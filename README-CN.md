@@ -1,14 +1,14 @@
-- **English**
-- [简体中文](README-CN.md)
+- [English](README.md)
+- **简体中文**
 
 <p align="center">
 <img src="images/ldk-logo.jpg" alt="ldk" />
 </p>
 
-# Information
-* A multi-platform lgou2w development kit.
+# 介绍
+* 一个多平台的 lgou2w 开发套件.
 
-# Modules
+# 模块
 
 * ldk
     * ldk-asm
