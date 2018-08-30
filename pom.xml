@@ -9,6 +9,26 @@
     <artifactId>ldk</artifactId>
     <version>0.0.1</version>
     <packaging>pom</packaging>
+    <description>A multi-platform lgou2w development kit</description>
+    <url>https://github.com/lgou2w/ldk</url>
+
+    <issueManagement>
+        <url>https://github.com/lgou2w/ldk/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:lgou2w/ldk.git</connection>
+        <developerConnection>scm:git:git@github.com:lgou2w/ldk.git</developerConnection>
+        <url>git@github.com:lgou2w/ldk.git</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
     <properties>
         <kotlin.version>1.2.61</kotlin.version>
@@ -20,6 +40,8 @@
 
     <modules>
         <module>ldk-common</module>
+        <module>ldk-chat</module>
+        <module>ldk-nbt</module>
     </modules>
 
     <dependencies>
