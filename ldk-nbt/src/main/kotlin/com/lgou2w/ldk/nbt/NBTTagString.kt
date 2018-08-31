@@ -36,6 +36,12 @@ class NBTTagString : NBTBase<String> {
         output.writeUTF(value)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (super.equals(other))
+            return value == (other as NBTBase<*>).value
+        return false
+    }
+
     override fun toString(): String {
         return "NBTTagString(value=${value.replace("\"", "\\\"")})"
     }

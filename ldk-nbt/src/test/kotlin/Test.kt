@@ -77,4 +77,13 @@ class Test {
         NBTStreams.writeBase64(compound).println()
         NBTStreams.write(ByteArrayOutputStream(), compound)
     }
+
+    @Test
+    fun test_NBTOf() {
+        val a = ofList<NBTTagString> { addString("1"); addString("2") }
+        val b = ofList<NBTTagString> { addString("1"); addString("2") }
+        a.hashCode().println()
+        b.hashCode().println()
+        println(a == b)
+    }
 }

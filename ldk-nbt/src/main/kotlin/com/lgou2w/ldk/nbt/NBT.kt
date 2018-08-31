@@ -20,22 +20,55 @@ import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
 
+/**
+ * ## NBT
+ *
+ * @see [NBTBase]
+ * @author lgou2w
+ */
 interface NBT<T> : Cloneable {
 
+    /**
+     * * The name of this NBT tag.
+     * * 此 NBT 标签的名称.
+     */
     val name: String
 
+    /**
+     * The type of this NBT tag.
+     * * 此 NBT 标签的类型.
+     *
+     * @see [NBTType]
+     */
     val type: NBTType
 
+    /**
+     * * The value of this NBT tag.
+     * * 此 NBT 标签的值.
+     */
     var value: T
 
+    /**
+     * * Reads the NBT tag from the given [input] data input.
+     * * 从给定的 [input] 数据输入读取 NBT 标签.
+     *
+     * @throws [IOException] I/O
+     */
     @Throws(IOException::class)
     fun read(input: DataInput)
 
+    /**
+     * * Write the given [output] data output to this NBT tag.
+     * * 将给定的 [output] 数据输出写入此 NBT 标签.
+     *
+     * @throws [IOException] I/O
+     */
     @Throws(IOException::class)
     fun write(output: DataOutput)
 
     /**
-     * * See the json format of Gson.
+     * * Convert this NBT tag to a string in the `JSON` format.
+     * * 将此 NBT 标签转换为 `JSON` 格式的字符串.
      *
      * @see [NBTTagList.toJson]
      * @see [NBTTagCompound.toJson]
@@ -43,7 +76,8 @@ interface NBT<T> : Cloneable {
     fun toJson(): String
 
     /**
-     * * See the nbt format of Minecraft.
+     * * Convert this NBT tag to a `JSON` format string with a Minecraft specific type value suffix.
+     * * 将此 NBT 标签转换为携有 Minecraft 特定类型值后缀的 `JSON` 格式字符串.
      *
      * @see [NBTTagList.toMojangson]
      * @see [NBTTagCompound.toMojangson]
@@ -55,6 +89,7 @@ interface NBT<T> : Cloneable {
 
         // const tag key
         // TODO Do not advocate doing this
+        // SEE ISSUES: https://github.com/lgou2w/ldk/issues/5
 
         //<editor-fold desc="TAG" defaultstate="collapsed">
 
@@ -125,6 +160,16 @@ interface NBT<T> : Cloneable {
     }
 }
 
+/**
+ * * Create an `NBTList` object that specifies the NBT type.
+ * * 创建一个指定 NBT 类型的 `NBTList` 对象.
+ *
+ * @see [NBTTagList]
+ * @param name Name
+ * @param name 名称
+ * @param block Initializer
+ * @param block 初始化
+ */
 @JvmOverloads
 inline fun <E: NBTBase<*>> ofList(
         name: String = "",
@@ -135,6 +180,16 @@ inline fun <E: NBTBase<*>> ofList(
     return list
 }
 
+/**
+ * * Create an NBT object of `NBTTagCompound`.
+ * * 创建一个 `NBTTagCompound` 的 NBT 对象.
+ *
+ * @see [NBTTagCompound]
+ * @param name Name
+ * @param name 名称
+ * @param block Initializer
+ * @param block 初始化
+ */
 @JvmOverloads
 inline fun ofCompound(
         name: String = "",
@@ -143,25 +198,4 @@ inline fun ofCompound(
     val compound = NBTTagCompound(name)
     compound.block()
     return compound
-}
-
-@JvmOverloads
-inline fun <reified E> Collection<E>.ofList(
-        name: String = "",
-        block: NBTTagList<NBTBase<E>>.() -> Unit = {}
-) : NBTTagList<NBTBase<E>> {
-    val list = NBTTagList<NBTBase<E>>(name)
-    if (isNotEmpty()) {
-        val elementType = NBTType.fromClass(E::class.java)
-        if (elementType == null)
-            throw IllegalArgumentException("不支持的集合元素类型: ${E::class.java}.")
-        @Suppress("UNCHECKED_CAST")
-        forEach {
-            val tag = NBTType.createTag(elementType)
-            (tag as NBTBase<E>).value = it
-            list.add(tag)
-        }
-    }
-    list.block()
-    return list
 }

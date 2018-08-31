@@ -41,4 +41,10 @@ abstract class NBTTagNumber<T: Number>(
 
     fun toByte(): Byte
             = value.toByte()
+
+    override fun equals(other: Any?): Boolean {
+        if (super.equals(other))
+            return value == (other as NBTBase<*>).value
+        return false
+    }
 }

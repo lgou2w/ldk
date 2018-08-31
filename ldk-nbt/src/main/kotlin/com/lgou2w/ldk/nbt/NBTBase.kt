@@ -36,7 +36,7 @@ abstract class NBTBase<T>(
         if (other === this)
             return true
         if (other is NBTBase<*>)
-            return other.name == name && other.type == type && other.value0 == value0
+            return other.name == name && other.type == type
         return false
     }
 
