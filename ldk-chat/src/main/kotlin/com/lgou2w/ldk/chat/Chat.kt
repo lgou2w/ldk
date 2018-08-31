@@ -16,23 +16,56 @@
 
 package com.lgou2w.ldk.chat
 
+/**
+ * * Converts the given string to a color string with the [altColorChar] character.
+ * * 将给定的字符串以 [altColorChar] 字符转换为颜色字符串.
+ *
+ * @param [altColorChar] Color character, default `&` value
+ * @param [altColorChar] 颜色字符, 默认 `&` 值
+ */
 @JvmOverloads
 fun String.toColor(altColorChar: Char = '&'): String
         = ChatColor.translateAlternateColorCodes(altColorChar, this)
 
+/**
+ * * Converts the given string array to an array of color strings with the [altColorChar] character.
+ * * 将给定的字符串数组以 [altColorChar] 字符转换为颜色字符串数组.
+ *
+ * @param [altColorChar] Color character, default `&` value
+ * @param [altColorChar] 颜色字符, 默认 `&` 值
+ */
 @JvmOverloads
 fun Array<out String>.toColor(altColorChar: Char = '&'): Array<out String>
         = toList().map { it.toColor(altColorChar) }.toTypedArray()
 
+/**
+ * * Converts a given list of strings to a list of color strings with the [altColorChar] character.
+ * * 将给定的字符串集合以 [altColorChar] 字符转换为颜色字符串集合.
+ *
+ * @param [altColorChar] Color character, default `&` value
+ * @param [altColorChar] 颜色字符, 默认 `&` 值
+ */
 @JvmOverloads
 fun Iterable<String>.toColor(altColorChar: Char = '&'): List<String>
         = map { it.toColor(altColorChar) }
 
+/**
+ * * Remove color characters from the given string.
+ * * 从给定的字符串剔除颜色字符.
+ */
 fun String.stripColor(): String
         = ChatColor.stripColor(this)
 
+/**
+ * * Remove color characters from a given array of strings.
+ * * 从给定的字符串数组剔除颜色字符.
+ */
 fun Array<out String>.stripColor(): Array<out String>
         = toList().map { it.stripColor() }.toTypedArray()
 
+/**
+ * * Remove color characters from a given list of strings.
+ * * 从给定的字符串集合剔除颜色字符.
+ */
 fun Iterable<String>.stripColor(): List<String>
         = map { it.stripColor() }

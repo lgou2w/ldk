@@ -19,7 +19,7 @@ package com.lgou2w.ldk.chat
 import com.lgou2w.ldk.common.Builder
 
 /**
- * ## ChatComponentFancy (聊天组件花式)
+ * ## ChatComponentFancy (花式聊天组件)
  *
  * * Use this fancy component to quickly create multiple components for custom connections.
  * * 使用这个花式组件可以快速的创建多个组件进行自定义连接.
@@ -190,6 +190,11 @@ open class ChatComponentFancy(
     /**
      * * The last component that sets this fancy component has a click open file event.
      * * 设置此花式组件最后一个组件具有点击打开文件事件.
+     *
+     * > *  Opens a link to any protocol, but cannot be used in `JSON` chat for security reasons.
+     *      Only exists to internally implement links for screenshots.
+     *
+     * > * 打开指向任何协议的链接, 但出于安全原因, 不能在 `JSON` 聊天中使用. 仅存在内部实现屏幕截图的链接.
      *
      * @see [ChatClickEvent.Action.OPEN_FILE]
      * @param path File path.

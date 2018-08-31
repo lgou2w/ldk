@@ -58,6 +58,11 @@ data class ChatClickEvent(
         /**
          * * Chat Click Type: Open File
          * * 聊天点击类型: 打开文件
+         *
+         * > *  Opens a link to any protocol, but cannot be used in `JSON` chat for security reasons.
+         *      Only exists to internally implement links for screenshots.
+         *
+         * > * 打开指向任何协议的链接, 但出于安全原因, 不能在 `JSON` 聊天中使用. 仅存在内部实现屏幕截图的链接.
          */
         OPEN_FILE,
         /**

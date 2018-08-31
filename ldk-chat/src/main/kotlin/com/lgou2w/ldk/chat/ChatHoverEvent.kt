@@ -58,6 +58,16 @@ data class ChatHoverEvent(
         /**
          * * Chat Hover Event: Show Achievement
          * * 聊天移动事件: 显示成就
+         *
+         * > * Since Minecraft 1.12, this no longer exists. advancements instead simply use [SHOW_TEXT].
+         *      The ID of an achievement or statistic to display.
+         *
+         * > * 自从 Minecraft 1.12, 这个不再存在了. 进度只需使用 [SHOW_TEXT]. 要显示的进度 ID 或统计信息.
+         *
+         * ### Sample:
+         * ```json
+         * {"action":"show_text","value":"achievement.openInventory"}
+         * ```
          */
         SHOW_ACHIEVEMENT,
         /**

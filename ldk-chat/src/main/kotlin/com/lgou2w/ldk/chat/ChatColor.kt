@@ -165,20 +165,40 @@ enum class ChatColor(
 
     companion object {
 
+        /**
+         * Color character
+         */
         const val CHAR_COLOR = '§'
+        const val CHAR_CODE = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr"
 
         @JvmStatic
         private val STRIP_COLOR = Pattern.compile("(?i)$CHAR_COLOR[0-9A-FK-OR]")
 
+        /**
+         * * Remove color characters from the given [input] string.
+         * * 从给定的 [input] 字符串剔除颜色字符.
+         *
+         * @param input String to be culled
+         * @param input 需要剔除的字符串
+         */
         @JvmStatic
         fun stripColor(input: String): String
                 = STRIP_COLOR.matcher(input).replaceAll("")
 
+        /**
+         * * Converts the given [textToTranslate] string to the specified [altColorChar] color character to a color string.
+         * * 将给定的 [textToTranslate] 字符串以指定的 [altColorChar] 颜色字符转换为颜色字符串.
+         *
+         * @param [altColorChar] Color character
+         * @param [altColorChar] 颜色字符
+         * @param textToTranslate String to be converted
+         * @param textToTranslate 需要转换的字符串
+         */
         @JvmStatic
         fun translateAlternateColorCodes(altColorChar: Char, textToTranslate: String): String {
             val chars = textToTranslate.toCharArray()
             for (i in 0 until chars.size - 1) {
-                if (chars[i] == altColorChar && "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(chars[i + 1]) > -1) {
+                if (chars[i] == altColorChar && CHAR_CODE.indexOf(chars[i + 1]) > -1) {
                     chars[i] = CHAR_COLOR
                     chars[i + 1] = Character.toLowerCase(chars[i + 1])
                 }

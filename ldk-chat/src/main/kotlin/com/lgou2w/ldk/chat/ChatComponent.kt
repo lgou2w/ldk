@@ -97,6 +97,15 @@ interface ChatComponent {
      * * 将此聊天组件转换为源字符串.
      *
      * @see [ChatSerializer.toRaw]
+     */
+    fun toRaw(): String
+            = toRaw(true)
+
+    /**
+     * * Convert this chat component to a raw string.
+     * * 将此聊天组件转换为源字符串.
+     *
+     * @see [ChatSerializer.toRaw]
      * @param color Whether it has a color.
      * @param color 是否拥有颜色.
      */
@@ -129,6 +138,9 @@ interface ChatComponent {
     companion object {
         /**
          * ## Null of ChatComponent
+         *
+         * * Indicates that it is just a static `NULL` chat component, and internal functions do not have its functionality.
+         * * 表明仅仅只是一个静态的 `NULL` 聊天组件, 内部函数不具备其功能.
          *
          * ### Sample:
          * ```kotlin
