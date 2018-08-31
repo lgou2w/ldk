@@ -20,7 +20,7 @@ import com.lgou2w.ldk.common.Valuable
 import java.util.regex.Pattern
 
 /**
- * * ChatColor (聊天颜色)
+ * ## ChatColor (聊天颜色)
  *
  * @see [Valuable]
  * @author lgou2w
