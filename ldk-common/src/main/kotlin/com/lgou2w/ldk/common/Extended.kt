@@ -66,6 +66,39 @@ typealias Callable<T> = () -> T
 
 /**************************************************************************
  *
+ * Function and BiFunction Extended
+ *
+ * @see java.util.function.Function
+ * @see java.util.function.BiFunction
+ *
+ **************************************************************************/
+
+/**
+ * @see [java.util.function.Function.compose]
+ */
+inline infix fun <T, R, V> Function<T, R>.compose(crossinline before: Function<V, T>) : Function<V, R>
+        = { v : V -> invoke(before.invoke(v)) }
+
+/**
+ * @see [java.util.function.Function.andThen]
+ */
+inline infix fun <T, R, V> Function<T, R>.andThen(crossinline after: Function<R, V>) : Function<T, V>
+        = { t : T -> after.invoke(invoke(t)) }
+
+/**
+ * @see [java.util.function.Function.identity]
+ */
+fun <T, R> Function<T, R>.identity() : Function<T, T>
+        = { t : T -> t }
+
+/**
+ * @see [java.util.function.BiFunction.andThen]
+ */
+inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: Function<R, V>) : BiFunction<T, U, V>
+        = { t : T, u : U -> after.invoke(invoke(t, u)) }
+
+/**************************************************************************
+ *
  * Extended functions
  *
  **************************************************************************/
