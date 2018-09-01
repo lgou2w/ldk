@@ -22,12 +22,46 @@ package com.lgou2w.ldk.common
  *
  **************************************************************************/
 
+/**
+ * * Predicate, conditional function type alias.
+ * * 谓词, 条件函数类型别名.
+ */
 typealias Predicate<T> = (T) -> Boolean
+
+/**
+ * * Function, with parameters and returned type aliases.
+ * * 函数, 具有参数和返回的类型别名.
+ */
 typealias Function<T, R> = (T) -> R
+
+/**
+ * * Double-parameter function, with double arguments and returned type aliases.
+ * * 双参函数, 具有双参和返回的类型别名.
+ */
 typealias BiFunction<T, U, R> = (T, U) -> R
+
+/**
+ * * Consumer type aliases.
+ * * 消费者类型别名.
+ */
 typealias Consumer<T> = (T) -> Unit
+
+/**
+ * * Applicator type aliases.
+ * * 应用器类型名称.
+ */
 typealias Applicator<T> = T.() -> Unit
+
+/**
+ * * The applicator function, with the type alias returned.
+ * * 应用器函数, 具有返回的类型别名.
+ */
 typealias ApplicatorFunction<T, R> = T.() -> R
+
+/**
+ * * Callable type aliases.
+ * * 可回调类型别名.
+ */
 typealias Callable<T> = () -> T
 
 /**************************************************************************
@@ -36,6 +70,13 @@ typealias Callable<T> = () -> T
  *
  **************************************************************************/
 
+/**
+ * * Throws a [NullPointerException] if the receiver is `null`.
+ * * 如果接收器为 `null` 则抛出空指针异常.
+ *
+ * @param cause Cause
+ * @param cause 原因
+ */
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun <T> T?.notNull(cause: String = "NPE"): T {
@@ -44,11 +85,20 @@ fun <T> T?.notNull(cause: String = "NPE"): T {
     return this
 }
 
-inline fun <T> T?.applyIfNotNull(block: Applicator<T>) {
+/**
+ * * If the receiver is not `null`, then use `this` value as the receiver to call the specified [block] function.
+ * * 如果接收器不为 `null`, 那么使用 `this` 值作为接收器调用指定的 [block] 函数.
+ */
+inline fun <T> T?.applyIfNotNull(block: Applicator<T>) : T? {
     if (this != null)
         block(this)
+    return this
 }
 
+/**
+ * * If the receiver is not `null`, then the specified [block] function is called with the `this` value as the argument and the result is returned.
+ * * 如果接收器不为 `null`, 那么使用 `this` 值作为参数调用指定的 [block] 函数并返回其结果.
+ */
 inline fun <T, R> T?.letIfNotNull(block: ApplicatorFunction<T, R>) : R? {
     if (this != null)
         return block(this)
@@ -56,38 +106,78 @@ inline fun <T, R> T?.letIfNotNull(block: ApplicatorFunction<T, R>) : R? {
 }
 
 /**
- * Returns true if this is true.
+ * * Returns `true` if the receiver is `true`.
+ * * 如果接收器是 `true`, 那么返回 `true`.
  */
 fun Boolean?.isTrue() : Boolean
         = this != null && this
 
 /**
- * Returns true if this is null or false.
+ * * Returns `true` if the receiver is `null` or `false`.
+ * * 如果接收器是 `null` 或 `false`, 那么返回 `true`.
  */
 fun Boolean?.isFlase() : Boolean
         = this == null || !this
 
 /**
- * Returns true if this is null or true.
+ * * Returns `true` if the receiver is `null` or `true`.
+ * * 如果接收器是 `null` 或 `true`, 那么返回 `true`.
  */
 fun Boolean?.orTrue() : Boolean
         = this == null || this == true
 
 /**
- * Returns false if this is null or false.
+ * * Returns `false` if the receiver is `null` or `false`.
+ * * 如果接收器是 `null` 或 `false`, 那么返回 `false`.
  */
 fun Boolean?.orFalse() : Boolean
         = !(this == null || this == false)
 
+/**
+ * * Returns `true` If the receiver is after the given [other].
+ * * 如果接收器是在给定的 [other] 之后, 那么返回 `true`.
+ *
+ * > * `compareTo(other) > 0`
+ *
+ * @see [Comparable]
+ * @see [Comparable.compareTo]
+ */
 fun <T, C: Comparable<T>> C.isLater(other: T) : Boolean
         = compareTo(other) > 0
 
+/**
+ * * Returns `true` if the receiver is equal or after the given [other].
+ * * 如果接收器是在给定的 [other] 相等或之后, 那么返回 `true`.
+ *
+ * > * `compareTo(other) >= 0`
+ *
+ * @see [Comparable]
+ * @see [Comparable.compareTo]
+ */
 fun <T, C: Comparable<T>> C.isOrLater(other: T) : Boolean
         = compareTo(other) >= 0
 
+/**
+ * * Returns `true` if the receiver is between the given [min] and [max].
+ * * 如果接收器是在给定的 [min] 和 [max] 之间, 那么返回 `true`.
+ *
+ * > * `compareTo(min) > 0 && compareTo(max) < 0`
+ *
+ * @see [Comparable]
+ * @see [Comparable.compareTo]
+ */
 fun <T, C: Comparable<T>> C.isRange(min: T, max: T) : Boolean
         = compareTo(min) > 0 && compareTo(max) < 0
 
+/**
+ * * Returns `true` if the receiver is equal or between the given [min] and [max].
+ * * 如果接收器是在给定的 [min] 和 [max] 相等或之间, 那么返回 `true`.
+ *
+ * > * `compareTo(min) >= 0 && compareTo(max) <= 0`
+ *
+ * @see [Comparable]
+ * @see [Comparable.compareTo]
+ */
 fun <T, C: Comparable<T>> C.isOrRange(min: T, max: T) : Boolean
         = compareTo(min) >= 0 && compareTo(max) <= 0
 
@@ -97,11 +187,23 @@ fun <T, C: Comparable<T>> C.isOrRange(min: T, max: T) : Boolean
  *
  **************************************************************************/
 
+/**
+ * * Lazy loading class delegate.
+ * * 延迟加载类委托.
+ */
 fun <T> lazyClass(initializer: Callable<Class<T>>)
         = LazyClass(initializer)
 
+/**
+ * * Lazy loading of any class delegate.
+ * * 延迟加载任意类委托.
+ */
 fun lazyAnyClass(initializer: Callable<Class<*>>)
         = LazyAnyClass(initializer)
 
+/**
+ * * Lazy loading any or `null` class delegates.
+ * * 延迟加载任意或 `null` 类委托.
+ */
 fun lazyAnyOrNullClass(initializer: Callable<Class<*>?>)
         = LazyAnyOrNullClass(initializer)

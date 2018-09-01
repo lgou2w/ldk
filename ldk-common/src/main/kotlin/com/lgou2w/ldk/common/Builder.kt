@@ -16,8 +16,19 @@
 
 package com.lgou2w.ldk.common
 
+/**
+ * ## Builder (构建者)
+ *
+ * @param R Result type.
+ * @param R 结果类型.
+ * @author lgou2w
+ */
 @FunctionalInterface
 interface Builder<out R> {
 
+    /**
+     * * Build a result type object.
+     * * 构建一个结果类型对象.
+     */
     fun build() : R
 }

@@ -37,6 +37,30 @@ package com.lgou2w.ldk.common
  *  by MoonLake on 24/08/2017
  */
 
+/**
+ * * ## ComparisonChain (链式比较器)
+ *
+ * * Chain comparison separated by Google's `Guava` library.
+ *      Used to compare the properties of the current class and an object.
+ * * 由 Google 的 `Guava` 库分离出来的链式比较器. 用来比较当前类和一个对象的属性.
+ *
+ * ### Sample:
+ * ```kotlin
+ * class Entity(val id: Int, val name: String) : Comparable<Entity> {
+ *      override fun compareTo(other: Entity): Int {
+ *          return ComparisonChain.start()
+ *              .compare(id, other.id)
+ *              .compare(name, other.name)
+ *              .result
+ *      }
+ * }
+ * ```
+ *
+ * @see [start]
+ * @see [Comparable]
+ * @see [Comparable.compareTo]
+ * @author Guava, lgou2w
+ */
 abstract class ComparisonChain private constructor() {
 
     companion object {
@@ -45,6 +69,10 @@ abstract class ComparisonChain private constructor() {
         private val LESS: ComparisonChain = InactiveComparisonChain(-1)
         private val GREATER: ComparisonChain = InactiveComparisonChain(1)
 
+        /**
+         * * Perform chain comparison.
+         * * 进行链式比较器.
+         */
         @JvmStatic
         fun start(): ComparisonChain
                 = ACTIVE
@@ -73,12 +101,14 @@ abstract class ComparisonChain private constructor() {
         override fun compareFalseFirst(left: Boolean, right: Boolean): ComparisonChain
                 = classify(left.compareTo(right))
         override val result: Int
-            get() = 0
+                = 0
         private fun classify(result: Int): ComparisonChain
                 = if (result < 0) LESS else if (result > 0) GREATER else ACTIVE
     }
 
-    private class InactiveComparisonChain(private val result0: Int) : ComparisonChain() {
+    private class InactiveComparisonChain(
+            override val result: Int
+    ) : ComparisonChain() {
         override fun <T: Comparable<T>> compare(left: T, right: T): ComparisonChain
                 = this
         override fun <T> compare(left: T, right: T, comparator: Comparator<T>): ComparisonChain
@@ -95,8 +125,6 @@ abstract class ComparisonChain private constructor() {
                 = this
         override fun compareFalseFirst(left: Boolean, right: Boolean): ComparisonChain
                 = this
-        override val result: Int
-            get() = result0
     }
 
     /*
