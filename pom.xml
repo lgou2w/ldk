@@ -40,8 +40,11 @@
 
     <modules>
         <module>ldk-common</module>
+        <module>ldk-reflect</module>
+        <module>ldk-i18n</module>
         <module>ldk-chat</module>
         <module>ldk-nbt</module>
+        <module>ldk-bukkit</module>
     </modules>
 
     <pluginRepositories>

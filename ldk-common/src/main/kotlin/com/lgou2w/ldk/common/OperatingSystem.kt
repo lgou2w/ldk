@@ -48,11 +48,10 @@ enum class OperatingSystem(
             val beanServer = ManagementFactory.getPlatformMBeanServer()
             try {
                 val attribute = beanServer.getAttribute(ObjectName("java.lang", "type", "OperatingSystem"), "TotalPhysicalMemorySize")
-                if (attribute is Long)
-                    return@lazy (attribute / 1024 / 1024).toInt()
+                (attribute.toString().toLong() / 1024 / 1024).toInt()
             } catch (e: JMException) {
+                1024
             }
-            1024
         }
 
         @JvmStatic

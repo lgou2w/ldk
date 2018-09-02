@@ -13,7 +13,7 @@
 * ldk
     * ldk-asm
     * ldk-common
-    * ldk-reflection
+    * ldk-reflect
     * ldk-retrofit
     * ldk-rx
     * ldk-fx
