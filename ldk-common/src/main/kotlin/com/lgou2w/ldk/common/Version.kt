@@ -16,12 +16,37 @@
 
 package com.lgou2w.ldk.common
 
+/**
+ * ## Version (版本)
+ *
+ * * A version class with major, minor, and build numbers.
+ * * 一个具有主要、次要以及构建号的版本类.
+ *
+ * @see [Comparable]
+ * @author lgou2w
+ */
 open class Version(
+        /**
+         * * The major number of the version.
+         * * 版本的主要号.
+         */
         val major: Int,
+        /**
+         * * The minor number of the version.
+         * * 版本的次要号.
+         */
         val minor: Int,
+        /**
+         * * The build number of the version.
+         * * 版本的构建号.
+         */
         val build: Int
 ) : Comparable<Version> {
 
+    /**
+     * * The string value of the version number. E.g: `1.0.0`
+     * * 版本号的字符串值. 例如: `1.0.0`
+     */
     open val version: String
         get() = "$major.$minor.$build"
 

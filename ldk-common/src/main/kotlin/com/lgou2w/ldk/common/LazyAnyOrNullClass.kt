@@ -19,6 +19,19 @@ package com.lgou2w.ldk.common
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * ## LazyAnyOrNullClass (延迟加载任意或 `null` 类)
+ *
+ * * Used to lazy loading a any or `null` class.
+ * * 用于延迟加载指定的任意或 `null` 类.
+ *
+ * > * `val clazz : Class<*>? by lazyAnyOrNullClass { Class.forName("404 Not Found") }`
+ *
+ * @see [lazyAnyOrNullClass]
+ * @see [ReadOnlyProperty]
+ * @see [Lazy]
+ * @author lgou2w
+ */
 class LazyAnyOrNullClass(
         initializer: Callable<Class<*>?>
 ) : ReadOnlyProperty<Any, Class<*>?>,

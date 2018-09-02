@@ -16,7 +16,22 @@
 
 package com.lgou2w.ldk.common
 
+/**
+ * ## Valuable (有价值的)
+ *
+ * * Let it have a read-only member attribute of [value].
+ *      Generally used for enumeration, refer to [Enums.ofValuable], [Enums.fromValuable] function.
+ * * 让其具备一个 [value] 的只读成员属性.
+ *      一般用于枚举, 参考 [Enums.ofValuable], [Enums.fromValuable] 功能.
+ *
+ * @see [Enums.ofValuable]
+ * @see [Enums.fromValuable]
+ * @author lgou2w
+ */
 interface Valuable<T> {
 
+    /**
+     * @see [Valuable]
+     */
     val value: T
 }

@@ -26,11 +26,19 @@ import java.util.logging.Formatter
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 
+/**
+ * ## SimpleLogger (简单记录器)
+ *
+ * * The following format: `[HH:mm:dd] [Thread/Level]: Message`
+ *
+ * @author lgou2w
+ */
 class SimpleLogger(
         name: String,
         resourceBundleName: String? = null
 ) : Logger(name, resourceBundleName) {
 
+    @JvmOverloads
     constructor(
             clazz: Class<*>,
             resourceBundleName: String? = null

@@ -19,6 +19,19 @@ package com.lgou2w.ldk.common
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * ## LazyAnyClass (延迟加载任意类)
+ *
+ * * Used to lazy loading a specified class.
+ * * 用于延迟加载指定的一个类.
+ *
+ * > * `val clazz by lazyAnyClass { Class.forName("java.lang.String") }`
+ *
+ * @see [lazyAnyClass]
+ * @see [ReadOnlyProperty]
+ * @see [Lazy]
+ * @author lgou2w
+ */
 class LazyAnyClass(
         initializer: Callable<Class<*>>
 ) : ReadOnlyProperty<Any, Class<*>>,
