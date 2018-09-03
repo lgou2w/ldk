@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagCompound (复合 NBT 标签)
+ *
+ * @see [Map]
+ * @author lgou2w
+ */
 class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<String, NBTBase<*>> {
 
     @JvmOverloads
@@ -92,6 +98,8 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
 
     ///
     //
+
+    // TODO document
 
     fun put(value: NBTBase<*>): NBTBase<*>? {
         return put(value.name, value)

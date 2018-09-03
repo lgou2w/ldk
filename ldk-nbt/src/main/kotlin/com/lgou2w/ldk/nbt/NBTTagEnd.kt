@@ -19,9 +19,22 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagEnd (尾 NBT 标签)
+ *
+ * * This tag cannot create instance objects, please use the [INSTANCE] instance.
+ * * 此标签不能创建实例对象, 请使用 [INSTANCE] 实例.
+ *
+ * @see [INSTANCE]
+ * @author lgou2w
+ */
 class NBTTagEnd private constructor() : NBTBase<Any>("", Any()) {
 
     companion object {
+        /**
+         * * An empty `END` instance object.
+         * * 空的 `END` 实例对象.
+         */
         @JvmField
         val INSTANCE = NBTTagEnd()
     }

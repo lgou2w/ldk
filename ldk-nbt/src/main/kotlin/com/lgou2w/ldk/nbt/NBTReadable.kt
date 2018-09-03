@@ -16,7 +16,22 @@
 
 package com.lgou2w.ldk.nbt
 
+/**
+ * ## NBTReadable (可读 NBT 能力接口)
+ *
+ * * Implement this interface so it should have the ability to read data from `root`.
+ * * 实现此接口那么其应该具备从 `root` 读取数据能力.
+ *
+ * @see [load]
+ * @see [NBTSavable]
+ * @see [NBTTagCompound]
+ * @author lgou2w
+ */
 interface NBTReadable {
 
+    /**
+     * * Read the required data from the given [root] tag.
+     * * 从给定的 [root] 标签中读取需要的数据.
+     */
     fun load(root: NBTTagCompound)
 }

@@ -20,6 +20,12 @@ import java.io.DataInput
 import java.io.DataOutput
 import java.util.*
 
+/**
+ * ## NBTTagIntArray (整数数组 NBT 标签)
+ *
+ * @see [IntArray]
+ * @author lgou2w
+ */
 class NBTTagIntArray : NBTBase<IntArray> {
 
     @JvmOverloads

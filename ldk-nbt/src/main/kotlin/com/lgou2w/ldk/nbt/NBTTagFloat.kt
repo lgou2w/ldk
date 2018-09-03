@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagFloat (单精度浮点 NBT 标签)
+ *
+ * @see [Float]
+ * @author lgou2w
+ */
 class NBTTagFloat : NBTTagNumber<Float> {
 
     @JvmOverloads

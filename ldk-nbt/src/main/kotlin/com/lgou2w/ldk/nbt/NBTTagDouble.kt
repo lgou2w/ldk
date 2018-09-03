@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagDouble (双精度浮点 NBT 标签)
+ *
+ * @see [Double]
+ * @author lgou2w
+ */
 class NBTTagDouble : NBTTagNumber<Double> {
 
     @JvmOverloads

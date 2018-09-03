@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagInt (整数 NBT 标签)
+ *
+ * @see [Int]
+ * @author lgou2w
+ */
 class NBTTagInt : NBTTagNumber<Int> {
 
     @JvmOverloads

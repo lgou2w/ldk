@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagString (字符串 NBT 标签)
+ *
+ * @see [String]
+ * @author lgou2w
+ */
 class NBTTagString : NBTBase<String> {
 
     constructor(name: String = "", value: String = "") : super(name, value)

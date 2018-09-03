@@ -20,6 +20,12 @@ import java.io.DataInput
 import java.io.DataOutput
 import java.util.*
 
+/**
+ * ## NBTTagByteArray (字节数组 NBT 标签)
+ *
+ * @see [ByteArray]
+ * @author lgou2w
+ */
 class NBTTagByteArray : NBTBase<ByteArray> {
 
     @JvmOverloads
@@ -63,7 +69,7 @@ class NBTTagByteArray : NBTBase<ByteArray> {
     }
 
     override fun clone(): NBTTagByteArray {
-        return NBTTagByteArray(name, value)
+        return NBTTagByteArray(name, value) // clone
     }
 
     override fun toJson(): String {

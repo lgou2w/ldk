@@ -16,13 +16,24 @@
 
 package com.lgou2w.ldk.nbt
 
-import com.lgou2w.ldk.common.Enums
 import java.io.DataInput
 import java.io.DataOutput
 import java.util.*
 
+/**
+ * ## NBTTagList (集合 NBT 标签)
+ *
+ * @see [List]
+ * @author lgou2w
+ */
 class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
 
+    /**
+     * * The NBT tag type within this collection.
+     * * 此集合内的 NBT 标签类型.
+     *
+     * @see [NBTType]
+     */
     var elementType = NBTType.TAG_END
         private set
 
@@ -56,7 +67,7 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
         get() = NBTType.TAG_LIST
 
     override fun read(input: DataInput) {
-        val elementType = Enums.ofValuable(NBTType::class.java, input.readUnsignedByte()) ?: NBTType.TAG_END
+        val elementType = NBTType.fromId(input.readUnsignedByte()) ?: NBTType.TAG_END
         val length = input.readInt()
         this.elementType = elementType
         super.value0 = ArrayList()
@@ -119,6 +130,8 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
 
     ///
     //
+
+    // TODO document
 
     fun addByte(value: Byte): Boolean {
         @Suppress("UNCHECKED_CAST")

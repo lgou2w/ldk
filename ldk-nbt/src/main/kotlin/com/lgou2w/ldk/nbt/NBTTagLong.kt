@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagLong (长整数 NBT 标签)
+ *
+ * @see [Long]
+ * @author lgou2w
+ */
 class NBTTagLong : NBTTagNumber<Long> {
 
     @JvmOverloads

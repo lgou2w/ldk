@@ -35,12 +35,18 @@ interface NBT<T> : Cloneable {
     val name: String
 
     /**
-     * The type of this NBT tag.
+     * * The type of this NBT tag.
      * * 此 NBT 标签的类型.
      *
      * @see [NBTType]
      */
     val type: NBTType
+
+    /**
+     * * The type id of this NBT tag.
+     * * 此 NBT 标签的类型 Id.
+     */
+    val typeId: Int
 
     /**
      * * The value of this NBT tag.
@@ -52,6 +58,8 @@ interface NBT<T> : Cloneable {
      * * Reads the NBT tag from the given [input] data input.
      * * 从给定的 [input] 数据输入读取 NBT 标签.
      *
+     * @param input Input stream
+     * @param input 输入流
      * @throws [IOException] I/O
      */
     @Throws(IOException::class)
@@ -61,6 +69,8 @@ interface NBT<T> : Cloneable {
      * * Write the given [output] data output to this NBT tag.
      * * 将给定的 [output] 数据输出写入此 NBT 标签.
      *
+     * @param output Output stream
+     * @param output 输出流
      * @throws [IOException] I/O
      */
     @Throws(IOException::class)

@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagByte (字节 NBT 标签)
+ *
+ * @see [Byte]
+ * @author lgou2w
+ */
 class NBTTagByte : NBTTagNumber<Byte> {
 
     @JvmOverloads

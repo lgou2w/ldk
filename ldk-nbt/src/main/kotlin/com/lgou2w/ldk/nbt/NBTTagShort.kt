@@ -19,6 +19,12 @@ package com.lgou2w.ldk.nbt
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTTagShort (短整数 NBT 标签)
+ *
+ * @see [Short]
+ * @author lgou2w
+ */
 class NBTTagShort : NBTTagNumber<Short> {
 
     @JvmOverloads

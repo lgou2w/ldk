@@ -16,12 +16,24 @@
 
 package com.lgou2w.ldk.nbt
 
+/**
+ * ## NBTBase
+ *
+ * @see [NBTType]
+ * @author lgou2w
+ */
 abstract class NBTBase<T>(
         override val name: String,
+        /**
+         * * The source object for this NBT tag value.
+         * * 此 NBT 标签值的源对象.
+         *
+         * @see [value]
+         */
         protected var value0: T
 ) : NBT<T> {
 
-    val typeId: Int
+    override val typeId: Int
         get() = type.id
 
     override var value: T

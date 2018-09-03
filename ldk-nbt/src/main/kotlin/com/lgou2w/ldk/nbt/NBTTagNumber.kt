@@ -16,29 +16,61 @@
 
 package com.lgou2w.ldk.nbt
 
+/**
+ * ## NBTTagNumber (数字 NBT 标签)
+ *
+ * @see [NBTTagByte]
+ * @see [NBTTagShort]
+ * @see [NBTTagInt]
+ * @see [NBTTagLong]
+ * @see [NBTTagFloat]
+ * @see [NBTTagDouble]
+ * @author lgou2w
+ */
 abstract class NBTTagNumber<T: Number>(
         name: String,
         value: T
 ) : NBTBase<T>(name, value) {
 
+    /**
+     * @see [Number.toDouble]
+     */
     fun toDouble(): Double
             = value.toDouble()
 
+    /**
+     * @see [Number.toFloat]
+     */
     fun toFloat(): Float
             = value.toFloat()
 
+    /**
+     * @see [Number.toLong]
+     */
     fun toLong(): Long
             = value.toLong()
 
+    /**
+     * @see [Number.toInt]
+     */
     fun toInt(): Int
             = value.toInt()
 
+    /**
+     * @see [Number.toChar]
+     */
     fun toChar(): Char
             = value.toChar()
 
+    /**
+     * @see [Number.toShort]
+     */
     fun toShort(): Short
             = value.toShort()
 
+    /**
+     * @see [Number.toByte]
+     */
     fun toByte(): Byte
             = value.toByte()
 
