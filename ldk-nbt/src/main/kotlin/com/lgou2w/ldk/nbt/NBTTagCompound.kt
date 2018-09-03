@@ -153,17 +153,26 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
         return putByte(key, if (value) 1 else 0)
     }
 
+    private fun getAndCheck(key: String, expected: Class<out NBTBase<*>>) : NBTBase<*>? {
+        val tag = get(key) ?: return null
+        val expectedType = NBTType.fromClass(expected)
+        if (!expected.isInstance(tag))
+            throw ClassCastException("键 $key 的标签值类型 ${tag.type} 和预期不符合. (预期: ${expectedType ?: expected.simpleName})")
+        return tag
+    }
+
     private fun getNumber(key: String): Number {
-        val tag = get(key) ?: throw NoSuchElementException("未存在的指定键: $key")
+        val tag = getAndCheck(key, NBTTagNumber::class.java)
+                  ?: throw NoSuchElementException("未存在的指定键: $key")
         return (tag as NBTTagNumber<*>).value
     }
 
     private fun getNumberOrNull(key: String): Number? {
-        return (get(key) as? NBTTagNumber<*>)?.value
+        return (getAndCheck(key, NBTTagNumber::class.java) as? NBTTagNumber<*>)?.value
     }
 
     private fun <T> getOrDefault(type: NBTType, key: String): T {
-        var tag = get(key)
+        var tag = getAndCheck(key, type.wrapped)
         if (tag == null) {
             tag = when (type) {
                 NBTType.TAG_END -> throw UnsupportedOperationException("TAG_END")
@@ -259,11 +268,11 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     fun getByteArray(key: String): ByteArray {
-        return (get(key) as NBTTagByteArray).value
+        return (getAndCheck(key, NBTTagByteArray::class.java) as NBTTagByteArray).value
     }
 
     fun getByteArrayOrNull(key: String): ByteArray? {
-        return (get(key) as? NBTTagByteArray)?.value
+        return (getAndCheck(key, NBTTagByteArray::class.java) as? NBTTagByteArray)?.value
     }
 
     fun getByteArrayOrDefault(key: String): ByteArray {
@@ -271,11 +280,11 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     fun getString(key: String): String {
-        return (get(key) as NBTTagString).value
+        return (getAndCheck(key, NBTTagString::class.java) as NBTTagString).value
     }
 
     fun getStringOrNull(key: String): String? {
-        return (get(key) as? NBTTagString)?.value
+        return (getAndCheck(key, NBTTagString::class.java) as? NBTTagString)?.value
     }
 
     fun getStringOrDefault(key: String): String {
@@ -283,11 +292,11 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     fun getList(key: String): NBTTagList<*> {
-        return get(key) as NBTTagList<*>
+        return getAndCheck(key, NBTTagList::class.java) as NBTTagList<*>
     }
 
     fun getListOrNull(key: String): NBTTagList<*>? {
-        return get(key) as? NBTTagList<*>
+        return getAndCheck(key, NBTTagList::class.java) as? NBTTagList<*>
     }
 
     fun getListOrDefault(key: String): NBTTagList<*> {
@@ -295,23 +304,23 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     fun getCompound(key: String): NBTTagCompound {
-        return get(key) as NBTTagCompound
+        return getAndCheck(key, NBTTagCompound::class.java) as NBTTagCompound
     }
 
     fun getCompoundOrNull(key: String): NBTTagCompound? {
-        return get(key) as? NBTTagCompound
+        return getAndCheck(key, NBTTagCompound::class.java) as? NBTTagCompound
     }
 
     fun getCompoundOrDefault(key: String): NBTTagCompound {
         return getOrDefault(NBTType.TAG_COMPOUND, key)
     }
 
-    fun getIntArray(key: String): IntArray? {
-        return (get(key) as? NBTTagIntArray)?.value
+    fun getIntArray(key: String): IntArray {
+        return (getAndCheck(key, NBTTagIntArray::class.java) as NBTTagIntArray).value
     }
 
     fun getIntArrayOrNull(key: String): IntArray {
-        return (get(key) as NBTTagIntArray).value
+        return (getAndCheck(key, NBTTagIntArray::class.java) as NBTTagIntArray).value
     }
 
     fun getIntArrayOrDefault(key: String): IntArray {

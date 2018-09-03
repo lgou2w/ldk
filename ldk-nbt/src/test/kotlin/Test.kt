@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream
 
 class Test {
 
-    fun Any.println() = println(this)
+    private fun Any.println() = println(this)
 
     @Test
     fun test_NBTTo() {
@@ -85,5 +85,12 @@ class Test {
         a.hashCode().println()
         b.hashCode().println()
         println(a == b)
+    }
+
+    @Test(expected = ClassCastException::class)
+    fun test_NBTConflict() {
+        val tag = ofCompound {  }
+        tag.putString("value", "122345688")
+        tag.getInt("value").println()
     }
 }

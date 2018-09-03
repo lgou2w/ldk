@@ -44,7 +44,7 @@ enum class NBTType(
          * * The wrapped type of tag type.
          * * 标签类型的包装类型.
          */
-        val wrapped: Class<*>,
+        val wrapped: Class<out NBTBase<*>>,
         /**
          * * A tag type with a specific suffix.
          * * 具有特定后缀的标签类型.
