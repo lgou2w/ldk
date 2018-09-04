@@ -181,11 +181,11 @@ interface NBT<T> : Cloneable {
  * @param block 初始化
  */
 @JvmOverloads
-inline fun <E: NBTBase<*>> ofList(
+inline fun ofList(
         name: String = "",
-        block: NBTTagList<E>.() -> Unit = {}
-) : NBTTagList<E> {
-    val list = NBTTagList<E>(name)
+        block: NBTTagList.() -> Unit = {}
+) : NBTTagList {
+    val list = NBTTagList(name)
     list.block()
     return list
 }

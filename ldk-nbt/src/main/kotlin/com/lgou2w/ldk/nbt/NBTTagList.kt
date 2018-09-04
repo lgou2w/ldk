@@ -26,7 +26,7 @@ import java.util.*
  * @see [List]
  * @author lgou2w
  */
-class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
+class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
 
     /**
      * * The NBT tag type within this collection.
@@ -38,17 +38,17 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
         private set
 
     @JvmOverloads
-    constructor(name: String = "", value: MutableList<E> = LinkedList()) : super(name, value) {
+    constructor(name: String = "", value: MutableList<NBTBase<*>> = LinkedList()) : super(name, value) {
         for (el in value)
             check(el)
     }
 
-    constructor(value: MutableList<E> = LinkedList()) : super("", value) {
+    constructor(value: MutableList<NBTBase<*>> = LinkedList()) : super("", value) {
         for (el in value)
             check(el)
     }
 
-    override var value: MutableList<E>
+    override var value: MutableList<NBTBase<*>>
         get() = ArrayList(super.value0)
         set(value) {
             for (el in value)
@@ -56,7 +56,7 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
             super.value0 = ArrayList(value)
         }
 
-    protected fun check(element: E) {
+    private fun check(element: NBTBase<*>) {
         if (elementType == NBTType.TAG_END)
             elementType = element.type
         else if (elementType != element.type)
@@ -74,8 +74,7 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
         (0 until length).forEach {
             val tag = NBTType.createTag(elementType)
             tag.read(input)
-            @Suppress("UNCHECKED_CAST")
-            add(tag as E)
+            add(tag)
         }
     }
 
@@ -86,7 +85,8 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
             el.write(output)
     }
 
-    override fun clone(): NBTTagList<E> {
+    override fun clone(): NBTTagList {
+        val value = value0.map { it.clone() }.toMutableList()   // clone
         return NBTTagList(name, value)
     }
 
@@ -95,7 +95,7 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
     }
 
     override fun equals(other: Any?): Boolean {
-        if (super.equals(other) && (other as NBTTagList<*>).elementType == elementType)
+        if (super.equals(other) && (other as NBTTagList).elementType == elementType)
             return other.value0 == value0
         return false
     }
@@ -131,101 +131,183 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
     ///
     //
 
-    // TODO document
-
+    /**
+     * * Add the given byte [value] to this collection tag.
+     * * 将给定的字节值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addByte(value: Byte): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagByte(value) as E)
+        return add(NBTTagByte(value))
     }
 
+    /**
+     * * Add the given byte [value] to this collection tag.
+     * * 将给定的字节值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addByte(value: Int): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagByte(value.toByte()) as E)
+        return add(NBTTagByte(value.toByte()))
     }
 
+    /**
+     * * Add the given short [value] to this collection tag.
+     * * 将给定的短整数值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addShort(value: Short): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagShort(value) as E)
+        return add(NBTTagShort(value))
     }
 
+    /**
+     * * Add the given short [value] to this collection tag.
+     * * 将给定的短整数值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addShort(value: Int): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagShort(value.toShort()) as E)
+        return add(NBTTagShort(value.toShort()))
     }
 
+    /**
+     * * Add the given int [value] to this collection tag.
+     * * 将给定的整数值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addInt(value: Int): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagInt(value) as E)
+        return add(NBTTagInt(value))
     }
 
+    /**
+     * * Add the given long [value] to this collection tag.
+     * * 将给定的长整数值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addLong(value: Long): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagLong(value) as E)
+        return add(NBTTagLong(value))
     }
 
+    /**
+     * * Add the given float [value] to this collection tag.
+     * * 将给定的单精度浮点值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addFloat(value: Float): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagFloat(value) as E)
+        return add(NBTTagFloat(value))
     }
 
+    /**
+     * * Add the given double [value] to this collection tag.
+     * * 将给定的双精度浮点值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addDouble(value: Double): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagDouble(value) as E)
+        return add(NBTTagDouble(value))
     }
 
+    /**
+     * * Add the given byte array [value] to this collection tag.
+     * * 将给定的字节数组值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addByteArray(value: ByteArray): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagByteArray(value) as E)
+        return add(NBTTagByteArray(value))
     }
 
+    /**
+     * * Add the given string [value] to this collection tag.
+     * * 将给定的字符串值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addString(value: String): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagString(value) as E)
+        return add(NBTTagString(value))
     }
 
-    fun addList(value: NBTTagList<NBTBase<*>>): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(value as E)
+    /**
+     * * Add the given list tag [value] to this collection tag.
+     * * 将给定的集合标签值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
+    fun addList(value: NBTTagList): Boolean {
+        return add(value)
     }
 
+    /**
+     * * Add the given compound tag [value] to this collection tag.
+     * * 将给定的复合标签值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addCompound(value: NBTTagCompound): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(value as E)
+        return add(value)
     }
 
+    /**
+     * * Add the given int array [value] to this collection tag.
+     * * 将给定的整数数组值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addIntArray(value: IntArray): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagIntArray(value) as E)
+        return add(NBTTagIntArray(value))
     }
 
+    /**
+     * * Add the given boolean [value] to this collection tag.
+     * * 将给定的布尔值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
     fun addBoolean(value: Boolean): Boolean {
-        @Suppress("UNCHECKED_CAST")
-        return add(NBTTagByte(if (value) 1.toByte() else 0.toByte()) as E)
+        return add(NBTTagByte(if (value) 1.toByte() else 0.toByte()))
     }
 
     //
     ///
 
-    override fun iterator(): MutableIterator<E> {
+    override fun iterator(): MutableIterator<NBTBase<*>> {
         return value0.iterator()
     }
 
     override val size: Int
         get() = value0.size
 
-    override fun contains(element: E): Boolean {
+    override fun contains(element: NBTBase<*>): Boolean {
         return value0.contains(element)
     }
 
-    override fun containsAll(elements: Collection<E>): Boolean {
+    override fun containsAll(elements: Collection<NBTBase<*>>): Boolean {
         return value0.containsAll(elements)
     }
 
-    override fun get(index: Int): E {
+    override fun get(index: Int): NBTBase<*> {
         return value0[index]
     }
 
-    override fun indexOf(element: E): Int {
+    override fun indexOf(element: NBTBase<*>): Int {
         return value0.indexOf(element)
     }
 
@@ -233,27 +315,27 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
         return value0.isEmpty()
     }
 
-    override fun lastIndexOf(element: E): Int {
+    override fun lastIndexOf(element: NBTBase<*>): Int {
         return value0.lastIndexOf(element)
     }
 
-    override fun add(element: E): Boolean {
+    override fun add(element: NBTBase<*>): Boolean {
         check(element)
         return value0.add(element)
     }
 
-    override fun add(index: Int, element: E) {
+    override fun add(index: Int, element: NBTBase<*>) {
         check(element)
         return value0.add(index, element)
     }
 
-    override fun addAll(index: Int, elements: Collection<E>): Boolean {
+    override fun addAll(index: Int, elements: Collection<NBTBase<*>>): Boolean {
         for (el in elements)
             check(el)
         return value0.addAll(index, elements)
     }
 
-    override fun addAll(elements: Collection<E>): Boolean {
+    override fun addAll(elements: Collection<NBTBase<*>>): Boolean {
         for (el in elements)
             check(el)
         return value0.addAll(elements)
@@ -263,41 +345,41 @@ class NBTTagList<E: NBTBase<*>> : NBTBase<MutableList<E>>, MutableList<E> {
         value0.clear()
     }
 
-    override fun listIterator(): MutableListIterator<E> {
+    override fun listIterator(): MutableListIterator<NBTBase<*>> {
         return value0.listIterator()
     }
 
-    override fun listIterator(index: Int): MutableListIterator<E> {
+    override fun listIterator(index: Int): MutableListIterator<NBTBase<*>> {
         return value0.listIterator(index)
     }
 
-    override fun remove(element: E): Boolean {
+    override fun remove(element: NBTBase<*>): Boolean {
         check(element)
         return value0.remove(element)
     }
 
-    override fun removeAll(elements: Collection<E>): Boolean {
+    override fun removeAll(elements: Collection<NBTBase<*>>): Boolean {
         for (el in elements)
             check(el)
         return value0.removeAll(elements)
     }
 
-    override fun removeAt(index: Int): E {
+    override fun removeAt(index: Int): NBTBase<*> {
         return value0.removeAt(index)
     }
 
-    override fun retainAll(elements: Collection<E>): Boolean {
+    override fun retainAll(elements: Collection<NBTBase<*>>): Boolean {
         for (el in elements)
             check(el)
         return value0.retainAll(elements)
     }
 
-    override fun set(index: Int, element: E): E {
+    override fun set(index: Int, element: NBTBase<*>): NBTBase<*> {
         check(element)
         return value0.set(index, element)
     }
 
-    override fun subList(fromIndex: Int, toIndex: Int): MutableList<E> {
+    override fun subList(fromIndex: Int, toIndex: Int): MutableList<NBTBase<*>> {
         return value0.subList(fromIndex, toIndex)
     }
 }

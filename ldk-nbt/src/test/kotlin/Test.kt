@@ -33,7 +33,7 @@ class Test {
         NBTTagString().println()
         NBTTagByteArray(byteArrayOf(0, 1, 2, 3)).println()
         NBTTagIntArray(intArrayOf(0, 1, 2, 3)).println()
-        NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3))).println()
+        NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3)) as MutableList<NBTBase<*>>).println()
         NBTTagCompound(mutableMapOf("0" to NBTTagByte(0) as NBTBase<*>, "1" to NBTTagByte(1) as NBTBase<*>)).println()
     }
 
@@ -48,7 +48,7 @@ class Test {
         NBTTagString().toJson().println()
         NBTTagByteArray(byteArrayOf(0, 1, 2, 3)).toJson().println()
         NBTTagIntArray(intArrayOf(0, 1, 2, 3)).toJson().println()
-        NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3))).toJson().println()
+        NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3)) as MutableList<NBTBase<*>>).toJson().println()
         NBTTagCompound(mutableMapOf("0" to NBTTagByte(0) as NBTBase<*>, "1" to NBTTagByte(1) as NBTBase<*>)).toJson().println()
     }
 
@@ -63,7 +63,7 @@ class Test {
         NBTTagString().toMojangson().println()
         NBTTagByteArray(byteArrayOf(0, 1, 2, 3)).toMojangson().println()
         NBTTagIntArray(intArrayOf(0, 1, 2, 3)).toMojangson().println()
-        NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3))).toMojangson().println()
+        NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3)) as MutableList<NBTBase<*>>).toMojangson().println()
         NBTTagCompound(mutableMapOf("0" to NBTTagByte(0) as NBTBase<*>, "1" to NBTTagByte(1) as NBTBase<*>)).toMojangson().println()
     }
 
@@ -80,8 +80,8 @@ class Test {
 
     @Test
     fun test_NBTOf() {
-        val a = ofList<NBTTagString> { addString("1"); addString("2") }
-        val b = ofList<NBTTagString> { addString("1"); addString("2") }
+        val a = ofList { addString("1"); addString("2") }
+        val b = ofList { addString("1"); addString("2") }
         a.hashCode().println()
         b.hashCode().println()
         println(a == b)
@@ -92,5 +92,14 @@ class Test {
         val tag = ofCompound {  }
         tag.putString("value", "122345688")
         tag.getInt("value").println()
+    }
+
+    @Test
+    fun test_NBTClone() {
+        val tag = NBTTagIntArray(intArrayOf(1, 2, 3, 4))
+        val tag2 = tag.clone()
+        tag2.value = intArrayOf(4, 3, 2, 1)
+        tag.println()
+        tag2.println()
     }
 }

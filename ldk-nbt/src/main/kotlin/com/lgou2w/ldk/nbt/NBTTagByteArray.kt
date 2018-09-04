@@ -44,7 +44,7 @@ class NBTTagByteArray : NBTBase<ByteArray> {
         }
         set(value) {
             val value0 = ByteArray(value.size)
-            for ((i, el) in value0.withIndex())
+            for ((i, el) in value.withIndex())
                 value0[i] = el
             super.value0 = value0
         }

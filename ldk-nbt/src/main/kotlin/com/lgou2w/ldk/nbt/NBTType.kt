@@ -262,7 +262,7 @@ enum class NBTType(
                 TAG_DOUBLE -> NBTTagDouble(name)
                 TAG_BYTE_ARRAY -> NBTTagByteArray(name)
                 TAG_STRING -> NBTTagString(name = name)
-                TAG_LIST -> NBTTagList<NBTBase<*>>(name)
+                TAG_LIST -> NBTTagList(name)
                 TAG_COMPOUND -> NBTTagCompound(name)
                 TAG_INT_ARRAY -> NBTTagIntArray(name)
             }
