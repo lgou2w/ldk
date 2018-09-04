@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.i18n
 
+import java.io.IOException
 import java.util.*
 
 interface LanguageManager {
@@ -26,5 +27,13 @@ interface LanguageManager {
 
     val provider : LanguageProvider
 
+    @Throws(IOException::class)
     fun load(locale: Locale) : Language
+
+    @Throws(IOException::class, UnsupportedOperationException::class)
+    fun save(language: Language)
+
+    fun isValid(locale: Locale) : Boolean
+
+    fun isValid(language: Language) : Boolean
 }

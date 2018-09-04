@@ -16,16 +16,27 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
+import java.io.*
 
 class ExternalProvider(
-        private val directory : File
+        val directory : File
 ) : LanguageProvider {
 
-    override fun load(name: String): InputStream {
+    override fun load(name: String): InputStream? {
         val file = File(directory, name)
+        if (file.parentFile?.exists() != true)
+            file.parentFile?.mkdirs()
+        if (!file.exists())
+            return null
         return FileInputStream(file)
+    }
+
+    override fun isValid(name: String): Boolean {
+        return File(directory, name).exists()
+    }
+
+    override fun write(name: String): OutputStream {
+        val file = File(directory, name)
+        return FileOutputStream(file)
     }
 }

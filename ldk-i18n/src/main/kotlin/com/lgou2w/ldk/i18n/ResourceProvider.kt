@@ -20,10 +20,14 @@ import java.io.FileNotFoundException
 import java.io.InputStream
 
 open class ResourceProvider(
-        private val classLoader: ClassLoader = ResourceProvider::class.java.classLoader
+        val classLoader: ClassLoader = ResourceProvider::class.java.classLoader
 ) : LanguageProvider {
 
-    override fun load(name: String): InputStream {
+    override fun isValid(name: String): Boolean {
+        return classLoader.getResource(name) != null
+    }
+
+    override fun load(name: String): InputStream? {
         return classLoader.getResourceAsStream(name)
                ?: throw FileNotFoundException("类加载器中的资源文件 $name 未找到.")
     }

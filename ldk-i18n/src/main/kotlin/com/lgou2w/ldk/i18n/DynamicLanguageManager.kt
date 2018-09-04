@@ -40,6 +40,17 @@ class DynamicLanguageManager(
             load(locale)
     }
 
+    fun reload(locale: Locale) {
+        val loaded = languages.find { it.locale == locale }
+        if (loaded == null) {
+            load(locale)
+        } else {
+            val entries = super.loadEntries(locale)
+            loaded.clear()
+            loaded.addAll(entries)
+        }
+    }
+
     var dynamic : Language? = null
         private set
 
@@ -54,8 +65,7 @@ class DynamicLanguageManager(
     }
 
     fun switch(locale: Locale) {
-        val loaded = languages.find { it.locale == locale }
-                     ?: throw UnsupportedOperationException("动态语言管理器内未加载 $locale 语言.")
+        val loaded = load(locale)
         dynamic = loaded
     }
 }

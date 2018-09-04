@@ -18,9 +18,17 @@ package com.lgou2w.ldk.i18n
 
 import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
 
 interface LanguageProvider {
 
     @Throws(IOException::class)
-    fun load(name: String) : InputStream
+    fun load(name: String) : InputStream?
+
+    fun isValid(name: String) : Boolean
+
+    @Throws(IOException::class, UnsupportedOperationException::class)
+    fun write(name: String) : OutputStream {
+        throw UnsupportedOperationException("当前提供者不支持保存语言数据.")
+    }
 }

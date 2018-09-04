@@ -37,4 +37,10 @@ interface Language {
     fun getOr(key: String, def: String?) : String?
 
     fun getOr(key: String, def: String?, vararg args: Any) : String?
+
+    operator fun set(key: String, value: String)
+
+    fun clear()
+
+    fun addAll(entries: Map<String, String>)
 }

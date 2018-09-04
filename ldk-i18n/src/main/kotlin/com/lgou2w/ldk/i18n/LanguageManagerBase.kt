@@ -31,47 +31,38 @@ abstract class LanguageManagerBase(
         return "$baseName$name.$fileExtension"
     }
 
-    override fun load(locale: Locale): Language {
+    protected fun loadEntries(locale: Locale) : Map<String, String> {
         val name = checkName(locale)
         try {
             val input = provider.load(name)
-            val entries = adapter.adaptation(input)
-            return LanguageImpl(locale, entries)
+            return if (input != null) adapter.adapt(input) else LinkedHashMap()
         } catch (e: Exception) {
             throw IOException("从提供者加载语言文件时异常:", e.cause ?: e)
         }
     }
 
-    private class LanguageImpl(
-            override val locale: Locale,
-            internal val maps: Map<String, String>
-    ) : Language {
+    override fun load(locale: Locale): Language {
+        val entries = loadEntries(locale)
+        return SimpleLanguage(locale, entries)
+    }
 
-        override var formatter: Formatter? = null
-        override val size: Int
-            get() = maps.size
-        override val keys: Set<String>
-            get() = Collections.unmodifiableSet(maps.keys)
-        override val entries: Set<Map.Entry<String, String>>
-            get() = Collections.unmodifiableSet(maps.entries)
-
-        override fun get(key: String): String?
-                = getOr(key, null)
-        override fun get(key: String, vararg args: Any): String?
-                = getOr(key, null, *args)
-        override fun getOr(key: String, def: String?): String?
-                = getOr(key, def, emptyArray<String>())
-
-        override fun getOr(key: String, def: String?, vararg args: Any): String? {
-            val value = maps[key] ?: def ?: return null
-            val formatter = this.formatter
-            if (formatter != null && args.isNotEmpty())
-                return formatter.format(locale, value, *args)
-            return value
+    final override fun save(language: Language) {
+        val name = checkName(language.locale)
+        try {
+            val output = provider.write(name)
+            val values = language.entries.associate { it.key to it.value }.toMap(LinkedHashMap())
+            adapter.readapt(output, values)
+        } catch (e: Exception) {
+            throw IOException("从提供适配器中保存语言文件时异常:", e.cause ?: e)
         }
+    }
 
-        override fun toString(): String {
-            return "Language(locale=${if (locale == Locale.ROOT) "ROOT" else locale.toString()}, size=$size)"
-        }
+    override fun isValid(locale: Locale): Boolean {
+        val name = checkName(locale)
+        return provider.isValid(name)
+    }
+
+    override fun isValid(language: Language): Boolean {
+        return isValid(language.locale)
     }
 }

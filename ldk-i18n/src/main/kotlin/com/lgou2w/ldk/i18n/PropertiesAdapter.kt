@@ -18,16 +18,46 @@ package com.lgou2w.ldk.i18n
 
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.io.OutputStream
+import java.io.OutputStreamWriter
 import java.util.*
 
 class PropertiesAdapter : LanguageAdapter {
 
     override val fileExtension: String = "properties"
 
-    override fun adaptation(input: InputStream): Map<String, String> {
-        val properties = Properties()
+    override fun adapt(input: InputStream): Map<String, String> {
+        val properties = LinkedProperties()
+        val entries = LinkedHashMap<String, String>()
         properties.load(InputStreamReader(input, Charsets.UTF_8))
-        return properties.entries
-            .associate { it.key.toString() to it.value.toString() }
+        properties.keys.forEach { entries[it.toString()] = properties.getProperty(it.toString()) }
+        return entries
+    }
+
+    override fun readapt(output: OutputStream, entries: MutableMap<String, String>) {
+        val properties = LinkedProperties()
+        entries.forEach { properties.setProperty(it.key, it.value) }
+        properties.store(OutputStreamWriter(output, Charsets.UTF_8), null)
+        properties.clear()
+    }
+
+    private class LinkedProperties : Properties() {
+        companion object {
+            private const val serialVersionUID = -4334218671926846212L
+        }
+        override val keys: MutableSet<Any>
+                = Collections.synchronizedSet(LinkedHashSet<Any>())
+        override fun keys(): Enumeration<Any> {
+            return Collections.enumeration(keys)
+        }
+        override fun put(key: Any, value: Any?): Any? {
+            keys.add(key)
+            return super.put(key, value)
+        }
+        override fun stringPropertyNames(): MutableSet<String> {
+            val set = LinkedHashSet<String>()
+            keys.forEach { set.add(it.toString()) }
+            return set
+        }
     }
 }

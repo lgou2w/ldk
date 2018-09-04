@@ -17,10 +17,13 @@
 package com.lgou2w.ldk.i18n
 
 import java.io.InputStream
+import java.io.OutputStream
 
 interface LanguageAdapter {
 
     val fileExtension : String
 
-    fun adaptation(input: InputStream) : Map<String, String>
+    fun adapt(input: InputStream) : Map<String, String>
+
+    fun readapt(output: OutputStream, entries: MutableMap<String, String>)
 }
