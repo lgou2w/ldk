@@ -20,7 +20,7 @@
     </modules>
 
     <properties>
-        <bukkit.version>1.13-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.13.1-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>
