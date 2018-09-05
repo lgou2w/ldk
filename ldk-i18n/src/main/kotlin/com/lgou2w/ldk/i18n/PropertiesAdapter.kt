@@ -31,6 +31,7 @@ class PropertiesAdapter : LanguageAdapter {
         val entries = LinkedHashMap<String, String>()
         properties.load(InputStreamReader(input, Charsets.UTF_8))
         properties.keys.forEach { entries[it.toString()] = properties.getProperty(it.toString()) }
+        properties.clear()
         return entries
     }
 

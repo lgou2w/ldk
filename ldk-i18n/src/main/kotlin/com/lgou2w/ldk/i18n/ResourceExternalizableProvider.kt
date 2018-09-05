@@ -39,7 +39,7 @@ class ResourceExternalizableProvider(
                 input.close()
             } else {
                 if (external.parentFile?.exists() != true)
-                    external.parentFile.mkdirs()
+                    external.parentFile?.mkdirs()
                 return null
             }
         }
