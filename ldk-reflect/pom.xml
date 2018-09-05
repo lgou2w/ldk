@@ -13,4 +13,14 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ldk-reflect</artifactId>
 
+    <dependencies>
+        <!-- ldk-common -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-common</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
 </project>
