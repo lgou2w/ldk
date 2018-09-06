@@ -16,9 +16,10 @@
 
 package com.lgou2w.ldk.i18n
 
+import java.io.IOException
 import java.util.*
 
-class DynamicLanguageManager(
+open class DynamicLanguageManager(
         baseName: String,
         adapter: LanguageAdapter,
         provider: LanguageProvider
@@ -35,11 +36,13 @@ class DynamicLanguageManager(
         return language
     }
 
+    @Throws(IOException::class)
     fun loadAll(vararg locales: Locale) {
         for (locale in locales)
             load(locale)
     }
 
+    @Throws(IOException::class)
     fun reload(locale: Locale) {
         val loaded = languages.find { it.locale == locale }
         if (loaded == null) {
@@ -55,7 +58,7 @@ class DynamicLanguageManager(
         private set
 
     /**
-     * @throws NullPointerException If not already switched.
+     * @throws NullPointerException If not switched.
      */
     val dynamicUnsafe : Language
         get() = dynamic ?: throw NullPointerException("当前动态语言尚未切换.")
@@ -64,8 +67,13 @@ class DynamicLanguageManager(
         return languages.find { it.locale == locale } != null
     }
 
+    @Throws(IOException::class)
     fun switch(locale: Locale) {
         val loaded = load(locale)
         dynamic = loaded
+    }
+
+    fun clearLoaded() {
+        languages.clear()
     }
 }

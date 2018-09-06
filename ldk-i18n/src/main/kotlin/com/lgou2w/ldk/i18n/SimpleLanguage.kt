@@ -52,12 +52,28 @@ class SimpleLanguage(
         maps[key] = value
     }
 
+    override fun has(key: String): Boolean {
+        return maps.containsKey(key)
+    }
+
     override fun clear() {
         maps.clear()
     }
 
     override fun addAll(entries: Map<String, String>) {
         maps.putAll(entries)
+    }
+
+    override fun hashCode(): Int {
+        return locale.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other === this)
+            return true
+        if (other is SimpleLanguage)
+            return locale == other.locale
+        return false
     }
 
     override fun toString(): String {

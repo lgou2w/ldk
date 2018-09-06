@@ -22,6 +22,7 @@
     * ldk-nbt
     * ldk-bukkit
         * ldk-bukkit-common
+        * ldk-bukkit-i18n
         * ldk-bukkit-scheduler
         * ldk-bukkit-plugin
 
@@ -29,6 +30,7 @@
 
 * Intellij IDEA
 * JDK 8
+* Kotlin 1.2+
 * Maven 3.3+
 * Git
 

@@ -26,7 +26,7 @@ abstract class LanguageManagerBase(
 ) : LanguageManager {
 
     protected open fun checkName(locale: Locale) : String {
-        val fileExtension = adapter.fileExtension
+        val fileExtension = adapter.fileExtension.toLowerCase(Locale.US)
         val name = if (locale != Locale.ROOT) "_$locale" else ""
         return "$baseName$name.$fileExtension"
     }
@@ -50,7 +50,7 @@ abstract class LanguageManagerBase(
         val name = checkName(language.locale)
         try {
             val output = provider.write(name)
-            val values = language.entries.associate { it.key to it.value }.toMap(LinkedHashMap())
+            val values = language.entries.associate { it.key to it.value }.toMutableMap()
             adapter.readapt(output, values)
         } catch (e: Exception) {
             throw IOException("从提供适配器中保存语言文件时异常:", e.cause ?: e)

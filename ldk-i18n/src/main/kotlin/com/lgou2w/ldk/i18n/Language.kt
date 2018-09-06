@@ -40,6 +40,8 @@ interface Language {
 
     operator fun set(key: String, value: String)
 
+    fun has(key: String) : Boolean
+
     fun clear()
 
     fun addAll(entries: Map<String, String>)

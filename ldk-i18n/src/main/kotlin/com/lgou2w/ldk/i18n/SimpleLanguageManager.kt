@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.i18n
 
-class SimpleLanguageManager(
+open class SimpleLanguageManager(
         baseName: String,
         adapter: LanguageAdapter,
         provider: LanguageProvider
