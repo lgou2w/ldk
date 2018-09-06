@@ -25,7 +25,7 @@
         * ldk-bukkit-scheduler
         * ldk-bukkit-plugin
 
-# Development
+# 开发
 
 * Intellij IDEA
 * JDK 8
@@ -38,7 +38,7 @@ cd ldk
 mvn clean install
 ```
 
-# License
+# 协议
 
 ```
 Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
