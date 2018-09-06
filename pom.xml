@@ -44,6 +44,7 @@
         <module>ldk-i18n</module>
         <module>ldk-chat</module>
         <module>ldk-nbt</module>
+        <module>ldk-rx</module>
         <module>ldk-bukkit</module>
     </modules>
 
