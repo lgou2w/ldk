@@ -13,4 +13,56 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ldk-bukkit-plugin</artifactId>
 
+    <dependencies>
+        <!-- ldk-bukkit-common -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-bukkit-common</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- ldk-bukkit-i18n -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-bukkit-i18n</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- ldk-bukkit-scheduler -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-bukkit-scheduler</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Shade -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
 </project>
