@@ -15,6 +15,7 @@
  */
 
 import com.lgou2w.ldk.reflect.FuzzyReflect
+import com.lgou2w.ldk.reflect.Reflection
 import com.lgou2w.ldk.reflect.Visibility
 import org.junit.Test
 
@@ -50,5 +51,12 @@ class Test {
             .resultAccessorAs<MyClass, Int>()
             .invoke(instance)
         println(value)
+    }
+
+    @Test
+    fun test_CallerClass() {
+        Reflection.safe()
+            .getCallerClasses()
+            .forEach { println(it) }
     }
 }
