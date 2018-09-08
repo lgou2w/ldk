@@ -22,8 +22,8 @@ import com.lgou2w.ldk.reflect.PackageCached
 
 object MinecraftReflection {
 
-    val PACKAGE_CRAFTBUKKIT = "org.bukkit.craftbukkit.${MinecraftBukkitVersion.CURRENT.version}"
-    val PACKAGE_MINECRAFT = "net.minecraft.server.${MinecraftBukkitVersion.CURRENT.version}"
+    @JvmStatic val PACKAGE_CRAFTBUKKIT = "org.bukkit.craftbukkit.${MinecraftBukkitVersion.CURRENT.version}"
+    @JvmStatic val PACKAGE_MINECRAFT = "net.minecraft.server.${MinecraftBukkitVersion.CURRENT.version}"
 
     private val PACKAGE_CACHED_CRAFTBUKKIT: PackageCached
             by lazy { PackageCached(PACKAGE_CRAFTBUKKIT, SOURCE) }
@@ -32,10 +32,13 @@ object MinecraftReflection {
     private val  SOURCE: ClassSource
             by lazy { ClassSource.fromClassLoader() }
 
+    @JvmStatic
     @Throws(ClassNotFoundException::class)
     fun getMinecraftClass(className: String): Class<*>
             = PACKAGE_CACHED_MINECRAFT.getPackageClass(className)
 
+    @JvmStatic
+    @Throws(ClassNotFoundException::class)
     fun getMinecraftClass(className: String, vararg aliases: String): Class<*> = try {
         getMinecraftClass(className)
     } catch (e: ClassNotFoundException) {
@@ -48,26 +51,32 @@ object MinecraftReflection {
         else throw ClassNotFoundException("未查找到 $className 以及别名 ${aliases.joinToString()} 的类.", e.cause ?: e)
     }
 
+    @JvmStatic
     fun getMinecraftClassOrNull(className: String): Class<*>? = try {
         getMinecraftClass(className)
     } catch (e: ClassNotFoundException) {
         null
     }
 
+    @JvmStatic
     fun setMinecraftClass(className: String, clazz: Class<*>?): Class<*>? {
         PACKAGE_CACHED_MINECRAFT.setPackageClass(className, clazz)
         return clazz
     }
 
+    @JvmStatic
+    @Throws(ClassNotFoundException::class)
     fun getCraftBukkitClass(className: String): Class<*>
             = PACKAGE_CACHED_CRAFTBUKKIT.getPackageClass(className)
 
+    @JvmStatic
     fun getCraftBukkitClassOrNull(className: String): Class<*>? = try {
         getCraftBukkitClass(className)
     } catch (e: ClassNotFoundException) {
         null
     }
 
+    @JvmStatic
     fun setCraftBukkitClass(className: String, clazz: Class<*>?): Class<*>? {
         PACKAGE_CACHED_CRAFTBUKKIT.setPackageClass(className, clazz)
         return clazz

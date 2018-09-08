@@ -102,4 +102,19 @@ class Test {
         tag.println()
         tag2.println()
     }
+
+    @Test
+    fun test_NBT0908() {
+        ofCompound {
+            put("display", ofCompound {
+                putString("Name", "&aIron Sword")
+                put("Lore", ofList {
+                    addString("1")
+                    addString("1")
+                    addString("1")
+                })
+            })
+            putByte("Unbreakable", 1)
+        }.println()
+    }
 }

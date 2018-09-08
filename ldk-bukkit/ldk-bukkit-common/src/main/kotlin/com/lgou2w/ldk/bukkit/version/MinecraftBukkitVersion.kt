@@ -127,6 +127,7 @@ class MinecraftBukkitVersion(
             return map
         }
 
+        @JvmStatic
         fun lookup(mcVer: MinecraftVersion): MinecraftBukkitVersion {
             val compilerVer = if (mcVer.isPre) MinecraftVersion(mcVer.major, mcVer.minor, mcVer.build) else mcVer
             val entry = LOOKUP.floorEntry(compilerVer)

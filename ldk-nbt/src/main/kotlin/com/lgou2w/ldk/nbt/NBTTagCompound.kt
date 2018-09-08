@@ -25,7 +25,7 @@ import java.io.DataOutput
  * @see [Map]
  * @author lgou2w
  */
-class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<String, NBTBase<*>> {
+open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<String, NBTBase<*>> {
 
     @JvmOverloads
     constructor(name: String, value: MutableMap<String, NBTBase<*>> = LinkedHashMap()) : super(name, value)

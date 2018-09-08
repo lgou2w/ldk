@@ -63,12 +63,14 @@ object PacketFactory {
                 .resultAccessor()
     }
 
+    @JvmStatic
     fun sendPacket(player: Player, packet: Any) {
         val handle = EntityFactory.asNMS(player)
         val connection = FIELD_PLAYER_CONNECTION[handle]
         METHOD_PACKET_SEND.invoke(connection, packet)
     }
 
+    @JvmStatic
     fun processPacket(packet: Any, player: Player) {
         val handle = EntityFactory.asNMS(player)
         val connection = FIELD_PLAYER_CONNECTION[handle]

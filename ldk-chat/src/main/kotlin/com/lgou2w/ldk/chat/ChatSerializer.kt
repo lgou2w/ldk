@@ -104,7 +104,7 @@ object ChatSerializer {
      */
     fun fromRaw(raw: String?): ChatComponent {
         if (raw == null || raw.isEmpty())
-            return ChatComponentText.BLANK
+            return ChatComponentText("")
         return RawMessage(raw.toColor()).get()
     }
 
@@ -163,13 +163,13 @@ object ChatSerializer {
                 currentIndex = index
                 style = style?.clone()
                 if (currentComponent == null)
-                    currentComponent = ChatComponentText.BLANK
+                    currentComponent = ChatComponentText("")
                 currentComponent?.append(extra)
             }
         }
 
         internal fun get(): ChatComponent
-                = currentComponent ?: ChatComponentText.BLANK
+                = currentComponent ?: ChatComponentText("")
     }
 
     /**

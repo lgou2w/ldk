@@ -23,9 +23,11 @@ import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
+import com.lgou2w.ldk.nbt.ofCompound
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
+import java.util.*
 
 abstract class ItemBuilderBase : ItemBuilder {
 
@@ -54,10 +56,6 @@ abstract class ItemBuilderBase : ItemBuilder {
             setDurability(durability)
     }
 
-    protected open fun checkEmptyTag(tag: NBTTagCompound): NBTTagCompound {
-        return tag
-    }
-
     private fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?) {
         if (predicate == null) {
             remove(key)
@@ -72,17 +70,25 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun build(): ItemStack {
-        return ItemFactory.writeTag(itemStack, checkEmptyTag(tag))
+        return ItemFactory.writeTag(itemStack, tag)
     }
 
     final override val tag: NBTTagCompound
 
     final override fun getDurability(block: (ItemBuilder, Int) -> Unit): ItemBuilder {
-        TODO()
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            block(this, tag.getShortOrNull(NBT.TAG_DAMAGE)?.toInt() ?: 0)
+        else
+            block(this, itemStack.durability.toInt())
+        return this
     }
 
     final override fun setDurability(durability: Int): ItemBuilder {
-        TODO()
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            tag.putShort(NBT.TAG_DAMAGE, durability)
+        else
+            itemStack.durability = durability.toShort()
+        return this
     }
 
     override fun getDisplayName(block: (ItemBuilder, String?) -> Unit): ItemBuilder {
@@ -99,14 +105,56 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun setDisplayName(displayName: ChatComponent): ItemBuilder {
-        return setDisplayName(if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        val value = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
             displayName.toJson()
-            else ChatSerializer.toRaw(displayName))
+        else
+            ChatSerializer.toRaw(displayName)
+        return setDisplayName(value)
     }
 
     override fun removeDisplayName(predicate: Predicate<String>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
             ?.removeIf(NBT.TAG_DISPLAY_NAME, predicate)
+        return this
+    }
+
+    override fun setLore(vararg lore: String): ItemBuilder {
+        tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+            .getListOrDefault(NBT.TAG_DISPLAY_LORE)
+            .apply { lore.forEach { addString(it) } }
+        return this
+    }
+
+    private val dynamicEnchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        NBT.TAG_ENCH_FRESHLY
+    else
+        NBT.TAG_ENCH_LEGACY
+
+    override fun addEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
+        tag.getListOrDefault(dynamicEnchantment)
+            .addCompound(ofCompound {
+                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                    putString(NBT.TAG_ENCH_ID, enchantment.key)
+                else
+                    putShort(NBT.TAG_ENCH_ID, enchantment.id)
+                putShort(NBT.TAG_ENCH_LVL, level)
+            })
+        return this
+    }
+
+    // test
+    override fun a(): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_ATTRIBUTE_MODIFIERS)
+            .addCompound(ofCompound {
+                val uuid = UUID.randomUUID()
+                putString(NBT.TAG_ATTRIBUTE_SLOT, "mainhand")
+                putString(NBT.TAG_ATTRIBUTE_NAME, "abc")
+                putString(NBT.TAG_ATTRIBUTE_TYPE, "generic.attackDamage")
+                putInt(NBT.TAG_ATTRIBUTE_OPERATION, 0)
+                putDouble(NBT.TAG_ATTRIBUTE_AMOUNT, 10.0)
+                putLong(NBT.TAG_ATTRIBUTE_UUID_LEAST, uuid.leastSignificantBits)
+                putLong(NBT.TAG_ATTRIBUTE_UUID_MOST, uuid.mostSignificantBits)
+            })
         return this
     }
 }

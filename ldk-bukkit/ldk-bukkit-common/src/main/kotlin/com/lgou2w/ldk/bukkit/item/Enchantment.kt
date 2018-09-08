@@ -242,6 +242,13 @@ enum class Enchantment(
     override val value: String
         get() = type
 
+    val key : String
+        get() = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            NamespacedKey.minecraft(type).toString()
+        } else {
+            legacy
+        }
+
     fun toBukkit(): org.bukkit.enchantments.Enchantment {
         return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
             org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(type))

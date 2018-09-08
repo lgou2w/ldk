@@ -35,15 +35,6 @@ class ChatComponentText(
 
 ) : ChatComponentAbstract() {
 
-    companion object {
-
-        @JvmField
-        val BLANK = ChatComponentText("")
-
-        @JvmField
-        val NEWLINE = ChatComponentText("\n")
-    }
-
     /**
      * @constructor ChatComponentText
      *

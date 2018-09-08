@@ -26,7 +26,7 @@ import java.util.*
  * @see [List]
  * @author lgou2w
  */
-class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
+open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
 
     /**
      * * The NBT tag type within this collection.

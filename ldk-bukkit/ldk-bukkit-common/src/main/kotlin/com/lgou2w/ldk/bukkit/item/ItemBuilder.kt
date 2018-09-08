@@ -39,14 +39,20 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun removeDisplayName(predicate: Predicate<String>? = null) : ItemBuilder
 
+    fun setLore(vararg lore: String) : ItemBuilder
+
+    fun addEnchantment(enchantment: Enchantment, level: Int) : ItemBuilder
+
+    fun a() : ItemBuilder
+
     companion object {
 
         fun of(itemStack: ItemStack) : ItemBuilder
-                = of(SimpleItemBuilder(itemStack))
+                = SimpleItemBuilder(itemStack)
 
         @JvmOverloads
         fun of(material: Material, count: Int = 1, durability: Int = 0) : ItemBuilder
-                = of(SimpleItemBuilder(material, count, durability))
+                = SimpleItemBuilder(material, count, durability)
 
         fun <T: ItemBuilder> of(builder: T) : T {
             return builder

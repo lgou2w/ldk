@@ -59,12 +59,14 @@ object ChatFactory {
             .resultAccessorAs<Any, Gson>()
     }
 
+    @JvmStatic
     fun toNMS(component: ChatComponent): Any {
         val gson = FIELD_CHAT_SERIALIZER_GSON[null]!!
         val json = component.toJson()
         return gson.fromJson<Any>(json, CLASS_ICHAT_BASE_COMPONENT)
     }
 
+    @JvmStatic
     fun fromNMS(icbc: Any): ChatComponent {
         val gson = FIELD_CHAT_SERIALIZER_GSON[null]!!
         val json = gson.toJson(icbc, CLASS_ICHAT_BASE_COMPONENT)
@@ -75,6 +77,7 @@ object ChatFactory {
         }
     }
 
+    @JvmStatic
     @JvmOverloads
     fun sendToPlayer(player: Player, component: ChatComponent, action: ChatAction = ChatAction.CHAT) {
         val value : Any? =
@@ -85,6 +88,7 @@ object ChatFactory {
         PacketFactory.sendPacket(player, packet)
     }
 
+    @JvmStatic
     fun tooltipItem(fancy: ChatComponentFancy, itemStack: ItemStack) : ChatComponentFancy {
         val mojangson = ItemFactory.readItem(itemStack).toMojangson()
         return fancy.tooltipItem(mojangson)

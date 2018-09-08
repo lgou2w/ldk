@@ -19,15 +19,19 @@ package com.lgou2w.ldk.bukkit.item
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
+import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.isOrLater
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
+import com.lgou2w.ldk.nbt.NBTType
 import com.lgou2w.ldk.nbt.ofCompound
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.Visibility
+import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -35,7 +39,9 @@ object ItemFactory {
 
     @JvmStatic val CLASS_ITEM by lazyMinecraftClass("Item")
     @JvmStatic val CLASS_ITEMSTACK by lazyMinecraftClass("ItemStack")
+    @JvmStatic val CLASS_MINECRAFT_KEY by lazyMinecraftClassOrNull("MinecraftKey")
     @JvmStatic val CLASS_CRAFT_ITEMSTACK by lazyCraftBukkitClass("inventory.CraftItemStack")
+    @JvmStatic val CLASS_CRAFT_MAGIC_NUMBERS by lazyCraftBukkitClass("util.CraftMagicNumbers")
 
     // NMS.ItemStack -> private NMS.NBTTagCompound tag
     @JvmStatic val FIELD_ITEMSTACK_TAG: AccessorField<Any, Any> by lazy {
@@ -89,14 +95,72 @@ object ItemFactory {
                 .resultAccessor()
     }
 
+    // NMS.Item -> public static int getId(NMS.Item)
+    @JvmStatic val METHOD_ITEM_GET_ID : AccessorMethod<Any, Int> by lazy {
+        FuzzyReflect.of(CLASS_ITEM, true)
+            .useMethodMatcher()
+            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
+            .withName("getId")
+            .withType(Int::class.java)
+            .withParams(CLASS_ITEM)
+            .resultAccessorAs<Any, Int>()
+    }
+
+    // NMS.Item -> public static NMS.Item getById(int)
+    @JvmStatic val METHOD_ITEM_GET_BY_ID : AccessorMethod<Any, Any> by lazy {
+        FuzzyReflect.of(CLASS_ITEM, true)
+            .useMethodMatcher()
+            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
+            .withName("getById")
+            .withType(CLASS_ITEM)
+            .withParams(Int::class.java)
+            .resultAccessor()
+    }
+
+    // OBC.CraftMagicNumbers -> public static NMS.MinecraftKey key(Material)
+    @JvmStatic val METHOD_MAGIC_NUMBERS_KEY : AccessorMethod<Any, Any>? by lazy {
+        FuzzyReflect.of(CLASS_CRAFT_MAGIC_NUMBERS, true)
+            .useMethodMatcher()
+            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
+            .withType(CLASS_MINECRAFT_KEY.notNull("The 1.13 version doesn't have the MinecraftKey class ???"))
+            .withParams(Material::class.java)
+            .resultAccessorOrNull()
+    }
+
+    // NMS.ItemStack -> public NMS.NBTTagCompound save(NMS.NBTTagCompound)
+    @JvmStatic val METHOD_ITEMSTACK_SAVE : AccessorMethod<Any, Any> by lazy {
+        FuzzyReflect.of(CLASS_ITEMSTACK)
+            .useMethodMatcher()
+            .withVisibilities(Visibility.PUBLIC)
+            .withType(NBTFactory.CLASS_NBT_TAG_COMPOUND)
+            .withParams(NBTFactory.CLASS_NBT_TAG_COMPOUND)
+            .withName("save")
+            .resultAccessor()
+    }
+
+    @JvmStatic
+    @Deprecated("Magic Number")
+    private fun getItemId(item: Any?) : Int {
+        if (item == null) return 0
+        return METHOD_ITEM_GET_ID.invoke(null, item) ?: 0
+    }
+
+    @JvmStatic
+    @Deprecated("Magic Number")
+    private fun getItemById(id: Int) : Any? {
+        return METHOD_ITEM_GET_BY_ID.invoke(null, id)
+    }
+
+    @JvmStatic
     fun readTagSafe(itemStack: ItemStack): NBTTagCompound {
         return readTag(itemStack) ?: ofCompound(NBT.TAG)
     }
 
-    fun readTag(itemStack: ItemStack): NBTTagCompound? {
+    @JvmStatic
+    fun readTag(itemStack: ItemStack) : NBTTagCompound? {
         return if (CLASS_CRAFT_ITEMSTACK.isInstance(itemStack)) {
             val nmsStack = FIELD_CRAFT_ITEMSTACK_HANDLE[itemStack]
-            val nmsTag = FIELD_ITEMSTACK_TAG[nmsStack]
+            val nmsTag = FIELD_ITEMSTACK_TAG[nmsStack] ?: return null
             NBTFactory.fromNMS(nmsTag) as? NBTTagCompound
         } else {
             val nmsStack = METHOD_AS_NMSCOPY.invoke(null, itemStack)
@@ -106,27 +170,49 @@ object ItemFactory {
         }
     }
 
-    fun readItem(itemStack: ItemStack) : NBTTagCompound {
-        val tag = readTag(itemStack)
+    @JvmStatic
+    fun readItem(itemStack: ItemStack, tag: NBTTagCompound? = null) : NBTTagCompound {
         val root = ofCompound {  }
-        val id = itemStack.type.name.toLowerCase(Locale.US) // TODO
-        val count = itemStack.amount
-        val damage = itemStack.durability
-        root.putString(NBT.TAG_ID, "minecraft:$id")
-        root.putByte(NBT.TAG_COUNT, count)
-        if (!MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            // After version 1.13
+            // 1.13 版本之后
+            try {
+                // Get by OBC CraftLegacy
+                // 从 OBC 的 CraftLegacy 获取
+                val id = METHOD_MAGIC_NUMBERS_KEY
+                    .notNull("OBC.CraftMagicNumbers#key(Material)")
+                    .invoke(null, itemStack.type)
+                val count = itemStack.amount
+                root.putString(NBT.TAG_ID, id.toString())
+                root.putByte(NBT.TAG_COUNT, count)
+                root[NBT.TAG] = tag ?: readTagSafe(itemStack)
+            } catch (e: NullPointerException) {
+                // Get by ItemStack.save(NBTTagCompound)
+                // 从 ItemStack.save(NBTTagCompound) 获取
+                val nmsStack = METHOD_AS_NMSCOPY.invoke(null, itemStack)
+                val handle = NBTFactory.createInternal(NBTType.TAG_COMPOUND)
+                METHOD_ITEMSTACK_SAVE.invoke(nmsStack, handle)
+                return NBTFactory.fromNMS(handle) as NBTTagCompound
+            }
+        } else {
+            // Before version 1.13
+            // 1.13 版本之前
+            val id = itemStack.type.name.toLowerCase(Locale.US)
+            val count = itemStack.amount
+            val damage = itemStack.durability   // do not worry about it, 不用担心弃用
             root.putShort(NBT.TAG_DAMAGE, damage)
-        else
-            tag?.putShort(NBT.TAG_DAMAGE, damage)
-        if (tag != null)
-            root[NBT.TAG] = tag
+            root.putString(NBT.TAG_ID, "minecraft:$id")
+            root.putByte(NBT.TAG_COUNT, count)
+            root[NBT.TAG] = tag ?: readTagSafe(itemStack)
+        }
         return root
     }
 
+    @JvmStatic
     fun writeTag(itemStack: ItemStack, tag: NBTTagCompound?): ItemStack {
         if (CLASS_CRAFT_ITEMSTACK.isInstance(itemStack)) {
             val nmsStack = FIELD_CRAFT_ITEMSTACK_HANDLE[itemStack]
-            FIELD_ITEMSTACK_TAG[nmsStack] = NBTFactory.toNMS(tag)
+            FIELD_ITEMSTACK_TAG[nmsStack] = if (tag == null) null else NBTFactory.toNMS(tag)
         } else {
             if (tag == null) {
                 itemStack.itemMeta = null

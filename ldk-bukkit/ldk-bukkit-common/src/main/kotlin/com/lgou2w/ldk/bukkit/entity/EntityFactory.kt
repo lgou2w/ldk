@@ -69,18 +69,21 @@ object EntityFactory {
             .resultAccessor()
     }
 
+    @JvmStatic
     fun asNMS(entity: Entity): Any {
         return METHOD_GET_HANDLE.invoke(entity) as Any
     }
 
+    @JvmStatic
     fun readTag(entity: Entity) : NBTTagCompound {
         val nmsEntity = asNMS(entity)
-        val handle = NBTFactory.createInstance(NBTType.TAG_COMPOUND)
+        val handle = NBTFactory.createInternal(NBTType.TAG_COMPOUND)
         val nms = METHOD_ENTITY_SAVE_TAG.invoke(nmsEntity, handle)
-        return NBTFactory.fromNMS(nms) as? NBTTagCompound
+        return NBTFactory.fromNMS(nms!!) as? NBTTagCompound
         ?: ofCompound(NBT.TAG_ENTITY_TAG)
     }
 
+    @JvmStatic
     fun writeTag(entity: Entity, tag: NBTTagCompound) {
         val nmsEntity = asNMS(entity)
         val nms = NBTFactory.toNMS(tag)

@@ -30,9 +30,18 @@ import java.util.*
 object NBTFactory {
 
     @JvmStatic val CLASS_NBT_BASE by lazyMinecraftClass("NBTBase")
+    @JvmStatic val CLASS_NBT_TAG_LIST by lazyMinecraftClass("NBTTagList")
     @JvmStatic val CLASS_NBT_TAG_COMPOUND by lazyMinecraftClass("NBTTagCompound")
     @JvmStatic val CLASS_NBT_STREAM by lazyMinecraftClass("NBTCompressedStreamTools")
     @JvmStatic val CLASS_NBT_READ_LIMITER by lazyMinecraftClass("NBTReadLimiter")
+
+    // NMS.NBTList -> private byte type
+    @JvmStatic val NBT_LIST_TYPE_FIELD: AccessorField<Any, Byte> by lazy {
+        FuzzyReflect.of(CLASS_NBT_TAG_LIST, true)
+            .useFieldMatcher()
+            .withType(Byte::class.java)
+            .resultAccessorAs<Any, Byte>()
+    }
 
     // NMS.NBTBase -> public static NBTBase createTag(byte)
     @JvmStatic val METHOD_NBT_CREATE: AccessorMethod<Any, Any> by lazy {
@@ -76,6 +85,7 @@ object NBTFactory {
                 .resultAccessor()
     }
 
+    @JvmStatic
     fun fromNMS(nms: Any?): NBTBase<*>? {
         if (nms == null)
             return null
@@ -107,34 +117,28 @@ object NBTFactory {
         }
     }
 
+    @JvmStatic
     fun toNMS(nbt: NBTBase<*>?): Any? {
         if (nbt == null)
             return null
         return when (nbt.type) {
             NBTType.TAG_END -> NBT_END_INSTANCE
-            NBTType.TAG_COMPOUND -> toNMS0(nbt as NBTTagCompound)
-            NBTType.TAG_LIST -> toNMS0(nbt as NBTTagList)
-            else -> toNMS0(nbt.type, nbt.value as Any)
+            NBTType.TAG_COMPOUND -> {
+                val value = (nbt as NBTTagCompound).entries.associate { it.key to toNMS(it.value) }
+                createInternal(NBTType.TAG_COMPOUND, value)
+            }
+            NBTType.TAG_LIST -> {
+                val value = (nbt as NBTTagList).map { toNMS(it) }
+                val handle = createInternal(NBTType.TAG_LIST, value)
+                NBT_LIST_TYPE_FIELD[handle] = nbt.elementType.id.toByte()
+                handle
+            }
+            else -> createInternal(nbt.type, nbt.value)
         }
     }
 
-    fun createInstance(type: NBTType, value: Any? = null) : Any {
-        return toNMS0(type, value)
-    }
-
-    private fun toNMS0(compound: NBTTagCompound): Any {
-        val value = LinkedHashMap<String, Any>()
-        compound.entries.forEach { value[it.key] = toNMS(it.value)!! }
-        return toNMS0(NBTType.TAG_COMPOUND, value)
-    }
-
-    private fun toNMS0(list: NBTTagList): Any {
-        val value = LinkedList<Any>()
-        list.value.forEach { value.add(toNMS(it)!!) }
-        return toNMS0(NBTType.TAG_LIST, value)
-    }
-
-    private fun toNMS0(type: NBTType, value: Any? = null): Any {
+    @JvmStatic
+    fun createInternal(type: NBTType, value: Any? = null) : Any {
         val instance = METHOD_NBT_CREATE.invoke(null, type.id.toByte())
         val valueAccessor = NBT_TYPE_FIELD(type)
         if (value != null)

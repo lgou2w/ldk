@@ -30,3 +30,6 @@ fun lazyMinecraftClassOrNull(className: String)
 
 fun lazyCraftBukkitClass(className: String)
         = lazyAnyClass { MinecraftReflection.getCraftBukkitClass(className) }
+
+fun lazyCraftBukkitClassOrNull(className: String)
+        = lazyAnyOrNullClass { MinecraftReflection.getCraftBukkitClassOrNull(className) }
