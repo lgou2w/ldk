@@ -18,6 +18,7 @@ package com.lgou2w.ldk.bukkit.nbt
 
 import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
+import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.nbt.*
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
@@ -34,6 +35,7 @@ object NBTFactory {
     @JvmStatic val CLASS_NBT_TAG_COMPOUND by lazyMinecraftClass("NBTTagCompound")
     @JvmStatic val CLASS_NBT_STREAM by lazyMinecraftClass("NBTCompressedStreamTools")
     @JvmStatic val CLASS_NBT_READ_LIMITER by lazyMinecraftClass("NBTReadLimiter")
+    @JvmStatic val CLASS_NBT_LONG_ARRAY by lazyMinecraftClassOrNull("NBTTagLongArray")
 
     // NMS.NBTList -> private byte type
     @JvmStatic val NBT_LIST_TYPE_FIELD: AccessorField<Any, Byte> by lazy {
@@ -114,6 +116,7 @@ object NBTFactory {
             NBTType.TAG_BYTE_ARRAY -> NBTTagByteArray(NBT_TYPE_FIELD(type)[nms] as ByteArray)
             NBTType.TAG_STRING -> NBTTagString(NBT_TYPE_FIELD(type)[nms] as String)
             NBTType.TAG_INT_ARRAY -> NBTTagIntArray(NBT_TYPE_FIELD(type)[nms] as IntArray)
+            NBTType.TAG_LONG_ARRAY -> NBTTagLongArray(NBT_TYPE_FIELD(type)[nms] as LongArray)
             else -> throw UnsupportedOperationException()
         }
     }
@@ -134,7 +137,15 @@ object NBTFactory {
                 NBT_LIST_TYPE_FIELD[handle] = nbt.elementType.id.toByte()
                 handle
             }
-            else -> createInternal(nbt.type, nbt.value)
+            else -> if (nbt is NBTTagLongArray && CLASS_NBT_LONG_ARRAY == null) {
+                // 更大化兼容性
+                // 因为 LongArray 标签在 1.12 之后版本
+                // 所以如果不支持那么转换为 NBTTagList<Long>
+                val longList = NBTTagList(nbt.name)
+                nbt.value.forEach { longList.add(NBTTagLong(it)) }
+                toNMS(longList)
+            } else
+                createInternal(nbt.type, nbt.value)
         }
     }
 
@@ -173,6 +184,7 @@ object NBTFactory {
                 NBTType.TAG_INT_ARRAY -> "NBTTagIntArray"
                 NBTType.TAG_LIST -> "NBTTagList"
                 NBTType.TAG_COMPOUND -> "NBTTagCompound"
+                NBTType.TAG_LONG_ARRAY -> "NBTTagLongArray" // since Minecraft 1.12
             }), true)
                     .useFieldMatcher()
                     .withType(type.primitive)

@@ -131,15 +131,13 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
     ///
     //
 
-    /**
-     * * Add the given byte [value] to this collection tag.
-     * * 将给定的字节值 [value] 添加到此集合标签内.
-     *
-     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
-     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
-     */
-    fun addByte(value: Byte): Boolean {
-        return add(NBTTagByte(value))
+    @Throws(ClassCastException::class)
+    fun <T> asElements() : List<T> {
+        @Suppress("UNCHECKED_CAST")
+        return value0.map { nbt ->
+            if (nbt.type.isWrapper()) nbt as T
+            else nbt.value as T
+        }
     }
 
     /**
@@ -149,8 +147,19 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addByte(value: Int): Boolean {
-        return add(NBTTagByte(value.toByte()))
+    fun addByte(vararg value: Byte): Boolean {
+        return addAll(value.map { NBTTagByte(it) })
+    }
+
+    /**
+     * * Add the given byte [value] to this collection tag.
+     * * 将给定的字节值 [value] 添加到此集合标签内.
+     *
+     * @throws IllegalArgumentException If the collection element type and parameter type do not match.
+     * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
+     */
+    fun addByte(vararg value: Int): Boolean {
+        return addAll(value.map { NBTTagByte(it.toByte()) })
     }
 
     /**
@@ -160,8 +169,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addShort(value: Short): Boolean {
-        return add(NBTTagShort(value))
+    fun addShort(vararg value: Short): Boolean {
+        return addAll(value.map { NBTTagShort(it) })
     }
 
     /**
@@ -171,8 +180,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addShort(value: Int): Boolean {
-        return add(NBTTagShort(value.toShort()))
+    fun addShort(vararg value: Int): Boolean {
+        return addAll(value.map { NBTTagShort(it.toShort()) })
     }
 
     /**
@@ -182,8 +191,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addInt(value: Int): Boolean {
-        return add(NBTTagInt(value))
+    fun addInt(vararg value: Int): Boolean {
+        return addAll(value.map { NBTTagInt(it) })
     }
 
     /**
@@ -193,8 +202,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addLong(value: Long): Boolean {
-        return add(NBTTagLong(value))
+    fun addLong(vararg value: Long): Boolean {
+        return addAll(value.map { NBTTagLong(it) })
     }
 
     /**
@@ -204,8 +213,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addFloat(value: Float): Boolean {
-        return add(NBTTagFloat(value))
+    fun addFloat(vararg value: Float): Boolean {
+        return addAll(value.map { NBTTagFloat(it) })
     }
 
     /**
@@ -215,8 +224,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addDouble(value: Double): Boolean {
-        return add(NBTTagDouble(value))
+    fun addDouble(vararg value: Double): Boolean {
+        return addAll(value.map { NBTTagDouble(it) })
     }
 
     /**
@@ -226,8 +235,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addByteArray(value: ByteArray): Boolean {
-        return add(NBTTagByteArray(value))
+    fun addByteArray(vararg value: ByteArray): Boolean {
+        return addAll(value.map { NBTTagByteArray(it) })
     }
 
     /**
@@ -237,8 +246,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addString(value: String): Boolean {
-        return add(NBTTagString(value))
+    fun addString(vararg value: String): Boolean {
+        return addAll(value.map { NBTTagString(it) })
     }
 
     /**
@@ -248,8 +257,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addList(value: NBTTagList): Boolean {
-        return add(value)
+    fun addList(vararg value: NBTTagList): Boolean {
+        return addAll(value)
     }
 
     /**
@@ -259,8 +268,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addCompound(value: NBTTagCompound): Boolean {
-        return add(value)
+    fun addCompound(vararg value: NBTTagCompound): Boolean {
+        return addAll(value)
     }
 
     /**
@@ -270,8 +279,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addIntArray(value: IntArray): Boolean {
-        return add(NBTTagIntArray(value))
+    fun addIntArray(vararg value: IntArray): Boolean {
+        return addAll(value.map { NBTTagIntArray(it) })
     }
 
     /**
@@ -281,8 +290,8 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
      * @throws IllegalArgumentException If the collection element type and parameter type do not match.
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
-    fun addBoolean(value: Boolean): Boolean {
-        return add(NBTTagByte(if (value) 1.toByte() else 0.toByte()))
+    fun addBoolean(vararg value: Boolean): Boolean {
+        return addAll(value.map { NBTTagByte(if (it) 1.toByte() else 0.toByte()) })
     }
 
     //

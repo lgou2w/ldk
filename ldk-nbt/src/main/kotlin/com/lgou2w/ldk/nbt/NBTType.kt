@@ -167,6 +167,16 @@ enum class NBTType(
      * @see [NBTTagIntArray]
      */
     TAG_INT_ARRAY(11, IntArray::class.java, IntArray::class.java, NBTTagIntArray::class.java),
+    /**
+     * * TAG_LONG_ARRAY
+     *      * Primitive = `long [ ]`
+     *      * Reference = `long [ ]`
+     *      * Wrapped = `NBTTagLongArray.class`
+     *
+     * @see [NBTTagLongArray]
+     * @since Minecraft 1.12
+     */
+    TAG_LONG_ARRAY(12, LongArray::class.java, LongArray::class.java, NBTTagLongArray::class.java),
     ;
 
     /**
@@ -265,6 +275,7 @@ enum class NBTType(
                 TAG_LIST -> NBTTagList(name)
                 TAG_COMPOUND -> NBTTagCompound(name)
                 TAG_INT_ARRAY -> NBTTagIntArray(name)
+                TAG_LONG_ARRAY -> NBTTagLongArray(name)
             }
         }
     }

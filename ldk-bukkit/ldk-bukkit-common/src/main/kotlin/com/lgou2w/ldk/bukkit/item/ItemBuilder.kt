@@ -39,7 +39,21 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun removeDisplayName(predicate: Predicate<String>? = null) : ItemBuilder
 
+    fun getLore(block: (ItemBuilder, List<String>?) -> Unit) : ItemBuilder
+
     fun setLore(vararg lore: String) : ItemBuilder
+
+    fun clearLore() : ItemBuilder
+
+    fun addLore(vararg lore: String) : ItemBuilder
+
+    fun removeLore(predicate: Predicate<List<String>>? = null) : ItemBuilder
+
+    fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit) : ItemBuilder
+
+    fun setEnchantment(enchantments : Map<Enchantment, Int>) : ItemBuilder
+
+    fun clearEnchantment() : ItemBuilder
 
     fun addEnchantment(enchantment: Enchantment, level: Int) : ItemBuilder
 

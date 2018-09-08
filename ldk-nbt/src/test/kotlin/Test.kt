@@ -33,6 +33,7 @@ class Test {
         NBTTagString().println()
         NBTTagByteArray(byteArrayOf(0, 1, 2, 3)).println()
         NBTTagIntArray(intArrayOf(0, 1, 2, 3)).println()
+        NBTTagLongArray(longArrayOf(0, 1, 2, 3)).println()
         NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3)) as MutableList<NBTBase<*>>).println()
         NBTTagCompound(mutableMapOf("0" to NBTTagByte(0) as NBTBase<*>, "1" to NBTTagByte(1) as NBTBase<*>)).println()
     }
@@ -48,6 +49,7 @@ class Test {
         NBTTagString().toJson().println()
         NBTTagByteArray(byteArrayOf(0, 1, 2, 3)).toJson().println()
         NBTTagIntArray(intArrayOf(0, 1, 2, 3)).toJson().println()
+        NBTTagLongArray(longArrayOf(0, 1, 2, 3)).toJson().println()
         NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3)) as MutableList<NBTBase<*>>).toJson().println()
         NBTTagCompound(mutableMapOf("0" to NBTTagByte(0) as NBTBase<*>, "1" to NBTTagByte(1) as NBTBase<*>)).toJson().println()
     }
@@ -63,6 +65,7 @@ class Test {
         NBTTagString().toMojangson().println()
         NBTTagByteArray(byteArrayOf(0, 1, 2, 3)).toMojangson().println()
         NBTTagIntArray(intArrayOf(0, 1, 2, 3)).toMojangson().println()
+        NBTTagLongArray(longArrayOf(0, 1, 2, 3)).toMojangson().println()
         NBTTagList(arrayListOf(NBTTagByte(0), NBTTagByte(1), NBTTagByte(2), NBTTagByte(3)) as MutableList<NBTBase<*>>).toMojangson().println()
         NBTTagCompound(mutableMapOf("0" to NBTTagByte(0) as NBTBase<*>, "1" to NBTTagByte(1) as NBTBase<*>)).toMojangson().println()
     }

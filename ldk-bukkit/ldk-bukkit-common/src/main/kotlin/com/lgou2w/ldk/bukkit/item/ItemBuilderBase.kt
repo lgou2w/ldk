@@ -19,10 +19,12 @@ package com.lgou2w.ldk.bukkit.item
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatSerializer
+import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
+import com.lgou2w.ldk.nbt.NBTTagList
 import com.lgou2w.ldk.nbt.ofCompound
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -57,16 +59,20 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     private fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?) {
+        return removeIf<T, T>(key, { it }, predicate)
+    }
+
+    private fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?) {
         if (predicate == null) {
             remove(key)
-            return
+        } else {
+            val value = get(key) ?: return
+            @Suppress("UNCHECKED_CAST")
+            if (value.type.isWrapper() && predicate(transform(value as T)))
+                remove(key)
+            else if (predicate(transform(value.value as T)))
+                remove(key)
         }
-        val value = get(key) ?: return
-        @Suppress("UNCHECKED_CAST")
-        if (value.type.isWrapper() && predicate(value as T))
-            remove(key)
-        else if (predicate(value.value as T))
-            remove(key)
     }
 
     override fun build(): ItemStack {
@@ -120,10 +126,71 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun getLore(block: (ItemBuilder, List<String>?) -> Unit): ItemBuilder {
+        val lore = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+            ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
+            ?.asElements<String>()
+        block(this, lore)
+        return this
+    }
+
     override fun setLore(vararg lore: String): ItemBuilder {
+        clearLore()
+        addLore(*lore)
+        return this
+    }
+
+    override fun clearLore(): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+            ?.remove(NBT.TAG_DISPLAY_LORE)
+        return this
+    }
+
+    override fun addLore(vararg lore: String): ItemBuilder {
         tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
             .getListOrDefault(NBT.TAG_DISPLAY_LORE)
-            .apply { lore.forEach { addString(it) } }
+            .addString(*lore)
+        return this
+    }
+
+    override fun removeLore(predicate: Predicate<List<String>>?): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+            ?.removeIf<NBTTagList, List<String>>(NBT.TAG_DISPLAY_LORE, { it.asElements() }, predicate)
+        return this
+    }
+
+    override fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit): ItemBuilder {
+        val enchantments = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
+                ?.asElements<NBTTagCompound>()
+                ?.associate {
+                    val id = it.getString(NBT.TAG_ENCH_ID)
+                    Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                }
+        } else {
+            tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
+                ?.asElements<NBTTagCompound>()
+                ?.associate {
+                    val id = it.getShort(NBT.TAG_ENCH_ID).toInt()
+                    Enchantment.fromId(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                }
+        }
+        block(this, enchantments)
+        return this
+    }
+
+    override fun setEnchantment(enchantments: Map<Enchantment, Int>): ItemBuilder {
+        clearEnchantment()
+        enchantments.forEach { addEnchantment(it.key, it.value) }
+        return this
+    }
+
+    override fun clearEnchantment(): ItemBuilder {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            tag.remove(NBT.TAG_ENCH_FRESHLY)
+        } else {
+            tag.remove(NBT.TAG_ENCH_LEGACY)
+        }
         return this
     }
 

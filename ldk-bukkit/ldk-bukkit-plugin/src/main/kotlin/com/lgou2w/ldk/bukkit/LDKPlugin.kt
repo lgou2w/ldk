@@ -26,6 +26,7 @@ import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.chat.ChatComponentFancy
 import com.lgou2w.ldk.chat.ChatSerializer
+import com.lgou2w.ldk.chat.toColor
 import org.bukkit.Material
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 
@@ -54,14 +55,21 @@ class LDKPlugin : PluginBase() {
         logger.info("游戏版本: ${MinecraftVersion.CURRENT.version} 实现版本: ${MinecraftBukkitVersion.CURRENT.version}")
         registerListeners {
             event<PlayerCommandPreprocessEvent> {
+                if (!player.isOp)
+                    return@event
                 when (message) {
                     "/ib" -> {
                         val stack = Material.IRON_SWORD.builder()
                             .setDurability(100)
                             .setDisplayName(ChatSerializer.fromRaw("&aIron Sword"))
-                            .setLore("1", "2", "3")
                             .addEnchantment(Enchantment.DAMAGE, 5)
                             .addEnchantment(Enchantment.DURABILITY, 1)
+                            .clearEnchantment()
+                            .addEnchantment(Enchantment.DAMAGE, 1)
+                            .addLore(*arrayOf("&aLore").toColor())
+                            .getEnchantment { _, enchantments -> enchantments?.forEach { println(it) } }
+                            .getLore { _, lore -> lore?.forEach { println(it) } }
+                            .setDurability(0)
                             .build()
                         ChatComponentFancy("You get an item: ")
                             .color(ChatColor.GREEN)

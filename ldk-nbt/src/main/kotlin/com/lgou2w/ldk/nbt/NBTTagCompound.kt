@@ -245,6 +245,7 @@ open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<
                 NBTType.TAG_COMPOUND -> NBTTagCompound(key)
                 NBTType.TAG_INT_ARRAY -> NBTTagIntArray(key)
                 NBTType.TAG_BYTE_ARRAY -> NBTTagByteArray(key)
+                NBTType.TAG_LONG_ARRAY -> NBTTagLongArray(key)
             }
             put(tag) // put
         }
@@ -672,6 +673,41 @@ open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<
      */
     fun getBooleanOrDefault(key: String): Boolean {
         return getByteOrDefault(key) > 0
+    }
+
+    /**
+     * * Get the long array value from the given [key] key.
+     * * 从给定的 [key] 键中获取整数数组值.
+     *
+     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException 如果 [key] 键不存在.
+     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException 如果 [key] 键的值和预期不符合.
+     */
+    fun getLongArray(key: String): LongArray {
+        return (getAndCheck(key, NBTTagLongArray::class.java, false) as NBTTagLongArray).value
+    }
+
+    /**
+     * * Get the long array value from the given [key] key.
+     * * 从给定的 [key] 键中获取整数数组值.
+     *
+     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException 如果 [key] 键的值和预期不符合.
+     */
+    fun getLongArrayOrNull(key: String): LongArray? {
+        return (getAndCheck(key, NBTTagLongArray::class.java, true) as? NBTTagLongArray)?.value
+    }
+
+    /**
+     * * Get the long array value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * 从给定的 [key] 键中获取整数数组值, 如果不存在则添加默认并获取.
+     *
+     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
+     */
+    fun getLongArrayOrDefault(key: String): LongArray {
+        return getOrDefault(NBTType.TAG_LONG_ARRAY, key)
     }
 
     //
