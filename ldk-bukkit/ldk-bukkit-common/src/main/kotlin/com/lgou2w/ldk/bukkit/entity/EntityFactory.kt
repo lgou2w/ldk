@@ -79,7 +79,7 @@ object EntityFactory {
         val nmsEntity = asNMS(entity)
         val handle = NBTFactory.createInternal(NBTType.TAG_COMPOUND)
         val nms = METHOD_ENTITY_SAVE_TAG.invoke(nmsEntity, handle)
-        return NBTFactory.fromNMS(nms!!) as? NBTTagCompound
+        return NBTFactory.fromNMS(nms) as? NBTTagCompound
         ?: ofCompound(NBT.TAG_ENTITY_TAG)
     }
 

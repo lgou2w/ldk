@@ -199,6 +199,7 @@ object ItemFactory {
             // 1.13 版本之前
             val id = itemStack.type.name.toLowerCase(Locale.US)
             val count = itemStack.amount
+            @Suppress("DEPRECATION")
             val damage = itemStack.durability   // do not worry about it, 不用担心弃用
             root.putShort(NBT.TAG_DAMAGE, damage)
             root.putString(NBT.TAG_ID, "minecraft:$id")

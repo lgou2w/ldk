@@ -62,7 +62,6 @@ class LDKPlugin : PluginBase() {
                             .setLore("1", "2", "3")
                             .addEnchantment(Enchantment.DAMAGE, 5)
                             .addEnchantment(Enchantment.DURABILITY, 1)
-                            .a()
                             .build()
                         ChatComponentFancy("You get an item: ")
                             .color(ChatColor.GREEN)

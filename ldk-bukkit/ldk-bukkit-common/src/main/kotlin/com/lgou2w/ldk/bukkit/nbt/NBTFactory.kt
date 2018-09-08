@@ -90,6 +90,7 @@ object NBTFactory {
         if (nms == null)
             return null
         val type = NBTType.fromId(METHOD_NBT_GET_TYPE_ID.invoke(nms)!!.toInt())!!
+        @Suppress("UNCHECKED_CAST")
         return when (type) {
             NBTType.TAG_COMPOUND -> {
                 val compound = NBTTagCompound()
@@ -155,11 +156,11 @@ object NBTFactory {
 
     private val NBT_TYPE_FIELD_ACCESSORS: MutableMap<NBTType, AccessorField<Any, Any>> = HashMap()
     private val NBT_TYPE_FIELD: (NBTType) -> AccessorField<Any, Any> = { type ->
-        var ACCESSOR = NBT_TYPE_FIELD_ACCESSORS[type]
-        if (ACCESSOR == null) {
+        var accessor = NBT_TYPE_FIELD_ACCESSORS[type]
+        if (accessor == null) {
             if (type == NBTType.TAG_END)
                 throw IllegalArgumentException("类型 TAG_END 没有值成员字段.")
-            ACCESSOR = FuzzyReflect.of(MinecraftReflection.getMinecraftClass(when (type) {
+            accessor = FuzzyReflect.of(MinecraftReflection.getMinecraftClass(when (type) {
                 NBTType.TAG_END -> "NBTTagEnd"
                 NBTType.TAG_BYTE -> "NBTTagByte"
                 NBTType.TAG_SHORT -> "NBTTagShort"
@@ -176,8 +177,8 @@ object NBTFactory {
                     .useFieldMatcher()
                     .withType(type.primitive)
                     .resultAccessor()
-            NBT_TYPE_FIELD_ACCESSORS[type] = ACCESSOR
+            NBT_TYPE_FIELD_ACCESSORS[type] = accessor
         }
-        ACCESSOR
+        accessor
     }
 }

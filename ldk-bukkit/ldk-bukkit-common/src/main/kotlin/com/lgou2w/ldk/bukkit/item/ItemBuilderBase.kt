@@ -27,7 +27,6 @@ import com.lgou2w.ldk.nbt.ofCompound
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import java.util.*
 
 abstract class ItemBuilderBase : ItemBuilder {
 
@@ -41,6 +40,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     constructor(material: Material, count: Int, durability: Int) {
         var lazyDurability = false
         this.itemStack = try {
+            @Suppress("DEPRECATION")
             ItemStack(material, count, durability.toShort())
         } catch (e: NoSuchMethodException) {
             try {
@@ -79,6 +79,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
             block(this, tag.getShortOrNull(NBT.TAG_DAMAGE)?.toInt() ?: 0)
         else
+            @Suppress("DEPRECATION")
             block(this, itemStack.durability.toInt())
         return this
     }
@@ -87,6 +88,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
             tag.putShort(NBT.TAG_DAMAGE, durability)
         else
+            @Suppress("DEPRECATION")
             itemStack.durability = durability.toShort()
         return this
     }
@@ -125,36 +127,20 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
-    private val dynamicEnchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
-        NBT.TAG_ENCH_FRESHLY
-    else
-        NBT.TAG_ENCH_LEGACY
-
     override fun addEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
-        tag.getListOrDefault(dynamicEnchantment)
-            .addCompound(ofCompound {
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
-                    putString(NBT.TAG_ENCH_ID, enchantment.key)
-                else
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            tag.getListOrDefault(NBT.TAG_ENCH_FRESHLY)
+                .addCompound(ofCompound {
+                    putString(NBT.TAG_ENCH_ID, enchantment.type)
+                    putShort(NBT.TAG_ENCH_LVL, level)
+                })
+        } else {
+            tag.getListOrDefault(NBT.TAG_ENCH_LEGACY)
+                .addCompound(ofCompound {
                     putShort(NBT.TAG_ENCH_ID, enchantment.id)
-                putShort(NBT.TAG_ENCH_LVL, level)
-            })
-        return this
-    }
-
-    // test
-    override fun a(): ItemBuilder {
-        tag.getListOrDefault(NBT.TAG_ATTRIBUTE_MODIFIERS)
-            .addCompound(ofCompound {
-                val uuid = UUID.randomUUID()
-                putString(NBT.TAG_ATTRIBUTE_SLOT, "mainhand")
-                putString(NBT.TAG_ATTRIBUTE_NAME, "abc")
-                putString(NBT.TAG_ATTRIBUTE_TYPE, "generic.attackDamage")
-                putInt(NBT.TAG_ATTRIBUTE_OPERATION, 0)
-                putDouble(NBT.TAG_ATTRIBUTE_AMOUNT, 10.0)
-                putLong(NBT.TAG_ATTRIBUTE_UUID_LEAST, uuid.leastSignificantBits)
-                putLong(NBT.TAG_ATTRIBUTE_UUID_MOST, uuid.mostSignificantBits)
-            })
+                    putShort(NBT.TAG_ENCH_LVL, level)
+                })
+        }
         return this
     }
 }

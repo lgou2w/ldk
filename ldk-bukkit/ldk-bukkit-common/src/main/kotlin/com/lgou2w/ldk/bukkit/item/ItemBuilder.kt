@@ -43,8 +43,6 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun addEnchantment(enchantment: Enchantment, level: Int) : ItemBuilder
 
-    fun a() : ItemBuilder
-
     companion object {
 
         fun of(itemStack: ItemStack) : ItemBuilder
