@@ -95,27 +95,27 @@ object ItemFactory {
                 .resultAccessor()
     }
 
-    // NMS.Item -> public static int getId(NMS.Item)
-    @JvmStatic val METHOD_ITEM_GET_ID : AccessorMethod<Any, Int> by lazy {
-        FuzzyReflect.of(CLASS_ITEM, true)
-            .useMethodMatcher()
-            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
-            .withName("getId")
-            .withType(Int::class.java)
-            .withParams(CLASS_ITEM)
-            .resultAccessorAs<Any, Int>()
-    }
-
-    // NMS.Item -> public static NMS.Item getById(int)
-    @JvmStatic val METHOD_ITEM_GET_BY_ID : AccessorMethod<Any, Any> by lazy {
-        FuzzyReflect.of(CLASS_ITEM, true)
-            .useMethodMatcher()
-            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
-            .withName("getById")
-            .withType(CLASS_ITEM)
-            .withParams(Int::class.java)
-            .resultAccessor()
-    }
+//    // NMS.Item -> public static int getId(NMS.Item)
+//    @JvmStatic val METHOD_ITEM_GET_ID : AccessorMethod<Any, Int> by lazy {
+//        FuzzyReflect.of(CLASS_ITEM, true)
+//            .useMethodMatcher()
+//            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
+//            .withName("getId")
+//            .withType(Int::class.java)
+//            .withParams(CLASS_ITEM)
+//            .resultAccessorAs<Any, Int>()
+//    }
+//
+//    // NMS.Item -> public static NMS.Item getById(int)
+//    @JvmStatic val METHOD_ITEM_GET_BY_ID : AccessorMethod<Any, Any> by lazy {
+//        FuzzyReflect.of(CLASS_ITEM, true)
+//            .useMethodMatcher()
+//            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
+//            .withName("getById")
+//            .withType(CLASS_ITEM)
+//            .withParams(Int::class.java)
+//            .resultAccessor()
+//    }
 
     // OBC.CraftMagicNumbers -> public static NMS.MinecraftKey key(Material)
     @JvmStatic val METHOD_MAGIC_NUMBERS_KEY : AccessorMethod<Any, Any>? by lazy {
@@ -138,18 +138,18 @@ object ItemFactory {
             .resultAccessor()
     }
 
-    @JvmStatic
-    @Deprecated("Magic Number")
-    private fun getItemId(item: Any?) : Int {
-        if (item == null) return 0
-        return METHOD_ITEM_GET_ID.invoke(null, item) ?: 0
-    }
-
-    @JvmStatic
-    @Deprecated("Magic Number")
-    private fun getItemById(id: Int) : Any? {
-        return METHOD_ITEM_GET_BY_ID.invoke(null, id)
-    }
+//    @JvmStatic
+//    @Deprecated("Magic Number")
+//    private fun getItemId(item: Any?) : Int {
+//        if (item == null) return 0
+//        return METHOD_ITEM_GET_ID.invoke(null, item) ?: 0
+//    }
+//
+//    @JvmStatic
+//    @Deprecated("Magic Number")
+//    private fun getItemById(id: Int) : Any? {
+//        return METHOD_ITEM_GET_BY_ID.invoke(null, id)
+//    }
 
     @JvmStatic
     fun readTagSafe(itemStack: ItemStack): NBTTagCompound {

@@ -61,6 +61,8 @@ enum class Enchantment(
         val minimum: MinecraftVersion? = null
 ) : Valuable<String> {
 
+    // TODO Use the type name of 1.13 as the enumerated name
+
     /**
      * * Enchantment: Environmental Protection
      * * 附魔类型: 保护
@@ -246,6 +248,7 @@ enum class Enchantment(
         return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
             org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(type))
         } else {
+            @Suppress("DEPRECATION")
             org.bukkit.enchantments.Enchantment.getByName(legacy)
         }
     }

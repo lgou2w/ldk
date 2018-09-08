@@ -24,5 +24,5 @@ class SimpleItemBuilder : ItemBuilderBase {
     constructor(itemStack: ItemStack) : super(itemStack)
 
     @JvmOverloads
-    constructor(material: Material, count: Int = 1, damage: Int = 0) : super(material, count, damage)
+    constructor(material: Material, count: Int = 1, durability: Int = 0) : super(material, count, durability)
 }

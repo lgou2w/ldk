@@ -677,7 +677,7 @@ open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<
 
     /**
      * * Get the long array value from the given [key] key.
-     * * 从给定的 [key] 键中获取整数数组值.
+     * * 从给定的 [key] 键中获取长整数数组值.
      *
      * @throws NoSuchElementException If the [key] key does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
@@ -690,7 +690,7 @@ open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<
 
     /**
      * * Get the long array value from the given [key] key.
-     * * 从给定的 [key] 键中获取整数数组值.
+     * * 从给定的 [key] 键中获取长整数数组值.
      *
      * @throws ClassCastException If the value of the [key] key does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
@@ -701,7 +701,7 @@ open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<
 
     /**
      * * Get the long array value from the given [key] key. if it doesn't exist, add the default and get it.
-     * * 从给定的 [key] 键中获取整数数组值, 如果不存在则添加默认并获取.
+     * * 从给定的 [key] 键中获取长整数数组值, 如果不存在则添加默认并获取.
      *
      * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.

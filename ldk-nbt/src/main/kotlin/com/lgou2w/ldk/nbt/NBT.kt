@@ -98,8 +98,10 @@ interface NBT<T> : Cloneable {
     companion object Constants {
 
         // const tag key
-        // TODO Do not advocate doing this
+        // Do not advocate doing this
         // SEE ISSUES: https://github.com/lgou2w/ldk/issues/5
+
+        // TODO Dynamic TAG
 
         //<editor-fold desc="TAG" defaultstate="collapsed">
 
