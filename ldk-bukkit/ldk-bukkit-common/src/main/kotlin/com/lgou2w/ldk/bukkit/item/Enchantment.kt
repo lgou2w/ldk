@@ -21,6 +21,7 @@ import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
 import com.lgou2w.ldk.common.isOrLater
 import org.bukkit.NamespacedKey
+import java.util.*
 
 /**
  * ## Enchantment (附魔)
@@ -61,184 +62,182 @@ enum class Enchantment(
         val minimum: MinecraftVersion? = null
 ) : Valuable<String> {
 
-    // TODO Use the type name of 1.13 as the enumerated name
-
     /**
      * * Enchantment: Environmental Protection
      * * 附魔类型: 保护
      */
-    PROTECTION(0, 4, "PROTECTION_ENVIRONMENTAL", "protection"),
+    PROTECTION(0, 4, "protection_environmental", "protection"),
     /**
      * * Enchantment: Fire Protection
      * * 附魔类型: 火焰保护
      */
-    PROTECTION_FIRE(1, 4, "PROTECTION_FIRE", "fire_protection"),
+    FIRE_PROTECTION(1, 4, "protection_fire", "fire_protection"),
     /**
-     * * Enchantment: Fall Protection
+     * * Enchantment: Feather Falling
      * * 附魔类型: 摔落保护
      */
-    PROTECTION_FALL(2, 4, "PROTECTION_FALL", "feather_falling"),
+    FEATHER_FALLING(2, 4, "protection_fall", "feather_falling"),
     /**
-     * * Enchantment: Explosions Protection
+     * * Enchantment: Blast Protection
      * * 附魔类型: 爆炸保护
      */
-    PROTECTION_EXPLOSIONS(3, 4, "PROTECTION_EXPLOSIONS", "blast_protection"),
+    BLAST_PROTECTION(3, 4, "protection_explosions", "blast_protection"),
     /**
      * * Enchantment: Projectile Protection
      * * 附魔类型: 弹射物保护
      */
-    PROTECTION_PROJECTILE(4, 4, "PROTECTION_PROJECTILE", "projectile_protection"),
+    PROJECTILE_PROTECTION(4, 4, "protection_projectile", "projectile_protection"),
     /**
-     * * Enchantment: Oxygen
+     * * Enchantment: Respiration
      * * 附魔类型: 水下呼吸
      */
-    OXYGEN(5, 3, "OXYGEN", "respiration"),
+    RESPIRATION(5, 3, "oxygen", "respiration"),
     /**
-     * * Enchantment: Water Worker
+     * * Enchantment: Aqua Affinity
      * * 附魔类型: 水下速掘
      */
-    WATER_WORKER(6, 1, "WATER_WORKER", "aqua_affinity"),
+    AQUA_AFFINITY(6, 1, "water_worker", "aqua_affinity"),
     /**
      * * Enchantment: Thorns
      * * 附魔类型: 荆棘
      */
-    THORNS(7, 3, "THORNS", "thorns"),
+    THORNS(7, 3, "thorns", "thorns"),
     /**
      * * Enchantment: Depth Strider
      * * 附魔类型: 深海探索者
      */
-    DEPTH_STRIDER(8, 3, "DEPTH_STRIDER", "depth_strider"),
+    DEPTH_STRIDER(8, 3, "depth_strider", "depth_strider"),
     /**
      * * Enchantment: Frost Walker
      * * 附魔类型: 冰霜行者
      */
-    FROST_WALKER(9, 2, "FROST_WALKER", "frost_walker", MinecraftVersion.V1_9),
+    FROST_WALKER(9, 2, "frost_walker", "frost_walker", MinecraftVersion.V1_9),
     /**
      * * Enchantment: Binding Curse
      * * 附魔类型: 绑定诅咒
      */
-    BINDING_CURSE(10, 1, "BINDING_CURSE", "binding_curse", MinecraftVersion.V1_11),
+    BINDING_CURSE(10, 1, "binding_curse", "binding_curse", MinecraftVersion.V1_11),
 
     /**
-     * * Enchantment: All Damage
+     * * Enchantment: Sharpness
      * * 附魔类型: 锋利
      */
-    DAMAGE(16, 5, "DAMAGE_ALL", "sharpness"),
+    SHARPNESS(16, 5, "damage_all", "sharpness"),
     /**
-     * * Enchantment: Undead Damage
+     * * Enchantment: Smite
      * * 附魔类型: 亡灵杀手
      */
-    DAMAGE_UNDEAD(17, 5, "DAMAGE_UNDEAD", "smite"),
+    SMITE(17, 5, "damage_undead", "smite"),
     /**
-     * * Enchantment: Arthropods Damage
+     * * Enchantment: Bane of arthropods
      * * 附魔类型: 节肢杀手
      */
-    DAMAGE_ARTHROPODS(18, 5, "DAMAGE_ARTHROPODS", "bane_of_arthropods"),
+    BANE_OF_ARTHROPODS(18, 5, "damage_arthropods", "bane_of_arthropods"),
     /**
      * * Enchantment: Knockback
      * * 附魔类型: 击退
      */
-    KNOCKBACK(19, 2, "KNOCKBACK", "knockback"),
+    KNOCKBACK(19, 2, "knockback", "knockback"),
     /**
      * * Enchantment: Fire Aspect
      * * 附魔类型: 火焰附加
      */
-    FIRE_ASPECT(20, 2, "FIRE_ASPECT", "fire_aspect"),
+    FIRE_ASPECT(20, 2, "fire_aspect", "fire_aspect"),
     /**
-     * * Enchantment: Loot Bonus Mobs
+     * * Enchantment: Looting
      * * 附魔类型: 抢夺
      */
-    LOOT_BONUS_MOBS(21, 3, "LOOT_BONUS_MOBS", "looting"),
+    LOOTING(21, 3, "loot_bonus_mobs", "looting"),
     /**
-     * * Enchantment: Sweeping Edge
+     * * Enchantment: Sweeping
      * * 附魔类型: 横扫之刃
      */
-    SWEEPING_EDGE(22, 3, "SWEEPING_EDGE", "sweeping", MinecraftVersion(1, 11, 1)),
+    SWEEPING(22, 3, "sweeping_edge", "sweeping", MinecraftVersion(1, 11, 1)),
 
     /**
-     * * Enchantment: Dig Speed
+     * * Enchantment: Efficiency
      * * 附魔类型: 效率
      */
-    DIG_SPEED(32, 5, "DIG_SPEED", "efficiency"),
+    EFFICIENCY(32, 5, "dig_speed", "efficiency"),
     /**
      * * Enchantment: Silk Touch
      * * 附魔类型: 精准采集
      */
-    SILK_TOUCH(33, 1, "SILK_TOUCH", "silk_touch"),
+    SILK_TOUCH(33, 1, "silk_touch", "silk_touch"),
     /**
-     * * Enchantment: Durability
+     * * Enchantment: Unbreaking
      * * 附魔类型: 耐久
      */
-    DURABILITY(34, 3, "DURABILITY", "unbreaking"),
+    UNBREAKING(34, 3, "durability", "unbreaking"),
     /**
-     * * Enchantment: Lott Bonus Blocks
+     * * Enchantment: Fortune
      * * 附魔类型: 时运
      */
-    LOOT_BONUS_BLOCKS(35, 3, "LOOT_BONUS_BLOCKS", "fortune"),
+    FORTUNE(35, 3, "loot_bonus_blocks", "fortune"),
 
     /**
-     * * Enchantment: Arrow Damage
+     * * Enchantment: Power
      * * 附魔类型: 力量
      */
-    ARROW_DAMAGE(48, 5, "ARROW_DAMAGE", "power"),
+    POWER(48, 5, "arrow_damage", "power"),
     /**
-     * * Enchantment: Arrow Knockback
+     * * Enchantment: Punch
      * * 附魔类型: 冲击
      */
-    ARROW_KNOCKBACK(49, 2, "ARROW_KNOCKBACK", "punch"),
+    PUNCH(49, 2, "arrow_knockback", "punch"),
     /**
-     * * Enchantment: Arrow Fire
+     * * Enchantment: Flame
      * * 附魔类型: 火矢
      */
-    ARROW_FIRE(50, 1, "ARROW_FIRE", "flame"),
+    FLAME(50, 1, "arrow_fire", "flame"),
     /**
-     * * Enchantment: Arrow Infinite
+     * * Enchantment: Infinite
      * * 附魔类型: 无限
      */
-    ARROW_INFINITE(51, 1, "ARROW_INFINITE", "infinite"),
+    INFINITE(51, 1, "arrow_infinite", "infinite"),
 
     /**
-     * * Enchantment: Luck
+     * * Enchantment: Luck of the sea
      * * 附魔类型: 海之眷顾
      */
-    LUCK(61, 3, "LUCK", "luck_of_the_sea"),
+    LUCK_OF_THE_SEA(61, 3, "luck", "luck_of_the_sea"),
     /**
      * * Enchantment: Lure
      * * 附魔类型: 饵钓
      */
-    LURE(62, 3, "LURE", "lure"),
+    LURE(62, 3, "lure", "lure"),
 
     /**
      * * Enchantment: Loyalty
      * * 附魔类型: 忠诚
      */
-    LOYALTY(65, 3, "LOYALTY", "loyalty", MinecraftVersion.V1_13),
+    LOYALTY(65, 3, "loyalty", "loyalty", MinecraftVersion.V1_13),
     /**
      * * Enchantment: Impaling
      * * 附魔类型: 穿刺
      */
-    IMPALING(66, 5, "IMPALING", "impaling", MinecraftVersion.V1_13),
+    IMPALING(66, 5, "impaling", "impaling", MinecraftVersion.V1_13),
     /**
      * * Enchantment: Riptide
      * * 附魔类型: 激流
      */
-    RIPTIDE(67, 3, "RIPTIDE", "riptide", MinecraftVersion.V1_13),
+    RIPTIDE(67, 3, "riptide", "riptide", MinecraftVersion.V1_13),
     /**
      * * Enchantment: Channeling
      * * 附魔类型: 引雷
      */
-    CHANNELING(68, 1, "CHANNELING", "channeling", MinecraftVersion.V1_13),
+    CHANNELING(68, 1, "channeling", "channeling", MinecraftVersion.V1_13),
 
     /**
      * * Enchantment: Mending
      * * 附魔类型: 经验修补
      */
-    MENDING(70, 1, "MENDING", "mending", MinecraftVersion.V1_9),
+    MENDING(70, 1, "mending", "mending", MinecraftVersion.V1_9),
     /**
      * * Enchantment: Vanishing Curse
      * * 附魔类型: 消失诅咒
      */
-    VANISHING_CURSE(71, 1, "VANISHING_CURSE", "vanishing_curse", MinecraftVersion.V1_11),
+    VANISHING_CURSE(71, 1, "vanishing_curse", "vanishing_curse", MinecraftVersion.V1_11),
     ;
 
     override val value: String
@@ -278,7 +277,7 @@ enum class Enchantment(
         @JvmStatic
         @JvmName("fromName")
         fun fromName(name: String): Enchantment
-                = NAME_MAP[name] ?: throw IllegalArgumentException("无效的附魔类型名: $name.")
+                = NAME_MAP[name.toLowerCase(Locale.US)] ?: throw IllegalArgumentException("无效的附魔类型名: $name.")
 
         /**
          * * Get the enchantment type from the given id.

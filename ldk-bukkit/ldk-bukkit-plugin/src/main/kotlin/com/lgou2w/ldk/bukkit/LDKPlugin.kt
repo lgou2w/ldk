@@ -62,10 +62,10 @@ class LDKPlugin : PluginBase() {
                         val stack = Material.IRON_SWORD.builder()
                             .setDurability(100)
                             .setDisplayName(ChatSerializer.fromRaw("&aIron Sword"))
-                            .addEnchantment(Enchantment.DAMAGE, 5)
-                            .addEnchantment(Enchantment.DURABILITY, 1)
+                            .addEnchantment(Enchantment.SHARPNESS, 5)
+                            .addEnchantment(Enchantment.UNBREAKING, 1)
                             .clearEnchantment()
-                            .addEnchantment(Enchantment.DAMAGE, 1)
+                            .addEnchantment(Enchantment.SHARPNESS, 1)
                             .addLore(*arrayOf("&aLore").toColor())
                             .getEnchantment { _, enchantments -> enchantments?.forEach { println(it) } }
                             .getLore { _, lore -> lore?.forEach { println(it) } }
