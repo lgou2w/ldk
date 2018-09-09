@@ -65,11 +65,13 @@ class LDKPlugin : PluginBase() {
                             .addEnchantment(Enchantment.SHARPNESS, 5)
                             .addEnchantment(Enchantment.UNBREAKING, 1)
                             .clearEnchantment()
-                            .addEnchantment(Enchantment.SHARPNESS, 1)
-                            .addLore(*arrayOf("&aLore").toColor())
+                            .addEnchantment(Enchantment.SHARPNESS, 5)
+                            .addLore(*arrayOf("&aLore").toColor(), "Lore")
                             .getEnchantment { _, enchantments -> enchantments?.forEach { println(it) } }
                             .getLore { _, lore -> lore?.forEach { println(it) } }
                             .setDurability(0)
+                            .removeLore { it.startsWith(ChatColor.CHAR_COLOR) }
+                            .removeEnchantment { it.first == Enchantment.SHARPNESS && it.second > 3 }
                             .build()
                         ChatComponentFancy("You get an item: ")
                             .color(ChatColor.GREEN)

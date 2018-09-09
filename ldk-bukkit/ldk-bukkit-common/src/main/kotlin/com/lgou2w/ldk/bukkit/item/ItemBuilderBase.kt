@@ -59,7 +59,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     private fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?) {
-        return removeIf<T, T>(key, { it }, predicate)
+        removeIf<T, T>(key, { it }, predicate)
     }
 
     private fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?) {
@@ -72,6 +72,24 @@ abstract class ItemBuilderBase : ItemBuilder {
                 remove(key)
             else if (predicate(transform(value.value as T)))
                 remove(key)
+        }
+    }
+
+    private fun <T> NBTTagList.removeIf(predicate: Predicate<T>?) {
+        removeIf<T, T>({ it }, predicate)
+    }
+
+    private fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R>?) {
+        if (predicate == null) {
+            clear()
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            value.removeIf {
+                predicate(transform(
+                        if (it.type.isWrapper()) it as T
+                        else it.value as T
+                ))
+            }
         }
     }
 
@@ -153,9 +171,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
-    override fun removeLore(predicate: Predicate<List<String>>?): ItemBuilder {
+    override fun removeLore(predicate: Predicate<String>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
-            ?.removeIf<NBTTagList, List<String>>(NBT.TAG_DISPLAY_LORE, { it.asElements() }, predicate)
+            ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
+            ?.removeIf(predicate)
         return this
     }
 
@@ -207,6 +226,40 @@ abstract class ItemBuilderBase : ItemBuilder {
                     putShort(NBT.TAG_ENCH_ID, enchantment.id)
                     putShort(NBT.TAG_ENCH_LVL, level)
                 })
+        }
+        return this
+    }
+
+    override fun removeEnchantment(enchantment: Enchantment): ItemBuilder {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
+                ?.removeIf<NBTTagCompound> {
+                    val id = it.getString(NBT.TAG_ENCH_ID)
+                    Enchantment.fromName(id) == enchantment
+                }
+        } else {
+            tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
+                ?.removeIf<NBTTagCompound> {
+                    val id = it.getShort(NBT.TAG_ENCH_ID).toInt()
+                    Enchantment.fromId(id) == enchantment
+                }
+        }
+        return this
+    }
+
+    override fun removeEnchantment(predicate: Predicate<Pair<Enchantment, Int>>?): ItemBuilder {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
+                ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
+                    val id = it.getString(NBT.TAG_ENCH_ID)
+                    Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                }, predicate)
+        } else {
+            tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
+                ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
+                    val id = it.getShort(NBT.TAG_ENCH_ID).toInt()
+                    Enchantment.fromId(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                }, predicate)
         }
         return this
     }

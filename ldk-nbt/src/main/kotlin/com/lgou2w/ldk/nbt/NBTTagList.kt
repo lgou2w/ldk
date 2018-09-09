@@ -49,7 +49,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
     }
 
     override var value: MutableList<NBTBase<*>>
-        get() = ArrayList(super.value0)
+        get() = super.value0
         set(value) {
             for (el in value)
                 check(el)

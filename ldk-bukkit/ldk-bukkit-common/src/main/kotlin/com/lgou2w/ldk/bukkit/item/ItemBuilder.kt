@@ -47,7 +47,7 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun addLore(vararg lore: String) : ItemBuilder
 
-    fun removeLore(predicate: Predicate<List<String>>? = null) : ItemBuilder
+    fun removeLore(predicate: Predicate<String>? = null) : ItemBuilder
 
     fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit) : ItemBuilder
 
@@ -56,6 +56,10 @@ interface ItemBuilder : Builder<ItemStack> {
     fun clearEnchantment() : ItemBuilder
 
     fun addEnchantment(enchantment: Enchantment, level: Int) : ItemBuilder
+
+    fun removeEnchantment(enchantment: Enchantment) : ItemBuilder
+
+    fun removeEnchantment(predicate: Predicate<Pair<Enchantment, Int>>? = null) : ItemBuilder
 
     companion object {
 

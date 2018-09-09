@@ -120,4 +120,26 @@ class Test {
             putByte("Unbreakable", 1)
         }.println()
     }
+
+    @Test
+    fun test_NBTListValue() {
+        val list = ofList { addString("1", "2", "3") }
+        val list2 = list.clone()
+        val iterator = list.value.iterator()
+        while (iterator.hasNext()) {
+            if (iterator.next().value == "2")
+                iterator.remove()
+        }
+        println(list)
+        println(list2)
+    }
+
+    @Test
+    fun test_NBTCompoundValue() {
+        val compound = ofCompound { putString("a", "1"); putString("b", "1") }
+        val compound2 = compound.clone()
+        compound.values.removeIf { it.value == "1" }
+        println(compound)
+        println(compound2)
+    }
 }
