@@ -48,7 +48,7 @@ object MinecraftReflection {
         } catch (e: ClassNotFoundException) {
         }
         if (result != null) result.also { setMinecraftClass(className, it) }
-        else throw ClassNotFoundException("未查找到 $className 以及别名 ${aliases.joinToString()} 的类.", e.cause ?: e)
+        else throw ClassNotFoundException("The class for $className and the alias ${aliases.joinToString()} was not found.", e.cause ?: e)
     }
 
     @JvmStatic

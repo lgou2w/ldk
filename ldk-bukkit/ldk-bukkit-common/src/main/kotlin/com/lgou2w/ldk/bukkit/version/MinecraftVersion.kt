@@ -38,6 +38,7 @@ class MinecraftVersion(
         @JvmField val V1_11 = MinecraftVersion(1, 11, 0)
         @JvmField val V1_12 = MinecraftVersion(1, 12, 0)
         @JvmField val V1_13 = MinecraftVersion(1, 13, 0)
+        @JvmField val V1_14 = MinecraftVersion(1, 14, 0)
 
         @JvmStatic
         private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC.\\s*([a-zA-Z0-9\\-.]+)\\s*\\)")
@@ -50,7 +51,7 @@ class MinecraftVersion(
                     val version = Bukkit.getServer().version
                     val matcher = VERSION_PATTERN.matcher(version)
                     if (!matcher.matches() || matcher.group(1) == null)
-                        throw IllegalStateException("未成功匹配的 Bukkit Minecraft 版本号: $version.")
+                        throw IllegalStateException("Bukkit Minecraft version number not successfully matched: $version.")
                     val versionOnly = matcher.group(1)
                     val numbers = IntArray(3)
                     var pre: Int? = null
@@ -60,14 +61,14 @@ class MinecraftVersion(
                             versionOnly.split(Pattern.compile("\\."))
                             else versionOnly.substring(0, index).split(Pattern.compile("\\."))
                         if (elements.size == -1)
-                            throw IllegalStateException("无效的 Bukkit Minecraft 版本号: $versionOnly")
+                            throw IllegalStateException("Invalid Bukkit Minecraft version number: $versionOnly")
                         for (i in 0 until Math.min(numbers.size, elements.size))
                             numbers[i] = elements[i].trim().toInt()
                         if (index != -1)
                             pre = versionOnly.substring(index + 4).toInt()
                     } catch (e: Exception) {
                         if (e is NumberFormatException)
-                            throw IllegalStateException("无法解析的 Bukkit Minecraft 版本号: $versionOnly")
+                            throw IllegalStateException("Unable to parse Bukkit Minecraft version number: $versionOnly")
                         else
                             throw e
                     }

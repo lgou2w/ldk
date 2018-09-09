@@ -25,7 +25,7 @@ import java.io.DataOutput
  * @see [Map]
  * @author lgou2w
  */
-open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<String, NBTBase<*>> {
+class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<String, NBTBase<*>> {
 
     @JvmOverloads
     constructor(name: String, value: MutableMap<String, NBTBase<*>> = LinkedHashMap()) : super(name, value)
@@ -213,10 +213,10 @@ open class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<
         if (nullable && tag == null)
             return null
         if (tag == null)
-            throw NoSuchElementException("未存在的指定键: $key")
+            throw NoSuchElementException("Specified key that does not exist: $key")
         val expectedType = NBTType.fromClass(expected)
         if (!expected.isInstance(tag))
-            throw ClassCastException("键 $key 的标签值类型 ${tag.type} 和预期不符合. (预期: ${expectedType ?: expected.simpleName})")
+            throw ClassCastException("Key $key tag value type ${tag.type} does not match expectations. (Expected: ${expectedType ?: expected.simpleName})")
         return tag
     }
 

@@ -53,7 +53,7 @@ class PackageCached {
         if (cached.containsKey(className)) {
             val result = cached[className]
             if (result == null || !result.isPresent)
-                throw ClassNotFoundException("无法查找到类: $className")
+                throw ClassNotFoundException("Unable to find class: $className")
             return result.get()
         }
         try {
@@ -62,7 +62,7 @@ class PackageCached {
             return clazz
         } catch (e: ClassNotFoundException) {
             cached[className] = Optional.empty()
-            throw ClassNotFoundException("无法查找到类: $className", e.cause ?: e)
+            throw ClassNotFoundException("Unable to find class: $className", e.cause ?: e)
         }
     }
 

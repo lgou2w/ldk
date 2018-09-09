@@ -142,8 +142,7 @@ object NBTStreams {
             output = if (compress) GZIPOutputStream(FileOutputStream(file)) else FileOutputStream(file)
             write(output, nbt)
         } finally {
-            if (output != null)
-                output.close()
+            output?.close()
         }
     }
 
@@ -167,8 +166,7 @@ object NBTStreams {
             input = if (decompress) GZIPInputStream(FileInputStream(file)) else FileInputStream(file)
             return read(input)
         } finally {
-            if (input != null)
-                input.close()
+            input?.close()
         }
     }
 }

@@ -52,7 +52,7 @@ class LDKPlugin : PluginBase() {
 
     override fun enable() {
         logger.info("A lgou2w development kit of Bukkit.")
-        logger.info("游戏版本: ${MinecraftVersion.CURRENT.version} 实现版本: ${MinecraftBukkitVersion.CURRENT.version}")
+        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${MinecraftBukkitVersion.CURRENT.version}")
         registerListeners {
             event<PlayerCommandPreprocessEvent> {
                 if (!player.isOp)

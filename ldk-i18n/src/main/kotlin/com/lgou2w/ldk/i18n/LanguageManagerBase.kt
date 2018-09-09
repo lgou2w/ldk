@@ -37,7 +37,7 @@ abstract class LanguageManagerBase(
             val input = provider.load(name)
             return if (input != null) adapter.adapt(input) else LinkedHashMap()
         } catch (e: Exception) {
-            throw IOException("从提供者加载语言文件时异常:", e.cause ?: e)
+            throw IOException("Exception when loading a language file from a provider:", e.cause ?: e)
         }
     }
 
@@ -53,7 +53,7 @@ abstract class LanguageManagerBase(
             val values = language.entries.associate { it.key to it.value }.toMutableMap()
             adapter.readapt(output, values)
         } catch (e: Exception) {
-            throw IOException("从提供适配器中保存语言文件时异常:", e.cause ?: e)
+            throw IOException("Exception when saving a language file from the supplied adapter:", e.cause ?: e)
         }
     }
 

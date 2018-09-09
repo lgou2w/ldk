@@ -29,6 +29,6 @@ interface LanguageProvider {
 
     @Throws(IOException::class, UnsupportedOperationException::class)
     fun write(name: String) : OutputStream {
-        throw UnsupportedOperationException("当前提供者不支持保存语言数据.")
+        throw UnsupportedOperationException("Current provider does not support saving language data.")
     }
 }

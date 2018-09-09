@@ -36,7 +36,7 @@ abstract class ClassSource {
         @JvmStatic
         fun fromMap(map: Map<String, Class<*>>): ClassSource = object: ClassSource() {
             override fun loadClass(name: String): Class<*>
-                    = map[name] ?: throw ClassNotFoundException("指定类没有存在此 Map 中.")
+                    = map[name] ?: throw ClassNotFoundException("The specified class does not exist in this Map.")
         }
     }
 }

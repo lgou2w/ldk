@@ -277,7 +277,8 @@ enum class Enchantment(
         @JvmStatic
         @JvmName("fromName")
         fun fromName(name: String): Enchantment
-                = NAME_MAP[name.toLowerCase(Locale.US)] ?: throw IllegalArgumentException("无效的附魔类型名: $name.")
+                = NAME_MAP[name.toLowerCase(Locale.US)]
+                  ?: throw IllegalArgumentException("Invalid enchant type name: $name.")
 
         /**
          * * Get the enchantment type from the given id.
@@ -290,7 +291,7 @@ enum class Enchantment(
         @JvmName("fromId")
         @Throws(IllegalArgumentException::class)
         fun fromId(id: Int): Enchantment
-                = ID_MAP[id] ?: throw IllegalArgumentException("无效的附魔效果 ID $id 值.")
+                = ID_MAP[id] ?: throw IllegalArgumentException("Invalid enchantment ID $id value.")
 
         /**
          * * Whether the enchantment type exists from the given Id.

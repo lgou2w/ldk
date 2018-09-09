@@ -148,7 +148,7 @@ object ChatSerializer {
                                 ChatColor.STRIKETHROUGH -> style?.setStrikethrough(true)
                                 ChatColor.UNDERLINE -> style?.setUnderlined(true)
                                 ChatColor.ITALIC -> style?.setItalic(true)
-                                else -> throw AssertionError("无效颜色格式符: ${color.code}.")
+                                else -> throw AssertionError("Invalid color formatter: ${color.code}.")
                             }
                             else -> style = ChatStyle().setColor(color)
                         }
@@ -337,7 +337,7 @@ object ChatSerializer {
             } else if (jsonObject.has("score")) {
                 val jsonObjectScore = jsonObject.getAsJsonObject("score")
                 if (!jsonObjectScore.has("name") || !jsonObjectScore.has("objective"))
-                    throw JsonParseException("分数聊天组件至少拥有一个 name 或 objective 属性.")
+                    throw JsonParseException("The score chat component has at least one name or objective attribute.")
                 component = ChatComponentScore(jsonObjectScore.get("name").asString, jsonObjectScore.get("objective").asString)
                 if (jsonObjectScore.has("value"))
                     component.setValue(jsonObjectScore.get("value").asString)
@@ -346,7 +346,7 @@ object ChatSerializer {
             } else if (jsonObject.has("keybind")) {
                 component = ChatComponentKeybind(jsonObject.get("keybind").asString)
             } else {
-                throw JsonParseException("不知道如何把 $json 解析成一个聊天组件.")
+                throw JsonParseException("Don't know how to parse $json into a chat component.")
             }
             if (jsonObject.has("extra")) {
                 val jsonArray = jsonObject.getAsJsonArray("extra")
@@ -401,7 +401,7 @@ object ChatSerializer {
             } else if (src is ChatComponentKeybind) {
                 jsonObject.addProperty("keybind", src.keybind)
             } else {
-                throw JsonParseException("不知道如何把 $src 解析成一个聊天组件.")
+                throw JsonParseException("Don't know how to parse $src into a chat component.")
             }
             return jsonObject
         }

@@ -29,6 +29,6 @@ open class ResourceProvider(
 
     override fun load(name: String): InputStream? {
         return classLoader.getResourceAsStream(name)
-               ?: throw FileNotFoundException("类加载器中的资源文件 $name 未找到.")
+               ?: throw FileNotFoundException("The resource file $name in the class loader was not found.")
     }
 }

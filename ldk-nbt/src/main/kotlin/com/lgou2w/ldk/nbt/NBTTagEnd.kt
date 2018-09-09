@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.nbt
 
+import com.lgou2w.ldk.nbt.NBTTagEnd.Companion.INSTANCE
 import java.io.DataInput
 import java.io.DataOutput
 
@@ -38,6 +39,11 @@ class NBTTagEnd private constructor() : NBTBase<Any>("", Any()) {
         @JvmField
         val INSTANCE = NBTTagEnd()
     }
+
+    @Suppress("UNUSED_PARAMETER")
+    override var value: Any
+        get() = super.value
+        set(value) { }
 
     override val type: NBTType
         get() = NBTType.TAG_END

@@ -119,7 +119,7 @@ object Enums {
     @JvmOverloads
     fun <T> from(clazz: Class<T>, predicate: Predicate<Enum<*>>, def: Enum<*>? = null) : Enum<*>? {
         if (!clazz.isEnum)
-            throw IllegalArgumentException("参数类 $clazz 不是一个枚举类型.")
+            throw IllegalArgumentException("The parameter class $clazz is not an enum type.")
         return clazz.enumConstants?.map { it as Enum<*> }?.find(predicate) ?: def
     }
 
@@ -143,9 +143,9 @@ object Enums {
     @JvmOverloads
     fun <V, T> fromValuable(clazz: Class<T>, value: V?, def: Enum<*>? = null) : Enum<*>? where T : Enum<*>, T : Valuable<V> {
         if (!clazz.isEnum)
-            throw IllegalArgumentException("参数类 $clazz 不是一个枚举类型.")
+            throw IllegalArgumentException("The parameter class $clazz is not an enum type.")
         if (clazz.interfaces.find { Valuable::class.java.isAssignableFrom(it) } == null)
-            throw IllegalArgumentException("枚举类 $clazz 未实现 Valuable 接口.")
+            throw IllegalArgumentException("Enum class $clazz does not implement the Valuable interface.")
         return clazz.enumConstants?.map { it as T }?.find { it.value == value } ?: def
     }
 

@@ -41,6 +41,7 @@ class MinecraftBukkitVersion(
         @JvmField val V1_12_R1 = MinecraftBukkitVersion(1, 12, 1)
         @JvmField val V1_13_R1 = MinecraftBukkitVersion(1, 13, 1)
         @JvmField val V1_13_R2 = MinecraftBukkitVersion(1, 13, 2)
+        @JvmField val V1_14_R1 = MinecraftBukkitVersion(1, 14, 1)
 
         @JvmStatic
         private val VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$")
@@ -53,7 +54,7 @@ class MinecraftBukkitVersion(
                     val packageSplit = Bukkit.getServer().javaClass.`package`.name.split(Pattern.compile("\\."))
                     val matcher = VERSION_PATTERN.matcher(packageSplit.last())
                     if (!matcher.matches())
-                        throw IllegalStateException("未成功匹配到的 Bukkit NMS 版本号: ${packageSplit.last()}")
+                        throw IllegalStateException("Bukkit NMS version number not successfully matched: ${packageSplit.last()}")
                     field = MinecraftBukkitVersion(
                             matcher.group(1).toInt(),
                             matcher.group(2).toInt(),
@@ -124,6 +125,10 @@ class MinecraftBukkitVersion(
                     MinecraftVersion(1, 13, 1)
                     // ---> net.minecraft.server.v1_13_R2
             )] = V1_13_R2
+            map[arrayOf(
+                    MinecraftVersion(1, 14, 0)
+                    // ---> net.minecraft.server.v1_14_R1
+            )] = V1_14_R1
             return map
         }
 

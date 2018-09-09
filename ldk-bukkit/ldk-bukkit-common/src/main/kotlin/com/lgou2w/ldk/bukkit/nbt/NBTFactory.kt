@@ -170,7 +170,7 @@ object NBTFactory {
         var accessor = NBT_TYPE_FIELD_ACCESSORS[type]
         if (accessor == null) {
             if (type == NBTType.TAG_END)
-                throw IllegalArgumentException("类型 TAG_END 没有值成员字段.")
+                throw IllegalArgumentException("Type TAG_END has no value member field.")
             accessor = FuzzyReflect.of(MinecraftReflection.getMinecraftClass(when (type) {
                 NBTType.TAG_END -> "NBTTagEnd"
                 NBTType.TAG_BYTE -> "NBTTagByte"

@@ -49,7 +49,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
                     }
                 }
         ) {
-            logger.log(Level.SEVERE, "插件加载时依赖失败, 未成功依赖项: ${failedDependency?.name}.")
+            logger.log(Level.SEVERE, "Dependency failure when plugin loads, unload dependency: ${failedDependency?.name}.")
             server.pluginManager.disablePlugin(this)
             return
         }
@@ -57,14 +57,14 @@ abstract class PluginBase : JavaPlugin, Plugin {
             enable()
         } catch (e: Exception) {
             if (enableExceptionDisabled) {
-                logger.log(Level.SEVERE, "插件已禁用, 由于加载时异常:", e)
+                logger.log(Level.SEVERE, "The plugin is disabled due to an exception at load time:", e)
                 server.pluginManager.disablePlugin(this)
                 return
             } else
-                logger.log(Level.SEVERE, "加载时错误,跳过插件禁用, 异常:", e)
+                logger.log(Level.SEVERE, "Error loading, skip plugin disabled, exception:", e)
         }
         val endTime = System.currentTimeMillis()
-        logger.info("插件 $pluginName v$pluginVersion 成功加载, 总耗时: ${endTime - startTime}ms.")
+        logger.info("Plugin $pluginName $pluginVersion successfully loaded, total time: ${endTime - startTime}ms.")
     }
 
     final override fun onDisable() {

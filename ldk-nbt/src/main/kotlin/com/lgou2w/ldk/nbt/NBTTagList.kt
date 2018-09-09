@@ -26,7 +26,7 @@ import java.util.*
  * @see [List]
  * @author lgou2w
  */
-open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
+class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
 
     /**
      * * The NBT tag type within this collection.
@@ -60,7 +60,7 @@ open class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>
         if (elementType == NBTType.TAG_END)
             elementType = element.type
         else if (elementType != element.type)
-            throw IllegalArgumentException("列表元素值不符合的类型, 应为: $elementType.")
+            throw IllegalArgumentException("The type of list element value that does not match, should be: $elementType.")
     }
 
     override val type: NBTType
