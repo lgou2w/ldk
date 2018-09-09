@@ -132,14 +132,17 @@ object ChatSerializer {
             var groupId: Int
             while (matcher.find()) {
                 groupId = 0
-                do { ++groupId } while (matcher.group(groupId).apply { match = this } == null)
+                do {
+                    ++groupId
+                } while (matcher.group(groupId).apply { match = this } == null)
                 append(matcher.start(groupId))
                 when (groupId) {
                     1 -> {
-                        val color = Enums.ofValuable(ChatColor::class.java, match?.toLowerCase()?.get(1)) ?: ChatColor.WHITE
+                        val color = Enums.ofValuable(ChatColor::class.java, match?.toLowerCase()?.get(1))
+                                    ?: ChatColor.WHITE
                         when {
                             color == ChatColor.RESET -> style = ChatStyle()
-                            color.isFormat -> when(color) {
+                            color.isFormat -> when (color) {
                                 ChatColor.OBFUSCATED -> style?.setObfuscated(true)
                                 ChatColor.BOLD -> style?.setBold(true)
                                 ChatColor.STRIKETHROUGH -> style?.setStrikethrough(true)

@@ -45,19 +45,23 @@ class ChatComponentTranslation(
     /**
      * @see [ChatComponentTranslation.key]
      */
-    fun setKey(key: String): ChatComponentTranslation
-            { this.key = key; return this; }
+    fun setKey(key: String): ChatComponentTranslation {
+        this.key = key
+        return this
+    }
 
     /**
      * @see [ChatComponentTranslation.withs]
      */
-    fun addWiths(withs: Array<Any>): ChatComponentTranslation
-            { this.withs.addAll(withs); return this; }
+    fun addWiths(withs: Array<Any>): ChatComponentTranslation {
+        this.withs.addAll(withs)
+        return this
+    }
 
     override fun equals(other: Any?): Boolean {
-        if(other === this)
+        if (other === this)
             return true
-        if(other is ChatComponentTranslation)
+        if (other is ChatComponentTranslation)
             return super.equals(other) && key == other.key && withs == other.withs
         return false
     }

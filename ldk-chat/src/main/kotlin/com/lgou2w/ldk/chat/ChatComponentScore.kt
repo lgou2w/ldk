@@ -52,25 +52,31 @@ class ChatComponentScore(
     /**
      * @see [ChatComponentScore.name]
      */
-    fun setName(name: String): ChatComponentScore
-            { this.name = name; return this; }
+    fun setName(name: String): ChatComponentScore {
+        this.name = name
+        return this
+    }
 
     /**
      * @see [ChatComponentScore.objective]
      */
-    fun setObjective(objective: String): ChatComponentScore
-            { this.objective = objective; return this; }
+    fun setObjective(objective: String): ChatComponentScore {
+        this.objective = objective
+        return this
+    }
 
     /**
      * @see [ChatComponentScore.value]
      */
-    fun setValue(value: String?): ChatComponentScore
-            { this.value = value; return this; }
+    fun setValue(value: String?): ChatComponentScore {
+        this.value = value
+        return this
+    }
 
     override fun equals(other: Any?): Boolean {
-        if(other === this)
+        if (other === this)
             return true
-        if(other is ChatComponentScore)
+        if (other is ChatComponentScore)
             return super.equals(other) && name == other.name && objective == other.objective && value == other.value
         return false
     }

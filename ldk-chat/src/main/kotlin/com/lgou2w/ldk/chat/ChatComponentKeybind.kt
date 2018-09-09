@@ -38,13 +38,15 @@ class ChatComponentKeybind(
     /**
      * @see [ChatComponentKeybind.keybind]
      */
-    fun setKeybind(keybind: String): ChatComponentKeybind
-            { this.keybind = keybind; return this; }
+    fun setKeybind(keybind: String): ChatComponentKeybind {
+        this.keybind = keybind
+        return this
+    }
 
     override fun equals(other: Any?): Boolean {
-        if(other === this)
+        if (other === this)
             return true
-        if(other is ChatComponentKeybind)
+        if (other is ChatComponentKeybind)
             return super.equals(other) && keybind == other.keybind
         return false
     }

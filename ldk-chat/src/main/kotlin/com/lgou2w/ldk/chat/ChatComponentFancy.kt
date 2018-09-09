@@ -91,8 +91,10 @@ open class ChatComponentFancy(
      * @param component Chat component.
      * @param component 聊天组件.
      */
-    fun then(component: ChatComponent): ChatComponentFancy
-            { extras.add(component); return this; }
+    fun then(component: ChatComponent): ChatComponentFancy {
+        extras.add(component)
+        return this
+    }
 
     /**
      * * Set the color style of the last component of this fancy component.
@@ -102,8 +104,10 @@ open class ChatComponentFancy(
      * @param color Chat color.
      * @param color 聊天颜色.
      */
-    fun color(color: ChatColor): ChatComponentFancy
-            { last.style.setColor(color); return this; }
+    fun color(color: ChatColor): ChatComponentFancy {
+        last.style.setColor(color)
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a bold style.
@@ -111,8 +115,10 @@ open class ChatComponentFancy(
      *
      * @see [ChatColor.BOLD]
      */
-    fun withBold(): ChatComponentFancy
-            { last.style.setBold(true); return this; }
+    fun withBold(): ChatComponentFancy {
+        last.style.setBold(true)
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a italic style.
@@ -120,8 +126,10 @@ open class ChatComponentFancy(
      *
      * @see [ChatColor.ITALIC]
      */
-    fun withItalic(): ChatComponentFancy
-            { last.style.setItalic(true); return this; }
+    fun withItalic(): ChatComponentFancy {
+        last.style.setItalic(true)
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a underlined style.
@@ -129,8 +137,10 @@ open class ChatComponentFancy(
      *
      * @see [ChatColor.UNDERLINE]
      */
-    fun withUnderlined(): ChatComponentFancy
-            { last.style.setUnderlined(true); return this; }
+    fun withUnderlined(): ChatComponentFancy {
+        last.style.setUnderlined(true)
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a strikethrough style.
@@ -138,8 +148,10 @@ open class ChatComponentFancy(
      *
      * @see [ChatColor.STRIKETHROUGH]
      */
-    fun withStrikethrough(): ChatComponentFancy
-            { last.style.setStrikethrough(true); return this; }
+    fun withStrikethrough(): ChatComponentFancy {
+        last.style.setStrikethrough(true)
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a obfuscated style.
@@ -147,8 +159,10 @@ open class ChatComponentFancy(
      *
      * @see [ChatColor.OBFUSCATED]
      */
-    fun withObfuscated(): ChatComponentFancy
-            { last.style.setObfuscated(true); return this; }
+    fun withObfuscated(): ChatComponentFancy {
+        last.style.setObfuscated(true)
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a insertion string.
@@ -156,8 +170,10 @@ open class ChatComponentFancy(
      *
      * @see [ChatColor.OBFUSCATED]
      */
-    fun withInsertion(insertion: String): ChatComponentFancy
-            { last.style.setInsertion(insertion); return this; }
+    fun withInsertion(insertion: String): ChatComponentFancy {
+        last.style.setInsertion(insertion)
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a click event.
@@ -170,8 +186,10 @@ open class ChatComponentFancy(
      * @param value Action value.
      * @param value 交互值.
      */
-    fun withClickEvent(action: ChatClickEvent.Action, value: String): ChatComponentFancy
-            { last.style.setClickEvent(ChatClickEvent(action, value)); return this; }
+    fun withClickEvent(action: ChatClickEvent.Action, value: String): ChatComponentFancy {
+        last.style.setClickEvent(ChatClickEvent(action, value))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a hover event.
@@ -184,8 +202,10 @@ open class ChatComponentFancy(
      * @param value Action value.
      * @param value 交互值.
      */
-    fun withHoverEvent(action: ChatHoverEvent.Action, value: ChatComponent): ChatComponentFancy
-            { last.style.setHoverEvent(ChatHoverEvent(action, value)); return this; }
+    fun withHoverEvent(action: ChatHoverEvent.Action, value: ChatComponent): ChatComponentFancy {
+        last.style.setHoverEvent(ChatHoverEvent(action, value))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a click open file event.
@@ -200,8 +220,10 @@ open class ChatComponentFancy(
      * @param path File path.
      * @param path 文件路径.
      */
-    fun file(path: String): ChatComponentFancy
-            { last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.OPEN_FILE, path)); return this; }
+    fun file(path: String): ChatComponentFancy {
+        last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.OPEN_FILE, path))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a click open url event.
@@ -211,8 +233,10 @@ open class ChatComponentFancy(
      * @param url Web url.
      * @param url 网络链接.
      */
-    fun link(url: String): ChatComponentFancy
-            { last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.OPEN_URL, url)); return this; }
+    fun link(url: String): ChatComponentFancy {
+        last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.OPEN_URL, url))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a click suggest command event.
@@ -222,8 +246,10 @@ open class ChatComponentFancy(
      * @param command Command.
      * @param command 命令.
      */
-    fun suggest(command: String): ChatComponentFancy
-            { last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.SUGGEST_COMMAND, command)); return this }
+    fun suggest(command: String): ChatComponentFancy {
+        last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.SUGGEST_COMMAND, command))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a click run command event.
@@ -233,8 +259,10 @@ open class ChatComponentFancy(
      * @param command Command.
      * @param command 命令.
      */
-    fun command(command: String): ChatComponentFancy
-            { last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.RUN_COMMAND, command)); return this; }
+    fun command(command: String): ChatComponentFancy {
+        last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.RUN_COMMAND, command))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a click change page event.
@@ -244,8 +272,10 @@ open class ChatComponentFancy(
      * @param index Page index.
      * @param index 页面索引.
      */
-    fun changePage(index: Int): ChatComponentFancy
-            { last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.CHANGE_PAGE, index.toString())); return this; }
+    fun changePage(index: Int): ChatComponentFancy {
+        last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.CHANGE_PAGE, index.toString()))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a hover tooltip text event.
@@ -294,8 +324,10 @@ open class ChatComponentFancy(
      * @param component Chat component.
      * @param component 聊天组件.
      */
-    fun tooltipComponent(component: ChatComponent): ChatComponentFancy
-            { last.style.setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, component)); return this; }
+    fun tooltipComponent(component: ChatComponent): ChatComponentFancy {
+        last.style.setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, component))
+        return this
+    }
 
     /**
      * * The last component that sets this fancy component has a hover tooltip item stack event.
@@ -305,8 +337,11 @@ open class ChatComponentFancy(
      * @param itemMojangson ItemStack nbt tag.
      * @param itemMojangson 物品栈 NBT Tag.
      */
-    fun tooltipItem(itemMojangson: String): ChatComponentFancy
-            { last.style.setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_ITEM, ChatSerializer.ChatComponentRaw(itemMojangson))); return this; }
+    fun tooltipItem(itemMojangson: String): ChatComponentFancy {
+        val componentRaw = ChatSerializer.ChatComponentRaw(itemMojangson)
+        last.style.setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_ITEM, componentRaw))
+        return this
+    }
 
     // SEE: ldk-bukkit-common / com.lgou2w.ldk.bukkit.chat.ChatFactory
 
@@ -328,8 +363,10 @@ open class ChatComponentFancy(
      * @param componentFancy Chat component fancy.
      * @param componentFancy 聊天组件花式.
      */
-    fun join(componentFancy: ChatComponentFancy): ChatComponentFancy
-            { extras.addAll(componentFancy.extras); return this; }
+    fun join(componentFancy: ChatComponentFancy): ChatComponentFancy {
+        extras.addAll(componentFancy.extras)
+        return this
+    }
 
     /**
      * * Then add line breaks to the list of chat component fancy.
@@ -351,8 +388,10 @@ open class ChatComponentFancy(
      * * Clear all the extra component for this fancy component.
      * * 将此花式组件的附加组件全部清除.
      */
-    fun clear(): ChatComponentFancy
-            { extras.clear(); return this; }
+    fun clear(): ChatComponentFancy {
+        extras.clear()
+        return this
+    }
 
     override fun build(): ChatComponent {
         val chatComponent = ChatComponentText("")

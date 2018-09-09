@@ -51,13 +51,15 @@ class ChatComponentText(
      */
     constructor(text: ChatComponentText) : this(text.text)
 
-    fun setText(text: String): ChatComponentText
-            { this.text = text; return this; }
+    fun setText(text: String): ChatComponentText {
+        this.text = text
+        return this
+    }
 
     override fun equals(other: Any?): Boolean {
-        if(other === this)
+        if (other === this)
             return true
-        if(other is ChatComponentText)
+        if (other is ChatComponentText)
             return super.equals(other) && text == other.text
         return false
     }

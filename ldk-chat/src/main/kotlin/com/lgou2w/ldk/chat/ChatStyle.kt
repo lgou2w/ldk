@@ -140,59 +140,79 @@ open class ChatStyle {
     open fun getInsertion(): String?
             = insertion ?: getParent().getInsertion()
 
-    open fun setParent(parent: ChatStyle?): ChatStyle
-            { this.parent = parent; return this; }
+    open fun setParent(parent: ChatStyle?): ChatStyle {
+        this.parent = parent
+        return this
+    }
 
     /**
      * @see [ChatColor]
      */
-    open fun setColor(color: ChatColor?): ChatStyle
-            { this.color = color; return this; }
+    open fun setColor(color: ChatColor?): ChatStyle {
+        this.color = color
+        return this
+    }
 
     /**
      * @see [ChatColor.BOLD]
      */
-    open fun setBold(bold: Boolean?): ChatStyle
-            { this.bold = bold; return this; }
+    open fun setBold(bold: Boolean?): ChatStyle {
+        this.bold = bold
+        return this
+    }
 
     /**
      * @see [ChatColor.ITALIC]
      */
-    open fun setItalic(italic: Boolean?): ChatStyle
-            { this.italic = italic; return this; }
+    open fun setItalic(italic: Boolean?): ChatStyle {
+        this.italic = italic
+        return this
+    }
 
     /**
      * @see [ChatColor.STRIKETHROUGH]
      */
-    open fun setStrikethrough(strikethrough: Boolean?): ChatStyle
-            { this.strikethrough = strikethrough; return this; }
+    open fun setStrikethrough(strikethrough: Boolean?): ChatStyle {
+        this.strikethrough = strikethrough
+        return this
+    }
 
     /**
      * @see [ChatColor.UNDERLINE]
      */
-    open fun setUnderlined(underlined: Boolean?): ChatStyle
-            { this.underlined = underlined; return this; }
+    open fun setUnderlined(underlined: Boolean?): ChatStyle {
+        this.underlined = underlined
+        return this
+    }
 
     /**
      * @see [ChatColor.OBFUSCATED]
      */
-    open fun setObfuscated(obfuscated: Boolean?): ChatStyle
-            { this.obfuscated = obfuscated; return this; }
+    open fun setObfuscated(obfuscated: Boolean?): ChatStyle {
+        this.obfuscated = obfuscated
+        return this
+    }
 
     /**
      * @see [ChatClickEvent]
      */
-    open fun setClickEvent(clickEvent: ChatClickEvent?): ChatStyle
-            { this.clickEvent = clickEvent; return this; }
+    open fun setClickEvent(clickEvent: ChatClickEvent?): ChatStyle {
+        this.clickEvent = clickEvent
+        return this
+    }
 
     /**
      * @see [ChatHoverEvent]
      */
-    open fun setHoverEvent(hoverEvent: ChatHoverEvent?): ChatStyle
-            { this.hoverEvent = hoverEvent; return this; }
+    open fun setHoverEvent(hoverEvent: ChatHoverEvent?): ChatStyle {
+        this.hoverEvent = hoverEvent
+        return this
+    }
 
-    open fun setInsertion(insertion: String?): ChatStyle
-            { this.insertion = insertion; return this; }
+    open fun setInsertion(insertion: String?): ChatStyle {
+        this.insertion = insertion
+        return this
+    }
 
     /**
      * * Get this chat style is empty.

@@ -36,7 +36,7 @@ abstract class ChatComponentAbstract : ChatComponent {
 
     override var style: ChatStyle
         get() {
-            if(_style == null) {
+            if (_style == null) {
                 _style = ChatStyle()
                 extras.forEach { it.style.setParent(style) }
             }
@@ -86,9 +86,9 @@ abstract class ChatComponentAbstract : ChatComponent {
             = append(extra)
 
     override fun equals(other: Any?): Boolean {
-        if(other === this)
+        if (other === this)
             return true
-        if(other is ChatComponentAbstract)
+        if (other is ChatComponentAbstract)
             return style == other.style && extras == other.extras
         return false
     }
