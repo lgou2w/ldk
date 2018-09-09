@@ -152,6 +152,21 @@ object ItemFactory {
 //    }
 
     @JvmStatic
+    fun asNMSCopy(stack: ItemStack?) : Any? {
+        return METHOD_AS_NMSCOPY.invoke(null, stack)
+    }
+
+    @JvmStatic
+    fun asCraftMirror(origin: Any?) : ItemStack? {
+        return METHOD_AS_CRAFTMIRROR.invoke(null, origin) as? ItemStack
+    }
+
+    @JvmStatic
+    fun asBukkitCopy(origin: Any?) : ItemStack? {
+        return METHOD_AS_BUKKITCOPY.invoke(null, origin)
+    }
+
+    @JvmStatic
     fun readTagSafe(itemStack: ItemStack): NBTTagCompound {
         return readTag(itemStack) ?: ofCompound(NBT.TAG)
     }
@@ -163,15 +178,15 @@ object ItemFactory {
             val nmsTag = FIELD_ITEMSTACK_TAG[nmsStack] ?: return null
             NBTFactory.fromNMS(nmsTag) as? NBTTagCompound
         } else {
-            val nmsStack = METHOD_AS_NMSCOPY.invoke(null, itemStack)
-            val obcStack = METHOD_AS_CRAFTMIRROR.invoke(null, nmsStack) as ItemStack
+            val nmsStack = asNMSCopy(itemStack)
+            val obcStack = asCraftMirror(nmsStack) as ItemStack
             obcStack.itemMeta = itemStack.itemMeta
             readTag(obcStack)
         }
     }
 
     @JvmStatic
-    fun readItem(itemStack: ItemStack, tag: NBTTagCompound? = null) : NBTTagCompound {
+    fun readItem(itemStack: ItemStack) : NBTTagCompound {
         val root = ofCompound {  }
         if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
             // After version 1.13
@@ -185,11 +200,11 @@ object ItemFactory {
                 val count = itemStack.amount
                 root.putString(NBT.TAG_ID, id.toString())
                 root.putByte(NBT.TAG_COUNT, count)
-                root[NBT.TAG] = tag ?: readTagSafe(itemStack)
+                root[NBT.TAG] = readTagSafe(itemStack)
             } catch (e: NullPointerException) {
                 // Get by ItemStack.save(NBTTagCompound)
                 // 从 ItemStack.save(NBTTagCompound) 获取
-                val nmsStack = METHOD_AS_NMSCOPY.invoke(null, itemStack)
+                val nmsStack = asNMSCopy(itemStack)
                 val handle = NBTFactory.createInternal(NBTType.TAG_COMPOUND)
                 METHOD_ITEMSTACK_SAVE.invoke(nmsStack, handle)
                 return NBTFactory.fromNMS(handle) as NBTTagCompound
@@ -204,7 +219,7 @@ object ItemFactory {
             root.putShort(NBT.TAG_DAMAGE, damage)
             root.putString(NBT.TAG_ID, "minecraft:$id")
             root.putByte(NBT.TAG_COUNT, count)
-            root[NBT.TAG] = tag ?: readTagSafe(itemStack)
+            root[NBT.TAG] = readTagSafe(itemStack)
         }
         return root
     }
@@ -218,8 +233,8 @@ object ItemFactory {
             if (tag == null) {
                 itemStack.itemMeta = null
             } else {
-                val nmsStack = METHOD_AS_NMSCOPY.invoke(null, itemStack)
-                val obcStack = METHOD_AS_CRAFTMIRROR.invoke(null, nmsStack) as ItemStack
+                val nmsStack = asNMSCopy(itemStack)
+                val obcStack = asCraftMirror(nmsStack) as ItemStack
                 writeTag(obcStack, tag)
                 itemStack.itemMeta = obcStack.itemMeta
             }
