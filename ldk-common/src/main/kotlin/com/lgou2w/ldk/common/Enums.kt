@@ -97,6 +97,27 @@ object Enums {
     fun <V, T> ofValuable(clazz: Class<T>, value: V?, def: T? = null) : T? where T : Enum<T>, T : Valuable<V>
             = of(clazz, { it.value == value }, def)
 
+    /**
+     * * Finds the matching item from the specified [value] in the [Valuable] interface of the given enum class.
+     * * 将给定的枚举类以它实现的 [Valuable] 接口中从指定的 [value] 内查找匹配项.
+     *
+     * @param clazz Enum class
+     * @param clazz 枚举类
+     * @param value Specified value
+     * @param value 指定值
+     * @param def Default value, The default is `null`
+     * @param def 默认值, 默认为 `null` 值
+     * @throws NullPointerException If no matching items are found.
+     * @throws NullPointerException 如果未找到匹配项.
+     * @see [Valuable]
+     * @see [Valuable.value]
+     * @see [ofValuable]
+     */
+    @JvmOverloads
+    @Throws(NullPointerException::class)
+    fun <V, T> ofValuableNotNull(clazz: Class<T>, value: V?, def: T? = null) : T where T : Enum<T>, T : Valuable<V>
+            = ofValuable(clazz, value, def) ?: throw NullPointerException("The value of type $clazz was not found successfully: $value.")
+
     /**************************************************************************
      *
      * Class

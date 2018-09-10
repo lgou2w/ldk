@@ -66,6 +66,32 @@ typealias Callable<T> = () -> T
 
 /**************************************************************************
  *
+ * Predicate Extended
+ *
+ * @see java.util.function.Predicate
+ *
+ **************************************************************************/
+
+/**
+ * @see [java.util.function.Predicate.and]
+ */
+inline infix fun <T> Predicate<T>.and(crossinline other: Predicate<T>) : Predicate<T>
+        = { t : T -> invoke(t) && other.invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.or]
+ */
+inline infix fun <T> Predicate<T>.or(crossinline other: Predicate<T>) : Predicate<T>
+        = { t : T -> invoke(t) || other.invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.negate]
+ */
+fun <T> Predicate<T>.negate() : Predicate<T>
+        = { t : T -> !invoke(t) }
+
+/**************************************************************************
+ *
  * Function and BiFunction Extended
  *
  * @see java.util.function.Function
@@ -96,6 +122,20 @@ fun <T, R> Function<T, R>.identity() : Function<T, T>
  */
 inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: Function<R, V>) : BiFunction<T, U, V>
         = { t : T, u : U -> after.invoke(invoke(t, u)) }
+
+/**************************************************************************
+ *
+ * Consumer Extended
+ *
+ * @see [java.util.function.Consumer]
+ *
+ **************************************************************************/
+
+/**
+ * @see [java.util.function.Consumer.andThen]
+ */
+inline infix fun <T> Consumer<T>.andThenConsume(crossinline after: Consumer<T>) : Consumer<T>
+        = { t : T -> invoke(t); after.invoke(t) }
 
 /**************************************************************************
  *

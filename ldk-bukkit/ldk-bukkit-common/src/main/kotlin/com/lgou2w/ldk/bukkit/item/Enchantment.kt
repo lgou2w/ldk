@@ -20,7 +20,6 @@ import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
 import com.lgou2w.ldk.common.isOrLater
-import org.bukkit.NamespacedKey
 import java.util.*
 
 /**
@@ -245,7 +244,7 @@ enum class Enchantment(
 
     fun toBukkit(): org.bukkit.enchantments.Enchantment {
         return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
-            org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.minecraft(type))
+            org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type))
         } else {
             @Suppress("DEPRECATION")
             org.bukkit.enchantments.Enchantment.getByName(legacy)
@@ -268,6 +267,23 @@ enum class Enchantment(
         }
 
         /**
+         * * Get from the given Bukkit enchant type.
+         * * 从给定的 Bukkit 附魔类型获取.
+         *
+         * @throws IllegalArgumentException If the name does not exist.
+         * @throws IllegalArgumentException 如果名称不存在.
+         */
+        @JvmStatic
+        fun fromBukkit(enchant: org.bukkit.enchantments.Enchantment) : Enchantment {
+            return fromName(if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                enchant.key.key
+            else
+                @Suppress("DEPRECATION")
+                enchant.name
+            )
+        }
+
+        /**
          * * Get the enchantment type from the given name.
          * * 从给定的名称获取附魔类型.
          *
@@ -275,7 +291,6 @@ enum class Enchantment(
          * @throws IllegalArgumentException 如果名称不存在.
          */
         @JvmStatic
-        @JvmName("fromName")
         fun fromName(name: String): Enchantment
                 = NAME_MAP[name.toLowerCase(Locale.US)]
                   ?: throw IllegalArgumentException("Invalid enchant type name: $name.")
@@ -288,7 +303,6 @@ enum class Enchantment(
          * @throws IllegalArgumentException 如果 Id 不存在.
          */
         @JvmStatic
-        @JvmName("fromId")
         @Throws(IllegalArgumentException::class)
         fun fromId(id: Int): Enchantment
                 = ID_MAP[id] ?: throw IllegalArgumentException("Invalid enchantment ID $id value.")
@@ -298,7 +312,6 @@ enum class Enchantment(
          * * 从给定的 Id 获取附魔类型是否存在.
          */
         @JvmStatic
-        @JvmName("hasId")
         fun hasId(id: Int): Boolean
                 = ID_MAP.containsKey(id)
     }

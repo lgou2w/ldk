@@ -16,12 +16,18 @@
 
 package com.lgou2w.ldk.bukkit.item
 
+import com.lgou2w.ldk.bukkit.attribute.AttributeItemModifier
+import com.lgou2w.ldk.bukkit.attribute.AttributeType
+import com.lgou2w.ldk.bukkit.attribute.Operation
+import com.lgou2w.ldk.bukkit.attribute.Slot
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.common.Builder
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.Material
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import java.util.*
 
 interface ItemBuilder : Builder<ItemStack> {
 
@@ -31,13 +37,21 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun setDurability(durability: Int) : ItemBuilder
 
-    fun getDisplayName(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+    fun increaseDurability(durability: Int) : ItemBuilder
 
-    fun setDisplayName(displayName: String) : ItemBuilder
+    fun decreaseDurability(durability: Int) : ItemBuilder
+
+    fun getDisplayName(block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
 
     fun setDisplayName(displayName: ChatComponent) : ItemBuilder
 
-    fun removeDisplayName(predicate: Predicate<String>? = null) : ItemBuilder
+    fun removeDisplayName(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
+
+    fun getLocalizedName(block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
+
+    fun setLocalizedName(localizedName: ChatComponent) : ItemBuilder
+
+    fun removeLocalizedName(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
 
     fun getLore(block: (ItemBuilder, List<String>?) -> Unit) : ItemBuilder
 
@@ -60,6 +74,40 @@ interface ItemBuilder : Builder<ItemStack> {
     fun removeEnchantment(enchantment: Enchantment) : ItemBuilder
 
     fun removeEnchantment(predicate: Predicate<Pair<Enchantment, Int>>? = null) : ItemBuilder
+
+    fun getFlag(block: (ItemBuilder, Array<ItemFlag>?) -> Unit) : ItemBuilder
+
+    fun setFlag(flag: Array<ItemFlag>) : ItemBuilder
+
+    fun clearFlag() : ItemBuilder
+
+    fun addFlag(vararg flag: ItemFlag) : ItemBuilder
+
+    fun removeFlag(vararg flag: ItemFlag) : ItemBuilder
+
+    fun isUnbreakable(block: (ItemBuilder, Boolean) -> Unit) : ItemBuilder
+
+    fun setUnbreakable(unbreakable: Boolean) : ItemBuilder
+
+    fun getAttribute(block: (ItemBuilder, List<AttributeItemModifier>?) -> Unit) : ItemBuilder
+
+    fun setAttribute(attributes: List<AttributeItemModifier>) : ItemBuilder
+
+    fun clearAttribute() : ItemBuilder
+
+    fun addAttribute(attribute: AttributeItemModifier) : ItemBuilder
+
+    fun addAttribute(type: AttributeType, operation: Operation, amount: Double, uuid: UUID = UUID.randomUUID()): ItemBuilder
+
+    fun addAttribute(type: AttributeType, operation: Operation, slot: Slot?, amount: Double, uuid: UUID = UUID.randomUUID()): ItemBuilder
+
+    fun addAttribute(type: AttributeType, name: String = type.value, operation: Operation, amount: Double, uuid: UUID = UUID.randomUUID()): ItemBuilder
+
+    fun addAttribute(type: AttributeType, name: String = type.value, operation: Operation, slot: Slot?, amount: Double, uuid: UUID = UUID.randomUUID()): ItemBuilder
+
+    fun removeAttribute(type: AttributeType) : ItemBuilder
+
+    fun removeAttribute(predicate: Predicate<AttributeItemModifier>?) : ItemBuilder
 
     companion object {
 

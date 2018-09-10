@@ -64,6 +64,20 @@ object ChatSerializer {
     }
 
     /**
+     * * Converts the given raw `JSON` message to a [ChatComponent] object. If `null` then the result is `null`.
+     * * 将给定的源 `JSON` 消息转换为 [ChatComponent] 对象. 如果 `null` 则结果为 `null`.
+     *
+     * @see [toJson]
+     * @param json Raw `JSON` message.
+     * @param json 源 `JSON` 消息.
+     * @throws JsonParseException If parsing failed.
+     * @throws JsonParseException 如果解析时失败.
+     */
+    @Throws(JsonParseException::class)
+    fun fromJsonOrNull(json: String?): ChatComponent?
+            = if (json == null) null else fromJson(json)
+
+    /**
      * * Converts the raw source `JSON` message to [ChatComponent] object in [JsonReader.lenient] mode.
      * * 将给定的源 `JSON` 消息以 [JsonReader.lenient] 模式转换为 [ChatComponent] 对象.
      *

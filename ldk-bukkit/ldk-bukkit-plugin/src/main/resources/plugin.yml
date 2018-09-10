@@ -16,7 +16,7 @@
 
 name: LDK
 main: com.lgou2w.ldk.bukkit.LDKPlugin
-version: ${project.version}
+version: ${project.version}-${git.commit.id.abbrev}
 softdepend: [WorldEdit, Vault, PlaceholderAPI]
 author: lgou2w
 authors: [lgou2w]

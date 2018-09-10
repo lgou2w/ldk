@@ -134,10 +134,10 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
     @Throws(ClassCastException::class)
     fun <T> asElements() : List<T> {
         @Suppress("UNCHECKED_CAST")
-        return value0.map { nbt ->
-            if (nbt.type.isWrapper()) nbt as T
-            else nbt.value as T
-        }
+        return if (elementType.isWrapper())
+            value0.map { it as T }
+        else
+            value0.map { it.value as T }
     }
 
     /**

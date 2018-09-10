@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.nbt
+package com.lgou2w.ldk.bukkit.attribute
 
 /**
- * ## NBTSavable (可存 NBT 能力接口)
+ * ## Attributable (可属性能力)
  *
- * * Implement this interface so it should have the ability to store data to `root`.
- * * 实现此接口那么其应该具备将数据存储到 `root` 能力.
+ * * Get the attribute object from the given attribute type.
+ * * 从给定的属性类型获取属性对象.
  *
- * @see [save]
- * @see [NBTReadable]
- * @see [NBTTagCompound]
+ * @see [Attribute]
+ * @see [AttributeType]
  * @author lgou2w
  */
-interface NBTSavable {
+interface Attributable {
 
     /**
-     * * Store the data in the given `root` tag.
-     * * 将数据存储到给定的 `root` 标签中.
+     * * Get the attribute object from the given attribute type.
+     * * 从给定的属性类型获取属性对象.
+     *
+     * @param type Attribute type.
+     * @param type 属性类型.
      */
-    fun save(root: NBTTagCompound) : NBTTagCompound
+    fun getAttribute(type: AttributeType): Attribute
 }
