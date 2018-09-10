@@ -25,6 +25,17 @@
         <bukkit.version>1.13.1-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.md-5.net/content/groups/public/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Spigot Dependency -->
         <dependency>
