@@ -392,7 +392,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun setAttribute(attributes: List<AttributeItemModifier>): ItemBuilder {
-        if (attributes.isEmpty()) return this
+        clearAttribute()
         tag.getListOrDefault(NBT.TAG_ATTRIBUTE_MODIFIERS)
             .addCompound(*attributes.map {
                 it.save(ofCompound())
