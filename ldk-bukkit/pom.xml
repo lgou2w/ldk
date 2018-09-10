@@ -40,14 +40,14 @@
             <version>${bukkit.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Maybe you need to build it yourself -->
-        <!-- CraftBukkit Dependency -->
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>${bukkit.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--&lt;!&ndash; Maybe you need to build it yourself &ndash;&gt;-->
+        <!--&lt;!&ndash; CraftBukkit Dependency &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.bukkit</groupId>-->
+            <!--<artifactId>craftbukkit</artifactId>-->
+            <!--<version>${bukkit.version}</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
     </dependencies>
 
 </project>
