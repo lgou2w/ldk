@@ -5,6 +5,10 @@
 <img src="images/ldk-logo.jpg" alt="ldk" />
 </p>
 
+<p align="center">
+<a href="https://jitpack.io/#lgou2w/ldk"><img src="https://jitpack.io/v/lgou2w/ldk.svg" /></a>
+</p>
+
 # Information
 * A multi-platform lgou2w development kit.
 
