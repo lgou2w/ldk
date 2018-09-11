@@ -18,6 +18,8 @@ package com.lgou2w.ldk.bukkit
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
+import org.bstats.bukkit.Metrics
+import java.util.logging.Level
 
 class LDKPlugin : PluginBase() {
 
@@ -42,6 +44,11 @@ class LDKPlugin : PluginBase() {
     override fun enable() {
         logger.info("A lgou2w development kit of Bukkit.")
         logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${MinecraftBukkitVersion.CURRENT.version}")
+        try {
+            Metrics(this)
+        } catch (e: Exception) {
+            logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
+        }
     }
 
     override fun disable() {
