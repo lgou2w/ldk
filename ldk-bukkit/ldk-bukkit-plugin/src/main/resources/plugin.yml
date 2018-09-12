@@ -22,3 +22,10 @@ author: lgou2w
 authors: [lgou2w]
 website: https://lgou2w.com
 description: A lgou2w development kit of Bukkit.
+commands:
+  ldk:
+    description: A lgou2w development kit of Bukkit.
+    permission: ldk
+permissions:
+  ldk:
+    default: op
