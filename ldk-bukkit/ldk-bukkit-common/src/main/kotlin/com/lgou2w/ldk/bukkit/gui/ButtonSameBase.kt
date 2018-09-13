@@ -31,6 +31,9 @@ open class ButtonSameBase(
 
     override val indexes: IntArray = values.clone()
 
+    final override val stacks: List<ItemStack?>
+        get() = values.map { parent.inventory.getItem(it) }
+
     override fun isSame(index: Int): Boolean {
         return values.contains(index)
     }

@@ -21,12 +21,12 @@ import org.bukkit.inventory.Inventory
 object GuiFactory {
 
     @JvmStatic
-    fun fromInventory(inventory: Inventory) : Gui? {
-        return inventory.holder as? Gui
+    fun fromInventory(inventory: Inventory?) : Gui? {
+        return inventory?.holder as? Gui
     }
 
     @JvmStatic
-    fun isGui(inventory: Inventory) : Boolean {
+    fun isGui(inventory: Inventory?) : Boolean {
         return fromInventory(inventory) != null
     }
 
@@ -40,5 +40,10 @@ object GuiFactory {
         val x = (index + 1) % 9
         val y = (index + (9 - x) + 1) / 9
         return x to y
+    }
+
+    @JvmStatic
+    fun rangeToIndexes(value: IntRange) : IntArray {
+        return value.toList().toIntArray()
     }
 }

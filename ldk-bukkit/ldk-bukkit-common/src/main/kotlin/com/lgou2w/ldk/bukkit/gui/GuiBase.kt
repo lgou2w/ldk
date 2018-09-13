@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+import com.lgou2w.ldk.common.Consumer
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.command.Command
@@ -76,6 +77,8 @@ abstract class GuiBase : Gui {
      *
      **************************************************************************/
 
+    override var isAllowMove: Boolean = true
+
     final override var onOpened: ((gui: Gui, event: InventoryOpenEvent) -> Unit)? = null
     final override var onClosed: ((gui: Gui, event: InventoryCloseEvent) -> Unit)? = null
 
@@ -131,8 +134,32 @@ abstract class GuiBase : Gui {
         }
     }
 
+    override fun getButton(x: Int, y: Int): Button? {
+        return getButton(GuiFactory.coordinateToIndex(x, y))
+    }
+
     override fun isButton(index: Int): Boolean {
         return getButton(index) != null
+    }
+
+    override fun isButton(x: Int, y: Int): Boolean {
+        return isButton(GuiFactory.coordinateToIndex(x,  y))
+    }
+
+    override fun removeButton(index: Int): Boolean {
+        synchronized (buttonList) {
+            val button = getButton0(index) ?: return true
+            return buttonList.remove(button).apply {
+                if (this) {
+                    button.stack = null
+                    button.onClicked = null
+                }
+            }
+        }
+    }
+
+    override fun removeButton(x: Int, y: Int): Boolean {
+        return removeButton(GuiFactory.coordinateToIndex(x, y))
     }
 
     override fun addButton(): Button {
@@ -140,14 +167,59 @@ abstract class GuiBase : Gui {
         return setButton(index)
     }
 
+    override fun addButton(stack: ItemStack?): Button {
+        return addButton(stack, null)
+    }
+
+    override fun addButton(onClicked: Consumer<ButtonEvent>?): Button {
+        return addButton(null, onClicked)
+    }
+
+    override fun addButton(stack: ItemStack?, onClicked: Consumer<ButtonEvent>?): Button {
+        val button = addButton()
+        button.stack = stack
+        button.onClicked = onClicked
+        return button
+    }
+
     override fun setButton(index: Int): Button {
         val button = ButtonBase(this, index)
         return addButton0(button)
     }
 
+    override fun setButton(index: Int, stack: ItemStack?): Button {
+        return setButton(index, stack, null)
+    }
+
+    override fun setButton(index: Int, onClicked: Consumer<ButtonEvent>?): Button {
+        return setButton(index, null, onClicked)
+    }
+
+    override fun setButton(index: Int, stack: ItemStack?, onClicked: Consumer<ButtonEvent>?): Button {
+        val button = setButton(index)
+        button.stack = stack
+        button.onClicked = onClicked
+        return button
+    }
+
     override fun setSameButton(indexes: IntArray): ButtonSame {
         val button = ButtonSameBase(this, indexes)
         return addButton0(button)
+    }
+
+    override fun setSameButton(indexes: IntArray, stack: ItemStack?): ButtonSame {
+        return setSameButton(indexes, stack, null)
+    }
+
+    override fun setSameButton(indexes: IntArray, onClicked: Consumer<ButtonEvent>?): ButtonSame {
+        return setSameButton(indexes, null, onClicked)
+    }
+
+    override fun setSameButton(indexes: IntArray, stack: ItemStack?, onClicked: Consumer<ButtonEvent>?): ButtonSame {
+        val button = setSameButton(indexes)
+        button.stack = stack
+        button.onClicked = onClicked
+        return button
     }
 
     companion object {
@@ -159,21 +231,26 @@ abstract class GuiBase : Gui {
             val listener = RegisteredListener(object : Listener {}, EventExecutor { _, event ->
                 when (event) {
                     is InventoryOpenEvent -> {
-                        val gui = GuiFactory.fromInventory(event.inventory)
-                        if (gui != null)
-                            gui.onOpened?.invoke(gui, event)
+                        val gui = GuiFactory.fromInventory(event.inventory) ?: return@EventExecutor
+                        gui.onOpened?.invoke(gui, event)
                     }
                     is InventoryCloseEvent -> {
-                        val gui = GuiFactory.fromInventory(event.inventory)
-                        if (gui != null)
-                            gui.onClosed?.invoke(gui, event)
+                        val gui = GuiFactory.fromInventory(event.inventory) ?: return@EventExecutor
+                        gui.onClosed?.invoke(gui, event)
                     }
                     is InventoryClickEvent -> {
-                        val gui = GuiFactory.fromInventory(event.inventory)
-                        val button = gui?.getButton(event.slot)
-                        if (button != null) {
-                            val buttonEvent = ButtonEvent(button, event.whoClicked, event.currentItem, event)
-                            button.onClicked?.invoke(buttonEvent)
+                        val gui = GuiFactory.fromInventory(event.view.topInventory)
+                        if (gui != null) {
+                            if (event.rawSlot < gui.size) {
+                                val button = gui.getButton(event.rawSlot)
+                                if (button != null) {
+                                    val buttonEvent = ButtonEvent(button, event.whoClicked, event.currentItem, event)
+                                    button.onClicked?.invoke(buttonEvent)
+                                }
+                            } else {
+                                if (!gui.isAllowMove)
+                                    event.isCancelled = true
+                            }
                         }
                     }
                 }

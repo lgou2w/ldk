@@ -16,9 +16,13 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+import org.bukkit.inventory.ItemStack
+
 interface ButtonSame : Button {
 
     val indexes: IntArray
+
+    val stacks : List<ItemStack?>
 
     fun isSame(index: Int): Boolean
 }

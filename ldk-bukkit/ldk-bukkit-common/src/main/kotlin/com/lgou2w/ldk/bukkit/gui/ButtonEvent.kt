@@ -52,13 +52,8 @@ data class ButtonEvent(
         }
 
         @JvmStatic
-        fun thenCancelled(before: Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
-            return before andThenConsume CANCELLED
-        }
-
-        @JvmStatic
-        fun thenCancelledAndClose(before: Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
-            return before andThenConsume CANCELLED andThenConsume CLOSE
+        fun cancelledThen(after : Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
+            return CANCELLED andThenConsume after
         }
     }
 }
