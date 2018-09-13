@@ -41,9 +41,4 @@ object GuiFactory {
         val y = (index + (9 - x) + 1) / 9
         return x to y
     }
-
-    @JvmStatic
-    fun rangeToIndexes(value: IntRange) : IntArray {
-        return value.toList().toIntArray()
-    }
 }

@@ -92,15 +92,13 @@ abstract class GuiBase : Gui {
     final override val buttons : List<Button> = ArrayList(buttonList)
     
     private fun canAdd(button: Button) {
-        if (button.index < 0 || button.index + 1 > size)
-            throw IllegalArgumentException("Invalid button index: ${button.index} (should: >= 0 || <= ${size - 1})")
+        val sameMax = (button as? ButtonSame)?.indexes?.max()
+        if (button.index < 0 || button.index + 1 > size || (sameMax != null && sameMax + 1 > size))
+            throw IllegalArgumentException("Invalid button index: ${sameMax ?: button.index} (should: >= 0 || <= ${size - 1})")
         if (isButton(button.index))
             throw IllegalArgumentException("The current index ${button.index} already has a valid button.")
         var invalid = 0
-        if (button is ButtonSame && button.indexes.any {
-                    invalid = it
-                    isButton(it)
-                })
+        if (button is ButtonSame && button.indexes.any { invalid = it; isButton(it) })
             throw IllegalArgumentException("The same button index $invalid already has a valid button.")
     }
 
@@ -243,7 +241,7 @@ abstract class GuiBase : Gui {
                         if (gui != null) {
                             if (event.rawSlot < gui.size) {
                                 val button = gui.getButton(event.rawSlot)
-                                if (button != null) {
+                                if (button?.onClicked != null) {
                                     val buttonEvent = ButtonEvent(button, event.whoClicked, event.currentItem, event)
                                     button.onClicked?.invoke(buttonEvent)
                                 }
