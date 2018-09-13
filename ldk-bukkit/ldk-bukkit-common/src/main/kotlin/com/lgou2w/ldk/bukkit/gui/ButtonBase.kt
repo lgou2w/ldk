@@ -16,7 +16,10 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+import com.lgou2w.ldk.bukkit.item.ItemBuilder
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Consumer
+import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 open class ButtonBase(
@@ -29,6 +32,12 @@ open class ButtonBase(
         set(value) { parent.inventory.setItem(index, value) }
 
     final override var onClicked: Consumer<ButtonEvent>? = null
+
+    final override fun stackModify(modifier: Applicator<ItemBuilder>) {
+        val stackClone = stack?.clone()
+        if (stackClone != null && stackClone.type != Material.AIR)
+            stack = ItemBuilder.of(stackClone).apply(modifier).build()
+    }
 
     override fun hashCode(): Int {
         var result = parent.hashCode()

@@ -93,6 +93,12 @@ abstract class GuiBase : Gui {
             throw IllegalArgumentException("Invalid button index: ${button.index} (should: >= 0 || <= ${size - 1})")
         if (isButton(button.index))
             throw IllegalArgumentException("The current index ${button.index} already has a valid button.")
+        var invalid = 0
+        if (button is ButtonSame && button.indexes.any {
+                    invalid = it
+                    isButton(it)
+                })
+            throw IllegalArgumentException("The same button index $invalid already has a valid button.")
     }
 
     private fun <T : Button> addButton0(button: T) : T {

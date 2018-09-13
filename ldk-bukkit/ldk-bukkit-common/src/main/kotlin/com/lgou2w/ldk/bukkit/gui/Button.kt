@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+import com.lgou2w.ldk.bukkit.item.ItemBuilder
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Consumer
 import org.bukkit.inventory.ItemStack
 
@@ -28,4 +30,6 @@ interface Button {
     var stack: ItemStack?
 
     var onClicked : Consumer<ButtonEvent>?
+
+    fun stackModify(modifier: Applicator<ItemBuilder>)
 }

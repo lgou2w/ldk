@@ -16,13 +16,22 @@
 
 package com.lgou2w.ldk.bukkit
 
+import com.lgou2w.ldk.bukkit.event.registerListeners
+import com.lgou2w.ldk.bukkit.gui.ButtonEvent
+import com.lgou2w.ldk.bukkit.gui.GuiType
+import com.lgou2w.ldk.bukkit.gui.SimpleGui
+import com.lgou2w.ldk.bukkit.item.Enchantment
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.ChatColor
+import com.lgou2w.ldk.chat.ChatSerializer
 import com.lgou2w.ldk.chat.toColor
 import org.bstats.bukkit.Metrics
+import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.event.player.PlayerCommandPreprocessEvent
+import org.bukkit.inventory.ItemStack
 import java.util.*
 import java.util.logging.Level
 
@@ -53,6 +62,32 @@ class LDKPlugin : PluginBase() {
             Metrics(this)
         } catch (e: Exception) {
             logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
+        }
+        registerListeners {
+            event<PlayerCommandPreprocessEvent> {
+                if (message == "/gui") {
+                    val gui = SimpleGui(GuiType.CHEST_6, "My Gui")
+                    val button = gui.setButton(0)
+                    button.stack = ItemStack(Material.APPLE)
+                    button.onClicked = ButtonEvent.thenCancelled { event ->
+                        val same = event.button.parent.getButton(1)
+                        same?.stackModify {
+                            getDisplayName { _, displayName ->
+                                if (displayName == null) {
+                                    setDisplayName(ChatSerializer.fromRaw("&6Barrier"))
+                                    addEnchantment(Enchantment.UNBREAKING, 1)
+                                    setUnbreakable(true)
+                                    addLore("Lore1", "Lore2")
+                                }
+                            }
+                        }
+                    }
+                    val buttonSame = gui.setSameButton(intArrayOf(1, 2, 3, 4, 5, 6, 7, 8))
+                    buttonSame.stack = ItemStack(Material.BARRIER)
+                    buttonSame.onClicked = ButtonEvent.thenCancelled { _ -> }
+                    gui.open(player)
+                }
+            }
         }
     }
 
