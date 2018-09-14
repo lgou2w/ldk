@@ -32,6 +32,9 @@ data class ButtonEvent(
         val source: InventoryClickEvent
 ) {
 
+    val view : Gui
+        get() = button.parent
+
     fun isPlayer() : Boolean
             = clicker is Player
 
@@ -40,20 +43,25 @@ data class ButtonEvent(
 
     companion object Constants {
 
-        @JvmStatic
-        val CANCELLED : Consumer<ButtonEvent> = { event ->
+        @JvmField
+        val CANCEL : Consumer<ButtonEvent> = { event ->
             event.source.isCancelled = true
             event.source.result = Event.Result.DENY
         }
 
-        @JvmStatic
+        @JvmField
         val CLOSE : Consumer<ButtonEvent> = { event ->
             event.clicker.closeInventory()
         }
 
         @JvmStatic
-        fun cancelledThen(after : Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
-            return CANCELLED andThenConsume after
+        fun cancelThen(after : Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
+            return CANCEL andThenConsume after
+        }
+
+        @JvmStatic
+        fun cancelThenConsumeAndClose(after: Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
+            return CANCEL andThenConsume after andThenConsume CLOSE
         }
     }
 }

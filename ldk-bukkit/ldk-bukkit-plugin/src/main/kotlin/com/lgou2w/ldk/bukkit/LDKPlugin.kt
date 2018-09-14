@@ -16,23 +16,13 @@
 
 package com.lgou2w.ldk.bukkit
 
-import com.lgou2w.ldk.bukkit.event.registerListeners
-import com.lgou2w.ldk.bukkit.gui.ButtonEvent
-import com.lgou2w.ldk.bukkit.gui.ButtonSame
-import com.lgou2w.ldk.bukkit.gui.GuiType
-import com.lgou2w.ldk.bukkit.gui.SimpleGui
-import com.lgou2w.ldk.bukkit.item.isAir
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.chat.toColor
 import org.bstats.bukkit.Metrics
-import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.event.player.PlayerCommandPreprocessEvent
-import org.bukkit.inventory.ItemStack
 import java.util.*
 import java.util.logging.Level
 
@@ -63,52 +53,6 @@ class LDKPlugin : PluginBase() {
             Metrics(this)
         } catch (e: Exception) {
             logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
-        }
-        registerListeners {
-            event<PlayerCommandPreprocessEvent> {
-                if (message == "/gui") {
-                    val gui = SimpleGui(GuiType.CHEST_6, "Crafting Gui")
-                    gui.setSameButton(intArrayOf(
-                              0,   1,   2,   3,   4,   5,   6,   7,  8,
-                              9,                        14, 15, 16, 17,
-                            18,                        23,       25, 26,
-                            27,                        32, 33, 34, 35,
-                            36,                        41, 42, 43, 44,
-                            45, 46, 47, 48, 49, 50, 51, 52, 53
-                    ), ItemStack(Material.RED_STAINED_GLASS_PANE), ButtonEvent.CANCELLED)
-                    gui.setSameButton(intArrayOf(
-                            10, 11, 12, 13,
-                            19, 20, 21, 22,
-                            28, 29, 30, 31,
-                            37, 38, 39, 40
-                    )) { event ->
-                        Bukkit.getScheduler().runTaskLater(plugin, {
-                            val result = event.button.parent.getButton(24)
-                            val stacks = (event.button as ButtonSame).stacks
-                            if (stacks.count { it != null && it.type == Material.OAK_LOG } == 1) {
-                                result?.stack = ItemStack(Material.OAK_PLANKS, 4)
-                            } else {
-                                result?.stack = null
-                            }
-                        }, 1L)
-                    }
-                    gui.setButton(24) { event ->
-                        val cursor = event.clicker.itemOnCursor
-                        if (cursor.isAir()) {
-                            val clicked = event.clicked
-                            event.button.parent.getButton(10)?.stack = null
-                            event.button.stack = null
-                            Bukkit.getScheduler().runTaskLater(plugin, {
-                                event.clicker.itemOnCursor = clicked
-                            }, 1L)
-                        } else {
-                            event.source.isCancelled = true
-                        }
-                    }
-                    gui.isAllowMove = true
-                    gui.open(player)
-                }
-            }
         }
     }
 

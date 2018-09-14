@@ -21,10 +21,9 @@ import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
-import java.util.*
 
 enum class GuiType(
-        val slot: Int,
+        val size: Int,
         val title: String
 ) : Valuable<String> {
 
@@ -77,36 +76,28 @@ enum class GuiType(
         }
     },
     /**
-     * A furnace inventory, with a RESULT slot, a CRAFTING slot, and a FUEL
-     * slot.
+     * A workbench inventory, with 9 CRAFTING slots and a RESULT slot.
      */
-    FURNACE(3, "Furnace") {
+    WORKBENCH(10, "Crafting") {
         override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.FURNACE, title)
+            return Bukkit.createInventory(owner, InventoryType.WORKBENCH, title)
         }
     },
     /**
-     * A dispenser inventory, with 9 slots of type CONTAINER.
+     * An enchantment table inventory, with two CRAFTING slots and three
+     * enchanting buttons.
      */
-    DISPENSER(9, "Dispenser") {
+    ENCHANTING(2, "Enchanting") {
         override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.DISPENSER, title)
+            return Bukkit.createInventory(owner, InventoryType.ENCHANTING, title)
         }
     },
     /**
-     * A dropper inventory, with 9 slots of type CONTAINER.
+     * An anvil inventory, with 2 CRAFTING slots and 1 RESULT slot
      */
-    DROPPER(9, "Dropper") {
+    ANVIL(3, "Repairing") {
         override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.DROPPER, title)
-        }
-    },
-    /**
-     * A hopper inventory, with 5 slots of type CONTAINER.
-     */
-    HOPPER(5, "Hopper") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.HOPPER, title)
+            return Bukkit.createInventory(owner, InventoryType.ANVIL, title)
         }
     },
     /**
@@ -122,5 +113,5 @@ enum class GuiType(
     abstract fun createInventory(owner: InventoryHolder?, title: String): Inventory
 
     override val value: String
-        get() = title.toLowerCase(Locale.US)
+        get() = name
 }

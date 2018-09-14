@@ -19,12 +19,11 @@ package com.lgou2w.ldk.bukkit.gui
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Consumer
 
-class PageableGui(
+open class PageableGui(
         type: GuiType,
         title: String = type.title
 ) : GuiBase(type, title) {
 
-    override var parent: Gui? = null
     var next : PageableGui? = null
 
     fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}) : PageableGui {
@@ -37,16 +36,16 @@ class PageableGui(
     companion object {
 
         @JvmStatic
-        fun previousPageable() : Consumer<ButtonEvent> {
-            return ButtonEvent.cancelledThen { event ->
+        fun previousPage() : Consumer<ButtonEvent> {
+            return ButtonEvent.cancelThen { event ->
                 val parent = event.button.parent
                 parent.parent?.open(event.clicker)
             }
         }
 
         @JvmStatic
-        fun nextPageable() : Consumer<ButtonEvent> {
-            return ButtonEvent.cancelledThen { event ->
+        fun nextPage() : Consumer<ButtonEvent> {
+            return ButtonEvent.cancelThen { event ->
                 val parent = event.button.parent as? PageableGui
                 parent?.next?.open(event.clicker)
             }

@@ -73,6 +73,14 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     fun setButton(index: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
 
+    fun setButton(x: Int, y: Int) : Button
+
+    fun setButton(x: Int, y: Int, stack: ItemStack? = null) : Button
+
+    fun setButton(x: Int, y: Int, onClicked: Consumer<ButtonEvent>? = null) : Button
+
+    fun setButton(x: Int, y: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
+
     fun setSameButton(indexes: IntArray) : ButtonSame
 
     fun setSameButton(indexes: IntArray, stack: ItemStack? = null) : ButtonSame
