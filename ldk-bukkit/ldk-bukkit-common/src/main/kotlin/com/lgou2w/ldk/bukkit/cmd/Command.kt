@@ -20,6 +20,7 @@ package com.lgou2w.ldk.bukkit.cmd
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CommandRoot(
         val value: String,
+        val prefix: String = "",
         val aliases: Array<String> = [],
         val description: String = "",
         val usage: String = "",

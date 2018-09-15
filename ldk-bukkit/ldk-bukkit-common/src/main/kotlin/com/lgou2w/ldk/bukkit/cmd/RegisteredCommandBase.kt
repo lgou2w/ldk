@@ -67,16 +67,16 @@ open class RegisteredCommandBase(
         }
 
         override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
-            if (testPermission(sender)) {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.")
+            if (!testPermission(sender)) {
+                sender.sendMessage(parent.prefix + ChatColor.RED + "You do not have permission to use this command.")
                 return true
             }
             if (isPlayable && sender !is Player) {
-                sender.sendMessage(ChatColor.RED + "The console cannot execute this command.")
+                sender.sendMessage(parent.prefix + ChatColor.RED + "The console cannot execute this command.")
                 return true
             }
             if (args.size < min) {
-                sender.sendMessage(ChatColor.RED + "The arg length is less than the command min length.")
+                sender.sendMessage(parent.prefix + ChatColor.RED + "The arg length is less than the command min length.")
                 return true
             }
             val parameterValues : MutableList<Any?> = ArrayList()
@@ -134,6 +134,8 @@ open class RegisteredCommandBase(
             HashSet(childMap.keys)
         }
 
+    override var prefix: String = root.prefix
+
     override val name: String
         get() = root.value
     override val aliases: Array<out String>
@@ -157,24 +159,30 @@ open class RegisteredCommandBase(
     override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
         if (!manager.plugin.isEnabled)
             throw CommandException("Cannot execute command '$name' in plugin ${manager.plugin.description.fullName} - plugin is disabled.")
-        if (args.isEmpty()) {
-            usageMessage(sender, name, usage, null)
-            return false
+        return if (args.isEmpty()) {
+            usageMessage(sender, name, null)
+            false
         } else {
-            val child = getChild(args.first()) ?: return false
-            val childArgs = if (args.size > 1) args.copyOfRange(1, args.size) else emptyArray()
-            val success = child.execute(sender, name, childArgs)
+            val child = getChild(args.first())
+            val success = if (child != null) {
+                val childArgs = if (args.size > 1) args.copyOfRange(1, args.size) else emptyArray()
+                child.execute(sender, name, childArgs)
+            } else {
+                false
+            }
             if (!success)
-                usageMessage(sender, name, child.usage, args.first())
-            return success
+                usageMessage(sender, name, child)
+            success
         }
     }
 
-    protected open fun usageMessage(sender: CommandSender, name: String, usage: String, child: String?) {
-        if (!usage.isNotEmpty()) {
+    protected open fun usageMessage(sender: CommandSender, name: String, child: RegisteredCommand.Child?) {
+        val usage = child?.usage ?: usage
+        if (usage.isNotEmpty()) {
+            val description = child?.description ?: description
             var replaced = usage.replace("<command>", name)
-            if (child != null) replaced = replaced.replace("<child>", child)
-            replaced.split("\n").forEach { sender.sendMessage(it) }
+            if (child != null) replaced = replaced.replace("<child>", child.name)
+            sender.sendMessage(prefix + replaced + if (description.isNotEmpty()) " - $description" else "")
         }
     }
 

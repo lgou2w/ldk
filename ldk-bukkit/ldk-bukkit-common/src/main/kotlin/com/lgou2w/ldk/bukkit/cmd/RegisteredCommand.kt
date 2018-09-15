@@ -27,6 +27,8 @@ interface RegisteredCommand {
 
     val proxy : org.bukkit.command.Command
 
+    var prefix : String
+
     val root : CommandRoot
 
     val name : String

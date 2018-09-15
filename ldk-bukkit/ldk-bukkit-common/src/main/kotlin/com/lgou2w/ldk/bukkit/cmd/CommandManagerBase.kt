@@ -126,9 +126,9 @@ abstract class CommandManagerBase(
             .filter { method ->
                 val command = method.getAnnotation(Command::class.java)
                 val parameters = method.parameters
-                val firstMatched = CommandSender::class.java.isAssignableFrom(parameters.firstOrNull()?.parameterizedType as? Class<*>)
+                val firstMatched = parameters.isNotEmpty() && CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)
                 if (!firstMatched)
-                    plugin.logger.warning("The sub command ${command.value} function first parameter is not CommandSender type, filtered.")
+                    plugin.logger.warning("The sub command '${command.value}' function first parameter is not CommandSender type, filtered.")
                 firstMatched
             }.associate { method ->
                 val command = method.getAnnotation(Command::class.java)
