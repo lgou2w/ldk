@@ -22,7 +22,8 @@ annotation class CommandRoot(
         val value: String,
         val aliases: Array<String> = [],
         val description: String = "",
-        val usage: String = ""
+        val usage: String = "",
+        val fallbackPrefix: String = ""
 )
 
 @Target(AnnotationTarget.FUNCTION)
@@ -30,7 +31,8 @@ annotation class CommandRoot(
 annotation class Command(
         val value: String,
         val aliases: Array<String> = [],
-        val description: String = ""
+        val description: String = "",
+        val usage: String = ""
 )
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)

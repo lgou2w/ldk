@@ -21,11 +21,15 @@ import org.bukkit.plugin.Plugin
 
 interface CommandManager {
 
-    fun registerCommand(plugin: Plugin, source: Class<*>, vararg args: Any) : Boolean
+    val plugin : Plugin
 
-    fun registerCommand(plugin: Plugin, source: Any) : Boolean
+    fun registerCommand(source: Class<*>, vararg args: Any) : Boolean
+
+    fun registerCommand(source: Any) : Boolean
 
     fun getCommand(command: String) : RegisteredCommand?
+
+    fun getCommand(source: Class<*>) : RegisteredCommand?
 
     /**
      * @see [TypeTransforms.addDefaultTypeTransform]

@@ -17,9 +17,12 @@
 package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
-import java.util.*
 
 class EmptyCompleteProxy : CompleteProxy {
+
+    override fun getTypeCompleter(type: Class<*>): ParameterCompleter {
+        return ParameterCompleter.EMPTY
+    }
 
     override fun tabComplete(
             command: RegisteredCommand,
@@ -27,6 +30,6 @@ class EmptyCompleteProxy : CompleteProxy {
             name: String,
             args: Array<out String>
     ): List<String> {
-        return Collections.emptyList()
+        return emptyList()
     }
 }

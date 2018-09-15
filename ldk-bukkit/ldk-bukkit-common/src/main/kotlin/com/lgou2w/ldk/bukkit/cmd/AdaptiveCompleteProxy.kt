@@ -20,12 +20,28 @@ import org.bukkit.command.CommandSender
 
 class AdaptiveCompleteProxy : CompleteProxy {
 
+    override fun getTypeCompleter(type: Class<*>): ParameterCompleter {
+        return ParameterCompleter.adaptive(type)
+    }
+
     override fun tabComplete(
             command: RegisteredCommand,
             sender: CommandSender,
             name: String,
             args: Array<out String>
     ): List<String> {
-        TODO() // Adaptive tab complete
+        return if (args.isEmpty() || args.size == 1) {
+            command.childrenKeys.filter { child ->
+                val first = args.firstOrNull()
+                (first == null || child.startsWith(first))
+            }
+        } else {
+            val child = command.getChild(args.first()) ?: return emptyList()
+            if (args.lastIndex > child.max)
+                return emptyList()
+            val parameter = child.parameters[args.lastIndex - 1]
+            val completer = getTypeCompleter(parameter.type)
+            completer.onComplete(parameter, sender, args.last())
+        }
     }
 }

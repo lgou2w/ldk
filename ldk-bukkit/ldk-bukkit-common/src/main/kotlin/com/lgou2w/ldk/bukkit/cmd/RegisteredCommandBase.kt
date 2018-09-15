@@ -16,12 +16,15 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import com.lgou2w.ldk.chat.ChatColor
+import com.lgou2w.ldk.reflect.AccessorMethod
+import org.bukkit.command.CommandException
 import org.bukkit.command.CommandSender
-import org.bukkit.plugin.Plugin
+import org.bukkit.entity.Player
+import java.lang.reflect.Modifier
 import java.util.*
 
 open class RegisteredCommandBase(
-        final override val plugin: Plugin,
         final override val manager: CommandManager,
         final override val root: CommandRoot,
         final override val source: Any,
@@ -29,12 +32,16 @@ open class RegisteredCommandBase(
 ) : RegisteredCommand {
 
     open class ChildBase(
-            final override val parent: RegisteredCommand,
             final override val command: Command,
-            final override val permission: Permission,
+            final override val permission: Permission?,
             final override val isPlayable: Boolean,
-            final override val parameters: Array<out RegisteredCommand.ChildParameter>
+            final override val parameters: Array<out RegisteredCommand.ChildParameter>,
+            override val accessor: AccessorMethod<Any, Any>
     ) : RegisteredCommand.Child {
+
+        internal lateinit var registered: RegisteredCommand
+        override val parent: RegisteredCommand
+            get() = registered
 
         override val name: String
             get() = command.value
@@ -42,6 +49,8 @@ open class RegisteredCommandBase(
             get() = command.aliases
         override val description: String
             get() = command.description
+        override val usage: String
+            get() = command.usage
 
         override val length: Int
             get() = parameters.size
@@ -49,6 +58,56 @@ open class RegisteredCommandBase(
             get() = length
         override val min: Int
             get() = max - parameters.count { it.optional != null }
+
+        override fun invoke(vararg args: Any?): Any? {
+            return if (Modifier.isStatic(accessor.source.modifiers))
+                accessor.invoke(null, *args)
+            else
+                accessor.invoke(parent.source, *args)
+        }
+
+        override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
+            if (testPermission(sender)) {
+                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.")
+                return true
+            }
+            if (isPlayable && sender !is Player) {
+                sender.sendMessage(ChatColor.RED + "The console cannot execute this command.")
+                return true
+            }
+            if (args.size < min) {
+                sender.sendMessage(ChatColor.RED + "The arg length is less than the command min length.")
+                return true
+            }
+            val parameterValues : MutableList<Any?> = ArrayList()
+            parameterValues.add(if (isPlayable) sender as Player else sender)
+
+            for (index in 0 until max) {
+                val parameter = parameters[index]
+                val optional = parameter.optional
+                val transform = parent.manager.getTypeTransform(parameter.type)
+                val value = args.getOrNull(index) ?: optional?.def
+                val transformed = if (value != null) transform?.transform(value) else value
+                if (transformed != null && !parameter.type.isAssignableFrom(transformed::class.java))
+                    throw CommandException("Parameter $value type does not match. (Expected: ${parameter.type.simpleName})")
+                parameterValues.add(transformed)
+            }
+
+            try {
+                invoke(*parameterValues.toTypedArray())
+                return true
+            } catch (e: Exception) {
+                throw CommandException("Unhandled command exception:", e.cause ?: e)
+            }
+        }
+
+        override fun testPermission(sender: CommandSender): Boolean {
+            return permission == null || permission.values.all { sender.hasPermission(it) }
+        }
+
+        override fun toString(): String {
+            return "Child(name=$name, aliases=${Arrays.toString(aliases)}, min=$min, max=$max)"
+        }
     }
 
     override val proxy = object : org.bukkit.command.Command(
@@ -65,21 +124,15 @@ open class RegisteredCommandBase(
         }
     }
 
-    protected fun labelMatched(command: String) : Boolean {
-        return name == command || aliases.contains(command)
-    }
-
-    protected fun findChild(name: String, useAlias : Boolean) : RegisteredCommand.Child? {
-        synchronized (childMap) {
-            var child = childMap[name]
-            if (child == null && useAlias)
-                child = childMap.values.find { c -> c.aliases.any { alias -> alias == name } }
-            return child
-        }
-    }
-
     override val children: Map<String, RegisteredCommand.Child>
-        get() = HashMap(childMap)
+        get() = synchronized (childMap) {
+            HashMap(childMap)
+        }
+
+    override val childrenKeys: Set<String>
+        get() = synchronized (childMap) {
+            HashSet(childMap.keys)
+        }
 
     override val name: String
         get() = root.value
@@ -89,13 +142,40 @@ open class RegisteredCommandBase(
         get() = root.description
     override val usage: String
         get() = root.usage
+    override val fallbackPrefix: String
+        get() = root.fallbackPrefix
 
     override fun getChild(name: String): RegisteredCommand.Child? {
-        return findChild(name, true)
+        synchronized (childMap) {
+            var child = childMap[name]
+            if (child == null)
+                child = childMap.values.find { c -> c.aliases.any { alias -> alias == name } }
+            return child
+        }
     }
 
     override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
-        TODO() // Command execute
+        if (!manager.plugin.isEnabled)
+            throw CommandException("Cannot execute command '$name' in plugin ${manager.plugin.description.fullName} - plugin is disabled.")
+        if (args.isEmpty()) {
+            usageMessage(sender, name, usage, null)
+            return false
+        } else {
+            val child = getChild(args.first()) ?: return false
+            val childArgs = if (args.size > 1) args.copyOfRange(1, args.size) else emptyArray()
+            val success = child.execute(sender, name, childArgs)
+            if (!success)
+                usageMessage(sender, name, child.usage, args.first())
+            return success
+        }
+    }
+
+    protected open fun usageMessage(sender: CommandSender, name: String, usage: String, child: String?) {
+        if (!usage.isNotEmpty()) {
+            var replaced = usage.replace("<command>", name)
+            if (child != null) replaced = replaced.replace("<child>", child)
+            replaced.split("\n").forEach { sender.sendMessage(it) }
+        }
     }
 
     override var completeProxy: CompleteProxy? = null
@@ -103,5 +183,9 @@ open class RegisteredCommandBase(
     override fun complete(sender: CommandSender, name: String, args: Array<out String>): List<String> {
         val value = completeProxy?.tabComplete(this, sender, name, args)
         return value ?: Collections.emptyList()
+    }
+
+    override fun toString(): String {
+        return "RegisteredCommand(command=$name, aliases=${Arrays.toString(aliases)})"
     }
 }

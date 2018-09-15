@@ -20,6 +20,8 @@ import org.bukkit.command.CommandSender
 
 interface CompleteProxy {
 
+    fun getTypeCompleter(type: Class<*>) : ParameterCompleter
+
     fun tabComplete(
             command: RegisteredCommand,
             sender: CommandSender,

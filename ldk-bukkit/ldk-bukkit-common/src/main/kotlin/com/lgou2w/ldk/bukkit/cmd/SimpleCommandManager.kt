@@ -16,5 +16,9 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-open class SimpleCommandManager : CommandManagerBase() {
+import org.bukkit.plugin.Plugin
+
+open class SimpleCommandManager(
+        plugin: Plugin
+) : CommandManagerBase(plugin) {
 }
