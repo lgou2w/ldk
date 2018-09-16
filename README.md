@@ -15,6 +15,7 @@
 </p>
 
 # Information
+
 * A multi-platform lgou2w development kit.
 
 # Modules
@@ -36,6 +37,15 @@
         * ldk-bukkit-plugin
         
 # Binaries
+
+## Jenkins CI
+
+Many thanks to the `Jenkins CI` lifecycle provided by [@25](https://github.com/25).
+
+* [Stable version](http://soulbound.me/job/ldk/) (master)
+* [Development version](http://soulbound.me/job/ldk_Dev/) (develop)
+
+## Dependencies
 
 The `Maven` or `Gradle` dependency for the version tag can be found at https://jitpack.io/#lgou2w/ldk.
 
@@ -85,7 +95,7 @@ dependencies {
 ```bash
 git clone https://github.com/lgou2w/ldk.git
 cd ldk
-mvn clean install
+mvn clean package
 ```
 
 # License

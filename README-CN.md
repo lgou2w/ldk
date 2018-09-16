@@ -15,6 +15,7 @@
 </p>
 
 # 介绍
+
 * 一个多平台的 lgou2w 开发套件.
 
 # 模块
@@ -37,6 +38,15 @@
 
         
 # 构建
+
+## Jenkins CI
+
+非常感谢 [@25](https://github.com/25) 提供的 `Jenkins CI` 生命周期.
+
+* [稳定版](http://soulbound.me/job/ldk/) (master)
+* [开发版](http://soulbound.me/job/ldk_Dev/) (develop)
+
+## 依赖
 
 可以在 https://jitpack.io/#lgou2w/ldk 找到版本标记的 `Maven` 或 `Gradle` 依赖项.
 
@@ -86,7 +96,7 @@ dependencies {
 ```bash
 git clone https://github.com/lgou2w/ldk.git
 cd ldk
-mvn clean install
+mvn clean package
 ```
 
 # 协议
