@@ -37,6 +37,8 @@ abstract class CommandManagerBase(
     private val transforms : MutableMap<Class<*>, TypeTransform<*>> = HashMap()
     private val commands : MutableMap<String, RegisteredCommand> = HashMap()
 
+    override var globalFeedback: CommandFeedback = DefaultCommandFeedback()
+
     override fun registerCommand(source: Class<*>, vararg args: Any): Boolean {
         val instance = newSourceInstance(source, *args)
         return registerCommand(instance)

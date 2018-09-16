@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.reflect.AccessorMethod
 import org.bukkit.command.CommandSender
 
@@ -28,6 +29,8 @@ interface RegisteredCommand {
     val proxy : org.bukkit.command.Command
 
     var prefix : String
+
+    var feedback : CommandFeedback?
 
     val root : CommandRoot
 
@@ -86,6 +89,8 @@ interface RegisteredCommand {
         fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean
 
         fun testPermission(sender: CommandSender) : Boolean
+
+        fun testPermissionIfFailed(sender: CommandSender, block: Consumer<String>) : Boolean
     }
 
     class ChildParameter(

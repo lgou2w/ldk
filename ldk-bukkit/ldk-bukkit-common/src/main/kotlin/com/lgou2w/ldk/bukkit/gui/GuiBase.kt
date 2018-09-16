@@ -120,7 +120,7 @@ abstract class GuiBase : Gui {
     protected open fun nextAvailableIndex() : Int {
         synchronized (buttonList) {
             for (index in 0 until size)
-                if (buttonList.find { it.index == index } == null)
+                if (getButton0(index) == null)
                     return index
             throw IllegalStateException("Gui can't add more buttons.")
         }

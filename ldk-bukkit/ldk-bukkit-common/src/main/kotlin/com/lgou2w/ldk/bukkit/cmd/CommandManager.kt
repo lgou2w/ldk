@@ -23,6 +23,8 @@ interface CommandManager {
 
     val plugin : Plugin
 
+    var globalFeedback : CommandFeedback
+
     fun registerCommand(source: Class<*>, vararg args: Any) : Boolean
 
     fun registerCommand(source: Any) : Boolean

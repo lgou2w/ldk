@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import com.lgou2w.ldk.chat.ChatColor
+import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.reflect.AccessorMethod
 import org.bukkit.command.CommandException
 import org.bukkit.command.CommandSender
@@ -67,16 +67,19 @@ open class RegisteredCommandBase(
         }
 
         override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
-            if (!testPermission(sender)) {
-                sender.sendMessage(parent.prefix + ChatColor.RED + "You do not have permission to use this command.")
+            val feedback = parent.feedback ?: parent.manager.globalFeedback
+            var failedPermission = ""
+
+            if (!testPermissionIfFailed(sender) { failedPermission = it }) {
+                feedback.onPermission(sender, name, parent, this, args, failedPermission)
                 return true
             }
             if (isPlayable && sender !is Player) {
-                sender.sendMessage(parent.prefix + ChatColor.RED + "The console cannot execute this command.")
+                feedback.onPlayable(sender, name, parent, this, args)
                 return true
             }
             if (args.size < min) {
-                sender.sendMessage(parent.prefix + ChatColor.RED + "The arg length is less than the command min length.")
+                feedback.onMinimum(sender, name, parent, this, args, args.size, min)
                 return true
             }
             val parameterValues : MutableList<Any?> = ArrayList()
@@ -88,21 +91,33 @@ open class RegisteredCommandBase(
                 val transform = parent.manager.getTypeTransform(parameter.type)
                 val value = args.getOrNull(index) ?: optional?.def
                 val transformed = if (value != null) transform?.transform(value) else value
-                if (transformed != null && !parameter.type.isAssignableFrom(transformed::class.java))
-                    throw CommandException("Parameter $value type does not match. (Expected: ${parameter.type.simpleName})")
+                if (transformed != null && !parameter.type.isAssignableFrom(transformed::class.java)) {
+                    feedback.onTransform(sender, name, parent, this, args, parameter.type, transformed)
+                    return true
+                }
                 parameterValues.add(transformed)
             }
 
-            try {
+            return try {
                 invoke(*parameterValues.toTypedArray())
-                return true
+                true
             } catch (e: Exception) {
-                throw CommandException("Unhandled command exception:", e.cause ?: e)
+                feedback.onUnhandled(sender, name, parent, this, args, e)
+                true
             }
         }
 
         override fun testPermission(sender: CommandSender): Boolean {
             return permission == null || permission.values.all { sender.hasPermission(it) }
+        }
+
+        override fun testPermissionIfFailed(sender: CommandSender, block: Consumer<String>): Boolean {
+            return permission == null || permission.values.all {
+                val result = sender.hasPermission(it)
+                if (!result)
+                    block(it)
+                result
+            }
         }
 
         override fun toString(): String {
@@ -134,6 +149,7 @@ open class RegisteredCommandBase(
             HashSet(childMap.keys)
         }
 
+    override var feedback: CommandFeedback? = null
     override var prefix: String = root.prefix
 
     override val name: String
