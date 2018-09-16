@@ -33,6 +33,8 @@
     * ldk-bukkit
         * ldk-bukkit-common
         * ldk-bukkit-i18n
+        * ldk-bukkit-cmd
+        * ldk-bukkit-gui
         * ldk-bukkit-scheduler
         * ldk-bukkit-plugin
         
