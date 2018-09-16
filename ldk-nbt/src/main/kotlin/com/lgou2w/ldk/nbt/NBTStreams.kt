@@ -39,6 +39,7 @@ object NBTStreams {
      * @param input 输入流
      * @throws IOException I/O
      */
+    @JvmStatic
     @Throws(IOException::class)
     fun read(input: InputStream): NBTBase<*>? {
         return read(DataInputStream(input) as DataInput)
@@ -52,6 +53,7 @@ object NBTStreams {
      * @param input 数据输入
      * @throws IOException I/O
      */
+    @JvmStatic
     @Throws(IOException::class)
     fun read(input: DataInput): NBTBase<*>? {
         val type = NBTType.fromId(input.readByte().toInt())
@@ -72,6 +74,7 @@ object NBTStreams {
      * @param nbt NBT
      * @throws IOException I/O
      */
+    @JvmStatic
     @Throws(IOException::class)
     fun write(output: OutputStream, nbt: NBTBase<*>) {
         write(DataOutputStream(output) as DataOutput, nbt)
@@ -86,6 +89,7 @@ object NBTStreams {
      * @param nbt NBT
      * @throws IOException I/O
      */
+    @JvmStatic
     @Throws(IOException::class)
     fun write(output: DataOutput, nbt: NBTBase<*>) {
         output.writeByte(nbt.typeId)
@@ -102,6 +106,7 @@ object NBTStreams {
      * @param nbt NBT
      * @throws IOException I/O
      */
+    @JvmStatic
     @Throws(IOException::class)
     fun writeBase64(nbt: NBTBase<*>): String {
         val stream = ByteArrayOutputStream()
@@ -116,6 +121,7 @@ object NBTStreams {
      * @param value Base64 value
      * @throws IOException I/O
      */
+    @JvmStatic
     @Throws(IOException::class)
     fun readBase64(value: String): NBTBase<*>? {
         val bytes = Base64.getDecoder().decode(value)
@@ -134,6 +140,7 @@ object NBTStreams {
      * @param compress 是否使用 `GZip` 压缩数据
      * @throws IOException I/O
      */
+    @JvmStatic
     @JvmOverloads
     @Throws(IOException::class)
     fun writeFile(nbt: NBTBase<*>, file: File, compress: Boolean = true) {
@@ -156,6 +163,7 @@ object NBTStreams {
      * @param decompress 是否使用 `GZip` 解压缩数据
      * @throws IOException I/O
      */
+    @JvmStatic
     @JvmOverloads
     @Throws(IOException::class)
     fun readFile(file: File, decompress: Boolean = true): NBTBase<*>? {

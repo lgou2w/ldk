@@ -25,11 +25,11 @@ object MinecraftReflection {
     @JvmStatic val PACKAGE_CRAFTBUKKIT = "org.bukkit.craftbukkit.${MinecraftBukkitVersion.CURRENT.version}"
     @JvmStatic val PACKAGE_MINECRAFT = "net.minecraft.server.${MinecraftBukkitVersion.CURRENT.version}"
 
-    private val PACKAGE_CACHED_CRAFTBUKKIT: PackageCached
+    @JvmStatic private val PACKAGE_CACHED_CRAFTBUKKIT: PackageCached
             by lazy { PackageCached(PACKAGE_CRAFTBUKKIT, SOURCE) }
-    private val PACKAGE_CACHED_MINECRAFT: PackageCached
+    @JvmStatic private val PACKAGE_CACHED_MINECRAFT: PackageCached
             by lazy { PackageCached(PACKAGE_MINECRAFT, SOURCE) }
-    private val  SOURCE: ClassSource
+    @JvmStatic private val  SOURCE: ClassSource
             by lazy { ClassSource.fromClassLoader() }
 
     @JvmStatic

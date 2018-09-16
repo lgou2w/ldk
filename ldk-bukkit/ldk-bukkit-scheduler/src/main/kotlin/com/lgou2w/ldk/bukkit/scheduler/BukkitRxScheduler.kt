@@ -39,6 +39,7 @@ class BukkitRxScheduler private constructor(
         fun ofAsync(plugin: Plugin): BukkitRxScheduler
                 = BukkitRxScheduler(plugin, true)
 
+        @JvmStatic
         private fun scheduleOnBukkit(plugin: Plugin, command: Runnable, isAsync: Boolean, delay: Long = 0L, period: Long = -1): BukkitTask {
             val scheduler = Bukkit.getScheduler()
             return when (isAsync) {

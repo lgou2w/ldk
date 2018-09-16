@@ -43,6 +43,7 @@ object Enums {
      * @param def Default value, The default is `null`
      * @param def 默认值, 默认为 `null` 值
      */
+    @JvmStatic
     @JvmOverloads
     fun <T : Enum<T>> of(clazz: Class<T>, predicate: Predicate<T>, def: T? = null) : T? {
         return clazz.enumConstants?.find(predicate) ?: def
@@ -60,6 +61,7 @@ object Enums {
      * @param def 默认值, 默认为 `null` 值
      * @see [Enum.name]
      */
+    @JvmStatic
     @JvmOverloads
     fun <T : Enum<T>> ofName(clazz: Class<T>, name: String, def: T? = null) : T?
             = of(clazz, { it.name == name }, def)
@@ -76,6 +78,7 @@ object Enums {
      * @param def 默认值, 默认为 `null` 值
      * @see [Enum.ordinal]
      */
+    @JvmStatic
     @JvmOverloads
     fun <T : Enum<T>> ofOrigin(clazz: Class<T>, origin: Int, def: T? = null) : T?
             = of(clazz, { it.ordinal == origin }, def)
@@ -93,6 +96,7 @@ object Enums {
      * @see [Valuable]
      * @see [Valuable.value]
      */
+    @JvmStatic
     @JvmOverloads
     fun <V, T> ofValuable(clazz: Class<T>, value: V?, def: T? = null) : T? where T : Enum<T>, T : Valuable<V>
             = of(clazz, { it.value == value }, def)
@@ -113,6 +117,7 @@ object Enums {
      * @see [Valuable.value]
      * @see [ofValuable]
      */
+    @JvmStatic
     @JvmOverloads
     @Throws(NullPointerException::class)
     fun <V, T> ofValuableNotNull(clazz: Class<T>, value: V?, def: T? = null) : T where T : Enum<T>, T : Valuable<V>
@@ -137,6 +142,7 @@ object Enums {
      * @throws IllegalArgumentException If [clazz] is not an enum class.
      * @throws IllegalArgumentException 如果 [clazz] 不是一个枚举类.
      */
+    @JvmStatic
     @JvmOverloads
     fun <T> from(clazz: Class<T>, predicate: Predicate<Enum<*>>, def: Enum<*>? = null) : Enum<*>? {
         if (!clazz.isEnum)
@@ -161,6 +167,7 @@ object Enums {
      * @see [Valuable]
      * @see [Valuable.value]
      */
+    @JvmStatic
     @JvmOverloads
     fun <V, T> fromValuable(clazz: Class<T>, value: V?, def: Enum<*>? = null) : Enum<*>? where T : Enum<*>, T : Valuable<V> {
         if (!clazz.isEnum)
@@ -184,6 +191,7 @@ object Enums {
      * @throws IllegalArgumentException 如果 [clazz] 不是一个枚举类.
      * @see [Enum.name]
      */
+    @JvmStatic
     @JvmOverloads
     fun <T> fromName(clazz: Class<T>, name: String, def: Enum<*>? = null) : Enum<*>?
             = from(clazz, { it.name == name }, def)
@@ -202,6 +210,7 @@ object Enums {
      * @throws IllegalArgumentException 如果 [clazz] 不是一个枚举类.
      * @see [Enum.ordinal]
      */
+    @JvmStatic
     @JvmOverloads
     fun <T> fromOrigin(clazz: Class<T>, origin: Int, def: Enum<*>? = null) : Enum<*>?
             = from(clazz, { it.ordinal == origin }, def)

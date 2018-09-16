@@ -22,7 +22,6 @@ import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
 import java.io.IOException
 import java.io.StringReader
-import java.lang.StringBuilder
 import java.lang.reflect.Type
 import java.util.regex.Pattern
 
@@ -54,6 +53,7 @@ object ChatSerializer {
      * @throws JsonParseException If parsing failed.
      * @throws JsonParseException 如果解析时失败.
      */
+    @JvmStatic
     @Throws(JsonParseException::class)
     fun fromJson(json: String): ChatComponent = try {
         val jsonReader = JsonReader(StringReader(json))
@@ -73,6 +73,7 @@ object ChatSerializer {
      * @throws JsonParseException If parsing failed.
      * @throws JsonParseException 如果解析时失败.
      */
+    @JvmStatic
     @Throws(JsonParseException::class)
     fun fromJsonOrNull(json: String?): ChatComponent?
             = if (json == null) null else fromJson(json)
@@ -87,6 +88,7 @@ object ChatSerializer {
      * @throws JsonParseException If parsing failed.
      * @throws JsonParseException 如果解析时失败.
      */
+    @JvmStatic
     @Throws(JsonParseException::class)
     fun fromJsonLenient(json: String): ChatComponent = try {
         val jsonReader = JsonReader(StringReader(json))
@@ -105,6 +107,7 @@ object ChatSerializer {
      * @param component Chat component.
      * @param component 聊天组件.
      */
+    @JvmStatic
     fun toJson(component: ChatComponent): String
             = GSON.toJson(component)
 
@@ -116,6 +119,7 @@ object ChatSerializer {
      * @param raw Raw string.
      * @param raw 源字符串.
      */
+    @JvmStatic
     fun fromRaw(raw: String?): ChatComponent {
         if (raw == null || raw.isEmpty())
             return ChatComponentText("")
@@ -130,6 +134,7 @@ object ChatSerializer {
      * @param raw Raw string.
      * @param raw 源字符串.
      */
+    @JvmStatic
     fun fromRawOrNull(raw: String?): ChatComponent?
             = if (raw == null) null else fromRaw(raw)
 
@@ -200,6 +205,7 @@ object ChatSerializer {
      * @param color Whether it has a color.
      * @param color 是否拥有颜色.
      */
+    @JvmStatic
     @JvmOverloads
     fun toRaw(component: ChatComponent, color: Boolean = true): String {
         val builder = StringBuilder()
@@ -207,6 +213,7 @@ object ChatSerializer {
         return builder.toString()
     }
 
+    @JvmStatic
     private fun toRaw0(component: ChatComponent, color: Boolean = true, builder: StringBuilder) {
         if (color) {
             val chatStyle = component.style
@@ -228,6 +235,7 @@ object ChatSerializer {
         component.extras.forEach { toRaw0(it, color, builder) }
     }
 
+    @JvmStatic
     private fun appendColor(builder: StringBuilder, color: ChatColor) {
         builder.append(color.toString())
     }
