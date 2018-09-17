@@ -27,9 +27,11 @@ import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.isOrLater
+import com.lgou2w.ldk.common.letIfNotNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.NBTTagList
+import com.lgou2w.ldk.nbt.NBTTagString
 import com.lgou2w.ldk.nbt.ofCompound
 import org.bukkit.Color
 import org.bukkit.Material
@@ -66,6 +68,8 @@ abstract class ItemBuilderBase : ItemBuilder {
             setDurability(durability)
     }
 
+    //<editor-fold desc="NBT Extended" defaultstate="collapsed">
+
     private fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?) {
         removeIf<T, T>(key, { it }, predicate)
     }
@@ -101,12 +105,16 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
+    //</editor-fold>
+
     override fun build(): ItemStack {
         return ItemFactory.writeTag(itemStack, tag)
     }
 
     final override val tag: NBTTagCompound
 
+    //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
+    
     override var durability: Int
         get() {
             return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
@@ -142,6 +150,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         this.durability += durability // The higher the value, the lower the durability
         return this
     }
+
+    //</editor-fold>
+    
+    //<editor-fold desc="ItemBuilder - DisplayName" defaultstate="collapsed">
 
     override var displayName: ChatComponent?
         get() {
@@ -190,6 +202,10 @@ abstract class ItemBuilderBase : ItemBuilder {
             }, predicate)
         return this
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - LocalizedName" defaultstate="collapsed">
 
     override var localizedName: ChatComponent?
         get() {
@@ -241,6 +257,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Lore" defaultstate="collapsed">
+
     override var lore: List<String>?
         get() {
             return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
@@ -282,6 +302,10 @@ abstract class ItemBuilderBase : ItemBuilder {
             ?.removeIf(predicate)
         return this
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Enchantment" defaultstate="collapsed">
 
     override var enchantments: Map<Enchantment, Int>?
         get() {
@@ -364,6 +388,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - ItemFlag" defaultstate="collapsed">
+
     private fun addFlagBit(modifier: Int, vararg flag: ItemFlag) : Int {
         var value = modifier
         flag.forEach { value = value or (1 shl it.ordinal) }
@@ -424,6 +452,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Unbreakable" defaultstate="collapsed">
+
     override var isUnbreakable: Boolean
         get() = tag.getBooleanOrNull(NBT.TAG_UNBREAKABLE) ?: false
         set(value) { tag.putBoolean(NBT.TAG_UNBREAKABLE, value) }
@@ -437,6 +469,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         this.isUnbreakable = unbreakable
         return this
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Attribute" defaultstate="collapsed">
 
     override var attributes: List<AttributeItemModifier>?
         get() {
@@ -525,6 +561,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - CanDestroy" defaultstate="collapsed">
+
     private fun matchMaterial(type: String) : Material? {
         return try {
             if (type.startsWith("minecraft:", true))
@@ -582,6 +622,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - CanPlaceOn" defaultstate="collapsed">
+
     override var canPlaceOn: List<Material>?
         get() {
             return tag.getListOrNull(NBT.TAG_CAN_PLACE_ON)
@@ -628,6 +672,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - RepairCost" defaultstate="collapsed">
+
     override var repairCost: Int?
         get() = tag.getIntOrNull(NBT.TAG_REPAIR_COST)
         set(value) {
@@ -655,6 +703,10 @@ abstract class ItemBuilderBase : ItemBuilder {
         tag.removeIf(NBT.TAG_REPAIR_COST, predicate)
         return this
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - LeatherColor" defaultstate="collapsed">
 
     override var leatherColor: Color?
         get() {
@@ -691,4 +743,167 @@ abstract class ItemBuilderBase : ItemBuilder {
             }, predicate)
         return this
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - BookTitle" defaultstate="collapsed">
+
+    override var bookTitle: String?
+        get() = tag.getStringOrNull(NBT.TAG_BOOK_TITLE)
+        set(value) {
+            removeBookTitle()
+            if (value != null)
+                tag.putString(NBT.TAG_BOOK_TITLE, value)
+        }
+
+    override fun getBookTitle(block: (ItemBuilder, String?) -> Unit): ItemBuilder {
+        block(this, bookTitle)
+        return this
+    }
+
+    override fun setBookTitle(title: String?): ItemBuilder {
+        this.bookTitle = title
+        return this
+    }
+
+    override fun removeBookTitle(): ItemBuilder {
+        removeBookTitle(null)
+        return this
+    }
+
+    override fun removeBookTitle(predicate: Predicate<String>?): ItemBuilder {
+        tag.removeIf(NBT.TAG_BOOK_TITLE, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - BookAuthor" defaultstate="collapsed">
+
+    override var bookAuthor: String?
+        get() = tag.getStringOrNull(NBT.TAG_BOOK_AUTHOR)
+        set(value) {
+            removeBookAuthor()
+            if (value != null)
+                tag.putString(NBT.TAG_BOOK_AUTHOR, value)
+        }
+
+    override fun getBookAuthor(block: (ItemBuilder, String?) -> Unit): ItemBuilder {
+        block(this, bookAuthor)
+        return this
+    }
+
+    override fun setBookAuthor(author: String?): ItemBuilder {
+        this.bookAuthor = author
+        return this
+    }
+
+    override fun removeBookAuthor(): ItemBuilder {
+        removeBookAuthor(null)
+        return this
+    }
+
+    override fun removeBookAuthor(predicate: Predicate<String>?): ItemBuilder {
+        tag.removeIf(NBT.TAG_BOOK_AUTHOR, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - BookGeneration" defaultstate="collapsed">
+
+    override var bookGeneration: Generation?
+        get() {
+            return tag.getIntOrNull(NBT.TAG_BOOK_GENERATION)
+                ?.letIfNotNull { Enums.ofValuable(Generation::class.java, this) }
+        }
+        set(value) {
+            removeBookGeneration()
+            if (value != null)
+                tag.putInt(NBT.TAG_BOOK_GENERATION, value.ordinal)
+        }
+
+    override fun getBookGeneration(block: (ItemBuilder, Generation?) -> Unit): ItemBuilder {
+        block(this, bookGeneration)
+        return this
+    }
+
+    override fun setBookGeneration(generation: Generation): ItemBuilder {
+        this.bookGeneration = generation
+        return this
+    }
+
+    override fun removeBookGeneration(): ItemBuilder {
+        removeBookGeneration(null)
+        return this
+    }
+
+    override fun removeBookGeneration(predicate: Predicate<Generation>?): ItemBuilder {
+        tag.removeIf<Int, Generation>(NBT.TAG_BOOK_GENERATION, {
+            Enums.ofValuableNotNull(Generation::class.java, it)
+        }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - BookPages" defaultstate="collapsed">
+
+    override var bookPages: List<ChatComponent>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_BOOK_PAGES)
+                ?.asElements<String>()
+                ?.map { ChatSerializer.fromJsonOrLenient(it) }
+        }
+        set(value) {
+            clearBookPages()
+            if (value != null)
+                addBookPage(*value.toTypedArray())
+        }
+
+    override fun getBookPages(block: (ItemBuilder, List<ChatComponent>?) -> Unit): ItemBuilder {
+        block(this, bookPages)
+        return this
+    }
+
+    override fun getBookPage(index: Int, block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder {
+        block(this, bookPages?.getOrNull(index))
+        return this
+    }
+
+    override fun getBookPage(index: Int): ChatComponent? {
+        return bookPages?.getOrNull(index)
+    }
+
+    override fun setBookPages(pages: List<ChatComponent>?): ItemBuilder {
+        this.bookPages = pages
+        return this
+    }
+
+    override fun setBookPage(index: Int, page: ChatComponent): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_BOOK_PAGES)
+            .add(index, NBTTagString(page.toJson()))
+        return this
+    }
+
+    override fun clearBookPages(): ItemBuilder {
+        tag.remove(NBT.TAG_BOOK_PAGES)
+        return this
+    }
+
+    override fun addBookPage(vararg pages: ChatComponent): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_BOOK_PAGES)
+            .addString(*pages.map { it.toJson() }.toTypedArray())
+        return this
+    }
+
+    override fun removeBookPage(predicate: Predicate<ChatComponent>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_BOOK_PAGES)
+            ?.removeIf<String, ChatComponent>({
+                ChatSerializer.fromJsonLenient(it)
+            }, predicate)
+        return this
+    }
+
+    //</editor-fold>
 }

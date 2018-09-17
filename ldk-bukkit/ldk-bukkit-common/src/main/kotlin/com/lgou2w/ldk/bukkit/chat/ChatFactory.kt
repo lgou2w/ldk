@@ -17,7 +17,6 @@
 package com.lgou2w.ldk.bukkit.chat
 
 import com.google.gson.Gson
-import com.google.gson.JsonParseException
 import com.lgou2w.ldk.bukkit.item.ItemFactory
 import com.lgou2w.ldk.bukkit.packet.PacketFactory
 import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
@@ -72,11 +71,7 @@ object ChatFactory {
         MinecraftReflection.isExpected(icbc, CLASS_ICHAT_BASE_COMPONENT)
         val gson = FIELD_CHAT_SERIALIZER_GSON[null]!!
         val json = gson.toJson(icbc, CLASS_ICHAT_BASE_COMPONENT)
-        return try {
-            ChatSerializer.fromJson(json)
-        } catch (e: JsonParseException) {
-            ChatSerializer.fromJsonLenient(json)
-        }
+        return ChatSerializer.fromJsonOrLenient(json)
     }
 
     @JvmStatic

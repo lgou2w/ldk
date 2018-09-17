@@ -226,6 +226,70 @@ interface ItemBuilder : Builder<ItemStack> {
 
     //</editor-fold>
 
+    //<editor-fold desc="ItemBuilder - BookTitle" defaultstate="collapsed">
+
+    var bookTitle : String?
+
+    fun getBookTitle(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+
+    fun setBookTitle(title: String?) : ItemBuilder
+
+    fun removeBookTitle() : ItemBuilder
+
+    fun removeBookTitle(predicate: Predicate<String>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - BookAuthor" defaultstate="collapsed">
+
+    var bookAuthor : String?
+
+    fun getBookAuthor(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+
+    fun setBookAuthor(author: String?) : ItemBuilder
+
+    fun removeBookAuthor() : ItemBuilder
+
+    fun removeBookAuthor(predicate: Predicate<String>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - BookGeneration" defaultstate="collapsed">
+
+    var bookGeneration : Generation?
+
+    fun getBookGeneration(block: (ItemBuilder, Generation?) -> Unit) : ItemBuilder
+
+    fun setBookGeneration(generation: Generation) : ItemBuilder
+
+    fun removeBookGeneration() : ItemBuilder
+
+    fun removeBookGeneration(predicate: Predicate<Generation>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - BookPages" defaultstate="collapsed">
+
+    var bookPages : List<ChatComponent>?
+
+    fun getBookPages(block: (ItemBuilder, List<ChatComponent>?) -> Unit) : ItemBuilder
+
+    fun getBookPage(index: Int, block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
+
+    fun getBookPage(index: Int) : ChatComponent?
+
+    fun setBookPages(pages: List<ChatComponent>?) : ItemBuilder
+
+    fun setBookPage(index: Int, page: ChatComponent) : ItemBuilder
+
+    fun clearBookPages() : ItemBuilder
+
+    fun addBookPage(vararg pages: ChatComponent) : ItemBuilder
+
+    fun removeBookPage(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
+
+    //</editor-fold>
+
     // TODO More...
 
     companion object {

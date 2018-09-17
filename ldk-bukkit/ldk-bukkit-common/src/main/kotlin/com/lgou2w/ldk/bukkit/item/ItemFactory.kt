@@ -165,7 +165,7 @@ object ItemFactory {
 
     @JvmStatic
     fun asCraftMirror(origin: Any?) : ItemStack? {
-        MinecraftReflection.isExpected(origin, CLASS_CRAFT_ITEMSTACK)
+        MinecraftReflection.isExpected(origin, CLASS_ITEMSTACK)
         return METHOD_AS_CRAFTMIRROR.invoke(null, origin) as? ItemStack
     }
 
