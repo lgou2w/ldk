@@ -20,6 +20,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.lgou2w.ldk.bukkit.item.ItemFactory
 import com.lgou2w.ldk.bukkit.packet.PacketFactory
+import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.chat.ChatAction
@@ -68,6 +69,7 @@ object ChatFactory {
 
     @JvmStatic
     fun fromNMS(icbc: Any): ChatComponent {
+        MinecraftReflection.isExpected(icbc, CLASS_ICHAT_BASE_COMPONENT)
         val gson = FIELD_CHAT_SERIALIZER_GSON[null]!!
         val json = gson.toJson(icbc, CLASS_ICHAT_BASE_COMPONENT)
         return try {

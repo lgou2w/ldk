@@ -81,4 +81,17 @@ object MinecraftReflection {
         PACKAGE_CACHED_CRAFTBUKKIT.setPackageClass(className, clazz)
         return clazz
     }
+
+    /**
+     * * Determines if the given argument is the expected instance object, otherwise throws an exception.
+     * * 判断给定的参数是否为预期的实例对象, 否则抛出异常.
+     *
+     * @throws IllegalArgumentException If the argument is not an instance of the expected type.
+     * @throws IllegalArgumentException 如果参数不是预期类型的实例.
+     */
+    @Throws(IllegalArgumentException::class)
+    fun isExpected(instance: Any?, expected: Class<*>) {
+        if (instance != null && !expected.isInstance(instance))
+            throw IllegalArgumentException("The value type of the instance does not match the expected. (Expected: $expected)")
+    }
 }

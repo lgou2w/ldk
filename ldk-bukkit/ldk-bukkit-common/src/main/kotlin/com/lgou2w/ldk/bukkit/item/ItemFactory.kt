@@ -17,9 +17,12 @@
 package com.lgou2w.ldk.bukkit.item
 
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory
+import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
+import com.lgou2w.ldk.bukkit.version.API
+import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
@@ -39,8 +42,11 @@ object ItemFactory {
 
     @JvmStatic val CLASS_ITEM by lazyMinecraftClass("Item")
     @JvmStatic val CLASS_ITEMSTACK by lazyMinecraftClass("ItemStack")
-    @JvmStatic val CLASS_MINECRAFT_KEY by lazyMinecraftClassOrNull("MinecraftKey")
     @JvmStatic val CLASS_CRAFT_ITEMSTACK by lazyCraftBukkitClass("inventory.CraftItemStack")
+
+    @API(Level.Minecraft_V1_13)
+    @JvmStatic val CLASS_MINECRAFT_KEY by lazyMinecraftClassOrNull("MinecraftKey")
+    @API(Level.Minecraft_V1_13)
     @JvmStatic val CLASS_CRAFT_MAGIC_NUMBERS by lazyCraftBukkitClass("util.CraftMagicNumbers")
 
     // NMS.ItemStack -> private NMS.NBTTagCompound tag
@@ -118,6 +124,7 @@ object ItemFactory {
 //    }
 
     // OBC.CraftMagicNumbers -> public static NMS.MinecraftKey key(Material)
+    @API(Level.Minecraft_V1_13)
     @JvmStatic val METHOD_MAGIC_NUMBERS_KEY : AccessorMethod<Any, Any>? by lazy {
         FuzzyReflect.of(CLASS_CRAFT_MAGIC_NUMBERS, true)
             .useMethodMatcher()
@@ -158,11 +165,13 @@ object ItemFactory {
 
     @JvmStatic
     fun asCraftMirror(origin: Any?) : ItemStack? {
+        MinecraftReflection.isExpected(origin, CLASS_CRAFT_ITEMSTACK)
         return METHOD_AS_CRAFTMIRROR.invoke(null, origin) as? ItemStack
     }
 
     @JvmStatic
     fun asBukkitCopy(origin: Any?) : ItemStack? {
+        MinecraftReflection.isExpected(origin, CLASS_ITEMSTACK)
         return METHOD_AS_BUKKITCOPY.invoke(null, origin)
     }
 
@@ -186,6 +195,18 @@ object ItemFactory {
     }
 
     @JvmStatic
+    fun materialType(material: Material) : String {
+        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            METHOD_MAGIC_NUMBERS_KEY
+                .notNull("OBC.CraftMagicNumbers#key(Material)")
+                .invoke(null, material)
+                .toString()
+        } else {
+            "minecraft:${material.name.toLowerCase(Locale.US)}"
+        }
+    }
+
+    @JvmStatic
     fun readItem(itemStack: ItemStack) : NBTTagCompound {
         val root = ofCompound {  }
         if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
@@ -194,11 +215,9 @@ object ItemFactory {
             try {
                 // Get by OBC CraftLegacy
                 // 从 OBC 的 CraftLegacy 获取
-                val id = METHOD_MAGIC_NUMBERS_KEY
-                    .notNull("OBC.CraftMagicNumbers#key(Material)")
-                    .invoke(null, itemStack.type)
+                val id = materialType(itemStack.type)
                 val count = itemStack.amount
-                root.putString(NBT.TAG_ID, id.toString())
+                root.putString(NBT.TAG_ID, id)
                 root.putByte(NBT.TAG_COUNT, count)
                 root[NBT.TAG] = readTagSafe(itemStack)
             } catch (e: NullPointerException) {

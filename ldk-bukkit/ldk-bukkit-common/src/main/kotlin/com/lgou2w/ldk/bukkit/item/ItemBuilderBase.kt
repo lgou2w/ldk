@@ -31,6 +31,7 @@ import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.NBTTagList
 import com.lgou2w.ldk.nbt.ofCompound
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
@@ -106,56 +107,76 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     final override val tag: NBTTagCompound
 
+    override var durability: Int
+        get() {
+            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                tag.getShortOrNull(NBT.TAG_DAMAGE)?.toInt() ?: 0
+            else
+                @Suppress("DEPRECATION")
+                itemStack.durability.toInt()
+        }
+        set(value) {
+            if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                tag.putShort(NBT.TAG_DAMAGE, value)
+            else
+                @Suppress("DEPRECATION")
+                itemStack.durability = value.toShort()
+        }
+
     final override fun getDurability(block: (ItemBuilder, Int) -> Unit): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
-            block(this, tag.getShortOrNull(NBT.TAG_DAMAGE)?.toInt() ?: 0)
-        else
-            @Suppress("DEPRECATION")
-            block(this, itemStack.durability.toInt())
+        block(this, durability)
         return this
     }
 
     final override fun setDurability(durability: Int): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
-            tag.putShort(NBT.TAG_DAMAGE, durability)
-        else
-            @Suppress("DEPRECATION")
-            itemStack.durability = durability.toShort()
+        this.durability = durability
         return this
     }
 
     override fun increaseDurability(durability: Int): ItemBuilder {
-        var current = 0
-        getDurability { _, value -> current = value }
-        setDurability(current - durability) // The smaller the value, the higher the durability
+        this.durability -= durability // The smaller the value, the higher the durability
         return this
     }
 
     override fun decreaseDurability(durability: Int): ItemBuilder {
-        var current = 0
-        getDurability { _, value -> current = value }
-        setDurability(current + durability) // The higher the value, the lower the durability
+        this.durability += durability // The higher the value, the lower the durability
         return this
     }
+
+    override var displayName: ChatComponent?
+        get() {
+            val displayName = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+                ?.getStringOrNull(NBT.TAG_DISPLAY_NAME)
+            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                ChatSerializer.fromJsonOrNull(displayName)
+            else
+                ChatSerializer.fromRawOrNull(displayName)
+        }
+        set(value) {
+            if (value == null)
+                removeDisplayName()
+            else {
+                val displayName = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                    value.toJson()
+                else
+                    ChatSerializer.toRaw(value)
+                tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+                    .putString(NBT.TAG_DISPLAY_NAME, displayName)
+            }
+        }
 
     override fun getDisplayName(block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder {
-        val displayName = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
-            ?.getStringOrNull(NBT.TAG_DISPLAY_NAME)
-        val value = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
-            ChatSerializer.fromJsonOrNull(displayName)
-        else
-            ChatSerializer.fromRawOrNull(displayName)
-        block(this, value)
+        block(this, displayName)
         return this
     }
 
-    override fun setDisplayName(displayName: ChatComponent): ItemBuilder {
-        val value = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
-            displayName.toJson()
-        else
-            ChatSerializer.toRaw(displayName)
-        tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
-            .putString(NBT.TAG_DISPLAY_NAME, value)
+    override fun setDisplayName(displayName: ChatComponent?): ItemBuilder {
+        this.displayName = displayName
+        return this
+    }
+
+    override fun removeDisplayName(): ItemBuilder {
+        removeDisplayName(null)
         return this
     }
 
@@ -170,24 +191,41 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
-    override fun getLocalizedName(block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
-            getDisplayName(block)
-        } else {
-            val value = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
-                ?.getStringOrNull(NBT.TAG_DISPLAY_LOC_NAME)
-            block(this, ChatSerializer.fromRawOrNull(value))
+    override var localizedName: ChatComponent?
+        get() {
+            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+                displayName
+            } else {
+                val value = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+                    ?.getStringOrNull(NBT.TAG_DISPLAY_LOC_NAME)
+                ChatSerializer.fromRawOrNull(value)
+            }
         }
+        set(value) {
+            if (value == null)
+                removeLocalizedName()
+            else {
+                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+                    setDisplayName(value)
+                } else {
+                    tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+                        .putString(NBT.TAG_DISPLAY_LOC_NAME, value.toRaw())
+                }
+            }
+        }
+
+    override fun getLocalizedName(block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder {
+        block(this, localizedName)
         return this
     }
 
-    override fun setLocalizedName(localizedName: ChatComponent): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
-            setDisplayName(localizedName)
-        } else {
-            tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
-                .putString(NBT.TAG_DISPLAY_LOC_NAME, localizedName.toRaw())
-        }
+    override fun setLocalizedName(localizedName: ChatComponent?): ItemBuilder {
+        this.localizedName = localizedName
+        return this
+    }
+
+    override fun removeLocalizedName(): ItemBuilder {
+        removeLocalizedName(null)
         return this
     }
 
@@ -203,17 +241,25 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override var lore: List<String>?
+        get() {
+            return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+                ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
+                ?.asElements()
+        }
+        set(value) {
+            clearLore()
+            if (value != null)
+                addLore(*value.toTypedArray())
+        }
+
     override fun getLore(block: (ItemBuilder, List<String>?) -> Unit): ItemBuilder {
-        val lore = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
-            ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
-            ?.asElements<String>()
         block(this, lore)
         return this
     }
 
-    override fun setLore(vararg lore: String): ItemBuilder {
-        clearLore()
-        addLore(*lore)
+    override fun setLore(lore: List<String>?): ItemBuilder {
+        this.lore = lore
         return this
     }
 
@@ -237,29 +283,36 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
-    override fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit): ItemBuilder {
-        val enchantments = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
-            tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
-                ?.asElements<NBTTagCompound>()
-                ?.associate {
-                    val id = it.getString(NBT.TAG_ENCH_ID)
-                    Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                }
-        } else {
-            tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
-                ?.asElements<NBTTagCompound>()
-                ?.associate {
-                    val id = it.getShort(NBT.TAG_ENCH_ID).toInt()
-                    Enchantment.fromId(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                }
+    override var enchantments: Map<Enchantment, Int>?
+        get() {
+            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+                tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
+                    ?.asElements<NBTTagCompound>()
+                    ?.associate {
+                        val id = it.getString(NBT.TAG_ENCH_ID)
+                        Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    }
+            } else {
+                tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
+                    ?.asElements<NBTTagCompound>()
+                    ?.associate {
+                        val id = it.getShort(NBT.TAG_ENCH_ID).toInt()
+                        Enchantment.fromId(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    }
+            }
         }
+        set(value) {
+            clearEnchantment()
+            value?.forEach { addEnchantment(it.key, it.value) }
+        }
+
+    override fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit): ItemBuilder {
         block(this, enchantments)
         return this
     }
 
-    override fun setEnchantment(enchantments: Map<Enchantment, Int>): ItemBuilder {
-        clearEnchantment()
-        enchantments.forEach { addEnchantment(it.key, it.value) }
+    override fun setEnchantment(enchantments: Map<Enchantment, Int>?): ItemBuilder {
+        this.enchantments = enchantments
         return this
     }
 
@@ -323,7 +376,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         return value
     }
 
-    private fun getFlags(modifier: Int?) : Array<ItemFlag>? {
+    private fun getFlags(modifier: Int?) : Array<out ItemFlag>? {
         return if (modifier == null)
             null
         else {
@@ -333,15 +386,24 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
-    override fun getFlag(block: (ItemBuilder, Array<ItemFlag>?) -> Unit): ItemBuilder {
-        val modifier = tag.getIntOrNull(NBT.TAG_HIDE_FLAGS)
-        block(this, getFlags(modifier))
+    override var flags: Array<out ItemFlag>?
+        get() {
+            val modifier = tag.getIntOrNull(NBT.TAG_HIDE_FLAGS)
+            return getFlags(modifier)
+        }
+        set(value) {
+            clearFlag()
+            if (value != null)
+                addFlag(*value)
+        }
+
+    override fun getFlag(block: (ItemBuilder, Array<out ItemFlag>?) -> Unit): ItemBuilder {
+        block(this, flags)
         return this
     }
 
-    override fun setFlag(flag: Array<ItemFlag>): ItemBuilder {
-        clearFlag()
-        addFlag(*flag)
+    override fun setFlag(flags: Array<out ItemFlag>?): ItemBuilder {
+        this.flags = flags
         return this
     }
 
@@ -350,53 +412,64 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
-    override fun addFlag(vararg flag: ItemFlag): ItemBuilder {
+    override fun addFlag(vararg flags: ItemFlag): ItemBuilder {
         val modifier = tag.getIntOrDefault(NBT.TAG_HIDE_FLAGS)
-        tag.putInt(NBT.TAG_HIDE_FLAGS, addFlagBit(modifier, *flag))
+        tag.putInt(NBT.TAG_HIDE_FLAGS, addFlagBit(modifier, *flags))
         return this
     }
 
-    override fun removeFlag(vararg flag: ItemFlag): ItemBuilder {
+    override fun removeFlag(vararg flags: ItemFlag): ItemBuilder {
         val modifier = tag.getIntOrDefault(NBT.TAG_HIDE_FLAGS)
-        tag.putInt(NBT.TAG_HIDE_FLAGS, removeFlagBit(modifier, *flag))
+        tag.putInt(NBT.TAG_HIDE_FLAGS, removeFlagBit(modifier, *flags))
         return this
     }
+
+    override var isUnbreakable: Boolean
+        get() = tag.getBooleanOrNull(NBT.TAG_UNBREAKABLE) ?: false
+        set(value) { tag.putBoolean(NBT.TAG_UNBREAKABLE, value) }
 
     override fun isUnbreakable(block: (ItemBuilder, Boolean) -> Unit): ItemBuilder {
-        val value = tag.getBooleanOrNull(NBT.TAG_UNBREAKABLE)
-        block(this, value ?: false)
+        block(this, isUnbreakable)
         return this
     }
 
     override fun setUnbreakable(unbreakable: Boolean): ItemBuilder {
-        tag.putBoolean(NBT.TAG_UNBREAKABLE, unbreakable)
+        this.isUnbreakable = unbreakable
         return this
     }
+
+    override var attributes: List<AttributeItemModifier>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
+                ?.asElements<NBTTagCompound>()
+                ?.map { attribute ->
+                    val type = Enums.ofValuableNotNull(AttributeType::class.java, attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
+                    val name = attribute.getString(NBT.TAG_ATTRIBUTE_NAME)
+                    val operation = Enums.ofValuableNotNull(Operation::class.java, attribute.getInt(NBT.TAG_ATTRIBUTE_OPERATION))
+                    val slot = Enums.ofValuable(Slot::class.java, attribute.getStringOrNull(NBT.TAG_ATTRIBUTE_SLOT))
+                    val amount = attribute.getDouble(NBT.TAG_ATTRIBUTE_AMOUNT)
+                    val uuidMost = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_MOST)
+                    val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
+                    val uuid = if (uuidLeast == null || uuidMost == null) UUID.randomUUID() else UUID(uuidMost, uuidLeast)
+                    AttributeItemModifier(type, name, operation, slot, amount, uuid)
+                }
+        }
+        set(value) {
+            clearAttribute()
+            if (value != null)
+                tag.getListOrDefault(NBT.TAG_ATTRIBUTE_MODIFIERS)
+                    .addCompound(*value.map {
+                        it.save(ofCompound())
+                    }.toTypedArray())
+        }
 
     override fun getAttribute(block: (ItemBuilder, List<AttributeItemModifier>?) -> Unit): ItemBuilder {
-        val attributeModifiers = tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
-            ?.asElements<NBTTagCompound>()
-            ?.map { attribute ->
-                val type = Enums.ofValuableNotNull(AttributeType::class.java, attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
-                val name = attribute.getString(NBT.TAG_ATTRIBUTE_NAME)
-                val operation = Enums.ofValuableNotNull(Operation::class.java, attribute.getInt(NBT.TAG_ATTRIBUTE_OPERATION))
-                val slot = Enums.ofValuable(Slot::class.java, attribute.getStringOrNull(NBT.TAG_ATTRIBUTE_SLOT))
-                val amount = attribute.getDouble(NBT.TAG_ATTRIBUTE_AMOUNT)
-                val uuidMost = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_MOST)
-                val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
-                val uuid = if (uuidLeast == null || uuidMost == null) UUID.randomUUID() else UUID(uuidMost, uuidLeast)
-                AttributeItemModifier(type, name, operation, slot, amount, uuid)
-            }
-        block(this, attributeModifiers)
+        block(this, attributes)
         return this
     }
 
-    override fun setAttribute(attributes: List<AttributeItemModifier>): ItemBuilder {
-        clearAttribute()
-        tag.getListOrDefault(NBT.TAG_ATTRIBUTE_MODIFIERS)
-            .addCompound(*attributes.map {
-                it.save(ofCompound())
-            }.toTypedArray())
+    override fun setAttribute(attributes: List<AttributeItemModifier>?): ItemBuilder {
+        this.attributes = attributes
         return this
     }
 
@@ -448,6 +521,173 @@ abstract class ItemBuilderBase : ItemBuilder {
                 val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
                 val uuid = if (uuidLeast == null || uuidMost == null) UUID.randomUUID() else UUID(uuidMost, uuidLeast)
                 AttributeItemModifier(type, name, operation, slot, amount, uuid)
+            }, predicate)
+        return this
+    }
+
+    private fun matchMaterial(type: String) : Material? {
+        return try {
+            if (type.startsWith("minecraft:", true))
+                Material.matchMaterial(type.substring("minecraft:".length))
+            else
+                Material.matchMaterial(type)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    override var canDestroy: List<Material>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_CAN_DESTROY)
+                ?.asElements<String>()
+                ?.asSequence()
+                ?.map { matchMaterial(it) }
+                ?.filterNotNull()
+                ?.toList()
+        }
+        set(value) {
+            clearCanDestroy()
+            if (value != null)
+                addCanDestroy(*value.toTypedArray())
+        }
+
+    override fun getCanDestroy(block: (ItemBuilder, List<Material>?) -> Unit): ItemBuilder {
+        block(this, canDestroy)
+        return this
+    }
+
+    override fun setCanDestroy(types: List<Material>?): ItemBuilder {
+        this.canDestroy = types
+        return this
+    }
+
+    override fun clearCanDestroy(): ItemBuilder {
+        tag.remove(NBT.TAG_CAN_DESTROY)
+        return this
+    }
+
+    override fun addCanDestroy(vararg types: Material): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_CAN_DESTROY)
+            .addString(*types.map { ItemFactory.materialType(it) }.toTypedArray())
+        return this
+    }
+
+    override fun removeCanDestroy(vararg types: Material): ItemBuilder {
+        return removeCanDestroy { types.contains(it) }
+    }
+
+    override fun removeCanDestroy(predicate: Predicate<Material>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_CAN_DESTROY)
+            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, predicate)
+        return this
+    }
+
+    override var canPlaceOn: List<Material>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_CAN_PLACE_ON)
+                ?.asElements<String>()
+                ?.asSequence()
+                ?.map { matchMaterial(it) }
+                ?.filterNotNull()
+                ?.toList()
+        }
+        set(value) {
+            clearCanPlaceOn()
+            if (value != null)
+                addCanPlaceOn(*value.toTypedArray())
+        }
+
+    override fun getCanPlaceOn(block: (ItemBuilder, List<Material>?) -> Unit): ItemBuilder {
+        block(this, canPlaceOn)
+        return this
+    }
+
+    override fun setCanPlaceOn(types: List<Material>?): ItemBuilder {
+        this.canPlaceOn = types
+        return this
+    }
+
+    override fun clearCanPlaceOn(): ItemBuilder {
+        tag.remove(NBT.TAG_CAN_PLACE_ON)
+        return this
+    }
+
+    override fun addCanPlaceOn(vararg types: Material): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_CAN_PLACE_ON)
+            .addString(*types.map { ItemFactory.materialType(it) }.toTypedArray())
+        return this
+    }
+
+    override fun removeCanPlaceOn(vararg types: Material): ItemBuilder {
+        return removeCanPlaceOn { types.contains(it) }
+    }
+
+    override fun removeCanPlaceOn(predicate: Predicate<Material>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_CAN_PLACE_ON)
+            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, predicate)
+        return this
+    }
+
+    override var repairCost: Int?
+        get() = tag.getIntOrNull(NBT.TAG_REPAIR_COST)
+        set(value) {
+            removeRepairCost()
+            if (value != null)
+                tag.putInt(NBT.TAG_REPAIR_COST, value)
+        }
+
+    override fun getRepairCost(block: (ItemBuilder, Int?) -> Unit): ItemBuilder {
+        block(this, repairCost)
+        return this
+    }
+
+    override fun setRepairCost(repairCost: Int?): ItemBuilder {
+        this.repairCost = repairCost
+        return this
+    }
+
+    override fun removeRepairCost(): ItemBuilder {
+        removeRepairCost(null)
+        return this
+    }
+
+    override fun removeRepairCost(predicate: Predicate<Int>?): ItemBuilder {
+        tag.removeIf(NBT.TAG_REPAIR_COST, predicate)
+        return this
+    }
+
+    override var leatherColor: Color?
+        get() {
+            return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+                ?.getIntOrNull(NBT.TAG_LEATHER_ARMOR_COLOR)
+                ?.let { Color.fromRGB(it) }
+        }
+        set(value) {
+            removeLeatherColor()
+            if (value != null)
+                tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+                    .putInt(NBT.TAG_LEATHER_ARMOR_COLOR, value.asRGB())
+        }
+
+    override fun getLeatherColor(block: (ItemBuilder, Color?) -> Unit): ItemBuilder {
+        block(this, leatherColor)
+        return this
+    }
+
+    override fun setLeatherColor(leatherColor: Color?): ItemBuilder {
+        this.leatherColor = leatherColor
+        return this
+    }
+
+    override fun removeLeatherColor(): ItemBuilder {
+        removeLeatherColor(null)
+        return this
+    }
+
+    override fun removeLeatherColor(predicate: Predicate<Color>?): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+            ?.removeIf<Int, Color>(NBT.TAG_LEATHER_ARMOR_COLOR, {
+                Color.fromRGB(it)
             }, predicate)
         return this
     }

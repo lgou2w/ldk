@@ -108,7 +108,7 @@ interface NBT<T> : Cloneable {
         const val TAG = "tag"
         const val TAG_ID = "id"
         const val TAG_COUNT = "Count"
-        const val TAG_DAMAGE = "Damage" //
+        const val TAG_DAMAGE = "Damage"
         const val TAG_ENCH_LEGACY = "ench"  // since 18w21a remove and change to -> Enchantments
         const val TAG_ENCH_FRESHLY = "Enchantments"
         const val TAG_ENCH_ID = "id"
@@ -153,6 +153,7 @@ interface NBT<T> : Cloneable {
         const val TAG_POTION_DURATION = "Duration"
         const val TAG_POTION_AMBIENT = "Ambient"
         const val TAG_POTION_SHOW_PARTICLES = "ShowParticles"
+        const val TAG_POTION_SHOW_ICON = "ShowIcon" // since Minecraft 1.13
         const val TAG_BLOCK_ENTITY_TAG = "BlockEntityTag"
         const val TAG_BANNER_PATTERNS = "Patterns"
         const val TAG_BANNER_COLOR = "Color"

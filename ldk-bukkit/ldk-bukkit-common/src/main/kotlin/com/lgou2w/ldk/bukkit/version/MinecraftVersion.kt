@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.version
 import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Version
 import org.bukkit.Bukkit
+import java.util.*
 import java.util.regex.Pattern
 
 class MinecraftVersion(
@@ -76,6 +77,23 @@ class MinecraftVersion(
                 }
                 return field
             }
+
+        @JvmStatic private val LOOKUP_LEVEL : Map<Level, MinecraftVersion> =
+                Collections.unmodifiableMap(mapOf(
+                        Level.Minecraft_V1_8 to V1_8,
+                        Level.Minecraft_V1_9 to V1_9,
+                        Level.Minecraft_V1_10 to V1_10,
+                        Level.Minecraft_V1_11 to V1_11,
+                        Level.Minecraft_V1_12 to V1_12,
+                        Level.Minecraft_V1_13 to V1_13,
+                        Level.Minecraft_V1_14 to V1_14
+                ))
+
+        @JvmStatic
+        fun fromLevel(level: Level) : MinecraftVersion {
+            val value = LOOKUP_LEVEL[level]
+            return value ?: UNKNOWN
+        }
     }
 
     val isPre: Boolean

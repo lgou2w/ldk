@@ -24,6 +24,7 @@ import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.common.Builder
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.nbt.NBTTagCompound
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
@@ -33,6 +34,10 @@ interface ItemBuilder : Builder<ItemStack> {
 
     val tag: NBTTagCompound
 
+    //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
+
+    var durability : Int
+
     fun getDurability(block: (ItemBuilder, Int) -> Unit) : ItemBuilder
 
     fun setDurability(durability: Int) : ItemBuilder
@@ -41,21 +46,43 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun decreaseDurability(durability: Int) : ItemBuilder
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - DisplayName" defaultstate="collapsed">
+
+    var displayName : ChatComponent?
+
     fun getDisplayName(block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
 
-    fun setDisplayName(displayName: ChatComponent) : ItemBuilder
+    fun setDisplayName(displayName: ChatComponent?) : ItemBuilder
+
+    fun removeDisplayName() : ItemBuilder
 
     fun removeDisplayName(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - LocalizedName" defaultstate="collapsed">
+
+    var localizedName : ChatComponent?
+
     fun getLocalizedName(block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
 
-    fun setLocalizedName(localizedName: ChatComponent) : ItemBuilder
+    fun setLocalizedName(localizedName: ChatComponent?) : ItemBuilder
+
+    fun removeLocalizedName() : ItemBuilder
 
     fun removeLocalizedName(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Lore" defaultstate="collapsed">
+
+    var lore : List<String>?
+
     fun getLore(block: (ItemBuilder, List<String>?) -> Unit) : ItemBuilder
 
-    fun setLore(vararg lore: String) : ItemBuilder
+    fun setLore(lore: List<String>?) : ItemBuilder
 
     fun clearLore() : ItemBuilder
 
@@ -63,9 +90,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun removeLore(predicate: Predicate<String>? = null) : ItemBuilder
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Enchantment" defaultstate="collapsed">
+
+    var enchantments : Map<Enchantment, Int>?
+
     fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit) : ItemBuilder
 
-    fun setEnchantment(enchantments : Map<Enchantment, Int>) : ItemBuilder
+    fun setEnchantment(enchantments : Map<Enchantment, Int>?) : ItemBuilder
 
     fun clearEnchantment() : ItemBuilder
 
@@ -75,23 +108,41 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun removeEnchantment(predicate: Predicate<Pair<Enchantment, Int>>? = null) : ItemBuilder
 
-    fun getFlag(block: (ItemBuilder, Array<ItemFlag>?) -> Unit) : ItemBuilder
+    //</editor-fold>
 
-    fun setFlag(flag: Array<ItemFlag>) : ItemBuilder
+    //<editor-fold desc="ItemBuilder - ItemFlag" defaultstate="collapsed">
+
+    var flags : Array<out ItemFlag>?
+
+    fun getFlag(block: (ItemBuilder, Array<out ItemFlag>?) -> Unit) : ItemBuilder
+
+    fun setFlag(flags: Array<out ItemFlag>?) : ItemBuilder
 
     fun clearFlag() : ItemBuilder
 
-    fun addFlag(vararg flag: ItemFlag) : ItemBuilder
+    fun addFlag(vararg flags: ItemFlag) : ItemBuilder
 
-    fun removeFlag(vararg flag: ItemFlag) : ItemBuilder
+    fun removeFlag(vararg flags: ItemFlag) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Unbreakable" defaultstate="collapsed">
+
+    var isUnbreakable : Boolean
 
     fun isUnbreakable(block: (ItemBuilder, Boolean) -> Unit) : ItemBuilder
 
     fun setUnbreakable(unbreakable: Boolean) : ItemBuilder
 
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Attribute" defaultstate="collapsed">
+
+    var attributes : List<AttributeItemModifier>?
+
     fun getAttribute(block: (ItemBuilder, List<AttributeItemModifier>?) -> Unit) : ItemBuilder
 
-    fun setAttribute(attributes: List<AttributeItemModifier>) : ItemBuilder
+    fun setAttribute(attributes: List<AttributeItemModifier>?) : ItemBuilder
 
     fun clearAttribute() : ItemBuilder
 
@@ -107,7 +158,75 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun removeAttribute(type: AttributeType) : ItemBuilder
 
-    fun removeAttribute(predicate: Predicate<AttributeItemModifier>?) : ItemBuilder
+    fun removeAttribute(predicate: Predicate<AttributeItemModifier>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - CanDestroy" defaultstate="collapsed">
+
+    var canDestroy : List<Material>?
+
+    fun getCanDestroy(block: (ItemBuilder, List<Material>?) -> Unit) : ItemBuilder
+
+    fun setCanDestroy(types: List<Material>?) : ItemBuilder
+
+    fun clearCanDestroy() : ItemBuilder
+
+    fun addCanDestroy(vararg types: Material) : ItemBuilder
+
+    fun removeCanDestroy(vararg types: Material) : ItemBuilder
+
+    fun removeCanDestroy(predicate: Predicate<Material>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - CanPlaceOn" defaultstate="collapsed">
+
+    var canPlaceOn : List<Material>?
+
+    fun getCanPlaceOn(block: (ItemBuilder, List<Material>?) -> Unit) : ItemBuilder
+
+    fun setCanPlaceOn(types: List<Material>?) : ItemBuilder
+
+    fun clearCanPlaceOn() : ItemBuilder
+
+    fun addCanPlaceOn(vararg types: Material) : ItemBuilder
+
+    fun removeCanPlaceOn(vararg types: Material) : ItemBuilder
+
+    fun removeCanPlaceOn(predicate: Predicate<Material>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - RepairCost" defaultstate="collapsed">
+
+    var repairCost : Int?
+
+    fun getRepairCost(block: (ItemBuilder, Int?) -> Unit) : ItemBuilder
+
+    fun setRepairCost(repairCost: Int?) : ItemBuilder
+
+    fun removeRepairCost() : ItemBuilder
+
+    fun removeRepairCost(predicate: Predicate<Int>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - LeatherColor" defaultstate="collapsed">
+
+    var leatherColor : Color?
+
+    fun getLeatherColor(block: (ItemBuilder, Color?) -> Unit) : ItemBuilder
+
+    fun setLeatherColor(leatherColor: Color?) : ItemBuilder
+
+    fun removeLeatherColor() : ItemBuilder
+
+    fun removeLeatherColor(predicate: Predicate<Color>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    // TODO More...
 
     companion object {
 

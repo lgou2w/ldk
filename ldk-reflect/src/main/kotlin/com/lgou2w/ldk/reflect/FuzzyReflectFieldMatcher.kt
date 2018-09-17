@@ -48,7 +48,7 @@ class FuzzyReflectFieldMatcher(
 
     override fun withType(clazz: Class<*>): FuzzyReflectFieldMatcher {
         val primitiveType = DataType.ofPrimitive(clazz)
-        values = values.filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
+        values = values.asSequence().filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
         return this
     }
 
