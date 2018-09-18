@@ -63,4 +63,12 @@ abstract class NBTBase<T>(
     abstract override fun toString(): String
 
     public abstract override fun clone(): NBTBase<*>
+
+    @Throws(ClassCastException::class)
+    fun asCompound() : NBTTagCompound
+            = this as NBTTagCompound
+
+    @Throws(ClassCastException::class)
+    fun asList() : NBTTagList
+            = this as NBTTagList
 }

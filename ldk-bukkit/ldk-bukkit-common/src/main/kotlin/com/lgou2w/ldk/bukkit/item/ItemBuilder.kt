@@ -20,6 +20,9 @@ import com.lgou2w.ldk.bukkit.attribute.AttributeItemModifier
 import com.lgou2w.ldk.bukkit.attribute.AttributeType
 import com.lgou2w.ldk.bukkit.attribute.Operation
 import com.lgou2w.ldk.bukkit.attribute.Slot
+import com.lgou2w.ldk.bukkit.potion.PotionBase
+import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
+import com.lgou2w.ldk.bukkit.potion.PotionEffectType
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.common.Builder
 import com.lgou2w.ldk.common.Predicate
@@ -287,6 +290,106 @@ interface ItemBuilder : Builder<ItemStack> {
     fun addBookPage(vararg pages: ChatComponent) : ItemBuilder
 
     fun removeBookPage(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - StoredEnchantment" defaultstate="collapsed">
+
+    var storedEnchantments : Map<Enchantment, Int>?
+
+    fun getStoredEnchantments(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit) : ItemBuilder
+
+    fun setStoredEnchantments(storedEnchantments: Map<Enchantment, Int>?) : ItemBuilder
+
+    fun clearStoredEnchantments() : ItemBuilder
+
+    fun addStoredEnchantment(enchantment: Enchantment, level: Int) : ItemBuilder
+
+    fun removeStoredEnchantment(enchantment: Enchantment) : ItemBuilder
+
+    fun removeStoredEnchantment(predicate: Predicate<Pair<Enchantment, Int>>?) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - SkullOwner" defaultstate="collapsed">
+
+    var skullOwner : String?
+
+    fun getSkullOwner(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+
+    fun setSkullOwner(skullOwner: String?) : ItemBuilder
+
+    fun removeSkullOwner() : ItemBuilder
+
+    fun removeSkullOwner(predicate: Predicate<String>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - SkullOwner Value" defaultstate="collapsed">
+
+    var skullOwnerValue : String?
+
+    fun getSkullOwnerValue(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+
+    fun setSkullOwnerValue(value: String?) : ItemBuilder
+
+    fun setSkullOwnerValue(value: String, name: String?, id: UUID?) : ItemBuilder
+
+    fun removeSkullOwnerValue() : ItemBuilder
+
+    fun removeSkullOwnerValue(predicate: Predicate<String>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - PotionColor" defaultstate="collapsed">
+
+    var potionColor : Color?
+
+    fun getPotionColor(block: (ItemBuilder, Color?) -> Unit) : ItemBuilder
+
+    fun setPotionColor(color: Color) : ItemBuilder
+
+    fun removePotionColor() : ItemBuilder
+
+    fun removePotionColor(predicate: Predicate<Color>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - PotionBase" defaultstate="collapsed">
+
+    var potionBase : PotionBase?
+
+    fun getPotionBase(block: (ItemBuilder, PotionBase?) -> Unit) : ItemBuilder
+
+    fun setPotionBase(base: PotionBase?) : ItemBuilder
+
+    fun removePotionBase() : ItemBuilder
+
+    fun removePotionBase(predicate: Predicate<PotionBase>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - PotionCustom" defaultstate="collapsed">
+
+    var potionCustoms : List<PotionEffectCustom>?
+
+    fun getPotionCustoms(block: (ItemBuilder, List<PotionEffectCustom>?) -> Unit) : ItemBuilder
+
+    fun getPotionCustom(type: PotionEffectType) : PotionEffectCustom?
+
+    fun getPotionCustom(type: PotionEffectType, block: (ItemBuilder, PotionEffectCustom?) -> Unit) : ItemBuilder
+
+    fun setPotionCustoms(customs: List<PotionEffectCustom>?) : ItemBuilder
+
+    fun clearPotionCustoms() : ItemBuilder
+
+    fun addPotionCustom(effect: PotionEffectCustom) : ItemBuilder
+
+    fun addPotionCustom(effect: PotionEffectCustom, override: Boolean) : ItemBuilder
+
+    fun removePotionCustom(type: PotionEffectType) : ItemBuilder
+
+    fun removePotionCustom(predicate: Predicate<PotionEffectCustom>? = null) : ItemBuilder
 
     //</editor-fold>
 

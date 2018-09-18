@@ -20,6 +20,9 @@ import com.lgou2w.ldk.bukkit.attribute.AttributeItemModifier
 import com.lgou2w.ldk.bukkit.attribute.AttributeType
 import com.lgou2w.ldk.bukkit.attribute.Operation
 import com.lgou2w.ldk.bukkit.attribute.Slot
+import com.lgou2w.ldk.bukkit.potion.PotionBase
+import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
+import com.lgou2w.ldk.bukkit.potion.PotionEffectType
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatSerializer
@@ -29,9 +32,11 @@ import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.letIfNotNull
 import com.lgou2w.ldk.nbt.NBT
+import com.lgou2w.ldk.nbt.NBTBase
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.NBTTagList
 import com.lgou2w.ldk.nbt.NBTTagString
+import com.lgou2w.ldk.nbt.NBTType
 import com.lgou2w.ldk.nbt.ofCompound
 import org.bukkit.Color
 import org.bukkit.Material
@@ -902,6 +907,333 @@ abstract class ItemBuilderBase : ItemBuilder {
             ?.removeIf<String, ChatComponent>({
                 ChatSerializer.fromJsonLenient(it)
             }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - StoredEnchantment" defaultstate="collapsed">
+
+    override var storedEnchantments: Map<Enchantment, Int>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
+                ?.asElements<NBTTagCompound>()
+                ?.associate {
+                    val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    val enchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                        Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
+                    else
+                        Enchantment.fromId(it.getShort(NBT.TAG_ENCH_ID).toInt())
+                    enchantment to level
+                }
+        }
+        set(value) {
+            clearStoredEnchantments()
+            value?.forEach { addStoredEnchantment(it.key, it.value) }
+        }
+
+    override fun getStoredEnchantments(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit): ItemBuilder {
+        block(this, storedEnchantments)
+        return this
+    }
+
+    override fun setStoredEnchantments(storedEnchantments: Map<Enchantment, Int>?): ItemBuilder {
+        this.storedEnchantments = storedEnchantments
+        return this
+    }
+
+    override fun clearStoredEnchantments(): ItemBuilder {
+        tag.remove(NBT.TAG_STORED_ENCHANTMENTS)
+        return this
+    }
+
+    override fun addStoredEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_STORED_ENCHANTMENTS)
+            .addCompound(ofCompound {
+                putShort(NBT.TAG_ENCH_LVL, level)
+                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                    putString(NBT.TAG_ENCH_ID, enchantment.type)
+                else
+                    putShort(NBT.TAG_ENCH_ID, enchantment.id)
+            })
+        return this
+    }
+
+    override fun removeStoredEnchantment(enchantment: Enchantment): ItemBuilder {
+        removeStoredEnchantment { it.first == enchantment }
+        return this
+    }
+
+    override fun removeStoredEnchantment(predicate: Predicate<Pair<Enchantment, Int>>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
+            ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
+                val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                val enchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                    Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
+                else
+                    Enchantment.fromId(it.getShort(NBT.TAG_ENCH_ID).toInt())
+                enchantment to level
+            }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - SkullOwner" defaultstate="collapsed">
+
+    override var skullOwner: String?
+        get() {
+            val skullOwner = tag[NBT.TAG_SKULL_OWNER] ?: return null
+            return if (skullOwner.type == NBTType.TAG_COMPOUND)
+                skullOwner.asCompound().getStringOrNull(NBT.TAG_SKULL_OWNER_NAME)
+            else
+                skullOwner.value?.toString()
+        }
+        set(value) {
+            removeSkullOwner()
+            if (value != null)
+                tag.putString(NBT.TAG_SKULL_OWNER, value)
+        }
+
+    override fun getSkullOwner(block: (ItemBuilder, String?) -> Unit): ItemBuilder {
+        block(this, skullOwner)
+        return this
+    }
+
+    override fun setSkullOwner(skullOwner: String?): ItemBuilder {
+        this.skullOwner = skullOwner
+        return this
+    }
+
+    override fun removeSkullOwner(): ItemBuilder {
+        removeSkullOwner(null)
+        return this
+    }
+
+    override fun removeSkullOwner(predicate: Predicate<String>?): ItemBuilder {
+        tag.removeIf<NBTBase<*>, String>(NBT.TAG_SKULL_OWNER, {
+            if (it.type == NBTType.TAG_COMPOUND)
+                it.asCompound().getStringOrNull(NBT.TAG_SKULL_OWNER_NAME) ?: "INVALID"
+            else
+                it.value.toString()
+        }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - SkullOwner Value" defaultstate="collapsed">
+
+    override var skullOwnerValue: String?
+        get() {
+            if (tag[NBT.TAG_SKULL_OWNER]?.type == NBTType.TAG_STRING)
+                tag.remove(NBT.TAG_SKULL_OWNER)
+            return tag.getCompoundOrNull(NBT.TAG_SKULL_OWNER)
+                ?.getCompoundOrNull(NBT.TAG_SKULL_OWNER_PROPERTIES)
+                ?.getListOrNull(NBT.TAG_SKULL_OWNER_TEXTURES)
+                ?.asElements<NBTTagCompound>()
+                ?.firstOrNull()
+                ?.getStringOrNull(NBT.TAG_SKULL_OWNER_TEXTURES_VALUE)
+        }
+        set(value) {
+            removeSkullOwnerValue()
+            if (value != null)
+                setSkullOwnerValue(value, null, null)
+        }
+
+    override fun getSkullOwnerValue(block: (ItemBuilder, String?) -> Unit): ItemBuilder {
+        block(this, skullOwnerValue)
+        return this
+    }
+
+    override fun setSkullOwnerValue(value: String?): ItemBuilder {
+        this.skullOwnerValue = value
+        return this
+    }
+
+    override fun setSkullOwnerValue(value: String, name: String?, id: UUID?): ItemBuilder {
+        if (tag[NBT.TAG_SKULL_OWNER]?.type == NBTType.TAG_STRING)
+            tag.remove(NBT.TAG_SKULL_OWNER)
+        tag.getCompoundOrDefault(NBT.TAG_SKULL_OWNER)
+            .getCompoundOrDefault(NBT.TAG_SKULL_OWNER_PROPERTIES)
+            .getListOrDefault(NBT.TAG_SKULL_OWNER_TEXTURES)
+            .addCompound(ofCompound {
+                putString(NBT.TAG_SKULL_OWNER_TEXTURES_VALUE, value)
+            })
+        val skullOwner = tag.getCompoundOrDefault(NBT.TAG_SKULL_OWNER)
+        skullOwner.putString(NBT.TAG_SKULL_OWNER_ID, id?.toString() ?: UUID.randomUUID().toString())
+        if (name != null)
+            skullOwner.putString(NBT.TAG_SKULL_OWNER_NAME, name)
+        return this
+    }
+
+    override fun removeSkullOwnerValue(): ItemBuilder {
+        removeSkullOwner(null)
+        return this
+    }
+
+    override fun removeSkullOwnerValue(predicate: Predicate<String>?): ItemBuilder {
+        return if (tag[NBT.TAG_SKULL_OWNER]?.type == NBTType.TAG_STRING) {
+            this
+        } else {
+            tag.getCompoundOrNull(NBT.TAG_SKULL_OWNER)
+                ?.getCompoundOrNull(NBT.TAG_SKULL_OWNER_PROPERTIES)
+                ?.getListOrNull(NBT.TAG_SKULL_OWNER_TEXTURES)
+                ?.removeIf<NBTTagCompound, String>({
+                    it.getString(NBT.TAG_SKULL_OWNER_TEXTURES_VALUE)
+                }, predicate)
+            this
+        }
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - PotionColor" defaultstate="collapsed">
+
+    override var potionColor: Color?
+        get() = tag.getIntOrNull(NBT.TAG_CUSTOM_POTION_COLOR).letIfNotNull { Color.fromRGB(this) }
+        set(value) {
+            removePotionColor()
+            if (value != null)
+                tag.putInt(NBT.TAG_CUSTOM_POTION_COLOR, value.asRGB())
+        }
+
+    override fun getPotionColor(block: (ItemBuilder, Color?) -> Unit): ItemBuilder {
+        block(this, potionColor)
+        return this
+    }
+
+    override fun setPotionColor(color: Color): ItemBuilder {
+        this.potionColor = color
+        return this
+    }
+
+    override fun removePotionColor(): ItemBuilder {
+        removePotionColor(null)
+        return this
+    }
+
+    override fun removePotionColor(predicate: Predicate<Color>?): ItemBuilder {
+        tag.removeIf<Int, Color>(NBT.TAG_CUSTOM_POTION_COLOR, {
+            Color.fromRGB(it)
+        }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - PotionBase" defaultstate="collapsed">
+
+    override var potionBase: PotionBase?
+        get() = tag.getStringOrNull(NBT.TAG_POTION).letIfNotNull { PotionBase.valueOf(this) }
+        set(value) {
+            removePotionBase()
+            if (value != null)
+                tag.putString(NBT.TAG_POTION, value.value)
+        }
+
+    override fun getPotionBase(block: (ItemBuilder, PotionBase?) -> Unit): ItemBuilder {
+        block(this, potionBase)
+        return this
+    }
+
+    override fun setPotionBase(base: PotionBase?): ItemBuilder {
+        this.potionBase = base
+        return this
+    }
+
+    override fun removePotionBase(): ItemBuilder {
+        removePotionBase(null)
+        return this
+    }
+
+    override fun removePotionBase(predicate: Predicate<PotionBase>?): ItemBuilder {
+        tag.removeIf<String, PotionBase>(NBT.TAG_POTION, {
+            PotionBase.valueOf(it)
+        }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - PotionCustom" defaultstate="collapsed">
+
+    override var potionCustoms: List<PotionEffectCustom>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
+                ?.asElements<NBTTagCompound>()
+                ?.map { effect ->
+                    val type = PotionEffectType.fromId(effect.getByte(NBT.TAG_POTION_ID).toInt())
+                    val amplifier = effect.getByte(NBT.TAG_POTION_AMPLIFIER).toInt()
+                    val duration = effect.getInt(NBT.TAG_POTION_DURATION)
+                    val ambient = effect.getBoolean(NBT.TAG_POTION_AMBIENT)
+                    val particle = effect.getBoolean(NBT.TAG_POTION_SHOW_PARTICLES)
+                    val icon = effect.getBooleanOrNull(NBT.TAG_POTION_SHOW_ICON) ?: false
+                    PotionEffectCustom(type, amplifier, duration, ambient, particle, icon)
+                }
+        }
+        set(value) {
+            clearPotionCustoms()
+            value?.forEach { addPotionCustom(it) }
+        }
+
+    override fun getPotionCustoms(block: (ItemBuilder, List<PotionEffectCustom>?) -> Unit): ItemBuilder {
+        block(this, potionCustoms)
+        return this
+    }
+
+    override fun getPotionCustom(type: PotionEffectType): PotionEffectCustom? {
+        return potionCustoms?.firstOrNull { it.type == type }
+    }
+
+    override fun getPotionCustom(type: PotionEffectType, block: (ItemBuilder, PotionEffectCustom?) -> Unit): ItemBuilder {
+        block(this, getPotionCustom(type))
+        return this
+    }
+
+    override fun setPotionCustoms(customs: List<PotionEffectCustom>?): ItemBuilder {
+        this.potionCustoms = customs
+        return this
+    }
+
+    override fun clearPotionCustoms(): ItemBuilder {
+        tag.remove(NBT.TAG_CUSTOM_POTION_EFFECTS)
+        return this
+    }
+
+    override fun addPotionCustom(effect: PotionEffectCustom): ItemBuilder {
+        addPotionCustom(effect, false)
+        return this
+    }
+
+    override fun addPotionCustom(effect: PotionEffectCustom, override: Boolean): ItemBuilder {
+        return if (!override) {
+            tag.getListOrDefault(NBT.TAG_CUSTOM_POTION_EFFECTS)
+                .addCompound(effect.save(ofCompound()))
+            this
+        } else {
+            val list = tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
+            if (list == null) {
+                addPotionCustom(effect, false)
+                this
+            } else {
+                val index = list.indexOfFirst {
+                    val type = PotionEffectType.fromId(it.asCompound().getByte(NBT.TAG_POTION_ID).toInt())
+                    effect.type == type
+                }
+                if (index != -1)
+                    list[index] = effect.save(ofCompound())
+                this
+            }
+        }
+    }
+
+    override fun removePotionCustom(type: PotionEffectType): ItemBuilder {
+        removePotionCustom { it.type == type }
+        return this
+    }
+
+    override fun removePotionCustom(predicate: Predicate<PotionEffectCustom>?): ItemBuilder {
         return this
     }
 
