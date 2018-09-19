@@ -50,6 +50,13 @@
             <version>0.0.1-beta2</version>
             <scope>compile</scope>
         </dependency>
+        <!-- ldk-bukkit-depend -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-bukkit-depend</artifactId>
+            <version>0.0.1-beta2</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- ldk-bukkit-i18n -->
         <dependency>
             <groupId>com.lgou2w</groupId>

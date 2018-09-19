@@ -20,6 +20,7 @@
         <module>ldk-bukkit-cmd</module>
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
+        <module>ldk-bukkit-depend</module>
         <module>ldk-bukkit-scheduler</module>
         <module>ldk-bukkit-plugin</module>
     </modules>

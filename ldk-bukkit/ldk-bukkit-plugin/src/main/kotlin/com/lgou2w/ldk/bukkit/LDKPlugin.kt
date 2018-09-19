@@ -16,13 +16,17 @@
 
 package com.lgou2w.ldk.bukkit
 
+import com.lgou2w.ldk.bukkit.depend.DependWorldEdit
+import com.lgou2w.ldk.bukkit.depend.Depends
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.chat.toColor
 import org.bstats.bukkit.Metrics
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import java.util.*
 import java.util.logging.Level
 
@@ -67,6 +71,15 @@ class LDKPlugin : PluginBase() {
                     "&6/ldk help &8- &7View command help.",
                     "&6/ldk version &8- &7View current plugin version."
             ).toColor())
+
+            val worldEdit = Depends.getOrLoad(DependWorldEdit::class.java)
+            val region = worldEdit.getSelection(sender as Player)
+            if (region == null) {
+                sender.sendMessage("请先使用 WorldEdit 选中区域.")
+            } else {
+                sender.sendMessage(region.toString())
+            }
+
             true
         } else if (first.equals("version", true)) {
             sender.sendMessage(ChatColor.GRAY + "The LDK plugin version: ${ChatColor.GREEN}$pluginVersion")
@@ -80,6 +93,10 @@ class LDKPlugin : PluginBase() {
                     sender.sendMessage(ChatColor.GRAY + "https://github.com/lgou2w/ldk/releases/tag/$last")
                 }
             }
+            true
+        } else if (first.equals("depend", true)) {
+            val plugin = Bukkit.getPluginManager().getPlugin("WorldEdit")
+            Bukkit.getPluginManager().disablePlugin(plugin)
             true
         } else {
             false
