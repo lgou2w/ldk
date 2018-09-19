@@ -20,6 +20,8 @@ import com.lgou2w.ldk.bukkit.attribute.AttributeItemModifier
 import com.lgou2w.ldk.bukkit.attribute.AttributeType
 import com.lgou2w.ldk.bukkit.attribute.Operation
 import com.lgou2w.ldk.bukkit.attribute.Slot
+import com.lgou2w.ldk.bukkit.firework.FireworkEffect
+import com.lgou2w.ldk.bukkit.firework.FireworkType
 import com.lgou2w.ldk.bukkit.potion.PotionBase
 import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
 import com.lgou2w.ldk.bukkit.potion.PotionEffectType
@@ -390,6 +392,56 @@ interface ItemBuilder : Builder<ItemStack> {
     fun removePotionCustom(type: PotionEffectType) : ItemBuilder
 
     fun removePotionCustom(predicate: Predicate<PotionEffectCustom>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - FireworkStar" defaultstate="collapsed">
+
+    var fireworkStar : FireworkEffect?
+
+    fun getFireworkStar(block: (ItemBuilder, FireworkEffect?) -> Unit) : ItemBuilder
+
+    fun setFireworkStar(effect: FireworkEffect?) : ItemBuilder
+
+    fun removeFireworkStar() : ItemBuilder
+
+    fun removeFireworkStar(predicate: Predicate<FireworkEffect>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - FireworkRocket Effect" defaultstate="collapsed">
+
+    var fireworkRocketEffects : List<FireworkEffect>?
+
+    fun getFireworkRocketEffects(block: (ItemBuilder, List<FireworkEffect>?) -> Unit) : ItemBuilder
+
+    fun getFireworkRocketEffect(type: FireworkType) : FireworkEffect?
+
+    fun getFireworkRocketEffect(type: FireworkType, block: (ItemBuilder, FireworkEffect?) -> Unit) : ItemBuilder
+
+    fun setFireworkRocketEffects(effect: List<FireworkEffect>?) : ItemBuilder
+
+    fun clearFireworkRocketEffects() : ItemBuilder
+
+    fun addFireworkRocketEffect(effect: FireworkEffect) : ItemBuilder
+
+    fun removeFireworkRocketEffect(type: FireworkType) : ItemBuilder
+
+    fun removeFireworkRocketEffect(predicate: Predicate<FireworkEffect>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - FireworkRocket Flight" defaultstate="collapsed">
+
+    var fireworkRocketFlight : Int?
+
+    fun getFireworkRocketFlight(block: (ItemBuilder, Int?) -> Unit) : ItemBuilder
+
+    fun setFireworkRocketFlight(flight: Int?) : ItemBuilder
+
+    fun removeFireworkRocketFlight() : ItemBuilder
+
+    fun removeFireworkRocketFlight(predicate: Predicate<Int>? = null) : ItemBuilder
 
     //</editor-fold>
 

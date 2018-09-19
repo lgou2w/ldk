@@ -103,7 +103,7 @@ interface NBT<T> : Cloneable {
 
         // TODO Dynamic TAG
 
-        //<editor-fold desc="TAG" defaultstate="collapsed">
+        //<editor-fold desc="ItemStack - TAG" defaultstate="collapsed">
 
         const val TAG = "tag"
         const val TAG_ID = "id"

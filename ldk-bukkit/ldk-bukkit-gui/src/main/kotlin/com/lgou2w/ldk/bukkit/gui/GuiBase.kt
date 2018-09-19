@@ -31,7 +31,12 @@ import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.*
+import org.bukkit.plugin.EventExecutor
+import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.PluginBase
+import org.bukkit.plugin.PluginDescriptionFile
+import org.bukkit.plugin.PluginLoader
+import org.bukkit.plugin.RegisteredListener
 import java.io.File
 import java.io.InputStream
 import java.util.*
@@ -146,7 +151,7 @@ abstract class GuiBase : Gui {
 
     override fun removeButton(index: Int): Boolean {
         synchronized (buttonList) {
-            val button = getButton0(index) ?: return true
+            val button = getButton0(index) ?: return false
             return buttonList.remove(button).apply {
                 if (this) {
                     button.stack = null

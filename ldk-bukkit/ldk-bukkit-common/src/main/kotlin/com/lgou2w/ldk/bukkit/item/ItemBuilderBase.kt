@@ -20,6 +20,8 @@ import com.lgou2w.ldk.bukkit.attribute.AttributeItemModifier
 import com.lgou2w.ldk.bukkit.attribute.AttributeType
 import com.lgou2w.ldk.bukkit.attribute.Operation
 import com.lgou2w.ldk.bukkit.attribute.Slot
+import com.lgou2w.ldk.bukkit.firework.FireworkEffect
+import com.lgou2w.ldk.bukkit.firework.FireworkType
 import com.lgou2w.ldk.bukkit.potion.PotionBase
 import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
 import com.lgou2w.ldk.bukkit.potion.PotionEffectType
@@ -1234,6 +1236,135 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun removePotionCustom(predicate: Predicate<PotionEffectCustom>?): ItemBuilder {
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - FireworkStar" defaultstate="collapsed">
+
+    override var fireworkStar: FireworkEffect?
+        get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS_EXPLOSION).letIfNotNull { FireworkEffect.deserialize(this) }
+        set(value) {
+            removeFireworkStar()
+            if (value != null)
+                tag[NBT.TAG_FIREWORKS_EXPLOSION] = value.save(ofCompound())
+        }
+
+    override fun getFireworkStar(block: (ItemBuilder, FireworkEffect?) -> Unit): ItemBuilder {
+        block(this, fireworkStar)
+        return this
+    }
+
+    override fun setFireworkStar(effect: FireworkEffect?): ItemBuilder {
+        this.fireworkStar = effect
+        return this
+    }
+
+    override fun removeFireworkStar(): ItemBuilder {
+        removeFireworkStar(null)
+        return this
+    }
+
+    override fun removeFireworkStar(predicate: Predicate<FireworkEffect>?): ItemBuilder {
+        tag.removeIf<NBTTagCompound, FireworkEffect>(NBT.TAG_FIREWORKS_EXPLOSION, {
+            FireworkEffect.deserialize(it)
+        }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - FireworkRocket Effect" defaultstate="collapsed">
+
+    override var fireworkRocketEffects: List<FireworkEffect>?
+        get() {
+            return tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
+                ?.getListOrNull(NBT.TAG_FIREWORKS_EXPLOSIONS)
+                ?.asElements<NBTTagCompound>()
+                ?.map { FireworkEffect.deserialize(it) }
+        }
+        set(value) {
+            clearFireworkRocketEffects()
+            value?.forEach { addFireworkRocketEffect(it) }
+        }
+
+    override fun getFireworkRocketEffects(block: (ItemBuilder, List<FireworkEffect>?) -> Unit): ItemBuilder {
+        block(this, fireworkRocketEffects)
+        return this
+    }
+
+    override fun getFireworkRocketEffect(type: FireworkType): FireworkEffect? {
+        return fireworkRocketEffects?.find { it.type == type }
+    }
+
+    override fun getFireworkRocketEffect(type: FireworkType, block: (ItemBuilder, FireworkEffect?) -> Unit): ItemBuilder {
+        block(this, getFireworkRocketEffect(type))
+        return this
+    }
+
+    override fun setFireworkRocketEffects(effect: List<FireworkEffect>?): ItemBuilder {
+        this.fireworkRocketEffects = effect
+        return this
+    }
+
+    override fun clearFireworkRocketEffects(): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
+            ?.remove(NBT.TAG_FIREWORKS_EXPLOSIONS)
+        return this
+    }
+
+    override fun addFireworkRocketEffect(effect: FireworkEffect): ItemBuilder {
+        tag.getCompoundOrDefault(NBT.TAG_FIREWORKS)
+            .getListOrDefault(NBT.TAG_FIREWORKS_EXPLOSIONS)
+            .addCompound(effect.save(ofCompound()))
+        return this
+    }
+
+    override fun removeFireworkRocketEffect(type: FireworkType): ItemBuilder {
+        removeFireworkRocketEffect { it.type == type }
+        return this
+    }
+
+    override fun removeFireworkRocketEffect(predicate: Predicate<FireworkEffect>?): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
+            ?.getListOrNull(NBT.TAG_FIREWORKS_EXPLOSIONS)
+            ?.removeIf<NBTTagCompound, FireworkEffect>({
+                FireworkEffect.deserialize(it)
+            }, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - FireworkRocket Flight" defaultstate="collapsed">
+
+    override var fireworkRocketFlight: Int?
+        get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS)?.getIntOrNull(NBT.TAG_FIREWORKS_FLIGHT)
+        set(value) {
+            removeFireworkRocketFlight()
+            if (value != null)
+                tag.getCompoundOrDefault(NBT.TAG_FIREWORKS).putInt(NBT.TAG_FIREWORKS_FLIGHT, value)
+        }
+
+    override fun getFireworkRocketFlight(block: (ItemBuilder, Int?) -> Unit): ItemBuilder {
+        block(this, fireworkRocketFlight)
+        return this
+    }
+
+    override fun setFireworkRocketFlight(flight: Int?): ItemBuilder {
+        this.fireworkRocketFlight = flight
+        return this
+    }
+
+    override fun removeFireworkRocketFlight(): ItemBuilder {
+        removeFireworkRocketFlight(null)
+        return this
+    }
+
+    override fun removeFireworkRocketFlight(predicate: Predicate<Int>?): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
+            ?.removeIf(NBT.TAG_FIREWORKS_FLIGHT, predicate)
         return this
     }
 
