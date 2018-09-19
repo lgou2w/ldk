@@ -18,12 +18,12 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
 
-interface CompleteProxy {
+@FunctionalInterface
+interface TypeCompleter {
 
-    fun tabComplete(
-            command: RegisteredCommand,
+    fun onComplete(
+            parameter: RegisteredCommand.ChildParameter,
             sender: CommandSender,
-            name: String,
-            args: Array<out String>
+            value: String
     ) : List<String>
 }

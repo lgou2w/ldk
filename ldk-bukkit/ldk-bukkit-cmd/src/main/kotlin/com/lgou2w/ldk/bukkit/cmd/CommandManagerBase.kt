@@ -35,6 +35,7 @@ abstract class CommandManagerBase(
 ) : CommandManager {
 
     private val transforms : MutableMap<Class<*>, TypeTransform<*>> = HashMap()
+    private val completes : MutableMap<Class<*>, TypeCompleter> = HashMap()
     private val commands : MutableMap<String, RegisteredCommand> = HashMap()
 
     override var globalFeedback: CommandFeedback = DefaultCommandFeedback()
@@ -103,6 +104,38 @@ abstract class CommandManagerBase(
 
     override fun hasTypeTransform(type: Class<*>): Boolean {
         return getTypeTransform(type) != null
+    }
+
+    override fun addDefaultTypeCompletes() {
+        TypeCompletes.addDefaultTypeCompletes(this)
+    }
+
+    override fun addTypeCompleter(type: Class<*>, completer: (
+            parameter: RegisteredCommand.ChildParameter,
+            sender: CommandSender,
+            value: String) -> List<String>
+    ) {
+        return addTypeCompleter(type, object : TypeCompleter {
+            override fun onComplete(parameter: RegisteredCommand.ChildParameter, sender: CommandSender, value: String): List<String> {
+                return completer(parameter, sender, value)
+            }
+        })
+    }
+
+    override fun addTypeCompleter(type: Class<*>, completer: TypeCompleter) {
+        synchronized (completes) {
+            completes[type] = completer
+        }
+    }
+
+    override fun getTypeCompleter(type: Class<*>): TypeCompleter? {
+        synchronized (completes) {
+            return completes[type]
+        }
+    }
+
+    override fun hasTypeCompleter(type: Class<*>): Boolean {
+        return getTypeCompleter(type) != null
     }
 
     protected open fun registered(registered: RegisteredCommand) {

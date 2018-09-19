@@ -18,10 +18,11 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
 
-class AdaptiveCompleteProxy : CompleteProxy {
+open class AdaptiveCompleteProxy : CompleteProxy {
 
-    override fun getTypeCompleter(type: Class<*>): ParameterCompleter {
-        return ParameterCompleter.adaptive(type)
+    protected open fun adaptiveCompleter(type: Class<*>, manager: CommandManager) : TypeCompleter {
+        val completer = manager.getTypeCompleter(type)
+        return completer ?: TypeCompletes.DEFAULT
     }
 
     override fun tabComplete(
@@ -40,7 +41,7 @@ class AdaptiveCompleteProxy : CompleteProxy {
             if (args.lastIndex > child.max)
                 return emptyList()
             val parameter = child.parameters[args.lastIndex - 1]
-            val completer = getTypeCompleter(parameter.type)
+            val completer = adaptiveCompleter(parameter.type, command.manager)
             completer.onComplete(parameter, sender, args.last())
         }
     }

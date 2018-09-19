@@ -20,10 +20,6 @@ import org.bukkit.command.CommandSender
 
 class EmptyCompleteProxy : CompleteProxy {
 
-    override fun getTypeCompleter(type: Class<*>): ParameterCompleter {
-        return ParameterCompleter.EMPTY
-    }
-
     override fun tabComplete(
             command: RegisteredCommand,
             sender: CommandSender,

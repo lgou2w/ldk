@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.common.Function
+import org.bukkit.command.CommandSender
 import org.bukkit.plugin.Plugin
 
 interface CommandManager {
@@ -45,4 +46,21 @@ interface CommandManager {
     fun <T> getTypeTransform(type: Class<T>) : TypeTransform<T>?
 
     fun hasTypeTransform(type: Class<*>) : Boolean
+
+    /**
+     * @see [TypeCompletes.addDefaultTypeCompletes]
+     */
+    fun addDefaultTypeCompletes()
+
+    fun addTypeCompleter(type: Class<*>, completer: (
+            parameter: RegisteredCommand.ChildParameter,
+            sender: CommandSender,
+            value: String) -> List<String>
+    )
+
+    fun addTypeCompleter(type: Class<*>, completer: TypeCompleter)
+
+    fun getTypeCompleter(type: Class<*>) : TypeCompleter?
+
+    fun hasTypeCompleter(type: Class<*>) : Boolean
 }
