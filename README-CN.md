@@ -35,13 +35,14 @@
         * ldk-bukkit-i18n
         * ldk-bukkit-cmd
         * ldk-bukkit-gui
+        * ldk-bukkit-region
         * ldk-bukkit-scheduler
         * ldk-bukkit-plugin
 
         
 # 构建
 
-## Jenkins CI
+## 持续集成
 
 非常感谢 [@25](https://github.com/25) 提供的 `Jenkins CI` 生命周期.
 
