@@ -16,19 +16,13 @@
 
 package com.lgou2w.ldk.bukkit
 
-import com.lgou2w.ldk.bukkit.firework.FireworkEffect
-import com.lgou2w.ldk.bukkit.firework.FireworkType
-import com.lgou2w.ldk.bukkit.item.builder
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.chat.toColor
 import org.bstats.bukkit.Metrics
-import org.bukkit.Color
-import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import java.util.*
 import java.util.logging.Level
 
@@ -73,26 +67,6 @@ class LDKPlugin : PluginBase() {
                     "&6/ldk help &8- &7View command help.",
                     "&6/ldk version &8- &7View current plugin version."
             ).toColor())
-
-            val t1 = Material.FIREWORK_STAR.builder()
-                .setFireworkStar(FireworkEffect.builder(FireworkType.CREEPER)
-                    .withColors(Color.RED)
-                    .build()
-                )
-                .build()
-            val t2 = Material.FIREWORK_ROCKET.builder()
-                .addFireworkRocketEffect(FireworkEffect.builder(FireworkType.BALL_LARGE)
-                    .withFlicker()
-                    .withTrail()
-                    .withColors(Color.RED)
-                    .withFades(Color.GREEN)
-                    .build()
-                )
-                .setFireworkRocketFlight(2)
-                .build()
-
-            (sender as Player).inventory.addItem(t1, t2)
-
             true
         } else if (first.equals("version", true)) {
             sender.sendMessage(ChatColor.GRAY + "The LDK plugin version: ${ChatColor.GREEN}$pluginVersion")
