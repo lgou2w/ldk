@@ -22,6 +22,11 @@
             <id>placeholderapi-repo</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <!-- LuckPerms mirror -->
+        <repository>
+            <id>lucko-repo</id>
+            <url>https://repo.lucko.me</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -39,9 +44,15 @@
             <version>0.0.1-beta2</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Vault -->
+        <!-- VaultAPI --> <!-- LuckPerms Mirror -->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Vault --> <!-- Get Vault Plugin Class -->
         <!-- Only 1.2.27 in -> https://repo.md-5.net/content/groups/public/net/milkbowl/vault/Vault -->
-        <!-- Source http://nexus.hc.to/content/repositories/pub_releases/ but not accessible in China -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>

@@ -20,10 +20,8 @@ import com.lgou2w.ldk.bukkit.region.Region
 import com.lgou2w.ldk.bukkit.region.RegionCuboid
 import com.lgou2w.ldk.bukkit.region.RegionCylinder
 import com.lgou2w.ldk.bukkit.region.RegionEllipsoid
-import com.lgou2w.ldk.bukkit.region.RegionVector
 import com.lgou2w.ldk.bukkit.region.RegionVector2D
 import com.lgou2w.ldk.bukkit.region.RegionVectorBlock
-import com.sk89q.worldedit.BlockVector2D
 import com.sk89q.worldedit.IncompleteRegionException
 import com.sk89q.worldedit.Vector
 import com.sk89q.worldedit.Vector2D
@@ -36,12 +34,6 @@ import org.bukkit.World
 import org.bukkit.entity.Player
 
 class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
-
-    val isV7 : Boolean
-        get() {
-            checkReference()
-            return pluginVersion.contains("7.0")
-        }
 
     fun getSelectRegion(player: Player) : Region? {
         checkReference()
@@ -75,12 +67,6 @@ class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
             = RegionVector2D(x, z)
     private fun Vector2D.toRegionVector2D() : RegionVector2D
             = RegionVector2D(x, z)
-    private fun RegionVector.toVector() : Vector
-            = Vector(x, y, z)
-    private fun RegionVector.toVector2D() : BlockVector2D
-            = BlockVector2D(x, z)
-    private fun RegionVector2D.toVector() : BlockVector2D
-            = BlockVector2D(x, z)
 
     companion object {
         const val NAME = "WorldEdit"

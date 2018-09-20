@@ -87,9 +87,16 @@ object Depends {
         return if (registration != null)
             registration
         else {
-            val implemented = depend.newInstance()
-            register(depend, implemented)
-            implemented
+            try {
+                val implemented = depend.newInstance()
+                register(depend, implemented)
+                implemented
+            } catch (e: Exception) {
+                if (e is DependCannotException)
+                    throw e
+                else
+                    throw DependCannotException(e.message, e.cause ?: e)
+            }
         }
     }
 
