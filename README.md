@@ -37,6 +37,7 @@
         * ldk-bukkit-cmd
         * ldk-bukkit-gui
         * ldk-bukkit-region
+        * ldk-bukkit-depend
         * ldk-bukkit-scheduler
         * ldk-bukkit-plugin
         
