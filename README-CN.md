@@ -32,6 +32,7 @@
     * ldk-nbt
     * ldk-bukkit
         * ldk-bukkit-common
+        * ldk-bukkit-compatibility
         * ldk-bukkit-i18n
         * ldk-bukkit-cmd
         * ldk-bukkit-gui
