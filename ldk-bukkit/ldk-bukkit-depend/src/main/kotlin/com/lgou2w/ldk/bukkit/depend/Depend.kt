@@ -29,7 +29,6 @@ interface Depend : PluginArchive {
 
     val name: String
 
-
     /**
      * * Get this dependent plugin data folder object.
      * * 获取此依赖插件的数据目录对象.
