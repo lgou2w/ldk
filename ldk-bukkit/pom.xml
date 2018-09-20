@@ -16,6 +16,7 @@
 
     <modules>
         <module>ldk-bukkit-common</module>
+        <module>ldk-bukkit-compatibility</module>
         <module>ldk-bukkit-i18n</module>
         <module>ldk-bukkit-cmd</module>
         <module>ldk-bukkit-gui</module>
