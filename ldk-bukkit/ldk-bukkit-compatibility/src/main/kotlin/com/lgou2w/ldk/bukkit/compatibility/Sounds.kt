@@ -56,7 +56,11 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
+import org.bukkit.Location
 import org.bukkit.Sound
 
 enum class Sounds(private vararg val versionDependentNames: String) {
@@ -259,6 +263,31 @@ enum class Sounds(private vararg val versionDependentNames: String) {
 
     private var valid : Sound? = null
 
+    fun tryPlay(location: Location, volume: Float, pitch: Float) : Boolean {
+        return try {
+            val bukkit = toBukkit()
+            location.world.playSound(location, bukkit, volume, pitch)
+            true
+        } catch (e: IllegalArgumentException) {
+            false
+        }
+    }
+
+    // org.bukkit.SoundCategory -> since Minecraft 1.11
+    fun tryPlay(location: Location, category: Category, volume: Float, pitch: Float) : Boolean {
+        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_11_R1)) try {
+            val bukkit = toBukkit()
+            val soundCategory = Enums.ofName(org.bukkit.SoundCategory::class.java, category.name)
+            location.world.playSound(location, bukkit, soundCategory, volume, pitch)
+            true
+        } catch (e: Exception) {
+            // if error try normal
+            tryPlay(location, volume, pitch)
+        } else {
+            // Before 1.11 not supported category
+            tryPlay(location, volume, pitch)
+        }
+    }
 
     /**
      * * Get the bukkit sound for current server version Caches sound on first call.
@@ -276,5 +305,19 @@ enum class Sounds(private vararg val versionDependentNames: String) {
         } else {
             return valid.notNull()
         }
+    }
+
+    enum class Category {
+        MASTER,
+        MUSIC,
+        RECORDS,
+        WEATHER,
+        BLOCKS,
+        HOSTILE,
+        NEUTRAL,
+        PLAYERS,
+        AMBIENT,
+        VOICE,
+        ;
     }
 }
