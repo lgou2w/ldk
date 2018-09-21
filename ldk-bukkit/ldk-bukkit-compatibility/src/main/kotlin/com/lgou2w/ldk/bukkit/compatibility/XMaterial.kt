@@ -56,6 +56,9 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.item.ItemBuilder
+import com.lgou2w.ldk.bukkit.item.builder
+import com.lgou2w.ldk.common.Applicator
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -957,6 +960,11 @@ enum class XMaterial {
     fun createStack(count: Int) : ItemStack
             = createStack(this, count)
 
+    // ItemBuilder Extended
+    @JvmOverloads
+    fun builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}) : ItemBuilder
+            = toBukkit().builder(count, durability, block)
+
     companion object {
 
         private const val V1_13_VERSION_CHECK_TYPE = "RED_WOOL"
@@ -1033,7 +1041,7 @@ enum class XMaterial {
 
         @JvmStatic
         fun isSameType(xMaterial: XMaterial, itemStack: ItemStack) : Boolean {
-            val bukkit = xMaterial.toBukkit()
+            val bukkit = toBukkit(xMaterial)
             val type = itemStack.type
             return if (isV113OrLater) {
                 bukkit == type
