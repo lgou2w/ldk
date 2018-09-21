@@ -1,5 +1,3 @@
-package com.lgou2w.ldk.bukkit.compatibility;
-
 /*
  * The MIT License (MIT)
  *
@@ -40,16 +38,34 @@ package com.lgou2w.ldk.bukkit.compatibility;
  * limitations under the License.
  */
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+/*
+ * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.util.HashMap;
+package com.lgou2w.ldk.bukkit.compatibility
 
-public enum XMaterial {
+import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
+import java.util.*
+
+enum class XMaterial {
 
     ACACIA_BOAT("BOAT_ACACIA", 0),
     ACACIA_BUTTON("WOOD_BUTTON", 0),
-    ACACIA_DOOR("ACACIA_DOOR", 0),
+    ACACIA_DOOR(0, "ACACIA_DOOR", "ACACIA_DOOR_ITEM"),
     ACACIA_FENCE("ACACIA_FENCE", 0),
     ACACIA_FENCE_GATE("ACACIA_FENCE_GATE", 0),
     ACACIA_LEAVES("LEAVES_2", 0),
@@ -57,7 +73,7 @@ public enum XMaterial {
     ACACIA_PLANKS("WOOD", 4),
     ACACIA_PRESSURE_PLATE("WOOD_PLATE", 0),
     ACACIA_SAPLING("SAPLING", 4),
-    ACACIA_SLAB("WOOD_STEP", 4),
+    ACACIA_SLAB(4, "WOODEN_SLAB", "WOOD_STEP", "WOOD_DOUBLE_STEP"),
     ACACIA_STAIRS("ACACIA_STAIRS", 4),
     ACACIA_TRAPDOOR("TRAP_DOOR", 0),
     ACACIA_WOOD("LOG_2", 0),
@@ -79,12 +95,12 @@ public enum XMaterial {
     BEDROCK("BEDROCK", 0),
     BEEF("RAW_BEEF", 0),
     BEETROOT("BEETROOT", 0),
-    BEETROOTS("BEETROOT", 0),
+    BEETROOTS(0, "BEETROOT", "BEETROOT_BLOCK"),
     BEETROOT_SEEDS("BEETROOT_SEEDS", 0),
     BEETROOT_SOUP("BEETROOT_SOUP", 0),
     BIRCH_BOAT("BOAT_BIRCH", 0),
     BIRCH_BUTTON("WOOD_BUTTON", 0),
-    BIRCH_DOOR("BIRCH_DOOR", 0),
+    BIRCH_DOOR(0, "BIRCH_DOOR", "BIRCH_DOOR_ITEM"),
     BIRCH_FENCE("BIRCH_FENCE", 0),
     BIRCH_FENCE_GATE("BIRCH_FENCE_GATE", 0),
     BIRCH_LEAVES("LEAVES", 2),
@@ -92,11 +108,11 @@ public enum XMaterial {
     BIRCH_PLANKS("WOOD", 2),
     BIRCH_PRESSURE_PLATE("WOOD_PLATE", 0),
     BIRCH_SAPLING("SAPLING", 2),
-    BIRCH_SLAB("WOOD_STEP", 2),
+    BIRCH_SLAB(2, "WOODEN_SLAB", "WOOD_STEP", "WOOD_DOUBLE_STEP"),
     BIRCH_STAIRS("BIRCH_WOOD_STAIRS", 0),
     BIRCH_TRAPDOOR("TRAP_DOOR", 0),
     BIRCH_WOOD("LOG", 2),
-    BLACK_BANNER("BANNER", 0),
+    BLACK_BANNER(0, "BANNER", "STANDING_BANNER"),
     BLACK_BED("BED", 15),
     BLACK_CARPET("CARPET", 15),
     BLACK_CONCRETE("CONCRETE", 15),
@@ -111,7 +127,7 @@ public enum XMaterial {
     BLAZE_POWDER("BLAZE_POWDER", 0),
     BLAZE_ROD("BLAZE_ROD", 0),
     BLAZE_SPAWN_EGG("MONSTER_EGG", 0),
-    BLUE_BANNER("BANNER", 11),
+    BLUE_BANNER(11, "BANNER", "STANDING_BANNER"),
     BLUE_BED("BED", 4),
     BLUE_CARPET("CARPET", 11),
     BLUE_CONCRETE("CONCRETE", 11),
@@ -135,13 +151,14 @@ public enum XMaterial {
     BRAIN_CORAL("STONE", 0),
     BRAIN_CORAL_BLOCK("STONE", 0),
     BRAIN_CORAL_FAN("STONE", 0),
+    BRAIN_CORAL_WALL_FAN("STONE", 0),
     BREAD("BREAD", 0),
-    BREWING_STAND("BREWING_STAND", 0),
+    BREWING_STAND(0, "BREWING_STAND", "BREWING_STAND_ITEM"),
     BRICK("CLAY_BRICK", 0),
     BRICKS("BRICK", 0),
-    BRICK_SLAB("STEP", 4),
+    BRICK_SLAB(4, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     BRICK_STAIRS("BRICK_STAIRS", 0),
-    BROWN_BANNER("BANNER", 3),
+    BROWN_BANNER(3, "BANNER", "STANDING_BANNER"),
     BROWN_BED("BED", 12),
     BROWN_CARPET("CARPET", 12),
     BROWN_CONCRETE("CONCRETE", 12),
@@ -159,15 +176,16 @@ public enum XMaterial {
     BUBBLE_CORAL("STONE", 0),
     BUBBLE_CORAL_BLOCK("STONE", 0),
     BUBBLE_CORAL_FAN("STONE", 0),
+    BUBBLE_CORAL_WALL_FAN("STONE", 0),
     BUCKET("BUCKET", 0),
     CACTUS("CACTUS", 0),
     CACTUS_GREEN("INK_SACK", 2),
-    CAKE("CAKE", 0),
+    CAKE(0, "CAKE", "CAKE_BLOCK"),
     CARROT("CARROT_ITEM", 0),
     CARROTS("CARROT", 0),
     CARROT_ON_A_STICK("CARROT_STICK", 0),
     CARVED_PUMPKIN("PUMPKIN", 0),
-    CAULDRON("CAULDRON", 0),
+    CAULDRON(0, "CAULDRON", "CAULDRON_ITEM"),
     CAVE_AIR("AIR", 0),
     CAVE_SPIDER_SPAWN_EGG("MONSTER_EGG", 0),
     CHAINMAIL_BOOTS("CHAINMAIL_BOOTS", 0),
@@ -176,7 +194,7 @@ public enum XMaterial {
     CHAINMAIL_LEGGINGS("CHAINMAIL_LEGGINGS", 0),
     CHAIN_COMMAND_BLOCK("COMMAND_CHAIN", 0),
     CHARCOAL("COAL", 1),
-    CHEST("CHEST", 0),
+    CHEST(0, "CHEST", "LOCKED_CHEST"),
     CHEST_MINECART("STORAGE_MINECART", 0),
     CHICKEN("RAW_CHICKEN", 0),
     CHICKEN_SPAWN_EGG("MONSTER_EGG", 0),
@@ -196,7 +214,7 @@ public enum XMaterial {
     COAL_ORE("COAL_ORE", 0),
     COARSE_DIRT("DIRT", 1),
     COBBLESTONE("COBBLESTONE", 0),
-    COBBLESTONE_SLAB("STEP", 3),
+    COBBLESTONE_SLAB(3, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     COBBLESTONE_STAIRS("COBBLESTONE_STAIRS", 0),
     COBBLESTONE_WALL("COBBLE_WALL", 0),
     COBWEB("WEB", 0),
@@ -207,7 +225,7 @@ public enum XMaterial {
     COD_SPAWN_EGG("MONSTER_EGG", 0),
     COMMAND_BLOCK("COMMAND", 0),
     COMMAND_BLOCK_MINECART("COMMAND_MINECART", 0),
-    COMPARATOR("REDSTONE_COMPARATOR", 0),
+    COMPARATOR(0, "REDSTONE_COMPARATOR", "REDSTONE_COMPARATOR_ON", "REDSTONE_COMPARATOR_OFF"),
     COMPASS("COMPASS", 0),
     CONDUIT("STONE", 0),
     COOKED_BEEF("COOKED_BEEF", 0),
@@ -226,7 +244,7 @@ public enum XMaterial {
     CREEPER_WALL_HEAD("SKULL", 0),
     CUT_RED_SANDSTONE("STONE", 0),
     CUT_SANDSTONE("STONE", 0),
-    CYAN_BANNER("BANNER", 6),
+    CYAN_BANNER(6, "BANNER", "STANDING_BANNER"),
     CYAN_BED("BED", 9),
     CYAN_CARPET("CARPET", 9),
     CYAN_CONCRETE("CONCRETE", 9),
@@ -244,7 +262,7 @@ public enum XMaterial {
     DANDELION_YELLOW("INK_SACK", 11),
     DARK_OAK_BOAT("BOAT_DARK_OAK", 0),
     DARK_OAK_BUTTON("WOOD_BUTTON", 0),
-    DARK_OAK_DOOR("DARK_OAK_DOOR", 0),
+    DARK_OAK_DOOR(0, "DARK_OAK_DOOR", "DARK_OAK_DOOR_ITEM"),
     DARK_OAK_FENCE("DARK_OAK_FENCE", 0),
     DARK_OAK_FENCE_GATE("DARK_OAK_FENCE_GATE", 0),
     DARK_OAK_LEAVES("LEAVES_2", 1),
@@ -252,20 +270,35 @@ public enum XMaterial {
     DARK_OAK_PLANKS("WOOD", 5),
     DARK_OAK_PRESSURE_PLATE("WOOD_PLATE", 0),
     DARK_OAK_SAPLING("SAPLING", 5),
-    DARK_OAK_SLAB("WOOD_STEP", 0),
+    DARK_OAK_SLAB(5, "WOODEN_SLAB", "WOOD_STEP", "WOOD_DOUBLE_STEP"),
     DARK_OAK_STAIRS("DARK_OAK_STAIRS", 0),
     DARK_OAK_TRAPDOOR("TRAP_DOOR", 0),
     DARK_OAK_WOOD("LOG_2", 1),
     DARK_PRISMARINE("PRISMARINE", 2),
     DARK_PRISMARINE_SLAB("STONE", 0),
     DARK_PRISMARINE_STAIRS("STONE", 0),
-    DAYLIGHT_DETECTOR("DAYLIGHT_DETECTOR", 0),
+    DAYLIGHT_DETECTOR(0, "DAYLIGHT_DETECTOR", "DAYLIGHT_DETECTOR_INVERTED"),
+    DEAD_BRAIN_CORAL("STONE", 0),
     DEAD_BRAIN_CORAL_BLOCK("STONE", 0),
+    DEAD_BRAIN_CORAL_FAN("STONE", 0),
+    DEAD_BRAIN_CORAL_WALL_FAN("STONE", 0),
+    DEAD_BUBBLE_CORAL("STONE", 0),
     DEAD_BUBBLE_CORAL_BLOCK("STONE", 0),
+    DEAD_BUBBLE_CORAL_FAN("STONE", 0),
+    DEAD_BUBBLE_CORAL_WALL_FAN("STONE", 0),
     DEAD_BUSH("DEAD_BUSH", 0),
+    DEAD_FIRE_CORAL("STONE", 0),
     DEAD_FIRE_CORAL_BLOCK("STONE", 0),
+    DEAD_FIRE_CORAL_FAN("STONE", 0),
+    DEAD_FIRE_CORAL_WALL_FAN("STONE", 0),
+    DEAD_HORN_CORAL("STONE", 0),
     DEAD_HORN_CORAL_BLOCK("STONE", 0),
+    DEAD_HORN_CORAL_FAN("STONE", 0),
+    DEAD_HORN_CORAL_WALL_FAN("STONE", 0),
+    DEAD_TUBE_CORAL("STONE", 0),
     DEAD_TUBE_CORAL_BLOCK("STONE", 0),
+    DEAD_TUBE_CORAL_FAN("STONE", 0),
+    DEAD_TUBE_CORAL_WALL_FAN("STONE", 0),
     DEBUG_STICK("STICK", 0),
     DETECTOR_RAIL("DETECTOR_RAIL", 0),
     DIAMOND("DIAMOND", 0),
@@ -329,12 +362,13 @@ public enum XMaterial {
     FIRE_CORAL("STONE", 0),
     FIRE_CORAL_BLOCK("STONE", 0),
     FIRE_CORAL_FAN("STONE", 0),
+    FIRE_CORAL_WALL_FAN("STONE", 0),
     FISHING_ROD("FISHING_ROD", 0),
     FLINT("FLINT", 0),
     FLINT_AND_STEEL("FLINT_AND_STEEL", 0),
-    FLOWER_POT("FLOWER_POT", 0),
+    FLOWER_POT(0, "FLOWER_POT", "FLOWER_POT_ITEM"),
     FROSTED_ICE("FROSTED_ICE", 0),
-    FURNACE("FURNACE", 0),
+    FURNACE(0, "FURNACE", "BURNING_FURNACE"),
     FURNACE_MINECART("POWERED_MINECART", 0),
     GHAST_SPAWN_EGG("MONSTER_EGG", 0),
     GHAST_TEAR("GHAST_TEAR", 0),
@@ -365,7 +399,7 @@ public enum XMaterial {
     GRASS_BLOCK("GRASS", 0),
     GRASS_PATH("GRASS_PATH", 0),
     GRAVEL("GRAVEL", 0),
-    GRAY_BANNER("BANNER", 8),
+    GRAY_BANNER(8, "BANNER", "STANDING_BANNER"),
     GRAY_BED("BED", 7),
     GRAY_CARPET("CARPET", 7),
     GRAY_CONCRETE("CONCRETE", 7),
@@ -378,7 +412,7 @@ public enum XMaterial {
     GRAY_TERRACOTTA("STAINED_CLAY", 7),
     GRAY_WALL_BANNER("WALL_BANNER", 0),
     GRAY_WOOL("WOOL", 7),
-    GREEN_BANNER("BANNER", 2),
+    GREEN_BANNER(2, "BANNER", "STANDING_BANNER"),
     GREEN_BED("BED", 13),
     GREEN_CARPET("CARPET", 13),
     GREEN_CONCRETE("CONCRETE", 13),
@@ -400,6 +434,7 @@ public enum XMaterial {
     HORN_CORAL("STONE", 0),
     HORN_CORAL_BLOCK("STONE", 0),
     HORN_CORAL_FAN("STONE", 0),
+    HORN_CORAL_WALL_FAN("STONE", 0),
     HORSE_SPAWN_EGG("MONSTER_EGG", 0),
     HUSK_SPAWN_EGG("MONSTER_EGG", 0),
     ICE("ICE", 0),
@@ -415,7 +450,7 @@ public enum XMaterial {
     IRON_BLOCK("IRON_BLOCK", 0),
     IRON_BOOTS("IRON_BOOTS", 0),
     IRON_CHESTPLATE("IRON_CHESTPLATE", 0),
-    IRON_DOOR("IRON_DOOR", 0),
+    IRON_DOOR(0, "IRON_DOOR", "IRON_DOOR_BLOCK"),
     IRON_HELMET("IRON_HELMET", 0),
     IRON_HOE("IRON_HOE", 0),
     IRON_HORSE_ARMOR("IRON_BARDING", 0),
@@ -432,7 +467,7 @@ public enum XMaterial {
     JUKEBOX("JUKEBOX", 0),
     JUNGLE_BOAT("BOAT_JUNGLE", 0),
     JUNGLE_BUTTON("WOOD_BUTTON", 0),
-    JUNGLE_DOOR("JUNGLE_DOOR", 0),
+    JUNGLE_DOOR(0, "JUNGLE_DOOR", "JUNGLE_DOOR_ITEM"),
     JUNGLE_FENCE("JUNGLE_FENCE", 0),
     JUNGLE_FENCE_GATE("JUNGLE_FENCE_GATE", 0),
     JUNGLE_LEAVES("LEAVES", 3),
@@ -440,7 +475,7 @@ public enum XMaterial {
     JUNGLE_PLANKS("WOOD", 3),
     JUNGLE_PRESSURE_PLATE("WOOD_PLATE", 0),
     JUNGLE_SAPLING("SAPLING", 3),
-    JUNGLE_SLAB("WOOD_STEP", 3),
+    JUNGLE_SLAB(3, "WOODEN_SLAB", "WOOD_STEP", "WOOD_DOUBLE_STEP"),
     JUNGLE_STAIRS("JUNGLE_WOOD_STAIRS", 0),
     JUNGLE_TRAPDOOR("TRAP_DOOR", 0),
     JUNGLE_WOOD("LOG", 3),
@@ -452,7 +487,7 @@ public enum XMaterial {
     LAPIS_LAZULI("INK_SACK", 4),
     LAPIS_ORE("LAPIS_ORE", 0),
     LARGE_FERN("DOUBLE_PLANT", 3),
-    LAVA("LAVA", 0),
+    LAVA(0, "LAVA", "STATIONARY_LAVA"),
     LAVA_BUCKET("LAVA_BUCKET", 0),
     LEAD("LEASH", 0),
     LEATHER("LEATHER", 0),
@@ -461,7 +496,7 @@ public enum XMaterial {
     LEATHER_HELMET("LEATHER_HELMET", 0),
     LEATHER_LEGGINGS("LEATHER_LEGGINGS", 0),
     LEVER("LEVER", 0),
-    LIGHT_BLUE_BANNER("BANNER", 12),
+    LIGHT_BLUE_BANNER(12, "BANNER", "STANDING_BANNER"),
     LIGHT_BLUE_BED("BED", 3),
     LIGHT_BLUE_CARPET("CARPET", 3),
     LIGHT_BLUE_CONCRETE("CONCRETE", 3),
@@ -474,7 +509,7 @@ public enum XMaterial {
     LIGHT_BLUE_TERRACOTTA("STAINED_CLAY", 3),
     LIGHT_BLUE_WALL_BANNER("BANNER", 0),
     LIGHT_BLUE_WOOL("WOOL", 3),
-    LIGHT_GRAY_BANNER("BANNER", 7),
+    LIGHT_GRAY_BANNER(7, "BANNER", "STANDING_BANNER"),
     LIGHT_GRAY_BED("BED", 8),
     LIGHT_GRAY_CARPET("CARPET", 8),
     LIGHT_GRAY_CONCRETE("CONCRETE", 8),
@@ -490,7 +525,7 @@ public enum XMaterial {
     LIGHT_WEIGHTED_PRESSURE_PLATE("GOLD_PLATE", 0),
     LILAC("DOUBLE_PLANT", 1),
     LILY_PAD("WATER_LILY", 0),
-    LIME_BANNER("BANNER", 10),
+    LIME_BANNER(10, "BANNER", "STANDING_BANNER"),
     LIME_BED("BED", 5),
     LIME_CARPET("CARPET", 5),
     LIME_CONCRETE("CONCRETE", 5),
@@ -505,7 +540,7 @@ public enum XMaterial {
     LIME_WOOL("WOOL", 5),
     LINGERING_POTION("LINGERING_POTION", 0),
     LLAMA_SPAWN_EGG("MONSTER_EGG", 0),
-    MAGENTA_BANNER("BANNER", 13),
+    MAGENTA_BANNER(13, "BANNER", "STANDING_BANNER"),
     MAGENTA_BED("BED", 2),
     MAGENTA_CARPET("CARPET", 2),
     MAGENTA_CONCRETE("CONCRETE", 2),
@@ -521,7 +556,7 @@ public enum XMaterial {
     MAGMA_BLOCK("MAGMA", 0),
     MAGMA_CREAM("MAGMA_CREAM", 0),
     MAGMA_CUBE_SPAWN_EGG("MONSTER_EGG", 0),
-    MAP("MAP", 0),
+    MAP(0, "MAP", "EMPTY_MAP"),
     MELON("MELON_BLOCK", 0),
     MELON_SEEDS("MELON_SEEDS", 0),
     MELON_SLICE("MELON", 0),
@@ -534,7 +569,7 @@ public enum XMaterial {
     MOSSY_STONE_BRICKS("SMOOTH_BRICK", 1),
     MOVING_PISTON("PISTON_MOVING_PIECE", 0),
     MULE_SPAWN_EGG("MONSTER_EGG", 0),
-    MUSHROOM_STEM("BROWN_MUSHROOM", 0),
+    MUSHROOM_STEM(0, "BROWN_MUSHROOM", "HUGE_MUSHROOM_1", "HUGE_MUSHROOM_2"),
     MUSHROOM_STEW("MUSHROOM_SOUP", 0),
     MUSIC_DISC_11("GOLD_RECORD", 0),
     MUSIC_DISC_13("GREEN_RECORD", 0),
@@ -553,20 +588,20 @@ public enum XMaterial {
     NAME_TAG("NAME_TAG", 0),
     NAUTILUS_SHELL("STONE", 0),
     NETHERRACK("NETHERRACK", 0),
-    NETHER_BRICK("NETHER_BRICK", 0),
+    NETHER_BRICK("NETHER_BRICK_ITEM", 0),
     NETHER_BRICKS("NETHER_BRICK", 0),
     NETHER_BRICK_FENCE("NETHER_FENCE", 0),
-    NETHER_BRICK_SLAB("STEP", 6),
+    NETHER_BRICK_SLAB(6, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     NETHER_BRICK_STAIRS("NETHER_BRICK_STAIRS", 0),
     NETHER_PORTAL("PORTAL", 0),
     NETHER_QUARTZ_ORE("QUARTZ_ORE", 0),
     NETHER_STAR("NETHER_STAR", 0),
     NETHER_WART("NETHER_STALK", 0),
-    NETHER_WART_BLOCK("NETHER_WART_BLOCK", 0),
+    NETHER_WART_BLOCK(0, "NETHER_WART_BLOCK", "NETHER_WARTS"),
     NOTE_BLOCK("NOTE_BLOCK", 0),
     OAK_BOAT("BOAT", 0),
     OAK_BUTTON("WOOD_BUTTON", 0),
-    OAK_DOOR("WOOD_DOOR", 0),
+    OAK_DOOR(0, "WOODEN_DOOR", "WOOD_DOOR"),
     OAK_FENCE("FENCE", 0),
     OAK_FENCE_GATE("FENCE_GATE", 0),
     OAK_LEAVES("LEAVES", 0),
@@ -574,14 +609,14 @@ public enum XMaterial {
     OAK_PLANKS("WOOD", 0),
     OAK_PRESSURE_PLATE("WOOD_PLATE", 0),
     OAK_SAPLING("SAPLING", 0),
-    OAK_SLAB("WOOD_STEP", 0),
+    OAK_SLAB(0, "WOODEN_SLAB", "WOOD_STEP", "WOOD_DOUBLE_STEP"),
     OAK_STAIRS("WOOD_STAIRS", 0),
     OAK_TRAPDOOR("TRAP_DOOR", 0),
     OAK_WOOD("LOG", 0),
     OBSERVER("OBSERVER", 0),
     OBSIDIAN("OBSIDIAN", 0),
     OCELOT_SPAWN_EGG("RECORD_12", 0),
-    ORANGE_BANNER("BANNER", 14),
+    ORANGE_BANNER(14, "BANNER", "STANDING_BANNER"),
     ORANGE_BED("BED", 1),
     ORANGE_CARPET("CARPET", 1),
     ORANGE_CONCRETE("CONCRETE", 1),
@@ -605,7 +640,7 @@ public enum XMaterial {
     PHANTOM_MEMBRANE("STONE", 0),
     PHANTOM_SPAWN_EGG("MONSTER_EGG", 0),
     PIG_SPAWN_EGG("MONSTER_EGG", 0),
-    PINK_BANNER("BANNER", 9),
+    PINK_BANNER(9, "BANNER", "STANDING_BANNER"),
     PINK_BED("BED", 6),
     PINK_CARPET("CARPET", 6),
     PINK_CONCRETE("CONCRETE", 6),
@@ -672,7 +707,7 @@ public enum XMaterial {
     PUMPKIN_PIE("PUMPKIN_PIE", 0),
     PUMPKIN_SEEDS("PUMPKIN_SEEDS", 0),
     PUMPKIN_STEM("PUMPKIN_STEM", 0),
-    PURPLE_BANNER("BANNER", 5),
+    PURPLE_BANNER(5, "BANNER", "STANDING_BANNER"),
     PURPLE_BED("BED", 10),
     PURPLE_CARPET("CARPET", 10),
     PURPLE_CONCRETE("CONCRETE", 10),
@@ -687,12 +722,12 @@ public enum XMaterial {
     PURPLE_WOOL("WOOL", 10),
     PURPUR_BLOCK("PURPUR_BLOCK", 0),
     PURPUR_PILLAR("PURPUR_PILLAR", 0),
-    PURPUR_SLAB("PURPUR_SLAB", 0),
+    PURPUR_SLAB(0, "PURPUR_SLAB", "PURPUR_DOUBLE_SLAB"),
     PURPUR_STAIRS("PURPUR_STAIRS", 0),
     QUARTZ("QUARTZ", 0),
     QUARTZ_BLOCK("QUARTZ_BLOCK", 0),
     QUARTZ_PILLAR("QUARTZ_BLOCK", 2),
-    QUARTZ_SLAB("STEP", 7),
+    QUARTZ_SLAB(7, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     QUARTZ_STAIRS("QUARTZ_STAIRS", 0),
     RABBIT("RABBIT", 0),
     RABBIT_FOOT("RABBIT_FOOT", 0),
@@ -702,13 +737,13 @@ public enum XMaterial {
     RAIL("RAILS", 0),
     REDSTONE("REDSTONE", 0),
     REDSTONE_BLOCK("REDSTONE_BLOCK", 0),
-    REDSTONE_LAMP("REDSTONE_LAMP_OFF", 0),
-    REDSTONE_ORE("REDSTONE_ORE", 0),
-    REDSTONE_TORCH("REDSTONE_TORCH_ON", 0),
-    REDSTONE_WALL_TORCH("REDSTONE_TORCH_ON", 1),
+    REDSTONE_LAMP(0, "REDSTONE_LAMP_ON", "REDSTONE_LAMP_OFF"),
+    REDSTONE_ORE(0, "REDSTONE_ORE", "GLOWING_REDSTONE_ORE"),
+    REDSTONE_TORCH(0, "REDSTONE_TORCH_ON", "REDSTONE_TORCH_OFF"),
+    REDSTONE_WALL_TORCH(1, "REDSTONE_TORCH_ON", "REDSTONE_TORCH_OFF"),
     REDSTONE_WIRE("REDSTONE_WIRE", 0),
-    RED_BANNER("BANNER", 1),
-    RED_BED("BED", 14),
+    RED_BANNER(1, "BANNER", "STANDING_BANNER"),
+    RED_BED(14, "BED", "BED_BLOCK"),
     RED_CARPET("CARPET", 14),
     RED_CONCRETE("CONCRETE", 14),
     RED_CONCRETE_POWDER("CONCRETE_POWDER", 14),
@@ -718,7 +753,7 @@ public enum XMaterial {
     RED_NETHER_BRICKS("RED_NETHER_BRICK", 0),
     RED_SAND("SAND", 1),
     RED_SANDSTONE("RED_SANDSTONE", 0),
-    RED_SANDSTONE_SLAB("STONE_SLAB2", 0),
+    RED_SANDSTONE_SLAB(0, "STONE_SLAB2", "DOUBLE_STONE_SLAB2"),
     RED_SANDSTONE_STAIRS("RED_SANDSTONE_STAIRS", 0),
     RED_SHULKER_BOX("RED_SHULKER_BOX", 0),
     RED_STAINED_GLASS("STAINED_GLASS", 14),
@@ -727,7 +762,7 @@ public enum XMaterial {
     RED_TULIP("RED_ROSE", 4),
     RED_WALL_BANNER("WALL_BANNER", 0),
     RED_WOOL("WOOL", 14),
-    REPEATER("DIODE", 0),
+    REPEATER(0, "DIODE", "DIODE_BLOCK_ON", "DIODE_BLOCK_OFF"),
     REPEATING_COMMAND_BLOCK("COMMAND_REPEATING", 0),
     ROSE_BUSH("DOUBLE_PLANT", 4),
     ROSE_RED("INK_SACK", 1),
@@ -738,7 +773,7 @@ public enum XMaterial {
     SALMON_SPAWN_EGG("MONSTER_EGG", 0),
     SAND("SAND", 0),
     SANDSTONE("SANDSTONE", 0),
-    SANDSTONE_SLAB("STEP", 1),
+    SANDSTONE_SLAB(1, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     SANDSTONE_STAIRS("SANDSTONE_STAIRS", 0),
     SCUTE("STONE", 0),
     SEAGRASS("STONE", 0),
@@ -753,7 +788,7 @@ public enum XMaterial {
     SIGN("SIGN", 0),
     SILVERFISH_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_HORSE_SPAWN_EGG("MONSTER_EGG", 0),
-    SKELETON_SKULL("SKULL", 0),
+    SKELETON_SKULL(0, "SKULL", "SKULL_ITEM"),
     SKELETON_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_WALL_SKULL("SKULL", 0),
     SLIME_BALL("SLIME_BALL", 0),
@@ -762,7 +797,7 @@ public enum XMaterial {
     SMOOTH_QUARTZ("STONE", 0),
     SMOOTH_RED_SANDSTONE("RED_SANDSTONE", 2),
     SMOOTH_SANDSTONE("SANDSTONE", 2),
-    SMOOTH_STONE("STEP", 0),
+    SMOOTH_STONE("STONE", 0),
     SNOW("SNOW", 0),
     SNOWBALL("SNOW_BALL", 0),
     SNOW_BLOCK("SNOW_BLOCK", 0),
@@ -775,7 +810,7 @@ public enum XMaterial {
     SPONGE("SPONGE", 0),
     SPRUCE_BOAT("BOAT_SPRUCE", 0),
     SPRUCE_BUTTON("WOOD_BUTTON", 0),
-    SPRUCE_DOOR("SPRUCE_DOOR", 0),
+    SPRUCE_DOOR(0, "SPRUCE_DOOR", "SPRUCE_DOOR_ITEM"),
     SPRUCE_FENCE("SPRUCE_FENCE", 0),
     SPRUCE_FENCE_GATE("SPRUCE_FENCE_GATE", 0),
     SPRUCE_LEAVES("LEAVES", 1),
@@ -783,7 +818,7 @@ public enum XMaterial {
     SPRUCE_PLANKS("WOOD", 1),
     SPRUCE_PRESSURE_PLATE("WOOD_PLATE", 0),
     SPRUCE_SAPLING("SAPLING", 1),
-    SPRUCE_SLAB("WOOD_STEP", 1),
+    SPRUCE_SLAB(1, "WOODEN_SLAB", "WOOD_STEP", "WOOD_DOUBLE_STEP"),
     SPRUCE_STAIRS("SPRUCE_WOOD_STAIRS", 0),
     SPRUCE_TRAPDOOR("TRAP_DOOR", 0),
     SPRUCE_WOOD("LOG", 1),
@@ -793,14 +828,14 @@ public enum XMaterial {
     STONE("STONE", 0),
     STONE_AXE("STONE_AXE", 0),
     STONE_BRICKS("SMOOTH_BRICK", 0),
-    STONE_BRICK_SLAB("STEP", 5),
+    STONE_BRICK_SLAB(5, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     STONE_BRICK_STAIRS("SMOOTH_STAIRS", 0),
     STONE_BUTTON("STONE_BUTTON", 0),
     STONE_HOE("STONE_HOE", 0),
     STONE_PICKAXE("STONE_PICKAXE", 0),
     STONE_PRESSURE_PLATE("STONE_PLATE", 0),
     STONE_SHOVEL("STONE_SPADE", 0),
-    STONE_SLAB("STEP", 0),
+    STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     STONE_SWORD("STONE_SWORD", 0),
     STRAY_SPAWN_EGG("MONSTER_EGG", 0),
     STRING("STRING", 0),
@@ -819,7 +854,7 @@ public enum XMaterial {
     STRUCTURE_BLOCK("STRUCTURE_BLOCK", 0),
     STRUCTURE_VOID("STRUCTURE_VOID", 0),
     SUGAR("SUGAR", 0),
-    SUGAR_CANE("SUGAR_CANE", 0),
+    SUGAR_CANE(0, "SUGAR_CANE", "SUGAR_CANE_BLOCK"),
     SUNFLOWER("DOUBLE_PLANT", 0),
     TALL_GRASS("DOUBLE_PLANT", 2),
     TALL_SEAGRASS("STONE", 0),
@@ -839,6 +874,7 @@ public enum XMaterial {
     TUBE_CORAL("STONE", 0),
     TUBE_CORAL_BLOCK("STONE", 0),
     TUBE_CORAL_FAN("STONE", 0),
+    TUBE_CORAL_WALL_FAN("STONE", 0),
     TURTLE_EGG("MONSTER_EGG", 0),
     TURTLE_HELMET("STONE", 0),
     TURTLE_SPAWN_EGG("MONSTER_EGG", 0),
@@ -847,14 +883,14 @@ public enum XMaterial {
     VINDICATOR_SPAWN_EGG("MONSTER_EGG", 0),
     VINE("VINE", 0),
     VOID_AIR("AIR", 0),
-    WALL_SIGN("WALL_SIGN", 0),
+    WALL_SIGN(0, "WALL_SIGN", "SIGN_POST"),
     WALL_TORCH("TORCH", 1),
-    WATER("WATER", 0),
+    WATER(0, "WATER", "STATIONARY_WATER"),
     WATER_BUCKET("WATER_BUCKET", 0),
     WET_SPONGE("SPONGE", 1),
-    WHEAT("WHEAT", 0),
-    WHEAT_SEEDS("SEEDS", 0),
-    WHITE_BANNER("BANNER", 15),
+    WHEAT(0, "WHEAT", "CROPS"),
+    WHEAT_SEEDS(0, "WHEAT_SEEDS", "SEEDS"),
+    WHITE_BANNER(15, "BANNER", "STANDING_BANNER"),
     WHITE_BED("BED", 0),
     WHITE_CARPET("CARPET", 0),
     WHITE_CONCRETE("CONCRETE", 0),
@@ -879,7 +915,7 @@ public enum XMaterial {
     WOODEN_SWORD("WOOD_SWORD", 0),
     WRITABLE_BOOK("BOOK_AND_QUILL", 0),
     WRITTEN_BOOK("WRITTEN_BOOK", 0),
-    YELLOW_BANNER("BANNER", 11),
+    YELLOW_BANNER(11, "BANNER", "STANDING_BANNER"),
     YELLOW_BED("BED", 4),
     YELLOW_CARPET("CARPET", 4),
     YELLOW_CONCRETE("CONCRETE", 4),
@@ -898,139 +934,148 @@ public enum XMaterial {
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 0),
     ;
-    static int newV = -1;
-    private static HashMap<String, XMaterial> cachedSearch = new HashMap<>();
-    String m;
-    int data;
 
-    XMaterial(String m, int data) {
-        this.m = m;
-        this.data = data;
+    private val aliases : Array<out String>
+    private val data : Int
+
+    constructor(alias: String, data: Int) {
+        this.aliases = arrayOf(alias)
+        this.data = data
     }
 
-    public static boolean isNewVersion() {
-        if (newV == 0) return false;
-        if (newV == 1) return true;
-        Material mat = Material.matchMaterial("RED_WOOL");
-        if (mat != null) {
-            newV = 1;
-            return true;
-        }
-        newV = 0;
-        return false;
+    constructor(data: Int, vararg aliases: String) {
+        this.aliases = aliases
+        this.data = data
     }
 
-    public static XMaterial requestXMaterial(String name, byte data) {
-        if (cachedSearch.containsKey(name.toUpperCase() + "," + data)) {
-            return cachedSearch.get(name.toUpperCase() + "," + data);
-        }
-        for (XMaterial mat : XMaterial.values()) {
-            if (name.toUpperCase().equals(mat.m) && ((byte) mat.data) == data) {
-                cachedSearch.put(mat.m + "," + data, mat);
-                return mat;
+    fun toBukkit() : Material
+            = toBukkit(this)
+
+    fun isSameType(itemStack: ItemStack) : Boolean
+            = isSameType(this, itemStack)
+
+    fun createStack(count: Int) : ItemStack
+            = createStack(this, count)
+
+    companion object {
+
+        private const val V1_13_VERSION_CHECK_TYPE = "RED_WOOL"
+
+        @JvmStatic
+        private val isV113OrLater : Boolean by lazy {
+            try {
+                Material.matchMaterial(V1_13_VERSION_CHECK_TYPE) != null
+            } catch (e: IllegalArgumentException) {
+                false
             }
         }
-        return null;
-    }
 
-    public static XMaterial fromString(String key) {
-        XMaterial xmat = null;
-        try {
-            xmat = XMaterial.valueOf(key);
-            return xmat;
-        } catch (IllegalArgumentException e) {
-            String[] split = key.split(":");
-            if (split.length == 1) {
-                xmat = requestXMaterial(key, (byte) 0);
+        /**
+         * ### Before 1.13 <=> TYPE:DATA
+         * Case: WOOL:15 -> BLACK_WOOL
+         * Case: STONE:5 -> ANDESITE
+         *
+         * ### After 1.13
+         * Case: RED_WOOL -> RED_WOOL
+         */
+        @JvmStatic
+        private val LOOKUPS : MutableMap<String, XMaterial> = Collections.synchronizedMap(HashMap())
+
+        @JvmStatic
+        fun toBukkit(xMaterial: XMaterial) : Material {
+            val value = Material.matchMaterial(xMaterial.name)
+            return value ?: xMaterial.aliases.mapNotNull { Material.matchMaterial(it) }.firstOrNull()
+                   ?: throw UnsupportedOperationException("Internal error, unsupported '$xMaterial' material type.")
+        }
+
+        @JvmStatic
+        fun fromBukkit(material: Material) : XMaterial {
+            return searchByBukkit(material)
+                   ?: throw UnsupportedOperationException("Internal error, unsupported '$material' material type.")
+        }
+
+        @JvmStatic
+        fun searchByBukkit(material: Material) : XMaterial? {
+            val type = material.name.toUpperCase(Locale.US)
+            return try {
+                XMaterial.valueOf(type)
+            } catch (e: IllegalArgumentException) {
+                searchByType(type)
+            }
+        }
+
+        /**
+         * * Before 1.13 <=> `TYPE:DATA`, case: `WOOL:15` == `BLACK_WOOL`
+         * * After 1.13 <=> `TYPE`, case: `BLACK_WOOL`, `RED_BED`
+         */
+        @JvmStatic
+        fun searchByType(type: String) : XMaterial? {
+            val typeUpperCase = type.toUpperCase(Locale.US)
+            val data = type.split(":").getOrNull(1)?.toIntOrNull() // TYPE:DATA
+            val lookupKey = typeUpperCase + if (data != null) ":$data" else ""
+            val lookup = LOOKUPS[lookupKey]
+            if (lookup != null) {
+                return lookup
             } else {
-                xmat = requestXMaterial(split[0], (byte) Integer.parseInt(split[1]));
-            }
-            return xmat;
-        }
-
-    }
-
-    public ItemStack parseItem() {
-        Material mat = parseMaterial();
-        if (isNewVersion()) {
-            return new ItemStack(mat);
-        }
-        return new ItemStack(mat, 1, (byte) data);
-    }
-
-    public boolean isSameMaterial(ItemStack comp) {
-        if (isNewVersion()) {
-            return comp.getType() == this.parseMaterial();
-        }
-        if (comp.getType() == this.parseMaterial() &&
-                (int) comp.getData().getData() == (int) this.data) {
-            return true;
-        }
-        XMaterial xmat = fromMaterial(comp.getType());
-        if (isDamageable(xmat)) {
-            if (this.parseMaterial() == comp.getType()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public XMaterial fromMaterial(Material mat) {
-        try {
-            return XMaterial.valueOf(mat.toString());
-        } catch (IllegalArgumentException e) {
-            for (XMaterial xmat : XMaterial.values()) {
-                if (xmat.m.equals(mat.toString())) {
-                    return xmat;
+                val matched = try {
+                    XMaterial.valueOf(type)
+                } catch (e: IllegalArgumentException) {
+                    XMaterial.values().find { it.aliases.contains(typeUpperCase) && (data == null || it.data == data) }
+                }
+                return if (matched != null) {
+                    LOOKUPS[lookupKey] = matched
+                    matched
+                } else {
+                    null
                 }
             }
         }
-        return null;
-    }
 
-    public boolean isDamageable(XMaterial type) {
-        String[] split = type.toString().split("_");
-        int length = split.length;
-        switch (split[length - 1]) {
-            case "HELMET":
-                return true;
-            case "CHESTPLATE":
-                return true;
-            case "LEGGINGS":
-                return true;
-            case "BOOTS":
-                return true;
-            case "SWORD":
-                return true;
-            case "AXE":
-                return true;
-            case "PICKAXE":
-                return true;
-            case "SHOVEL":
-                return true;
-            case "HOE":
-                return true;
-            case "ELYTRA":
-                return true;
-            case "TURTLE_HELMET":
-                return true;
-            case "TRIDENT":
-                return true;
-            case "HORSE_ARMOR":
-                return true;
-            case "SHEARS":
-                return true;
-            default:
-                return false;
+        @JvmStatic
+        fun isSameType(xMaterial: XMaterial, itemStack: ItemStack) : Boolean {
+            val bukkit = xMaterial.toBukkit()
+            val type = itemStack.type
+            return if (isV113OrLater) {
+                bukkit == type
+            } else {
+                // Before version 1.13
+                @Suppress("DEPRECATION")
+                val data = itemStack.data.data.toInt()
+                bukkit == type && xMaterial.data == data
+            }
+        }
+
+        @JvmStatic
+        @JvmOverloads
+        fun createStack(xMaterial: XMaterial, count: Int = 1) : ItemStack {
+            val type = toBukkit(xMaterial)
+            return if (isV113OrLater) {
+                ItemStack(type, count)
+            } else {
+                // Before version 1.13
+                @Suppress("DEPRECATION")
+                ItemStack(type, count, xMaterial.data.toShort())
+            }
+        }
+
+        @JvmStatic
+        @Deprecated("DEBUG : Traverse all types from Bukkit to match.")
+        fun runtimeTest() {
+            var unsupportedCount = 0
+            Bukkit.getLogger().warning("-------- * XMaterial Runtime Test * -----")
+            Material.values().forEach { type ->
+                val xMaterial = XMaterial.searchByBukkit(type)
+                if (xMaterial == null) {
+                    Bukkit.getLogger().warning("> Material.${type.name} = Unsupported")
+                    unsupportedCount++
+                }
+            }
+            if (unsupportedCount != 0) {
+                Bukkit.getLogger().warning("A total of $unsupportedCount material types are not supported.")
+                Bukkit.getLogger().warning("Contact https://github.com/lgou2w/ldk for updates.")
+            } else
+                Bukkit.getLogger().warning("No incompatible material types. ;)")
+            Bukkit.getLogger().warning("-------------------------")
         }
     }
-
-    public Material parseMaterial() {
-        Material mat = Material.matchMaterial(this.toString());
-        if (mat != null) {
-            return mat;
-        }
-        return Material.matchMaterial(m);
-    }
-
 }
