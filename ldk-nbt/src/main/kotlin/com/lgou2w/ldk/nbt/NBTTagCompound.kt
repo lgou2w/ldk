@@ -97,6 +97,24 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
         }
     }
 
+    override fun toMojangsonWithColor(): String {
+        return buildString {
+            append("{")
+            for ((key, value) in entries) {
+                if (length > 1)
+                    append(", ") // one space blank
+                // append("\"")
+                append("§b") // aqua color
+                append(key)
+                append("§r") // reset
+                // append("\"")
+                append(": ") // one space blank
+                append(value.toMojangsonWithColor())
+            }
+            append("}")
+        }
+    }
+
     ///
     //
 
