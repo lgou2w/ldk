@@ -69,3 +69,17 @@ fun Array<out String>.stripColor(): Array<out String>
  */
 fun Iterable<String>.stripColor(): List<String>
         = map { it.stripColor() }
+
+/**
+ * * Converts the given string source to a chat component.
+ * * 将给定的字符串源转换为聊天组件.
+ */
+fun String.toComponent() : ChatComponent
+        = ChatSerializer.fromRaw(this)
+
+/**
+ * * Converts the given string source to a chat component.
+ * * 将给定的字符串源转换为聊天组件.
+ */
+fun String?.toComponentOrNull() : ChatComponent?
+        = ChatSerializer.fromRawOrNull(this)

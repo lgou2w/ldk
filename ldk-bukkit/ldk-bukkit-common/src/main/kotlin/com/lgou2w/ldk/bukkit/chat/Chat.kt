@@ -31,7 +31,7 @@ fun ChatSerializer.fromNMS(icbc: Any) : ChatComponent
 
 @JvmOverloads
 fun ChatComponent.send(player: Player, action: ChatAction = ChatAction.CHAT)
-        = ChatFactory.sendToPlayer(player, this, action)
+        = ChatFactory.sendChat(player, this, action)
 
 fun ChatComponentFancy.tooltipItem(itemStack: ItemStack) : ChatComponentFancy
         = ChatFactory.tooltipItem(this, itemStack)
