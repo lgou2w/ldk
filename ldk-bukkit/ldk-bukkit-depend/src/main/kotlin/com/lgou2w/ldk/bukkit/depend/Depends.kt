@@ -48,6 +48,7 @@ object Depends {
     }
 
     @JvmStatic
+    @Throws(IllegalArgumentException::class)
     fun <T: Depend> register(depend: Class<T>, implemented: T) : Boolean {
         if (!depend.isInstance(implemented))
             throw IllegalArgumentException("The depend implementation is not an instance object of the $depend class.")
