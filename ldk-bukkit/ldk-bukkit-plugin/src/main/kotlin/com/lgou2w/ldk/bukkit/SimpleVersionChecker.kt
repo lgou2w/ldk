@@ -21,7 +21,7 @@ import com.google.gson.JsonArray
 import org.bukkit.Bukkit
 import java.net.URL
 
-class SimpleVersionChecker(plugin: LDKPlugin, var block: ((String, Throwable?) -> Unit)? = null) {
+class SimpleVersionChecker(plugin: LDKPlugin, var block: ((version: String, commit: String, Throwable?) -> Unit)? = null) {
 
     private val API = "https://api.github.com/repos/lgou2w/ldk"
     private val API_VERSION = "https://api.github.com/repos/lgou2w/ldk/tags"
@@ -33,9 +33,10 @@ class SimpleVersionChecker(plugin: LDKPlugin, var block: ((String, Throwable?) -
                 val json = Gson().fromJson<JsonArray>(content, JsonArray::class.java)
                 val tag = json.first().asJsonObject
                 val version = tag["name"].asString
-                block?.invoke(version, null)
+                val commit = tag["commit"].asJsonObject["sha"].asString
+                block?.invoke(version, commit, null)
             } catch (e: Exception) {
-                block?.invoke(e.message ?: "", e)
+                block?.invoke(e.message ?: "", "", e)
             } finally {
                 block = null // gc
             }

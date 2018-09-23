@@ -16,3 +16,120 @@
 
 package com.lgou2w.ldk.bukkit.entity
 
+import org.bukkit.entity.Entity
+
+/**************************************************************************
+ *
+ * org.bukkit.entity.Entity Extended
+ *
+ **************************************************************************/
+
+fun Entity.getNearbyEntities(x: Double, y: Double, z: Double) : List<Entity>
+        = world.getNearbyEntities(location, x, y, z).toList()
+
+fun Entity.getNearbyEntities(range: Double) : List<Entity>
+        = world.getNearbyEntities(location, range, range, range).toList()
+
+fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, x: Double, y: Double, z: Double) : List<T>
+        = getNearbyEntities(x, y, z).filterIsInstance(type)
+
+fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, range: Double) : List<T>
+        = getNearbyEntities(range).filterIsInstance(type)
+
+/**************************************************************************
+ *
+ * org.bukkit.entity.Entity TargetHelper Extended
+ *
+ **************************************************************************/
+
+fun Entity.isInFront(target: Entity) : Boolean {
+    val facing = location.direction
+    val relative = target.location.subtract(location).toVector().normalize()
+    return facing.dot(relative) >= .0
+}
+
+fun Entity.isInFront(target: Entity, angle: Double) : Boolean {
+    if (angle <= .0) return false
+    if (angle >= 360.0) return true
+    val dotTarget = Math.cos(angle)
+    val facing = location.direction
+    val relative = target.location.subtract(location).toVector().normalize()
+    return facing.dot(relative) >= dotTarget
+}
+
+fun Entity.isBehind(target: Entity) : Boolean
+        = !isInFront(target)
+
+fun Entity.isBehind(target: Entity, angle: Double) : Boolean {
+    if (angle <= .0) return false
+    if (angle >= 360.0) return true
+    val dotTarget = Math.cos(angle)
+    val facing = location.direction
+    val relative = location.subtract(target.location).toVector().normalize()
+    return facing.dot(relative) >= dotTarget
+}
+
+@JvmOverloads
+fun Entity.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double = 4.0) : List<Entity>
+        = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
+
+@JvmOverloads
+fun Entity.getNearbyTargets(range: Double, tolerance: Double = 4.0) : List<Entity>
+        = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
+
+@JvmOverloads
+fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0) : List<T> {
+    val facing = location.direction
+    val fLengthSq = facing.lengthSquared()
+    return getNearbyEntities(x, y, z)
+        .asSequence()
+        .filter { type.isInstance(it) && isInFront(it) }
+        .filter {
+            val relative = it.location.subtract(location).toVector()
+            val dot = relative.dot(facing)
+            val rLengthSq = relative.lengthSquared()
+            val cosSquared = dot * dot / (rLengthSq * fLengthSq)
+            val sinSquared = 1.0 - cosSquared
+            val dSquared = rLengthSq * sinSquared
+            dSquared < tolerance
+        }
+        .map { type.cast(it) }
+        .toList()
+}
+
+@JvmOverloads
+fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, range: Double, tolerance: Double = 4.0) : List<T>
+        = getNearbyTargets(type, range, range, range, tolerance)
+
+@JvmOverloads
+fun Entity.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double = 4.0) : Entity?
+        = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
+
+@JvmOverloads
+fun Entity.getNearbyTarget(range: Double, tolerance: Double = 4.0) : Entity?
+        = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
+
+@JvmOverloads
+fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0) : T? {
+    val targets = getNearbyTargets(type, x, y, z, tolerance)
+    return when {
+        targets.isEmpty() -> null
+        targets.size == 1 -> targets.first()
+        else -> {
+            var target = targets.first()
+            var minDistance = target.location.distanceSquared(location)
+            for (alternate in targets) {
+                val distance = alternate.location.distanceSquared(location)
+                if (distance < minDistance) {
+                    minDistance = distance
+                    target = alternate
+                }
+            }
+            target
+        }
+    }
+}
+
+@JvmOverloads
+fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, range: Double, tolerance: Double = 4.0) : T?
+        = getNearbyTarget(type, range, range, range, tolerance)

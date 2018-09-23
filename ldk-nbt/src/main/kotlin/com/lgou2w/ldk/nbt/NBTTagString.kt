@@ -63,4 +63,8 @@ class NBTTagString : NBTBase<String> {
     override fun toMojangson(): String {
         return "\"" + value.replace("\"", "\\\"") + "\""
     }
+
+    override fun toMojangsonWithColor(): String {
+        return "\"§a" + value.replace("\"", "\\\"") + "§r\""
+    }
 }

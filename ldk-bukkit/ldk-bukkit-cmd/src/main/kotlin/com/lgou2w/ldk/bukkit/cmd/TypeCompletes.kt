@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import com.lgou2w.ldk.reflect.DataType
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
@@ -91,9 +92,34 @@ object TypeCompletes {
         }
     }
 
+    @JvmField
+    val BOOLEAN = object : TypeCompleter {
+        override fun onComplete(
+                parameter: RegisteredCommand.ChildParameter,
+                sender: CommandSender,
+                value: String
+        ): List<String> {
+            // boolean、Boolean
+            // kotlin Boolean? => java.lang.Boolean
+            // kotlin Boolean => java.lang.Boolean.TYPE <=> boolean
+            return if (DataType.ofPrimitive(parameter.type) == Boolean::class.java) {
+                val first = when {
+                    parameter.optional != null -> "[Boolean=${parameter.optional.def}]"
+                    parameter.isNullable -> "null"
+                    else -> "<Boolean>"
+                }
+                listOf(first, "true", "false").filter { it.startsWith(value) }
+            } else {
+                emptyList()
+            }
+        }
+    }
+
     @JvmStatic
     fun addDefaultTypeCompletes(manager: CommandManager) {
         manager.addTypeCompleter(Player::class.java, PLAYER)
         manager.addTypeCompleter(Enum::class.java, ENUM)
+        manager.addTypeCompleter(Boolean::class.java, BOOLEAN)
+        manager.addTypeCompleter(java.lang.Boolean::class.java, BOOLEAN)
     }
 }

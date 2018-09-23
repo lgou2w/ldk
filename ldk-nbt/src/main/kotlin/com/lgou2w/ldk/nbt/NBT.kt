@@ -95,6 +95,18 @@ interface NBT<T> : Cloneable {
      */
     fun toMojangson(): String
 
+    /**
+     * * Convert this NBT tag to a `JSON` format string with a Minecraft specific type value suffix and color.
+     * * 将此 NBT 标签转换为携有 Minecraft 特定类型值后缀和具有颜色的 `JSON` 格式字符串.
+     *
+     * > Note: that only color characters are used.
+     *
+     * @see [NBTTagList.toMojangsonWithColor]
+     * @see [NBTTagCompound.toMojangsonWithColor]
+     * @see [NBTType.mojangsonSuffix]
+     */
+    fun toMojangsonWithColor(): String
+
     companion object Constants {
 
         // const tag key

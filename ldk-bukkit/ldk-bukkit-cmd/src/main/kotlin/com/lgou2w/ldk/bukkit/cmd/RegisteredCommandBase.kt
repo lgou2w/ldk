@@ -18,6 +18,7 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.reflect.AccessorMethod
+import com.lgou2w.ldk.reflect.DataType
 import org.bukkit.command.CommandException
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -57,7 +58,7 @@ open class RegisteredCommandBase(
         override val max: Int
             get() = length
         override val min: Int
-            get() = max - parameters.count { it.optional != null }
+            get() = max - parameters.count { it.optional != null || it.isNullable }
 
         override fun invoke(vararg args: Any?): Any? {
             return if (Modifier.isStatic(accessor.source.modifiers))
@@ -88,7 +89,9 @@ open class RegisteredCommandBase(
             for (index in 0 until max) {
                 val parameter = parameters[index]
                 val optional = parameter.optional
-                val transform = parent.manager.getTypeTransform(parameter.type)
+                var transform = parent.manager.getTypeTransform(parameter.type)
+                if (transform == null && DataType.ofPrimitive(parameter.type).isPrimitive)
+                    transform = parent.manager.getTypeTransform(DataType.ofPrimitive(parameter.type))
                 val value = args.getOrNull(index) ?: optional?.def
                 val transformed = if (value != null) transform?.transform(value) else value
                 if (transformed != null && !parameter.type.isAssignableFrom(transformed::class.java)) {

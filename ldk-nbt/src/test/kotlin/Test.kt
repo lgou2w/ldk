@@ -142,4 +142,18 @@ class Test {
         println(compound)
         println(compound2)
     }
+
+    @Test
+    fun test_NBTWithColor() {
+        NBTTagByteArray(byteArrayOf(1, 2, 3, 4, 5)).toMojangsonWithColor().println()
+        NBTTagString("minecraft:iron_sword").toMojangsonWithColor().println()
+        NBTTagList().apply {
+            addString("1", "2", "3", "4", "5")
+        }.toMojangsonWithColor().println()
+        NBTTagCompound().apply {
+            putByte("byte", 1)
+            putString("string", "minecraft:iron")
+            put("list", NBTTagList().apply { addString("1", "2", "3", "4", "5") })
+        }.toMojangsonWithColor().println()
+    }
 }
