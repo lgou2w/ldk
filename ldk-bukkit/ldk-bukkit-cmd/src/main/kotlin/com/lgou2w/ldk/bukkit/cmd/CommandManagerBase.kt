@@ -169,10 +169,16 @@ abstract class CommandManagerBase(
                 val command = method.getAnnotation(Command::class.java)
                 val permission = method.getAnnotation(Permission::class.java)
                 val isPlayable = method.getAnnotation(Playable::class.java) != null
-                val parameters = method.parameters.filterIndexed { index, _ -> index != 0 }.map { parameter ->
+                val parameters = method.parameters.filterIndexed { index, _ -> index != 0 }.mapNotNull { parameter ->
                     val type = parameter.parameterizedType as Class<*>
                     val optional = parameter.getAnnotation(Optional::class.java)
-                    RegisteredCommand.ChildParameter(type, optional)
+                    val nullable = parameter.getAnnotation(Nullable::class.java)
+                    if (optional != null && nullable != null) {
+                        plugin.logger.warning("Optional or nullable annotations can only have one, filtered.")
+                        null
+                    } else {
+                        RegisteredCommand.ChildParameter(type, optional, nullable != null)
+                    }
                 }.toTypedArray()
                 val accessor = Accessors.ofMethod<Any, Any>(method)
                 val child = parsedCommandChild(command, permission, isPlayable, parameters, accessor)

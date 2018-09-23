@@ -95,7 +95,8 @@ interface RegisteredCommand {
 
     class ChildParameter(
             val type : Class<*>,
-            val optional: Optional?
+            val optional: Optional?,
+            val isNullable: Boolean
     ) {
 
         internal lateinit var child : RegisteredCommand.Child
