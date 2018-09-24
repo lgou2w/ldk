@@ -34,7 +34,7 @@ abstract class ReflectMatcher<T>(
             else ArrayList()
 
     open fun with(block: Function<T, Boolean>): ReflectMatcher<T> {
-        values = values.filter(block).toMutableList()
+        values = values.asSequence().filter(block).toMutableList()
         return this
     }
 

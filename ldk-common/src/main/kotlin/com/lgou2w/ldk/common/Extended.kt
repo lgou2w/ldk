@@ -64,6 +64,12 @@ typealias ApplicatorFunction<T, R> = T.() -> R
  */
 typealias Callable<T> = () -> T
 
+/**
+ * * Runnable type aliases.
+ * * 可运行类型别名.
+ */
+typealias Runnable = () -> Unit
+
 /**************************************************************************
  *
  * Predicate Extended
@@ -189,7 +195,7 @@ fun Boolean?.isTrue() : Boolean
  * * Returns `true` if the receiver is `null` or `false`.
  * * 如果接收器是 `null` 或 `false`, 那么返回 `true`.
  */
-fun Boolean?.isFlase() : Boolean
+fun Boolean?.isFalse() : Boolean
         = this == null || !this
 
 /**

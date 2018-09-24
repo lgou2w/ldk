@@ -60,7 +60,19 @@ abstract class NBTBase<T>(
         return value0.toString() + type.mojangsonSuffix
     }
 
+    override fun toMojangsonWithColor(): String {
+        return toMojangson()
+    }
+
     abstract override fun toString(): String
 
     public abstract override fun clone(): NBTBase<*>
+
+    @Throws(ClassCastException::class)
+    fun asCompound() : NBTTagCompound
+            = this as NBTTagCompound
+
+    @Throws(ClassCastException::class)
+    fun asList() : NBTTagList
+            = this as NBTTagList
 }

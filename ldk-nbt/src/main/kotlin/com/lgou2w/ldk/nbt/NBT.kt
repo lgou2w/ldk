@@ -95,6 +95,18 @@ interface NBT<T> : Cloneable {
      */
     fun toMojangson(): String
 
+    /**
+     * * Convert this NBT tag to a `JSON` format string with a Minecraft specific type value suffix and color.
+     * * 将此 NBT 标签转换为携有 Minecraft 特定类型值后缀和具有颜色的 `JSON` 格式字符串.
+     *
+     * > Note: that only color characters are used.
+     *
+     * @see [NBTTagList.toMojangsonWithColor]
+     * @see [NBTTagCompound.toMojangsonWithColor]
+     * @see [NBTType.mojangsonSuffix]
+     */
+    fun toMojangsonWithColor(): String
+
     companion object Constants {
 
         // const tag key
@@ -103,12 +115,12 @@ interface NBT<T> : Cloneable {
 
         // TODO Dynamic TAG
 
-        //<editor-fold desc="TAG" defaultstate="collapsed">
+        //<editor-fold desc="ItemStack - TAG" defaultstate="collapsed">
 
         const val TAG = "tag"
         const val TAG_ID = "id"
         const val TAG_COUNT = "Count"
-        const val TAG_DAMAGE = "Damage" //
+        const val TAG_DAMAGE = "Damage"
         const val TAG_ENCH_LEGACY = "ench"  // since 18w21a remove and change to -> Enchantments
         const val TAG_ENCH_FRESHLY = "Enchantments"
         const val TAG_ENCH_ID = "id"
@@ -143,16 +155,18 @@ interface NBT<T> : Cloneable {
         const val TAG_MAP_COLOR = "MapColor"
         const val TAG_MAP_SCALING = "map_is_scaling"
         const val TAG_SKULL_OWNER = "SkullOwner"
-        const val TAG_SKULL_PROPERTIES = "Properties"
-        const val TAG_SKULL_TEXTURES = "textures"
-        const val TAG_SKULL_TEXTURES_ID = "Id"
-        const val TAG_SKULL_TEXTURES_VALUE = "Value"
+        const val TAG_SKULL_OWNER_ID = "Id"
+        const val TAG_SKULL_OWNER_NAME = "Name"
+        const val TAG_SKULL_OWNER_PROPERTIES = "Properties"
+        const val TAG_SKULL_OWNER_TEXTURES = "textures"
+        const val TAG_SKULL_OWNER_TEXTURES_VALUE = "Value"
         const val TAG_POTION = "Potion"
         const val TAG_POTION_ID = "Id"
         const val TAG_POTION_AMPLIFIER = "Amplifier"
         const val TAG_POTION_DURATION = "Duration"
         const val TAG_POTION_AMBIENT = "Ambient"
         const val TAG_POTION_SHOW_PARTICLES = "ShowParticles"
+        const val TAG_POTION_SHOW_ICON = "ShowIcon" // since Minecraft 1.13
         const val TAG_BLOCK_ENTITY_TAG = "BlockEntityTag"
         const val TAG_BANNER_PATTERNS = "Patterns"
         const val TAG_BANNER_COLOR = "Color"

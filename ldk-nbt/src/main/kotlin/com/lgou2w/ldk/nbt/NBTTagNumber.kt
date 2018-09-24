@@ -74,6 +74,11 @@ abstract class NBTTagNumber<T: Number>(
     fun toByte(): Byte
             = value.toByte()
 
+    override fun toMojangsonWithColor(): String {
+        val suffix = type.mojangsonSuffix
+        return "§6${value}§c${suffix}§r"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (super.equals(other))
             return value == (other as NBTBase<*>).value

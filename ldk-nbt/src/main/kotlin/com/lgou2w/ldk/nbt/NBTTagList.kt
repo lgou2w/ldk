@@ -128,6 +128,18 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
         }
     }
 
+    override fun toMojangsonWithColor(): String {
+        return buildString {
+            append("[")
+            for ((index, el) in value0.withIndex()) {
+                if (index > 0)
+                    append(", ") // one space blank
+                append(el.toMojangsonWithColor())
+            }
+            append("]")
+        }
+    }
+
     ///
     //
 

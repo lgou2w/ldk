@@ -6,10 +6,16 @@
 </p>
 
 <p align="center">
+<a href="https://travis-ci.org/lgou2w/ldk"><img src="https://travis-ci.org/lgou2w/ldk.svg?branch=develop" /></a>
+<a href="https://codebeat.co/projects/github-com-lgou2w-ldk-develop"><img alt="codebeat badge" src="https://codebeat.co/badges/7c8fccc7-6096-4f12-81e3-98b1f39a3875" /></a>
 <a href="https://jitpack.io/#lgou2w/ldk"><img src="https://jitpack.io/v/lgou2w/ldk.svg" /></a>
+<a href="https://www.apache.org/licenses/LICENSE-2.0.txt"><img src="https://img.shields.io/hexpm/l/plug.svg" /></a>
+<a href="https://github.com/lgou2w/ldk/pulls"><img src="https://img.shields.io/badge/contributing-welcome-FF69B4.svg?style=flat" /></a>
+<a href="https://github.com/lgou2w/ldk/issues"><img src="https://img.shields.io/badge/issues-report-E74C3C.svg?style=flat"></a>
 </p>
 
 # 介绍
+
 * 一个多平台的 lgou2w 开发套件.
 
 # 模块
@@ -26,9 +32,63 @@
     * ldk-nbt
     * ldk-bukkit
         * ldk-bukkit-common
+        * ldk-bukkit-compatibility
         * ldk-bukkit-i18n
+        * ldk-bukkit-cmd
+        * ldk-bukkit-gui
+        * ldk-bukkit-region
+        * ldk-bukkit-depend
         * ldk-bukkit-scheduler
         * ldk-bukkit-plugin
+
+        
+# 构建
+
+## 持续集成
+
+非常感谢 [@25](https://github.com/25) 提供的 `Jenkins CI` 生命周期.
+
+* [稳定版](http://soulbound.me/job/ldk/) (master)
+* [开发版](http://soulbound.me/job/ldk_Dev/) (develop)
+
+## 依赖
+
+可以在 https://jitpack.io/#lgou2w/ldk 找到版本标记的 `Maven` 或 `Gradle` 依赖项.
+
+> 模块 ldk-bukkit-plugin 的 Bukkit 运行时分发在 [releases](https://github.com/lgou2w/ldk/releases) 中.
+
+* Maven
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+	
+<dependencies>
+    <dependency>
+        <groupId>com.github.lgou2w.ldk</groupId>
+        <artifactId>${module}</artifactId>
+        <version>${version}</version>
+        <scope>compile</scope>
+    </dependency>
+</dependencies>
+```
+
+* Gradle
+```gsp
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    compile 'com.github.lgou2w.ldk:${module}:${version}'
+}
+```
 
 # 开发
 
@@ -41,7 +101,7 @@
 ```bash
 git clone https://github.com/lgou2w/ldk.git
 cd ldk
-mvn clean install
+mvn clean package
 ```
 
 # 协议

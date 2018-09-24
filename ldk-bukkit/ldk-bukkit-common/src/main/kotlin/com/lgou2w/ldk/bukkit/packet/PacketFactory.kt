@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.packet
 
 import com.lgou2w.ldk.bukkit.entity.EntityFactory
+import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
@@ -65,6 +66,7 @@ object PacketFactory {
 
     @JvmStatic
     fun sendPacket(player: Player, packet: Any) {
+        MinecraftReflection.isExpected(packet, CLASS_PACKET)
         val handle = EntityFactory.asNMS(player)
         val connection = FIELD_PLAYER_CONNECTION[handle]
         METHOD_PACKET_SEND.invoke(connection, packet)
@@ -72,6 +74,7 @@ object PacketFactory {
 
     @JvmStatic
     fun processPacket(packet: Any, player: Player) {
+        MinecraftReflection.isExpected(packet, CLASS_PACKET)
         val handle = EntityFactory.asNMS(player)
         val connection = FIELD_PLAYER_CONNECTION[handle]
         METHOD_PACKET_PROCESS.invoke(packet, connection)

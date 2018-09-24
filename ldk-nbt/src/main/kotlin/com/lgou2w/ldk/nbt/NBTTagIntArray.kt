@@ -80,4 +80,9 @@ class NBTTagIntArray : NBTBase<IntArray> {
         val suffix = NBTType.TAG_INT.mojangsonSuffix
         return value0.joinToString("$suffix,", "[", "$suffix]")
     }
+
+    override fun toMojangsonWithColor(): String {
+        val suffix = "§c${NBTType.TAG_INT.mojangsonSuffix}§r"
+        return value0.joinToString("$suffix, §6", "[§6", "$suffix]")
+    }
 }

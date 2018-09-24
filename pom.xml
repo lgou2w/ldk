@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgou2w</groupId>
     <artifactId>ldk</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-beta2</version>
     <packaging>pom</packaging>
     <description>A multi-platform lgou2w development kit</description>
     <url>https://github.com/lgou2w/ldk</url>
@@ -26,12 +26,12 @@
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
 
     <properties>
-        <kotlin.version>1.2.61</kotlin.version>
+        <kotlin.version>1.2.70</kotlin.version>
         <dokka.version>0.9.17</dokka.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -106,7 +106,7 @@
                 <executions>
                     <execution>
                         <id>attach-sources</id>
-                        <phase>verify</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>

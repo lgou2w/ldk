@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - openjdk8
+branches:
+  only:
+    - develop
+script:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+cache:
+  directories:
+    - $HOME/.m2

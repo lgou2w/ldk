@@ -60,11 +60,13 @@ class FuzzyReflect private constructor(
 
     companion object {
 
+        @JvmStatic
         @JvmOverloads
         fun of(reference: Class<*>, isForceAccess: Boolean = false): FuzzyReflect {
             return FuzzyReflect(reference, isForceAccess)
         }
 
+        @JvmStatic
         @JvmOverloads
         fun of(reference: Any, isForceAccess: Boolean = false): FuzzyReflect {
             return FuzzyReflect(reference.javaClass, isForceAccess)

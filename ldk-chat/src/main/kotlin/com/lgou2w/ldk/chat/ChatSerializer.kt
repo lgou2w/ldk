@@ -22,7 +22,6 @@ import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
 import java.io.IOException
 import java.io.StringReader
-import java.lang.StringBuilder
 import java.lang.reflect.Type
 import java.util.regex.Pattern
 
@@ -54,6 +53,7 @@ object ChatSerializer {
      * @throws JsonParseException If parsing failed.
      * @throws JsonParseException 如果解析时失败.
      */
+    @JvmStatic
     @Throws(JsonParseException::class)
     fun fromJson(json: String): ChatComponent = try {
         val jsonReader = JsonReader(StringReader(json))
@@ -73,13 +73,14 @@ object ChatSerializer {
      * @throws JsonParseException If parsing failed.
      * @throws JsonParseException 如果解析时失败.
      */
+    @JvmStatic
     @Throws(JsonParseException::class)
     fun fromJsonOrNull(json: String?): ChatComponent?
             = if (json == null) null else fromJson(json)
 
     /**
-     * * Converts the raw source `JSON` message to [ChatComponent] object in [JsonReader.lenient] mode.
-     * * 将给定的源 `JSON` 消息以 [JsonReader.lenient] 模式转换为 [ChatComponent] 对象.
+     * * Converts the raw source `JSON` message to [ChatComponent] object in [JsonReader.lenient] lenient mode.
+     * * 将给定的源 `JSON` 消息以 [JsonReader.lenient] 宽松模式转换为 [ChatComponent] 对象.
      *
      * @see [toJson]
      * @param json Raw `JSON` message.
@@ -87,6 +88,7 @@ object ChatSerializer {
      * @throws JsonParseException If parsing failed.
      * @throws JsonParseException 如果解析时失败.
      */
+    @JvmStatic
     @Throws(JsonParseException::class)
     fun fromJsonLenient(json: String): ChatComponent = try {
         val jsonReader = JsonReader(StringReader(json))
@@ -94,6 +96,25 @@ object ChatSerializer {
         GSON.getAdapter(ChatComponent::class.java).read(jsonReader)
     } catch (e: IOException) {
         throw JsonParseException(e)
+    }
+
+    /**
+     * * Converts the given source `JSON` message to a [ChatComponent] object. If the parsing exception tries the lenient mode.
+     * * 将给定的源 `JSON` 消息转换为 [ChatComponent] 对象. 如果解析异常尝试宽松模式.
+     *
+     * @see [fromJson]
+     * @see [fromJsonLenient]
+     * @param json Raw `JSON` message.
+     * @param json 源 `JSON` 消息.
+     * @throws JsonParseException If parsing failed.
+     * @throws JsonParseException 如果解析时失败.
+     */
+    @JvmStatic
+    @Throws(JsonParseException::class)
+    fun fromJsonOrLenient(json: String): ChatComponent = try {
+        fromJson(json)
+    } catch (e: JsonParseException) {
+        fromJsonLenient(json)
     }
 
     /**
@@ -105,6 +126,7 @@ object ChatSerializer {
      * @param component Chat component.
      * @param component 聊天组件.
      */
+    @JvmStatic
     fun toJson(component: ChatComponent): String
             = GSON.toJson(component)
 
@@ -116,6 +138,7 @@ object ChatSerializer {
      * @param raw Raw string.
      * @param raw 源字符串.
      */
+    @JvmStatic
     fun fromRaw(raw: String?): ChatComponent {
         if (raw == null || raw.isEmpty())
             return ChatComponentText("")
@@ -130,6 +153,7 @@ object ChatSerializer {
      * @param raw Raw string.
      * @param raw 源字符串.
      */
+    @JvmStatic
     fun fromRawOrNull(raw: String?): ChatComponent?
             = if (raw == null) null else fromRaw(raw)
 
@@ -200,6 +224,7 @@ object ChatSerializer {
      * @param color Whether it has a color.
      * @param color 是否拥有颜色.
      */
+    @JvmStatic
     @JvmOverloads
     fun toRaw(component: ChatComponent, color: Boolean = true): String {
         val builder = StringBuilder()
@@ -207,6 +232,7 @@ object ChatSerializer {
         return builder.toString()
     }
 
+    @JvmStatic
     private fun toRaw0(component: ChatComponent, color: Boolean = true, builder: StringBuilder) {
         if (color) {
             val chatStyle = component.style
@@ -228,6 +254,7 @@ object ChatSerializer {
         component.extras.forEach { toRaw0(it, color, builder) }
     }
 
+    @JvmStatic
     private fun appendColor(builder: StringBuilder, color: ChatColor) {
         builder.append(color.toString())
     }

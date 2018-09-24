@@ -23,12 +23,15 @@ import java.lang.reflect.Method
 
 object Accessors {
 
+    @JvmStatic
     fun <T> ofConstructor(constructor: Constructor<T>): AccessorConstructor<T>
             = AccessorConstructorImpl(constructor)
 
+    @JvmStatic
     fun <T, R> ofMethod(method: Method): AccessorMethod<T, R>
             = AccessorMethodImpl(method)
 
+    @JvmStatic
     fun <T, R> ofField(field: Field): AccessorField<T, R>
             = AccessorFieldImpl(field)
 

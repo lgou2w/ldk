@@ -91,6 +91,7 @@ object NBTFactory {
     fun fromNMS(nms: Any?): NBTBase<*>? {
         if (nms == null)
             return null
+        MinecraftReflection.isExpected(nms, CLASS_NBT_BASE)
         val type = NBTType.fromId(METHOD_NBT_GET_TYPE_ID.invoke(nms)!!.toInt())!!
         @Suppress("UNCHECKED_CAST")
         return when (type) {

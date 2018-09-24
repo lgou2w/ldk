@@ -80,4 +80,9 @@ class NBTTagByteArray : NBTBase<ByteArray> {
         val suffix = NBTType.TAG_BYTE.mojangsonSuffix
         return value0.joinToString("$suffix,", "[", "$suffix]")
     }
+
+    override fun toMojangsonWithColor(): String {
+        val suffix = "§c${NBTType.TAG_BYTE.mojangsonSuffix}§r"
+        return value0.joinToString("$suffix, §6", "[§6", "$suffix]")
+    }
 }

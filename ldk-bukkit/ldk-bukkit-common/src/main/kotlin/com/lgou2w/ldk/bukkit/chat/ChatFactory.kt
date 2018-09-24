@@ -17,16 +17,18 @@
 package com.lgou2w.ldk.bukkit.chat
 
 import com.google.gson.Gson
-import com.google.gson.JsonParseException
 import com.lgou2w.ldk.bukkit.item.ItemFactory
 import com.lgou2w.ldk.bukkit.packet.PacketFactory
+import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.chat.ChatAction
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatComponentFancy
 import com.lgou2w.ldk.chat.ChatSerializer
 import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.reflect.AccessorConstructor
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.FuzzyReflect
@@ -68,18 +70,15 @@ object ChatFactory {
 
     @JvmStatic
     fun fromNMS(icbc: Any): ChatComponent {
+        MinecraftReflection.isExpected(icbc, CLASS_ICHAT_BASE_COMPONENT)
         val gson = FIELD_CHAT_SERIALIZER_GSON[null]!!
         val json = gson.toJson(icbc, CLASS_ICHAT_BASE_COMPONENT)
-        return try {
-            ChatSerializer.fromJson(json)
-        } catch (e: JsonParseException) {
-            ChatSerializer.fromJsonLenient(json)
-        }
+        return ChatSerializer.fromJsonOrLenient(json)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun sendToPlayer(player: Player, component: ChatComponent, action: ChatAction = ChatAction.CHAT) {
+    fun sendChat(player: Player, component: ChatComponent, action: ChatAction = ChatAction.CHAT) {
         val value : Any? =
                 if (CLASS_CHAT_MESSAGE_TYPE != null) Enums.fromOrigin(CLASS_CHAT_MESSAGE_TYPE!!, action.ordinal)
                 else action.id
@@ -93,4 +92,76 @@ object ChatFactory {
         val mojangson = ItemFactory.readItem(itemStack).toMojangson()
         return fancy.tooltipItem(mojangson)
     }
+
+    //<editor-fold desc="Title - Temporary implements" defaultstate="collapsed">
+
+    @JvmStatic private val CLASS_PACKET_OUT_TITLE by lazyMinecraftClass("PacketPlayOutTitle")
+    @JvmStatic private val CLASS_ENUM_TITLE_ACTION by lazyMinecraftClass("PacketPlayOutTitle\$EnumTitleAction", "EnumTitleAction")
+
+    // NMS.PacketPlayOutTitle -> public constructor(NMS.EnumTitleAction, NMS.IChatComponent, Int, Int, Int)
+    @JvmStatic private val CONSTRUCTOR_PACKET_OUT_TITLE : AccessorConstructor<Any> by lazy {
+        FuzzyReflect.of(CLASS_PACKET_OUT_TITLE, true)
+            .useConstructorMatcher()
+            .withParams(CLASS_ENUM_TITLE_ACTION, CLASS_ICHAT_BASE_COMPONENT, Int::class.java, Int::class.java, Int::class.java)
+            .resultAccessor()
+    }
+
+    private const val PACKET_TITLE_ACTION_TITLE = "TITLE"
+    private const val PACKET_TITLE_ACTION_SUBTITLE = "SUBTITLE"
+    private const val PACKET_TITLE_ACTION_ACTIONBAR = "ACTIONBAR" // since Minecraft 1.11
+    private const val PACKET_TITLE_ACTION_TIMES = "TIMES"
+    private const val PACKET_TITLE_ACTION_RESET = "RESET"
+    private const val PACKET_TITLE_ACTION_CLEAR = "CLEAR"
+
+    /**
+     * * TITLE | SUBTITLE | ACTIONBAR -> Action, ChatComponent
+     * * TIMES -> Action, Int, Int, Int
+     * * RESET | CLEAR -> Action
+     */
+    @JvmStatic
+    private fun sendTitle(player: Player, action: String, value: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20) {
+        val enumAction = Enums.fromName(CLASS_ENUM_TITLE_ACTION, action)
+        val packet = when {
+            value != null -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, ChatFactory.toNMS(value), -1, -1, -1)
+            action == PACKET_TITLE_ACTION_TIMES -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, null, fadeIn, stay, fadeOut)
+            else -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, null, -1, -1, -1)
+        }
+        PacketFactory.sendPacket(player, packet)
+    }
+
+    @JvmStatic
+    fun sendTitle(player: Player, title: ChatComponent, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
+            = sendTitle(player, title, null, fadeIn, stay, fadeOut)
+
+    @JvmStatic
+    fun sendTitle(player: Player, title: ChatComponent, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20) {
+        sendTitleTimes(player, fadeIn, stay, fadeOut)
+        sendTitle(player, PACKET_TITLE_ACTION_TITLE, title)
+        if (subTitle != null)
+            sendTitle(player, PACKET_TITLE_ACTION_SUBTITLE, subTitle)
+    }
+
+    // ACTIONBAR => Since Minecraft 1.11
+    @JvmStatic
+    fun sendTitleBar(player: Player, title: ChatComponent) {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_11_R1)) {
+            sendTitle(player, PACKET_TITLE_ACTION_ACTIONBAR, title)
+        } else {
+            sendTitle(player, title)
+        }
+    }
+
+    @JvmStatic
+    fun sendTitleTimes(player: Player, fadeIn: Int, stay: Int, fadeOut: Int)
+            = sendTitle(player, PACKET_TITLE_ACTION_TIMES, null, fadeIn, stay, fadeOut)
+
+    @JvmStatic
+    fun sendTitleReset(player: Player)
+            = sendTitle(player, PACKET_TITLE_ACTION_RESET, null)
+
+    @JvmStatic
+    fun sendTitleClear(player: Player)
+            = sendTitle(player, PACKET_TITLE_ACTION_CLEAR, null)
+
+    //</editor-fold>
 }

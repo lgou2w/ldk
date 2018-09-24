@@ -15,6 +15,7 @@
  */
 
 import com.lgou2w.ldk.reflect.FuzzyReflect
+import com.lgou2w.ldk.reflect.LazyFuzzyReflect
 import com.lgou2w.ldk.reflect.Reflection
 import com.lgou2w.ldk.reflect.Visibility
 import org.junit.Test
@@ -26,6 +27,20 @@ class Test {
         fun get() : Int {
             return member
         }
+    }
+
+    val myClassMember = LazyFuzzyReflect(MyClass::class.java) {
+        useForceAccess()
+            .useFieldMatcher()
+            .withType(Int::class.java)
+            .resultAccessorAs<MyClass, Int>()
+    }
+
+    @Test
+    fun test_LazyField() {
+        println(myClassMember.isInitialized())
+        println(myClassMember.value[MyClass(100)])
+        println(myClassMember.isInitialized())
     }
 
     @Test
