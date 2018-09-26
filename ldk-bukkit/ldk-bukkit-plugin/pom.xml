@@ -85,12 +85,6 @@
             <version>1.2</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-hikari</artifactId>
-            <version>0.0.1-beta2</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>
