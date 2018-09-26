@@ -31,7 +31,7 @@
     </licenses>
 
     <properties>
-        <kotlin.version>1.2.70</kotlin.version>
+        <kotlin.version>1.2.71</kotlin.version>
         <dokka.version>0.9.17</dokka.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -45,6 +45,7 @@
         <module>ldk-chat</module>
         <module>ldk-nbt</module>
         <module>ldk-rx</module>
+        <module>ldk-hikari</module>
         <module>ldk-bukkit</module>
     </modules>
 
