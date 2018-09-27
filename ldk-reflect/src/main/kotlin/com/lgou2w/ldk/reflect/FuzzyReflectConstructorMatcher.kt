@@ -16,10 +16,10 @@
 
 package com.lgou2w.ldk.reflect
 
-import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Constructor
+import java.util.*
 
 /**
  * ## FuzzyReflectConstructorMatcher (模糊反射构造匹配器)
@@ -34,8 +34,8 @@ class FuzzyReflectConstructorMatcher<T: Any>(
         initialize: Collection<Constructor<T>>? = null
 ) : FuzzyReflectMatcher<Constructor<T>>(reflect, initialize) {
 
-    override fun with(block: Function<Constructor<T>, Boolean>): FuzzyReflectConstructorMatcher<T> {
-        return super.with(block) as FuzzyReflectConstructorMatcher
+    override fun with(predicate: Predicate<Constructor<T>>): FuzzyReflectConstructorMatcher<T> {
+        return super.with(predicate) as FuzzyReflectConstructorMatcher
     }
 
     override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectConstructorMatcher<T> {
@@ -72,6 +72,13 @@ class FuzzyReflectConstructorMatcher<T: Any>(
     override fun resultAccessorOrNull(): AccessorConstructor<T>?
             = resultOrNull()?.letIfNotNull { Accessors.ofConstructor(this) }
 
+    /**
+     * * Get the first valid result accessor for this fuzzy reflection matcher.
+     * * 获取此模糊反射匹配器的第一个有效结果访问器.
+     *
+     * @throws NoSuchElementException If the match result is empty.
+     * @throws NoSuchElementException 如果匹配结果为空.
+     */
     @Suppress("UNCHECKED_CAST")
     fun <R> resultAccessorAs(): AccessorConstructor<R>
             = Accessors.ofConstructor(result() as Constructor<R>)

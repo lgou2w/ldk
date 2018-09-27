@@ -59,26 +59,16 @@ abstract class Reflection private constructor() {
     }
 
     /**
-     * * Get the caller class from `0` to the given depth [depth].
-     * * 获取从 `0` 到给定深度 [depth] 的调用者类.
-     *
-     * @param depth Depth
-     * @param depth 深度
-     */
-    fun getCallerClasses(depth: Int? = null) : List<Class<*>>
-            = getCallerClasses(null, depth) // TODO Improve
-
-    /**
      * * Get the expected class from `0` to the given depth [depth].
      * * 获取从 `0` 到给定深度 [depth] 的预期类.
      *
-     * @param expected Expected type
-     * @param expected 预期类型
      * @param depth Depth
      * @param depth 深度
+     * @param expected Expected type
+     * @param expected 预期类型
      */
     @JvmOverloads
-    open fun getCallerClasses(expected: Class<*>? = null, depth: Int? = null) : List<Class<*>> {
+    open fun getCallerClasses(depth: Int? = null, expected: Class<*>? = null) : List<Class<*>> {
         return emptyList()
     }
 
@@ -122,7 +112,7 @@ abstract class Reflection private constructor() {
                 try {
                     Class.forName("sun.reflect.Reflection")
                     SAFE = SunReflection()
-                    SAFE?.getCallerClass(1)  // test method
+                    SAFE?.getCallerClasses(depth = 1)  // test method
                     thread = false
                 } catch (e: ClassNotFoundException) {
                 } catch (e: NoSuchMethodException) {
@@ -133,6 +123,14 @@ abstract class Reflection private constructor() {
                 }
             }
             return SAFE!!
+        }
+
+        @JvmStatic
+        private fun safeDepth(depth: Int?) : Int {
+            return if (depth == 0x7FFFFFFF)
+                depth
+            else
+                depth?.plus(1) ?: 0x7FFFFFFF
         }
     }
 
@@ -149,11 +147,11 @@ abstract class Reflection private constructor() {
                 }
             }
         }
-        override fun getCallerClasses(expected: Class<*>?, depth: Int?): List<Class<*>> {
+        override fun getCallerClasses(depth: Int?, expected: Class<*>?): List<Class<*>> {
             val callerClasses = ArrayList<Class<*>>()
             try {
                 @Suppress("DEPRECATION")
-                for (index in 0 until (depth?.plus(1) ?: 0x7FFFFFFF)) try {
+                for (index in 0 until safeDepth(depth)) try {
                     val clazz = sun.reflect.Reflection.getCallerClass(index) ?: break
                     if (expected != null && expected.isAssignableFrom(clazz)) callerClasses.add(clazz)
                     else if (expected == null) callerClasses.add(clazz)
@@ -179,10 +177,10 @@ abstract class Reflection private constructor() {
                 null
             }
         }
-        override fun getCallerClasses(expected: Class<*>?, depth: Int?): List<Class<*>> {
+        override fun getCallerClasses(depth: Int?, expected: Class<*>?): List<Class<*>> {
             val elements = Thread.currentThread().stackTrace
             val callerClasses = ArrayList<Class<*>>()
-            for (index in 0 until Math.min(elements.size, depth?.plus(1) ?: 0x7FFFFFFF)) try {
+            for (index in 0 until Math.min(elements.size, safeDepth(depth))) try {
                 val clazz = Class.forName(elements[index].className) ?: break
                 if (expected != null && expected.isAssignableFrom(clazz)) callerClasses.add(clazz)
                 else if (expected == null) callerClasses.add(clazz)

@@ -28,12 +28,11 @@ import java.lang.reflect.Method
  */
 interface Reflect {
 
-    /** Added in 0.0.1-beta3 */
     /**
      * * Get the reference class for this reflect.
      * * 获取此反射器的引用类.
      */
-    /** val reference : Class<*> */
+    val reference : Class<*>
 
     /**
      * * Gets whether this reflect is in forced access mode.
@@ -46,18 +45,6 @@ interface Reflect {
      * * 将此反射器设置为强制访问模式.
      */
     fun useForceAccess(): Reflect
-
-    /** Removed in 0.0.1-beta3 */
-    @Deprecated("Extended maintenance by FuzzyReflect")
-    fun useConstructorMatcher(): ReflectMatcher<Constructor<Any>>
-
-    /** Removed in 0.0.1-beta3 */
-    @Deprecated("Extended maintenance by FuzzyReflect")
-    fun useMethodMatcher(): ReflectMatcher<Method>
-
-    /** Removed in 0.0.1-beta3 */
-    @Deprecated("Extended maintenance by FuzzyReflect")
-    fun useFieldMatcher(): ReflectMatcher<Field>
 
     /**
      * * Gets all constructor collections for this reflect reference class.

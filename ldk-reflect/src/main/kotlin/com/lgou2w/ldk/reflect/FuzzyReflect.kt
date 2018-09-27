@@ -23,11 +23,36 @@ import java.lang.reflect.Method
 /**
  * ## FuzzyReflect (模糊反射器)
  *
+ * * Quick, convenient, and fuzzy matching to find reflection values ​​with various attributes.
+ * * 快速、方便，以模糊的方式匹配查找具备各种属性的反射值.
+ *
+ * ### Sample:
+ * ```kotlin
+ * class My {
+ *      fun say(msg: String) : Int {
+ *          println(msg)
+ *          return 0
+ *      }
+ * }
+ * fun main(args: Array<String>) {
+ *      val say = FuzzyReflect.of(My::class.java)
+ *          .useMethodMatcher()                                 // Method matcher
+ *          .withVisibilities(Visibility.PUBLIC)            // Public function
+ *          .withType(Int::class.java)                           // Return Int
+ *          .withParams(String::class.java)                 // Method parameters
+ *          .withName("say")                                        // Method name
+ *          .resultAccessorAs<My, Int>()                    // My is instance, Int is method return value
+
+ *      val value = say.invoke(My(), "hello world")   // value = 1
+ *      // "hello world" Printed
+ * }
+ * ```
+ *
  * @see [Reflect]
  * @author lgou2w
  */
 class FuzzyReflect private constructor(
-        private val reference: Class<*>,
+        override val reference: Class<*>,
         override val isForceAccess: Boolean
 ) : Reflect {
 
@@ -35,21 +60,15 @@ class FuzzyReflect private constructor(
         return FuzzyReflect(reference, true)
     }
 
-    /** Separate maintenance in 0.0.1-beta3 */
-    @Suppress("OverridingDeprecatedMember")
-    override fun useConstructorMatcher(): FuzzyReflectConstructorMatcher<Any>
+    fun useConstructorMatcher(): FuzzyReflectConstructorMatcher<Any>
             = FuzzyReflectConstructorMatcher(this,
             @Suppress("UNCHECKED_CAST")
             constructors.map { it as Constructor<Any> })
 
-    /** Separate maintenance in 0.0.1-beta3 */
-    @Suppress("OverridingDeprecatedMember")
-    override fun useMethodMatcher(): FuzzyReflectMethodMatcher
+    fun useMethodMatcher(): FuzzyReflectMethodMatcher
             = FuzzyReflectMethodMatcher(this, methods)
 
-    /** Separate maintenance in 0.0.1-beta3 */
-    @Suppress("OverridingDeprecatedMember")
-    override fun useFieldMatcher(): FuzzyReflectFieldMatcher
+    fun useFieldMatcher(): FuzzyReflectFieldMatcher
             = FuzzyReflectFieldMatcher(this, fields)
 
     override val constructors: Set<Constructor<*>>

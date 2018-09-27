@@ -177,7 +177,7 @@ enum class DataType(
             if (left != null && right != null && left.size == right.size) {
                 (0 until left.size)
                         .filter { left[it] != right[it] && !left[it].isAssignableFrom(right[it]) }
-                        .forEach { return false }
+                        .forEach { _ -> return false }
                 return true
             }
             return left == null && right == null

@@ -16,10 +16,10 @@
 
 package com.lgou2w.ldk.reflect
 
-import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Method
+import java.util.*
 
 /**
  * ## FuzzyReflectMethodMatcher (模糊反射函数匹配器)
@@ -34,8 +34,8 @@ class FuzzyReflectMethodMatcher(
         initialize: Collection<Method>? = null
 ) : FuzzyReflectMatcher<Method>(reflect, initialize) {
 
-    override fun with(block: Function<Method, Boolean>): FuzzyReflectMethodMatcher {
-        return super.with(block) as FuzzyReflectMethodMatcher
+    override fun with(predicate: Predicate<Method>): FuzzyReflectMethodMatcher {
+        return super.with(predicate) as FuzzyReflectMethodMatcher
     }
 
     override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectMethodMatcher {
@@ -74,6 +74,13 @@ class FuzzyReflectMethodMatcher(
     override fun resultAccessorOrNull(): AccessorMethod<Any, Any>?
             = resultOrNull()?.letIfNotNull { Accessors.ofMethod<Any, Any>(this) }
 
+    /**
+     * * Get the first valid result accessor for this fuzzy reflection matcher.
+     * * 获取此模糊反射匹配器的第一个有效结果访问器.
+     *
+     * @throws NoSuchElementException If the match result is empty.
+     * @throws NoSuchElementException 如果匹配结果为空.
+     */
     fun <T, R> resultAccessorAs(): AccessorMethod<T, R>
             = Accessors.ofMethod(result())
 }
