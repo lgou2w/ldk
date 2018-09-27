@@ -21,6 +21,15 @@ import com.lgou2w.ldk.common.Predicate
 import java.lang.reflect.AccessibleObject
 import java.lang.reflect.Member
 
+/**
+ * ## FuzzyReflectMatcher (模糊反射匹配器)
+ *
+ * @see [FuzzyReflect]
+ * @see [FuzzyReflectConstructorMatcher]
+ * @see [FuzzyReflectMethodMatcher]
+ * @see [FuzzyReflectFieldMatcher]
+ * @author lgou2w
+ */
 abstract class FuzzyReflectMatcher<T>(
         reflect: FuzzyReflect,
         initialize: Collection<T>? = null

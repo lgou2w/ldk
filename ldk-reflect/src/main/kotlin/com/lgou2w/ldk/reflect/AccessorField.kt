@@ -18,9 +18,41 @@ package com.lgou2w.ldk.reflect
 
 import java.lang.reflect.Field
 
+/**
+ * ## AccessorField (字段访问器)
+ *
+ * @see [Accessor]
+ * @see [Field]
+ * @see [Accessors.ofField]
+ * @author lgou2w
+ */
 interface AccessorField<T, R> : Accessor<Field> {
 
+    /**
+     * * Get the value of this field from the given instance object [instance].
+     * * 从给定的实例对象 [instance] 获取该字段的值.
+     *
+     * @param instance Instance object
+     * @param instance 实例对象
+     * @throws RuntimeException Throws an exception if the field cannot be used or cannot be read.
+     * @throws RuntimeException 如果无法使用或无法读取字段则抛出异常.
+     * @see [Field.get]
+     */
+    @Throws(RuntimeException::class)
     operator fun get(instance: T?): R?
 
+    /**
+     * * Sets the given value [value] to the field of the given instance object [instance].
+     * * 将给定的值 [value] 设置到给定实例对象 [instance] 的字段中.
+     *
+     * @param instance Instance object
+     * @param instance 实例对象
+     * @param value Value
+     * @param value 值
+     * @throws RuntimeException Throws an exception if the field cannot be used or cannot be read.
+     * @throws RuntimeException 如果无法使用或无法读取字段则抛出异常.
+     * @see [Field.set]
+     */
+    @Throws(RuntimeException::class)
     operator fun set(instance: T?, value: R?)
 }

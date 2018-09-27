@@ -21,6 +21,14 @@ import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Field
 
+/**
+ * ## FuzzyReflectFieldMatcher (模糊反射字段匹配器)
+ *
+ * @see [FuzzyReflect]
+ * @see [FuzzyReflectMatcher]
+ * @see [Field]
+ * @author lgou2w
+ */
 class FuzzyReflectFieldMatcher(
         reflect: FuzzyReflect,
         initialize: Collection<Field>? = null

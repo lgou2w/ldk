@@ -105,8 +105,8 @@ class IteratorChain<T> private constructor(
          * * Joins a given iterator array into an iterator chain object.
          * * 将给定的迭代器数组连接成一个迭代链对象.
          *
-         * @param [iterators] Iterator array
-         * @param [iterators] 迭代器数组
+         * @param iterators Iterator array
+         * @param iterators 迭代器数组
          */
         @JvmStatic
         fun <T> concat(vararg iterators: Iterator<T>) : IteratorChain<T>
@@ -116,8 +116,8 @@ class IteratorChain<T> private constructor(
          * * Joins a given iterator collection into an iterator chain object.
          * * 将给定的迭代器集合连接成一个迭代链对象.
          *
-         * @param [iterators] Iterator collection
-         * @param [iterators] 迭代器集合
+         * @param iterators Iterator collection
+         * @param iterators 迭代器集合
          */
         @JvmStatic
         fun <T> concat(iterators: Collection<Iterator<T>>) : IteratorChain<T>

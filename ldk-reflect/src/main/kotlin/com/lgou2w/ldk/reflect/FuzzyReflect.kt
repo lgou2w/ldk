@@ -20,6 +20,12 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
+/**
+ * ## FuzzyReflect (模糊反射器)
+ *
+ * @see [Reflect]
+ * @author lgou2w
+ */
 class FuzzyReflect private constructor(
         private val reference: Class<*>,
         override val isForceAccess: Boolean
@@ -29,14 +35,20 @@ class FuzzyReflect private constructor(
         return FuzzyReflect(reference, true)
     }
 
+    /** Separate maintenance in 0.0.1-beta3 */
+    @Suppress("OverridingDeprecatedMember")
     override fun useConstructorMatcher(): FuzzyReflectConstructorMatcher<Any>
             = FuzzyReflectConstructorMatcher(this,
             @Suppress("UNCHECKED_CAST")
             constructors.map { it as Constructor<Any> })
 
+    /** Separate maintenance in 0.0.1-beta3 */
+    @Suppress("OverridingDeprecatedMember")
     override fun useMethodMatcher(): FuzzyReflectMethodMatcher
             = FuzzyReflectMethodMatcher(this, methods)
 
+    /** Separate maintenance in 0.0.1-beta3 */
+    @Suppress("OverridingDeprecatedMember")
     override fun useFieldMatcher(): FuzzyReflectFieldMatcher
             = FuzzyReflectFieldMatcher(this, fields)
 
@@ -60,12 +72,30 @@ class FuzzyReflect private constructor(
 
     companion object {
 
+        /**
+         * * Create a fuzzy reflector from the given reference class [reference].
+         * * 从给定的引用类 [reference] 创建一个模糊反射器.
+         *
+         * @param reference Reference class
+         * @param reference 引用类
+         * @param isForceAccess Whether to force access
+         * @param isForceAccess 是否强制访问
+         */
         @JvmStatic
         @JvmOverloads
         fun of(reference: Class<*>, isForceAccess: Boolean = false): FuzzyReflect {
             return FuzzyReflect(reference, isForceAccess)
         }
 
+        /**
+         * * Create a fuzzy reflector from the given reference object [reference].
+         * * 从给定的引用对象 [reference] 创建一个模糊反射器.
+         *
+         * @param reference Reference object
+         * @param reference 引用对象
+         * @param isForceAccess Whether to force access
+         * @param isForceAccess 是否强制访问
+         */
         @JvmStatic
         @JvmOverloads
         fun of(reference: Any, isForceAccess: Boolean = false): FuzzyReflect {

@@ -19,6 +19,11 @@ package com.lgou2w.ldk.reflect
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * ## PackageCached (包缓存器)
+ *
+ * @author lgou2w
+ */
 class PackageCached {
 
     private val cached: MutableMap<String, Optional<Class<*>>>
@@ -82,6 +87,10 @@ class PackageCached {
             cached.remove(className)
     }
 
+    /**
+     * * Clear the internal cache.
+     * * 清除内部缓存.
+     */
     fun gc() {
         cached.clear()
     }

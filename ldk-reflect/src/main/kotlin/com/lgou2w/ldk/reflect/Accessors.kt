@@ -21,16 +21,49 @@ import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
+/**
+ * ## Accessors (访问器工具)
+ *
+ * * An accessor object can be created from a given construct, method, or field.
+ * * 可以通过给定的构造、方法或字段创建出访问器对象.
+ *
+ * @see [Accessor]
+ * @see [AccessorConstructor]
+ * @see [AccessorMethod]
+ * @see [AccessorField]
+ * @author lgou2w
+ */
 object Accessors {
 
+    /**
+     * * Create a constructor accessor for the given constructor [constructor].
+     * * 将给定的构造函数 [constructor] 创建一个构造访问器.
+     *
+     * @param constructor Constructor
+     * @param constructor 构造函数
+     */
     @JvmStatic
     fun <T> ofConstructor(constructor: Constructor<T>): AccessorConstructor<T>
             = AccessorConstructorImpl(constructor)
 
+    /**
+     * * Create a method accessor for the given method [method].
+     * * 将给定的方法 [method] 创建一个方法访问器.
+     *
+     * @param method Method
+     * @param method 方法
+     */
     @JvmStatic
     fun <T, R> ofMethod(method: Method): AccessorMethod<T, R>
             = AccessorMethodImpl(method)
 
+    /**
+     * * Create a field accessor for the given field [field].
+     * * 将给定的字段 [field] 创建一个字段访问器.
+     *
+     * @param field Field
+     * @param field 字段
+     */
     @JvmStatic
     fun <T, R> ofField(field: Field): AccessorField<T, R>
             = AccessorFieldImpl(field)

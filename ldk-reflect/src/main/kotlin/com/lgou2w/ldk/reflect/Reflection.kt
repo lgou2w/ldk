@@ -18,16 +18,65 @@ package com.lgou2w.ldk.reflect
 
 import java.util.*
 
+/**
+ * ## Reflection
+ *
+ * ### Sample:
+ * ```kotlin
+ * package my.app
+ * class App {
+ *   fun test() {
+ *     Reflection.safe().getCallerClasses(10).forEach { println(it) }
+ *   }
+ * }
+ * fun main(args: Array<String>) {
+ *   App().test()
+ *   // class sun.reflect.Reflection | java.lang.Thread
+ *   // class com.lgou2w.ldk.reflect.Reflection$SunReflection | ThreadReflection
+ *   // class com.lgou2w.ldk.reflect.Reflection
+ *   // class my.app.App
+ *   // ...
+ * }
+ * ```
+ *
+ * @see [com.lgou2w.ldk.reflect.Reflection.safe]
+ * @see [getCallerClass]
+ * @see [getCallerClasses]
+ * @author lgou2w
+ */
 abstract class Reflection private constructor() {
 
+    /**
+     * * Get the caller class for the given depth [depth].
+     * * 获取给定深度 [depth] 的调用者类.
+     *
+     * @param depth Depth
+     * @param depth 深度
+     */
     @JvmOverloads
     open fun getCallerClass(depth: Int? = null) : Class<*>? {
         return null
     }
 
+    /**
+     * * Get the caller class from `0` to the given depth [depth].
+     * * 获取从 `0` 到给定深度 [depth] 的调用者类.
+     *
+     * @param depth Depth
+     * @param depth 深度
+     */
     fun getCallerClasses(depth: Int? = null) : List<Class<*>>
-            = getCallerClasses(null, depth)
+            = getCallerClasses(null, depth) // TODO Improve
 
+    /**
+     * * Get the expected class from `0` to the given depth [depth].
+     * * 获取从 `0` 到给定深度 [depth] 的预期类.
+     *
+     * @param expected Expected type
+     * @param expected 预期类型
+     * @param depth Depth
+     * @param depth 深度
+     */
     @JvmOverloads
     open fun getCallerClasses(expected: Class<*>? = null, depth: Int? = null) : List<Class<*>> {
         return emptyList()
@@ -35,11 +84,25 @@ abstract class Reflection private constructor() {
 
     companion object {
 
+        /**
+         * * Get the wrapped reflection implemented by the underlying `sun.reflect.Reflection` of `Sun`.
+         * * 获取由 `Sun` 的底层 `sun.reflect.Reflection` 实现的包装反射.
+         *
+         * > `WARNING` : This depends on whether the `JDK` is reserved, please use [safe] method.
+         *
+         * @see [safe]
+         */
         @JvmStatic
         @Deprecated("sun.reflect.Reflection", ReplaceWith("safe"))
         fun sun() : Reflection
                 = SunReflection()
 
+        /**
+         * * Get the wrapped reflection implemented by the stack information of `Thread`.
+         * * 获取由 `Thread` 的堆栈信息实现的包装反射.
+         *
+         * @see [safe]
+         */
         @JvmStatic
         @Deprecated("It is recommended to use safe to get.", ReplaceWith("safe"))
         fun thread() : Reflection
@@ -48,6 +111,10 @@ abstract class Reflection private constructor() {
         @JvmStatic
         private var SAFE : Reflection? = null
 
+        /**
+         * * Give preference to the underlying implementation of `Sun`, if not available then use the wrapped reflection of the `Thread` stack information.
+         * * 优先使用 `Sun` 的底层实现, 如果不可用那么使用 `Thread` 的堆栈信息实现的包装反射.
+         */
         @JvmStatic
         fun safe() : Reflection {
             if (SAFE == null) {

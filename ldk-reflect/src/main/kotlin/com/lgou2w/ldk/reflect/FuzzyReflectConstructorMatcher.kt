@@ -21,6 +21,14 @@ import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Constructor
 
+/**
+ * ## FuzzyReflectConstructorMatcher (模糊反射构造匹配器)
+ *
+ * @see [FuzzyReflect]
+ * @see [FuzzyReflectMatcher]
+ * @see [Constructor]
+ * @author lgou2w
+ */
 class FuzzyReflectConstructorMatcher<T: Any>(
         reflect: FuzzyReflect,
         initialize: Collection<Constructor<T>>? = null

@@ -19,7 +19,24 @@ package com.lgou2w.ldk.reflect
 import java.lang.reflect.AccessibleObject
 import java.lang.reflect.Member
 
+/**
+ * ## Accessor (访问器)
+ *
+ * @see [Accessors]
+ * @see [AccessorConstructor]
+ * @see [AccessorMethod]
+ * @see [AccessorField]
+ * @author lgou2w
+ */
 interface Accessor<out T> where T: AccessibleObject, T: Member {
 
+    /**
+     * * The source object of the accessor.
+     * * 访问器的源对象.
+     *
+     * @see [java.lang.reflect.Constructor]
+     * @see [java.lang.reflect.Method]
+     * @see [java.lang.reflect.Field]
+     */
     val source: T
 }

@@ -24,6 +24,8 @@ import java.lang.reflect.Member
 import java.util.*
 import java.util.regex.Pattern
 
+/** Removed in 0.0.1-beta3 */
+@Deprecated("Extended maintenance by FuzzyReflectMatcher")
 abstract class ReflectMatcher<T>(
         val reflect: Reflect,
         initialize: Collection<T>? = null

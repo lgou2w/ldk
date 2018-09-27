@@ -20,6 +20,13 @@ import com.lgou2w.ldk.common.ApplicatorFunction
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * ## LazyFuzzyReflect (延迟加载模糊反射)
+ *
+ * @see [ReadOnlyProperty]
+ * @see [Lazy]
+ * @author lgou2w
+ */
 class LazyFuzzyReflect<T> @JvmOverloads constructor(
         source: Class<*>,
         isForceAccess: Boolean = false,
@@ -41,10 +48,18 @@ class LazyFuzzyReflect<T> @JvmOverloads constructor(
     }
 }
 
+/**
+ * * Lazy fuzzy reflect delegate.
+ * * 延迟模糊反射委托.
+ */
 @JvmOverloads
 fun <T> lazyFuzzyReflect(source: Class<*>, isForceAccess: Boolean = false, initializer: ApplicatorFunction<FuzzyReflect, T>)
         = LazyFuzzyReflect(source, isForceAccess, initializer)
 
+/**
+ * * Lazy fuzzy reflect delegate.
+ * * 延迟模糊反射委托.
+ */
 @JvmOverloads
 fun <T> lazyFuzzyReflect(source: Any, isForceAccess: Boolean = false, initializer: ApplicatorFunction<FuzzyReflect, T>)
         = LazyFuzzyReflect(source.javaClass, isForceAccess, initializer)

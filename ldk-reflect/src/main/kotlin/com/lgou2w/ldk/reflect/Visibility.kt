@@ -20,6 +20,15 @@ import java.lang.reflect.AccessibleObject
 import java.lang.reflect.Member
 import java.lang.reflect.Modifier
 
+/**
+ * ## Visibility (可见性)
+ *
+ * @see [Modifier]
+ * @see [java.lang.reflect.Constructor]
+ * @see [java.lang.reflect.Method]
+ * @see [java.lang.reflect.Field]
+ * @author lgou2w
+ */
 enum class Visibility {
 
     PRIVATE,
@@ -36,6 +45,13 @@ enum class Visibility {
     STRICT,
     ;
 
+    /**
+     * * Gets whether this visibility is matched from the given accessible object.
+     * * 从给定的可访问对象获取是否匹配此可见性.
+     *
+     * @param accessible Accessible object
+     * @param accessible 可访问对象
+     */
     fun <E> isMatches(accessible: E): Boolean where E : AccessibleObject, E: Member {
         val modifiers = accessible.modifiers
         return when (this) {

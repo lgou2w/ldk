@@ -21,6 +21,14 @@ import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Method
 
+/**
+ * ## FuzzyReflectMethodMatcher (模糊反射函数匹配器)
+ *
+ * @see [FuzzyReflect]
+ * @see [FuzzyReflectMatcher]
+ * @see [Method]
+ * @author lgou2w
+ */
 class FuzzyReflectMethodMatcher(
         reflect: FuzzyReflect,
         initialize: Collection<Method>? = null
