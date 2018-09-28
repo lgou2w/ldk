@@ -18,29 +18,33 @@
 
 * 一个多平台的 lgou2w 开发套件.
 
+多模块，多平台，低耦合，依赖库，Minecraft 的聊天和 NBT 库，工具，实用程序，包装，
+Rxjava，Retrofit，ASM，Bukkit 的扩展和运行时等。快速开发，Lambda，函数编程。 
+集成的多模块多平台 lgou2w 开发套件。`LDK`
+
 # 模块
 
 * ldk
-    * ldk-asm
-    * ldk-common
-    * ldk-i18n
-    * ldk-reflect
-    * ldk-retrofit
-    * ldk-rx
-    * ldk-fx
-    * ldk-chat
-    * ldk-nbt
-    * ldk-bukkit
-        * ldk-bukkit-common
-        * ldk-bukkit-compatibility
-        * ldk-bukkit-i18n
-        * ldk-bukkit-cmd
-        * ldk-bukkit-gui
-        * ldk-bukkit-region
-        * ldk-bukkit-depend
-        * ldk-bukkit-scheduler
-        * ldk-bukkit-plugin
-
+    * [ldk-asm](/ldk-asm)
+    * [ldk-common](/ldk-common)
+    * [ldk-i18n](/ldk-i18n)
+    * [ldk-reflect](/ldk-reflect)
+    * [ldk-retrofit](/ldk-retrofit)
+    * [ldk-rx](/ldk-rx)
+    * [ldk-fx](/ldk-fx) (N/A)
+    * [ldk-chat](/ldk-chat)
+    * [ldk-nbt](/ldk-nbt)
+    * [ldk-hikari](/ldk-hikari)
+    * [ldk-bukkit](/ldk-bukkit)
+        * [ldk-bukkit-common](/ldk-bukkit/ldk-bukkit-common)
+        * [ldk-bukkit-compatibility](/ldk-bukkit/ldk-bukkit-compatibility)
+        * [ldk-bukkit-i18n](/ldk-bukkit/ldk-bukkit-i18n)
+        * [ldk-bukkit-cmd](/ldk-bukkit/ldk-bukkit-cmd)
+        * [ldk-bukkit-gui](/ldk-bukkit/ldk-bukkit-gui)
+        * [ldk-bukkit-region](/ldk-bukkit/ldk-bukkit-region)
+        * [ldk-bukkit-depend](/ldk-bukkit/ldk-bukkit-depend)
+        * [ldk-bukkit-scheduler](/ldk-bukkit/ldk-bukkit-scheduler)
+        * [ldk-bukkit-plugin](/ldk-bukkit/ldk-bukkit-plugin)
         
 # 构建
 

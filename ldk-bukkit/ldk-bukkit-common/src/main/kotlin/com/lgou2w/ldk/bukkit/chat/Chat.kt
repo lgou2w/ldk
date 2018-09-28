@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.chat
 import com.lgou2w.ldk.chat.ChatAction
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatComponentFancy
+import com.lgou2w.ldk.chat.ChatComponentText
 import com.lgou2w.ldk.chat.ChatSerializer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -35,3 +36,15 @@ fun ChatComponent.send(player: Player, action: ChatAction = ChatAction.CHAT)
 
 fun ChatComponentFancy.tooltipItem(itemStack: ItemStack) : ChatComponentFancy
         = ChatFactory.tooltipItem(this, itemStack)
+
+@JvmOverloads
+fun ChatComponent.sendTitle(player: Player, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
+        = ChatFactory.sendTitle(player, this, fadeIn, stay, fadeOut)
+
+@JvmOverloads
+fun ChatComponent.sendTitle(player: Player, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
+        = ChatFactory.sendTitle(player, this, subTitle, fadeIn, stay, fadeOut)
+
+@JvmOverloads
+fun ChatComponent.sendTitleSub(player: Player, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
+        = ChatFactory.sendTitle(player, ChatComponentText(""), this, fadeIn, stay, fadeOut)

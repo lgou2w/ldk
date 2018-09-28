@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgou2w</groupId>
     <artifactId>ldk</artifactId>
-    <version>0.0.1-beta2</version>
+    <version>0.0.1-beta3</version>
     <packaging>pom</packaging>
     <description>A multi-platform lgou2w development kit</description>
     <url>https://github.com/lgou2w/ldk</url>
@@ -31,7 +31,7 @@
     </licenses>
 
     <properties>
-        <kotlin.version>1.2.70</kotlin.version>
+        <kotlin.version>1.2.71</kotlin.version>
         <dokka.version>0.9.17</dokka.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -40,11 +40,14 @@
 
     <modules>
         <module>ldk-common</module>
+        <module>ldk-asm</module>
         <module>ldk-reflect</module>
+        <module>ldk-retrofit</module>
         <module>ldk-i18n</module>
         <module>ldk-chat</module>
         <module>ldk-nbt</module>
         <module>ldk-rx</module>
+        <module>ldk-hikari</module>
         <module>ldk-bukkit</module>
     </modules>
 

@@ -20,8 +20,39 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
+/**
+ * ## FuzzyReflect (模糊反射器)
+ *
+ * * Quick, convenient, and fuzzy matching to find reflection values ​​with various attributes.
+ * * 快速、方便，以模糊的方式匹配查找具备各种属性的反射值.
+ *
+ * ### Sample:
+ * ```kotlin
+ * class My {
+ *      fun say(msg: String) : Int {
+ *          println(msg)
+ *          return 0
+ *      }
+ * }
+ * fun main(args: Array<String>) {
+ *      val say = FuzzyReflect.of(My::class.java)
+ *          .useMethodMatcher()                                 // Method matcher
+ *          .withVisibilities(Visibility.PUBLIC)            // Public function
+ *          .withType(Int::class.java)                           // Return Int
+ *          .withParams(String::class.java)                 // Method parameters
+ *          .withName("say")                                        // Method name
+ *          .resultAccessorAs<My, Int>()                    // My is instance, Int is method return value
+
+ *      val value = say.invoke(My(), "hello world")   // value = 1
+ *      // "hello world" Printed
+ * }
+ * ```
+ *
+ * @see [Reflect]
+ * @author lgou2w
+ */
 class FuzzyReflect private constructor(
-        private val reference: Class<*>,
+        override val reference: Class<*>,
         override val isForceAccess: Boolean
 ) : Reflect {
 
@@ -29,15 +60,15 @@ class FuzzyReflect private constructor(
         return FuzzyReflect(reference, true)
     }
 
-    override fun useConstructorMatcher(): FuzzyReflectConstructorMatcher<Any>
+    fun useConstructorMatcher(): FuzzyReflectConstructorMatcher<Any>
             = FuzzyReflectConstructorMatcher(this,
             @Suppress("UNCHECKED_CAST")
             constructors.map { it as Constructor<Any> })
 
-    override fun useMethodMatcher(): FuzzyReflectMethodMatcher
+    fun useMethodMatcher(): FuzzyReflectMethodMatcher
             = FuzzyReflectMethodMatcher(this, methods)
 
-    override fun useFieldMatcher(): FuzzyReflectFieldMatcher
+    fun useFieldMatcher(): FuzzyReflectFieldMatcher
             = FuzzyReflectFieldMatcher(this, fields)
 
     override val constructors: Set<Constructor<*>>
@@ -60,12 +91,30 @@ class FuzzyReflect private constructor(
 
     companion object {
 
+        /**
+         * * Create a fuzzy reflector from the given reference class [reference].
+         * * 从给定的引用类 [reference] 创建一个模糊反射器.
+         *
+         * @param reference Reference class
+         * @param reference 引用类
+         * @param isForceAccess Whether to force access
+         * @param isForceAccess 是否强制访问
+         */
         @JvmStatic
         @JvmOverloads
         fun of(reference: Class<*>, isForceAccess: Boolean = false): FuzzyReflect {
             return FuzzyReflect(reference, isForceAccess)
         }
 
+        /**
+         * * Create a fuzzy reflector from the given reference object [reference].
+         * * 从给定的引用对象 [reference] 创建一个模糊反射器.
+         *
+         * @param reference Reference object
+         * @param reference 引用对象
+         * @param isForceAccess Whether to force access
+         * @param isForceAccess 是否强制访问
+         */
         @JvmStatic
         @JvmOverloads
         fun of(reference: Any, isForceAccess: Boolean = false): FuzzyReflect {

@@ -16,18 +16,26 @@
 
 package com.lgou2w.ldk.reflect
 
-import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Field
+import java.util.*
 
+/**
+ * ## FuzzyReflectFieldMatcher (模糊反射字段匹配器)
+ *
+ * @see [FuzzyReflect]
+ * @see [FuzzyReflectMatcher]
+ * @see [Field]
+ * @author lgou2w
+ */
 class FuzzyReflectFieldMatcher(
         reflect: FuzzyReflect,
         initialize: Collection<Field>? = null
 ) : FuzzyReflectMatcher<Field>(reflect, initialize) {
 
-    override fun with(block: Function<Field, Boolean>): FuzzyReflectFieldMatcher {
-        return super.with(block) as FuzzyReflectFieldMatcher
+    override fun with(predicate: Predicate<Field>): FuzzyReflectFieldMatcher {
+        return super.with(predicate) as FuzzyReflectFieldMatcher
     }
 
     override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectFieldMatcher {
@@ -65,6 +73,13 @@ class FuzzyReflectFieldMatcher(
     override fun resultAccessorOrNull(): AccessorField<Any, Any>?
             = resultOrNull()?.letIfNotNull { Accessors.ofField<Any, Any>(this) }
 
+    /**
+     * * Get the first valid result accessor for this fuzzy reflection matcher.
+     * * 获取此模糊反射匹配器的第一个有效结果访问器.
+     *
+     * @throws NoSuchElementException If the match result is empty.
+     * @throws NoSuchElementException 如果匹配结果为空.
+     */
     fun <T, R> resultAccessorAs(): AccessorField<T, R>
             = Accessors.ofField(result())
 }

@@ -18,7 +18,26 @@ package com.lgou2w.ldk.reflect
 
 import java.lang.reflect.Constructor
 
+/**
+ * ## AccessorConstructor (构造访问器)
+ *
+ * @see [Accessor]
+ * @see [Constructor]
+ * @see [Accessors.ofConstructor]
+ * @author lgou2w
+ */
 interface AccessorConstructor<T> : Accessor<Constructor<T>> {
 
+    /**
+     * * Create an instance object with the given parameter [params].
+     * * 以给定的参数 [params] 创建一个实例对象.
+     *
+     * @param params Parameter
+     * @param params 参数
+     * @throws RuntimeException Throws an exception if it cannot be used, an internal error, or an instance error.
+     * @throws RuntimeException 如果无法使用、内部错误或实例错误时抛出异常.
+     * @see [Constructor.newInstance]
+     */
+    @Throws(RuntimeException::class)
     fun newInstance(vararg params: Any?): T
 }

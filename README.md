@@ -17,29 +17,34 @@
 # Information
 
 * A multi-platform lgou2w development kit.
+    
+Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's chat and nbt library、Tools、Utility、Package、
+Rxjava、Retrofit、ASM、Bukkit's extended and runtime and etc. Rapid development、Lambda、Functional programming. 
+Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
 # Modules
 
 * ldk
-    * ldk-asm
-    * ldk-common
-    * ldk-i18n
-    * ldk-reflect
-    * ldk-retrofit
-    * ldk-rx
-    * ldk-fx
-    * ldk-chat
-    * ldk-nbt
-    * ldk-bukkit
-        * ldk-bukkit-common
-        * ldk-bukkit-compatibility
-        * ldk-bukkit-i18n
-        * ldk-bukkit-cmd
-        * ldk-bukkit-gui
-        * ldk-bukkit-region
-        * ldk-bukkit-depend
-        * ldk-bukkit-scheduler
-        * ldk-bukkit-plugin
+    * [ldk-asm](/ldk-asm)
+    * [ldk-common](/ldk-common)
+    * [ldk-i18n](/ldk-i18n)
+    * [ldk-reflect](/ldk-reflect)
+    * [ldk-retrofit](/ldk-retrofit)
+    * [ldk-rx](/ldk-rx)
+    * [ldk-fx](/ldk-fx) (N/A)
+    * [ldk-chat](/ldk-chat)
+    * [ldk-nbt](/ldk-nbt)
+    * [ldk-hikari](/ldk-hikari)
+    * [ldk-bukkit](/ldk-bukkit)
+        * [ldk-bukkit-common](/ldk-bukkit/ldk-bukkit-common)
+        * [ldk-bukkit-compatibility](/ldk-bukkit/ldk-bukkit-compatibility)
+        * [ldk-bukkit-i18n](/ldk-bukkit/ldk-bukkit-i18n)
+        * [ldk-bukkit-cmd](/ldk-bukkit/ldk-bukkit-cmd)
+        * [ldk-bukkit-gui](/ldk-bukkit/ldk-bukkit-gui)
+        * [ldk-bukkit-region](/ldk-bukkit/ldk-bukkit-region)
+        * [ldk-bukkit-depend](/ldk-bukkit/ldk-bukkit-depend)
+        * [ldk-bukkit-scheduler](/ldk-bukkit/ldk-bukkit-scheduler)
+        * [ldk-bukkit-plugin](/ldk-bukkit/ldk-bukkit-plugin)
         
 # Binaries
 
