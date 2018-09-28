@@ -22,6 +22,13 @@
     </repositories>
 
     <dependencies>
+        <!-- ldk-hikari -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-hikari</artifactId>
+            <version>0.1-rc</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- ldk-bukkit-common -->
         <dependency>
             <groupId>com.lgou2w</groupId>
