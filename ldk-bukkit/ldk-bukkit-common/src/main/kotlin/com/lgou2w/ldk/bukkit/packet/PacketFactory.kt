@@ -22,6 +22,7 @@ import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.FuzzyReflect
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -82,24 +83,25 @@ object PacketFactory {
     }
 
     @JvmStatic
-    fun sendToNearby(center: Location, packet: Any)
-            = sendToNearby(null, false, center, packet)
+    fun sendPacketTo(packet: Any, vararg players: Player) {
+        MinecraftReflection.isExpected(packet, CLASS_PACKET)
+        players.forEach {
+            try {
+                sendPacket(it, packet)
+            } catch (e: Exception) {
+            }
+        }
+    }
 
     @JvmStatic
-    fun sendToNearby(player: Player?, force: Boolean, center: Location, packet: Any) {
+    fun sendPacketToAll(packet: Any)
+            = sendPacketTo(packet, *Bukkit.getOnlinePlayers().toTypedArray())
+
+    @JvmStatic
+    fun sendPacketToNearby(packet: Any, center: Location, range: Double) {
         MinecraftReflection.isExpected(packet, CLASS_PACKET)
-        center.world.players
-            .asSequence()
-            .filter { player == null || player.canSee(it) }
-            .filter {
-                val distance = it.location.distanceSquared(center)
-                distance < 1024.0 || (force && distance < 262144.0)
-            }
-            .forEach {
-                try {
-                    sendPacket(it, packet)
-                } catch (e: Exception) {
-                }
-            }
+        val squared = if (range < 1.0) 1.0 else range * range
+        val receivers = center.world.players.filter { it.location.distanceSquared(center) <= squared }
+        sendPacketTo(packet, *receivers.toTypedArray())
     }
 }

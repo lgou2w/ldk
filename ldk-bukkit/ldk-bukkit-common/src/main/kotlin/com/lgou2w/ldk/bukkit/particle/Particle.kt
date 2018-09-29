@@ -17,7 +17,6 @@
 package com.lgou2w.ldk.bukkit.particle
 
 import com.lgou2w.ldk.bukkit.version.API
-import com.lgou2w.ldk.bukkit.version.IllegalBukkitVersionException
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
@@ -34,13 +33,11 @@ enum class Particle(
      * * 如果粒子由 `@Deprecated` 注解那么代表在 `Minecraft 1.13` 中被移除.
      *      不过依然是能够用的, 仅仅只是兼容层. 只是不会记住 Id 而已.
      *
-     * * 由 `@API` 注解的粒子说明是对应版本才加入的, 使用时切记.
+     * * 由 `@API` 注解的粒子说明是对应版本才加入的, 使用时注意.
      *
      * 目前 `Minecraft 1.12.2` 为止, 可用的粒子效果一共为 49 种. [SPIT] 结束.
      * 在 `Minecraft 1.13` 中分别移除了 [UNDERWATER_DEPTH]、[FOOTSTEP]、[ITEM_SNOW_SHOVEL]、[BLOCKDUST]、[TAKE]，
      *      不过没关系的, 这些在 1.13 依然能够使用, LDK 已经为这些做好兼容.
-     *
-     * > [FOOTSTEP] 在 Minecraft 1.13 不被兼容.
      */
 
     POOF(34, "explosion_normal", "poof"),
@@ -52,7 +49,7 @@ enum class Particle(
     FISHING(22, "water_wake", "fishing"),
     UNDERWATER(42, "suspended", "underwater"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("UNDERWATER"))
-    UNDERWATER_DEPTH(null, "suspended_depth", "underwater"),
+    UNDERWATER_DEPTH("suspended_depth", 42),
     CRIT(6, "crit", "crit"),
     ENCHANTED_HIT(14, "crit_magic", "enchanted_hit"),
     SMOKE(37, "smoke_normal", "smoke"),
@@ -72,23 +69,23 @@ enum class Particle(
     ENCHANT(15, "enchantment_table", "enchant"),
     FLAME(23, "flame", "flame"),
     LAVA(31, "lava", "lava"),
-    @Deprecated("Removed in Minecraft 1.13, Unable to force compatibility.")
-    FOOTSTEP(null, "footstep", "footstep"),
+    @Deprecated("Removed in Minecraft 1.13")
+    FOOTSTEP("footstep", 2),
     CLOUD(5, "cloud", "cloud"),
     DUST(11, "red_dust", "dust"),
     ITEM_SNOWBALL(29, "snowball", "item_snowball"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("ITEM_SNOWBALL"))
-    ITEM_SNOW_SHOVEL(null, "snow_shovel", "item_snowball"),
+    ITEM_SNOW_SHOVEL("snow_shovel", 29),
     ITEM_SLIME(28, "slime", "item_slime"),
     HEART(25, "heart", "heart"),
     BARRIER(2, "barrier", "barrier"),
     ITEM(27, "item_crack", "item"),
     BLOCK(3, "block_crack", "block"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("BLOCK"))
-    BLOCKDUST(null, "blockdust", "block"),
+    BLOCKDUST("blockdust", 3),
     RAIN(36, "water_drop", "rain"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("ITEM"))
-    TAKE(null, "item_take", "item"),
+    TAKE("item_take", 27),
     ELDER_GUARDIAN(13, "mob_appearance", "elder_guardian"),
 
     @API(Level.Minecraft_V1_9) DRAGON_BREATH(8, "dragon_breath", "dragon_breath"),
@@ -107,10 +104,15 @@ enum class Particle(
     @API(Level.Minecraft_V1_13) DOLPHIN(49, "dolphin", "dolphin"),
     ;
 
+    constructor(
+            legacy: String,
+            equivalent: Int
+    ) : this(equivalent, legacy, legacy)
+
     override val value: Int
         get() = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
             @Suppress("DEPRECATION")
-            internal ?: if (this == FOOTSTEP) -1 else Particle.valueOf(type.toUpperCase(Locale.US)).internal ?: -1
+            internal ?: -1
         else
             ordinal
 
@@ -118,6 +120,7 @@ enum class Particle(
 
         @JvmStatic var COMPATIBILITIES : Array<Particle> private set
         @JvmStatic private val ID_MAP : MutableMap<Int, Particle> = HashMap()
+        @JvmStatic private val NAME_MAP : MutableMap<String, Particle> = HashMap()
 
         // internal == null => skip
         // Particle > SPIT && CURRENT < 1.13 => skip
@@ -125,17 +128,21 @@ enum class Particle(
         init {
             val isV113OrLater = MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)
             Particle.values().forEach { particle ->
-                if (isV113OrLater && particle.internal != null) {
-                    ID_MAP[particle.internal] = particle
-                } else if (particle.ordinal <= Particle.SPIT.ordinal) {
-                    ID_MAP[particle.ordinal] = particle
-                }
+                ID_MAP[particle.value] = particle
+                NAME_MAP[particle.legacy] = particle
+                NAME_MAP[particle.type] = particle
             }
-            COMPATIBILITIES = ID_MAP.values.toTypedArray()
+            COMPATIBILITIES = ID_MAP.values
+                .filter { (isV113OrLater && it.internal != null) || it.ordinal <= SPIT.ordinal }
+                .toTypedArray()
         }
 
         @JvmStatic
         fun fromId(id: Int) : Particle
-                = ID_MAP[id] ?: throw IllegalBukkitVersionException("Unsupported particle effect type: $id")
+                = ID_MAP[id] ?: throw IllegalArgumentException("Unsupported particle effect type: $id")
+
+        @JvmStatic
+        fun fromName(name: String) : Particle
+                = NAME_MAP[name] ?: throw IllegalArgumentException("Unsupported particle effect type: $name")
     }
 }

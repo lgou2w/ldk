@@ -22,6 +22,7 @@ import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClassOrNull
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.reflect.AccessorConstructor
@@ -199,19 +200,24 @@ object ParticleFactory {
     ) : Any {
         val nms = METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, particle.type)
         val param = if (particle == Particle.ITEM) {
-            val stack = data as? ItemStack ?: if (data is Material) ItemStack(data) else
-                throw IllegalArgumentException("Particle ITEM data type can only be Material or ItemStack.")
+            val stack = when (data) {
+                is ItemStack -> data
+                is Material -> ItemStack(data)
+                is ParticleData -> ItemStack(data.type)
+                else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
+            }
             CONSTRUCTOR_PARAM_ITEM.notNull().newInstance(nms, ItemFactory.asNMSCopy(stack))
         } else if (particle == Particle.BLOCK || particle == Particle.BLOCKDUST || particle == Particle.FALLING_DUST) {
             val block = when (data) {
                 is Block -> FIELD_CRAFT_BLOCK_DATA_STATE.notNull()[data.blockData]
                 is Material -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, data, 0.toByte())
-                else -> throw IllegalArgumentException("Particle BLOCK or BLOCKDUST or FALLING_DUST data type can only be Material or Block.")
+                is ParticleData -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, data.type, data.data.toByte())
+                else -> throw IllegalArgumentException("Particle BLOCK | BLOCKDUST | FALLING_DUST data can only be Material | Block | ParticleData.")
             }
             CONSTRUCTOR_PARAM_BLOCK.notNull().newInstance(nms, block)
         } else if (particle == Particle.DUST) {
             val dust = data as? ParticleDust ?: if (data is Color) ParticleDust(data, 0.01f) else
-                throw IllegalArgumentException("Particle DUST data type can only be ParticleDust or Color.")
+                throw IllegalArgumentException("Particle DUST data can only be ParticleDust | Color.")
             CONSTRUCTOR_PARAM_REDSTONE.notNull().newInstance(
                     dust.color.red / 255.0f,
                     dust.color.green / 255.0f,
@@ -249,16 +255,20 @@ object ParticleFactory {
         var overrideOffsetY = offsetY
         var overrideOffsetZ = offsetZ
         val packetData = if (particle == Particle.ITEM) {
-            val type = (data as? ItemStack)?.type ?: data as? Material
-                       ?: throw IllegalArgumentException("Particle ITEM data type can only be Material or ItemStack.")
-            val value = (data as? ItemStack)?.data?.data?.toInt() ?: 0
+            val (type, value) = when (data) {
+                is ItemStack -> data.type to data.data.data.toInt()
+                is Material -> data to 0
+                is ParticleData -> data.type to data.data
+                else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
+            }
             intArrayOf(type.id, value)
         } else if (particle == Particle.BLOCK || particle == Particle.BLOCKDUST || particle == Particle.FALLING_DUST) {
-            val type = (data as? Block)?.type ?: data as? Material
-                       ?: throw IllegalArgumentException("Particle BLOCK or BLOCKDUST or FALLING_DUST data type can only be Material or Block.")
-            if (!type.isBlock)
-                throw IllegalArgumentException("The material type '$type' is not a block.")
-            val value = (data as? Block)?.data?.toInt() ?: 0
+            val (type, value) = when (data) {
+                is Block -> data.type to data.data.toInt()
+                is Material -> data to 0
+                is ParticleData -> data.type to data.data
+                else -> throw IllegalArgumentException("Particle BLOCK | BLOCKDUST | FALLING_DUST data can only be Material | Block | ParticleData.")
+            }
             intArrayOf(type.id or (value shl 12))
         } else {
             intArrayOf()
@@ -270,6 +280,9 @@ object ParticleFactory {
             overrideOffsetZ = color.blue / 255.0f
             if (color.red == 0)
                 overrideOffsetX = Float.MIN_VALUE
+        }
+        if (particle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
+            overrideOffsetX = data.value / 24f
         }
         val nms = METHOD_GET_PARTICLE_LEGACY.notNull().invoke(null, particle.value)
         return CONSTRUCTOR_LEGACY.notNull().newInstance(
@@ -285,8 +298,58 @@ object ParticleFactory {
     }
 
     @JvmStatic
+    @JvmOverloads
     fun sendParticle(
-            player: Player?,
+            particle: Particle,
+            center: Location,
+            range: Double = 32.0,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) {
+        val packet = createPacket(particle, center.x.toFloat(), center.y.toFloat(), center.z.toFloat(), offsetX, offsetY, offsetZ, speed, count, range > 256.0, data)
+        PacketFactory.sendPacketToNearby(packet, center, range)
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun sendParticle(
+            sender: Player?,
+            particle: Particle,
+            center: Location,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) {
+        sendParticle(center.world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun sendParticle(
+            players: List<Player>,
+            particle: Particle,
+            center: Location,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) {
+        sendParticle(players, { it.world == center.world }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
+    }
+
+    @JvmStatic
+    private fun sendParticle(
+            players: List<Player>,
+            filter: Predicate<Player>,
             particle: Particle,
             center: Location,
             offsetX: Float,
@@ -294,10 +357,20 @@ object ParticleFactory {
             offsetZ: Float,
             speed: Float,
             count: Int,
-            longDistance: Boolean,
             data: Any?
     ) {
+        var longDistance = false
+        val results = players
+            .asSequence()
+            .filter {
+                val result = filter(it)
+                if (result && it.location.distanceSquared(center) >= 256.0)
+                    longDistance = true
+                result
+            }
+            .toList()
+            .toTypedArray()
         val packet = createPacket(particle, center.x.toFloat(), center.y.toFloat(), center.z.toFloat(), offsetX, offsetY, offsetZ, speed, count, longDistance, data)
-        PacketFactory.sendToNearby(player, false, center, packet)
+        PacketFactory.sendPacketTo(packet, *results)
     }
 }
