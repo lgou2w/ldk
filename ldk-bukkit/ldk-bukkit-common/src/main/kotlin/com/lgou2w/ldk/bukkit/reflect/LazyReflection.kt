@@ -28,6 +28,9 @@ fun lazyMinecraftClass(className: String, vararg aliases: String)
 fun lazyMinecraftClassOrNull(className: String)
         = lazyAnyOrNullClass { MinecraftReflection.getMinecraftClassOrNull(className) }
 
+fun lazyMinecraftClassOrNull(className: String, vararg aliases: String)
+        = lazyAnyOrNullClass { MinecraftReflection.getMinecraftClassOrNull(className, *aliases) }
+
 fun lazyCraftBukkitClass(className: String)
         = lazyAnyClass { MinecraftReflection.getCraftBukkitClass(className) }
 

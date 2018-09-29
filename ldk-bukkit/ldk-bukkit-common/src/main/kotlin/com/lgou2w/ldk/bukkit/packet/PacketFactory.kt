@@ -22,6 +22,7 @@ import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.FuzzyReflect
+import org.bukkit.Location
 import org.bukkit.entity.Player
 
 object PacketFactory {
@@ -78,5 +79,27 @@ object PacketFactory {
         val handle = EntityFactory.asNMS(player)
         val connection = FIELD_PLAYER_CONNECTION[handle]
         METHOD_PACKET_PROCESS.invoke(packet, connection)
+    }
+
+    @JvmStatic
+    fun sendToNearby(center: Location, packet: Any)
+            = sendToNearby(null, false, center, packet)
+
+    @JvmStatic
+    fun sendToNearby(player: Player?, force: Boolean, center: Location, packet: Any) {
+        MinecraftReflection.isExpected(packet, CLASS_PACKET)
+        center.world.players
+            .asSequence()
+            .filter { player == null || player.canSee(it) }
+            .filter {
+                val distance = it.location.distanceSquared(center)
+                distance < 1024.0 || (force && distance < 262144.0)
+            }
+            .forEach {
+                try {
+                    sendPacket(it, packet)
+                } catch (e: Exception) {
+                }
+            }
     }
 }
