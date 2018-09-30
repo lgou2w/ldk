@@ -19,8 +19,10 @@ package com.lgou2w.ldk.bukkit.particle
 /**
  * ## ParticleNote (粒子音符)
  *
- * * Used only in versions prior to 1.13, set the color of the note particle. The value is `0 ~ 24` range.
- * * 仅在 1.13 之前版本使用, 设置音符粒子的颜色. 值为 `0 ~ 24` 范围.
+ * * Sets the color of the note particle. The value is `0 ~ 24` range.
+ *      * Need to set the number of `count` to `0` color to take effect.
+ * * 设置音符粒子的颜色. 值为 `0 ~ 24` 范围.
+ *      * 需要将 `count` 数量设置为 `0` 颜色才会生效.
  *
  * @author lgou2w
  */

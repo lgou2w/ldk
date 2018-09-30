@@ -198,6 +198,7 @@ object ParticleFactory {
             data: Any?
     ) : Any {
         val nms = METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, particle.type)
+        var overrideOffsetX = offsetX
         val param = if (particle == Particle.ITEM) {
             val stack = when (data) {
                 is ItemStack -> data
@@ -229,11 +230,14 @@ object ParticleFactory {
         } else {
             nms
         }
+        if (particle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
+            overrideOffsetX = data.value / 24f
+        }
         return CONSTRUCTOR_FRESH.notNull().newInstance(
                 param,
                 longDistance,
                 x, y, z,
-                offsetX,
+                overrideOffsetX,
                 offsetY,
                 offsetZ,
                 speed,
@@ -254,6 +258,8 @@ object ParticleFactory {
             longDistance: Boolean,
             data: Any?
     ) : Any {
+        val nms = METHOD_GET_PARTICLE_LEGACY.notNull().invoke(null, particle.value)
+                  ?: throw IllegalArgumentException("This particle $particle is not supported by the server version.")
         var overrideOffsetX = offsetX
         var overrideOffsetY = offsetY
         var overrideOffsetZ = offsetZ
@@ -287,7 +293,6 @@ object ParticleFactory {
         if (particle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
             overrideOffsetX = data.value / 24f
         }
-        val nms = METHOD_GET_PARTICLE_LEGACY.notNull().invoke(null, particle.value)
         return CONSTRUCTOR_LEGACY.notNull().newInstance(
                 nms,
                 longDistance,
@@ -300,6 +305,12 @@ object ParticleFactory {
                 packetData)
     }
 
+    /**
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
+     * @param data [Particle.NOTE] => [ParticleNote] | `null`
+     */
     @JvmStatic
     @JvmOverloads
     fun sendParticle(
@@ -317,6 +328,12 @@ object ParticleFactory {
         PacketFactory.sendPacketToNearby(packet, center, range)
     }
 
+    /**
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
+     * @param data [Particle.NOTE] => [ParticleNote] | `null`
+     */
     @JvmStatic
     @JvmOverloads
     fun sendParticle(
@@ -333,6 +350,12 @@ object ParticleFactory {
         sendParticle(center.world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
     }
 
+    /**
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
+     * @param data [Particle.NOTE] => [ParticleNote] | `null`
+     */
     @JvmStatic
     @JvmOverloads
     fun sendParticle(
