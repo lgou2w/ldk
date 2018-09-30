@@ -59,6 +59,13 @@ object MinecraftReflection {
     }
 
     @JvmStatic
+    fun getMinecraftClassOrNull(className: String, vararg aliases: String): Class<*>? = try {
+        getMinecraftClass(className, *aliases)
+    } catch (e: ClassNotFoundException) {
+        null
+    }
+
+    @JvmStatic
     fun setMinecraftClass(className: String, clazz: Class<*>?): Class<*>? {
         PACKAGE_CACHED_MINECRAFT.setPackageClass(className, clazz)
         return clazz
