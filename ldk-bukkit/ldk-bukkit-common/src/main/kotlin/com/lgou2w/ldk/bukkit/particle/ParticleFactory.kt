@@ -39,8 +39,7 @@ import org.bukkit.inventory.ItemStack
 
 object ParticleFactory {
 
-    @JvmStatic val CLASS_PACKET_OUT_PARTICLES by lazyMinecraftClass("PacketPlayOutWorldParticles")
-
+    @JvmStatic private val CLASS_PACKET_OUT_PARTICLES by lazyMinecraftClass("PacketPlayOutWorldParticles")
     @JvmStatic private val CLASS_ENUM_PARTICLE by lazyMinecraftClassOrNull("EnumParticle", "PacketPlayOutWorldParticles\$EnumParticle")
     @JvmStatic private val CLASS_PARTICLE by lazyMinecraftClassOrNull("Particle")
     @JvmStatic private val CLASS_PARTICLES by lazyMinecraftClassOrNull("Particles")
@@ -216,8 +215,12 @@ object ParticleFactory {
             }
             CONSTRUCTOR_PARAM_BLOCK.notNull().newInstance(nms, block)
         } else if (particle == Particle.DUST) {
-            val dust = data as? ParticleDust ?: if (data is Color) ParticleDust(data, 0.01f) else
-                throw IllegalArgumentException("Particle DUST data can only be ParticleDust | Color.")
+            val dust = when (data) {
+                is ParticleDust -> data
+                is Color -> ParticleDust(data)
+                null -> ParticleDust(Color.WHITE) // nullable
+                else -> throw IllegalArgumentException("Particle DUST data can only be ParticleDust | Color.")
+            }
             CONSTRUCTOR_PARAM_REDSTONE.notNull().newInstance(
                     dust.color.red / 255.0f,
                     dust.color.green / 255.0f,

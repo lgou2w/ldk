@@ -18,5 +18,5 @@ package com.lgou2w.ldk.bukkit.particle
 
 import org.bukkit.Color
 
-data class ParticleDust(val color: Color, val size: Float) {
+data class ParticleDust(val color: Color, val size: Float = 1f) {
 }

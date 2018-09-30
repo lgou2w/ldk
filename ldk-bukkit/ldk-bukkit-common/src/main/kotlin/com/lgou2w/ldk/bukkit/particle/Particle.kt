@@ -24,7 +24,7 @@ import com.lgou2w.ldk.common.isOrLater
 import java.util.*
 
 enum class Particle(
-        private val internal: Int?,
+        private val internal: Int,
         val legacy: String,
         val type: String
 ) : Valuable<Int> {
@@ -49,7 +49,7 @@ enum class Particle(
     FISHING(22, "water_wake", "fishing"),
     UNDERWATER(42, "suspended", "underwater"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("UNDERWATER"))
-    UNDERWATER_DEPTH("suspended_depth", 42),
+    UNDERWATER_DEPTH("suspended_depth", -42),
     CRIT(6, "crit", "crit"),
     ENCHANTED_HIT(14, "crit_magic", "enchanted_hit"),
     SMOKE(37, "smoke_normal", "smoke"),
@@ -70,22 +70,22 @@ enum class Particle(
     FLAME(23, "flame", "flame"),
     LAVA(31, "lava", "lava"),
     @Deprecated("Removed in Minecraft 1.13")
-    FOOTSTEP("footstep", 2),
+    FOOTSTEP("footstep", -2),
     CLOUD(5, "cloud", "cloud"),
     DUST(11, "red_dust", "dust"),
     ITEM_SNOWBALL(29, "snowball", "item_snowball"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("ITEM_SNOWBALL"))
-    ITEM_SNOW_SHOVEL("snow_shovel", 29),
+    ITEM_SNOW_SHOVEL("snow_shovel", -29),
     ITEM_SLIME(28, "slime", "item_slime"),
     HEART(25, "heart", "heart"),
     BARRIER(2, "barrier", "barrier"),
     ITEM(27, "item_crack", "item"),
     BLOCK(3, "block_crack", "block"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("BLOCK"))
-    BLOCKDUST("blockdust", 3),
+    BLOCKDUST("blockdust", -3),
     RAIN(36, "water_drop", "rain"),
     @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("ITEM"))
-    TAKE("item_take", 27),
+    TAKE("item_take", -27),
     ELDER_GUARDIAN(13, "mob_appearance", "elder_guardian"),
 
     @API(Level.Minecraft_V1_9) DRAGON_BREATH(8, "dragon_breath", "dragon_breath"),
@@ -112,7 +112,7 @@ enum class Particle(
     override val value: Int
         get() = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
             @Suppress("DEPRECATION")
-            internal ?: -1
+            Math.abs(internal)
         else
             ordinal
 
@@ -122,7 +122,7 @@ enum class Particle(
         @JvmStatic private val ID_MAP : MutableMap<Int, Particle> = HashMap()
         @JvmStatic private val NAME_MAP : MutableMap<String, Particle> = HashMap()
 
-        // internal == null => skip
+        // internal < 0 => skip
         // Particle > SPIT && CURRENT < 1.13 => skip
 
         init {
@@ -133,7 +133,7 @@ enum class Particle(
                 NAME_MAP[particle.type] = particle
             }
             COMPATIBILITIES = ID_MAP.values
-                .filter { (isV113OrLater && it.internal != null) || it.ordinal <= SPIT.ordinal }
+                .filter { (isV113OrLater && it.internal >= 0) || (!isV113OrLater && it.ordinal <= SPIT.ordinal) }
                 .toTypedArray()
         }
 
