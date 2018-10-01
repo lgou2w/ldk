@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgou2w</groupId>
     <artifactId>ldk</artifactId>
-    <version>0.0.1-beta3</version>
+    <version>0.1-rc</version>
     <packaging>pom</packaging>
     <description>A multi-platform lgou2w development kit</description>
     <url>https://github.com/lgou2w/ldk</url>
