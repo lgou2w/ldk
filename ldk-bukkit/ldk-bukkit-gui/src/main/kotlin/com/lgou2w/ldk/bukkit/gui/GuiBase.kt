@@ -89,12 +89,73 @@ abstract class GuiBase : Gui {
 
     /**************************************************************************
      *
+     * Properties Holder
+     *
+     **************************************************************************/
+
+    private val propertyTable = Hashtable<String, Any>()
+    final override val properties: Map<String, Any>
+        get() = synchronized (propertyTable) {
+            Hashtable(propertyTable)
+        }
+
+    override fun setProperty(key: String, value: Any): Any? {
+        synchronized (propertyTable) {
+            return propertyTable.put(key, value)
+        }
+    }
+
+    override fun getProperty(key: String, def: Any?): Any? {
+        synchronized (propertyTable) {
+            return propertyTable[key] ?: def
+        }
+    }
+
+    override fun getProperty(key: String): Any?
+            = getProperty(key, null)
+
+    override fun <T> getPropertyAs(key: String, def: T?): T? {
+        val value = getProperty(key, def) ?: return null
+        try {
+            @Suppress("UNCHECKED_CAST")
+            return value as? T
+        } catch (e: ClassCastException) {
+            throw IllegalStateException("The value $value of the property $key does not match the expected.")
+        }
+    }
+
+    override fun <T> getPropertyAs(key: String): T?
+            = getPropertyAs(key, null)
+
+    override fun containsProperty(key: String): Boolean {
+        synchronized (propertyTable) {
+            return propertyTable.containsKey(key)
+        }
+    }
+
+    override fun removeProperty(key: String): Any? {
+        synchronized (propertyTable) {
+            return propertyTable.remove(key)
+        }
+    }
+
+    override fun clearProperties() {
+        synchronized (propertyTable) {
+            propertyTable.clear()
+        }
+    }
+
+    /**************************************************************************
+     *
      * Button Implement
      *
      **************************************************************************/
 
     private val buttonList : MutableList<Button> = ArrayList()
-    final override val buttons : List<Button> = ArrayList(buttonList)
+    final override val buttons : List<Button>
+        get() = synchronized (buttonList) {
+            ArrayList(buttonList)
+        }
     
     private fun canAdd(button: Button) {
         val sameMax = (button as? ButtonSame)?.indexes?.max()
@@ -131,6 +192,12 @@ abstract class GuiBase : Gui {
         }
     }
 
+    override fun hasButton(): Boolean {
+        synchronized (buttonList) {
+            return buttonList.isNotEmpty()
+        }
+    }
+
     override fun getButton(index: Int): Button? {
         synchronized (buttonList) {
             return getButton0(index)
@@ -149,9 +216,8 @@ abstract class GuiBase : Gui {
         return isButton(GuiFactory.coordinateToIndex(x,  y))
     }
 
-    override fun removeButton(index: Int): Boolean {
+    override fun removeButton(button: Button): Boolean {
         synchronized (buttonList) {
-            val button = getButton0(index) ?: return false
             return buttonList.remove(button).apply {
                 if (this) {
                     button.stack = null
@@ -161,8 +227,25 @@ abstract class GuiBase : Gui {
         }
     }
 
+    override fun removeButton(index: Int): Boolean {
+        val button = getButton0(index) ?: return false
+        return removeButton(button)
+    }
+
     override fun removeButton(x: Int, y: Int): Boolean {
         return removeButton(GuiFactory.coordinateToIndex(x, y))
+    }
+
+    override fun removeButtons() {
+        synchronized (buttonList) {
+            val iterator = buttonList.iterator()
+            while (iterator.hasNext()) {
+                val next = iterator.next()
+                next.stack = null
+                next.onClicked = null
+                iterator.remove()
+            }
+        }
     }
 
     override fun addButton(): Button {
@@ -239,6 +322,27 @@ abstract class GuiBase : Gui {
         button.stack = stack
         button.onClicked = onClicked
         return button
+    }
+
+    override fun hashCode(): Int {
+        var result = type.hashCode()
+        result = 31 * result + (parent?.hashCode() ?: 0)
+        result = 31 * result + inventory.hashCode()
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other === this)
+            return true
+        if (other is GuiBase)
+            return type == other.type && parent == other.parent && inventory == other.inventory
+        if (other is Inventory)
+            return inventory == other
+        return false
+    }
+
+    override fun toString(): String {
+        return "Gui(type=$type, title=$title, size=$size, hasParent=${hasParent()})"
     }
 
     companion object {

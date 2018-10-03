@@ -79,6 +79,6 @@ open class DefaultCommandFeedback : CommandFeedback {
         if (e is CommandException)
             throw e
         else
-            throw CommandException(e.message, e.cause ?: e)
+            throw CommandException(e.message, e)
     }
 }
