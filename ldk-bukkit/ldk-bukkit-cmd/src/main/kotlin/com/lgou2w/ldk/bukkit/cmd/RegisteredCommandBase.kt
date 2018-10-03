@@ -37,7 +37,7 @@ open class RegisteredCommandBase(
             final override val permission: Permission?,
             final override val isPlayable: Boolean,
             final override val parameters: Array<out RegisteredCommand.ChildParameter>,
-            override val accessor: AccessorMethod<Any, Any>
+            final override val accessor: AccessorMethod<Any, Any>
     ) : RegisteredCommand.Child {
 
         internal lateinit var registered: RegisteredCommand
@@ -53,15 +53,17 @@ open class RegisteredCommandBase(
         override val usage: String
             get() = command.usage
 
-        override val length: Int
-            get() = parameters.size
-        override val max: Int
-            get() = length
-        override val min: Int
-            get() = max - parameters.count { it.optional != null || it.isNullable }
+        final override val length: Int
+                = parameters.size
+        final override val max: Int
+                = length
+        final override val min: Int
+                = max - parameters.count { it.optional != null || it.isNullable }
+        final override val isStatic: Boolean
+                = Modifier.isStatic(accessor.source.modifiers)
 
         override fun invoke(vararg args: Any?): Any? {
-            return if (Modifier.isStatic(accessor.source.modifiers))
+            return if (isStatic)
                 accessor.invoke(null, *args)
             else
                 accessor.invoke(parent.source, *args)

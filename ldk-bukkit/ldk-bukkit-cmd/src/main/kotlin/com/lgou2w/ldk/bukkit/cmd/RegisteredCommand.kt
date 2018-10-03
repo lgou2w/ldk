@@ -84,6 +84,8 @@ interface RegisteredCommand {
 
         val min : Int
 
+        val isStatic : Boolean
+
         fun invoke(vararg args: Any?) : Any?
 
         fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean
