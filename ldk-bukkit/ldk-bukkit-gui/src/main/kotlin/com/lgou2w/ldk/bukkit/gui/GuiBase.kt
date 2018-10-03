@@ -89,6 +89,64 @@ abstract class GuiBase : Gui {
 
     /**************************************************************************
      *
+     * Properties Holder
+     *
+     **************************************************************************/
+
+    private val propertyTable = Hashtable<String, Any>()
+    final override val properties: Map<String, Any>
+        get() = synchronized (propertyTable) {
+            Hashtable(propertyTable)
+        }
+
+    override fun setProperty(key: String, value: Any): Any? {
+        synchronized (propertyTable) {
+            return propertyTable.put(key, value)
+        }
+    }
+
+    override fun getProperty(key: String, def: Any?): Any? {
+        synchronized (propertyTable) {
+            return propertyTable[key] ?: def
+        }
+    }
+
+    override fun getProperty(key: String): Any?
+            = getProperty(key, null)
+
+    override fun <T> getPropertyAs(key: String, def: T?): T? {
+        val value = getProperty(key, def) ?: return null
+        try {
+            @Suppress("UNCHECKED_CAST")
+            return value as? T
+        } catch (e: ClassCastException) {
+            throw IllegalStateException("The value $value of the property $key does not match the expected.")
+        }
+    }
+
+    override fun <T> getPropertyAs(key: String): T?
+            = getPropertyAs(key, null)
+
+    override fun containsProperty(key: String): Boolean {
+        synchronized (propertyTable) {
+            return propertyTable.containsKey(key)
+        }
+    }
+
+    override fun removeProperty(key: String): Any? {
+        synchronized (propertyTable) {
+            return propertyTable.remove(key)
+        }
+    }
+
+    override fun clearProperties() {
+        synchronized (propertyTable) {
+            propertyTable.clear()
+        }
+    }
+
+    /**************************************************************************
+     *
      * Button Implement
      *
      **************************************************************************/

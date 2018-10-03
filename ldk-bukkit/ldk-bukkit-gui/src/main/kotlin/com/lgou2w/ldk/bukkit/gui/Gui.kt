@@ -43,6 +43,36 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     var onClosed: ((gui: Gui, event: InventoryCloseEvent) -> Unit)?
 
+    /**************************************************************************
+     *
+     * Properties Holder
+     *
+     **************************************************************************/
+
+    val properties : Map<String, Any>
+
+    fun setProperty(key: String, value: Any) : Any?
+
+    fun getProperty(key: String, def: Any? = null) : Any?
+
+    fun getProperty(key: String) : Any?
+
+    fun <T> getPropertyAs(key: String, def: T? = null) : T?
+
+    fun <T> getPropertyAs(key: String) : T?
+
+    fun containsProperty(key: String) : Boolean
+
+    fun removeProperty(key: String) : Any?
+
+    fun clearProperties()
+
+    /**************************************************************************
+     *
+     * API
+     *
+     **************************************************************************/
+
     fun open(human: HumanEntity)
 
     fun hasButton() : Boolean
