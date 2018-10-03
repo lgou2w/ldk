@@ -45,6 +45,8 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     fun open(human: HumanEntity)
 
+    fun hasButton() : Boolean
+
     fun getButton(index: Int) : Button?
 
     fun getButton(x: Int, y: Int) : Button?
@@ -53,9 +55,13 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     fun isButton(x: Int, y: Int) : Boolean
 
+    fun removeButton(button: Button) : Boolean
+
     fun removeButton(index: Int) : Boolean
 
     fun removeButton(x: Int, y: Int) : Boolean
+
+    fun removeButtons()
 
     fun addButton() : Button
 

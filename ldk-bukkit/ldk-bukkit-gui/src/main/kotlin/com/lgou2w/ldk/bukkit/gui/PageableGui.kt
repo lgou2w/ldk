@@ -18,6 +18,7 @@ package com.lgou2w.ldk.bukkit.gui
 
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Consumer
+import com.lgou2w.ldk.common.Predicate
 
 open class PageableGui(
         type: GuiType,
@@ -26,11 +27,27 @@ open class PageableGui(
 
     var next : PageableGui? = null
 
+    @JvmOverloads
     fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}) : PageableGui {
         val next = PageableGui(type, title)
         next.parent = this
         this.next = next
         return next.also(initializer)
+    }
+
+    @JvmOverloads
+    fun removePage(completed: Applicator<PageableGui>? = null)
+            = removePageIf({ true }, completed)
+
+    @JvmOverloads
+    fun removePageIf(predicate: Predicate<PageableGui>? = null, completed: Applicator<PageableGui>? = null) {
+        val next = this.next
+        if (next != null && predicate != null && !predicate(next))
+            return
+        if (next != null && completed != null)
+            completed(next)
+        next?.parent = null
+        this.next = null
     }
 
     companion object {
