@@ -35,6 +35,8 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     val buttons: List<Button>
 
+    val buttonSize : Int
+
     fun hasParent() : Boolean
 
     var isAllowMove : Boolean
