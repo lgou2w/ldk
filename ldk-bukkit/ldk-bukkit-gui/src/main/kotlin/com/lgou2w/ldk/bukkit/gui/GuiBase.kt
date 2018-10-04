@@ -156,6 +156,11 @@ abstract class GuiBase : Gui {
         get() = synchronized (buttonList) {
             ArrayList(buttonList)
         }
+
+    override val buttonSize: Int
+        get() = synchronized (buttonList) {
+            buttonList.size
+        }
     
     private fun canAdd(button: Button) {
         val sameMax = (button as? ButtonSame)?.indexes?.max()
