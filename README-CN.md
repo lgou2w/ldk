@@ -32,6 +32,7 @@ Rxjava，Retrofit，ASM，Bukkit 的扩展和运行时等。快速开发，Lambd
     * [ldk-retrofit](/ldk-retrofit)
     * [ldk-rx](/ldk-rx)
     * [ldk-fx](/ldk-fx) (N/A)
+    * [ldk-rsa](/ldk-rsa)
     * [ldk-chat](/ldk-chat)
     * [ldk-nbt](/ldk-nbt)
     * [ldk-hikari](/ldk-hikari)

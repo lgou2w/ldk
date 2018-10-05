@@ -32,6 +32,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
     * [ldk-retrofit](/ldk-retrofit)
     * [ldk-rx](/ldk-rx)
     * [ldk-fx](/ldk-fx) (N/A)
+    * [ldk-rsa](/ldk-rsa)
     * [ldk-chat](/ldk-chat)
     * [ldk-nbt](/ldk-nbt)
     * [ldk-hikari](/ldk-hikari)
