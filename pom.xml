@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgou2w</groupId>
     <artifactId>ldk</artifactId>
-    <version>0.1.2-rc</version>
+    <version>0.1.3-rc</version>
     <packaging>pom</packaging>
     <description>A multi-platform lgou2w development kit</description>
     <url>https://github.com/lgou2w/ldk</url>
@@ -47,6 +47,7 @@
         <module>ldk-chat</module>
         <module>ldk-nbt</module>
         <module>ldk-rx</module>
+        <module>ldk-rsa</module>
         <module>ldk-hikari</module>
         <module>ldk-bukkit</module>
     </modules>
