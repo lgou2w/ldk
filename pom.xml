@@ -47,9 +47,9 @@
         <module>ldk-chat</module>
         <module>ldk-nbt</module>
         <module>ldk-rx</module>
+        <module>ldk-rsa</module>
         <module>ldk-hikari</module>
         <module>ldk-bukkit</module>
-        <module>ldk-rsa</module>
     </modules>
 
     <pluginRepositories>
