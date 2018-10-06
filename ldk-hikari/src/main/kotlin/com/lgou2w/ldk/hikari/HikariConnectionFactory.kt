@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.hikari
 
+import com.lgou2w.ldk.common.notNull
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
@@ -26,6 +27,9 @@ abstract class HikariConnectionFactory(
 ) : ConnectionFactory {
 
     private var hikari : HikariDataSource? = null
+
+    override val dataSource: HikariDataSource
+        get() = hikari.notNull("Connection factory has not been initialized.")
 
     /**
      * * implementation override

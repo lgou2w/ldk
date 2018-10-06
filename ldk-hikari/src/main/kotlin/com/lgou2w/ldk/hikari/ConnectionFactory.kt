@@ -16,10 +16,13 @@
 
 package com.lgou2w.ldk.hikari
 
+import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
 import java.sql.SQLException
 
 interface ConnectionFactory {
+
+    val dataSource : HikariDataSource
 
     val implementationName : String
 
