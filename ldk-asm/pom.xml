@@ -13,12 +13,23 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ldk-asm</artifactId>
 
+    <properties>
+        <asm.version>6.2.1</asm.version>
+    </properties>
+
     <dependencies>
         <!-- ASM -->
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>6.2.1</version>
+            <version>${asm.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- ASM-Commons -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>${asm.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
