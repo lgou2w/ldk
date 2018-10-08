@@ -53,8 +53,8 @@ Rxjava，Retrofit，ASM，Bukkit 的扩展和运行时等。快速开发，Lambd
 
 非常感谢 [@25](https://github.com/25) 提供的 `Jenkins CI` 生命周期.
 
-* [稳定版](http://soulbound.me/job/ldk/) (master)
-* [开发版](http://soulbound.me/job/ldk_Dev/) (develop)
+* [稳定版](http://www.soulbound.me/job/ldk/) (master)
+* [开发版](http://www.soulbound.me/job/ldk_Dev/) (develop)
 
 ## 依赖
 

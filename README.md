@@ -53,8 +53,8 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
 Many thanks to the `Jenkins CI` lifecycle provided by [@25](https://github.com/25).
 
-* [Stable version](http://soulbound.me/job/ldk/) (master)
-* [Development version](http://soulbound.me/job/ldk_Dev/) (develop)
+* [Stable version](http://www.soulbound.me/job/ldk/) (master)
+* [Development version](http://www.soulbound.me/job/ldk_Dev/) (develop)
 
 ## Dependencies
 
