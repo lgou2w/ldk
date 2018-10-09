@@ -50,6 +50,10 @@ interface RegisteredCommand {
 
     fun getChild(name: String) : Child?
 
+    fun registerChild(provider: ChildProvider, force: Boolean) : Boolean
+
+    fun unregisterChild(name: String) : Boolean
+
     fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean
 
     var completeProxy : CompleteProxy?
@@ -104,5 +108,8 @@ interface RegisteredCommand {
         internal lateinit var child : RegisteredCommand.Child
         val parent: RegisteredCommand.Child
             get() = child
+
+        val canNull : Boolean
+            get() = optional != null || isNullable
     }
 }

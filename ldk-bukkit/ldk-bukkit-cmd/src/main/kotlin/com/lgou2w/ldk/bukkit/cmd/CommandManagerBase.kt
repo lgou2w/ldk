@@ -72,6 +72,10 @@ abstract class CommandManagerBase(
         }
     }
 
+    override fun parseChildProvider(parsed: RegisteredCommand, provider: ChildProvider): RegisteredCommand.Child? {
+        return parseCommandChild(parsed, provider)
+    }
+
     override fun addDefaultTypeTransforms() {
         TypeTransforms.addDefaultTypeTransform(this)
     }
@@ -152,6 +156,13 @@ abstract class CommandManagerBase(
         return parsed
     }
 
+    protected open fun parseCommandChild(parsed: RegisteredCommand, source: ChildProvider) : RegisteredCommandBase.ChildBase? {
+        val children = parseCommandChildren(source)
+        val child = children.values.firstOrNull() ?: return null
+        child.registered = parsed
+        return child
+    }
+
     protected open fun parseCommandChildren(source: Any) : MutableMap<String, RegisteredCommandBase.ChildBase> {
         return FuzzyReflect.of(source, true)
             .useMethodMatcher()
@@ -181,7 +192,7 @@ abstract class CommandManagerBase(
                     }
                 }.toTypedArray()
                 val accessor = Accessors.ofMethod<Any, Any>(method)
-                val child = parsedCommandChild(command, permission, isPlayable, parameters, accessor)
+                val child = parsedCommandChild(source, command, permission, isPlayable, parameters, accessor)
                 parameters.forEach { parameter -> parameter.child = child }
                 command.value to child
             }.toMutableMap()
@@ -198,12 +209,15 @@ abstract class CommandManagerBase(
     }
 
     protected open fun parsedCommandChild(
+            source: Any,
             command: Command,
             permission: Permission?,
             isPlayable: Boolean,
             parameters: Array<out RegisteredCommand.ChildParameter>,
             accessor: AccessorMethod<Any, Any>
     ) : RegisteredCommandBase.ChildBase {
+        if (source is ChildProvider)
+            return RegisteredCommandBase.ChildBaseProvider(source, command, permission, isPlayable, parameters, accessor)
         return RegisteredCommandBase.ChildBase(command, permission, isPlayable, parameters, accessor)
     }
 
