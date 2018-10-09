@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.gui
 
 import com.lgou2w.ldk.common.Consumer
+import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.command.Command
@@ -126,6 +127,12 @@ abstract class GuiBase : Gui {
 
     override fun <T> getPropertyAs(key: String): T?
             = getPropertyAs(key, null)
+
+    override fun <T> getPropertyAsNotNull(key: String, def: T): T
+            = getPropertyAs(key, def).notNull("The property $key does not have a valid value.")
+
+    override fun <T> getPropertyAsNotNull(key: String): T
+            = getPropertyAs<T>(key, null).notNull("The property $key does not have a valid value.")
 
     override fun containsProperty(key: String): Boolean {
         synchronized (propertyTable) {

@@ -93,31 +93,32 @@ object NBTFactory {
             return null
         MinecraftReflection.isExpected(nms, CLASS_NBT_BASE)
         val type = NBTType.fromId(METHOD_NBT_GET_TYPE_ID.invoke(nms)!!.toInt())!!
+        val fieldValue = NBT_TYPE_FIELD(type)[nms]
         @Suppress("UNCHECKED_CAST")
         return when (type) {
             NBTType.TAG_COMPOUND -> {
                 val compound = NBTTagCompound()
-                val value = NBT_TYPE_FIELD(type)[nms] as Map<String, Any>
+                val value = fieldValue as Map<String, Any>
                 value.entries.forEach { compound[it.key] = fromNMS(it.value)!! }
                 compound
             }
             NBTType.TAG_LIST -> {
                 val list = NBTTagList()
-                val value = NBT_TYPE_FIELD(type)[nms] as List<Any>
+                val value = fieldValue as List<Any>
                 value.forEach { list.add(fromNMS(it)!!) }
                 list
             }
             NBTType.TAG_END -> NBTTagEnd.INSTANCE
-            NBTType.TAG_BYTE -> NBTTagByte(NBT_TYPE_FIELD(type)[nms] as Byte)
-            NBTType.TAG_SHORT -> NBTTagShort(NBT_TYPE_FIELD(type)[nms] as Short)
-            NBTType.TAG_INT -> NBTTagInt(NBT_TYPE_FIELD(type)[nms] as Int)
-            NBTType.TAG_LONG -> NBTTagLong(NBT_TYPE_FIELD(type)[nms] as Long)
-            NBTType.TAG_FLOAT -> NBTTagFloat(NBT_TYPE_FIELD(type)[nms] as Float)
-            NBTType.TAG_DOUBLE -> NBTTagDouble(NBT_TYPE_FIELD(type)[nms] as Double)
-            NBTType.TAG_BYTE_ARRAY -> NBTTagByteArray(NBT_TYPE_FIELD(type)[nms] as ByteArray)
-            NBTType.TAG_STRING -> NBTTagString(NBT_TYPE_FIELD(type)[nms] as String)
-            NBTType.TAG_INT_ARRAY -> NBTTagIntArray(NBT_TYPE_FIELD(type)[nms] as IntArray)
-            NBTType.TAG_LONG_ARRAY -> NBTTagLongArray(NBT_TYPE_FIELD(type)[nms] as LongArray)
+            NBTType.TAG_BYTE -> NBTTagByte(fieldValue as Byte)
+            NBTType.TAG_SHORT -> NBTTagShort(fieldValue as Short)
+            NBTType.TAG_INT -> NBTTagInt(fieldValue as Int)
+            NBTType.TAG_LONG -> NBTTagLong(fieldValue as Long)
+            NBTType.TAG_FLOAT -> NBTTagFloat(fieldValue as Float)
+            NBTType.TAG_DOUBLE -> NBTTagDouble(fieldValue as Double)
+            NBTType.TAG_BYTE_ARRAY -> NBTTagByteArray(fieldValue as ByteArray)
+            NBTType.TAG_STRING -> NBTTagString(fieldValue as String)
+            NBTType.TAG_INT_ARRAY -> NBTTagIntArray(fieldValue as IntArray)
+            NBTType.TAG_LONG_ARRAY -> NBTTagLongArray(fieldValue as LongArray)
             else -> throw UnsupportedOperationException()
         }
     }

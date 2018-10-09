@@ -63,7 +63,6 @@ class IteratorChain<T> private constructor(
 ) : Iterator<T> {
 
     private val iterators : List<Iterator<T>> = iterators.toList()
-    private var lastUsedIterator : Iterator<T>? = null
     private var currentIterator : Iterator<T>? = null
     private var currentIndex = 0
 
@@ -71,7 +70,6 @@ class IteratorChain<T> private constructor(
         if (currentIterator == null) {
             @Suppress("UNCHECKED_CAST")
             currentIterator = if (iterators.isEmpty()) EMPTY as Iterator<T> else iterators[0]
-            lastUsedIterator = currentIterator
         } else {
             while (!currentIterator.notNull().hasNext() && currentIndex < iterators.size - 1) {
                 currentIndex += 1
@@ -82,13 +80,11 @@ class IteratorChain<T> private constructor(
 
     override fun hasNext(): Boolean {
         updateCurrentIterator()
-        lastUsedIterator = currentIterator
         return currentIterator.notNull().hasNext()
     }
 
     override fun next(): T {
         updateCurrentIterator()
-        lastUsedIterator = currentIterator
         return currentIterator.notNull().next()
     }
 

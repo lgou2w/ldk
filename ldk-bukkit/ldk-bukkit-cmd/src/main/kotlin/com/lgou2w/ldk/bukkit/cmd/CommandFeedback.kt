@@ -54,7 +54,8 @@ interface CommandFeedback {
             child: RegisteredCommand.Child,
             args: Array<out String>,
             expected: Class<*>,
-            transformed: Any
+            value: String?,
+            transformed: Any?
     )
 
     fun onUnhandled(

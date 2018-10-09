@@ -62,9 +62,10 @@ open class DefaultCommandFeedback : CommandFeedback {
             child: RegisteredCommand.Child,
             args: Array<out String>,
             expected: Class<*>,
-            transformed: Any
+            value: String?,
+            transformed: Any?
     ) {
-        sender.sendMessage(registered.prefix + ChatColor.RED + "Parameter $transformed type does not match. (Expected: ${expected.simpleName})")
+        sender.sendMessage(registered.prefix + ChatColor.RED + "Transformed '$value' to '$transformed' type does not match. (Expected: ${expected.simpleName})")
     }
 
     @Throws(CommandException::class)

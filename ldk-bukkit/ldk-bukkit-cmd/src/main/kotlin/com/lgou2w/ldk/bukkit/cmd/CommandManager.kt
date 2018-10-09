@@ -34,6 +34,8 @@ interface CommandManager {
 
     fun getCommand(source: Class<*>) : RegisteredCommand?
 
+    fun parseChildProvider(parsed: RegisteredCommand, provider: ChildProvider) : RegisteredCommand.Child?
+
     /**
      * @see [TypeTransforms.addDefaultTypeTransform]
      */

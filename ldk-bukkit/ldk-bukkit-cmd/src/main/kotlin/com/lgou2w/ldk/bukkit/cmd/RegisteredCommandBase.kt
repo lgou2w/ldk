@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.DataType
@@ -96,8 +97,10 @@ open class RegisteredCommandBase(
                     transform = parent.manager.getTypeTransform(DataType.ofPrimitive(parameter.type))
                 val value = args.getOrNull(index) ?: optional?.def
                 val transformed = if (value != null) transform?.transform(value) else value
-                if (transformed != null && !parameter.type.isAssignableFrom(transformed::class.java)) {
-                    feedback.onTransform(sender, name, parent, this, args, parameter.type, transformed)
+                if ((transformed == null && !parameter.canNull) ||
+                    (transformed != null && !parameter.type.isAssignableFrom(transformed::class.java))
+                ) {
+                    feedback.onTransform(sender, name, parent, this, args, parameter.type, value, transformed)
                     return true
                 }
                 parameterValues.add(transformed)
@@ -127,6 +130,27 @@ open class RegisteredCommandBase(
 
         override fun toString(): String {
             return "Child(name=$name, aliases=${Arrays.toString(aliases)}, min=$min, max=$max)"
+        }
+    }
+
+    open class ChildBaseProvider(
+            private val provider: ChildProvider,
+            command: Command,
+            permission: Permission?,
+            isPlayable: Boolean,
+            parameters: Array<out RegisteredCommand.ChildParameter>,
+            accessor: AccessorMethod<Any, Any>
+    ) : ChildBase(command, permission, isPlayable, parameters, accessor) {
+
+        override fun invoke(vararg args: Any?): Any? {
+            return if (isStatic)
+                accessor.invoke(null, *args)
+            else
+                accessor.invoke(provider, *args)
+        }
+
+        override fun toString(): String {
+            return "Child(name=$name, aliases=${Arrays.toString(aliases)}, min=$min, max=$max, provider=${provider::class.java.simpleName})"
         }
     }
 
@@ -177,6 +201,30 @@ open class RegisteredCommandBase(
         }
     }
 
+    override fun registerChild(provider: ChildProvider, force: Boolean): Boolean {
+        val child = manager.parseChildProvider(this, provider)
+        if (child == null) {
+            manager.plugin.logger.warning("Not resolved from the child provider $provider to a valid command function, skipped.")
+            return false
+        }
+        val existed = getChild(child.name)
+        if (existed != null && !force) {
+            manager.plugin.logger.warning("A valid child command '${child.name}' exists. cannot be force overridden, skipped.")
+            return false
+        }
+        synchronized (childMap) {
+            childMap[child.name] = child
+            return true
+        }
+    }
+
+    override fun unregisterChild(name: String): Boolean {
+        val child = getChild(name) ?: return false
+        return synchronized (childMap) {
+            childMap.remove(child.name, child)
+        }
+    }
+
     override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
         if (!manager.plugin.isEnabled)
             throw CommandException("Cannot execute command '$name' in plugin ${manager.plugin.description.fullName} - plugin is disabled.")
@@ -204,6 +252,8 @@ open class RegisteredCommandBase(
             var replaced = usage.replace("<command>", name)
             if (child != null) replaced = replaced.replace("<child>", child.name)
             sender.sendMessage(prefix + replaced + if (description.isNotEmpty()) " - $description" else "")
+        } else {
+            sender.sendMessage(prefix + ChatColor.RED + "Unknown parameter. Type \"/$name help\" for help.")
         }
     }
 
