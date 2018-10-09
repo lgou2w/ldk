@@ -63,6 +63,10 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     fun <T> getPropertyAs(key: String) : T?
 
+    fun <T> getPropertyAsNotNull(key: String, def: T) : T
+
+    fun <T> getPropertyAsNotNull(key: String) : T
+
     fun containsProperty(key: String) : Boolean
 
     fun removeProperty(key: String) : Any?
