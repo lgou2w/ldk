@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.DataType
@@ -251,6 +252,8 @@ open class RegisteredCommandBase(
             var replaced = usage.replace("<command>", name)
             if (child != null) replaced = replaced.replace("<child>", child.name)
             sender.sendMessage(prefix + replaced + if (description.isNotEmpty()) " - $description" else "")
+        } else {
+            sender.sendMessage(prefix + ChatColor.RED + "Unknown parameter. Type \"/$name help\" for help.")
         }
     }
 
