@@ -37,6 +37,8 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
     * [ldk-nbt](/ldk-nbt)
     * [ldk-hikari](/ldk-hikari)
     * [ldk-bukkit](/ldk-bukkit)
+        * [ldk-bukkit-version](/ldk-bukkit/ldk-bukkit-version)
+        * [ldk-bukkit-reflect](/ldk-bukkit/ldk-bukkit-reflect)
         * [ldk-bukkit-common](/ldk-bukkit/ldk-bukkit-common)
         * [ldk-bukkit-compatibility](/ldk-bukkit/ldk-bukkit-compatibility)
         * [ldk-bukkit-i18n](/ldk-bukkit/ldk-bukkit-i18n)
