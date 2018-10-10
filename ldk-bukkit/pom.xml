@@ -15,15 +15,17 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>ldk-bukkit-common</module>
-        <module>ldk-bukkit-compatibility</module>
-        <module>ldk-bukkit-i18n</module>
+        <module>ldk-bukkit-version</module> <!-- first -->
+        <module>ldk-bukkit-reflect</module> <!-- second -->
+        <module>ldk-bukkit-common</module> <!-- common -->
+        <module>ldk-bukkit-compatibility</module> <!-- extended -->
+        <module>ldk-bukkit-i18n</module> <!-- extended... -->
         <module>ldk-bukkit-cmd</module>
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
         <module>ldk-bukkit-depend</module>
         <module>ldk-bukkit-scheduler</module>
-        <module>ldk-bukkit-plugin</module>
+        <module>ldk-bukkit-plugin</module> <!-- runtime -->
     </modules>
 
     <properties>
@@ -56,8 +58,8 @@
             <version>${bukkit.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--&lt;!&ndash; Maybe you need to build it yourself &ndash;&gt;-->
-        <!--&lt;!&ndash; CraftBukkit Dependency &ndash;&gt;-->
+        <!-- Maybe you need to build it yourself -->
+        <!-- CraftBukkit Dependency -->
         <!--<dependency>-->
             <!--<groupId>org.bukkit</groupId>-->
             <!--<artifactId>craftbukkit</artifactId>-->
