@@ -71,15 +71,7 @@ class LDKPlugin : PluginBase() {
         } else if (first.equals("version", true)) {
             sender.sendMessage(ChatColor.GRAY + "The LDK plugin version: ${ChatColor.GREEN}$pluginVersion")
             sender.sendMessage(ChatColor.GRAY + "Checking version, please wait...")
-            SimpleVersionChecker(this) { version, commit, ex ->
-                if (ex != null) {
-                    sender.sendMessage(ChatColor.RED + "Exception when checking version: ${ex.message}")
-                    ex.printStackTrace()
-                } else {
-                    sender.sendMessage(ChatColor.GRAY + "Latest version: ${ChatColor.GREEN}$version-${commit.substring(0, 7)}")
-                    sender.sendMessage(ChatColor.GRAY + "https://github.com/lgou2w/ldk/releases/tag/$version")
-                }
-            }
+            // TODO Version checker
             true
         } else {
             false
