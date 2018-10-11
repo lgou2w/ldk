@@ -85,6 +85,13 @@
             <version>0.1.6-rc</version>
             <scope>compile</scope>
         </dependency>
+        <!-- ldk-bukkit-coroutines -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-bukkit-coroutines</artifactId>
+            <version>0.1.6-rc</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- bStats.org -->
         <dependency>
             <groupId>org.bstats</groupId>

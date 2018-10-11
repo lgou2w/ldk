@@ -449,13 +449,16 @@ interface ItemBuilder : Builder<ItemStack> {
 
     companion object {
 
+        @JvmStatic
         fun of(itemStack: ItemStack) : ItemBuilder
                 = SimpleItemBuilder(itemStack)
 
+        @JvmStatic
         @JvmOverloads
         fun of(material: Material, count: Int = 1, durability: Int = 0) : ItemBuilder
                 = SimpleItemBuilder(material, count, durability)
 
+        @JvmStatic
         fun <T: ItemBuilder> of(builder: T) : T {
             return builder
         }
