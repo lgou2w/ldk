@@ -26,5 +26,5 @@ fun Plugin.coroutines(
         .coroutines(this, server.scheduler, initializeState, block)
 }
 
-fun Plugin.displatcher(state: State = State.SYNC) : BukkitDisplatcher
-        = BukkitDisplatcher(this, state)
+fun Plugin.dispatcher(state: State = State.SYNC) : BukkitDispatcher
+        = BukkitDispatcher(this, state)

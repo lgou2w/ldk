@@ -23,7 +23,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import kotlin.coroutines.CoroutineContext
 
-class BukkitDisplatcher(
+class BukkitDispatcher(
         val plugin: Plugin,
         val state: State
 ) : CoroutineDispatcher(), Delay {
