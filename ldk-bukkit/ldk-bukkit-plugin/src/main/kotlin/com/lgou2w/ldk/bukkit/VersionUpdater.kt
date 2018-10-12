@@ -31,7 +31,7 @@ import java.util.logging.Level
 
 class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
 
-    private val currentVersion = "0.1"
+    private val currentVersion = plugin.pluginVersion
     private var lastCheckedAt : Long = 0L
     private var lastRelease : Release? = null
 
@@ -109,7 +109,7 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
 
     companion object Constants {
 
-        private const val MAX_CHECK_INTERVAL = 1 * 60 * 1000L // 10 minutes
+        private const val MAX_CHECK_INTERVAL = 10 * 60 * 1000L // 10 minutes
         private const val API_VERSION = "https://api.github.com/repos/lgou2w/ldk/releases/latest"
         private const val RELEASE_TAG = "tag_name" // String
         private const val RELEASE_PRE = "prerelease" // Boolean
