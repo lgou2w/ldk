@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3%2b-brightgreen.svg"></a>
 <a href="https://travis-ci.org/lgou2w/ldk"><img src="https://travis-ci.org/lgou2w/ldk.svg?branch=develop" /></a>
 <a href="https://codebeat.co/projects/github-com-lgou2w-ldk-develop"><img alt="codebeat badge" src="https://codebeat.co/badges/7c8fccc7-6096-4f12-81e3-98b1f39a3875" /></a>
 <a href="https://jitpack.io/#lgou2w/ldk"><img src="https://jitpack.io/v/lgou2w/ldk.svg" /></a>
@@ -19,8 +20,12 @@
 * A multi-platform lgou2w development kit.
     
 Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's chat and nbt library、Tools、Utility、Package、
-Rxjava、Retrofit、ASM、Bukkit's extended and runtime and etc. Rapid development、Lambda、Functional programming. 
+Rxjava、Retrofit、ASM、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
 Integrated multi-module multi-platform lgou2w development kit. `LDK`
+
+* Compatibility with Minecraft Bukkit
+
+    <a href=""><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
 
 # Modules
 
@@ -47,6 +52,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
         * [ldk-bukkit-region](/ldk-bukkit/ldk-bukkit-region)
         * [ldk-bukkit-depend](/ldk-bukkit/ldk-bukkit-depend)
         * [ldk-bukkit-scheduler](/ldk-bukkit/ldk-bukkit-scheduler)
+        * [ldk-bukkit-coroutines](/ldk-bukkit/ldk-bukkit-coroutines)
         * [ldk-bukkit-plugin](/ldk-bukkit/ldk-bukkit-plugin)
         
 # Binaries
@@ -101,7 +107,7 @@ dependencies {
 
 * Intellij IDEA
 * JDK 8
-* Kotlin 1.2+
+* Kotlin 1.3+
 * Maven 3.3+
 * Git
 

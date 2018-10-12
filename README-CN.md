@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3%2b-brightgreen.svg"></a>
 <a href="https://travis-ci.org/lgou2w/ldk"><img src="https://travis-ci.org/lgou2w/ldk.svg?branch=develop" /></a>
 <a href="https://codebeat.co/projects/github-com-lgou2w-ldk-develop"><img alt="codebeat badge" src="https://codebeat.co/badges/7c8fccc7-6096-4f12-81e3-98b1f39a3875" /></a>
 <a href="https://jitpack.io/#lgou2w/ldk"><img src="https://jitpack.io/v/lgou2w/ldk.svg" /></a>
@@ -19,8 +20,12 @@
 * 一个多平台的 lgou2w 开发套件.
 
 多模块，多平台，低耦合，依赖库，Minecraft 的聊天和 NBT 库，工具，实用程序，包装，
-Rxjava，Retrofit，ASM，Bukkit 的扩展和运行时等。快速开发，Lambda，函数编程。 
+Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
 集成的多模块多平台 lgou2w 开发套件。`LDK`
+
+* 对于 Minecraft Bukkit 的兼容性
+
+    <a href=""><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
 
 # 模块
 
@@ -47,6 +52,7 @@ Rxjava，Retrofit，ASM，Bukkit 的扩展和运行时等。快速开发，Lambd
         * [ldk-bukkit-region](/ldk-bukkit/ldk-bukkit-region)
         * [ldk-bukkit-depend](/ldk-bukkit/ldk-bukkit-depend)
         * [ldk-bukkit-scheduler](/ldk-bukkit/ldk-bukkit-scheduler)
+        * [ldk-bukkit-coroutines](/ldk-bukkit/ldk-bukkit-coroutines)
         * [ldk-bukkit-plugin](/ldk-bukkit/ldk-bukkit-plugin)
         
 # 构建
@@ -101,7 +107,7 @@ dependencies {
 
 * Intellij IDEA
 * JDK 8
-* Kotlin 1.2+
+* Kotlin 1.3+
 * Maven 3.3+
 * Git
 
