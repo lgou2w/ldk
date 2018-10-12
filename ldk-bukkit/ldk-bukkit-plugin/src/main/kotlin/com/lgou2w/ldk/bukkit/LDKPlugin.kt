@@ -18,7 +18,6 @@ package com.lgou2w.ldk.bukkit
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
-import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.chat.toColor
 import org.bstats.bukkit.Metrics
 import org.bukkit.command.Command
@@ -27,6 +26,12 @@ import java.util.*
 import java.util.logging.Level
 
 class LDKPlugin : PluginBase() {
+
+    companion object Constants {
+
+        const val NAME = "LDK"
+        const val PREFIX = "[LDK] "
+    }
 
     override val enableDependencies = arrayOf(
             dependency {
@@ -43,6 +48,8 @@ class LDKPlugin : PluginBase() {
             }
     )
 
+    private var updater : VersionUpdater? = null
+
     override fun load() {
     }
 
@@ -54,9 +61,12 @@ class LDKPlugin : PluginBase() {
         } catch (e: Exception) {
             logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
         }
+        updater = VersionUpdater(this)
+        updater?.firstCheck()
     }
 
     override fun disable() {
+        updater = null
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -69,9 +79,7 @@ class LDKPlugin : PluginBase() {
             ).toColor())
             true
         } else if (first.equals("version", true)) {
-            sender.sendMessage(ChatColor.GRAY + "The LDK plugin version: ${ChatColor.GREEN}$pluginVersion")
-            sender.sendMessage(ChatColor.GRAY + "Checking version, please wait...")
-            // TODO Version checker
+            updater?.pushRelease(sender)
             true
         } else {
             false
