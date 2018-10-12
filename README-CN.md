@@ -23,9 +23,9 @@
 Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
 集成的多模块多平台 lgou2w 开发套件。`LDK`
 
-* 对于 Minecraft Bukkit 的兼容性
+* 对于 Minecraft 服务器的兼容性.
 
-    <a href=""><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
+    <a href="https://github.com/lgou2w/ldk"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
 
 # 模块
 
