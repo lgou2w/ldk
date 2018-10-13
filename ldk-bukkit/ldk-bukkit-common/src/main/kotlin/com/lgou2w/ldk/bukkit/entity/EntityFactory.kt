@@ -19,6 +19,8 @@ package com.lgou2w.ldk.bukkit.entity
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.NBTType
@@ -27,6 +29,8 @@ import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.Visibility
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
+import org.bukkit.inventory.ItemStack
 
 object EntityFactory {
 
@@ -88,5 +92,55 @@ object EntityFactory {
         val nmsEntity = asNMS(entity)
         val nms = NBTFactory.toNMS(tag)
         METHOD_ENTITY_READ_TAG.invoke(nmsEntity, nms)
+    }
+
+    @JvmStatic
+    fun getItemInHand(entity: LivingEntity) : ItemStack? {
+        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_9_R1))
+            getItemInMainHand(entity)
+        else
+            @Suppress("DEPRECATION")
+            entity.equipment.itemInHand
+    }
+
+    @JvmStatic
+    fun setItemInHand(entity: LivingEntity, stack: ItemStack?) {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_9_R1))
+            setItemInMainHand(entity, stack)
+        else
+            @Suppress("DEPRECATION")
+            entity.equipment.itemInHand = stack
+    }
+
+    @JvmStatic
+    fun getItemInMainHand(entity: LivingEntity) : ItemStack? {
+        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_9_R1))
+            entity.equipment.itemInMainHand
+        else
+            getItemInHand(entity)
+    }
+
+    @JvmStatic
+    fun setItemInMainHand(entity: LivingEntity, stack: ItemStack?) {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_9_R1))
+            entity.equipment.itemInMainHand = stack
+        else
+            setItemInHand(entity, stack)
+    }
+
+    @JvmStatic
+    fun getItemInOffHand(entity: LivingEntity) : ItemStack? {
+        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_9_R1))
+            entity.equipment.itemInOffHand
+        else
+            getItemInHand(entity)
+    }
+
+    @JvmStatic
+    fun setItemInOffHand(entity: LivingEntity, stack: ItemStack?) {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_9_R1))
+            entity.equipment.itemInOffHand = stack
+        else
+            setItemInHand(entity, stack)
     }
 }
