@@ -31,6 +31,7 @@ class LDKPlugin : PluginBase() {
 
         const val NAME = "LDK"
         const val PREFIX = "[LDK] "
+        const val GITHUB = "https://github.com/lgou2w/ldk"
     }
 
     override val enableDependencies = arrayOf(
@@ -55,6 +56,7 @@ class LDKPlugin : PluginBase() {
 
     override fun enable() {
         logger.info("A lgou2w development kit of Bukkit.")
+        logger.info("Open source: $GITHUB")
         logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${MinecraftBukkitVersion.CURRENT.version}")
         try {
             Metrics(this)

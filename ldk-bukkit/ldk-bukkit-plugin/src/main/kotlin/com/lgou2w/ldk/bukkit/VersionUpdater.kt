@@ -62,13 +62,19 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
         var receiver = sender
         val last = lastRelease
         val pushed : Consumer<Release> = { release ->
-            receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GRAY + "There are new available. please update, plz, plz :")
-            receiver.sendMessage(" = " + ChatColor.GRAY + "Version: " + ChatColor.GOLD + release.tag)
-            receiver.sendMessage(" = " + ChatColor.GRAY + "Released: " + ChatColor.GREEN + release.releasedAt)
-            receiver.sendMessage(" = " + ChatColor.GRAY + "Pre Release: " + ChatColor.GREEN + release.isPreRelease)
-            receiver.sendMessage(" = " + ChatColor.GRAY + "Author: " + ChatColor.AQUA + release.author)
-            receiver.sendMessage(" = " + ChatColor.GRAY + "Url: " + ChatColor.AQUA + release.authorUrl)
-            receiver.sendMessage(" = " + ChatColor.GRAY + "Download: " + ChatColor.GREEN + release.fileDownloadUrl)
+            if (!release.isPreRelease) {
+                receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GRAY + "There are new available. please update, plz, plz :")
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Version: " + ChatColor.GOLD + release.tag)
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Released: " + ChatColor.GREEN + release.releasedAt)
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Author: " + ChatColor.AQUA + release.author)
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Url: " + ChatColor.AQUA + release.authorUrl)
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Download: " + ChatColor.GREEN + release.fileDownloadUrl)
+            } else {
+                receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GRAY + "There is a new preview available:")
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Version: " + ChatColor.GOLD + release.tag)
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Released: " + ChatColor.GREEN + release.releasedAt)
+                receiver.sendMessage(" = " + ChatColor.GRAY + "Url: " + ChatColor.AQUA + URL_RELEASE + release.tag)
+            }
         }
         val block : Callable<Release?> = if (last == null || canRecheck()) {
             {
@@ -111,6 +117,7 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
 
         private const val MAX_CHECK_INTERVAL = 10 * 60 * 1000L // 10 minutes
         private const val API_VERSION = "https://api.github.com/repos/lgou2w/ldk/releases/latest"
+        private const val URL_RELEASE = "https://github.com/lgou2w/ldk/releases/tag/" // {tag}
         private const val RELEASE_TAG = "tag_name" // String
         private const val RELEASE_PRE = "prerelease" // Boolean
         private const val RELEASE_AT = "published_at" // yyyy-MM-ddTHH:mm:ssZ
