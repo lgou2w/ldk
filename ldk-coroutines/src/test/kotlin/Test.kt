@@ -14,17 +14,30 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.coroutines
+import com.lgou2w.ldk.coroutines.CoroutineFactory
+import com.lgou2w.ldk.coroutines.SimpleCoroutineFactory
+import com.lgou2w.ldk.coroutines.SingleThreadDispatcherProvider
+import org.junit.Before
+import org.junit.Test
 
-import org.bukkit.plugin.Plugin
+class Test {
 
-fun Plugin.coroutines(
-        initializeState: State = State.SYNC,
-        block: suspend BukkitCoroutines.() -> Unit
-) : CoroutinesTask {
-    return BukkitCoroutines
-        .coroutines(this, server.scheduler, initializeState, block)
+    lateinit var coroutineFactory : CoroutineFactory
+
+    @Before
+    fun init() {
+        coroutineFactory = SimpleCoroutineFactory(
+                SingleThreadDispatcherProvider("ldk")
+        )
+    }
+
+    @Test
+    fun test_Coroutines() {
+        coroutineFactory.launch {
+            with {
+            }
+            async {
+            }
+        }
+    }
 }
-
-fun Plugin.dispatcher(state: State = State.SYNC) : BukkitDispatcher
-        = BukkitDispatcher(this, state)

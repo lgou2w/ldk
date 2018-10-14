@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.coroutines
+package com.lgou2w.ldk.coroutines
 
-import org.bukkit.Bukkit
-
-enum class State {
-
-    SYNC,
-    ASYNC,
-    ;
-
-    companion object {
-        @JvmStatic
-        fun currentState() : State
-                = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
-    }
+open class SimpleCoroutineFactory(
+        provider: DispatcherProvider
+) : CoroutineFactoryBase(provider) {
 }

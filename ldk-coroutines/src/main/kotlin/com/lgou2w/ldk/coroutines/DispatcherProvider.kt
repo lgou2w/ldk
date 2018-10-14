@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.coroutines
+package com.lgou2w.ldk.coroutines
 
-import org.bukkit.plugin.Plugin
-import org.bukkit.scheduler.BukkitTask
+import kotlin.coroutines.CoroutineContext
 
-interface CoroutinesTask {
+interface DispatcherProvider {
 
-    val plugin : Plugin
-
-    val currentTask : BukkitTask?
-
-    val isSync : Boolean
-
-    val isAsync : Boolean
-
-    fun cancel()
+    val dispatcher : CoroutineContext
 }

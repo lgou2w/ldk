@@ -5,13 +5,13 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>ldk-bukkit</artifactId>
+        <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
         <version>0.1.6-rc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-bukkit-coroutines</artifactId>
+    <artifactId>ldk-coroutines</artifactId>
 
     <dependencies>
         <!-- ldk-common -->
@@ -21,11 +21,11 @@
             <version>0.1.6-rc</version>
             <scope>compile</scope>
         </dependency>
-        <!-- ldk-coroutines -->
+        <!-- Kotlin Coroutines -->
         <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-coroutines</artifactId>
-            <version>0.1.6-rc</version>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>0.30.2-eap13</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -40,6 +40,7 @@
 
     <modules>
         <module>ldk-common</module>
+        <module>ldk-coroutines</module>
         <module>ldk-asm</module>
         <module>ldk-reflect</module>
         <module>ldk-retrofit</module>

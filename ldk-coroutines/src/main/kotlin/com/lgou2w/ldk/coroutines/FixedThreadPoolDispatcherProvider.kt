@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.coroutines
+package com.lgou2w.ldk.coroutines
 
-import org.bukkit.Bukkit
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlin.coroutines.CoroutineContext
 
-enum class State {
+class FixedThreadPoolDispatcherProvider(
+        threads: Int,
+        threadName: String
+) : DispatcherProvider {
 
-    SYNC,
-    ASYNC,
-    ;
-
-    companion object {
-        @JvmStatic
-        fun currentState() : State
-                = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
+    init {
+        if (threads < 1)
+            throw IllegalArgumentException("The thread pool size must be greater than or equal to 1.")
     }
+
+    override val dispatcher: CoroutineContext
+            = newFixedThreadPoolContext(threads, threadName)
 }

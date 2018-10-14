@@ -48,6 +48,7 @@ class BukkitDispatcher(
     }
 
     companion object {
+        @JvmStatic
         private fun unitToTick(timeMillis: Long): Long {
             return Math.round(timeMillis * 0.02)
         }

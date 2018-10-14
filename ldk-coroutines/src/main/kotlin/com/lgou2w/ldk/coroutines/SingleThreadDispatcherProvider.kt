@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.coroutines
+package com.lgou2w.ldk.coroutines
 
-import org.bukkit.Bukkit
+import kotlinx.coroutines.newSingleThreadContext
+import kotlin.coroutines.CoroutineContext
 
-enum class State {
+class SingleThreadDispatcherProvider(
+        threadName: String
+) : DispatcherProvider {
 
-    SYNC,
-    ASYNC,
-    ;
-
-    companion object {
-        @JvmStatic
-        fun currentState() : State
-                = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
-    }
+    override val dispatcher: CoroutineContext
+            = newSingleThreadContext(threadName)
 }

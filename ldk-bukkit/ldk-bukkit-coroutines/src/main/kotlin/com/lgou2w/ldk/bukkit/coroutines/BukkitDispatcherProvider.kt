@@ -16,17 +16,15 @@
 
 package com.lgou2w.ldk.bukkit.coroutines
 
-import org.bukkit.Bukkit
+import com.lgou2w.ldk.coroutines.DispatcherProvider
+import org.bukkit.plugin.Plugin
+import kotlin.coroutines.CoroutineContext
 
-enum class State {
+class BukkitDispatcherProvider(
+        plugin: Plugin,
+        state: State
+) : DispatcherProvider {
 
-    SYNC,
-    ASYNC,
-    ;
-
-    companion object {
-        @JvmStatic
-        fun currentState() : State
-                = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
-    }
+    override val dispatcher: CoroutineContext
+            = BukkitDispatcher(plugin, state)
 }
