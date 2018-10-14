@@ -19,7 +19,7 @@
 
 * A multi-platform lgou2w development kit.
     
-Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's chat and nbt library、Tools、Utility、Package、
+Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's chat and nbt library、Coroutines、Tools、Utility、Package、
 Rxjava、Retrofit、ASM、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
 Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
@@ -32,6 +32,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
 * ldk
     * [ldk-asm](/ldk-asm)
     * [ldk-common](/ldk-common)
+    * [ldk-coroutines](/ldk-coroutines)
     * [ldk-i18n](/ldk-i18n)
     * [ldk-reflect](/ldk-reflect)
     * [ldk-retrofit](/ldk-retrofit)
