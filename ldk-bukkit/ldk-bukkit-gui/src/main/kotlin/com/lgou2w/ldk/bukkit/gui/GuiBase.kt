@@ -360,7 +360,7 @@ abstract class GuiBase : Gui {
     companion object {
         @JvmStatic private val registered = AtomicBoolean(false)
         @JvmStatic private fun safeRegisterHandlerListener() {
-            if (registered.getAndSet(true))
+            if (!registered.compareAndSet(false, true))
                 return
             val ldk : Plugin? = Bukkit.getPluginManager().getPlugin("LDK")
             val listener = RegisteredListener(object : Listener {}, EventExecutor { _, event ->
