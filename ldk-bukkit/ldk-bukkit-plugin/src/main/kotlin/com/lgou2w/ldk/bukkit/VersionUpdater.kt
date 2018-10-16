@@ -17,7 +17,7 @@
 package com.lgou2w.ldk.bukkit
 
 import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.google.gson.JsonArray
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Callable
@@ -116,7 +116,7 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
     companion object Constants {
 
         private const val MAX_CHECK_INTERVAL = 10 * 60 * 1000L // 10 minutes
-        private const val API_VERSION = "https://api.github.com/repos/lgou2w/ldk/releases/latest"
+        private const val API_VERSION = "https://api.github.com/repos/lgou2w/ldk/releases"
         private const val URL_RELEASE = "https://github.com/lgou2w/ldk/releases/tag/" // {tag}
         private const val RELEASE_TAG = "tag_name" // String
         private const val RELEASE_PRE = "prerelease" // Boolean
@@ -131,14 +131,15 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
         @Throws(Exception::class)
         private fun parseLatestRelease() : Release? {
             val content = URL(API_VERSION).readText(Charsets.UTF_8)
-            val json = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
-            val tag = json.get(RELEASE_TAG)?.asString ?: return null
-            val releasedAt = json.get(RELEASE_AT).asString
-            val isPreRelease = json.get(RELEASE_PRE).asBoolean
-            val authorJson = json.get(RELEASE_AUTHOR)?.asJsonObject
+            val releases = Gson().fromJson<JsonArray>(content, JsonArray::class.java)
+            val release = releases.firstOrNull()?.asJsonObject ?: return null
+            val tag = release.get(RELEASE_TAG).asString
+            val releasedAt = release.get(RELEASE_AT).asString
+            val isPreRelease = release.get(RELEASE_PRE).asBoolean
+            val authorJson = release.get(RELEASE_AUTHOR)?.asJsonObject
             val author = authorJson?.get(RELEASE_AUTHOR_NAME)?.asString ?: "UNKNOWN"
             val authorUrl = authorJson?.get(RELEASE_AUTHOR_URL)?.asString ?: "404 Not Found"
-            val downloadJson = json.get(RELEASE_DOWNLOADS)?.asJsonArray?.firstOrNull()?.asJsonObject
+            val downloadJson = release.get(RELEASE_DOWNLOADS)?.asJsonArray?.firstOrNull()?.asJsonObject
             val fileName = downloadJson?.get(RELEASE_DOWNLOAD_NAME)?.asString
             val fileDownloadUrl = downloadJson?.get(RELEASE_DOWNLOAD_URL)?.asString
             return Release(tag, releasedAt, isPreRelease, author, authorUrl, fileName, fileDownloadUrl)
