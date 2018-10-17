@@ -42,8 +42,8 @@ object TypeCompletes {
                 value: String
         ): List<String> {
             val type = parameter.type.simpleName
-            return if (parameter.optional != null) {
-                Collections.singletonList("[$type=${parameter.optional.def}]")
+            return if (parameter.canNull) {
+                Collections.singletonList("[$type=${parameter.optional?.def}]")
             } else {
                 Collections.singletonList("<$type>")
             }
