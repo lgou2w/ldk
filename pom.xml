@@ -68,7 +68,7 @@
 
     <repositories>
         <repository>
-            <id>kotlin-dev</id>
+            <id>kotlin-eap</id>
             <url>https://dl.bintray.com/kotlin/kotlin-eap/</url>
         </repository>
     </repositories>
@@ -107,10 +107,6 @@
                             <goal>compile</goal>
                         </goals>
                         <configuration>
-                            <args>
-                                <!-- Kotlin Coroutines -->
-                                <arg>-Xcoroutines=enable</arg>
-                            </args>
                             <jvmTarget>${maven.compiler.target}</jvmTarget>
                             <sourceDirs>
                                 <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>

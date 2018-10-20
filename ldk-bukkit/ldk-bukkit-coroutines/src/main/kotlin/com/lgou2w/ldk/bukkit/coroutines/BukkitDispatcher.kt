@@ -16,9 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.coroutines
 
-import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Delay
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import kotlin.coroutines.CoroutineContext
@@ -26,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 class BukkitDispatcher(
         val plugin: Plugin,
         val state: State
-) : CoroutineDispatcher(), Delay {
+) : CoroutineDispatcher() {
 
     override fun dispatch(context: CoroutineContext, block: Runnable) {
         if (state != State.ASYNC && Bukkit.isPrimaryThread())
@@ -36,21 +34,6 @@ class BukkitDispatcher(
                 State.SYNC -> Bukkit.getScheduler().runTask(plugin, block)
                 State.ASYNC -> Bukkit.getScheduler().runTaskAsynchronously(plugin, block)
             }
-        }
-    }
-
-    override fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>) {
-        val block : com.lgou2w.ldk.common.Runnable = { continuation.apply { resumeUndispatched(Unit) } }
-        when (state) {
-            State.SYNC -> Bukkit.getScheduler().runTaskLater(plugin, block, unitToTick(timeMillis))
-            State.ASYNC -> Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, block, unitToTick(timeMillis))
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        private fun unitToTick(timeMillis: Long): Long {
-            return Math.round(timeMillis * 0.02)
         }
     }
 }
