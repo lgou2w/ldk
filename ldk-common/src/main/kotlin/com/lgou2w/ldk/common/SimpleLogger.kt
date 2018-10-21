@@ -33,6 +33,7 @@ import java.util.logging.Logger
  *
  * @author lgou2w
  */
+@Deprecated("USELESS") // TODO 0.1.6-rc
 class SimpleLogger(
         name: String,
         resourceBundleName: String? = null

@@ -113,7 +113,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
-    @Deprecated("USELESS")
+    @Deprecated("USELESS") // TODO 0.1.6-rc
     fun initPluginFolder() {
         if (!dataFolder.exists())
             dataFolder.mkdirs()
