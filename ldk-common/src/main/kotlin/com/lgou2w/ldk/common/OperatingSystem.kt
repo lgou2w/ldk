@@ -121,7 +121,7 @@ enum class OperatingSystem(
         val VERSION = System.getProperty("os.version")
 
         init {
-            val name = System.getProperty("os.type").toLowerCase(Locale.US)
+            val name = System.getProperty("os.name").toLowerCase(Locale.US)
             CURRENT = when {
                 name.contains("win") -> WINDOWS
                 name.contains("mac") -> OSX
