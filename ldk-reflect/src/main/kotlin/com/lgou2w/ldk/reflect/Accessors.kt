@@ -93,7 +93,7 @@ object Accessors {
         override fun invoke(instance: T?, vararg params: Any?): R? {
             try {
                 @Suppress("UNCHECKED_CAST")
-                return source.invoke(instance, *params) as R?
+                return source.invoke(instance, *params) as? R
             } catch (e: IllegalAccessException) {
                 throw RuntimeException("Unable to use reflector.", e)
             } catch (e: InvocationTargetException) {
@@ -111,7 +111,7 @@ object Accessors {
         override fun get(instance: T?): R? {
             try {
                 @Suppress("UNCHECKED_CAST")
-                return source.get(instance) as R?
+                return source.get(instance) as? R
             } catch (e: IllegalArgumentException) {
                 throw RuntimeException("Unable to read field: $source", e)
             } catch (e: IllegalAccessException) {
