@@ -113,15 +113,6 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
-    @Deprecated("USELESS") // TODO 0.1.6-rc
-    fun initPluginFolder() {
-        if (!dataFolder.exists())
-            dataFolder.mkdirs()
-        val config = File(dataFolder, "config.yml")
-        if (!config.exists() && getResource("config.yml") != null)
-            saveDefaultConfig()
-    }
-
     /**************************************************************************
      *
      * Plugin Archive

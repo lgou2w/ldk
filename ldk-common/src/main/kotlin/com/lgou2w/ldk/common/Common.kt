@@ -16,8 +16,6 @@
 
 package com.lgou2w.ldk.common
 
-// TODO 0.1.6-rc Rename to Common
-
 /**************************************************************************
  *
  * Type alias
