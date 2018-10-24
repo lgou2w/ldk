@@ -70,10 +70,18 @@ private fun <T> Plugin.callTaskFuture(callback: Callable<T>, delay: Long = 0L, a
     }
     if (delay <= 0) {
         if (async) runTaskAsync(task)
-        else task.invoke()  // blocking server threads, Until the task is completed
+        else {
+            // SEE -> https://github.com/lgou2w/ldk/issues/32
+            // blocking server threads, Until the task is completed
+            if (Bukkit.isPrimaryThread())
+                task.invoke()
+            else
+                runTask(task)
+        }
     } else {
+        // blocking server threads after waiting for a delay, Until the task is completed
         if (async) runTaskAsyncLater(task, delay)
-        else runTaskLater(task, delay) // blocking server threads after waiting for a delay, Until the task is completed
+        else runTaskLater(task, delay)
     }
     return future
 }
