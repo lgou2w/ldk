@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+import com.lgou2w.ldk.common.Constants
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
@@ -168,7 +169,7 @@ abstract class GuiBase : Gui {
         get() = synchronized (buttonList) {
             buttonList.size
         }
-    
+
     private fun canAdd(button: Button) {
         val sameMax = (button as? ButtonSame)?.indexes?.max()
         if (button.index < 0 || button.index + 1 > size || (sameMax != null && sameMax + 1 > size))
@@ -362,7 +363,7 @@ abstract class GuiBase : Gui {
         @JvmStatic private fun safeRegisterHandlerListener() {
             if (!registered.compareAndSet(false, true))
                 return
-            val ldk : Plugin? = Bukkit.getPluginManager().getPlugin("LDK")
+            val ldk : Plugin? = Bukkit.getPluginManager().getPlugin(Constants.LDK)
             val listener = RegisteredListener(object : Listener {}, EventExecutor { _, event ->
                 when (event) {
                     is InventoryOpenEvent -> {

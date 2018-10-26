@@ -29,9 +29,9 @@ class LDKPlugin : PluginBase() {
 
     companion object Constants {
 
-        const val NAME = "LDK"
-        const val PREFIX = "[LDK] "
-        const val GITHUB = "https://github.com/lgou2w/ldk"
+        const val NAME = com.lgou2w.ldk.common.Constants.LDK
+        const val PREFIX = "[$NAME] "
+        const val GITHUB = com.lgou2w.ldk.common.Constants.LDK_GITHUB
     }
 
     override val enableDependencies = arrayOf(
