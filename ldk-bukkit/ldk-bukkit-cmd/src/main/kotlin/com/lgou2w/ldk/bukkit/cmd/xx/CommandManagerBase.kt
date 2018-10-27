@@ -1,0 +1,90 @@
+/*
+ * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.lgou2w.ldk.bukkit.cmd.xx
+
+import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
+import com.lgou2w.ldk.reflect.FuzzyReflect
+import org.bukkit.Bukkit
+import org.bukkit.Server
+import org.bukkit.command.CommandMap
+import org.bukkit.command.CommandSender
+import org.bukkit.plugin.Plugin
+import java.util.concurrent.ConcurrentHashMap
+import java.util.logging.Level
+
+abstract class CommandManagerBase(
+        final override val plugin: Plugin,
+        override val parser: CommandParser
+) : CommandManager {
+
+    protected val commands : MutableMap<String, RegisteredCommand> = ConcurrentHashMap()
+
+    override val transforms = Transforms()
+    override val globalFeedback: CommandFeedback = SimpleCommandFeedback()
+
+    override fun registerCommand(source: Any): RegisteredCommand {
+        val command = parser.parse(this, source)
+        return if (registerBukkitCommand(command)) {
+            initialize(command, this)
+            command.children.values.forEach { child -> initialize(child, this) }
+            command
+        } else {
+            throw UnsupportedOperationException("Internal error when registering to bukkit.")
+        }
+    }
+
+    override fun getCommand(command: String): RegisteredCommand? {
+        return commands[command]
+    }
+
+    companion object {
+
+        @JvmStatic private fun initialize(command: RegisteredCommand, manager: CommandManager) {
+            val source = command.source
+            if (source is Initializable) try {
+                source.initialize(command, manager)
+            } catch (e: Exception) {
+                manager.plugin.logger.log(Level.WARNING, "Command source object initialization exception:", e)
+            }
+        }
+
+        @JvmStatic private val bukkitCommandMap : CommandMap by lazy {
+            FuzzyReflect.of(MinecraftReflection.getCraftBukkitClass("CraftServer"), true)
+                .useFieldMatcher()
+                .withType(CommandMap::class.java)
+                .resultAccessorAs<Server, CommandMap>()[Bukkit.getServer()] as CommandMap
+        }
+        @JvmStatic private fun registerBukkitCommand(command: RegisteredCommand) : Boolean {
+            val proxy = object : org.bukkit.command.Command(
+                    command.name, "", "", command.aliases.toMutableList()
+            ) {
+                override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
+                    return command.execute(sender, name, args)
+                }
+                override fun tabComplete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
+                    return command.complete(sender, alias, args)
+                }
+            }
+            return try {
+                bukkitCommandMap.register(command.name, "", proxy)
+            } catch (e: Exception) {
+                command.manager.plugin.logger.log(Level.SEVERE, e.message, e)
+                false
+            }
+        }
+    }
+}
