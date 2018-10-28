@@ -28,6 +28,7 @@ class DefaultCommandParser : CommandParser {
         val clazz = source.javaClass
         val commandRoot = parseRoot(manager, clazz)
         val permission = clazz.getAnnotation(Permission::class.java)
+        val description = clazz.getAnnotation(Description::class.java)
         val executors = parseExecutors(manager, source, clazz)
         val command = buildCommandRegistered(
                 manager,
@@ -36,7 +37,7 @@ class DefaultCommandParser : CommandParser {
                 commandRoot.value,
                 commandRoot.aliases,
                 permission?.values,
-                commandRoot.prefix,
+                description,
                 emptyMap(),
                 executors
         )
@@ -84,7 +85,7 @@ class DefaultCommandParser : CommandParser {
             }
     }
 
-    private fun parseExecutorParameters(manager: CommandManager, method: Method) : Array<out DefaultCommandExecutor.Parameter> {
+    private fun parseExecutorParameters(manager: CommandManager, method: Method) : Array<out CommandExecutor.Parameter> {
         return method.parameters.filterIndexed { index, _ -> index != 0 }.mapNotNull { parameter ->
             val type = parameter.parameterizedType as Class<*>
             val optional = parameter.getAnnotation(Optional::class.java)
@@ -93,7 +94,7 @@ class DefaultCommandParser : CommandParser {
                 manager.plugin.logger.warning("Optional or nullable annotations can only have one, skipped.")
                 null
             } else {
-                DefaultCommandExecutor.Parameter(type, optional?.def, nullable != null)
+                CommandExecutor.Parameter(type, optional?.def, nullable != null)
             }
         }.toTypedArray()
     }
@@ -115,7 +116,8 @@ class DefaultCommandParser : CommandParser {
                 null to null
             }
             if (root != null && instance != null) {
-                val childPermission = clazz.getAnnotation(Permission::class.java)
+                val childPermission = child.getAnnotation(Permission::class.java)
+                val childDescription = child.getAnnotation(Description::class.java)
                 val childExecutors = parseExecutors(manager, instance, child)
                 val childCommand = buildCommandRegistered(
                         manager,
@@ -124,7 +126,7 @@ class DefaultCommandParser : CommandParser {
                         root.value,
                         root.aliases,
                         childPermission?.values,
-                        root.prefix,
+                        childDescription,
                         emptyMap(),
                         childExecutors
                 )
@@ -141,7 +143,7 @@ class DefaultCommandParser : CommandParser {
             name: String,
             aliases: Array<out String>,
             permission: Array<out String>?,
-            prefix: String,
+            description: Description?,
             children: Map<String, DefaultRegisteredCommand>,
             executors: Map<String, DefaultCommandExecutor>
     ) : DefaultRegisteredCommand {
@@ -152,7 +154,7 @@ class DefaultCommandParser : CommandParser {
                 name,
                 aliases,
                 permission,
-                prefix,
+                description,
                 children,
                 executors
         )
@@ -165,7 +167,7 @@ class DefaultCommandParser : CommandParser {
             permission: Array<out String>?,
             isPlayable: Boolean,
             method: Method,
-            parameters: Array<out DefaultCommandExecutor.Parameter>
+            parameters: Array<out CommandExecutor.Parameter>
     ) : DefaultCommandExecutor {
         return DefaultCommandExecutor(
                 source,
@@ -173,8 +175,8 @@ class DefaultCommandParser : CommandParser {
                 aliases,
                 permission,
                 isPlayable,
-                Accessors.ofMethod(method),
-                parameters
+                parameters,
+                Accessors.ofMethod(method)
         )
     }
 }

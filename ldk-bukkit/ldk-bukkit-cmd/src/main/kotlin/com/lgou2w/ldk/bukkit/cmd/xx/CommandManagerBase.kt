@@ -34,6 +34,7 @@ abstract class CommandManagerBase(
     protected val commands : MutableMap<String, RegisteredCommand> = ConcurrentHashMap()
 
     override val transforms = Transforms()
+    override val completes = Completes()
     override val globalFeedback: CommandFeedback = SimpleCommandFeedback()
 
     override fun registerCommand(source: Any): RegisteredCommand {
@@ -69,9 +70,14 @@ abstract class CommandManagerBase(
                 .resultAccessorAs<Server, CommandMap>()[Bukkit.getServer()] as CommandMap
         }
         @JvmStatic private fun registerBukkitCommand(command: RegisteredCommand) : Boolean {
+            val description = command.description?.description ?: ""
+            val usageMessage = command.description?.usage ?: ""
             val proxy = object : org.bukkit.command.Command(
-                    command.name, "", "", command.aliases.toMutableList()
+                    command.name, description, usageMessage, command.aliases.toMutableList()
             ) {
+                init {
+                    permission = command.permission?.firstOrNull()
+                }
                 override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
                     return command.execute(sender, name, args)
                 }
@@ -80,7 +86,7 @@ abstract class CommandManagerBase(
                 }
             }
             return try {
-                bukkitCommandMap.register(command.name, "", proxy)
+                bukkitCommandMap.register(command.name, command.fallbackPrefix, proxy)
             } catch (e: Exception) {
                 command.manager.plugin.logger.log(Level.SEVERE, e.message, e)
                 false

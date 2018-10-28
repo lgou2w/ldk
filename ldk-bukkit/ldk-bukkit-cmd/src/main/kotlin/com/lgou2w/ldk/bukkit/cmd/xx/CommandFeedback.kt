@@ -24,7 +24,7 @@ interface CommandFeedback {
             sender: CommandSender,
             name: String,
             command: RegisteredCommand,
-            executor: CommandExecutor,
+            executor: CommandExecutor?,
             args: Array<out String>,
             permission: String
     )

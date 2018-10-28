@@ -16,11 +16,41 @@
 
 package com.lgou2w.ldk.bukkit.cmd.xx
 
+import java.util.*
+
 abstract class CommandExecutorBase(
-        override val reference: Any,
-        override val name: String,
-        override val aliases: Array<out String>,
-        override val permission: Array<out String>?,
-        override val isPlayable: Boolean
+        final override val reference: Any,
+        final override val name: String,
+        final override val aliases: Array<out String>,
+        final override val permission: Array<out String>?,
+        final override val isPlayable: Boolean,
+        final override val parameters: Array<out CommandExecutor.Parameter>
 ) : CommandExecutor {
+
+    val length = parameters.size
+    val max = length
+    val min = max - parameters.count { it.canNullable }
+
+    override fun hashCode(): Int {
+        var result = reference.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + Arrays.hashCode(aliases)
+        result = 31 * result + Arrays.hashCode(permission)
+        result = 31 * result + isPlayable.hashCode()
+        result = 31 * result + Arrays.hashCode(parameters)
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other === this)
+            return true
+        if (other is CommandExecutorBase)
+            return reference == other.reference &&
+                   name == other.name &&
+                   Arrays.equals(aliases, other.aliases) &&
+                   Arrays.equals(permission, other.permission) &&
+                   isPlayable == other.isPlayable &&
+                   Arrays.equals(parameters, other.parameters)
+        return false
+    }
 }

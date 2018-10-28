@@ -22,15 +22,24 @@ import org.bukkit.command.CommandSender
 
 open class SimpleCommandFeedback : CommandFeedback {
 
+    protected fun sendMessage(
+            command: RegisteredCommand,
+            sender: CommandSender,
+            message: String
+    ) {
+        val prefix = command.rootParent?.prefix ?: command.prefix
+        sender.sendMessage(prefix + message)
+    }
+
     override fun onPermission(
             sender: CommandSender,
             name: String,
             command: RegisteredCommand,
-            executor: CommandExecutor,
+            executor: CommandExecutor?,
             args: Array<out String>,
             permission: String
     ) {
-        sender.sendMessage(command.prefix + ChatColor.RED + "You do not have permission to use this command.")
+        sendMessage(command, sender, ChatColor.RED + "You do not have permission to use this command.")
     }
 
     override fun onPlayable(
@@ -40,7 +49,7 @@ open class SimpleCommandFeedback : CommandFeedback {
             executor: CommandExecutor,
             args: Array<out String>
     ) {
-        sender.sendMessage(command.prefix + ChatColor.RED + "The console cannot execute this command.")
+        sendMessage(command, sender, ChatColor.RED + "The console cannot execute this command.")
     }
 
     override fun onMinimum(
@@ -52,7 +61,11 @@ open class SimpleCommandFeedback : CommandFeedback {
             current: Int,
             min: Int
     ) {
-        sender.sendMessage(command.prefix + ChatColor.RED + "The arg length is less than the command min length. (Current: $current, Min: $min)")
+        sendMessage(
+                command,
+                sender,
+                ChatColor.RED + "The arg length is less than the command min length. (Current: $current, Min: $min)"
+        )
     }
 
     override fun onTransform(
@@ -65,7 +78,11 @@ open class SimpleCommandFeedback : CommandFeedback {
             value: String?,
             transformed: Any?
     ) {
-        sender.sendMessage(command.prefix + ChatColor.RED + "Transformed '$value' to '$transformed' type does not match. (Expected: ${expected.simpleName})")
+        sendMessage(
+                command,
+                sender,
+                ChatColor.RED + "Transformed '$value' to '$transformed' type does not match. (Expected: ${expected.simpleName})"
+        )
     }
 
     @Throws(CommandException::class)

@@ -28,5 +28,16 @@ interface CommandExecutor {
 
     val isPlayable : Boolean
 
+    val parameters: Array<out CommandExecutor.Parameter>
+
     fun execute(vararg args: Any?) : Any?
+
+    data class Parameter(
+            val type : Class<*>,
+            val defValue: String?,
+            val isNullable: Boolean
+    ) {
+        val canNullable : Boolean
+            get() = defValue != null || isNullable
+    }
 }

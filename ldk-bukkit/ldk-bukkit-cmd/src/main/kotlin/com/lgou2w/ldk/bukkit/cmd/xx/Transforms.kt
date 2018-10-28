@@ -46,8 +46,8 @@ open class Transforms : Iterable<Transform<*>> {
         })
     }
 
-    fun removeTransform(type: Class<*>) {
-        transforms.remove(type)
+    fun removeTransform(type: Class<*>) : Transform<*>? {
+        return transforms.remove(type)
     }
 
     fun <T> getTransform(type: Class<T>) : Transform<T>? {

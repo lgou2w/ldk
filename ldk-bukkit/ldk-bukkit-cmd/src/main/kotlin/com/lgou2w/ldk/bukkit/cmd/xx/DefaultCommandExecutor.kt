@@ -26,14 +26,11 @@ class DefaultCommandExecutor(
         aliases: Array<out String>,
         permission: Array<out String>?,
         isPlayable: Boolean,
-        val executor: AccessorMethod<Any, Any>,
-        val parameters: Array<out DefaultCommandExecutor.Parameter>
-) : CommandExecutorBase(reference, name, aliases, permission, isPlayable) {
+        parameters: Array<out CommandExecutor.Parameter>,
+        val executor: AccessorMethod<Any, Any>
+) : CommandExecutorBase(reference, name, aliases, permission, isPlayable, parameters) {
 
     val isStatic = Modifier.isStatic(executor.source.modifiers)
-    val length = parameters.size
-    val max = length
-    val min = max - parameters.count { it.canNullable }
 
     override fun execute(vararg args: Any?): Any? {
         return if (isStatic)
@@ -43,11 +40,8 @@ class DefaultCommandExecutor(
     }
 
     override fun hashCode(): Int {
-        var result = reference.hashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + Arrays.hashCode(aliases)
-        result = 31 * result + Arrays.hashCode(permission)
-        result = 31 * result + isPlayable.hashCode()
+        var result = super.hashCode()
+        result = 31 * result + executor.hashCode()
         return result
     }
 
@@ -55,24 +49,11 @@ class DefaultCommandExecutor(
         if (other === this)
             return true
         if (other is DefaultCommandExecutor)
-            return reference == other.reference &&
-                   name == other.name &&
-                   Arrays.equals(aliases, other.aliases) &&
-                   Arrays.equals(permission, other.permission) &&
-                   isPlayable == other.isPlayable
+            return super.equals(other) && executor == other.executor
         return false
     }
 
     override fun toString(): String {
-        return "DefaultCommandExecutor(name=$name, aliases=${Arrays.toString(aliases)}, permission=${Arrays.toString(permission)}, isPlayable=$isPlayable)"
-    }
-
-    class Parameter(
-            val type : Class<*>,
-            val defValue: String?,
-            val isNullable: Boolean
-    ) {
-        val canNullable : Boolean
-            get() = defValue != null || isNullable
+        return "DefaultCommandExecutor(name=$name, aliases=${Arrays.toString(aliases)}, isPlayable=$isPlayable)"
     }
 }

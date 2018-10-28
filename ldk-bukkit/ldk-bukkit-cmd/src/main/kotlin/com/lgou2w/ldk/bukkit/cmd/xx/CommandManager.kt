@@ -26,6 +26,8 @@ interface CommandManager {
 
     val transforms : Transforms
 
+    val completes : Completes
+
     val globalFeedback : CommandFeedback
 
     @Throws(CommandParseException::class)

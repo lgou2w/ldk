@@ -18,8 +18,14 @@ package com.lgou2w.ldk.bukkit.cmd.xx
 
 import org.bukkit.command.CommandSender
 
-@CommandRoot("sample", prefix = "[Sample] ")
-class Sample {
+@CommandRoot("sample")
+@Description(prefix = "[<command>] ", fallbackPrefix = "LDK")
+@Permission("sample")
+class Sample : Initializable {
+
+    override fun initialize(command: RegisteredCommand, manager: CommandManager) {
+        command.prefix = "[${command.name.capitalize()}] "
+    }
 
     // => /sample
 
@@ -30,6 +36,7 @@ class Sample {
     }
 
     @CommandRoot("user")
+    @Permission("sample.user")
     class User {
 
         // => /sample user

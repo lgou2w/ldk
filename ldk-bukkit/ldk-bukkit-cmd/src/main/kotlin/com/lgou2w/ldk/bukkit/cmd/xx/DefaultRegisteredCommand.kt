@@ -32,7 +32,7 @@ class DefaultRegisteredCommand(
         override val name: String,
         override val aliases: Array<out String>,
         override val permission: Array<out String>?,
-        override var prefix: String,
+        override val description: Description?,
         children: Map<String, DefaultRegisteredCommand>,
         executors: Map<String, DefaultCommandExecutor>
 ) : RegisteredCommand {
@@ -45,13 +45,21 @@ class DefaultRegisteredCommand(
     override val executors: Map<String, CommandExecutor>
         get() = HashMap(mExecutors)
 
+    override val fallbackPrefix: String = description?.fallbackPrefix ?: ""
+    override var prefix: String = description?.prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
+        set(value) { field = value.replace(COMMAND_PLACEHOLDER, name) }
+
     override var feedback: CommandFeedback? = null
+    override var isAllowCompletion: Boolean = true
 
     /**************************************************************************
      *
      * API
      *
      **************************************************************************/
+
+    override val rootParent: RegisteredCommand?
+        get() = getRootParent(this)
 
     override fun registerChild(child: RegisteredCommand, forcibly: Boolean): Boolean {
         if (child !is DefaultRegisteredCommand)
@@ -83,18 +91,28 @@ class DefaultRegisteredCommand(
      *
      **************************************************************************/
 
+    private fun getRootParent(command: RegisteredCommand?) : RegisteredCommand? {
+        val parent = command?.parent
+        return if (parent == null)
+            command
+        else
+            getRootParent(parent)
+    }
+
     override fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean {
-        if (args.isEmpty()) {
+        if (!testPermissionIfFailed(sender, permission) {
+                    (feedback ?: manager.globalFeedback)
+                        .onPermission(sender, name, this, null, args, it)
+                })
+            return true
+        return if (args.isEmpty()) {
             typeHelp(sender)
+            true
         } else {
             val child = findChild(args.first())
-            return if (child != null) {
-                child.execute(sender, name, pollArgument(args))
-            } else {
-                invokeExecutor(sender, args)
-            }
+            child?.execute(sender, name, pollArgument(args))
+                   ?: invokeExecutor(sender, args)
         }
-        return false
     }
 
     private fun invokeExecutor(sender: CommandSender, args: Array<out String>) : Boolean {
@@ -129,9 +147,8 @@ class DefaultRegisteredCommand(
             args: Array<out String>,
             parameterValues: MutableList<Any?>
     ) : Boolean {
-        var failedPermission = ""
-        if (!testPermissionIfFailed(sender) { failedPermission = it }) {
-            feedback.onPermission(sender, name, this, executor, args, failedPermission)
+        if (!testPermissionIfFailed(sender, executor.permission) {
+                    feedback.onPermission(sender, name, this, executor, args, it) }) {
             return false
         }
         if (executor.isPlayable && sender !is Player) {
@@ -161,10 +178,14 @@ class DefaultRegisteredCommand(
         return true
     }
 
-    private fun testPermissionIfFailed(sender: CommandSender, block: Consumer<String>): Boolean {
+    private fun testPermissionIfFailed(
+            sender: CommandSender,
+            permission: Array<out String>?,
+            block: Consumer<String>? = null
+    ): Boolean {
         return permission == null || permission.all {
             val result = sender.hasPermission(it)
-            if (!result)
+            if (!result && block != null)
                 block(it)
             result
         }
@@ -178,19 +199,49 @@ class DefaultRegisteredCommand(
     }
 
     private fun typeHelp(sender: CommandSender) {
-        sender.sendMessage(ChatColor.RED + "Unknown parameter. Type \"/$name help\" for help.")
+        val root = rootParent ?: this
+        val usage = description?.usage
+        if (usage == null || usage.isEmpty())
+            sender.sendMessage(root.prefix + ChatColor.RED + "Unknown parameter. Type \"/${root.name} help\" for help.")
+        else
+            sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
     }
 
     override fun complete(sender: CommandSender, name: String, args: Array<out String>): List<String> {
-        return emptyList()
+        if (!testPermissionIfFailed(sender, permission))
+            return emptyList()
+        return if (args.size <= 1) {
+            mChildren.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key } +
+            mExecutors.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key }
+                .filter {
+                    val first = args.firstOrNull()
+                    (first == null || it.startsWith(first))
+                }
+        } else {
+            val child = findChild(args.first())
+            child?.complete(sender, name, pollArgument(args))
+                ?: invokeExecutorComplete(sender, args)
+        }
+    }
+
+    private fun invokeExecutorComplete(sender: CommandSender, args: Array<out String>) : List<String> {
+        val executor = findExecutor(args.first())
+        return if (executor == null || args.lastIndex > executor.max || !testPermissionIfFailed(sender, executor.permission))
+            emptyList()
+        else {
+            val parameter = executor.parameters[args.lastIndex - 1]
+            val completer = manager.completes.getCompleter(parameter.type) ?: Completer.DEFAULT
+            completer.onComplete(parameter, sender, args.last())
+        }
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
+        var result = source.hashCode()
+        result = result * 31 + name.hashCode()
         result = result * 31 + Arrays.hashCode(aliases)
-        result = result * 31 + Arrays.hashCode(permission)
         result = result * 31 + mChildren.hashCode()
         result = result * 31 + mExecutors.hashCode()
+        result = result * 31 + (description?.hashCode() ?: 0)
         return result
     }
 
@@ -198,15 +249,20 @@ class DefaultRegisteredCommand(
         if (other === this)
             return true
         if (other is DefaultRegisteredCommand)
-            return name == other.name &&
+            return source == other.source &&
+                   name == other.name &&
                    Arrays.equals(aliases, other.aliases) &&
-                   Arrays.equals(permission, other.permission) &&
                    mChildren == other.mChildren &&
-                   mExecutors == other.mExecutors
+                   mExecutors == other.mExecutors &&
+                   description == other.description
         return false
     }
 
     override fun toString(): String {
-        return "DefaultRegisteredCommand(name=$name, aliases=${Arrays.toString(aliases)}, permission=${Arrays.toString(permission)})"
+        return "DefaultRegisteredCommand(name=$name, aliases=${Arrays.toString(aliases)})"
+    }
+
+    companion object Constants {
+        const val COMMAND_PLACEHOLDER = "<command>"
     }
 }

@@ -40,17 +40,25 @@ interface RegisteredCommand {
 
     val permission : Array<out String>?
 
+    val fallbackPrefix : String
+
+    val description : Description?
+
     val executors : Map<String, CommandExecutor>
 
     var prefix : String
 
     var feedback : CommandFeedback?
 
+    var isAllowCompletion : Boolean
+
     /**************************************************************************
      *
      * API
      *
      **************************************************************************/
+
+    val rootParent : RegisteredCommand?
 
     fun registerChild(child: RegisteredCommand, forcibly: Boolean) : Boolean
 
