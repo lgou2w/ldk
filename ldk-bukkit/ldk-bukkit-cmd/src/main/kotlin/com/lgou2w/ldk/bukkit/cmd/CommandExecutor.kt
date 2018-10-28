@@ -14,10 +14,30 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.cmd.xx
+package com.lgou2w.ldk.bukkit.cmd
 
-interface CommandParser {
+interface CommandExecutor {
 
-    @Throws(CommandParseException::class)
-    fun parse(manager: CommandManager, source: Any) : RegisteredCommand
+    val reference : Any
+
+    val name : String
+
+    val aliases : Array<out String>
+
+    val permission : Array<out String>?
+
+    val isPlayable : Boolean
+
+    val parameters: Array<out Parameter>
+
+    fun execute(vararg args: Any?) : Any?
+
+    data class Parameter(
+            val type : Class<*>,
+            val defValue: String?,
+            val isNullable: Boolean
+    ) {
+        val canNullable : Boolean
+            get() = defValue != null || isNullable
+    }
 }

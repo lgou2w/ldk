@@ -16,8 +16,8 @@
 
 package com.lgou2w.ldk.bukkit
 
-import com.lgou2w.ldk.bukkit.cmd.xx.DefaultCommandManager
-import com.lgou2w.ldk.bukkit.cmd.xx.Sample
+import com.lgou2w.ldk.bukkit.cmd.DefaultCommandManager
+import com.lgou2w.ldk.bukkit.cmd.Sample
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.toColor

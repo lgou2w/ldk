@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.cmd.xx
+package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

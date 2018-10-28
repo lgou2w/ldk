@@ -20,8 +20,13 @@ package com.lgou2w.ldk.bukkit.cmd
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CommandRoot(
         val value: String,
+        val aliases: Array<String> = []
+)
+
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Description(
         val prefix: String = "",
-        val aliases: Array<String> = [],
         val description: String = "",
         val usage: String = "",
         val fallbackPrefix: String = ""
@@ -31,12 +36,10 @@ annotation class CommandRoot(
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Command(
         val value: String,
-        val aliases: Array<String> = [],
-        val description: String = "",
-        val usage: String = ""
+        val aliases: Array<String> = []
 )
 
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Permission(vararg val values: String)
 

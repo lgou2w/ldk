@@ -14,22 +14,33 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.cmd.xx
+package com.lgou2w.ldk.bukkit.cmd
 
+import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.nbt.NBTType
 import org.bukkit.command.CommandSender
 
 @CommandRoot("sample")
-@Description(prefix = "[<command>] ", fallbackPrefix = "LDK")
 @Permission("sample")
 class Sample : Initializable {
 
     override fun initialize(command: RegisteredCommand, manager: CommandManager) {
         command.prefix = "[${command.name.capitalize()}] "
+        command.manager.transforms
+            .addTransform(NBTType::class.java) {
+                Enums.ofName(NBTType::class.java, it)
+            }
+        command.manager.completes
+            .addCompleter(NBTType::class.java) { _, _, value ->
+                NBTType.values().filter { it.name.startsWith(value) }
+                    .map { it.name }
+            }
     }
 
     // => /sample
 
     @Command("hello")
+    @Permission("sample.hello")
     fun hello(sender: CommandSender) {
         // => /sample hello
         sender.sendMessage("hello world ~")
@@ -42,15 +53,28 @@ class Sample : Initializable {
         // => /sample user
 
         @Command("add")
+        @Permission("sample.user.add")
         fun add(sender: CommandSender, username: String, password: String) {
             // => /sample user add
             sender.sendMessage("add user => ($username:$password)")
         }
 
         @Command("remove")
+        @Permission("sample.user.remove")
         fun remove(sender: CommandSender, username: String) {
             // => /sample user remove
             sender.sendMessage("remove user => ($username)")
+        }
+    }
+
+    @CommandRoot("nbt")
+    @Permission("sample.nbt")
+    class NBT {
+
+        @Command("type")
+        @Permission("sample.nbt.type")
+        fun type(sender: CommandSender, type: NBTType) {
+            sender.sendMessage("nbt type wrapped => ${type.wrapped.canonicalName}")
         }
     }
 }

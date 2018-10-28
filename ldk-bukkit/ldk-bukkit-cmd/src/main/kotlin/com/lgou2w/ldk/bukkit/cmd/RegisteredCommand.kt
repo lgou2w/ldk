@@ -16,8 +16,6 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import com.lgou2w.ldk.common.Consumer
-import com.lgou2w.ldk.reflect.AccessorMethod
 import org.bukkit.command.CommandSender
 
 interface RegisteredCommand {
@@ -26,90 +24,55 @@ interface RegisteredCommand {
 
     val source : Any
 
-    val proxy : org.bukkit.command.Command
+    val parent : RegisteredCommand?
 
-    var prefix : String
+    val children : Map<String, RegisteredCommand>
 
-    var feedback : CommandFeedback?
-
-    val root : CommandRoot
+    /**************************************************************************
+     *
+     * Properties
+     *
+     **************************************************************************/
 
     val name : String
 
     val aliases : Array<out String>
 
-    val description : String
-
-    val usage : String
+    val permission : Array<out String>?
 
     val fallbackPrefix : String
 
-    val children : Map<String, Child>
+    val description : Description?
 
-    val childrenKeys : Set<String>
+    val executors : Map<String, CommandExecutor>
 
-    fun getChild(name: String) : Child?
+    var prefix : String
 
-    fun registerChild(provider: ChildProvider, force: Boolean) : Boolean
+    var feedback : CommandFeedback?
 
-    fun unregisterChild(name: String) : Boolean
+    var isAllowCompletion : Boolean
+
+    /**************************************************************************
+     *
+     * API
+     *
+     **************************************************************************/
+
+    val rootParent : RegisteredCommand?
+
+    fun registerChild(child: RegisteredCommand, forcibly: Boolean) : Boolean
+
+    fun findChild(name: String, allowAlias: Boolean = true) : RegisteredCommand?
+
+    fun findExecutor(name: String, allowAlias: Boolean = true) : CommandExecutor?
+
+    /**************************************************************************
+     *
+     * Significant
+     *
+     **************************************************************************/
 
     fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean
 
-    var completeProxy : CompleteProxy?
-
     fun complete(sender: CommandSender, name: String, args: Array<out String>) : List<String>
-
-    interface Child {
-
-        val parent : RegisteredCommand
-
-        val command : Command
-
-        val permission : Permission?
-
-        val isPlayable : Boolean
-
-        val name : String
-
-        val aliases : Array<out String>
-
-        val description : String
-
-        val usage : String
-
-        val parameters : Array<out ChildParameter>
-
-        val accessor: AccessorMethod<Any, Any>
-
-        val length : Int
-
-        val max : Int
-
-        val min : Int
-
-        val isStatic : Boolean
-
-        fun invoke(vararg args: Any?) : Any?
-
-        fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean
-
-        fun testPermission(sender: CommandSender) : Boolean
-
-        fun testPermissionIfFailed(sender: CommandSender, block: Consumer<String>) : Boolean
-    }
-
-    class ChildParameter(
-            val type : Class<*>,
-            val optional: Optional?,
-            val isNullable: Boolean
-    ) {
-
-        internal lateinit var child : RegisteredCommand.Child
-        val parent: RegisteredCommand.Child
-            get() = child
-
-        val canNull : Boolean
-            get() = optional != null || isNullable
-    }
 }

@@ -20,10 +20,8 @@ import org.bukkit.plugin.Plugin
 
 class DefaultCommandManager(
         plugin: Plugin
-) : SimpleCommandManager(plugin) {
+) : SimpleCommandManager(plugin, DefaultCommandParser()) {
 
-    init {
-        addDefaultTypeTransforms()
-        addDefaultTypeCompletes()
-    }
+    override val parser: DefaultCommandParser
+        get() = super.parser as DefaultCommandParser
 }

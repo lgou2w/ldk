@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.cmd.xx
+package com.lgou2w.ldk.bukkit.cmd
 
-import org.bukkit.plugin.Plugin
+class CommandParseException : RuntimeException {
 
-interface CommandManager {
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
 
-    val plugin : Plugin
-
-    val parser : CommandParser
-
-    val transforms : Transforms
-
-    val completes : Completes
-
-    val globalFeedback : CommandFeedback
-
-    @Throws(CommandParseException::class)
-    fun registerCommand(source: Any) : RegisteredCommand
-
-    fun getCommand(command: String) : RegisteredCommand?
+    companion object {
+        private const val serialVersionUID = 5618219760104310664L
+    }
 }

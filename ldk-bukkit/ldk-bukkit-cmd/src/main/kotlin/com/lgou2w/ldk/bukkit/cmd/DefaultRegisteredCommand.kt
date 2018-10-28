@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.cmd.xx
+package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.Consumer
@@ -211,12 +211,14 @@ class DefaultRegisteredCommand(
         if (!testPermissionIfFailed(sender, permission))
             return emptyList()
         return if (args.size <= 1) {
-            mChildren.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key } +
-            mExecutors.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key }
+            (mChildren.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key } +
+            mExecutors.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key })
                 .filter {
                     val first = args.firstOrNull()
                     (first == null || it.startsWith(first))
                 }
+                .toMutableList()
+                .apply { sort() }
         } else {
             val child = findChild(args.first())
             child?.complete(sender, name, pollArgument(args))
