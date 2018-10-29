@@ -64,6 +64,8 @@ class DefaultRegisteredCommand(
     override fun registerChild(child: RegisteredCommand, forcibly: Boolean): Boolean {
         if (child !is DefaultRegisteredCommand)
             throw IllegalArgumentException("The subcommand must be an instance of DefaultRegisteredCommand.")
+        if (child.name.isBlank())
+            throw IllegalArgumentException("The subcommand name cannot be blank.")
         val existed = findChild(child.name, false)
         if (existed != null && !forcibly)
             return false
@@ -99,31 +101,43 @@ class DefaultRegisteredCommand(
             getRootParent(parent)
     }
 
-    override fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean {
+    private fun compareWithAliases(source: String) : Boolean {
+        var result = source == name
+        if (!result)
+            result = aliases.contains(source)
+        return result
+    }
+
+    override fun execute(sender: CommandSender, label: String, args: Array<out String>) : Boolean {
         if (!testPermissionIfFailed(sender, permission) {
                     (feedback ?: manager.globalFeedback)
-                        .onPermission(sender, name, this, null, args, it)
+                        .onPermission(sender, label, this, null, args, it)
                 })
             return true
-        return if (args.isEmpty()) {
-            val childSameExecutor = findExecutor(this.name) // RegisteredCommand name
+        return if (args.isEmpty() || (compareWithAliases(label) && args.isEmpty())) {
+            val childSameExecutor = findExecutor(name)
             if (childSameExecutor != null)
-                invokeExecutor(childSameExecutor, sender, emptyArray())
+                invokeExecutor(childSameExecutor, sender, emptyArray()) // mapping not have arguments
             else {
                 typeHelp(sender)
                 true
             }
         } else {
             val child = findChild(args.first())
-            child?.execute(sender, name, pollArgument(args))
+            child?.execute(sender, child.name, pollArgument(args))
                    ?: invokeExecutor(null, sender, args)
         }
     }
 
     private fun invokeExecutor(executor: DefaultCommandExecutor?, sender: CommandSender, args: Array<out String>) : Boolean {
         val commandExecutor = executor ?: findExecutor(args.first())
-        val arguments = pollArgument(args)
-        val success = if (commandExecutor != null) try {
+        val arguments = if (args.isEmpty()) emptyArray() else pollArgument(args)
+        if (commandExecutor != null && compareWithAliases(commandExecutor.name) && args.isNotEmpty()) {
+            // mapping not have arguments
+            typeHelp(sender)
+            return true
+        }
+        if (commandExecutor != null) try {
             val parameterValues = ArrayList<Any?>()
             val feedback = feedback ?: manager.globalFeedback
             if (!parseExecutorArguments(commandExecutor, feedback, sender, arguments, parameterValues))
@@ -138,11 +152,9 @@ class DefaultRegisteredCommand(
         } catch (e: Exception) {
             throw CommandException(e.message, e)
         } else {
-            false
-        }
-        if (!success)
             typeHelp(sender)
-        return success
+            return true
+        }
     }
 
     private fun parseExecutorArguments(
@@ -212,12 +224,12 @@ class DefaultRegisteredCommand(
             sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
     }
 
-    override fun complete(sender: CommandSender, name: String, args: Array<out String>): List<String> {
+    override fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
         if (!testPermissionIfFailed(sender, permission))
             return emptyList()
         return if (args.size <= 1) {
             (mChildren.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key } +
-            mExecutors.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key })
+            mExecutors.filter { testPermissionIfFailed(sender, it.value.permission) && it.key != name }.map { it.key })
                 .filter {
                     val first = args.firstOrNull()
                     (first == null || it.startsWith(first))
@@ -226,7 +238,7 @@ class DefaultRegisteredCommand(
                 .apply { sort() }
         } else {
             val child = findChild(args.first())
-            child?.complete(sender, name, pollArgument(args))
+            child?.complete(sender, alias, pollArgument(args))
                 ?: invokeExecutorComplete(sender, args)
         }
     }

@@ -69,6 +69,7 @@ class LDKPlugin : PluginBase() {
 //        updater?.firstCheck()
 
         commandManager.transforms.addDefaultTransforms()
+        commandManager.completes.addDefaultCompletes()
         commandManager.registerCommand(Sample())
     }
 

@@ -20,7 +20,7 @@ import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.nbt.NBTType
 import org.bukkit.command.CommandSender
 
-@CommandRoot("sample")
+@CommandRoot("sample", aliases = ["sp"])
 @Permission("sample")
 class Sample : Initializable {
 
@@ -43,14 +43,14 @@ class Sample : Initializable {
         sender.sendMessage("invoke sample")
     }
 
-    @Command("hello")
+    @Command("hello", aliases = ["hi", "nh"])
     @Permission("sample.hello")
     fun hello(sender: CommandSender) {
         // => /sample hello
         sender.sendMessage("hello world ~")
     }
 
-    @CommandRoot("user")
+    @CommandRoot("user", aliases = ["u"])
     @Permission("sample.user")
     class User {
 
@@ -60,14 +60,14 @@ class Sample : Initializable {
             sender.sendMessage("invoke user")
         }
 
-        @Command("add")
+        @Command("add", aliases = ["a", "tj"])
         @Permission("sample.user.add")
-        fun add(sender: CommandSender, username: String, password: String) {
+        fun add(sender: CommandSender, username: String, @Optional("123456") password: String) {
             // => /sample user add
             sender.sendMessage("add user => ($username:$password)")
         }
 
-        @Command("remove")
+        @Command("remove", aliases = ["r", "yc"])
         @Permission("sample.user.remove")
         fun remove(sender: CommandSender, username: String) {
             // => /sample user remove

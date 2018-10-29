@@ -73,12 +73,12 @@ abstract class CommandManagerBase(
         }
         @JvmStatic private fun registerBukkitCommand(command: RegisteredCommand) : Boolean {
             val description = command.description?.description ?: ""
-            val usageMessage = command.description?.usage ?: ""
+            val usageMessage = command.description?.usage ?: "/${command.name} help"
             val proxy = object : org.bukkit.command.Command(
                     command.name, description, usageMessage, command.aliases.toMutableList()
             ) {
                 init {
-                    permission = command.permission?.firstOrNull()
+                    permission = command.permission?.joinToString(";")
                 }
                 override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
                     return command.execute(sender, name, args)
