@@ -37,7 +37,11 @@ class Sample : Initializable {
             }
     }
 
-    // => /sample
+    @Command("sample")
+    fun sample(sender: CommandSender) {
+        // => /sample
+        sender.sendMessage("invoke sample")
+    }
 
     @Command("hello")
     @Permission("sample.hello")
@@ -50,7 +54,11 @@ class Sample : Initializable {
     @Permission("sample.user")
     class User {
 
-        // => /sample user
+        @Command("user")
+        fun user(sender: CommandSender) {
+            // => /sample user
+            sender.sendMessage("invoke user")
+        }
 
         @Command("add")
         @Permission("sample.user.add")

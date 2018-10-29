@@ -29,7 +29,7 @@ class DefaultCommandParser : CommandParser {
         val commandRoot = parseRoot(manager, clazz)
         val permission = clazz.getAnnotation(Permission::class.java)
         val description = clazz.getAnnotation(Description::class.java)
-        val executors = parseExecutors(manager, source, clazz)
+        val executors = parseExecutors(manager, commandRoot.value, source, clazz)
         val command = buildCommandRegistered(
                 manager,
                 source,
@@ -49,11 +49,19 @@ class DefaultCommandParser : CommandParser {
     private fun parseRoot(manager: CommandManager, clazz: Class<*>) : CommandRoot {
         if (Modifier.isAbstract(clazz.modifiers) || Modifier.isInterface(clazz.modifiers) || clazz.isEnum || clazz.isAnnotation)
             throw CommandParseException("The command $clazz cannot be an abstract, interface, enum, or annotation class.")
-        return clazz.getAnnotation(CommandRoot::class.java)
+        val root = clazz.getAnnotation(CommandRoot::class.java)
                ?: throw CommandParseException("The command $clazz must be annotated by CommandRoot.")
+        if (root.value.isBlank())
+            throw CommandParseException("The command $clazz name is blank.")
+        return root
     }
 
-    private fun parseExecutors(manager: CommandManager, source: Any, clazz: Class<*>) : Map<String, DefaultCommandExecutor> {
+    private fun parseExecutors(
+            manager: CommandManager,
+            name: String,
+            source: Any,
+            clazz: Class<*>
+    ) : Map<String, DefaultCommandExecutor> {
         return FuzzyReflect.of(clazz, true)
             .useMethodMatcher()
             .withAnnotation(Command::class.java)
@@ -62,11 +70,24 @@ class DefaultCommandParser : CommandParser {
             .filter { method ->
                 val command = method.getAnnotation(Command::class.java)
                 val parameters = method.parameters
-                val firstMatched = parameters.isNotEmpty() &&
-                                   CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)
-                if (!firstMatched)
-                    manager.plugin.logger.warning("The sub command '${command.value}' function first parameter is not CommandSender type, filtered.")
-                firstMatched
+                var result = true
+                if (result && command.value.isBlank()) {
+                    manager.plugin.logger
+                        .warning("Command '${clazz.simpleName}#${method.name}' executor name is blank. filtered.")
+                    result = false
+                }
+                if (result && parameters.isNotEmpty() &&
+                    CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)) {
+                    manager.plugin.logger
+                        .warning("Command '${command.value}' executor first parameter is not CommandSender type. filtered.")
+                    result = false
+                }
+                if (result && command.value == name && parameters.size > 1) {
+                    manager.plugin.logger
+                        .warning("Command '${command.value}' executor and command mapping, parameters must only be one CommandSender. filtered.")
+                    result = false
+                }
+                result
             }
             .associate { method ->
                 val command = method.getAnnotation(Command::class.java)
@@ -118,7 +139,7 @@ class DefaultCommandParser : CommandParser {
             if (root != null && instance != null) {
                 val childPermission = child.getAnnotation(Permission::class.java)
                 val childDescription = child.getAnnotation(Description::class.java)
-                val childExecutors = parseExecutors(manager, instance, child)
+                val childExecutors = parseExecutors(manager, root.value, instance, child)
                 val childCommand = buildCommandRegistered(
                         manager,
                         instance,

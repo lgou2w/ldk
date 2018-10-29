@@ -41,7 +41,6 @@ abstract class CommandManagerBase(
         val command = parser.parse(this, source)
         return if (registerBukkitCommand(command)) {
             initialize(command, this)
-            command.children.values.forEach { child -> initialize(child, this) }
             command
         } else {
             throw UnsupportedOperationException("Internal error when registering to bukkit.")
@@ -60,6 +59,9 @@ abstract class CommandManagerBase(
                 source.initialize(command, manager)
             } catch (e: Exception) {
                 manager.plugin.logger.log(Level.WARNING, "Command source object initialization exception:", e)
+            }
+            command.children.values.forEach { child ->
+                initialize(child, manager)
             }
         }
 

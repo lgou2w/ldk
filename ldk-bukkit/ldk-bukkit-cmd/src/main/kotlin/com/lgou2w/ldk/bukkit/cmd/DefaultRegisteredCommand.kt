@@ -106,28 +106,33 @@ class DefaultRegisteredCommand(
                 })
             return true
         return if (args.isEmpty()) {
-            typeHelp(sender)
-            true
+            val childSameExecutor = findExecutor(this.name) // RegisteredCommand name
+            if (childSameExecutor != null)
+                invokeExecutor(childSameExecutor, sender, emptyArray())
+            else {
+                typeHelp(sender)
+                true
+            }
         } else {
             val child = findChild(args.first())
             child?.execute(sender, name, pollArgument(args))
-                   ?: invokeExecutor(sender, args)
+                   ?: invokeExecutor(null, sender, args)
         }
     }
 
-    private fun invokeExecutor(sender: CommandSender, args: Array<out String>) : Boolean {
-        val executor = findExecutor(args.first())
+    private fun invokeExecutor(executor: DefaultCommandExecutor?, sender: CommandSender, args: Array<out String>) : Boolean {
+        val commandExecutor = executor ?: findExecutor(args.first())
         val arguments = pollArgument(args)
-        val success = if (executor != null) try {
+        val success = if (commandExecutor != null) try {
             val parameterValues = ArrayList<Any?>()
             val feedback = feedback ?: manager.globalFeedback
-            if (!parseExecutorArguments(executor, feedback, sender, arguments, parameterValues))
+            if (!parseExecutorArguments(commandExecutor, feedback, sender, arguments, parameterValues))
                 return true
             return try {
-                executor.execute(*parameterValues.toTypedArray())
+                commandExecutor.execute(*parameterValues.toTypedArray())
                 true
             } catch (e: Exception) {
-                feedback.onUnhandled(sender, name, this, executor, arguments, e)
+                feedback.onUnhandled(sender, name, this, commandExecutor, arguments, e)
                 true
             }
         } catch (e: Exception) {
