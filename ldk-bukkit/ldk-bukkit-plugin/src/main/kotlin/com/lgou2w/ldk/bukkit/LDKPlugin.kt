@@ -75,6 +75,7 @@ class LDKPlugin : PluginBase() {
         commandManager.completes.addDefaultCompletes()
         commandManager.registerCommand(Sample())
         commandManager.registerCommand(MyCommand())
+        commandManager.registerCommand(MeCommand())
     }
 
     val commandManager = DefaultCommandManager(this)
@@ -87,14 +88,21 @@ class LDKPlugin : PluginBase() {
     class MyCommand : Initializable {
         override fun initialize(command: RegisteredCommand) {
             command.prefix = "[My] "
-            command.registerChild(MySubCommand(), false)
+            command.registerChild(MySubCommand())
+        }
+    }
+
+    @CommandRoot("me")
+    class MeCommand : Initializable {
+        override fun initialize(command: RegisteredCommand) {
+            command.prefix = "[Me] "
+            command.registerChild(MySubCommand())
         }
     }
 
     @CommandRoot("sub")
     class MySubCommand : Initializable {
         override fun initialize(command: RegisteredCommand) {
-            println(command)
         }
         @com.lgou2w.ldk.bukkit.cmd.Command("sub")
         fun sub(sender: CommandSender) {

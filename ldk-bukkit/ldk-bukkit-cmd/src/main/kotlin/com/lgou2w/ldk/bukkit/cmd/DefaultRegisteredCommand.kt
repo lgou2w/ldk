@@ -58,11 +58,13 @@ class DefaultRegisteredCommand(
      *
      **************************************************************************/
 
+    internal var isRegistered : Boolean = false
+
     override val rootParent: RegisteredCommand?
         get() = getRootParent(this)
 
     override fun registerChild(child: Any, forcibly: Boolean): Boolean {
-        val command = manager.parser.parse(manager, child)
+        val command = manager.parser.parse(manager, this, child)
         return registerChild(command, forcibly)
     }
 
@@ -71,12 +73,13 @@ class DefaultRegisteredCommand(
             throw IllegalArgumentException("The subcommand must be an instance of DefaultRegisteredCommand.")
         if (child.name.isBlank())
             throw IllegalArgumentException("The subcommand name cannot be blank.")
-        if (child.parent != null)
-            throw IllegalArgumentException("The subcommand already has a parent command.")
+        if (child.isRegistered)
+            throw IllegalArgumentException("The subcommand already has registered.")
         val existed = findChild(child.name, false)
         if (existed != null && !forcibly)
             return false
         mChildren[child.name] = child
+        child.isRegistered = true
         return true
     }
 

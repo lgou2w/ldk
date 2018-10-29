@@ -31,7 +31,9 @@ abstract class CommandManagerBase(
         override val parser: CommandParser
 ) : CommandManager {
 
-    protected val commands : MutableMap<String, RegisteredCommand> = ConcurrentHashMap()
+    protected val mCommands = ConcurrentHashMap<String, RegisteredCommand>()
+    override val commands : MutableMap<String, RegisteredCommand>
+        get() = HashMap(mCommands)
 
     override val transforms = Transforms()
     override val completes = Completes()
@@ -39,16 +41,20 @@ abstract class CommandManagerBase(
 
     override fun registerCommand(source: Any): RegisteredCommand {
         val command = parser.parse(this, source)
+        val existed = mCommands[command.name]
+        if (existed != null)
+            throw UnsupportedOperationException("This command '${command.name}' has already been registered.")
         return if (registerBukkitCommand(command)) {
             initialize(command, this)
+            mCommands[command.name] = command
             command
         } else {
-            throw UnsupportedOperationException("Internal error when registering to bukkit.")
+            throw UnsupportedOperationException("Internal error when registering command '${command.name}' to bukkit.")
         }
     }
 
     override fun getCommand(command: String): RegisteredCommand? {
-        return commands[command]
+        return mCommands[command]
     }
 
     companion object {

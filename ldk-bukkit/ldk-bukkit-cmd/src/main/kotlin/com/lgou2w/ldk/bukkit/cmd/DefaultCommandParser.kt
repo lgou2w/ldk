@@ -25,6 +25,10 @@ import java.lang.reflect.Modifier
 class DefaultCommandParser : CommandParser {
 
     override fun parse(manager: CommandManager, source: Any): DefaultRegisteredCommand {
+        return parse(manager, null, source)
+    }
+
+    override fun parse(manager: CommandManager, parent: RegisteredCommand?, source: Any): DefaultRegisteredCommand {
         val clazz = source.javaClass
         val commandRoot = parseRoot(manager, clazz)
         val permission = clazz.getAnnotation(Permission::class.java)
@@ -33,7 +37,7 @@ class DefaultCommandParser : CommandParser {
         val command = buildCommandRegistered(
                 manager,
                 source,
-                null,
+                parent as? DefaultRegisteredCommand,
                 commandRoot.value,
                 commandRoot.aliases,
                 permission?.values,

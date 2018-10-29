@@ -24,4 +24,10 @@ class DefaultCommandManager(
 
     override val parser: DefaultCommandParser
         get() = super.parser as DefaultCommandParser
+
+    override fun registerCommand(source: Any): DefaultRegisteredCommand {
+        val command = super.registerCommand(source) as DefaultRegisteredCommand
+        command.isRegistered = true
+        return command
+    }
 }

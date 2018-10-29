@@ -20,4 +20,7 @@ interface CommandParser {
 
     @Throws(CommandParseException::class)
     fun parse(manager: CommandManager, source: Any) : RegisteredCommand
+
+    @Throws(CommandParseException::class)
+    fun parse(manager: CommandManager, parent: RegisteredCommand?, source: Any) : RegisteredCommand
 }

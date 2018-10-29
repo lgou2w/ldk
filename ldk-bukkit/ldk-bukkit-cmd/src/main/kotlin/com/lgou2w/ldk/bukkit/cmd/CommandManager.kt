@@ -24,13 +24,15 @@ interface CommandManager {
 
     val parser : CommandParser
 
+    val commands : Map<String, RegisteredCommand>
+
     val transforms : Transforms
 
     val completes : Completes
 
     val globalFeedback : CommandFeedback
 
-    @Throws(CommandParseException::class)
+    @Throws(CommandParseException::class, UnsupportedOperationException::class)
     fun registerCommand(source: Any) : RegisteredCommand
 
     fun getCommand(command: String) : RegisteredCommand?
