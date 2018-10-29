@@ -61,11 +61,18 @@ class DefaultRegisteredCommand(
     override val rootParent: RegisteredCommand?
         get() = getRootParent(this)
 
+    override fun registerChild(child: Any, forcibly: Boolean): Boolean {
+        val command = manager.parser.parse(manager, child)
+        return registerChild(command, forcibly)
+    }
+
     override fun registerChild(child: RegisteredCommand, forcibly: Boolean): Boolean {
         if (child !is DefaultRegisteredCommand)
             throw IllegalArgumentException("The subcommand must be an instance of DefaultRegisteredCommand.")
         if (child.name.isBlank())
             throw IllegalArgumentException("The subcommand name cannot be blank.")
+        if (child.parent != null)
+            throw IllegalArgumentException("The subcommand already has a parent command.")
         val existed = findChild(child.name, false)
         if (existed != null && !forcibly)
             return false
@@ -225,7 +232,7 @@ class DefaultRegisteredCommand(
     }
 
     override fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
-        if (!testPermissionIfFailed(sender, permission))
+        if (!isAllowCompletion || !testPermissionIfFailed(sender, permission))
             return emptyList()
         return if (args.size <= 1) {
             (mChildren.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key } +

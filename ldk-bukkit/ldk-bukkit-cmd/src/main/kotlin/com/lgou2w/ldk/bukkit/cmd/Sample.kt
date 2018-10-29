@@ -24,8 +24,9 @@ import org.bukkit.command.CommandSender
 @Permission("sample")
 class Sample : Initializable {
 
-    override fun initialize(command: RegisteredCommand, manager: CommandManager) {
+    override fun initialize(command: RegisteredCommand) {
         command.prefix = "[${command.name.capitalize()}] "
+        command.isAllowCompletion = true
         command.manager.transforms
             .addTransform(NBTType::class.java) {
                 Enums.ofName(NBTType::class.java, it)
@@ -63,14 +64,14 @@ class Sample : Initializable {
         @Command("add", aliases = ["a", "tj"])
         @Permission("sample.user.add")
         fun add(sender: CommandSender, username: String, @Optional("123456") password: String) {
-            // => /sample user add
+            // => /sample user add <username> [password]
             sender.sendMessage("add user => ($username:$password)")
         }
 
         @Command("remove", aliases = ["r", "yc"])
         @Permission("sample.user.remove")
         fun remove(sender: CommandSender, username: String) {
-            // => /sample user remove
+            // => /sample user remove <username>
             sender.sendMessage("remove user => ($username)")
         }
     }
@@ -82,6 +83,7 @@ class Sample : Initializable {
         @Command("type")
         @Permission("sample.nbt.type")
         fun type(sender: CommandSender, type: NBTType) {
+            // => /sample nbt type <type>
             sender.sendMessage("nbt type wrapped => ${type.wrapped.canonicalName}")
         }
     }

@@ -56,7 +56,7 @@ abstract class CommandManagerBase(
         @JvmStatic private fun initialize(command: RegisteredCommand, manager: CommandManager) {
             val source = command.source
             if (source is Initializable) try {
-                source.initialize(command, manager)
+                source.initialize(command)
             } catch (e: Exception) {
                 manager.plugin.logger.log(Level.WARNING, "Command source object initialization exception:", e)
             }

@@ -60,7 +60,11 @@ interface RegisteredCommand {
 
     val rootParent : RegisteredCommand?
 
-    fun registerChild(child: RegisteredCommand, forcibly: Boolean) : Boolean
+    @Throws(IllegalArgumentException::class, CommandParseException::class)
+    fun registerChild(child: Any, forcibly: Boolean = false) : Boolean
+
+    @Throws(IllegalArgumentException::class)
+    fun registerChild(child: RegisteredCommand, forcibly: Boolean = false) : Boolean
 
     fun findChild(name: String, allowAlias: Boolean = true) : RegisteredCommand?
 

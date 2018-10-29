@@ -18,5 +18,5 @@ package com.lgou2w.ldk.bukkit.cmd
 
 interface Initializable {
 
-    fun initialize(command: RegisteredCommand, manager: CommandManager)
+    fun initialize(command: RegisteredCommand)
 }
