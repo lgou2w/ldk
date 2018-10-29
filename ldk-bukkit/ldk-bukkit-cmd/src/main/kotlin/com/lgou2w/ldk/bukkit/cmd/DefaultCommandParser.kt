@@ -77,7 +77,7 @@ class DefaultCommandParser : CommandParser {
                     result = false
                 }
                 if (result && parameters.isNotEmpty() &&
-                    CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)) {
+                    !CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)) {
                     manager.plugin.logger
                         .warning("Command '${command.value}' executor first parameter is not CommandSender type. filtered.")
                     result = false
