@@ -49,6 +49,10 @@ annotation class Playable
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
+annotation class Parameter(val value: String)
+
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class Optional(val def: String = "")
 
 @Target(AnnotationTarget.VALUE_PARAMETER)

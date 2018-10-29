@@ -34,6 +34,7 @@ interface CommandExecutor {
 
     data class Parameter(
             val type : Class<*>,
+            val name: String?,
             val defValue: String?,
             val isNullable: Boolean
     ) {

@@ -63,14 +63,23 @@ class Sample : Initializable {
 
         @Command("add", aliases = ["a", "tj"])
         @Permission("sample.user.add")
-        fun add(sender: CommandSender, username: String, @Optional("123456") password: String) {
+        fun add(sender: CommandSender,
+                @Parameter("username")
+                username: String,
+                @Parameter("password")
+                @Optional("123456")
+                password: String
+        ) {
             // => /sample user add <username> [password]
             sender.sendMessage("add user => ($username:$password)")
         }
 
         @Command("remove", aliases = ["r", "yc"])
         @Permission("sample.user.remove")
-        fun remove(sender: CommandSender, username: String) {
+        fun remove(sender: CommandSender,
+                   @Parameter("username")
+                   username: String
+        ) {
             // => /sample user remove <username>
             sender.sendMessage("remove user => ($username)")
         }

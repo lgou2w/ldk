@@ -16,10 +16,7 @@
 
 package com.lgou2w.ldk.bukkit
 
-import com.lgou2w.ldk.bukkit.cmd.CommandRoot
 import com.lgou2w.ldk.bukkit.cmd.DefaultCommandManager
-import com.lgou2w.ldk.bukkit.cmd.Initializable
-import com.lgou2w.ldk.bukkit.cmd.RegisteredCommand
 import com.lgou2w.ldk.bukkit.cmd.Sample
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
@@ -74,40 +71,12 @@ class LDKPlugin : PluginBase() {
         commandManager.transforms.addDefaultTransforms()
         commandManager.completes.addDefaultCompletes()
         commandManager.registerCommand(Sample())
-        commandManager.registerCommand(MyCommand())
-        commandManager.registerCommand(MeCommand())
     }
 
     val commandManager = DefaultCommandManager(this)
 
     override fun disable() {
         updater = null
-    }
-
-    @CommandRoot("my")
-    class MyCommand : Initializable {
-        override fun initialize(command: RegisteredCommand) {
-            command.prefix = "[My] "
-            command.registerChild(MySubCommand())
-        }
-    }
-
-    @CommandRoot("me")
-    class MeCommand : Initializable {
-        override fun initialize(command: RegisteredCommand) {
-            command.prefix = "[Me] "
-            command.registerChild(MySubCommand())
-        }
-    }
-
-    @CommandRoot("sub")
-    class MySubCommand : Initializable {
-        override fun initialize(command: RegisteredCommand) {
-        }
-        @com.lgou2w.ldk.bukkit.cmd.Command("sub")
-        fun sub(sender: CommandSender) {
-            sender.sendMessage("my sub command")
-        }
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {

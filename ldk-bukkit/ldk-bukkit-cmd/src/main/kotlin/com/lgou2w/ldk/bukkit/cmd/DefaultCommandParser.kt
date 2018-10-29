@@ -113,13 +113,14 @@ class DefaultCommandParser : CommandParser {
     private fun parseExecutorParameters(manager: CommandManager, method: Method) : Array<out CommandExecutor.Parameter> {
         return method.parameters.filterIndexed { index, _ -> index != 0 }.mapNotNull { parameter ->
             val type = parameter.parameterizedType as Class<*>
+            val name = parameter.getAnnotation(Parameter::class.java)?.value
             val optional = parameter.getAnnotation(Optional::class.java)
             val nullable = parameter.getAnnotation(Nullable::class.java)
             if (optional != null && nullable != null) {
                 manager.plugin.logger.warning("Optional or nullable annotations can only have one, skipped.")
                 null
             } else {
-                CommandExecutor.Parameter(type, optional?.def, nullable != null)
+                CommandExecutor.Parameter(type, name, optional?.def, nullable != null)
             }
         }.toTypedArray()
     }

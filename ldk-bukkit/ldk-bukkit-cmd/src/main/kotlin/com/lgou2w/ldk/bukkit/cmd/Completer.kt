@@ -49,11 +49,11 @@ interface Completer {
                     sender: CommandSender,
                     value: String
             ): List<String> {
-                val type = parameter.type.simpleName
+                val alias = parameter.name ?: parameter.type.simpleName
                 return if (parameter.canNullable) {
-                    Collections.singletonList("[$type=${parameter.defValue}]")
+                    Collections.singletonList("[$alias=${parameter.defValue}]")
                 } else {
-                    Collections.singletonList("<$type>")
+                    Collections.singletonList("<$alias>")
                 }
             }
         }
@@ -103,10 +103,11 @@ interface Completer {
                     sender: CommandSender,
                     value: String
             ): List<String> {
+                val alias = parameter.name ?: "Boolean"
                 val first = when {
-                    parameter.defValue != null -> "[Boolean=${parameter.defValue}]"
+                    parameter.defValue != null -> "[$alias=${parameter.defValue}]"
                     parameter.isNullable -> "null"
-                    else -> "<Boolean>"
+                    else -> "<$alias>"
                 }
                 return listOf(first, "false", "true")
                     .filter { it.startsWith(value) }
