@@ -7,11 +7,15 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.6-beta2</version>
+        <version>0.1.6-beta3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ldk-coroutines</artifactId>
+
+    <properties>
+        <kotlin.coroutines.version>1.0.0</kotlin.coroutines.version>
+    </properties>
 
     <repositories>
         <repository>
@@ -25,14 +29,14 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-common</artifactId>
-            <version>0.1.6-beta2</version>
+            <version>0.1.6-beta3</version>
             <scope>compile</scope>
         </dependency>
         <!-- Kotlin Coroutines -->
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core</artifactId>
-            <version>1.0.0-RC1</version>
+            <version>${kotlin.coroutines.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

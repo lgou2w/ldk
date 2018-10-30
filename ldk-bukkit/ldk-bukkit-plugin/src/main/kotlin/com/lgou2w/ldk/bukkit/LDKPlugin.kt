@@ -16,8 +16,6 @@
 
 package com.lgou2w.ldk.bukkit
 
-import com.lgou2w.ldk.bukkit.cmd.DefaultCommandManager
-import com.lgou2w.ldk.bukkit.cmd.Sample
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.toColor
@@ -66,14 +64,7 @@ class LDKPlugin : PluginBase() {
             logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
         }
         updater = VersionUpdater(this)
-//        updater?.firstCheck()
-
-        commandManager.transforms.addDefaultTransforms()
-        commandManager.completes.addDefaultCompletes()
-        commandManager.registerCommand(Sample())
     }
-
-    val commandManager = DefaultCommandManager(this)
 
     override fun disable() {
         updater = null
