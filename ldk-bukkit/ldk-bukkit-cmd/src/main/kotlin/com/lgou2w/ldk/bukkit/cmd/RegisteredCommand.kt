@@ -16,8 +16,6 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import com.lgou2w.ldk.common.Consumer
-import com.lgou2w.ldk.reflect.AccessorMethod
 import org.bukkit.command.CommandSender
 
 interface RegisteredCommand {
@@ -26,90 +24,59 @@ interface RegisteredCommand {
 
     val source : Any
 
-    val proxy : org.bukkit.command.Command
+    val parent : RegisteredCommand?
 
-    var prefix : String
+    val children : Map<String, RegisteredCommand>
 
-    var feedback : CommandFeedback?
-
-    val root : CommandRoot
+    /**************************************************************************
+     *
+     * Properties
+     *
+     **************************************************************************/
 
     val name : String
 
     val aliases : Array<out String>
 
-    val description : String
-
-    val usage : String
+    val permission : Array<out String>?
 
     val fallbackPrefix : String
 
-    val children : Map<String, Child>
+    val description : Description?
 
-    val childrenKeys : Set<String>
+    val executors : Map<String, CommandExecutor>
 
-    fun getChild(name: String) : Child?
+    var prefix : String
 
-    fun registerChild(provider: ChildProvider, force: Boolean) : Boolean
+    var feedback : CommandFeedback?
 
-    fun unregisterChild(name: String) : Boolean
+    var isAllowCompletion : Boolean
 
-    fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean
+    /**************************************************************************
+     *
+     * API
+     *
+     **************************************************************************/
 
-    var completeProxy : CompleteProxy?
+    val rootParent : RegisteredCommand?
 
-    fun complete(sender: CommandSender, name: String, args: Array<out String>) : List<String>
+    @Throws(IllegalArgumentException::class, CommandParseException::class)
+    fun registerChild(child: Any, forcibly: Boolean = false) : Boolean
 
-    interface Child {
+    @Throws(IllegalArgumentException::class)
+    fun registerChild(child: RegisteredCommand, forcibly: Boolean = false) : Boolean
 
-        val parent : RegisteredCommand
+    fun findChild(name: String, allowAlias: Boolean = true) : RegisteredCommand?
 
-        val command : Command
+    fun findExecutor(name: String, allowAlias: Boolean = true) : CommandExecutor?
 
-        val permission : Permission?
+    /**************************************************************************
+     *
+     * Significant
+     *
+     **************************************************************************/
 
-        val isPlayable : Boolean
+    fun execute(sender: CommandSender, label: String, args: Array<out String>) : Boolean
 
-        val name : String
-
-        val aliases : Array<out String>
-
-        val description : String
-
-        val usage : String
-
-        val parameters : Array<out ChildParameter>
-
-        val accessor: AccessorMethod<Any, Any>
-
-        val length : Int
-
-        val max : Int
-
-        val min : Int
-
-        val isStatic : Boolean
-
-        fun invoke(vararg args: Any?) : Any?
-
-        fun execute(sender: CommandSender, name: String, args: Array<out String>) : Boolean
-
-        fun testPermission(sender: CommandSender) : Boolean
-
-        fun testPermissionIfFailed(sender: CommandSender, block: Consumer<String>) : Boolean
-    }
-
-    class ChildParameter(
-            val type : Class<*>,
-            val optional: Optional?,
-            val isNullable: Boolean
-    ) {
-
-        internal lateinit var child : RegisteredCommand.Child
-        val parent: RegisteredCommand.Child
-            get() = child
-
-        val canNull : Boolean
-            get() = optional != null || isNullable
-    }
+    fun complete(sender: CommandSender, alias: String, args: Array<out String>) : List<String>
 }

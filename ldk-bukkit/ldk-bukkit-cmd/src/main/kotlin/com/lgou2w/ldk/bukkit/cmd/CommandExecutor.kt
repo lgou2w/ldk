@@ -16,22 +16,29 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import com.lgou2w.ldk.chat.toColor
-import org.bukkit.command.CommandSender
+interface CommandExecutor {
 
-abstract class StandardCommand : Initializable {
+    val reference : Any
 
-    lateinit var command : RegisteredCommand
-        private set
+    val name : String
 
-    final override fun initialize(manager: CommandManager, registered: RegisteredCommand) {
-        command = registered
-        initialize(manager)
-    }
+    val aliases : Array<out String>
 
-    protected abstract fun initialize(manager: CommandManager)
+    val permission : Array<out String>?
 
-    protected fun CommandSender.send(message: String) {
-        sendMessage(command.prefix + message.toColor())
+    val isPlayable : Boolean
+
+    val parameters: Array<out Parameter>
+
+    fun execute(vararg args: Any?) : Any?
+
+    data class Parameter(
+            val type : Class<*>,
+            val name: String?,
+            val defValue: String?,
+            val isNullable: Boolean
+    ) {
+        val canNullable : Boolean
+            get() = defValue != null || isNullable
     }
 }

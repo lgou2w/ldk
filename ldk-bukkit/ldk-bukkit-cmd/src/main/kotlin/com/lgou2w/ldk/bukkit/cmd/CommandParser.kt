@@ -16,14 +16,11 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import org.bukkit.command.CommandSender
+interface CommandParser {
 
-@FunctionalInterface
-interface TypeCompleter {
+    @Throws(CommandParseException::class)
+    fun parse(manager: CommandManager, source: Any) : RegisteredCommand
 
-    fun onComplete(
-            parameter: RegisteredCommand.ChildParameter,
-            sender: CommandSender,
-            value: String
-    ) : List<String>
+    @Throws(CommandParseException::class)
+    fun parse(manager: CommandManager, parent: RegisteredCommand?, source: Any) : RegisteredCommand
 }
