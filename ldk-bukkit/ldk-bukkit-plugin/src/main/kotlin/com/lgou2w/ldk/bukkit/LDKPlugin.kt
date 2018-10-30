@@ -34,21 +34,6 @@ class LDKPlugin : PluginBase() {
         const val GITHUB = com.lgou2w.ldk.common.Constants.LDK_GITHUB
     }
 
-    override val enableDependencies = arrayOf(
-            dependency {
-                name = "WorldEdit"
-                softDepend = true
-            },
-            dependency {
-                name = "Vault"
-                softDepend = true
-            },
-            dependency {
-                name = "PlaceholderAPI"
-                softDepend = true
-            }
-    )
-
     private var updater : VersionUpdater? = null
 
     override fun load() {
