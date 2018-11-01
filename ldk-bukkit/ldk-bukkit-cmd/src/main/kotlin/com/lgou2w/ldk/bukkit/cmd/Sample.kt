@@ -22,9 +22,10 @@ import org.bukkit.command.CommandSender
 
 @CommandRoot("sample", aliases = ["sp"])
 @Permission("sample")
-class Sample : Initializable {
+@Deprecated("USELESS")
+class Sample : StandardCommand() {
 
-    override fun initialize(command: RegisteredCommand) {
+    override fun initialize() {
         command.prefix = "[${command.name.capitalize()}] "
         command.isAllowCompletion = true
         command.manager.transforms
@@ -41,37 +42,38 @@ class Sample : Initializable {
     @Command("sample")
     fun sample(sender: CommandSender) {
         // => /sample
-        sender.sendMessage("invoke sample")
+        sender.send("invoke sample")
     }
 
     @Command("hello", aliases = ["hi", "nh"])
     @Permission("sample.hello")
     fun hello(sender: CommandSender) {
         // => /sample hello
-        sender.sendMessage("hello world ~")
+        sender.send("hello world ~")
     }
 
     @CommandRoot("user", aliases = ["u"])
     @Permission("sample.user")
-    class User {
+    class User : StandardCommand() {
 
         @Command("user")
         fun user(sender: CommandSender) {
             // => /sample user
-            sender.sendMessage("invoke user")
+            sender.send("invoke user")
         }
 
         @Command("add", aliases = ["a", "tj"])
         @Permission("sample.user.add")
         fun add(sender: CommandSender,
                 @Parameter("username")
+                @Playername
                 username: String,
                 @Parameter("password")
                 @Optional("123456")
                 password: String
         ) {
             // => /sample user add <username> [password]
-            sender.sendMessage("add user => ($username:$password)")
+            sender.send("add user => ($username:$password)")
         }
 
         @Command("remove", aliases = ["r", "yc"])
@@ -81,19 +83,19 @@ class Sample : Initializable {
                    username: String
         ) {
             // => /sample user remove <username>
-            sender.sendMessage("remove user => ($username)")
+            sender.send("remove user => ($username)")
         }
     }
 
     @CommandRoot("nbt")
     @Permission("sample.nbt")
-    class NBT {
+    class NBT : StandardCommand() {
 
         @Command("type")
         @Permission("sample.nbt.type")
         fun type(sender: CommandSender, type: NBTType) {
             // => /sample nbt type <type>
-            sender.sendMessage("nbt type wrapped => ${type.wrapped.canonicalName}")
+            sender.send("nbt type wrapped => ${type.wrapped.canonicalName}")
         }
     }
 }

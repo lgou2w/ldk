@@ -18,6 +18,7 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 open class Completes : Iterable<Completer> {
@@ -69,5 +70,18 @@ open class Completes : Iterable<Completer> {
         addCompleter(Enum::class.java, Completer.ENUM)
         addCompleter(Boolean::class.java, Completer.BOOLEAN)
         addCompleter(java.lang.Boolean::class.java, Completer.BOOLEAN)
+    }
+
+    companion object {
+        @JvmStatic fun matchOnlinePlayers(sender: CommandSender, value: String) : List<String> {
+            val senderPlayer = sender as? Player
+            val matchedPlayers = sender.server.onlinePlayers.filter { player ->
+                (senderPlayer == null || senderPlayer.canSee(player)) && player.name.startsWith(value)
+            }.map { player ->
+                player.name
+            }
+            Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER)
+            return matchedPlayers
+        }
     }
 }

@@ -16,8 +16,8 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import java.util.*
 
 @FunctionalInterface
@@ -54,6 +54,11 @@ interface Completer {
                     Collections.singletonList("[$alias=${parameter.defValue}]")
                 } else {
                     Collections.singletonList("<$alias>")
+                }.let {
+                    if (parameter.isPlayerName && Bukkit.getOnlinePlayers().isNotEmpty())
+                        it.toMutableList().apply { addAll(Completes.matchOnlinePlayers(sender, value)) }
+                    else
+                        it
                 }
             }
         }
@@ -65,14 +70,7 @@ interface Completer {
                     sender: CommandSender,
                     value: String
             ): List<String> {
-                val senderPlayer = sender as? Player
-                val matchedPlayers = sender.server.onlinePlayers.filter { player ->
-                    (senderPlayer == null || senderPlayer.canSee(player)) && player.name.startsWith(value)
-                }.map { player ->
-                    player.name
-                }
-                Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER)
-                return matchedPlayers
+                return Completes.matchOnlinePlayers(sender, value)
             }
         }
 
