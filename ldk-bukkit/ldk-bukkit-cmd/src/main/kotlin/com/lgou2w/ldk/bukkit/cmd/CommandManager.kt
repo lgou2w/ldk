@@ -30,7 +30,7 @@ interface CommandManager {
 
     val completes : Completes
 
-    val globalFeedback : CommandFeedback
+    var globalFeedback : CommandFeedback
 
     @Throws(CommandParseException::class, UnsupportedOperationException::class)
     fun registerCommand(source: Any) : RegisteredCommand
