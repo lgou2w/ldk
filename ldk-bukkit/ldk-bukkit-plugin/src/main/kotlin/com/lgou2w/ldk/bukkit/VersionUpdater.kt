@@ -18,6 +18,7 @@ package com.lgou2w.ldk.bukkit
 
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Callable
@@ -29,7 +30,7 @@ import org.bukkit.entity.Player
 import java.net.URL
 import java.util.logging.Level
 
-class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
+internal class VersionUpdater(private val plugin: LDKPlugin) {
 
     private val currentVersion = plugin.pluginVersion
     private var lastCheckedAt : Long = 0L
@@ -55,7 +56,7 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
         plugin.runTaskAsyncLater({
             if (Bukkit.getPluginManager().getPlugin(LDKPlugin.NAME)?.isEnabled.isTrue())
                 pushRelease(Bukkit.getConsoleSender())
-        }, 30 * 20L) // Wait 30 seconds
+        }, 60 * 20L) // Wait 60 seconds
     }
 
     fun pushRelease(sender: CommandSender) {
@@ -116,7 +117,8 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
     companion object Constants {
 
         private const val MAX_CHECK_INTERVAL = 10 * 60 * 1000L // 10 minutes
-        private const val API_VERSION = "https://api.github.com/repos/lgou2w/ldk/releases"
+        private const val API_GITHUB = "https://api.github.com/repos/lgou2w/ldk/releases"
+        private const val API_JITPACK = "https://jitpack.io/api/builds/com.github.lgou2w.ldk/ldk"
         private const val URL_RELEASE = "https://github.com/lgou2w/ldk/releases/tag/" // {tag}
         private const val RELEASE_TAG = "tag_name" // String
         private const val RELEASE_PRE = "prerelease" // Boolean
@@ -127,22 +129,42 @@ class VersionUpdater internal constructor(private val plugin: LDKPlugin) {
         private const val RELEASE_DOWNLOADS = "assets" // JsonArray
         private const val RELEASE_DOWNLOAD_NAME = "name" // String
         private const val RELEASE_DOWNLOAD_URL = "browser_download_url" // String
+        private const val RELEASE_GROUP_ID = "com.github.lgou2w" // JsonObject
+        private const val RELEASE_ARTIFACT_ID = "ldk" // JsonObject
 
         @Throws(Exception::class)
         private fun parseLatestRelease() : Release? {
-            val content = URL(API_VERSION).readText(Charsets.UTF_8)
+            val content : String
+            try {
+                content = URL(API_GITHUB).readText(Charsets.UTF_8)
+            } catch (e: Exception) {
+                return parseLatestReleaseFromJitpack()
+            }
             val releases = Gson().fromJson<JsonArray>(content, JsonArray::class.java)
             val release = releases.firstOrNull()?.asJsonObject ?: return null
             val tag = release.get(RELEASE_TAG).asString
             val releasedAt = release.get(RELEASE_AT).asString
             val isPreRelease = release.get(RELEASE_PRE).asBoolean
             val authorJson = release.get(RELEASE_AUTHOR)?.asJsonObject
-            val author = authorJson?.get(RELEASE_AUTHOR_NAME)?.asString ?: "UNKNOWN"
+            val author = authorJson?.get(RELEASE_AUTHOR_NAME)?.asString ?: "Unknown"
             val authorUrl = authorJson?.get(RELEASE_AUTHOR_URL)?.asString ?: "404 Not Found"
             val downloadJson = release.get(RELEASE_DOWNLOADS)?.asJsonArray?.firstOrNull()?.asJsonObject
             val fileName = downloadJson?.get(RELEASE_DOWNLOAD_NAME)?.asString
             val fileDownloadUrl = downloadJson?.get(RELEASE_DOWNLOAD_URL)?.asString
             return Release(tag, releasedAt, isPreRelease, author, authorUrl, fileName, fileDownloadUrl)
+        }
+
+        @Throws(Exception::class)
+        private fun parseLatestReleaseFromJitpack() : Release? {
+            val content = URL(API_JITPACK).readText(Charsets.UTF_8)
+            val releases = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
+            val release = releases[RELEASE_GROUP_ID]?.asJsonObject ?: return null
+            val tags = release[RELEASE_ARTIFACT_ID]?.asJsonObject ?: return null
+            val tag = tags.entrySet().lastOrNull()?.key ?: return null
+            val releasedAt = "Unknown, Non github.com source. See download url."
+            val isPreRelease = if (tag < "1.0") !tag.contains("rc") else tag.contains("-")
+            val fileDownloadUrl = URL_RELEASE + tag
+            return Release(tag, releasedAt, isPreRelease, "lgou2w", "https://github.com/lgou2w", null, fileDownloadUrl)
         }
     }
 }

@@ -49,6 +49,7 @@ class LDKPlugin : PluginBase() {
             logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
         }
         updater = VersionUpdater(this)
+        updater?.firstCheck()
     }
 
     override fun disable() {
