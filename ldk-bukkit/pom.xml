@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.5-rc</version>
+        <version>0.1.6-rc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -15,19 +15,22 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>ldk-bukkit-common</module>
-        <module>ldk-bukkit-compatibility</module>
-        <module>ldk-bukkit-i18n</module>
+        <module>ldk-bukkit-version</module> <!-- first -->
+        <module>ldk-bukkit-reflect</module> <!-- second -->
+        <module>ldk-bukkit-common</module> <!-- common -->
+        <module>ldk-bukkit-compatibility</module> <!-- extended -->
+        <module>ldk-bukkit-i18n</module> <!-- extended... -->
         <module>ldk-bukkit-cmd</module>
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
         <module>ldk-bukkit-depend</module>
         <module>ldk-bukkit-scheduler</module>
-        <module>ldk-bukkit-plugin</module>
+        <module>ldk-bukkit-coroutines</module> <!-- kotlin coroutines -->
+        <module>ldk-bukkit-plugin</module> <!-- runtime -->
     </modules>
 
     <properties>
-        <bukkit.version>1.13.1-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.13.2-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <repositories>
@@ -56,8 +59,8 @@
             <version>${bukkit.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--&lt;!&ndash; Maybe you need to build it yourself &ndash;&gt;-->
-        <!--&lt;!&ndash; CraftBukkit Dependency &ndash;&gt;-->
+        <!-- Maybe you need to build it yourself -->
+        <!-- CraftBukkit Dependency -->
         <!--<dependency>-->
             <!--<groupId>org.bukkit</groupId>-->
             <!--<artifactId>craftbukkit</artifactId>-->

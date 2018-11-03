@@ -23,8 +23,8 @@ interface CommandFeedback {
     fun onPermission(
             sender: CommandSender,
             name: String,
-            registered: RegisteredCommand,
-            child: RegisteredCommand.Child,
+            command: RegisteredCommand,
+            executor: CommandExecutor?,
             args: Array<out String>,
             permission: String
     )
@@ -32,16 +32,16 @@ interface CommandFeedback {
     fun onPlayable(
             sender: CommandSender,
             name: String,
-            registered: RegisteredCommand,
-            child: RegisteredCommand.Child,
+            command: RegisteredCommand,
+            executor: CommandExecutor,
             args: Array<out String>
     )
 
     fun onMinimum(
             sender: CommandSender,
             name: String,
-            registered: RegisteredCommand,
-            child: RegisteredCommand.Child,
+            command: RegisteredCommand,
+            executor: CommandExecutor,
             args: Array<out String>,
             current: Int,
             min: Int
@@ -50,8 +50,8 @@ interface CommandFeedback {
     fun onTransform(
             sender: CommandSender,
             name: String,
-            registered: RegisteredCommand,
-            child: RegisteredCommand.Child,
+            command: RegisteredCommand,
+            executor: CommandExecutor,
             args: Array<out String>,
             expected: Class<*>,
             value: String?,
@@ -61,8 +61,8 @@ interface CommandFeedback {
     fun onUnhandled(
             sender: CommandSender,
             name: String,
-            registered: RegisteredCommand,
-            child: RegisteredCommand.Child,
+            command: RegisteredCommand,
+            executor: CommandExecutor,
             args: Array<out String>,
             e: Exception
     )

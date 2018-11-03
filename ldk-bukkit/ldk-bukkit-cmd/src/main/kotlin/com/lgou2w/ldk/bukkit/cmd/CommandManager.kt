@@ -16,53 +16,24 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import com.lgou2w.ldk.common.Function
-import org.bukkit.command.CommandSender
 import org.bukkit.plugin.Plugin
 
 interface CommandManager {
 
     val plugin : Plugin
 
+    val parser : CommandParser
+
+    val commands : Map<String, RegisteredCommand>
+
+    val transforms : Transforms
+
+    val completes : Completes
+
     var globalFeedback : CommandFeedback
 
-    fun registerCommand(source: Class<*>, vararg args: Any) : Boolean
-
-    fun registerCommand(source: Any) : Boolean
+    @Throws(CommandParseException::class, UnsupportedOperationException::class)
+    fun registerCommand(source: Any) : RegisteredCommand
 
     fun getCommand(command: String) : RegisteredCommand?
-
-    fun getCommand(source: Class<*>) : RegisteredCommand?
-
-    fun parseChildProvider(parsed: RegisteredCommand, provider: ChildProvider) : RegisteredCommand.Child?
-
-    /**
-     * @see [TypeTransforms.addDefaultTypeTransform]
-     */
-    fun addDefaultTypeTransforms()
-
-    fun <T> addTypeTransform(type: Class<T>, transform: Function<String, T?>)
-
-    fun <T> addTypeTransform(type: Class<T>, transform: TypeTransform<T>)
-
-    fun <T> getTypeTransform(type: Class<T>) : TypeTransform<T>?
-
-    fun hasTypeTransform(type: Class<*>) : Boolean
-
-    /**
-     * @see [TypeCompletes.addDefaultTypeCompletes]
-     */
-    fun addDefaultTypeCompletes()
-
-    fun addTypeCompleter(type: Class<*>, completer: (
-            parameter: RegisteredCommand.ChildParameter,
-            sender: CommandSender,
-            value: String) -> List<String>
-    )
-
-    fun addTypeCompleter(type: Class<*>, completer: TypeCompleter)
-
-    fun getTypeCompleter(type: Class<*>) : TypeCompleter?
-
-    fun hasTypeCompleter(type: Class<*>) : Boolean
 }

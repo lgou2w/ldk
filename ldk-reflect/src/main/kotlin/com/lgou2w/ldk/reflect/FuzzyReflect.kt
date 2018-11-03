@@ -43,7 +43,7 @@ import java.lang.reflect.Method
  *          .withName("say")                                        // Method name
  *          .resultAccessorAs<My, Int>()                    // My is instance, Int is method return value
 
- *      val value = say.invoke(My(), "hello world")   // value = 1
+ *      val value = say.invoke(My(), "hello world")   // value = 0
  *      // "hello world" Printed
  * }
  * ```

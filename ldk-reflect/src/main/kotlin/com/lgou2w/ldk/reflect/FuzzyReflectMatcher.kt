@@ -138,7 +138,7 @@ abstract class FuzzyReflectMatcher<T>(
      * @throws NoSuchElementException If the match result is empty.
      * @throws NoSuchElementException 如果匹配结果为空.
      */
-    @Throws(NoSuchFileException::class)
+    @Throws(NoSuchElementException::class)
     open fun result(): T
             = results().first()
 

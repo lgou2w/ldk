@@ -21,17 +21,22 @@ import org.bukkit.command.CommandSender
 
 abstract class StandardCommand : Initializable {
 
-    lateinit var command : RegisteredCommand
-        private set
+    lateinit var command : RegisteredCommand private set
 
-    final override fun initialize(manager: CommandManager, registered: RegisteredCommand) {
-        command = registered
-        initialize(manager)
+    override fun initialize(command: RegisteredCommand) {
+        this.command = command
+        this.initialize()
     }
 
-    protected abstract fun initialize(manager: CommandManager)
+    protected open fun initialize() { }
 
-    protected fun CommandSender.send(message: String) {
-        sendMessage(command.prefix + message.toColor())
+    fun CommandSender.send(message: String) {
+        val prefix = command.rootParent?.prefix ?: command.prefix
+        sendMessage(prefix + message.toColor())
+    }
+
+    fun CommandSender.send(message: Array<out String>) {
+        val prefix = command.rootParent?.prefix ?: command.prefix
+        sendMessage(message.toColor().map { msg -> prefix + msg }.toTypedArray())
     }
 }

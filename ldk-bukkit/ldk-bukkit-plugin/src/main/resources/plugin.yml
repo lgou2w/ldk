@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018 The lgou2w (mcmoonlake@hotmail.com)
+# Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,11 @@ name: LDK
 api-version: 1.13
 main: com.lgou2w.ldk.bukkit.LDKPlugin
 version: ${project.version}-${git.commit.id.abbrev}
-softdepend: [WorldEdit, Vault, PlaceholderAPI]
+load: STARTUP
 author: lgou2w
 authors: [lgou2w]
 website: https://lgou2w.com
+git: https://github.com/lgou2w/ldk
 description: A lgou2w development kit of Bukkit.
 commands:
   ldk:

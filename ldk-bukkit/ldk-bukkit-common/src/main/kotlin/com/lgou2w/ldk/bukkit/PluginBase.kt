@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit
 
 import com.lgou2w.ldk.common.Applicator
+import com.lgou2w.ldk.common.notNull
 import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.java.JavaPluginLoader
@@ -50,6 +51,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
                 }
         ) {
             logger.log(Level.SEVERE, "Dependency failure when plugin loads, unload dependency: ${failedDependency?.name}.")
+            failedDependency(failedDependency.notNull())
             server.pluginManager.disablePlugin(this)
             return
         }
@@ -91,6 +93,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
      **************************************************************************/
 
     protected open val enableDependencies: Array<PluginDependency> = emptyArray()
+    protected open fun failedDependency(dependency: PluginDependency) { }
 
     protected class PluginDependencyScope {
         var name: String = "UNKNOWN"
@@ -109,14 +112,6 @@ abstract class PluginBase : JavaPlugin, Plugin {
      * Plugin Public API
      *
      **************************************************************************/
-
-    fun initPluginFolder() {
-        if (!dataFolder.exists())
-            dataFolder.mkdirs()
-        val config = File(dataFolder, "config.yml")
-        if (!config.exists() && getResource("config.yml") != null)
-            saveDefaultConfig()
-    }
 
     /**************************************************************************
      *
