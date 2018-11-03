@@ -37,7 +37,7 @@ abstract class CommandManagerBase(
 
     override val transforms = Transforms()
     override val completes = Completes()
-    override val globalFeedback: CommandFeedback = SimpleCommandFeedback()
+    override var globalFeedback: CommandFeedback = SimpleCommandFeedback()
 
     override fun registerCommand(source: Any): RegisteredCommand {
         val command = parser.parse(this, source)

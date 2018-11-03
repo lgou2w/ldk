@@ -116,11 +116,20 @@ class DefaultCommandParser : CommandParser {
             val name = parameter.getAnnotation(Parameter::class.java)?.value
             val optional = parameter.getAnnotation(Optional::class.java)
             val nullable = parameter.getAnnotation(Nullable::class.java)
+            val playerName = parameter.getAnnotation(Playername::class.java)
             if (optional != null && nullable != null) {
-                manager.plugin.logger.warning("Optional or nullable annotations can only have one, skipped.")
+                manager.plugin.logger.warning("The parameter '$name ?: $parameter' Optional or nullable annotations can only have one, skipped.")
                 null
             } else {
-                CommandExecutor.Parameter(type, name, optional?.def, nullable != null)
+                if (playerName != null && type != String::class.java)
+                    manager.plugin.logger.warning("The parameter '$name ?: $parameter' matches the player name, but the type is not a string.")
+                CommandExecutor.Parameter(
+                        type,
+                        name,
+                        optional?.def,
+                        nullable != null,
+                        type == String::class.java && playerName != null
+                )
             }
         }.toTypedArray()
     }

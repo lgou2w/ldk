@@ -36,7 +36,8 @@ interface CommandExecutor {
             val type : Class<*>,
             val name: String?,
             val defValue: String?,
-            val isNullable: Boolean
+            val isNullable: Boolean,
+            val isPlayerName: Boolean
     ) {
         val canNullable : Boolean
             get() = defValue != null || isNullable
