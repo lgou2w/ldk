@@ -49,11 +49,14 @@ interface Completer {
                     sender: CommandSender,
                     value: String
             ): List<String> {
-                val alias = parameter.name ?: parameter.type.simpleName
+                val alias = if (parameter.vararg == null) parameter.name ?: parameter.type.simpleName
+                    else parameter.name ?: parameter.vararg.simpleName
                 return if (parameter.canNullable) {
-                    Collections.singletonList("[$alias=${parameter.defValue}]")
+                    if (parameter.vararg == null) Collections.singletonList("[$alias=${parameter.defValue}]")
+                    else Collections.singletonList("[$alias=${parameter.defValue}...]")
                 } else {
-                    Collections.singletonList("<$alias>")
+                    if (parameter.vararg == null) Collections.singletonList("<$alias>")
+                    else Collections.singletonList("<$alias...>")
                 }.let {
                     if (parameter.isPlayerName && Bukkit.getOnlinePlayers().isNotEmpty())
                         it.toMutableList().apply { addAll(Completes.matchOnlinePlayers(sender, value)) }
@@ -101,11 +104,14 @@ interface Completer {
                     sender: CommandSender,
                     value: String
             ): List<String> {
-                val alias = parameter.name ?: "Boolean"
+                val alias = if (parameter.vararg == null) parameter.name ?: "Boolean"
+                    else parameter.name ?: parameter.vararg.simpleName
                 val first = when {
-                    parameter.defValue != null -> "[$alias=${parameter.defValue}]"
                     parameter.isNullable -> "null"
-                    else -> "<$alias>"
+                    parameter.defValue != null ->
+                        if (parameter.vararg == null) "[$alias=${parameter.defValue}]" else "[$alias=${parameter.defValue}...]"
+                    else ->
+                        if (parameter.vararg == null) "<$alias>" else "<$alias...>"
                 }
                 return listOf(first, "false", "true")
                     .filter { it.startsWith(value) }

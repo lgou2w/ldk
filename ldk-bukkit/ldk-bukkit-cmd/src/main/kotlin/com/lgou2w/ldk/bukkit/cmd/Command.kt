@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import kotlin.reflect.KClass
+
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CommandRoot(
@@ -62,3 +64,7 @@ annotation class Nullable
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Playername
+
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Vararg(val value: KClass<*>)
