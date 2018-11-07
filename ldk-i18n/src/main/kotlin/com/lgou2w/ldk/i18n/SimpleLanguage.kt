@@ -17,21 +17,22 @@
 package com.lgou2w.ldk.i18n
 
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
-class SimpleLanguage(
+open class SimpleLanguage(
         override val locale: Locale,
         maps: Map<String, String>
 ) : Language {
 
-    private val maps = Collections.synchronizedMap(maps)
+    protected val languages = ConcurrentHashMap(maps)
 
     override var formatter: Formatter? = null
     override val size: Int
-        get() = maps.size
+        get() = languages.size
     override val keys: Set<String>
-        get() = Collections.unmodifiableSet(maps.keys)
+        get() = languages.keys
     override val entries: Set<Map.Entry<String, String>>
-        get() = Collections.unmodifiableSet(maps.entries)
+        get() = languages.entries
 
     override fun get(key: String): String?
             = getOr(key, null)
@@ -41,7 +42,7 @@ class SimpleLanguage(
             = getOr(key, def, emptyArray<String>())
 
     override fun getOr(key: String, def: String?, vararg args: Any): String? {
-        val value = maps[key] ?: def ?: return null
+        val value = languages[key] ?: def ?: return null
         val formatter = this.formatter
         if (formatter != null && args.isNotEmpty())
             return formatter.format(locale, value, *args)
@@ -49,30 +50,32 @@ class SimpleLanguage(
     }
 
     override fun set(key: String, value: String) {
-        maps[key] = value
+        languages[key] = value
     }
 
     override fun has(key: String): Boolean {
-        return maps.containsKey(key)
+        return languages.containsKey(key)
     }
 
     override fun clear() {
-        maps.clear()
+        languages.clear()
     }
 
     override fun addAll(entries: Map<String, String>) {
-        maps.putAll(entries)
+        languages.putAll(entries)
     }
 
     override fun hashCode(): Int {
-        return locale.hashCode()
+        var result = locale.hashCode()
+        result = 31 * result + languages.hashCode()
+        return result
     }
 
     override fun equals(other: Any?): Boolean {
         if (other === this)
             return true
         if (other is SimpleLanguage)
-            return locale == other.locale
+            return locale == other.locale && languages == other.languages
         return false
     }
 
