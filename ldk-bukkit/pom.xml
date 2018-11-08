@@ -17,6 +17,7 @@
     <modules>
         <module>ldk-bukkit-version</module> <!-- first -->
         <module>ldk-bukkit-reflect</module> <!-- second -->
+        <module>ldk-bukkit-nbt</module> <!-- bukkit nbt -->
         <module>ldk-bukkit-common</module> <!-- common -->
         <module>ldk-bukkit-compatibility</module> <!-- extended -->
         <module>ldk-bukkit-i18n</module> <!-- extended... -->
