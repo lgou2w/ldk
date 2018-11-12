@@ -244,7 +244,7 @@ enum class XMaterial {
     COW_SPAWN_EGG("MONSTER_EGG", 0),
     CRACKED_STONE_BRICKS("SMOOTH_BRICK", 2),
     CRAFTING_TABLE("WORKBENCH", 0),
-    CREEPER_HEAD("SKULL", 4),
+    CREEPER_HEAD(4, "SKULL", "SKULL_ITEM"),
     CREEPER_SPAWN_EGG("MONSTER_EGG", 0),
     CREEPER_WALL_HEAD("SKULL", 4),
     CUT_RED_SANDSTONE("STONE", 0),
@@ -326,7 +326,7 @@ enum class XMaterial {
     DONKEY_SPAWN_EGG("MONSTER_EGG", 0),
     DRAGON_BREATH("DRAGONS_BREATH", 0),
     DRAGON_EGG("DRAGON_EGG", 0),
-    DRAGON_HEAD("SKULL", 5),
+    DRAGON_HEAD(5, "SKULL", "SKULL_ITEM"),
     DRAGON_WALL_HEAD("SKULL", 5),
     DRIED_KELP("STONE", 0),
     DRIED_KELP_BLOCK("STONE", 0),
@@ -661,7 +661,7 @@ enum class XMaterial {
     PINK_WOOL("WOOL", 6),
     PISTON("PISTON_BASE", 0),
     PISTON_HEAD("PISTON_EXTENSION", 0),
-    PLAYER_HEAD("SKULL", 3),
+    PLAYER_HEAD(3, "SKULL", "SKULL_ITEM"),
     PLAYER_WALL_HEAD("SKULL", 3),
     PODZOL("DIRT", 2),
     POISONOUS_POTATO("POISONOUS_POTATO", 0),
@@ -873,7 +873,7 @@ enum class XMaterial {
     TRIDENT("STONE", 0),
     TRIPWIRE("TRIPWIRE", 0),
     TRIPWIRE_HOOK("TRIPWIRE_HOOK", 0),
-    TROPICAL_FISH("RAW_FISH", 0),
+    TROPICAL_FISH("RAW_FISH", 2),
     TROPICAL_FISH_BUCKET("BUCKET", 0),
     TROPICAL_FISH_SPAWN_EGG("MONSTER_EGG", 0),
     TUBE_CORAL("STONE", 0),
@@ -909,7 +909,7 @@ enum class XMaterial {
     WHITE_WALL_BANNER("WALL_BANNER", 0),
     WHITE_WOOL("WOOL", 0),
     WITCH_SPAWN_EGG("MONSTER_EGG", 0),
-    WITHER_SKELETON_SKULL("SKULL", 1),
+    WITHER_SKELETON_SKULL(1, "SKULL", "SKULL_ITEM"),
     WITHER_SKELETON_SPAWN_EGG("MONSTER_EGG", 0),
     WITHER_SKELETON_WALL_SKULL("SKULL", 1),
     WOLF_SPAWN_EGG("MONSTER_EGG", 0),
@@ -932,7 +932,7 @@ enum class XMaterial {
     YELLOW_TERRACOTTA("STAINED_CLAY", 4),
     YELLOW_WALL_BANNER("WALL_BANNER", 0),
     YELLOW_WOOL("WOOL", 4),
-    ZOMBIE_HEAD("SKULL", 2),
+    ZOMBIE_HEAD(2, "SKULL", "SKULL_ITEM"),
     ZOMBIE_HORSE_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_PIGMAN_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_SPAWN_EGG("MONSTER_EGG", 0),
@@ -1021,17 +1021,24 @@ enum class XMaterial {
         @JvmStatic
         fun searchByType(type: String) : XMaterial? {
             val typeUpperCase = type.toUpperCase(Locale.US)
-            val data = type.split(":").getOrNull(1)?.toIntOrNull() // TYPE:DATA
-            val lookupKey = typeUpperCase + if (data != null) ":$data" else ""
+            val typeKey = typeUpperCase.split(":").getOrNull(0) ?: typeUpperCase
+            val data = typeUpperCase.split(":").getOrNull(1)?.toIntOrNull() // TYPE:DATA
+            val lookupKey = if (data != null) "$typeKey:$data" else typeKey
             val lookup = LOOKUPS[lookupKey]
             if (lookup != null) {
                 return lookup
             } else {
-                val matched = try {
-                    XMaterial.valueOf(type)
+                var matched : XMaterial?
+                try {
+                    matched = XMaterial.valueOf(typeKey)
+                    val validate = matched.toBukkit()
+                    if (validate.name.toUpperCase() != typeKey)
+                        matched = null
                 } catch (e: IllegalArgumentException) {
-                    XMaterial.values().find { it.aliases.contains(typeUpperCase) && (data == null || it.data == data) }
+                    matched = null
                 }
+                if (matched == null || (data != null && matched.data != data))
+                    matched = XMaterial.values().find { it.aliases.contains(typeKey) && (data == null || it.data == data) }
                 return if (matched != null) {
                     LOOKUPS[lookupKey] = matched
                     matched
