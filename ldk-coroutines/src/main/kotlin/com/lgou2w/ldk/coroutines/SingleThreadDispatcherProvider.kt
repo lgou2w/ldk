@@ -16,13 +16,18 @@
 
 package com.lgou2w.ldk.coroutines
 
-import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.asCoroutineDispatcher
+import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 class SingleThreadDispatcherProvider(
-        threadName: String
+        private val threadName: String
 ) : DispatcherProvider {
 
+    private val createPoolThread : (Runnable) -> Thread = { r ->
+        Thread(r, threadName)
+    }
+
     override val dispatcher: CoroutineContext
-            = newSingleThreadContext(threadName)
+            = Executors.newSingleThreadExecutor(createPoolThread).asCoroutineDispatcher()
 }

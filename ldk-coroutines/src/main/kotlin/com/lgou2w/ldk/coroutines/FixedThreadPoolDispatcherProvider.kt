@@ -16,12 +16,14 @@
 
 package com.lgou2w.ldk.coroutines
 
-import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.asCoroutineDispatcher
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.CoroutineContext
 
 class FixedThreadPoolDispatcherProvider(
-        threads: Int,
-        threadName: String
+        private val threads: Int,
+        private val threadName: String
 ) : DispatcherProvider {
 
     init {
@@ -29,6 +31,11 @@ class FixedThreadPoolDispatcherProvider(
             throw IllegalArgumentException("The thread pool size must be greater than or equal to 1.")
     }
 
+    private val threadNo = AtomicInteger()
+    private val createPoolThread : (Runnable) -> Thread = { r ->
+        Thread(r, if (threads == 1) threadName else threadName + "-" + threadNo.incrementAndGet())
+    }
+
     override val dispatcher: CoroutineContext
-            = newFixedThreadPoolContext(threads, threadName)
+            = Executors.newFixedThreadPool(threads, createPoolThread).asCoroutineDispatcher()
 }
