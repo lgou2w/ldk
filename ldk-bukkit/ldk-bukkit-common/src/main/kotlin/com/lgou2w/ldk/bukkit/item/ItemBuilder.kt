@@ -454,7 +454,6 @@ interface ItemBuilder : Builder<ItemStack> {
                 = SimpleItemBuilder(itemStack)
 
         @JvmStatic
-        @JvmOverloads
         fun of(material: Material, count: Int = 1, durability: Int = 0) : ItemBuilder
                 = SimpleItemBuilder(material, count, durability)
 

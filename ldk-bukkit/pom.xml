@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.6-rc</version>
+        <version>0.1.6-rc2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -17,6 +17,7 @@
     <modules>
         <module>ldk-bukkit-version</module> <!-- first -->
         <module>ldk-bukkit-reflect</module> <!-- second -->
+        <module>ldk-bukkit-nbt</module> <!-- bukkit nbt -->
         <module>ldk-bukkit-common</module> <!-- common -->
         <module>ldk-bukkit-compatibility</module> <!-- extended -->
         <module>ldk-bukkit-i18n</module> <!-- extended... -->

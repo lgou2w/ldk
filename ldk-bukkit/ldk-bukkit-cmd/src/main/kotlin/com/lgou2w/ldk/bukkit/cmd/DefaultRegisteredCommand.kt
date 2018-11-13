@@ -187,20 +187,29 @@ class DefaultRegisteredCommand(
             return false
         }
         parameterValues.add(if (executor.isPlayable) sender as Player else sender)
-        for (index in 0 until executor.max) {
-            val parameter = executor.parameters[index]
-            var transform = manager.transforms.getTransform(parameter.type)
-            if (transform == null && DataType.ofPrimitive(parameter.type).isPrimitive)
-                transform = manager.transforms.getTransform(DataType.ofPrimitive(parameter.type))
+        val vararg = executor.parameters.lastOrNull()
+        val maxArguments = if (args.size < executor.max) executor.max else args.size
+        for (index in 0 until maxArguments) {
+            val parameter = if (vararg != null && index >= vararg.index) vararg else executor.parameters.getOrNull(index)
+                            ?: break
+            val parameterType = parameter.vararg ?: parameter.type
+            var transform = manager.transforms.getTransform(parameterType)
+            if (transform == null && DataType.ofPrimitive(parameterType).isPrimitive)
+                transform = manager.transforms.getTransform(DataType.ofPrimitive(parameterType))
             val value = args.getOrNull(index) ?: parameter.defValue
             val transformed = if (value != null) transform?.transform(value) else value
             if ((transformed == null && !parameter.canNullable) ||
-                (transformed != null && !parameter.type.isAssignableFrom(transformed::class.java))
+                (transformed != null && !parameterType.isAssignableFrom(transformed::class.java))
             ) {
-                feedback.onTransform(sender, name, this, executor, args, parameter.type, value, transformed)
+                feedback.onTransform(sender, name, this, executor, args, parameterType, value, transformed)
                 return false
             }
             parameterValues.add(transformed)
+        }
+        if (vararg?.vararg != null) {
+            val varArguments = parameterValues.subList(vararg.index + 1, parameterValues.size).toList()
+            parameterValues.removeAll(varArguments)
+            parameterValues.add(ArrayList(varArguments)) // vararg
         }
         return true
     }
@@ -255,12 +264,22 @@ class DefaultRegisteredCommand(
 
     private fun invokeExecutorComplete(sender: CommandSender, args: Array<out String>) : List<String> {
         val executor = findExecutor(args.first())
-        return if (executor == null || args.lastIndex > executor.max || !testPermissionIfFailed(sender, executor.permission))
+        return if (executor == null || !testPermissionIfFailed(sender, executor.permission))
             emptyList()
         else {
-            val parameter = executor.parameters[args.lastIndex - 1]
-            val completer = manager.completes.getCompleter(parameter.type) ?: Completer.DEFAULT
-            completer.onComplete(parameter, sender, args.last())
+            if (args.lastIndex <= executor.max) {
+                val parameter = executor.parameters[args.lastIndex - 1]
+                val completer = manager.completes.getCompleter(parameter.type) ?: Completer.DEFAULT
+                completer.onComplete(parameter, sender, args.last())
+            } else {
+                val vararg = executor.parameters.lastOrNull()
+                if (vararg?.vararg == null)
+                    emptyList()
+                else {
+                    val completer = manager.completes.getCompleter(vararg.vararg) ?: Completer.DEFAULT
+                    completer.onComplete(vararg, sender, args.last())
+                }
+            }
         }
     }
 

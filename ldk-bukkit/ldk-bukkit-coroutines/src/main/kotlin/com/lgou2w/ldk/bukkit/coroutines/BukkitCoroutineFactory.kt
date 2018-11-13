@@ -17,8 +17,8 @@
 package com.lgou2w.ldk.bukkit.coroutines
 
 import com.lgou2w.ldk.coroutines.CoroutineFactory
+import com.lgou2w.ldk.coroutines.CoroutineFactoryBase
 import com.lgou2w.ldk.coroutines.CustomizeDispatcherProvider
-import com.lgou2w.ldk.coroutines.SimpleCoroutineFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -29,7 +29,7 @@ import kotlin.coroutines.suspendCoroutine
 
 open class BukkitCoroutineFactory(
         val plugin: Plugin
-) : SimpleCoroutineFactory(CustomizeDispatcherProvider(Dispatchers.Unconfined)) {
+) : CoroutineFactoryBase(CustomizeDispatcherProvider(Dispatchers.Unconfined)) {
 
     // 强制使用 Unconfined 调度器
     // Mandatory use the Unconfined dispatcher
