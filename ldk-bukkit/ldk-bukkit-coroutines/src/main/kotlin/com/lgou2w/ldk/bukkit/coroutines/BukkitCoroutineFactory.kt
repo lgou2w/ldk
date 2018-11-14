@@ -38,7 +38,7 @@ open class BukkitCoroutineFactory(
             = NonRepeatingBukkitCoroutineTask(plugin)
 
     @Deprecated("No status.", replaceWith = ReplaceWith("launcher"), level = DeprecationLevel.HIDDEN)
-    override fun launch(block: CoroutineFactory.() -> Unit): Job {
+    override fun launch(block: suspend CoroutineFactory.() -> Unit): Job {
         return launcher(State.SYNC) {
             block()
         }
