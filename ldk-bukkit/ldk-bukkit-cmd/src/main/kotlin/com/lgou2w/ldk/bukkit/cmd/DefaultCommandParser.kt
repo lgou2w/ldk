@@ -21,6 +21,7 @@ import com.lgou2w.ldk.reflect.FuzzyReflect
 import org.bukkit.command.CommandSender
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
+import java.lang.reflect.ParameterizedType
 
 class DefaultCommandParser : CommandParser {
 
@@ -74,31 +75,14 @@ class DefaultCommandParser : CommandParser {
             .filter { method ->
                 val command = method.getAnnotation(Command::class.java)
                 val parameters = method.parameters
-                var result = true
-                if (result && command.value.isBlank()) {
-                    manager.plugin.logger
-                        .warning("Command '${clazz.simpleName}#${method.name}' executor name is blank. filtered.")
-                    result = false
-                }
-                if (result && parameters.isNotEmpty() &&
-                    !CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)) {
-                    manager.plugin.logger
-                        .warning("Command '${command.value}' executor first parameter is not CommandSender type. filtered.")
-                    result = false
-                }
-                if (result && command.value == name && parameters.size > 1) {
-                    manager.plugin.logger
-                        .warning("Command '${command.value}' executor and command mapping, parameters must only be one CommandSender. filtered.")
-                    result = false
-                }
-                result
+                isValidExecutor(manager, name, clazz, command, method, parameters)
             }
-            .associate { method ->
+            .mapNotNull { method ->
                 val command = method.getAnnotation(Command::class.java)
                 val permission = method.getAnnotation(Permission::class.java)
                 val isPlayable = method.getAnnotation(Playable::class.java) != null
                 val parameters = parseExecutorParameters(manager, method)
-                command.value to buildCommandExecutor(
+                if (parameters == null) null else command.value to buildCommandExecutor(
                         source,
                         command.value,
                         command.aliases,
@@ -108,30 +92,118 @@ class DefaultCommandParser : CommandParser {
                         parameters
                 )
             }
+            .associate { it }
     }
 
-    private fun parseExecutorParameters(manager: CommandManager, method: Method) : Array<out CommandExecutor.Parameter> {
-        return method.parameters.filterIndexed { index, _ -> index != 0 }.mapNotNull { parameter ->
-            val type = parameter.parameterizedType as Class<*>
+    private fun isValidExecutor(
+            manager: CommandManager,
+            name: String,
+            clazz: Class<*>,
+            command: Command,
+            method: Method,
+            parameters: Array<out java.lang.reflect.Parameter>
+    ) : Boolean {
+        val alias = "${method.declaringClass.canonicalName}#${method.name}"
+        // Command name cannot be blank
+        if (command.value.isBlank()) {
+            betterError(manager, """
+                Command '${clazz.simpleName}#${method.name}' executor name is blank. filtered.
+                  Correction: ?
+                    @Command("${method.name}")
+            """.trimIndent())
+            return false
+        }
+        // Command executor parameters cannot be empty and the first must be of type CommandSender
+        // fun sample (sender: CommandSender, ...)
+        if (parameters.isNotEmpty() &&
+            !CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)) {
+            betterError(manager, """
+                Command '${command.value}' executor first parameter is not CommandSender type. filtered.
+                  Correction: ?
+                    fun $alias(sender: CommandSender, ...) {...}
+            """.trimIndent())
+            return false
+        }
+        // The parameter mapping can only be a CommandSender type.
+        if (command.value == name && parameters.size > 1) {
+            betterError(manager, """
+                Command '${command.value}' executor and command mapping, parameters must only be one CommandSender. filtered.
+                  Correction: ?
+                    fun $alias(sender: CommandSender) {...}
+            """.trimIndent())
+            return false
+        }
+        return true
+    }
+
+    private fun parseExecutorParameters(manager: CommandManager, method: Method) : Array<out CommandExecutor.Parameter>? {
+        val parameters = method.parameters
+        val processLength = parameters.size - 1
+        return parameters.filterIndexed { index, _ -> index != 0 }.mapIndexed { index, parameter ->
+            val type = parameter.type as Class<*>
             val name = parameter.getAnnotation(Parameter::class.java)?.value
             val optional = parameter.getAnnotation(Optional::class.java)
             val nullable = parameter.getAnnotation(Nullable::class.java)
             val playerName = parameter.getAnnotation(Playername::class.java)
+            val vararg = parameter.getAnnotation(Vararg::class.java)?.value?.java
+            val alias = "${method.declaringClass.canonicalName}#${method.name}"
+            val param = name ?: parameter.name
             if (optional != null && nullable != null) {
-                manager.plugin.logger.warning("The parameter '$name ?: $parameter' Optional or nullable annotations can only have one, skipped.")
-                null
-            } else {
-                if (playerName != null && type != String::class.java)
-                    manager.plugin.logger.warning("The parameter '$name ?: $parameter' matches the player name, but the type is not a string.")
-                CommandExecutor.Parameter(
-                        type,
-                        name,
-                        optional?.def,
-                        nullable != null,
-                        type == String::class.java && playerName != null
-                )
+                betterError(manager, """
+                    The parameter '$param' Optional or nullable annotations can only have one, filtered.
+                      Correction: ?
+                        $alias(@Optional $param: ${type.name}) or
+                        $alias(@Nullable $param: ${type.name})
+                """.trimIndent())
+                return null
             }
-        }.toTypedArray()
+            if (vararg != null) {
+                if (index + 1 != processLength) {
+                    betterError(manager, """
+                        The variable length parameter '$param' can only be in the last position of the actuator, filtered.
+                          Correction: ?
+                            fun $alias(..., $param: List<${vararg.name}>)
+                    """)
+                    return null
+                }
+                if (type != List::class.java) {
+                    betterError(manager, """
+                        The variable length parameter '$alias' must be a List type, filtered.
+                          Correction: ?
+                            fun $alias(..., $param: List<${vararg.name}>)
+                    """.trimIndent())
+                    return null
+                }
+                val genericParameter = method.genericParameterTypes[index + 1] as ParameterizedType
+                val transformedType = genericParameter.actualTypeArguments.first() as Class<*>
+                if (transformedType != vararg) {
+                    betterError(manager, """
+                        The expected type of the variable length parameter '$param' does not match the List type, filtered.
+                          Correction: ?
+                            fun $alias(..., $param: List<${vararg.name}>)
+                    """.trimIndent())
+                    return null
+                }
+            }
+            if (playerName != null && type != String::class.java) {
+                betterError(manager, """
+                        The parameter '$param' matches the player name, but the type is not a string.
+                          Correction: ?
+                            fun $alias(..., @Playername $param: String)
+                    """.trimIndent())
+                return null
+            }
+            CommandExecutor.Parameter(
+                    index,
+                    type,
+                    name,
+                    optional?.def,
+                    nullable != null,
+                    type == String::class.java && playerName != null,
+                    vararg
+            )
+        }
+            .toTypedArray()
     }
 
     private fun registerChildren(
@@ -147,7 +219,12 @@ class DefaultCommandParser : CommandParser {
                 root to instance
             } catch (e: Exception) {
                 if (e !is CommandParseException)
-                    manager.plugin.logger.warning("Unable to access constructor of the $child, confirm the declaration and 'public' modifier. skipped")
+                    betterError(manager, """
+                        Unable to access constructor of the $child, confirm the declaration and 'public' modifier. filtered
+                          Correction: ?
+                            class ${child.name} (...) or
+                            class ${child.name} { public constructor(...) }
+                    """.trimIndent())
                 null to null
             }
             if (root != null && instance != null) {
@@ -169,6 +246,11 @@ class DefaultCommandParser : CommandParser {
                 registerChildren(manager, childCommand, instance, child)
             }
         }
+    }
+
+    private fun betterError(manager: CommandManager, message: String) {
+        manager.plugin.logger.warning("-------- Command parsing warning -----")
+        message.split("\n").forEach { manager.plugin.logger.warning(it) }
     }
 
     private fun buildCommandRegistered(

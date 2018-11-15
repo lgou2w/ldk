@@ -27,7 +27,7 @@ interface CoroutineFactory {
 
     val context : CoroutineContext
 
-    fun launch(block: CoroutineFactory.() -> Unit) : Job
+    fun launch(block: suspend CoroutineFactory.() -> Unit) : Job
 
     // Operating function
 

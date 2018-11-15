@@ -32,7 +32,7 @@ abstract class CoroutineFactoryBase(
     override val context: CoroutineContext
         get() = provider.dispatcher
 
-    override fun launch(block: CoroutineFactory.() -> Unit): Job {
+    override fun launch(block: suspend CoroutineFactory.() -> Unit): Job {
         return GlobalScope.launch(context) {
             launching()
             block()

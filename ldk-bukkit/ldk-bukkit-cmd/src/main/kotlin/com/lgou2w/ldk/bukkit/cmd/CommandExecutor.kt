@@ -33,11 +33,13 @@ interface CommandExecutor {
     fun execute(vararg args: Any?) : Any?
 
     data class Parameter(
+            val index: Int,
             val type : Class<*>,
             val name: String?,
             val defValue: String?,
             val isNullable: Boolean,
-            val isPlayerName: Boolean
+            val isPlayerName: Boolean,
+            val vararg: Class<*>?
     ) {
         val canNullable : Boolean
             get() = defValue != null || isNullable

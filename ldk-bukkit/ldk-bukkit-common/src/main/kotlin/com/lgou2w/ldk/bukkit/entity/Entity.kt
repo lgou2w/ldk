@@ -17,6 +17,8 @@
 package com.lgou2w.ldk.bukkit.entity
 
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
+import org.bukkit.inventory.ItemStack
 
 /**************************************************************************
  *
@@ -133,3 +135,21 @@ fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z:
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, range: Double, tolerance: Double = 4.0) : T?
         = getNearbyTarget(type, range, range, range, tolerance)
+
+/**************************************************************************
+ *
+ * org.bukkit.entity.LivingEntity Extended
+ *
+ **************************************************************************/
+
+var LivingEntity.itemInHand: ItemStack?
+    get() = EntityFactory.getItemInHand(this)
+    set(value) { EntityFactory.setItemInHand(this, value) }
+
+var LivingEntity.itemInMainHand: ItemStack?
+    get() = EntityFactory.getItemInMainHand(this)
+    set(value) { EntityFactory.setItemInMainHand(this, value) }
+
+var LivingEntity.itemInOffHand: ItemStack?
+    get() = EntityFactory.getItemInOffHand(this)
+    set(value) { EntityFactory.setItemInOffHand(this, value) }

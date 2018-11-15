@@ -17,9 +17,31 @@
 package com.lgou2w.ldk.bukkit.coroutines
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import kotlin.coroutines.CoroutineContext
+
+@JvmOverloads
+fun Dispatchers.bukkit(plugin: Plugin, state: State = State.SYNC)
+        = BukkitDispatcher(plugin, state)
+
+suspend inline fun <T> Plugin.withBukkit(crossinline block: suspend CoroutineScope.() -> T): T {
+    return withContext(Dispatchers.bukkit(this)) {
+        block()
+    }
+}
+
+suspend inline fun <T> Plugin.withBukkitAsync(crossinline block: suspend CoroutineScope.() -> T): Deferred<T> {
+    return GlobalScope.async(Dispatchers.bukkit(this, State.ASYNC)) {
+        block()
+    }
+}
 
 class BukkitDispatcher(
         val plugin: Plugin,

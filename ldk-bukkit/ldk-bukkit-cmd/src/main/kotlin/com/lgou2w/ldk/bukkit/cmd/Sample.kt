@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.cmd
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.nbt.NBTType
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 @CommandRoot("sample", aliases = ["sp"])
 @Permission("sample")
@@ -50,6 +51,13 @@ class Sample : StandardCommand() {
     fun hello(sender: CommandSender) {
         // => /sample hello
         sender.send("hello world ~")
+    }
+
+    @Command("tell")
+    fun tell(sender: CommandSender, target: Player, @Optional("hi~") @Vararg(String::class) msgs: List<String>) {
+        val msg = msgs.joinToString(" ")
+        sender.sendMessage("You said to ${target.name} : $msg")
+        target.sendMessage("${sender.name} tell you : $msg")
     }
 
     @CommandRoot("user", aliases = ["u"])
