@@ -77,11 +77,11 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="NBT Extended" defaultstate="collapsed">
 
-    private fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?) {
+    protected fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?) {
         removeIf<T, T>(key, { it }, predicate)
     }
 
-    private fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?) {
+    protected fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?) {
         if (predicate == null) {
             remove(key)
         } else {
@@ -94,11 +94,11 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
-    private fun <T> NBTTagList.removeIf(predicate: Predicate<T>?) {
+    protected fun <T> NBTTagList.removeIf(predicate: Predicate<T>?) {
         removeIf<T, T>({ it }, predicate)
     }
 
-    private fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R>?) {
+    protected fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R>?) {
         if (predicate == null) {
             clear()
         } else {
@@ -121,7 +121,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     final override val tag: NBTTagCompound
 
     //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
-    
+
     override var durability: Int
         get() {
             return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
@@ -159,7 +159,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     //</editor-fold>
-    
+
     //<editor-fold desc="ItemBuilder - DisplayName" defaultstate="collapsed">
 
     override var displayName: ChatComponent?
