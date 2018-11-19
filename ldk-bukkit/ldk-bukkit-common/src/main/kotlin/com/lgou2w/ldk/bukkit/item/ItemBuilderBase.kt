@@ -28,10 +28,13 @@ import com.lgou2w.ldk.bukkit.potion.PotionEffectType
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatSerializer
+import com.lgou2w.ldk.common.ApplicatorFunction
+import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.isOrLater
+import com.lgou2w.ldk.common.isTrue
 import com.lgou2w.ldk.common.letIfNotNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTBase
@@ -112,6 +115,26 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
+    protected fun <T> NBTTagList.removeIf(block: BiFunction<Int, T, Boolean>?) {
+        removeIf<T, T>({ it }, block)
+    }
+
+    protected fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, block: BiFunction<Int, R, Boolean>?) {
+        if (block == null) {
+            clear()
+        } else {
+            val iterator = iterator()
+            var index = 0
+            @Suppress("UNCHECKED_CAST")
+            while (iterator.hasNext()) {
+                val next = iterator.next()
+                val value = if (next.type.isWrapper()) next as T else next.value as T
+                if (block(index++, transform(value)))
+                    iterator.remove()
+            }
+        }
+    }
+
     //</editor-fold>
 
     override fun build(): ItemStack {
@@ -121,6 +144,9 @@ abstract class ItemBuilderBase : ItemBuilder {
     final override val tag: NBTTagCompound
 
     //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
+
+    override val maxDurability: Int
+        get() = itemStack.type.maxDurability.toInt()
 
     override var durability: Int
         get() {
@@ -148,13 +174,31 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.durability = durability
+        return this
+    }
+
     override fun increaseDurability(durability: Int): ItemBuilder {
         this.durability -= durability // The smaller the value, the higher the durability
         return this
     }
 
+    override fun increaseDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.durability -= durability
+        return this
+    }
+
     override fun decreaseDurability(durability: Int): ItemBuilder {
         this.durability += durability // The higher the value, the lower the durability
+        return this
+    }
+
+    override fun decreaseDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.durability += durability
         return this
     }
 
@@ -191,6 +235,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setDisplayName(displayName: ChatComponent?): ItemBuilder {
         this.displayName = displayName
+        return this
+    }
+
+    override fun setDisplayNameIf(displayName: ChatComponent?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.displayName = displayName
         return this
     }
 
@@ -247,6 +297,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setLocalizedNameIf(localizedName: ChatComponent?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.localizedName = localizedName
+        return this
+    }
+
     override fun removeLocalizedName(): ItemBuilder {
         removeLocalizedName(null)
         return this
@@ -290,6 +346,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setLoreIf(lore: List<String>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.lore = lore
+        return this
+    }
+
     override fun clearLore(): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
             ?.remove(NBT.TAG_DISPLAY_LORE)
@@ -303,10 +365,21 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addLoreIf(vararg lore: String, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addLore(*lore)
+        return this
+    }
+
     override fun removeLore(predicate: Predicate<String>?): ItemBuilder {
+        removeLoreIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeLoreIndexed(block: BiFunction<Int, String, Boolean>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
             ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
-            ?.removeIf(predicate)
+            ?.removeIf(block)
         return this
     }
 
@@ -347,12 +420,29 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setEnchantmentIf(enchantments: Map<Enchantment, Int>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.enchantments = enchantments
+        return this
+    }
+
     override fun clearEnchantment(): ItemBuilder {
         if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
             tag.remove(NBT.TAG_ENCH_FRESHLY)
         } else {
             tag.remove(NBT.TAG_ENCH_LEGACY)
         }
+        return this
+    }
+
+    override fun addEnchantment(enchantment: Pair<Enchantment, Int>): ItemBuilder {
+        addEnchantment(enchantment.first, enchantment.second)
+        return this
+    }
+
+    override fun addEnchantmentIf(enchantment: Pair<Enchantment, Int>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addEnchantment(enchantment.first, enchantment.second)
         return this
     }
 
@@ -373,24 +463,35 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addEnchantmentIf(enchantment: Enchantment, level: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addEnchantment(enchantment, level)
+        return this
+    }
+
     override fun removeEnchantment(enchantment: Enchantment): ItemBuilder {
         removeEnchantment { it.first == enchantment }
         return this
     }
 
     override fun removeEnchantment(predicate: Predicate<Pair<Enchantment, Int>>?): ItemBuilder {
+        removeEnchantmentIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
         if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
             tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
                 ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getString(NBT.TAG_ENCH_ID)
                     Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                }, predicate)
+                }, block)
         } else {
             tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
                 ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getShort(NBT.TAG_ENCH_ID).toInt()
                     Enchantment.fromId(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                }, predicate)
+                }, block)
         }
         return this
     }
@@ -442,6 +543,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setFlagIf(flags: Array<out ItemFlag>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.flags = flags
+        return this
+    }
+
     override fun clearFlag(): ItemBuilder {
         tag.remove(NBT.TAG_HIDE_FLAGS)
         return this
@@ -450,6 +557,12 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun addFlag(vararg flags: ItemFlag): ItemBuilder {
         val modifier = tag.getIntOrDefault(NBT.TAG_HIDE_FLAGS)
         tag.putInt(NBT.TAG_HIDE_FLAGS, addFlagBit(modifier, *flags))
+        return this
+    }
+
+    override fun addFlagIf(vararg flags: ItemFlag, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addFlag(*flags)
         return this
     }
 
@@ -474,6 +587,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setUnbreakable(unbreakable: Boolean): ItemBuilder {
         this.isUnbreakable = unbreakable
+        return this
+    }
+
+    override fun setUnbreakableIf(unbreakable: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.isUnbreakable = unbreakable
         return this
     }
 
@@ -516,6 +635,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setAttributeIf(attributes: List<AttributeItemModifier>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.attributes = attributes
+        return this
+    }
+
     override fun clearAttribute(): ItemBuilder {
         tag.remove(NBT.TAG_ATTRIBUTE_MODIFIERS)
         return this
@@ -524,6 +649,12 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun addAttribute(attribute: AttributeItemModifier): ItemBuilder {
         tag.getListOrDefault(NBT.TAG_ATTRIBUTE_MODIFIERS)
             .addCompound(attribute.save(ofCompound()))
+        return this
+    }
+
+    override fun addAttributeIf(attribute: AttributeItemModifier, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addAttribute(attribute)
         return this
     }
 
@@ -553,6 +684,11 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun removeAttribute(predicate: Predicate<AttributeItemModifier>?): ItemBuilder {
+        removeAttributeIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeAttributeIndexed(block: BiFunction<Int, AttributeItemModifier, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
             ?.removeIf<NBTTagCompound, AttributeItemModifier>({ attribute ->
                 val type = Enums.ofValuableNotNull(AttributeType::class.java, attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
@@ -564,7 +700,7 @@ abstract class ItemBuilderBase : ItemBuilder {
                 val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
                 val uuid = if (uuidLeast == null || uuidMost == null) UUID.randomUUID() else UUID(uuidMost, uuidLeast)
                 AttributeItemModifier(type, name, operation, slot, amount, uuid)
-            }, predicate)
+            }, block)
         return this
     }
 
@@ -608,6 +744,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setCanDestroyIf(types: List<Material>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.canDestroy = types
+        return this
+    }
+
     override fun clearCanDestroy(): ItemBuilder {
         tag.remove(NBT.TAG_CAN_DESTROY)
         return this
@@ -619,13 +761,24 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addCanDestroyIf(vararg types: Material, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addCanDestroy(*types)
+        return this
+    }
+
     override fun removeCanDestroy(vararg types: Material): ItemBuilder {
         return removeCanDestroy { types.contains(it) }
     }
 
     override fun removeCanDestroy(predicate: Predicate<Material>?): ItemBuilder {
+        removeCanDestroyIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeCanDestroyIndexed(block: BiFunction<Int, Material, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_CAN_DESTROY)
-            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, predicate)
+            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, block)
         return this
     }
 
@@ -658,6 +811,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setCanPlaceOnIf(types: List<Material>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.canPlaceOn = types
+        return this
+    }
+
     override fun clearCanPlaceOn(): ItemBuilder {
         tag.remove(NBT.TAG_CAN_PLACE_ON)
         return this
@@ -669,13 +828,24 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addCanPlaceOnIf(vararg types: Material, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addCanPlaceOn(*types)
+        return this
+    }
+
     override fun removeCanPlaceOn(vararg types: Material): ItemBuilder {
         return removeCanPlaceOn { types.contains(it) }
     }
 
     override fun removeCanPlaceOn(predicate: Predicate<Material>?): ItemBuilder {
+        removeCanPlaceOnIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeCanPlaceOnIndexed(block: BiFunction<Int, Material, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_CAN_PLACE_ON)
-            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, predicate)
+            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, block)
         return this
     }
 
@@ -698,6 +868,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setRepairCost(repairCost: Int?): ItemBuilder {
         this.repairCost = repairCost
+        return this
+    }
+
+    override fun setRepairCostIf(repairCost: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.repairCost = repairCost
         return this
     }
 
@@ -738,6 +914,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setLeatherColorIf(leatherColor: Color?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.leatherColor = leatherColor
+        return this
+    }
+
     override fun removeLeatherColor(): ItemBuilder {
         removeLeatherColor(null)
         return this
@@ -773,6 +955,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setBookTitleIf(title: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.bookTitle = title
+        return this
+    }
+
     override fun removeBookTitle(): ItemBuilder {
         removeBookTitle(null)
         return this
@@ -802,6 +990,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setBookAuthor(author: String?): ItemBuilder {
         this.bookAuthor = author
+        return this
+    }
+
+    override fun setBookAuthorIf(author: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.bookAuthor = author
         return this
     }
 
@@ -837,6 +1031,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setBookGeneration(generation: Generation): ItemBuilder {
         this.bookGeneration = generation
+        return this
+    }
+
+    override fun setBookGenerationIf(generation: Generation, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.bookGeneration = generation
         return this
     }
 
@@ -887,9 +1087,21 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setBookPagesIf(pages: List<ChatComponent>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.bookPages = pages
+        return this
+    }
+
     override fun setBookPage(index: Int, page: ChatComponent): ItemBuilder {
         tag.getListOrDefault(NBT.TAG_BOOK_PAGES)
             .add(index, NBTTagString(page.toJson()))
+        return this
+    }
+
+    override fun setBookPageIf(index: Int, page: ChatComponent, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            setBookPage(index, page)
         return this
     }
 
@@ -904,11 +1116,22 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addBookPage(vararg pages: ChatComponent, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addBookPage(*pages)
+        return this
+    }
+
     override fun removeBookPage(predicate: Predicate<ChatComponent>?): ItemBuilder {
+        removeBookPageIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeBookPageIndexed(block: BiFunction<Int, ChatComponent, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_BOOK_PAGES)
             ?.removeIf<String, ChatComponent>({
                 ChatSerializer.fromJsonLenient(it)
-            }, predicate)
+            }, block)
         return this
     }
 
@@ -944,8 +1167,25 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setStoredEnchantmentsIf(storedEnchantments: Map<Enchantment, Int>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.storedEnchantments = storedEnchantments
+        return this
+    }
+
     override fun clearStoredEnchantments(): ItemBuilder {
         tag.remove(NBT.TAG_STORED_ENCHANTMENTS)
+        return this
+    }
+
+    override fun addStoredEnchantment(enchantment: Pair<Enchantment, Int>): ItemBuilder {
+        addStoredEnchantment(enchantment.first, enchantment.second)
+        return this
+    }
+
+    override fun addStoredEnchantmentIf(enchantment: Pair<Enchantment, Int>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addStoredEnchantment(enchantment.first, enchantment.second)
         return this
     }
 
@@ -961,12 +1201,23 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addStoredEnchantmentIf(enchantment: Enchantment, level: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addStoredEnchantment(enchantment, level)
+        return this
+    }
+
     override fun removeStoredEnchantment(enchantment: Enchantment): ItemBuilder {
         removeStoredEnchantment { it.first == enchantment }
         return this
     }
 
     override fun removeStoredEnchantment(predicate: Predicate<Pair<Enchantment, Int>>?): ItemBuilder {
+        removeStoredEnchantmentIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeStoredEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
             ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
                 val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
@@ -975,7 +1226,7 @@ abstract class ItemBuilderBase : ItemBuilder {
                 else
                     Enchantment.fromId(it.getShort(NBT.TAG_ENCH_ID).toInt())
                 enchantment to level
-            }, predicate)
+            }, block)
         return this
     }
 
@@ -1004,6 +1255,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setSkullOwner(skullOwner: String?): ItemBuilder {
         this.skullOwner = skullOwner
+        return this
+    }
+
+    override fun setSkullOwnerIf(skullOwner: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.skullOwner = skullOwner
         return this
     }
 
@@ -1053,6 +1310,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setSkullOwnerValueIf(value: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.skullOwnerValue = value
+        return this
+    }
+
     override fun setSkullOwnerValue(value: String, name: String?, id: UUID?): ItemBuilder {
         if (tag[NBT.TAG_SKULL_OWNER]?.type == NBTType.TAG_STRING)
             tag.remove(NBT.TAG_SKULL_OWNER)
@@ -1066,6 +1329,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         skullOwner.putString(NBT.TAG_SKULL_OWNER_ID, id?.toString() ?: UUID.randomUUID().toString())
         if (name != null)
             skullOwner.putString(NBT.TAG_SKULL_OWNER_NAME, name)
+        return this
+    }
+
+    override fun setSkullOwnerValue(value: String, name: String?, id: UUID?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            setSkullOwnerValue(value, name, id)
         return this
     }
 
@@ -1110,6 +1379,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setPotionColorIf(color: Color, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.potionColor = color
+        return this
+    }
+
     override fun removePotionColor(): ItemBuilder {
         removePotionColor(null)
         return this
@@ -1141,6 +1416,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setPotionBase(base: PotionBase?): ItemBuilder {
         this.potionBase = base
+        return this
+    }
+
+    override fun setPotionBaseIf(base: PotionBase?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.potionBase = base
         return this
     }
 
@@ -1198,6 +1479,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setPotionCustoms(customs: List<PotionEffectCustom>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.potionCustoms = customs
+        return this
+    }
+
     override fun clearPotionCustoms(): ItemBuilder {
         tag.remove(NBT.TAG_CUSTOM_POTION_EFFECTS)
         return this
@@ -1230,12 +1517,33 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
+    override fun addPotionCustomIf(effect: PotionEffectCustom, override: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addPotionCustom(effect, override)
+        return this
+    }
+
     override fun removePotionCustom(type: PotionEffectType): ItemBuilder {
         removePotionCustom { it.type == type }
         return this
     }
 
     override fun removePotionCustom(predicate: Predicate<PotionEffectCustom>?): ItemBuilder {
+        removePotionCustomIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removePotionCustomIndexed(block: BiFunction<Int, PotionEffectCustom, Boolean>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
+            ?.removeIf<NBTTagCompound, PotionEffectCustom>({
+                val type = PotionEffectType.fromId(it.getByte(NBT.TAG_POTION_ID).toInt())
+                val amplifier = it.getByte(NBT.TAG_POTION_AMPLIFIER).toInt()
+                val duration = it.getInt(NBT.TAG_POTION_DURATION)
+                val ambient = it.getBoolean(NBT.TAG_POTION_AMBIENT)
+                val particle = it.getBoolean(NBT.TAG_POTION_SHOW_PARTICLES)
+                val icon = it.getBooleanOrNull(NBT.TAG_POTION_SHOW_ICON) ?: false
+                PotionEffectCustom(type, amplifier, duration, ambient, particle, icon)
+            }, block)
         return this
     }
 
@@ -1258,6 +1566,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setFireworkStar(effect: FireworkEffect?): ItemBuilder {
         this.fireworkStar = effect
+        return this
+    }
+
+    override fun setFireworkStar(effect: FireworkEffect?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.fireworkStar = effect
         return this
     }
 
@@ -1308,6 +1622,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun setFireworkRocketEffectsIf(effect: List<FireworkEffect>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.fireworkRocketEffects = effect
+        return this
+    }
+
     override fun clearFireworkRocketEffects(): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
             ?.remove(NBT.TAG_FIREWORKS_EXPLOSIONS)
@@ -1321,17 +1641,28 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addFireworkRocketEffectIf(effect: FireworkEffect, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addFireworkRocketEffect(effect)
+        return this
+    }
+
     override fun removeFireworkRocketEffect(type: FireworkType): ItemBuilder {
         removeFireworkRocketEffect { it.type == type }
         return this
     }
 
     override fun removeFireworkRocketEffect(predicate: Predicate<FireworkEffect>?): ItemBuilder {
+        removeFireworkRocketEffectIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeFireworkRocketEffectIndexed(block: BiFunction<Int, FireworkEffect, Boolean>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
             ?.getListOrNull(NBT.TAG_FIREWORKS_EXPLOSIONS)
             ?.removeIf<NBTTagCompound, FireworkEffect>({
                 FireworkEffect.deserialize(it)
-            }, predicate)
+            }, block)
         return this
     }
 
@@ -1354,6 +1685,12 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun setFireworkRocketFlight(flight: Int?): ItemBuilder {
         this.fireworkRocketFlight = flight
+        return this
+    }
+
+    override fun setFireworkRocketFlightIf(flight: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.fireworkRocketFlight = flight
         return this
     }
 
