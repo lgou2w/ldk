@@ -32,6 +32,8 @@ interface CommandExecutor {
 
     fun execute(vararg args: Any?) : Any?
 
+    var description : String?
+
     data class Parameter(
             val index: Int,
             val type : Class<*>,

@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.bukkit
 
+import com.lgou2w.ldk.bukkit.cmd.DefaultCommandManager
+import com.lgou2w.ldk.bukkit.cmd.Sample
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.toColor
@@ -50,7 +52,13 @@ class LDKPlugin : PluginBase() {
         }
         updater = VersionUpdater(this)
         updater?.firstCheck()
+
+        commandManager.completes.addDefaultCompletes()
+        commandManager.transforms.addDefaultTransforms()
+        commandManager.registerCommand(Sample())
     }
+
+    val commandManager = DefaultCommandManager(this)
 
     override fun disable() {
         updater = null

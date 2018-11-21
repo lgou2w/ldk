@@ -32,7 +32,10 @@ class DefaultRegisteredCommand(
         override val name: String,
         override val aliases: Array<out String>,
         override val permission: Array<out String>?,
-        override val description: Description?,
+        override val fallbackPrefix: String,
+        override var description: String? = null,
+        override var usage: String? = null,
+        prefix: String? = null,
         children: Map<String, DefaultRegisteredCommand>,
         executors: Map<String, DefaultCommandExecutor>
 ) : RegisteredCommand {
@@ -45,8 +48,7 @@ class DefaultRegisteredCommand(
     override val executors: Map<String, CommandExecutor>
         get() = HashMap(mExecutors)
 
-    override val fallbackPrefix: String = description?.fallbackPrefix ?: ""
-    override var prefix: String = description?.prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
+    override var prefix: String = prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
         set(value) { field = value.replace(COMMAND_PLACEHOLDER, name) }
 
     override var feedback: CommandFeedback? = null
@@ -236,7 +238,7 @@ class DefaultRegisteredCommand(
 
     private fun typeHelp(sender: CommandSender) {
         val root = rootParent ?: this
-        val usage = description?.usage
+        val usage = usage
         if (usage == null || usage.isEmpty())
             sender.sendMessage(root.prefix + ChatColor.RED + "Unknown parameter. Type \"/${root.name} help\" for help.")
         else
@@ -289,7 +291,6 @@ class DefaultRegisteredCommand(
         result = result * 31 + Arrays.hashCode(aliases)
         result = result * 31 + mChildren.hashCode()
         result = result * 31 + mExecutors.hashCode()
-        result = result * 31 + (description?.hashCode() ?: 0)
         return result
     }
 
@@ -301,8 +302,7 @@ class DefaultRegisteredCommand(
                    name == other.name &&
                    Arrays.equals(aliases, other.aliases) &&
                    mChildren == other.mChildren &&
-                   mExecutors == other.mExecutors &&
-                   description == other.description
+                   mExecutors == other.mExecutors
         return false
     }
 

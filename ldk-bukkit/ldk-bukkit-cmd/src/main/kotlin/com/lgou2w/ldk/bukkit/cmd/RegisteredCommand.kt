@@ -28,6 +28,8 @@ interface RegisteredCommand {
 
     val children : Map<String, RegisteredCommand>
 
+    val executors : Map<String, CommandExecutor>
+
     /**************************************************************************
      *
      * Properties
@@ -42,11 +44,11 @@ interface RegisteredCommand {
 
     val fallbackPrefix : String
 
-    val description : Description?
-
-    val executors : Map<String, CommandExecutor>
-
     var prefix : String
+
+    var description : String?
+
+    var usage : String?
 
     var feedback : CommandFeedback?
 

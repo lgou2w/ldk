@@ -82,6 +82,7 @@ class DefaultCommandParser : CommandParser {
                 val permission = method.getAnnotation(Permission::class.java)
                 val isPlayable = method.getAnnotation(Playable::class.java) != null
                 val parameters = parseExecutorParameters(manager, method)
+                val description = method.getAnnotation(CommandDescription::class.java)?.value
                 if (parameters == null) null else command.value to buildCommandExecutor(
                         source,
                         command.value,
@@ -89,7 +90,8 @@ class DefaultCommandParser : CommandParser {
                         permission?.values,
                         isPlayable,
                         method,
-                        parameters
+                        parameters,
+                        description
                 )
             }
             .associate { it }
@@ -271,7 +273,10 @@ class DefaultCommandParser : CommandParser {
                 name,
                 aliases,
                 permission,
-                description,
+                description?.fallbackPrefix ?: "",
+                description?.description,
+                description?.usage,
+                description?.prefix,
                 children,
                 executors
         )
@@ -284,7 +289,8 @@ class DefaultCommandParser : CommandParser {
             permission: Array<out String>?,
             isPlayable: Boolean,
             method: Method,
-            parameters: Array<out CommandExecutor.Parameter>
+            parameters: Array<out CommandExecutor.Parameter>,
+            description: String?
     ) : DefaultCommandExecutor {
         return DefaultCommandExecutor(
                 source,
@@ -293,7 +299,8 @@ class DefaultCommandParser : CommandParser {
                 permission,
                 isPlayable,
                 parameters,
-                Accessors.ofMethod(method)
+                Accessors.ofMethod(method),
+                description
         )
     }
 }

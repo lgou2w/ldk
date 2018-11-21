@@ -40,7 +40,15 @@ class Sample : StandardCommand() {
             }
     }
 
+    @Command("help")
+    @CommandDescription("View sample command help.")
+    fun help(sender: CommandSender) {
+        val tooltips = CommandHelper.createSimpleCommandTooltips(command, true)
+        tooltips.forEach { sender.sendMessage(it) }
+    }
+
     @Command("sample")
+    @CommandDescription("Sample command.")
     fun sample(sender: CommandSender) {
         // => /sample
         sender.send("invoke sample")
@@ -48,12 +56,14 @@ class Sample : StandardCommand() {
 
     @Command("hello", aliases = ["hi", "nh"])
     @Permission("sample.hello")
+    @CommandDescription("Test and say Hello world.")
     fun hello(sender: CommandSender) {
         // => /sample hello
         sender.send("hello world ~")
     }
 
     @Command("tell")
+    @CommandDescription("Send a private chat message to the specified target player.")
     fun tell(sender: CommandSender, target: Player, @Optional("hi~") @Vararg(String::class) msgs: List<String>) {
         val msg = msgs.joinToString(" ")
         sender.sendMessage("You said to ${target.name} : $msg")
@@ -62,6 +72,7 @@ class Sample : StandardCommand() {
 
     @CommandRoot("user", aliases = ["u"])
     @Permission("sample.user")
+    @Description(description = "View sample user command.")
     class User : StandardCommand() {
 
         @Command("user")
@@ -97,6 +108,7 @@ class Sample : StandardCommand() {
 
     @CommandRoot("nbt")
     @Permission("sample.nbt")
+    @Description(description = "View sample nbt command.")
     class NBT : StandardCommand() {
 
         @Command("type")
