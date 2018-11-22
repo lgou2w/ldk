@@ -26,6 +26,20 @@
     </repositories>
 
     <dependencies>
+        <!-- ldk-asm -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-asm</artifactId>
+            <version>0.1.7-alpha</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- ldk-rsa -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-rsa</artifactId>
+            <version>0.1.7-alpha</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- ldk-hikari -->
         <dependency>
             <groupId>com.lgou2w</groupId>

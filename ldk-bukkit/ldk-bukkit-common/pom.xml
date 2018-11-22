@@ -14,45 +14,10 @@
     <artifactId>ldk-bukkit-common</artifactId>
 
     <dependencies>
-        <!-- ldk-asm -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-asm</artifactId>
-            <version>0.1.7-alpha</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- ldk-common -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-common</artifactId>
-            <version>0.1.7-alpha</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- ldk-reflect -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-reflect</artifactId>
-            <version>0.1.7-alpha</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- ldk-chat -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-chat</artifactId>
-            <version>0.1.7-alpha</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- ldk-nbt -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-nbt</artifactId>
-            <version>0.1.7-alpha</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- ldk-rsa -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-rsa</artifactId>
             <version>0.1.7-alpha</version>
             <scope>compile</scope>
         </dependency>
