@@ -31,6 +31,8 @@ abstract class CommandExecutorBase(
     val max = length
     val min = max - parameters.count { it.canNullable }
 
+    override var description: String? = null
+
     override fun hashCode(): Int {
         var result = reference.hashCode()
         result = 31 * result + name.hashCode()

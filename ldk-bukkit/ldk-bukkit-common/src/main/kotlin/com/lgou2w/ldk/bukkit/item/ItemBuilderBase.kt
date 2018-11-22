@@ -143,10 +143,65 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     final override val tag: NBTTagCompound
 
-    //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
+    final override val material: Material
+        get() = itemStack.type
 
-    override val maxDurability: Int
+    final override val maxDurability: Int
         get() = itemStack.type.maxDurability.toInt()
+
+    final override val maxStackSize: Int
+        get() = itemStack.type.maxStackSize
+
+    final override fun reBuilder(material: Material, count: Int, durability: Int): ItemBuilder
+            = ItemBuilder.of(material, count, durability)
+
+    //<editor-fold desc="ItemBuilder - Generic" defaultstate="collapsed">
+
+    final override var count: Int
+        get() = itemStack.amount
+        set(value) { itemStack.amount = value }
+
+    override fun getCount(block: (ItemBuilder, Int) -> Unit): ItemBuilder {
+        block(this, count)
+        return this
+    }
+
+    override fun setCount(count: Int): ItemBuilder {
+        this.count = count
+        return this
+    }
+
+    override fun setCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.count = count
+        return this
+    }
+
+    override fun increaseCount(count: Int): ItemBuilder {
+        this.count += count
+        return this
+    }
+
+    override fun increaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.count += count
+        return this
+    }
+
+    override fun decreaseCount(count: Int): ItemBuilder {
+        this.count -= count
+        return this
+    }
+
+    override fun decreaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.count -= count
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
 
     override var durability: Int
         get() {
@@ -230,6 +285,17 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun getDisplayName(block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder {
         block(this, displayName)
+        return this
+    }
+
+    override fun setDisplayName(displayName: String?): ItemBuilder {
+        this.displayName = ChatSerializer.fromRawOrNull(displayName)
+        return this
+    }
+
+    override fun setDisplayNameIf(displayName: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.displayName = ChatSerializer.fromRawOrNull(displayName)
         return this
     }
 
