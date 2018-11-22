@@ -41,14 +41,62 @@ interface ItemBuilder : Builder<ItemStack> {
 
     val tag: NBTTagCompound
 
-    //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
+    /**
+     * * The material type of this item stack.
+     * * 此物品栈的材料类型.
+     *
+     * @see [org.bukkit.Material]
+     * @see [org.bukkit.inventory.ItemStack.type]
+     */
+    val material : Material
 
     /**
      * * Maximum durability of this item stack material type.
+     * * 此物品栈材料类型的最大耐久度.
      *
      * @see [org.bukkit.Material.getMaxDurability]
      */
     val maxDurability : Int
+
+    /**
+     * * Maximum stack size of this item stack material type.
+     * * 此物品栈材料类型的最大堆叠大小.
+     *
+     * @see [org.bukkit.Material.getMaxStackSize]
+     */
+    val maxStackSize : Int
+
+    /**
+     * * Rebuilds an [ItemBuilder] object with the given material type data. using the current material type data if not specified.
+     * * 以给定的材料类型数据重建一个 [ItemBuilder] 对象, 如果不指定则使用当前材料类型数据.
+     */
+    fun reBuilder(material: Material = this.material, count: Int = this.count, durability: Int = this.durability) : ItemBuilder
+
+    //<editor-fold desc="ItemBuilder - Generic" defaultstate="collapsed">
+
+    /**
+     * * The count of this item stack.
+     * * 此物品栈的数量.
+     */
+    var count : Int
+
+    fun getCount(block: (ItemBuilder, Int) -> Unit) : ItemBuilder
+
+    fun setCount(count: Int) : ItemBuilder
+
+    fun setCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+
+    fun increaseCount(count: Int) : ItemBuilder
+
+    fun increaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+
+    fun decreaseCount(count: Int) : ItemBuilder
+
+    fun decreaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
 
     var durability : Int
 
@@ -73,6 +121,10 @@ interface ItemBuilder : Builder<ItemStack> {
     var displayName : ChatComponent?
 
     fun getDisplayName(block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
+
+    fun setDisplayName(displayName: String?) : ItemBuilder
+
+    fun setDisplayNameIf(displayName: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
 
     fun setDisplayName(displayName: ChatComponent?) : ItemBuilder
 

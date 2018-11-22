@@ -32,7 +32,10 @@ class DefaultRegisteredCommand(
         override val name: String,
         override val aliases: Array<out String>,
         override val permission: Array<out String>?,
-        override val description: Description?,
+        override val fallbackPrefix: String,
+        override var description: String? = null,
+        override var usage: String? = null,
+        prefix: String? = null,
         children: Map<String, DefaultRegisteredCommand>,
         executors: Map<String, DefaultCommandExecutor>
 ) : RegisteredCommand {
@@ -45,8 +48,7 @@ class DefaultRegisteredCommand(
     override val executors: Map<String, CommandExecutor>
         get() = HashMap(mExecutors)
 
-    override val fallbackPrefix: String = description?.fallbackPrefix ?: ""
-    override var prefix: String = description?.prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
+    override var prefix: String = prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
         set(value) { field = value.replace(COMMAND_PLACEHOLDER, name) }
 
     override var feedback: CommandFeedback? = null
@@ -188,18 +190,22 @@ class DefaultRegisteredCommand(
         }
         parameterValues.add(if (executor.isPlayable) sender as Player else sender)
         val vararg = executor.parameters.lastOrNull()
-        val maxArguments = if (args.size < executor.max) executor.max else args.size
+        val maxArguments = if (args.size <= executor.max) executor.max else args.size
         for (index in 0 until maxArguments) {
             val parameter = if (vararg != null && index >= vararg.index) vararg else executor.parameters.getOrNull(index)
-                            ?: break
+            if (parameter == null || (vararg?.vararg == null && index > executor.length - 1))
+                break
             val parameterType = parameter.vararg ?: parameter.type
             var transform = manager.transforms.getTransform(parameterType)
-            if (transform == null && DataType.ofPrimitive(parameterType).isPrimitive)
-                transform = manager.transforms.getTransform(DataType.ofPrimitive(parameterType))
+            var transformedType = parameterType
+            if (transform == null || DataType.ofPrimitive(transformedType).isPrimitive) {
+                transformedType = DataType.ofPrimitive(transformedType)
+                transform = manager.transforms.getTransform(transformedType)
+            }
             val value = args.getOrNull(index) ?: parameter.defValue
             val transformed = if (value != null) transform?.transform(value) else value
             if ((transformed == null && !parameter.canNullable) ||
-                (transformed != null && !parameterType.isAssignableFrom(transformed::class.java))
+                (transformed != null && !transformedType.isAssignableFrom(DataType.ofPrimitive(transformed::class.java)))
             ) {
                 feedback.onTransform(sender, name, this, executor, args, parameterType, value, transformed)
                 return false
@@ -236,9 +242,9 @@ class DefaultRegisteredCommand(
 
     private fun typeHelp(sender: CommandSender) {
         val root = rootParent ?: this
-        val usage = description?.usage
+        val usage = usage
         if (usage == null || usage.isEmpty())
-            sender.sendMessage(root.prefix + ChatColor.RED + "Unknown parameter. Type \"/${root.name} help\" for help.")
+            sender.sendMessage(root.prefix + ChatColor.RED + "Unknown command. Type \"/${root.name} help\" for help.")
         else
             sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
     }
@@ -289,7 +295,6 @@ class DefaultRegisteredCommand(
         result = result * 31 + Arrays.hashCode(aliases)
         result = result * 31 + mChildren.hashCode()
         result = result * 31 + mExecutors.hashCode()
-        result = result * 31 + (description?.hashCode() ?: 0)
         return result
     }
 
@@ -301,8 +306,7 @@ class DefaultRegisteredCommand(
                    name == other.name &&
                    Arrays.equals(aliases, other.aliases) &&
                    mChildren == other.mChildren &&
-                   mExecutors == other.mExecutors &&
-                   description == other.description
+                   mExecutors == other.mExecutors
         return false
     }
 

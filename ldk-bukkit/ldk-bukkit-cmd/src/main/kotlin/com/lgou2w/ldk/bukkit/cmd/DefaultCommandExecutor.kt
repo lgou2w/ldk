@@ -27,7 +27,8 @@ class DefaultCommandExecutor(
         permission: Array<out String>?,
         isPlayable: Boolean,
         parameters: Array<out CommandExecutor.Parameter>,
-        val executor: AccessorMethod<Any, Any>
+        val executor: AccessorMethod<Any, Any>,
+        override var description: String?
 ) : CommandExecutorBase(reference, name, aliases, permission, isPlayable, parameters) {
 
     val isStatic = Modifier.isStatic(executor.source.modifiers)

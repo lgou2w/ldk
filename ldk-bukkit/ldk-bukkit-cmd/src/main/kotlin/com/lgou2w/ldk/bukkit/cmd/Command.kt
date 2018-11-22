@@ -41,6 +41,10 @@ annotation class Command(
         val aliases: Array<String> = []
 )
 
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class CommandDescription(val value: String)
+
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Permission(vararg val values: String)
