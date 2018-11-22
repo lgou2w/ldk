@@ -43,8 +43,11 @@ class Sample : StandardCommand() {
     @Command("help")
     @CommandDescription("View sample command help.")
     fun help(sender: CommandSender) {
-        val tooltips = CommandHelper.createSimpleCommandTooltips(command, true)
-        tooltips.forEach { sender.sendMessage(it) }
+        CommandHelper.sendSimpleCommandTooltips(sender, command, false, true, CommandHelper.Sorted.C_T_E)
+    }
+
+    @Command("vararg")
+    fun vararg(sender: CommandSender, @Vararg(String::class) v1: List<String>, @Vararg(String::class) v2: List<String>) {
     }
 
     @Command("sample")
@@ -65,6 +68,7 @@ class Sample : StandardCommand() {
     @Command("tell")
     @CommandDescription("Send a private chat message to the specified target player.")
     fun tell(sender: CommandSender, target: Player, @Optional("hi~") @Vararg(String::class) msgs: List<String>) {
+        // => /sample tell <target> [msgs...]
         val msg = msgs.joinToString(" ")
         sender.sendMessage("You said to ${target.name} : $msg")
         target.sendMessage("${sender.name} tell you : $msg")

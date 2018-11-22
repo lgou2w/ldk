@@ -135,6 +135,15 @@ class DefaultCommandParser : CommandParser {
             """.trimIndent())
             return false
         }
+        // Variable length parameters cannot have multiple
+        if (parameters.count { parameter -> parameter.getAnnotation(Vararg::class.java) != null } > 1) {
+            betterError(manager, """
+                Command '${command.value}' executor variable length parameters cannot have multiple. filtered.
+                  Correction: ?
+                    fun $alias(sender: CommandSender, ..., @Vararg parameter: List) {...}
+            """.trimIndent())
+            return false
+        }
         return true
     }
 

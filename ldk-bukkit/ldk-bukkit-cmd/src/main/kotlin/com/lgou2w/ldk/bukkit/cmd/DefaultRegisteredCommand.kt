@@ -190,18 +190,22 @@ class DefaultRegisteredCommand(
         }
         parameterValues.add(if (executor.isPlayable) sender as Player else sender)
         val vararg = executor.parameters.lastOrNull()
-        val maxArguments = if (args.size < executor.max) executor.max else args.size
+        val maxArguments = if (args.size <= executor.max) executor.max else args.size
         for (index in 0 until maxArguments) {
             val parameter = if (vararg != null && index >= vararg.index) vararg else executor.parameters.getOrNull(index)
-                            ?: break
+            if (parameter == null || (vararg?.vararg == null && index > executor.length - 1))
+                break
             val parameterType = parameter.vararg ?: parameter.type
             var transform = manager.transforms.getTransform(parameterType)
-            if (transform == null && DataType.ofPrimitive(parameterType).isPrimitive)
-                transform = manager.transforms.getTransform(DataType.ofPrimitive(parameterType))
+            var transformedType = parameterType
+            if (transform == null || DataType.ofPrimitive(transformedType).isPrimitive) {
+                transformedType = DataType.ofPrimitive(transformedType)
+                transform = manager.transforms.getTransform(transformedType)
+            }
             val value = args.getOrNull(index) ?: parameter.defValue
             val transformed = if (value != null) transform?.transform(value) else value
             if ((transformed == null && !parameter.canNullable) ||
-                (transformed != null && !parameterType.isAssignableFrom(transformed::class.java))
+                (transformed != null && !transformedType.isAssignableFrom(DataType.ofPrimitive(transformed::class.java)))
             ) {
                 feedback.onTransform(sender, name, this, executor, args, parameterType, value, transformed)
                 return false
@@ -240,7 +244,7 @@ class DefaultRegisteredCommand(
         val root = rootParent ?: this
         val usage = usage
         if (usage == null || usage.isEmpty())
-            sender.sendMessage(root.prefix + ChatColor.RED + "Unknown parameter. Type \"/${root.name} help\" for help.")
+            sender.sendMessage(root.prefix + ChatColor.RED + "Unknown command. Type \"/${root.name} help\" for help.")
         else
             sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
     }

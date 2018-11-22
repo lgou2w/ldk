@@ -18,18 +18,38 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.applyIfNotNull
+import org.bukkit.command.CommandSender
 
 object CommandHelper {
 
-    private val OPTIONAL_LEFT = "${ChatColor.DARK_GRAY}[${ChatColor.GREEN}"
+    private val PARAMETER = "${ChatColor.AQUA}"
+    private val OPTIONAL_LEFT = "${ChatColor.DARK_GRAY}[$PARAMETER"
     private val OPTIONAL_RIGHT = "${ChatColor.DARK_GRAY}]"
-    private val REQUIRED_LEFT = "${ChatColor.DARK_GRAY}<${ChatColor.GREEN}"
+    private val REQUIRED_LEFT = "${ChatColor.DARK_GRAY}<$PARAMETER"
     private val REQUIRED_RIGHT = "${ChatColor.DARK_GRAY}>"
-    private val SLASH = "${ChatColor.GOLD}/"
+    private val SLASH = "${ChatColor.GRAY}/${ChatColor.GOLD}"
     private val DASH = "${ChatColor.DARK_GRAY}-${ChatColor.GRAY}"
+    private val DEF = "${ChatColor.DARK_GRAY}=${ChatColor.GREEN}"
+    private val VARARG = "$PARAMETER..."
+    private const val NOT_SET = "Not set."
     private const val NEWLINE = "\n"
     private const val EMPTY = ""
     private const val BLANK = " "
+
+    @JvmStatic
+    fun sendSimpleCommandTooltips(
+            receiver: CommandSender,
+            command: RegisteredCommand,
+            newLineDesc: Boolean = false,
+            named: Boolean = true,
+            sorted: Sorted = Sorted.NONE
+    ) {
+        val tooltips = createSimpleCommandTooltips(command, newLineDesc, named, sorted)
+        tooltips.forEach { tooltip ->
+            if (tooltip.contains(NEWLINE)) receiver.sendMessage(tooltip.split(NEWLINE).toTypedArray())
+            else receiver.sendMessage(tooltip)
+        }
+    }
 
     @JvmStatic
     fun createSimpleCommandTooltip(
@@ -37,11 +57,13 @@ object CommandHelper {
             index: Int,
             split: Int = 4,
             newLineDesc: Boolean = false,
-            sorted: Boolean = true
+            named: Boolean = true,
+            sorted: Sorted = Sorted.NONE
     ): List<String> {
         val betterSplit = if (newLineDesc) split else split * 2
-        val tooltips = createSimpleCommandTooltips(command, newLineDesc, sorted).chunked(betterSplit)
-        if (tooltips.isEmpty()) return emptyList()
+        val tooltips = createSimpleCommandTooltips(command, newLineDesc, named, sorted).chunked(betterSplit)
+        if (tooltips.isEmpty())
+            return emptyList()
         return when {
             index <= 0 -> tooltips.first()
             index >= tooltips.size -> tooltips.last()
@@ -53,36 +75,44 @@ object CommandHelper {
     fun createSimpleCommandTooltips(
             command: RegisteredCommand,
             newLineDesc: Boolean = false,
-            sorted: Boolean = true
+            named: Boolean = true,
+            sorted: Sorted = Sorted.NONE
     ) : List<String> {
-        val name = named(command)
+        val name = if (named) named(command) else command.name
         val children = command.children
         val executors = command.executors
         if (children.isEmpty() && executors.isEmpty())
             return emptyList()
-        val values = children
-            .map { "$SLASH$name$BLANK${it.key}${description(it.value.description, newLineDesc)}" }
+        val childrenTooltips = children
+            .map { "$SLASH$name$BLANK$PARAMETER${it.key}${description(it.value.description, newLineDesc)}" }
             .toMutableList()
-        values += executors
+        val executorsTooltips = executors
             .filter { it.key != command.name }
-            .map { "$SLASH$name$BLANK${it.key}$BLANK${createSimpleExecutorUsage(it.value)}${description(it.value.description, newLineDesc)}" }
-        whetherCommandMapping(command, executors, newLineDesc).applyIfNotNull { values.add(0, "$SLASH$name$BLANK$this") }
-        return if (sorted) values.sorted() else values
+            .map { "$SLASH$name$BLANK$PARAMETER${it.key}${createSimpleExecutorUsage(it.value)}${description(it.value.description, newLineDesc)}" }
+        val sortedTooltips = when (sorted) {
+            Sorted.NONE -> childrenTooltips + executorsTooltips
+            Sorted.DEFAULT -> (childrenTooltips + executorsTooltips).sorted()
+            Sorted.C_T_E -> childrenTooltips.sorted() + executorsTooltips.sorted()
+            Sorted.E_T_C -> executorsTooltips.sorted() + childrenTooltips.sorted()
+        }.toMutableList()
+        whetherCommandMapping(command, executors, newLineDesc)
+            .applyIfNotNull { sortedTooltips.add(0, "$SLASH$name$this") }
+        return sortedTooltips
     }
 
     @JvmStatic
     fun createSimpleExecutorUsage(executor: CommandExecutor): String {
         val parameters = executor.parameters
         return if (parameters.isNotEmpty()) {
-            parameters.joinToString(separator = BLANK) { parameter ->
+            BLANK + parameters.joinToString(separator = BLANK) { parameter ->
                 val alias = if (parameter.vararg == null) parameter.name ?: parameter.type.simpleName
                     else parameter.name ?: parameter.vararg.simpleName
                 if (parameter.canNullable) {
-                    if (parameter.vararg == null) "$OPTIONAL_LEFT$alias=${parameter.defValue}$OPTIONAL_RIGHT"
-                    else "$OPTIONAL_LEFT$alias=${parameter.defValue}...$OPTIONAL_RIGHT"
+                    if (parameter.vararg == null) "$OPTIONAL_LEFT$alias$DEF${parameter.defValue}$OPTIONAL_RIGHT"
+                    else "$OPTIONAL_LEFT$alias$DEF${parameter.defValue}$VARARG$OPTIONAL_RIGHT"
                 } else {
                     if (parameter.vararg == null) "$REQUIRED_LEFT$alias$REQUIRED_RIGHT"
-                    else "$REQUIRED_LEFT$alias...$REQUIRED_RIGHT"
+                    else "$REQUIRED_LEFT$alias$VARARG$REQUIRED_RIGHT"
                 }
             }
         } else {
@@ -100,8 +130,8 @@ object CommandHelper {
     }
 
     private fun description(description: String?, newLineDesc: Boolean): String {
-        return if (newLineDesc) "$NEWLINE$BLANK$DASH$BLANK${description ?: "Not set."}" // TODO temporary
-        else "$BLANK$DASH$BLANK${description ?: "Not set."}"
+        return if (newLineDesc) "$NEWLINE$BLANK$DASH$BLANK${description ?: NOT_SET}"
+        else "$BLANK$DASH$BLANK${description ?: NOT_SET}"
     }
 
     private fun named(command: RegisteredCommand?): String {
@@ -110,5 +140,14 @@ object CommandHelper {
             "${named(command.parent)}$BLANK$name"
         else
             name ?: EMPTY
+    }
+
+    enum class Sorted {
+
+        NONE,
+        DEFAULT,
+        C_T_E,
+        E_T_C,
+        ;
     }
 }
