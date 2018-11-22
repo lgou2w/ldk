@@ -46,10 +46,6 @@ class Sample : StandardCommand() {
         CommandHelper.sendSimpleCommandTooltips(sender, command, false, true, CommandHelper.Sorted.C_T_E)
     }
 
-    @Command("vararg")
-    fun vararg(sender: CommandSender, @Vararg(String::class) v1: List<String>, @Vararg(String::class) v2: List<String>) {
-    }
-
     @Command("sample")
     @CommandDescription("Sample command.")
     fun sample(sender: CommandSender) {
