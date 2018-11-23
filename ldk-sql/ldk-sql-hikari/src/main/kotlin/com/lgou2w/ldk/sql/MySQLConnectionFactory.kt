@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
 import com.zaxxer.hikari.HikariConfig
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 class MySQLConnectionFactory(
-        configuration: Configuration
+        configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
     override val implementationName: String = "MySQL"
     override val driverClass: String = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
 
-    override fun appendProperties(config: HikariConfig, configuration: Configuration) {
+    override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
         config.addDataSourceProperty("cachePrepStmts", "true")
         config.addDataSourceProperty("alwaysSendSetIsolation", "false")
         config.addDataSourceProperty("cacheServerConfiguration", "true")

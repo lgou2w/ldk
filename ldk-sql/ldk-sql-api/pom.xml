@@ -5,27 +5,20 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>ldk</artifactId>
+        <artifactId>ldk-sql</artifactId>
         <groupId>com.lgou2w</groupId>
         <version>0.1.7-alpha</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-hikari</artifactId>
+    <artifactId>ldk-sql-api</artifactId>
 
     <dependencies>
-        <!-- ldk-sql-api -->
+        <!-- ldk-common -->
         <dependency>
             <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-sql-api</artifactId>
+            <artifactId>ldk-common</artifactId>
             <version>0.1.7-alpha</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- HikariCP -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.2.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
-data class Configuration(
+data class HikariConfiguration(
         val poolName: String?,
         val address: String,
         val database: String,

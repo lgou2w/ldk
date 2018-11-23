@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
 import com.lgou2w.ldk.common.notNull
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
-class ConfigurationBuilder {
+class HikariConfigurationBuilder {
 
     var poolName : String? = null
 

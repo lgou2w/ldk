@@ -14,19 +14,7 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
-data class Configuration(
-        val poolName: String?,
-        val address: String,
-        val database: String,
-        val username: String,
-        val password: String,
-        val maxPoolSize: Int,
-        val minIdleConnections: Int,
-        val maxLifetime: Long,
-        val connectionTimeout: Long,
-        val properties: Map<String, String>
-) {
+data class HikariTestSession(val isConnected: Boolean, val delay: Long) {
 }

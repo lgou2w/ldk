@@ -16,5 +16,6 @@
 
 package com.lgou2w.ldk.hikari
 
+@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 data class TestSession(val isConnected: Boolean, val delay: Long) {
 }

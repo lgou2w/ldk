@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
 import com.zaxxer.hikari.HikariConfig
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 class MariaDbConnectionFactory(
-        configuration: Configuration
+        configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
     override val implementationName: String = "MariaDB"
     override val driverClass: String = "org.mariadb.jdbc.MariaDbDataSource"
 
-    override fun appendProperties(config: HikariConfig, configuration: Configuration) {
+    override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
         val entries = configuration.properties.entries
         if (entries.isEmpty())
             return

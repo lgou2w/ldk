@@ -49,6 +49,7 @@
         <module>ldk-nbt</module>
         <module>ldk-rx</module>
         <module>ldk-rsa</module>
+        <module>ldk-sql</module>
         <module>ldk-hikari</module>
         <module>ldk-bukkit</module>
     </modules>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
 import com.lgou2w.ldk.common.notNull
 import com.zaxxer.hikari.HikariConfig
@@ -22,9 +22,8 @@ import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
 import java.sql.SQLException
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 abstract class HikariConnectionFactory(
-        protected val configuration: Configuration
+        protected val configuration: HikariConfiguration
 ) : ConnectionFactory {
 
     private var hikari : HikariDataSource? = null
@@ -37,7 +36,7 @@ abstract class HikariConnectionFactory(
      */
     protected abstract val driverClass : String
 
-    protected open fun appendProperties(config: HikariConfig, configuration: Configuration) {
+    protected open fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
         configuration.properties.forEach {
             config.addDataSourceProperty(it.key, it.value)
         }
@@ -75,7 +74,7 @@ abstract class HikariConnectionFactory(
         }
     }
 
-    override fun testSession() : TestSession {
+    fun testSession() : HikariTestSession {
         var success = true
         val start = System.currentTimeMillis()
         try {
@@ -89,7 +88,7 @@ abstract class HikariConnectionFactory(
             success = false
         }
         val end = System.currentTimeMillis() - start
-        return TestSession(success, if (success) end else -1L)
+        return HikariTestSession(success, if (success) end else -1L)
     }
 
     override fun openSession(): Connection {

@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
 import java.util.*
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
-fun buildConfiguration(block: ConfigurationBuilder.() -> Unit) : Configuration {
-    val builder = ConfigurationBuilder().also(block)
-    return Configuration(
+fun buildConfiguration(block: HikariConfigurationBuilder.() -> Unit) : HikariConfiguration {
+    val builder = HikariConfigurationBuilder().also(block)
+    return HikariConfiguration(
             builder.poolName,
             builder.address!!,
             builder.database!!,

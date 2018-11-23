@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.hikari
+package com.lgou2w.ldk.sql
 
-@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
-data class Configuration(
-        val poolName: String?,
-        val address: String,
-        val database: String,
-        val username: String,
-        val password: String,
-        val maxPoolSize: Int,
-        val minIdleConnections: Int,
-        val maxLifetime: Long,
-        val connectionTimeout: Long,
-        val properties: Map<String, String>
-) {
+import java.sql.Connection
+import java.sql.SQLException
+import javax.sql.DataSource
+
+interface ConnectionFactory {
+
+    val dataSource : DataSource
+
+    val implementationName : String
+
+    fun initialize()
+
+    fun shutdown()
+
+    @Throws(SQLException::class)
+    fun openSession(): Connection
 }
