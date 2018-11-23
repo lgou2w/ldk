@@ -18,6 +18,7 @@
         <module>ldk-sql-api</module>
         <module>ldk-sql-hikari</module>
         <module>ldk-sql-sqlite</module>
+        <module>ldk-sql-h2</module>
     </modules>
 
 </project>

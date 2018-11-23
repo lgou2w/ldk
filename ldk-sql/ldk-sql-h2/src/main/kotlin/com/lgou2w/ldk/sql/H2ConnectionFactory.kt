@@ -23,23 +23,26 @@ import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import java.nio.file.Path
 import java.sql.Connection
+import java.sql.Driver
 import java.sql.SQLException
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.sql.DataSource
+import kotlin.properties.Delegates
 
-class SQLiteConnectionFactory(
-        val file: Path,
+class H2ConnectionFactory(
+        val path: Path,
         val properties: Properties = Properties()
 ) : ConnectionFactory {
 
+    private var driver : Driver by Delegates.notNull()
     private var connectionWrap : WrappedConnection? = null
     private val initialized = AtomicBoolean(false)
 
     override val dataSource: DataSource
         get() = throw UnsupportedOperationException("The SQLite connection factory does not support data sources.")
 
-    override val implementationName: String = "SQLite"
+    override val implementationName: String = "H2"
 
     override fun initialize() {
         initializeDriver()
@@ -55,7 +58,7 @@ class SQLiteConnectionFactory(
     @Synchronized
     override fun openSession(): Connection {
         if (connectionWrap == null || connectionWrap?.isClosed.isTrue()) {
-            val connection = createConnection("jdbc:sqlite:$file", properties)
+            val connection = createConnection("jdbc:h2:$path", properties)
             if (connection != null)
                 connectionWrap = WrappedConnection.wrap(connection)
         }
@@ -67,7 +70,8 @@ class SQLiteConnectionFactory(
         if (!initialized.compareAndSet(false, true))
             return
         try {
-            Class.forName("org.sqlite.JDBC")
+            Class.forName("org.h2.Driver")
+            driver = org.h2.Driver.load()
         } catch (e: Exception) {
             initialized.set(false)
             if (e is ClassNotFoundException)
@@ -80,7 +84,7 @@ class SQLiteConnectionFactory(
     private fun createConnection(url: String, properties: Properties): Connection? {
         initializeDriver()
         return try {
-            org.sqlite.JDBC.createConnection(url, properties)
+            driver.connect(url, properties)
         } catch (e: NoSuchMethodException) {
             throw RuntimeException(e)
         } catch (e: IllegalAccessException) {
@@ -115,7 +119,7 @@ class SQLiteConnectionFactory(
                 return null
             }
             return if (args == null) method.invoke(connection)
-                else method.invoke(connection, *args)
+            else method.invoke(connection, *args)
         }
     }
 }

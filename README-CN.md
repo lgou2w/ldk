@@ -49,6 +49,7 @@ Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开�
         * [`ldk-sql-api`](/ldk-sql/ldk-sql-api)
         * [`ldk-sql-hikari`](/ldk-sql/ldk-sql-hikari)
         * [`ldk-sql-sqlite`](/ldk-sql/ldk-sql-sqlite)
+        * [`ldk-sql-h2`](/ldk-sql/ldk-sql-h2)
     * [`ldk-bukkit`](/ldk-bukkit)
         * [`ldk-bukkit-version`](/ldk-bukkit/ldk-bukkit-version)
         * [`ldk-bukkit-reflect`](/ldk-bukkit/ldk-bukkit-reflect)
