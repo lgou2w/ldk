@@ -44,7 +44,7 @@ Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开�
     * [`ldk-rsa`](/ldk-rsa)
     * [`ldk-chat`](/ldk-chat)
     * [`ldk-nbt`](/ldk-nbt)
-    * ~~[`ldk-hikari`](/ldk-hikari)~~ (Deprecated. Please use [`ldk-sql-hikari`](/ldk-sql/ldk-sql-hikari))
+    * ~~[`ldk-hikari`](/ldk-hikari)~~ (已弃用. 请使用 [`ldk-sql-hikari`](/ldk-sql/ldk-sql-hikari) 模块.)
     * [`ldk-sql`](/ldk-sql)
         * [`ldk-sql-api`](/ldk-sql/ldk-sql-api)
         * [`ldk-sql-hikari`](/ldk-sql/ldk-sql-hikari)
