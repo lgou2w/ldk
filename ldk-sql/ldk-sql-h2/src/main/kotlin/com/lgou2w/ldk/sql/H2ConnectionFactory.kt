@@ -40,7 +40,7 @@ class H2ConnectionFactory(
     private val initialized = AtomicBoolean(false)
 
     override val dataSource: DataSource
-        get() = throw UnsupportedOperationException("The SQLite connection factory does not support data sources.")
+        get() = throw UnsupportedOperationException("The H2 connection factory does not support data sources.")
 
     override val implementationName: String = "H2"
 
