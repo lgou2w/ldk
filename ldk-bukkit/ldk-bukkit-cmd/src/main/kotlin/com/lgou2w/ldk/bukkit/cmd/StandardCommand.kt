@@ -23,7 +23,7 @@ abstract class StandardCommand : Initializable {
 
     lateinit var command : RegisteredCommand private set
 
-    override fun initialize(command: RegisteredCommand) {
+    final override fun initialize(command: RegisteredCommand) {
         this.command = command
         this.initialize()
     }
