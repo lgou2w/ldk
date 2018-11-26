@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit
 import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Runnable
 import org.bukkit.Bukkit
+import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 import java.util.concurrent.CompletableFuture
@@ -97,3 +98,12 @@ fun <T> Plugin.callTaskFutureAsync(callback: Callable<T>) : CompletableFuture<T>
 
 fun <T> Plugin.callTaskFutureAsyncLater(callback: Callable<T>, delay: Long) : CompletableFuture<T>
         = callTaskFuture(callback, delay, true)
+
+/**************************************************************************
+ *
+ * org.bukkit.plugin.Plugin Listener Extended
+ *
+ **************************************************************************/
+
+fun Plugin.registerListener(listener: Listener)
+        = Bukkit.getPluginManager().registerEvents(listener, this)
