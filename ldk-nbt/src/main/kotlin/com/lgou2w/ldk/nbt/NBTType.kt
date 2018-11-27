@@ -143,7 +143,7 @@ enum class NBTType(
     /**
      * * TAG_LIST
      *      * Primitive = `java.util.List.class`
-     *      * Reference = `java.lang.List.class`
+     *      * Reference = `java.util.List.class`
      *      * Wrapped = `NBTTagList.class`
      *
      * @see [NBTTagList]
@@ -152,7 +152,7 @@ enum class NBTType(
     /**
      * * TAG_COMPOUND
      *      * Primitive = `java.util.Map.class`
-     *      * Reference = `java.lang.Map.class`
+     *      * Reference = `java.util.Map.class`
      *      * Wrapped = `NBTTagCompound.class`
      *
      * @see [NBTTagCompound]
