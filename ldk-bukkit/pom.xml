@@ -25,7 +25,7 @@
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
         <module>ldk-bukkit-depend</module>
-        <module>ldk-bukkit-scheduler</module>
+        <module>ldk-bukkit-rx</module>
         <module>ldk-bukkit-coroutines</module> <!-- kotlin coroutines -->
         <module>ldk-bukkit-plugin</module> <!-- runtime -->
     </modules>

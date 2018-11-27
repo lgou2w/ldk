@@ -97,13 +97,6 @@
             <version>0.1.7-alpha</version>
             <scope>compile</scope>
         </dependency>
-        <!-- ldk-bukkit-scheduler -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-bukkit-scheduler</artifactId>
-            <version>0.1.7-alpha</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- ldk-bukkit-coroutines -->
         <dependency>
             <groupId>com.lgou2w</groupId>
