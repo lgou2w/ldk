@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-alpha</version>
+        <version>0.1.7-beta</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-sql-api</artifactId>
-            <version>0.1.7-alpha</version>
+            <version>0.1.7-beta</version>
             <scope>compile</scope>
         </dependency>
         <!-- HikariCP -->
