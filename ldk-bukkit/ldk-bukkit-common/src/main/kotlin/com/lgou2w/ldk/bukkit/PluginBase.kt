@@ -65,8 +65,10 @@ abstract class PluginBase : JavaPlugin, Plugin {
             } else
                 logger.log(Level.SEVERE, "Error loading, skip plugin disabled, exception:", e)
         }
-        val endTime = System.currentTimeMillis()
-        logger.info("Plugin $pluginName $pluginVersion successfully loaded, total time: ${endTime - startTime}ms.")
+        if (isEnabled) {
+            val endTime = System.currentTimeMillis()
+            logger.info("Plugin $pluginName $pluginVersion successfully loaded, total time: ${endTime - startTime}ms.")
+        }
     }
 
     final override fun onDisable() {

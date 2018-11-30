@@ -18,6 +18,7 @@ package com.lgou2w.ldk.hikari
 
 import com.zaxxer.hikari.HikariConfig
 
+@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 class MySQLConnectionFactory(
         configuration: Configuration
 ) : HikariConnectionFactory(configuration) {

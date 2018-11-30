@@ -17,22 +17,11 @@
 package com.lgou2w.ldk.hikari
 
 import com.zaxxer.hikari.HikariDataSource
-import java.sql.Connection
-import java.sql.SQLException
 
-interface ConnectionFactory {
+@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
+interface ConnectionFactory : com.lgou2w.ldk.sql.ConnectionFactory {
 
-    val dataSource : HikariDataSource
-
-    val implementationName : String
-
-    fun initialize()
-
-    @Throws(Exception::class)
-    fun shutdown()
+    override val dataSource : HikariDataSource
 
     fun testSession() : TestSession
-
-    @Throws(SQLException::class)
-    fun openSession() : Connection
 }

@@ -22,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
 import java.sql.SQLException
 
+@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 abstract class HikariConnectionFactory(
         protected val configuration: Configuration
 ) : ConnectionFactory {

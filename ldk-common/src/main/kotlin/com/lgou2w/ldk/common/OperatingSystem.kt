@@ -44,7 +44,7 @@ enum class OperatingSystem(
     WINDOWS ("windows"),
     LINUX ("linux"),
     OSX ("osx"),
-    UNKNOWN ("universal"),
+    UNKNOWN ("unknown"),
     ;
 
     override val value : String
@@ -73,11 +73,6 @@ enum class OperatingSystem(
                 1024
             }
         }
-
-//        @JvmStatic
-//        val SUGGESTED_MEMORY : Int by lazy {
-//            (Math.round(1.0 * TOTAL_MEMORY / 4.0 / 128.0) * 128).toInt()
-//        }
 
         /**
          * * Indicates the operating system architecture of the current platform.
@@ -132,13 +127,6 @@ enum class OperatingSystem(
                     System.getProperty("sun.arch.data.model") ?:
                     System.getProperty("os.arch")
         }
-
-//        @JvmStatic
-//        fun setClipboard(content: String) {
-//            val clipboard = ClipboardContent()
-//            clipboard.putString(content)
-//            Clipboard.getSystemClipboard().setContent(clipboard)
-//        }
 
         /**
          * * gc -> runFinalization -> gc

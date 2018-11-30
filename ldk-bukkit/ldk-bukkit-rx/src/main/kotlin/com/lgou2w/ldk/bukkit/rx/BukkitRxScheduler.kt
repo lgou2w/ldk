@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit.scheduler
+package com.lgou2w.ldk.bukkit.rx
 
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable

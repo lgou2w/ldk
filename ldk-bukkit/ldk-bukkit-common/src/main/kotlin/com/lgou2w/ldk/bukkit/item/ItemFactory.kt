@@ -219,7 +219,9 @@ object ItemFactory {
                 val count = itemStack.amount
                 root.putString(NBT.TAG_ID, id)
                 root.putByte(NBT.TAG_COUNT, count)
-                root[NBT.TAG] = readTagSafe(itemStack)
+                val tag = readTag(itemStack)
+                if (tag != null)
+                    root[NBT.TAG] = tag
             } catch (e: NullPointerException) {
                 // Get by ItemStack.save(NBTTagCompound)
                 // 从 ItemStack.save(NBTTagCompound) 获取

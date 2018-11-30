@@ -156,4 +156,26 @@ class Test {
             put("list", NBTTagList().apply { addString("1", "2", "3", "4", "5") })
         }.toMojangsonWithColor().println()
     }
+
+    @Test
+    fun test_NBTRemoveIf() {
+        val list = ofList {
+            addInt(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+        }.removeIf<Int> { it % 2 == 0 }
+        println(list)
+    }
+
+    @Test
+    fun test_NBTRemoveIf2() {
+        val compound = ofCompound {
+            putString("id", "iron_sword")
+            put("tag", ofCompound {
+                putShort("Damage", 10)
+                putBoolean("Unbreakable", true)
+            })
+        }.removeIf<NBTTagCompound, Int>("tag", { tag ->
+            tag.getShort("Damage").toInt()
+        }, { it == 10 })
+        println(compound)
+    }
 }

@@ -18,6 +18,7 @@ package com.lgou2w.ldk.hikari
 
 import com.lgou2w.ldk.common.notNull
 
+@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 class ConfigurationBuilder {
 
     var poolName : String? = null

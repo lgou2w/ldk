@@ -31,7 +31,6 @@ import com.lgou2w.ldk.chat.ChatSerializer
 import com.lgou2w.ldk.common.ApplicatorFunction
 import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Enums
-import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.isTrue
@@ -39,10 +38,11 @@ import com.lgou2w.ldk.common.letIfNotNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTBase
 import com.lgou2w.ldk.nbt.NBTTagCompound
-import com.lgou2w.ldk.nbt.NBTTagList
 import com.lgou2w.ldk.nbt.NBTTagString
 import com.lgou2w.ldk.nbt.NBTType
 import com.lgou2w.ldk.nbt.ofCompound
+import com.lgou2w.ldk.nbt.removeIf
+import com.lgou2w.ldk.nbt.removeIfIndexed
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.inventory.ItemFlag
@@ -77,65 +77,6 @@ abstract class ItemBuilderBase : ItemBuilder {
         if (lazyDurability)
             setDurability(durability)
     }
-
-    //<editor-fold desc="NBT Extended" defaultstate="collapsed">
-
-    protected fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?) {
-        removeIf<T, T>(key, { it }, predicate)
-    }
-
-    protected fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?) {
-        if (predicate == null) {
-            remove(key)
-        } else {
-            val value = get(key) ?: return
-            @Suppress("UNCHECKED_CAST")
-            if (value.type.isWrapper() && predicate(transform(value as T)))
-                remove(key)
-            else if (predicate(transform(value.value as T)))
-                remove(key)
-        }
-    }
-
-    protected fun <T> NBTTagList.removeIf(predicate: Predicate<T>?) {
-        removeIf<T, T>({ it }, predicate)
-    }
-
-    protected fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R>?) {
-        if (predicate == null) {
-            clear()
-        } else {
-            @Suppress("UNCHECKED_CAST")
-            value.removeIf {
-                predicate(transform(
-                        if (it.type.isWrapper()) it as T
-                        else it.value as T
-                ))
-            }
-        }
-    }
-
-    protected fun <T> NBTTagList.removeIf(block: BiFunction<Int, T, Boolean>?) {
-        removeIf<T, T>({ it }, block)
-    }
-
-    protected fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, block: BiFunction<Int, R, Boolean>?) {
-        if (block == null) {
-            clear()
-        } else {
-            val iterator = iterator()
-            var index = 0
-            @Suppress("UNCHECKED_CAST")
-            while (iterator.hasNext()) {
-                val next = iterator.next()
-                val value = if (next.type.isWrapper()) next as T else next.value as T
-                if (block(index++, transform(value)))
-                    iterator.remove()
-            }
-        }
-    }
-
-    //</editor-fold>
 
     override fun build(): ItemStack {
         return ItemFactory.writeTag(itemStack, tag)
@@ -445,7 +386,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeLoreIndexed(block: BiFunction<Int, String, Boolean>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
             ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
-            ?.removeIf(block)
+            ?.removeIfIndexed(block)
         return this
     }
 
@@ -548,13 +489,13 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
         if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
             tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
-                ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
+                ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getString(NBT.TAG_ENCH_ID)
                     Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
                 }, block)
         } else {
             tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
-                ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
+                ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getShort(NBT.TAG_ENCH_ID).toInt()
                     Enchantment.fromId(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
                 }, block)
@@ -756,7 +697,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun removeAttributeIndexed(block: BiFunction<Int, AttributeItemModifier, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
-            ?.removeIf<NBTTagCompound, AttributeItemModifier>({ attribute ->
+            ?.removeIfIndexed<NBTTagCompound, AttributeItemModifier>({ attribute ->
                 val type = Enums.ofValuableNotNull(AttributeType::class.java, attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
                 val name = attribute.getString(NBT.TAG_ATTRIBUTE_NAME)
                 val operation = Enums.ofValuableNotNull(Operation::class.java, attribute.getInt(NBT.TAG_ATTRIBUTE_OPERATION))
@@ -844,7 +785,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun removeCanDestroyIndexed(block: BiFunction<Int, Material, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_CAN_DESTROY)
-            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, block)
+            ?.removeIfIndexed<String, Material>({ matchMaterial(it) ?: Material.AIR }, block)
         return this
     }
 
@@ -911,7 +852,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun removeCanPlaceOnIndexed(block: BiFunction<Int, Material, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_CAN_PLACE_ON)
-            ?.removeIf<String, Material>({ matchMaterial(it) ?: Material.AIR }, block)
+            ?.removeIfIndexed<String, Material>({ matchMaterial(it) ?: Material.AIR }, block)
         return this
     }
 
@@ -1195,7 +1136,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun removeBookPageIndexed(block: BiFunction<Int, ChatComponent, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_BOOK_PAGES)
-            ?.removeIf<String, ChatComponent>({
+            ?.removeIfIndexed<String, ChatComponent>({
                 ChatSerializer.fromJsonLenient(it)
             }, block)
         return this
@@ -1285,7 +1226,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun removeStoredEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
-            ?.removeIf<NBTTagCompound, Pair<Enchantment, Int>>({
+            ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                 val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
                 val enchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
                     Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
@@ -1601,7 +1542,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override fun removePotionCustomIndexed(block: BiFunction<Int, PotionEffectCustom, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
-            ?.removeIf<NBTTagCompound, PotionEffectCustom>({
+            ?.removeIfIndexed<NBTTagCompound, PotionEffectCustom>({
                 val type = PotionEffectType.fromId(it.getByte(NBT.TAG_POTION_ID).toInt())
                 val amplifier = it.getByte(NBT.TAG_POTION_AMPLIFIER).toInt()
                 val duration = it.getInt(NBT.TAG_POTION_DURATION)
@@ -1726,7 +1667,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeFireworkRocketEffectIndexed(block: BiFunction<Int, FireworkEffect, Boolean>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
             ?.getListOrNull(NBT.TAG_FIREWORKS_EXPLOSIONS)
-            ?.removeIf<NBTTagCompound, FireworkEffect>({
+            ?.removeIfIndexed<NBTTagCompound, FireworkEffect>({
                 FireworkEffect.deserialize(it)
             }, block)
         return this

@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.hikari
 
+@Deprecated("Will be removed in 0.1.7-rc. Please replace with ldk-sql-hikari module.", level = DeprecationLevel.WARNING)
 data class Configuration(
         val poolName: String?,
         val address: String,
