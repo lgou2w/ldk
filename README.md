@@ -44,7 +44,6 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
     * [`ldk-rsa`](/ldk-rsa)
     * [`ldk-chat`](/ldk-chat)
     * [`ldk-nbt`](/ldk-nbt)
-    * ~~[`ldk-hikari`](/ldk-hikari)~~ (Deprecated. Please use [`ldk-sql-hikari`](/ldk-sql/ldk-sql-hikari) Module.)
     * [`ldk-sql`](/ldk-sql)
         * [`ldk-sql-api`](/ldk-sql/ldk-sql-api)
         * [`ldk-sql-hikari`](/ldk-sql/ldk-sql-hikari)
