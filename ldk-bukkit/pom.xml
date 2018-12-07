@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.6-rc4</version>
+        <version>0.1.7-rc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -25,7 +25,7 @@
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
         <module>ldk-bukkit-depend</module>
-        <module>ldk-bukkit-scheduler</module>
+        <module>ldk-bukkit-rx</module>
         <module>ldk-bukkit-coroutines</module> <!-- kotlin coroutines -->
         <module>ldk-bukkit-plugin</module> <!-- runtime -->
     </modules>

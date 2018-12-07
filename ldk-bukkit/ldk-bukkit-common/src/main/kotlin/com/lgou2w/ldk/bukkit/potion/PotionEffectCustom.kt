@@ -77,7 +77,7 @@ data class PotionEffectCustom @JvmOverloads constructor(
             val duration = args["duration"]?.toString()?.toInt() ?: 0
             val ambient = args["ambient"]?.toString()?.toBoolean() ?: false
             val particle = args["particle"]?.toString()?.toBoolean() ?: false
-            val icon = args["color"]?.toString()?.toBoolean() ?: false
+            val icon = args["icon"]?.toString()?.toBoolean() ?: false
             return PotionEffectCustom(type, amplifier, duration, ambient, particle, icon)
         }
     }

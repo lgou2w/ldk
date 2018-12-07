@@ -17,6 +17,7 @@
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.LazyFuzzyReflect
 import com.lgou2w.ldk.reflect.Reflection
+import com.lgou2w.ldk.reflect.StructureModifier
 import com.lgou2w.ldk.reflect.Visibility
 import org.junit.Test
 
@@ -73,5 +74,22 @@ class Test {
         Reflection.safe()
             .getCallerClasses()
             .forEach { println(it) }
+    }
+
+    @Test
+    fun test_StructureModifier() {
+        class Data {
+            private var name: String = "My"
+            private var age : Int = 0
+            override fun toString(): String {
+                return "Data(name=$name, age=$age)"
+            }
+        }
+        val instance = Data()
+        println(instance)
+        val sm = StructureModifier.of<Data>().withTarget(instance)
+        sm.withType(String::class.java).write(0, "Data Structure")
+        sm.withType(Int::class.java).write(0, 23)
+        println(instance)
     }
 }

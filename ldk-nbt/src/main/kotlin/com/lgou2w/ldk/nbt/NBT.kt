@@ -16,6 +16,10 @@
 
 package com.lgou2w.ldk.nbt
 
+import com.lgou2w.ldk.common.BiFunction
+import com.lgou2w.ldk.common.Function
+import com.lgou2w.ldk.common.Predicate
+import com.lgou2w.ldk.common.isTrue
 import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
@@ -224,4 +228,47 @@ inline fun ofCompound(
     val compound = NBTTagCompound(name)
     compound.block()
     return compound
+}
+
+fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?)
+        = removeIf<T, T>(key, { it }, predicate)
+
+fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?): NBTTagCompound {
+    if (predicate == null) {
+        remove(key)
+    } else {
+        val value = get(key) ?: return this
+        @Suppress("UNCHECKED_CAST")
+        if (value.type.isWrapper() && predicate(transform(value as T)))
+            remove(key)
+        else if (predicate(transform(value.value as T)))
+            remove(key)
+    }
+    return this
+}
+
+fun <T> NBTTagList.removeIf(predicate: Predicate<T>?)
+        = removeIfIndexed { _, value: T -> predicate?.invoke(value).isTrue() }
+
+fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R>?): NBTTagList
+        = removeIfIndexed { _, value: T -> predicate?.invoke(transform(value)).isTrue() }
+
+fun <T> NBTTagList.removeIfIndexed(block: BiFunction<Int, T, Boolean>?)
+        = removeIfIndexed<T, T>({ it }, block)
+
+fun <T, R> NBTTagList.removeIfIndexed(transform: Function<T, R>, block: BiFunction<Int, R, Boolean>?): NBTTagList {
+    if (block == null) {
+        clear()
+    } else {
+        val iterator = iterator()
+        var index = 0
+        @Suppress("UNCHECKED_CAST")
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            val value = if (next.type.isWrapper()) next as T else next.value as T
+            if (block(index++, transform(value)))
+                iterator.remove()
+        }
+    }
+    return this
 }

@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.toColor
+import com.lgou2w.ldk.common.isOrLater
 import org.bstats.bukkit.Metrics
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -28,7 +29,6 @@ import java.util.logging.Level
 class LDKPlugin : PluginBase() {
 
     companion object Constants {
-
         const val NAME = com.lgou2w.ldk.common.Constants.LDK
         const val PREFIX = "[$NAME] "
         const val GITHUB = com.lgou2w.ldk.common.Constants.LDK_GITHUB
@@ -40,6 +40,16 @@ class LDKPlugin : PluginBase() {
     }
 
     override fun enable() {
+        if (!MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_8_R1)) {
+            // Very sorry. Although can load LDK, it is not compatible with 1.7 and previous versions from the beginning of design.
+            logger.severe("-------- A lgou2w development kit of Bukkit -----")
+            logger.severe("  Very sorry Although can load LDK, it is not compatible")
+            logger.severe("  with 1.7 and previous versions from the beginning of design.")
+            logger.severe("  Thank you for downloaded and trying this plugin.")
+            logger.severe("-------------")
+            server.pluginManager.disablePlugin(this)
+            return
+        }
         logger.info("A lgou2w development kit of Bukkit.")
         logger.info("Open source: $GITHUB")
         logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${MinecraftBukkitVersion.CURRENT.version}")

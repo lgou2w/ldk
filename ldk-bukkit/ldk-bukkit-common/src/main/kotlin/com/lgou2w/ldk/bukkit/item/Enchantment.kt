@@ -31,7 +31,6 @@ import java.util.*
  * @see [Valuable]
  * @see [org.bukkit.enchantments.Enchantment]
  * @author lgou2w
- * @since 2.0
  */
 enum class Enchantment(
         /**
