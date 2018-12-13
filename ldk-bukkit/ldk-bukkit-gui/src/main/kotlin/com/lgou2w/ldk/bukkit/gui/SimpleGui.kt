@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
-open class SimpleGui(
+class SimpleGui(
         type: GuiType,
         title: String = type.title
 ) : GuiBase(type, title) {
