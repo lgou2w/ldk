@@ -240,7 +240,9 @@ object ItemFactory {
             root.putShort(NBT.TAG_DAMAGE, damage)
             root.putString(NBT.TAG_ID, "minecraft:$id")
             root.putByte(NBT.TAG_COUNT, count)
-            root[NBT.TAG] = readTagSafe(itemStack)
+            val tag = readTag(itemStack)
+            if (tag != null)
+                root[NBT.TAG] = tag
         }
         return root
     }

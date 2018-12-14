@@ -43,7 +43,7 @@ class LDKPlugin : PluginBase() {
         if (!MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_8_R1)) {
             // Very sorry. Although can load LDK, it is not compatible with 1.7 and previous versions from the beginning of design.
             logger.severe("-------- A lgou2w development kit of Bukkit -----")
-            logger.severe("  Very sorry Although can load LDK, it is not compatible")
+            logger.severe("  Very sorry. Although can load LDK, it is not compatible")
             logger.severe("  with 1.7 and previous versions from the beginning of design.")
             logger.severe("  Thank you for downloaded and trying this plugin.")
             logger.severe("-------------")
