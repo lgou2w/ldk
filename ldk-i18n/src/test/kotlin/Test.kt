@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import com.lgou2w.ldk.i18n.*
+import com.lgou2w.ldk.i18n.DynamicLanguageManager
+import com.lgou2w.ldk.i18n.MessageFormatter
+import com.lgou2w.ldk.i18n.PropertiesAdapter
+import com.lgou2w.ldk.i18n.ResourceExternalizableProvider
+import com.lgou2w.ldk.i18n.ResourceProvider
+import com.lgou2w.ldk.i18n.SimpleLanguageManager
 import org.junit.Test
 import java.io.File
 import java.util.*
@@ -26,11 +31,12 @@ class Test {
         val adapter = PropertiesAdapter()
         val provider = ResourceProvider()
         val manager = SimpleLanguageManager("language", adapter, provider)
+        manager.globalFormatter = MessageFormatter()
         val language = manager.load(Locale.ROOT)
-        language.formatter = MessageFormatter()
         println(language)
         println(language["version"])
         println(language["helloWorld"])
+        println(language.get("format", "LDK"))
     }
 
     @Test

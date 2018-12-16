@@ -25,6 +25,8 @@ abstract class LanguageManagerBase(
         override val provider: LanguageProvider
 ) : LanguageManager {
 
+    override var globalFormatter: Formatter? = null
+
     protected open fun checkName(locale: Locale) : String {
         val fileExtension = adapter.fileExtension.toLowerCase(Locale.US)
         val name = if (locale != Locale.ROOT) "_$locale" else ""
@@ -43,7 +45,7 @@ abstract class LanguageManagerBase(
 
     override fun load(locale: Locale): Language {
         val entries = loadEntries(locale)
-        return SimpleLanguage(locale, entries)
+        return SimpleLanguage(this, locale, entries)
     }
 
     final override fun save(language: Language) {

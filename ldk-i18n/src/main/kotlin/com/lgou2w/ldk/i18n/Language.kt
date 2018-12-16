@@ -20,6 +20,8 @@ import java.util.*
 
 interface Language {
 
+    val manager : LanguageManager
+
     val locale : Locale
 
     var formatter : Formatter?
