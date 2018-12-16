@@ -18,7 +18,6 @@ package com.lgou2w.ldk.bukkit.gui
 
 import com.lgou2w.ldk.common.Valuable
 import org.bukkit.Bukkit
-import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 
@@ -73,39 +72,6 @@ enum class GuiType(
     CHEST_1(9, "Chest") {
         override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
             return Bukkit.createInventory(owner, 9, title)
-        }
-    },
-    /**
-     * A workbench inventory, with 9 CRAFTING slots and a RESULT slot.
-     */
-    WORKBENCH(10, "Crafting") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.WORKBENCH, title)
-        }
-    },
-    /**
-     * An enchantment table inventory, with two CRAFTING slots and three
-     * enchanting buttons.
-     */
-    ENCHANTING(2, "Enchanting") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.ENCHANTING, title)
-        }
-    },
-    /**
-     * An anvil inventory, with 2 CRAFTING slots and 1 RESULT slot
-     */
-    ANVIL(3, "Repairing") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.ANVIL, title)
-        }
-    },
-    /**
-     * The merchant inventory, with 2 TRADE-IN slots, and 1 RESULT slot.
-     */
-    MERCHANT(3, "Merchant") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, InventoryType.MERCHANT, title)
         }
     },
     ;

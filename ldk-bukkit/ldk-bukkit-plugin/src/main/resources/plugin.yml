@@ -23,7 +23,7 @@ author: lgou2w
 authors: [lgou2w]
 contributors: [lgou2w, Feier]
 website: https://lgou2w.com
-git: https://github.com/lgou2w/ldk
+github: https://github.com/lgou2w/ldk
 description: A lgou2w development kit of Bukkit.
 commands:
   ldk:
