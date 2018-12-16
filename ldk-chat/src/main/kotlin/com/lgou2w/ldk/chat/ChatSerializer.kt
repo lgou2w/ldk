@@ -392,7 +392,7 @@ object ChatSerializer {
             if (jsonObject.has("extra")) {
                 val jsonArray = jsonObject.getAsJsonArray("extra")
                 if (jsonArray.size() <= 0)
-                    throw JsonParseException("无效的空数组组件.")
+                    throw JsonParseException("Invalid empty array component.")
                 (0 until jsonArray.size()).forEach {
                     val component1 = deserialize(jsonArray[it], typeOfT, context)
                     if (component1 != null)
