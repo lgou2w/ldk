@@ -27,6 +27,10 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
     <a href="https://github.com/lgou2w/ldk"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
 
+* Wiki
+
+    Please check the [wiki](https://github.com/lgou2w/ldk/wiki) for various module usage and questions.
+
 # Modules
 
 <details>

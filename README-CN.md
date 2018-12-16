@@ -27,6 +27,10 @@ Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开�
 
     <a href="https://github.com/lgou2w/ldk"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
 
+* Wiki
+
+    有关各种模块使用和问题请查看 [维基](https://github.com/lgou2w/ldk/wiki) 内容.
+
 # 模块
 
 <details>
