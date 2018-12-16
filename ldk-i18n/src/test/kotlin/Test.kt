@@ -64,7 +64,7 @@ class Test {
         if (!manager.isValid(language)) {
             language["version"] = "1.0"
             language["helloWorld"] = "HelloWorld!"
-            manager.save(language)
+            language.save()
             println("初始化.")
         } else {
             println("读取=$language")
@@ -95,7 +95,7 @@ class Test {
         }
 
         if (!manager.isValid(language) || updated) {
-            manager.save(language)
+            language.save()
             println("资源已更新")
         }
         language.entries.forEach { println(it) }

@@ -16,10 +16,14 @@
 
 package com.lgou2w.ldk.i18n
 
+import java.io.IOException
 import java.util.*
 
 interface Language {
 
+    /**
+     * @since 0.1.7-rc2
+     */
     val manager : LanguageManager
 
     val locale : Locale
@@ -31,6 +35,12 @@ interface Language {
     val keys : Set<String>
 
     val entries : Set<Map.Entry<String, String>>
+
+    /**
+     * @since 0.1.7-rc2
+     */
+    @Throws(IOException::class)
+    fun save()
 
     operator fun get(key: String) : String?
 

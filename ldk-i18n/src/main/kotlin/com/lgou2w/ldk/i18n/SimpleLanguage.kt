@@ -35,6 +35,10 @@ open class SimpleLanguage(
     override val entries: Set<Map.Entry<String, String>>
         get() = languages.entries
 
+    override fun save() {
+        manager.save(this)
+    }
+
     override fun get(key: String): String?
             = getOr(key, null)
     override fun get(key: String, vararg args: Any): String?
