@@ -64,7 +64,7 @@ Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开�
         * [`ldk-bukkit-gui`](/ldk-bukkit/ldk-bukkit-gui)
         * [`ldk-bukkit-region`](/ldk-bukkit/ldk-bukkit-region)
         * [`ldk-bukkit-depend`](/ldk-bukkit/ldk-bukkit-depend)
-        * [`ldk-bukkit-scheduler`](/ldk-bukkit/ldk-bukkit-scheduler)
+        * [`ldk-bukkit-rx`](/ldk-bukkit/ldk-bukkit-rx)
         * [`ldk-bukkit-coroutines`](/ldk-bukkit/ldk-bukkit-coroutines)
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
         

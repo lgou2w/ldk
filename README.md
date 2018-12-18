@@ -64,7 +64,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
         * [`ldk-bukkit-gui`](/ldk-bukkit/ldk-bukkit-gui)
         * [`ldk-bukkit-region`](/ldk-bukkit/ldk-bukkit-region)
         * [`ldk-bukkit-depend`](/ldk-bukkit/ldk-bukkit-depend)
-        * [`ldk-bukkit-scheduler`](/ldk-bukkit/ldk-bukkit-scheduler)
+        * [`ldk-bukkit-rx`](/ldk-bukkit/ldk-bukkit-rx)
         * [`ldk-bukkit-coroutines`](/ldk-bukkit/ldk-bukkit-coroutines)
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
         
