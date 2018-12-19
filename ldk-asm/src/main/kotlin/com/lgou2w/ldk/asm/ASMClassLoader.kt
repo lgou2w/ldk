@@ -30,11 +30,14 @@ abstract class ASMClassLoader private constructor(
 
     abstract fun defineClass(name: String, byteArray: ByteArray): Class<*>
 
+    fun defineClasses(classes: Map<String, ByteArray>): List<Class<*>>
+            = classes.map { defineClass(it.key, it.value) }
+
     companion object {
 
         @JvmStatic
         private val instance by lazy {
-            object : ASMClassLoader(ClassLoader.getSystemClassLoader()) {
+            object : ASMClassLoader(ASMClassLoader::class.java.classLoader) {
                 override fun defineClass(name: String, byteArray: ByteArray): Class<*>
                         = defineClass(name, byteArray, 0, byteArray.size, ASMClassLoader::class.java.protectionDomain)
             }

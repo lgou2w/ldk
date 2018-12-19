@@ -26,6 +26,9 @@
         <repository>
             <id>lucko-repo</id>
             <url>https://repo.lucko.me</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
