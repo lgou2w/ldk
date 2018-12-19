@@ -20,7 +20,7 @@
 * A multi-platform lgou2w development kit.
     
 Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's chat and nbt library、Coroutines、Tools、Utility、Package、
-Rxjava、Retrofit、ASM、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
+JavaFx、Rxjava、Retrofit、ASM、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
 Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
 * Compatibility with Minecraft server.
@@ -44,7 +44,13 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
     * [`ldk-reflect`](/ldk-reflect)
     * [`ldk-retrofit`](/ldk-retrofit)
     * [`ldk-rx`](/ldk-rx)
-    * [`ldk-fx`](/ldk-fx) (N/A)
+    * [`ldk-fx`](/ldk-fx)
+        * [`ldk-fx-commom`](/ldk-fx/ldk-fx-common)
+        * [`ldk-fx-coroutines`](/ldk-fx/ldk-fx-coroutines)
+        * [`ldk-fx-fontawesomefx`](/ldk-fx/ldk-fx-fontawesomefx)
+        * [`ldk-fx-jfoenix`](/ldk-fx/ldk-fx-jfoenix)
+        * [`ldk-fx-tornadofx`](/ldk-fx/ldk-fx-tornadofx)
+        * [`ldk-fx-rx`](/ldk-fx/ldk-fx-rx)
     * [`ldk-rsa`](/ldk-rsa)
     * [`ldk-chat`](/ldk-chat)
     * [`ldk-nbt`](/ldk-nbt)

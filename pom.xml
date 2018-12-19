@@ -50,6 +50,7 @@
         <module>ldk-rx</module>
         <module>ldk-rsa</module>
         <module>ldk-sql</module>
+        <module>ldk-fx</module>
         <module>ldk-bukkit</module>
     </modules>
 

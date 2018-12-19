@@ -5,34 +5,27 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>ldk</artifactId>
+        <artifactId>ldk-fx</artifactId>
         <groupId>com.lgou2w</groupId>
         <version>0.1.7-rc2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-rx</artifactId>
+    <artifactId>ldk-fx-jfoenix</artifactId>
 
     <dependencies>
-        <!-- ldk-common -->
+        <!-- ldk-fx-common -->
         <dependency>
             <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-common</artifactId>
+            <artifactId>ldk-fx-common</artifactId>
             <version>0.1.7-rc2</version>
             <scope>compile</scope>
         </dependency>
-        <!-- RxJava -->
+        <!-- JFoenix -->
         <dependency>
-            <groupId>io.reactivex.rxjava2</groupId>
-            <artifactId>rxjava</artifactId>
-            <version>2.2.4</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- RxKotlin -->
-        <dependency>
-            <groupId>io.reactivex.rxjava2</groupId>
-            <artifactId>rxkotlin</artifactId>
-            <version>2.3.0</version>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>8.0.8</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
