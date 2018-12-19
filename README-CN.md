@@ -45,7 +45,7 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
     * [`ldk-retrofit`](/ldk-retrofit)
     * [`ldk-rx`](/ldk-rx)
     * [`ldk-fx`](/ldk-fx)
-        * [`ldk-fx-commom`](/ldk-fx/ldk-fx-common)
+        * [`ldk-fx-common`](/ldk-fx/ldk-fx-common)
         * [`ldk-fx-coroutines`](/ldk-fx/ldk-fx-coroutines)
         * [`ldk-fx-fontawesomefx`](/ldk-fx/ldk-fx-fontawesomefx)
         * [`ldk-fx-jfoenix`](/ldk-fx/ldk-fx-jfoenix)

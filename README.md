@@ -45,7 +45,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
     * [`ldk-retrofit`](/ldk-retrofit)
     * [`ldk-rx`](/ldk-rx)
     * [`ldk-fx`](/ldk-fx)
-        * [`ldk-fx-commom`](/ldk-fx/ldk-fx-common)
+        * [`ldk-fx-common`](/ldk-fx/ldk-fx-common)
         * [`ldk-fx-coroutines`](/ldk-fx/ldk-fx-coroutines)
         * [`ldk-fx-fontawesomefx`](/ldk-fx/ldk-fx-fontawesomefx)
         * [`ldk-fx-jfoenix`](/ldk-fx/ldk-fx-jfoenix)
