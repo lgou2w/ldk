@@ -117,8 +117,6 @@ interface NBT<T> : Cloneable {
         // Do not advocate doing this
         // SEE ISSUES: https://github.com/lgou2w/ldk/issues/5
 
-        // TODO Dynamic TAG
-
         //<editor-fold desc="ItemStack - TAG" defaultstate="collapsed">
 
         const val TAG = "tag"

@@ -20,6 +20,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 open class SimpleLanguage(
+        override val manager: LanguageManager,
         override val locale: Locale,
         maps: Map<String, String>
 ) : Language {
@@ -34,6 +35,10 @@ open class SimpleLanguage(
     override val entries: Set<Map.Entry<String, String>>
         get() = languages.entries
 
+    override fun save() {
+        manager.save(this)
+    }
+
     override fun get(key: String): String?
             = getOr(key, null)
     override fun get(key: String, vararg args: Any): String?
@@ -43,7 +48,7 @@ open class SimpleLanguage(
 
     override fun getOr(key: String, def: String?, vararg args: Any): String? {
         val value = languages[key] ?: def ?: return null
-        val formatter = this.formatter
+        val formatter = this.formatter ?: manager.globalFormatter
         if (formatter != null && args.isNotEmpty())
             return formatter.format(locale, value, *args)
         return value
@@ -67,6 +72,7 @@ open class SimpleLanguage(
 
     override fun hashCode(): Int {
         var result = locale.hashCode()
+        result = 31 * result + manager.hashCode()
         result = 31 * result + languages.hashCode()
         return result
     }
@@ -75,7 +81,7 @@ open class SimpleLanguage(
         if (other === this)
             return true
         if (other is SimpleLanguage)
-            return locale == other.locale && languages == other.languages
+            return manager == other.manager && locale == other.locale && languages == other.languages
         return false
     }
 

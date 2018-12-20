@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>ldk-fx</artifactId>
+        <groupId>com.lgou2w</groupId>
+        <version>0.1.7-rc2</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>ldk-fx-fontawesomefx</artifactId>
+
+    <repositories>
+        <!-- FontAwesomeFX - Using dua3 Mirror -->
+        <repository>
+            <id>jerady</id>
+            <url>https://dl.bintray.com/dua3/public</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- ldk-fx-common -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-fx-common</artifactId>
+            <version>0.1.7-rc2</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- FontAwesomeFX -->
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-commons</artifactId>
+            <version>9.1.2-jpms</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- FontAwesomeFX - Fontawesome -->
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-fontawesome</artifactId>
+            <version>4.7.0-9.1.2-jpms</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>

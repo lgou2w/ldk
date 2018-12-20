@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import com.lgou2w.ldk.i18n.*
+import com.lgou2w.ldk.i18n.DynamicLanguageManager
+import com.lgou2w.ldk.i18n.MessageFormatter
+import com.lgou2w.ldk.i18n.PropertiesAdapter
+import com.lgou2w.ldk.i18n.ResourceExternalizableProvider
+import com.lgou2w.ldk.i18n.ResourceProvider
+import com.lgou2w.ldk.i18n.SimpleLanguageManager
 import org.junit.Test
 import java.io.File
 import java.util.*
@@ -26,11 +31,12 @@ class Test {
         val adapter = PropertiesAdapter()
         val provider = ResourceProvider()
         val manager = SimpleLanguageManager("language", adapter, provider)
+        manager.globalFormatter = MessageFormatter()
         val language = manager.load(Locale.ROOT)
-        language.formatter = MessageFormatter()
         println(language)
         println(language["version"])
         println(language["helloWorld"])
+        println(language.get("format", "LDK"))
     }
 
     @Test
@@ -58,7 +64,7 @@ class Test {
         if (!manager.isValid(language)) {
             language["version"] = "1.0"
             language["helloWorld"] = "HelloWorld!"
-            manager.save(language)
+            language.save()
             println("初始化.")
         } else {
             println("读取=$language")
@@ -89,7 +95,7 @@ class Test {
         }
 
         if (!manager.isValid(language) || updated) {
-            manager.save(language)
+            language.save()
             println("资源已更新")
         }
         language.entries.forEach { println(it) }

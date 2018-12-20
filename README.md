@@ -20,12 +20,16 @@
 * A multi-platform lgou2w development kit.
     
 Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's chat and nbt library、Coroutines、Tools、Utility、Package、
-Rxjava、Retrofit、ASM、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
+JavaFx、Rxjava、Retrofit、ASM、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
 Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
 * Compatibility with Minecraft server.
 
     <a href="https://github.com/lgou2w/ldk"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
+
+* Wiki
+
+    Please check the [wiki](https://github.com/lgou2w/ldk/wiki) for various module usage and questions.
 
 # Modules
 
@@ -40,7 +44,13 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
     * [`ldk-reflect`](/ldk-reflect)
     * [`ldk-retrofit`](/ldk-retrofit)
     * [`ldk-rx`](/ldk-rx)
-    * [`ldk-fx`](/ldk-fx) (N/A)
+    * [`ldk-fx`](/ldk-fx)
+        * [`ldk-fx-common`](/ldk-fx/ldk-fx-common)
+        * [`ldk-fx-coroutines`](/ldk-fx/ldk-fx-coroutines)
+        * [`ldk-fx-fontawesomefx`](/ldk-fx/ldk-fx-fontawesomefx)
+        * [`ldk-fx-jfoenix`](/ldk-fx/ldk-fx-jfoenix)
+        * [`ldk-fx-tornadofx`](/ldk-fx/ldk-fx-tornadofx)
+        * [`ldk-fx-rx`](/ldk-fx/ldk-fx-rx)
     * [`ldk-rsa`](/ldk-rsa)
     * [`ldk-chat`](/ldk-chat)
     * [`ldk-nbt`](/ldk-nbt)
@@ -60,7 +70,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
         * [`ldk-bukkit-gui`](/ldk-bukkit/ldk-bukkit-gui)
         * [`ldk-bukkit-region`](/ldk-bukkit/ldk-bukkit-region)
         * [`ldk-bukkit-depend`](/ldk-bukkit/ldk-bukkit-depend)
-        * [`ldk-bukkit-scheduler`](/ldk-bukkit/ldk-bukkit-scheduler)
+        * [`ldk-bukkit-rx`](/ldk-bukkit/ldk-bukkit-rx)
         * [`ldk-bukkit-coroutines`](/ldk-bukkit/ldk-bukkit-coroutines)
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
         

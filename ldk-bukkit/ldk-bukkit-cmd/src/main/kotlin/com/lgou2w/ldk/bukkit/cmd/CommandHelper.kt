@@ -37,6 +37,23 @@ object CommandHelper {
     private const val BLANK = " "
 
     @JvmStatic
+    fun sendSimpleCommandTooltip(
+            receiver: CommandSender,
+            command: RegisteredCommand,
+            index: Int,
+            split: Int = 4,
+            newLineDesc: Boolean = false,
+            named: Boolean = true,
+            sorted: Sorted = Sorted.NONE
+    ) {
+        val tooltips = createSimpleCommandTooltip(command, index, split, newLineDesc, named, sorted)
+        tooltips.forEach { tooltip ->
+            if (tooltip.contains(NEWLINE)) receiver.sendMessage(tooltip.split(NEWLINE).toTypedArray())
+            else receiver.sendMessage(tooltip)
+        }
+    }
+
+    @JvmStatic
     fun sendSimpleCommandTooltips(
             receiver: CommandSender,
             command: RegisteredCommand,

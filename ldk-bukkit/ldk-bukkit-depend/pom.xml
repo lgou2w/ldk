@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk-bukkit</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-rc</version>
+        <version>0.1.7-rc2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,6 +26,9 @@
         <repository>
             <id>lucko-repo</id>
             <url>https://repo.lucko.me</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -34,14 +37,14 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-common</artifactId>
-            <version>0.1.7-rc</version>
+            <version>0.1.7-rc2</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-region -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-region</artifactId>
-            <version>0.1.7-rc</version>
+            <version>0.1.7-rc2</version>
             <scope>compile</scope>
         </dependency>
         <!-- VaultAPI --> <!-- LuckPerms Mirror -->

@@ -27,6 +27,11 @@ interface LanguageManager {
 
     val provider : LanguageProvider
 
+    /**
+     * @since 0.1.7-rc2
+     */
+    var globalFormatter : Formatter?
+
     @Throws(IOException::class)
     fun load(locale: Locale) : Language
 
