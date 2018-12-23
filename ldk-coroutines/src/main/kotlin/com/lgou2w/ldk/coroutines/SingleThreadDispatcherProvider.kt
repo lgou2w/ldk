@@ -16,9 +16,9 @@
 
 package com.lgou2w.ldk.coroutines
 
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
 import java.util.concurrent.Executors
-import kotlin.coroutines.CoroutineContext
 
 class SingleThreadDispatcherProvider(
         private val threadName: String
@@ -28,6 +28,6 @@ class SingleThreadDispatcherProvider(
         Thread(r, threadName)
     }
 
-    override val dispatcher: CoroutineContext
+    override val dispatcher: ExecutorCoroutineDispatcher
             = Executors.newSingleThreadExecutor(createPoolThread).asCoroutineDispatcher()
 }
