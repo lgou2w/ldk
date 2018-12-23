@@ -14,7 +14,7 @@
     <artifactId>ldk-coroutines</artifactId>
 
     <properties>
-        <kotlin.coroutines.version>1.0.1</kotlin.coroutines.version>
+        <kotlin.coroutines.version>1.1.0</kotlin.coroutines.version>
     </properties>
 
     <repositories>
