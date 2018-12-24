@@ -86,7 +86,7 @@ object EntityFactory {
     @JvmStatic
     fun asNMS(entity: Entity?): Any? {
         if (entity == null) return null
-        return METHOD_GET_HANDLE.invoke(entity) as Any
+        return METHOD_GET_HANDLE.invoke(entity)
     }
 
     @JvmStatic
