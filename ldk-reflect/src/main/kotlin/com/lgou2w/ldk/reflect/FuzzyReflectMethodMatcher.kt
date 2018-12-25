@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.reflect
 
+import com.lgou2w.ldk.common.BiFunction
+import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Method
@@ -36,6 +38,10 @@ class FuzzyReflectMethodMatcher(
 
     override fun with(predicate: Predicate<Method>): FuzzyReflectMethodMatcher {
         return super.with(predicate) as FuzzyReflectMethodMatcher
+    }
+
+    override fun <U> with(initialize: Callable<U>, predicate: BiFunction<Method, U, Boolean>): FuzzyReflectMethodMatcher {
+        return super.with(initialize, predicate) as FuzzyReflectMethodMatcher
     }
 
     override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectMethodMatcher {
