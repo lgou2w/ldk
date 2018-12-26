@@ -104,4 +104,36 @@ object PacketFactory {
         val receivers = center.world.players.filter { it.location.distanceSquared(center) <= squared }
         sendPacketTo(packet, *receivers.toTypedArray())
     }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun processPacketTo(packet: Any, vararg players: Player) {
+        MinecraftReflection.isExpected(packet, CLASS_PACKET)
+        players.forEach {
+            try {
+                processPacket(packet, it)
+            } catch (e: Exception) {
+            }
+        }
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun processPacketToAll(packet: Any)
+            = processPacketTo(packet, *Bukkit.getOnlinePlayers().toTypedArray())
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun processPacketToNearby(packet: Any, center: Location, range: Double) {
+        MinecraftReflection.isExpected(packet, CLASS_PACKET)
+        val squared = if (range < 1.0) 1.0 else range * range
+        val senders = center.world.players.filter { it.location.distanceSquared(center) <= squared }
+        processPacketTo(packet, *senders.toTypedArray())
+    }
 }
