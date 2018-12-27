@@ -21,6 +21,7 @@ import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
@@ -118,6 +119,17 @@ object EntityFactory {
         val nmsEntity = asNMS(entity)
         val nms = NBTFactory.toNMS(tag)
         METHOD_ENTITY_READ_TAG.invoke(nmsEntity, nms)
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun <T : Entity> modifyTag(entity: T, applicator: Applicator<NBTTagCompound>): T {
+        val tag = readTag(entity)
+        applicator(tag)
+        writeTag(entity, tag)
+        return entity
     }
 
     @JvmStatic

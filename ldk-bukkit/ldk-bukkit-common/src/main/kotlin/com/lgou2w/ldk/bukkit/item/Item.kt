@@ -31,14 +31,23 @@ fun ItemStack?.isNotAir(): Boolean
 inline fun Material.builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}): ItemBuilder
         = ItemBuilder.of(this, count, durability).also(block)
 
+@JvmOverloads
 inline fun ItemStack.builder(block: Applicator<ItemBuilder> = {}): ItemBuilder
         = ItemBuilder.of(this).also(block)
 
+@JvmOverloads
 inline fun ItemStack.readTag(block: Applicator<NBTTagCompound?> = {}): NBTTagCompound?
         = ItemFactory.readTag(this).also(block)
 
+@JvmOverloads
 inline fun ItemStack.readTagSafe(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
         = ItemFactory.readTagSafe(this).also(block)
 
 fun NBTTagCompound?.writeTag(itemStack: ItemStack): ItemStack
         = ItemFactory.writeTag(itemStack, this)
+
+/**
+ * @since 0.1.7-rc3
+ */
+fun ItemStack.modifyTag(block: Applicator<NBTTagCompound>): ItemStack
+        = ItemFactory.modifyTag(this, block)
