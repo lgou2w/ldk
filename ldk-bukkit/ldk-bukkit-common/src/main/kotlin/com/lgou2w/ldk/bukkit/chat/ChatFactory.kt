@@ -145,27 +145,105 @@ object ChatFactory {
      * * RESET | CLEAR -> Action
      */
     @JvmStatic
-    private fun sendTitle(player: Player, action: String, value: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20) {
+    private fun createTitlePacket(
+            action: String,
+            value: ChatComponent?,
+            fadeIn: Int,
+            stay: Int,
+            fadeOut: Int
+    ): Any {
         val enumAction = Enums.fromName(CLASS_ENUM_TITLE_ACTION, action)
-        val packet = when {
+        return when {
             value != null -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, ChatFactory.toNMS(value), -1, -1, -1)
             action == PACKET_TITLE_ACTION_TIMES -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, null, fadeIn, stay, fadeOut)
             else -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, null, -1, -1, -1)
         }
+    }
+
+    @JvmStatic
+    private fun sendTitle(
+            player: Player,
+            action: String,
+            value: ChatComponent?,
+            fadeIn: Int = 10,
+            stay: Int = 70,
+            fadeOut: Int = 20
+    ) {
+        val packet = createTitlePacket(action, value, fadeIn, stay, fadeOut)
         PacketFactory.sendPacket(player, packet)
     }
 
     @JvmStatic
+    private fun sendTitleTo(
+            players: Array<Player>,
+            action: String,
+            value: ChatComponent?,
+            fadeIn: Int = 10,
+            stay: Int = 70,
+            fadeOut: Int = 20
+    ) {
+        val packet = createTitlePacket(action, value, fadeIn, stay, fadeOut)
+        PacketFactory.sendPacketTo(packet, *players)
+    }
+
+    @JvmStatic
+    private fun sendTitleToAll(
+            action: String,
+            value: ChatComponent?,
+            fadeIn: Int = 10,
+            stay: Int = 70,
+            fadeOut: Int = 20
+    ) = sendTitleTo(Bukkit.getOnlinePlayers().toTypedArray(), action, value, fadeIn, stay, fadeOut)
+
+    @JvmStatic
+    @JvmOverloads
     fun sendTitle(player: Player, title: ChatComponent, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
             = sendTitle(player, title, null, fadeIn, stay, fadeOut)
 
+    /**
+     * @since 0.1.7-rc3
+     */
     @JvmStatic
+    @JvmOverloads
+    fun sendTitleTo(players: Array<Player>, title: ChatComponent, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
+            = sendTitleTo(players, title, null, fadeIn, stay, fadeOut)
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendTitleToAll(title: ChatComponent, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
+            = sendTitleTo(Bukkit.getOnlinePlayers().toTypedArray(), title, null, fadeIn, stay, fadeOut)
+
+    @JvmStatic
+    @JvmOverloads
     fun sendTitle(player: Player, title: ChatComponent, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20) {
         sendTitleTimes(player, fadeIn, stay, fadeOut)
         sendTitle(player, PACKET_TITLE_ACTION_TITLE, title)
         if (subTitle != null)
             sendTitle(player, PACKET_TITLE_ACTION_SUBTITLE, subTitle)
     }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendTitleTo(players: Array<Player>, title: ChatComponent, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20) {
+        sendTitleTimesTo(players, fadeIn, stay, fadeOut)
+        sendTitleTo(players, PACKET_TITLE_ACTION_TITLE, title)
+        if (subTitle != null)
+            sendTitleTo(players, PACKET_TITLE_ACTION_SUBTITLE, subTitle)
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendTitleToAll(title: ChatComponent, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
+            = sendTitleTo(Bukkit.getOnlinePlayers().toTypedArray(), title, subTitle, fadeIn, stay, fadeOut)
 
     // ACTIONBAR => Since Minecraft 1.11
     @JvmStatic
@@ -177,17 +255,78 @@ object ChatFactory {
         }
     }
 
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleBarTo(players: Array<Player>, title: ChatComponent) {
+        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_11_R1)) {
+            sendTitleTo(players, PACKET_TITLE_ACTION_ACTIONBAR, title)
+        } else {
+            sendTitleTo(players, title)
+        }
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleBarToAll(title: ChatComponent)
+            = sendTitleBarTo(Bukkit.getOnlinePlayers().toTypedArray(), title)
+
     @JvmStatic
     fun sendTitleTimes(player: Player, fadeIn: Int, stay: Int, fadeOut: Int)
             = sendTitle(player, PACKET_TITLE_ACTION_TIMES, null, fadeIn, stay, fadeOut)
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleTimesTo(players: Array<Player>, fadeIn: Int, stay: Int, fadeOut: Int)
+            = sendTitleTo(players, PACKET_TITLE_ACTION_TIMES, null, fadeIn, stay, fadeOut)
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleTimesToAll(fadeIn: Int, stay: Int, fadeOut: Int)
+            = sendTitleTo(Bukkit.getOnlinePlayers().toTypedArray(), PACKET_TITLE_ACTION_TIMES, null, fadeIn, stay, fadeOut)
 
     @JvmStatic
     fun sendTitleReset(player: Player)
             = sendTitle(player, PACKET_TITLE_ACTION_RESET, null)
 
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleResetTo(players: Array<Player>)
+            = sendTitleTo(players, PACKET_TITLE_ACTION_RESET, null)
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleResetToAll()
+            = sendTitleResetTo(Bukkit.getOnlinePlayers().toTypedArray())
+
     @JvmStatic
     fun sendTitleClear(player: Player)
             = sendTitle(player, PACKET_TITLE_ACTION_CLEAR, null)
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleClearTo(players: Array<Player>)
+            = sendTitleTo(players, PACKET_TITLE_ACTION_CLEAR, null)
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun sendTitleClearToAll(players: Array<Player>)
+            = sendTitleClearTo(Bukkit.getOnlinePlayers().toTypedArray())
 
     //</editor-fold>
 }
