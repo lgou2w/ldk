@@ -33,6 +33,7 @@ import com.lgou2w.ldk.reflect.AccessorConstructor
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.Visibility
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -76,16 +77,41 @@ object ChatFactory {
         return ChatSerializer.fromJsonOrLenient(json)
     }
 
+    /**
+     * @since 0.1.7-rc3
+     */
     @JvmStatic
     @JvmOverloads
-    fun sendChat(player: Player, component: ChatComponent, action: ChatAction = ChatAction.CHAT) {
+    fun createChatPacket(component: ChatComponent, action: ChatAction = ChatAction.CHAT): Any {
         val value : Any? =
                 if (CLASS_CHAT_MESSAGE_TYPE != null) Enums.fromOrigin(CLASS_CHAT_MESSAGE_TYPE!!, action.ordinal)
                 else action.id
         val icbc = toNMS(component)
-        val packet = CONSTRUCTOR_PACKET_OUT_CHAT.newInstance(icbc, value)
-        PacketFactory.sendPacket(player, packet)
+        return CONSTRUCTOR_PACKET_OUT_CHAT.newInstance(icbc, value)
     }
+
+    @JvmStatic
+    @JvmOverloads
+    fun sendChat(player: Player, component: ChatComponent, action: ChatAction = ChatAction.CHAT)
+            = sendChatTo(arrayOf(player), component, action)
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendChatTo(players: Array<Player>, component: ChatComponent, action: ChatAction = ChatAction.CHAT) {
+        val packet = createChatPacket(component, action)
+        PacketFactory.sendPacketTo(packet, *players)
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendChatToAll(component: ChatComponent, action: ChatAction = ChatAction.CHAT)
+            = sendChatTo(Bukkit.getOnlinePlayers().toTypedArray(), component, action)
 
     @JvmStatic
     fun tooltipItem(fancy: ChatComponentFancy, itemStack: ItemStack) : ChatComponentFancy {
