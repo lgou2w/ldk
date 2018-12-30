@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.item
 
+import com.lgou2w.ldk.bukkit.compatibility.XMaterial
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.Material
@@ -51,3 +52,11 @@ fun NBTTagCompound?.writeTag(itemStack: ItemStack): ItemStack
  */
 fun ItemStack.modifyTag(block: Applicator<NBTTagCompound>): ItemStack
         = ItemFactory.modifyTag(this, block)
+
+/**
+ * @since 0.1.7-rc3
+ */
+@JvmOverloads
+@Throws(UnsupportedOperationException::class)
+fun XMaterial.builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}): ItemBuilder
+        = ItemBuilder.of(toBukkit(), count, durability).also(block)

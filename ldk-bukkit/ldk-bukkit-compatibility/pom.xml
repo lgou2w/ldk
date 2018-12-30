@@ -14,10 +14,10 @@
     <artifactId>ldk-bukkit-compatibility</artifactId>
 
     <dependencies>
-        <!-- ldk-bukkit-common -->
+        <!-- ldk-bukkit-version -->
         <dependency>
             <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-bukkit-common</artifactId>
+            <artifactId>ldk-bukkit-version</artifactId>
             <version>0.1.7-rc3</version>
             <scope>compile</scope>
         </dependency>

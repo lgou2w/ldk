@@ -54,13 +54,6 @@
             <version>0.1.7-rc3</version>
             <scope>compile</scope>
         </dependency>
-        <!-- ldk-bukkit-compatibility -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-bukkit-compatibility</artifactId>
-            <version>0.1.7-rc3</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- ldk-bukkit-cmd -->
         <dependency>
             <groupId>com.lgou2w</groupId>
