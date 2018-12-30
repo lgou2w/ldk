@@ -14,7 +14,7 @@
     <artifactId>ldk-chat</artifactId>
 
     <dependencies>
-        <!-- ldl-common -->
+        <!-- ldk-common -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-common</artifactId>
