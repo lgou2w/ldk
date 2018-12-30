@@ -24,6 +24,7 @@ import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.bukkit.version.API
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBT
@@ -262,6 +263,17 @@ object ItemFactory {
                 itemStack.itemMeta = obcStack.itemMeta
             }
         }
+        return itemStack
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun modifyTag(itemStack: ItemStack, applicator: Applicator<NBTTagCompound>): ItemStack {
+        val tag = readTagSafe(itemStack)
+        applicator(tag)
+        writeTag(itemStack, tag)
         return itemStack
     }
 }

@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.reflect
 
+import com.lgou2w.ldk.common.BiFunction
+import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Field
@@ -36,6 +38,10 @@ class FuzzyReflectFieldMatcher(
 
     override fun with(predicate: Predicate<Field>): FuzzyReflectFieldMatcher {
         return super.with(predicate) as FuzzyReflectFieldMatcher
+    }
+
+    override fun <U> with(initialize: Callable<U>, predicate: BiFunction<Field, U, Boolean>): FuzzyReflectFieldMatcher {
+        return super.with(initialize, predicate) as FuzzyReflectFieldMatcher
     }
 
     override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectFieldMatcher {

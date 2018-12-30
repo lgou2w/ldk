@@ -16,6 +16,9 @@
 
 package com.lgou2w.ldk.bukkit.entity
 
+import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
+import com.lgou2w.ldk.common.Applicator
+import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
@@ -25,6 +28,19 @@ import org.bukkit.inventory.ItemStack
  * org.bukkit.entity.Entity Extended
  *
  **************************************************************************/
+
+/**
+ * @since 0.1.7-rc3
+ */
+@JvmOverloads
+fun Entity.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
+        = EntityFactory.readTag(this).also(block)
+
+/**
+ * @since 0.1.7-rc3
+ */
+fun <T : Entity> T.modifyTag(block: Applicator<NBTTagCompound>): T
+        = EntityFactory.modifyTag(this, block)
 
 fun Entity.getNearbyEntities(x: Double, y: Double, z: Double) : List<Entity>
         = world.getNearbyEntities(location, x, y, z).toList()
@@ -153,3 +169,10 @@ var LivingEntity.itemInMainHand: ItemStack?
 var LivingEntity.itemInOffHand: ItemStack?
     get() = EntityFactory.getItemInOffHand(this)
     set(value) { EntityFactory.setItemInOffHand(this, value) }
+
+/**
+ * @since 0.1.7-rc3
+ */
+@JvmOverloads
+fun LivingEntity.applyToEffect(effectCustom: PotionEffectCustom, force: Boolean = false): Boolean
+        = effectCustom.applyToEntity(this, force)

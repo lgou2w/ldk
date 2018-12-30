@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.reflect
 
+import com.lgou2w.ldk.common.BiFunction
+import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Constructor
@@ -36,6 +38,10 @@ class FuzzyReflectConstructorMatcher<T: Any>(
 
     override fun with(predicate: Predicate<Constructor<T>>): FuzzyReflectConstructorMatcher<T> {
         return super.with(predicate) as FuzzyReflectConstructorMatcher
+    }
+
+    override fun <U> with(initialize: Callable<U>, predicate: BiFunction<Constructor<T>, U, Boolean>): FuzzyReflectConstructorMatcher<T> {
+        return super.with(initialize, predicate) as FuzzyReflectConstructorMatcher<T>
     }
 
     override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectConstructorMatcher<T> {

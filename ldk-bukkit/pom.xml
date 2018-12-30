@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-rc2</version>
+        <version>0.1.7-rc3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -15,18 +15,18 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>ldk-bukkit-version</module> <!-- first -->
-        <module>ldk-bukkit-reflect</module> <!-- second -->
-        <module>ldk-bukkit-nbt</module> <!-- bukkit nbt -->
+        <module>ldk-bukkit-version</module> <!-- version -->
+        <module>ldk-bukkit-reflect</module> <!-- reflect -->
+        <module>ldk-bukkit-nbt</module> <!-- nbt -->
+        <module>ldk-bukkit-compatibility</module> <!-- compatibility -->
         <module>ldk-bukkit-common</module> <!-- common -->
-        <module>ldk-bukkit-compatibility</module> <!-- extended -->
         <module>ldk-bukkit-i18n</module> <!-- extended... -->
         <module>ldk-bukkit-cmd</module>
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
         <module>ldk-bukkit-depend</module>
         <module>ldk-bukkit-rx</module>
-        <module>ldk-bukkit-coroutines</module> <!-- kotlin coroutines -->
+        <module>ldk-bukkit-coroutines</module> <!-- coroutines -->
         <module>ldk-bukkit-plugin</module> <!-- runtime -->
     </modules>
 

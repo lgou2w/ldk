@@ -16,11 +16,15 @@
 
 package com.lgou2w.ldk.bukkit.potion
 
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.ComparisonChain
+import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.entity.LivingEntity
+import org.bukkit.potion.PotionEffect
 
 data class PotionEffectCustom @JvmOverloads constructor(
         val type: PotionEffectType,
@@ -32,6 +36,18 @@ data class PotionEffectCustom @JvmOverloads constructor(
 ) : ConfigurationSerializable,
         NBTSavable,
         Comparable<PotionEffectCustom> {
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmOverloads
+    fun applyToEntity(entity: LivingEntity, force: Boolean = false): Boolean {
+        val effect = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle, icon)
+        else
+            PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle)
+        return entity.addPotionEffect(effect, force)
+    }
 
     override fun save(root: NBTTagCompound): NBTTagCompound {
         root.putByte(NBT.TAG_POTION_ID, type.id)

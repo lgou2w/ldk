@@ -72,6 +72,26 @@ interface ItemBuilder : Builder<ItemStack> {
      */
     fun reBuilder(material: Material = this.material, count: Int = this.count, durability: Int = this.durability) : ItemBuilder
 
+    /**
+     * @see [reBuilder]
+     */
+    fun reBuilder(material: Material = this.material, count: Int = this.count) : ItemBuilder
+
+    /**
+     * @see [reBuilder]
+     */
+    fun reBuilder(material: Material = this.material) : ItemBuilder
+
+    /**
+     * @see [reBuilder]
+     */
+    fun reBuilder(count: Int = this.count) : ItemBuilder
+
+    /**
+     * @see [reBuilder]
+     */
+    fun reBuilder(count: Int = this.count, durability: Int = this.durability) : ItemBuilder
+
     //<editor-fold desc="ItemBuilder - Generic" defaultstate="collapsed">
 
     /**

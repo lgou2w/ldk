@@ -17,9 +17,11 @@
 package com.lgou2w.ldk.bukkit.entity
 
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory
+import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
@@ -53,6 +55,15 @@ object EntityFactory {
             .resultAccessor()
     }
 
+    // NMS.Entity -> public OBC.CraftEntity getBukkitEntity()
+    @JvmStatic val METHOD_GET_BUKKIT_ENTITY : AccessorMethod<Any, Entity> by lazy {
+        FuzzyReflect.of(CLASS_ENTITY, true)
+            .useMethodMatcher()
+            .withVisibilities(Visibility.PUBLIC)
+            .withName("getBukkitEntity")
+            .resultAccessorAs<Any, Entity>()
+    }
+
     // NMS.Entity -> public NMS.NBTTagCompound save(NMS.NBTTagCompound)
     @JvmStatic val METHOD_ENTITY_SAVE_TAG : AccessorMethod<Any, Any> by lazy {
         FuzzyReflect.of(CLASS_ENTITY, true)
@@ -74,8 +85,24 @@ object EntityFactory {
     }
 
     @JvmStatic
-    fun asNMS(entity: Entity): Any {
-        return METHOD_GET_HANDLE.invoke(entity) as Any
+    fun asNMS(entity: Entity?): Any? {
+        if (entity == null) return null
+        return METHOD_GET_HANDLE.invoke(entity)
+    }
+
+    @JvmStatic
+    fun asBukkit(nms: Any?): Entity? {
+        if (nms == null) return null
+        MinecraftReflection.isExpected(nms, CLASS_ENTITY)
+        return METHOD_GET_BUKKIT_ENTITY.invoke(nms)
+    }
+
+    @JvmStatic
+    inline fun <reified T : Entity> asBukkitEntity(nms: Any?): T? {
+        val entity = asBukkit(nms) ?: return null
+        return if (T::class.java.isInstance(entity)) T::class.java.cast(entity)
+        else throw IllegalArgumentException(
+                "The entity type ${entity::class.java.simpleName} does not match the expected ${T::class.java.simpleName}.")
     }
 
     @JvmStatic
@@ -92,6 +119,17 @@ object EntityFactory {
         val nmsEntity = asNMS(entity)
         val nms = NBTFactory.toNMS(tag)
         METHOD_ENTITY_READ_TAG.invoke(nmsEntity, nms)
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    fun <T : Entity> modifyTag(entity: T, applicator: Applicator<NBTTagCompound>): T {
+        val tag = readTag(entity)
+        applicator(tag)
+        writeTag(entity, tag)
+        return entity
     }
 
     @JvmStatic

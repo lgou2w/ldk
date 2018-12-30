@@ -40,7 +40,12 @@ class LDKPlugin : PluginBase() {
     }
 
     override fun enable() {
-        if (!MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_8_R1)) {
+        val safeCurrent = try {
+            MinecraftBukkitVersion.CURRENT
+        } catch (e: Exception) {
+            null
+        }
+        if (safeCurrent == null || !safeCurrent.isOrLater(MinecraftBukkitVersion.V1_8_R1)) {
             // Very sorry. Although can load LDK, it is not compatible with 1.7 and previous versions from the beginning of design.
             logger.severe("-------- A lgou2w development kit of Bukkit -----")
             logger.severe("  Very sorry. Although can load LDK, it is not compatible")
