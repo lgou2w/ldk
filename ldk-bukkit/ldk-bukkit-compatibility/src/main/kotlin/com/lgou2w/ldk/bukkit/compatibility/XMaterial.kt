@@ -56,9 +56,6 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
-import com.lgou2w.ldk.bukkit.item.ItemBuilder
-import com.lgou2w.ldk.bukkit.item.builder
-import com.lgou2w.ldk.common.Applicator
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -953,19 +950,23 @@ enum class XMaterial {
         this.data = data
     }
 
+    @Throws(UnsupportedOperationException::class)
     fun toBukkit() : Material
             = toBukkit(this)
 
+    @Throws(UnsupportedOperationException::class)
     fun isSameType(itemStack: ItemStack) : Boolean
             = isSameType(this, itemStack)
 
+    @Throws(UnsupportedOperationException::class)
     fun createStack(count: Int) : ItemStack
             = createStack(this, count)
 
-    // ItemBuilder Extended
-    @JvmOverloads
-    fun builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}) : ItemBuilder
-            = toBukkit().builder(count, durability, block)
+//    SEE : ldk-bukkit-common / com.lgou2w.ldk.bukkit.item.ItemKt
+//    // ItemBuilder Extended
+//    @JvmOverloads
+//    fun builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}) : ItemBuilder
+//            = toBukkit().builder(count, durability, block)
 
     companion object {
 
@@ -992,6 +993,7 @@ enum class XMaterial {
         private val LOOKUPS : MutableMap<String, XMaterial> = Collections.synchronizedMap(HashMap())
 
         @JvmStatic
+        @Throws(UnsupportedOperationException::class)
         fun toBukkit(xMaterial: XMaterial) : Material {
             val value = Material.matchMaterial(xMaterial.name)
             return value ?: xMaterial.aliases.mapNotNull { Material.matchMaterial(it) }.firstOrNull()
@@ -999,6 +1001,7 @@ enum class XMaterial {
         }
 
         @JvmStatic
+        @Throws(UnsupportedOperationException::class)
         fun fromBukkit(material: Material) : XMaterial {
             return searchByBukkit(material)
                    ?: throw UnsupportedOperationException("Internal error, unsupported '$material' material type.")
@@ -1049,6 +1052,7 @@ enum class XMaterial {
         }
 
         @JvmStatic
+        @Throws(UnsupportedOperationException::class)
         fun isSameType(xMaterial: XMaterial, itemStack: ItemStack) : Boolean {
             val bukkit = toBukkit(xMaterial)
             val type = itemStack.type
@@ -1064,6 +1068,7 @@ enum class XMaterial {
 
         @JvmStatic
         @JvmOverloads
+        @Throws(UnsupportedOperationException::class)
         fun createStack(xMaterial: XMaterial, count: Int = 1) : ItemStack {
             val type = toBukkit(xMaterial)
             return if (isV113OrLater) {

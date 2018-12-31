@@ -71,6 +71,7 @@ object Depends {
         Bukkit.getServicesManager().unregisterAll(PLUGIN)
     }
 
+    @JvmStatic
     operator fun get(name: String) : Depend? {
         val registrations = Bukkit.getServicesManager().getRegistrations(PLUGIN)
         return registrations
@@ -78,11 +79,13 @@ object Depends {
             ?.provider as? Depend
     }
 
+    @JvmStatic
     operator fun <T: Depend> get(depend: Class<T>) : T? {
         val registration = Bukkit.getServicesManager().getRegistration(depend) ?: return null
         return if (registration.service == depend) registration.provider else null
     }
 
+    @JvmStatic
     @Throws(DependCannotException::class)
     fun <T: Depend> getOrLoad(depend: Class<T>) : T {
         val registration = get(depend)
@@ -102,9 +105,11 @@ object Depends {
         }
     }
 
+    @JvmStatic
     fun hasDepend(name: String) : Boolean
             = get(name) != null
 
+    @JvmStatic
     fun <T: Depend> hasDepend(depend: Class<T>) : Boolean
             = get(depend) != null
 

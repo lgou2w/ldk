@@ -20,6 +20,7 @@ import com.lgou2w.ldk.bukkit.nbt.NBTFactory
 import com.lgou2w.ldk.bukkit.packet.PacketFactory
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.NBTType
 import com.lgou2w.ldk.reflect.AccessorConstructor
@@ -120,5 +121,17 @@ object BlockFactory {
             val range = Bukkit.getServer().viewDistance * 32 + .0
             PacketFactory.sendPacketToNearby(packet, block.location, range)
         }
+    }
+
+    /**
+     * @since 0.1.7-rc3
+     */
+    @JvmStatic
+    @Throws(IllegalArgumentException::class)
+    fun modifyTag(block: Block, applicator: Applicator<NBTTagCompound>): Block {
+        val tag = readTag(block)
+        applicator(tag)
+        writeTag(block, tag)
+        return block
     }
 }

@@ -96,6 +96,18 @@ abstract class ItemBuilderBase : ItemBuilder {
     final override fun reBuilder(material: Material, count: Int, durability: Int): ItemBuilder
             = ItemBuilder.of(material, count, durability)
 
+    final override fun reBuilder(material: Material, count: Int): ItemBuilder
+            = ItemBuilder.of(material, count, this.durability)
+
+    final override fun reBuilder(material: Material): ItemBuilder
+            = ItemBuilder.of(material, this.count, this.durability)
+
+    override fun reBuilder(count: Int): ItemBuilder
+            = ItemBuilder.of(this.material, count, this.durability)
+
+    override fun reBuilder(count: Int, durability: Int): ItemBuilder
+            = ItemBuilder.of(this.material, count, durability)
+
     //<editor-fold desc="ItemBuilder - Generic" defaultstate="collapsed">
 
     final override var count: Int

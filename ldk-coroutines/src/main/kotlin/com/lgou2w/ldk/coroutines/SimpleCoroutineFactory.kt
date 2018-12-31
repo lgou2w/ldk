@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.coroutines
 
-open class SimpleCoroutineFactory(
+class SimpleCoroutineFactory(
         provider: DispatcherProvider
 ) : CoroutineFactoryBase(provider) {
 }

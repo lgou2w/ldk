@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.reflect
 
+import com.lgou2w.ldk.common.BiFunction
+import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
@@ -44,13 +46,29 @@ abstract class FuzzyReflectMatcher<T>(
 
     /**
      * * Match reflection values ​​from a given predicate condition [predicate].
-     * * 从给定的谓词条件[predicate] 中匹配反射值.
+     * * 从给定的谓词条件 [predicate] 中匹配反射值.
      *
      * @param predicate Condition
      * @param predicate 条件
      */
     open fun with(predicate: Predicate<T>): FuzzyReflectMatcher<T> {
         values = values.asSequence().filter(predicate).toMutableList()
+        return this
+    }
+
+    /**
+     * * Initialize the given value first, then match the reflection value from the given predicate condition [predicate].
+     * * 首先初始化给定值, 然后从给定的谓词条件 [predicate] 中匹配反射值.
+     *
+     * @param initialize Initialize value
+     * @param initialize 初始化值
+     * @param predicate Condition
+     * @param predicate 条件
+     * @since 0.1.7-rc3
+     */
+    open fun <U> with(initialize: Callable<U>, predicate: BiFunction<T, U, Boolean>): FuzzyReflectMatcher<T> {
+        val initializeValue = initialize()
+        values = values.asSequence().filter { predicate(it, initializeValue) }.toMutableList()
         return this
     }
 
@@ -72,7 +90,7 @@ abstract class FuzzyReflectMatcher<T>(
      * @param regex 名称规则
      */
     open fun withName(regex: String): FuzzyReflectMatcher<T>
-            = with { Pattern.compile(regex).matcher(it.name).matches() }
+            = with({ Pattern.compile(regex) }) { it, pattern -> pattern.matcher(it.name).matches() }
 
     /**
      * * Match reflection values ​​from the given annotation class [annotation].

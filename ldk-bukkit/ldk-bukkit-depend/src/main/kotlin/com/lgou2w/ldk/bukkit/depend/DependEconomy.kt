@@ -31,10 +31,14 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         }
 
     init {
-        val registered = Bukkit.getServicesManager().getRegistration(Economy::class.java)
+        val registrations = Bukkit.getServicesManager().getRegistrations(Economy::class.java)
+        if (registrations.size > 1)
+            plugin.logger.info("[LDK] There are multiple economic services, using maximum priority.")
+        val registered = registrations.sortedBy { it.priority }.lastOrNull() // Maximum priority
         if (registered == null || registered.provider == null)
             throw DependCannotException("The Vault does not have a registered Economy service.")
         economy = registered.provider
+        plugin.logger.info("[LDK] Uses ${economy.name} as an economy dependency.")
     }
 
     val economyName : String
@@ -57,30 +61,113 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
             = economy.hasAccount(player, world)
 
     @JvmOverloads
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("hasAccount(OfflinePlayer, String)"))
+    fun hasAccount(playerName: String, world: String? = null): Boolean {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.hasAccount(playerName, world)
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
+
+    @JvmOverloads
     fun createAccount(player: OfflinePlayer, world: String? = null): Boolean
             = economy.createPlayerAccount(player, world)
+
+    @JvmOverloads
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("createAccount(OfflinePlayer, String)"))
+    fun createAccount(playerName: String, world: String? = null): Boolean {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.createPlayerAccount(playerName, world)
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
 
     @JvmOverloads
     fun getBalance(player: OfflinePlayer, world: String? = null): Double
             = economy.getBalance(player, world)
 
     @JvmOverloads
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("getBalance(OfflinePlayer, String)"))
+    fun getBalance(playerName: String, world: String? = null): Double {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.getBalance(playerName, world)
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
+
+    @JvmOverloads
     fun hasBalance(player: OfflinePlayer, value: Double, world: String? = null): Boolean
             = economy.has(player, world, value)
+
+    @JvmOverloads
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("hasBalance(OfflinePlayer, Double, String)"))
+    fun hasBalance(playerName: String, value: Double, world: String? = null): Boolean {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.has(playerName, world, value)
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
 
     @JvmOverloads
     fun withdraw(player: OfflinePlayer, value: Double, world: String? = null): Response
             = economy.withdrawPlayer(player, world, value).toAdapter()
 
     @JvmOverloads
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("withdraw(OfflinePlayer, Double, String)"))
+    fun withdraw(playerName: String, value: Double, world: String? = null): Response {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.withdrawPlayer(playerName, world, value).toAdapter()
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
+
+    @JvmOverloads
     fun deposit(player: OfflinePlayer, value: Double, world: String? = null): Response
             = economy.depositPlayer(player, world, value).toAdapter()
+
+    @JvmOverloads
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("deposit(OfflinePlayer, Double, String)"))
+    fun deposit(playerName: String, value: Double, world: String? = null): Response {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.depositPlayer(playerName, world, value).toAdapter()
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
 
     fun hasBankSupport(): Boolean
             = economy.hasBankSupport()
 
     fun createBank(name: String, owner: OfflinePlayer): Response
             = economy.createBank(name, owner).toAdapter()
+
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("createBank(String, OfflinePlayer)"))
+    fun createBank(name: String, owner: String): Response {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.createBank(name, owner).toAdapter()
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
 
     fun deleteBank(name: String): Response
             = economy.deleteBank(name).toAdapter()
@@ -100,24 +187,47 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
     fun isBankOwner(name: String, player: OfflinePlayer): Response
             = economy.isBankOwner(name, player).toAdapter()
 
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("isBankOwner(String, OfflinePlayer)"))
+    fun isBankOwner(name: String, player: String): Response {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.isBankOwner(name, player).toAdapter()
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
+
     fun isBankMember(name: String, player: OfflinePlayer): Response
             = economy.isBankMember(name, player).toAdapter()
+
+    @Throws(DependCannotException::class)
+    @Deprecated("Not recommended method.", ReplaceWith("isBankMember(String, OfflinePlayer)"))
+    fun isBankMember(name: String, player: String): Response {
+        return try {
+            @Suppress("DEPRECATION")
+            economy.isBankMember(name, player).toAdapter()
+        } catch (e: NoSuchMethodException) {
+            throw DependCannotException(EXCEPTION_METHOD_REMOVED)
+        }
+    }
 
     val banks: List<String>
         get() = economy.banks
 
     companion object {
         const val NAME = "Vault"
+        const val EXCEPTION_METHOD_REMOVED = "Error, method has deprecated and removed."
         @JvmField val NULL = Response(.0, .0, Response.Type.NULL, null)
     }
 
-    private fun net.milkbowl.vault.economy.EconomyResponse?.toAdapter() : Response {
+    private fun EconomyResponse?.toAdapter() : Response {
         return  if (this?.type == null) {
             NULL
         } else {
             val adapterType = when (type) {
-                net.milkbowl.vault.economy.EconomyResponse.ResponseType.FAILURE -> Response.Type.FAILURE
-                net.milkbowl.vault.economy.EconomyResponse.ResponseType.SUCCESS -> Response.Type.SUCCESS
+                EconomyResponse.ResponseType.FAILURE -> Response.Type.FAILURE
+                EconomyResponse.ResponseType.SUCCESS -> Response.Type.SUCCESS
                 EconomyResponse.ResponseType.NOT_IMPLEMENTED -> Response.Type.NOT_IMPLEMENTED
                 else -> Response.Type.NULL
             }
@@ -129,7 +239,8 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
             val amount: Double,
             val balance: Double,
             val type: Type,
-            val errorMessage: String? = null) {
+            val errorMessage: String? = null
+    ) {
 
         fun transactionSuccess(): Boolean
                 = type == Type.SUCCESS
