@@ -36,5 +36,4 @@ enum class Level {
 }
 
 @Retention(AnnotationRetention.RUNTIME)
-@Deprecated("Indicates that this is a draft and may change in the future.")
 annotation class Draft
