@@ -34,3 +34,7 @@ enum class Level {
     val version : MinecraftVersion
         get() = MinecraftVersion.fromLevel(this)
 }
+
+@Retention(AnnotationRetention.RUNTIME)
+@Deprecated("Indicates that this is a draft and may change in the future.")
+annotation class Draft
