@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.item
 
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
@@ -236,6 +237,20 @@ enum class Enchantment(
      * * 附魔类型: 消失诅咒
      */
     VANISHING_CURSE(71, 1, "vanishing_curse", "vanishing_curse", MinecraftVersion.V1_11),
+
+    // TODO Id is negative number because of uncertainty.
+
+    @Draft
+    @Deprecated("Draft")
+    MULTISHOT(-1, 1, "multishot", "multishot", MinecraftVersion.V1_14),
+
+    @Draft
+    @Deprecated("Draft")
+    QUICK_CHARGE(-2, 3, "quick_charge", "quick_charge", MinecraftVersion.V1_14),
+
+    @Draft
+    @Deprecated("Draft")
+    PIERCING(-3, 4, "piercing", "piercing", MinecraftVersion.V1_14),
     ;
 
     override val value: String
