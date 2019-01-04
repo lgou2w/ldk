@@ -56,14 +56,13 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.version.Draft
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
 enum class XMaterial {
-
-    // TODO Minecraft 1.14
 
     ACACIA_BOAT("BOAT_ACACIA", 0),
     ACACIA_BUTTON("WOOD_BUTTON", 0),
@@ -935,6 +934,39 @@ enum class XMaterial {
     ZOMBIE_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 2),
+
+
+    // TODO Minecraft 1.14
+    // Warning: Not yet released, just based on the draft of the wiki.
+
+    // Blocks :
+    @Draft @Deprecated("Draft") BAMBOO("STONE", 0),
+    @Draft @Deprecated("Draft") BARREL("STONE", 0),
+    @Draft @Deprecated("Draft") BELL("STONE", 0),
+    @Draft @Deprecated("Draft") BLAST_FURNACE("STONE", 0),
+    @Draft @Deprecated("Draft") DRINDSTONE("STONE", 0),
+    @Draft @Deprecated("Draft") JIGSAW("STONE", 0),
+    @Draft @Deprecated("Draft") LANTERN("STONE", 0),
+    @Draft @Deprecated("Draft") LOOM("STONE", 0),
+    @Draft @Deprecated("Draft") SCAFFOLDING("STONE", 0),
+    // TODO Signs
+    // TODO Slabs
+    @Draft @Deprecated("Draft") SMOKER("STONE", 0),
+    // TODO Stairs
+    @Draft @Deprecated("Draft") SWEET_BERRY_BUSH("STONE", 0),
+    // TODO Walls
+
+    // Items :
+    @Draft @Deprecated("Draft") FLOWER_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") CREEPER_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") SKULL_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") MOJANG_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") CROSSBOW("BOW", 0),
+    // TODO Dyes
+    // TODO Spawn eggs
+    @Draft @Deprecated("Draft") SUSPICIOUS_STEW("STONE", 0),
+    @Draft @Deprecated("Draft") SWEET_BERRIES("STONE", 0),
+
     ;
 
     private val aliases : Array<out String>
