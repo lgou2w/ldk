@@ -65,6 +65,8 @@ import org.bukkit.Sound
 
 enum class Sounds(private vararg val versionDependentNames: String) {
 
+    //<editor-fold desc="Sounds" defaultstate="collapsed">
+
     AMBIENCE_CAVE("AMBIENCE_CAVE", "AMBIENT_CAVE"),
     AMBIENCE_RAIN("AMBIENCE_RAIN", "WEATHER_RAIN"),
     AMBIENCE_THUNDER("AMBIENCE_THUNDER", "ENTITY_LIGHTNING_THUNDER", "ENTITY_LIGHTNING_BOLT_THUNDER"),
@@ -259,6 +261,8 @@ enum class Sounds(private vararg val versionDependentNames: String) {
     VILLAGER_IDLE("VILLAGER_IDLE", "ENTITY_VILLAGER_AMBIENT"),
     VILLAGER_NO("VILLAGER_NO", "ENTITY_VILLAGER_NO"),
     VILLAGER_YES("VILLAGER_YES", "ENTITY_VILLAGER_YES"),
+
+    //</editor-fold>
     ;
 
     private var valid : Sound? = null
