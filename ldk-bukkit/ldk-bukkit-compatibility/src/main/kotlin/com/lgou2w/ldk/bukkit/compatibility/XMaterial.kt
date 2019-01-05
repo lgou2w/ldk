@@ -948,7 +948,7 @@ enum class XMaterial {
     @Draft @Deprecated("Draft") FLETCHING_TABLE("STONE", 0),
     @Draft @Deprecated("Draft") SMITHING_TABLE("STONE", 0),
     @Draft @Deprecated("Draft") STONECUTTER("STONE", 0),
-    @Draft @Deprecated("Draft") CORNFLOWER("STONE", 1),
+    @Draft @Deprecated("Draft") CORNFLOWER("STONE", 0),
     @Draft @Deprecated("Draft") LILY_OF_THE_VALLEY("STONE", 0),
     @Draft @Deprecated("Draft") WITHER_ROSE("STONE", 0),
     @Draft @Deprecated("Draft") GRINDSTONE("STONE", 0),
