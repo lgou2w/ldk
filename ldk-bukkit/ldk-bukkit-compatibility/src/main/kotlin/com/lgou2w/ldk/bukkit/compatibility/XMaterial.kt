@@ -64,6 +64,8 @@ import java.util.*
 
 enum class XMaterial {
 
+    //<editor-fold desc="XMaterials" defaultstate="collapsed">
+
     ACACIA_BOAT("BOAT_ACACIA", 0),
     ACACIA_BUTTON("WOOD_BUTTON", 0),
     ACACIA_DOOR(0, "ACACIA_DOOR", "ACACIA_DOOR_ITEM"),
@@ -786,7 +788,6 @@ enum class XMaterial {
     SHULKER_BOX("PURPLE_SHULKER_BOX", 0),
     SHULKER_SHELL("SHULKER_SHELL", 0),
     SHULKER_SPAWN_EGG("MONSTER_EGG", 0),
-    SIGN("SIGN", 0),
     SILVERFISH_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_HORSE_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_SKULL(0, "SKULL", "SKULL_ITEM"),
@@ -884,7 +885,6 @@ enum class XMaterial {
     VINDICATOR_SPAWN_EGG("MONSTER_EGG", 0),
     VINE("VINE", 0),
     VOID_AIR("AIR", 0),
-    WALL_SIGN(0, "WALL_SIGN", "SIGN_POST"),
     WALL_TORCH("TORCH", 1),
     WATER(0, "WATER", "STATIONARY_WATER"),
     WATER_BUCKET("WATER_BUCKET", 0),
@@ -935,38 +935,59 @@ enum class XMaterial {
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 2),
 
+    //</editor-fold>
 
     // TODO Minecraft 1.14
     // Warning: Not yet released, just based on the draft of the wiki.
 
-    // Blocks :
     @Draft @Deprecated("Draft") BAMBOO("STONE", 0),
     @Draft @Deprecated("Draft") BARREL("STONE", 0),
     @Draft @Deprecated("Draft") BELL("STONE", 0),
     @Draft @Deprecated("Draft") BLAST_FURNACE("STONE", 0),
-    @Draft @Deprecated("Draft") DRINDSTONE("STONE", 0),
+    @Draft @Deprecated("Draft") CARTOGRAPHY_TABLE("STONE", 0),
+    @Draft @Deprecated("Draft") FLETCHING_TABLE("STONE", 0),
+    @Draft @Deprecated("Draft") SMITHING_TABLE("STONE", 0),
+    @Draft @Deprecated("Draft") STONECUTTER("STONE", 0),
+    @Draft @Deprecated("Draft") CORNFLOWER("STONE", 1),
+    @Draft @Deprecated("Draft") LILY_OF_THE_VALLEY("STONE", 0),
+    @Draft @Deprecated("Draft") WITHER_ROSE("STONE", 0),
+    @Draft @Deprecated("Draft") GRINDSTONE("STONE", 0),
     @Draft @Deprecated("Draft") JIGSAW("STONE", 0),
     @Draft @Deprecated("Draft") LANTERN("STONE", 0),
+    @Draft @Deprecated("Draft") LECTERN("STONE", 0),
     @Draft @Deprecated("Draft") LOOM("STONE", 0),
     @Draft @Deprecated("Draft") SCAFFOLDING("STONE", 0),
-    // TODO Signs
-    // TODO Slabs
     @Draft @Deprecated("Draft") SMOKER("STONE", 0),
-    // TODO Stairs
     @Draft @Deprecated("Draft") SWEET_BERRY_BUSH("STONE", 0),
-    // TODO Walls
 
-    // Items :
     @Draft @Deprecated("Draft") FLOWER_BANNER_PATTERN("PAPER", 0),
     @Draft @Deprecated("Draft") CREEPER_BANNER_PATTERN("PAPER", 0),
     @Draft @Deprecated("Draft") SKULL_BANNER_PATTERN("PAPER", 0),
     @Draft @Deprecated("Draft") MOJANG_BANNER_PATTERN("PAPER", 0),
     @Draft @Deprecated("Draft") CROSSBOW("BOW", 0),
-    // TODO Dyes
-    // TODO Spawn eggs
     @Draft @Deprecated("Draft") SUSPICIOUS_STEW("STONE", 0),
     @Draft @Deprecated("Draft") SWEET_BERRIES("STONE", 0),
 
+    SIGN(0, "OAK_SIGN", "SIGN"), // TODO Need to test
+    WALL_SIGN(0, "OAK_WALL_SIGN", "WALL_SIGN", "SIGN_POST"),
+    @Draft @Deprecated("Draft") OAK_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") OAK_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") BIRCH_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") BIRCH_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") JUNGLE_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") JUNGEL_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") ACACIA_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") ACACIA_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") DARK_OAK_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") DARK_OAK_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") SPRUCE_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") SPRUCE_WALL_SIGN("WALL_SIGN", 0),
+
+    // TODO Slabs
+    // TODO Stairs
+    // TODO Walls
+    // TODO Dyes
+    // TODO Spawn eggs
     ;
 
     private val aliases : Array<out String>
