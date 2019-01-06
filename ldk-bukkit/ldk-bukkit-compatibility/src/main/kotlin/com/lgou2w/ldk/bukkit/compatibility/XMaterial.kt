@@ -983,11 +983,19 @@ enum class XMaterial {
     @Draft @Deprecated("Draft") SPRUCE_SIGN("SIGN", 0),
     @Draft @Deprecated("Draft") SPRUCE_WALL_SIGN("WALL_SIGN", 0),
 
+    @Draft @Deprecated("Draft") BLUE_DYE("STONE", 0),
+    @Draft @Deprecated("Draft") BROWN_DYE("STONE", 0),
+    @Draft @Deprecated("Draft") BLACK_DYE("STONE", 0),
+    @Draft @Deprecated("Draft") WHITE_DYE("STONE", 0),
+
+    @Draft @Deprecated("Draft") CAT_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") ILLAGER_BEAST_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") PANDA_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") PILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
+
     // TODO Slabs
     // TODO Stairs
     // TODO Walls
-    // TODO Dyes
-    // TODO Spawn eggs
     ;
 
     private val aliases : Array<out String>
