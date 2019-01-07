@@ -57,6 +57,8 @@
 package com.lgou2w.ldk.bukkit.compatibility
 
 import com.lgou2w.ldk.bukkit.version.Draft
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.isOrLater
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -1031,15 +1033,9 @@ enum class XMaterial {
 
     companion object {
 
-        private const val V1_13_VERSION_CHECK_TYPE = "RED_WOOL"
-
         @JvmStatic
         private val isV113OrLater : Boolean by lazy {
-            try {
-                Material.matchMaterial(V1_13_VERSION_CHECK_TYPE) != null
-            } catch (e: IllegalArgumentException) {
-                false
-            }
+            MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)
         }
 
         /**
