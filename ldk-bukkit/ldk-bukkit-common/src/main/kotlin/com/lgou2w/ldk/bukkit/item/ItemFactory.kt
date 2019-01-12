@@ -267,7 +267,7 @@ object ItemFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun modifyTag(itemStack: ItemStack, applicator: Applicator<NBTTagCompound>): ItemStack {

@@ -122,7 +122,7 @@ object EntityFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun <T : Entity> modifyTag(entity: T, applicator: Applicator<NBTTagCompound>): T {

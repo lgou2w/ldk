@@ -38,7 +38,7 @@ data class PotionEffectCustom @JvmOverloads constructor(
         Comparable<PotionEffectCustom> {
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmOverloads
     fun applyToEntity(entity: LivingEntity, force: Boolean = false): Boolean {
