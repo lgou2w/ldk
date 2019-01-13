@@ -22,7 +22,7 @@ import java.util.*
 interface Language {
 
     /**
-     * @since 0.1.7-rc2
+     * @since LDK 0.1.7-rc2
      */
     val manager : LanguageManager
 
@@ -37,7 +37,7 @@ interface Language {
     val entries : Set<Map.Entry<String, String>>
 
     /**
-     * @since 0.1.7-rc2
+     * @since LDK 0.1.7-rc2
      */
     @Throws(IOException::class)
     fun save()

@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap
  * ## StructureModifier (结构修改器)
  *
  * @author lgou2w
- * @since 0.1.7
+ * @since LDK 0.1.7
  */
 open class StructureModifier<T : Any> {
 

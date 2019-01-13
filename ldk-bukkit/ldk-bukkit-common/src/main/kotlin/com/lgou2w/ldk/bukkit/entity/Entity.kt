@@ -30,14 +30,14 @@ import org.bukkit.inventory.ItemStack
  **************************************************************************/
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun Entity.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
         = EntityFactory.readTag(this).also(block)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 fun <T : Entity> T.modifyTag(block: Applicator<NBTTagCompound>): T
         = EntityFactory.modifyTag(this, block)
@@ -171,7 +171,7 @@ var LivingEntity.itemInOffHand: ItemStack?
     set(value) { EntityFactory.setItemInOffHand(this, value) }
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun LivingEntity.applyToEffect(effectCustom: PotionEffectCustom, force: Boolean = false): Boolean

@@ -48,13 +48,13 @@ fun NBTTagCompound?.writeTag(itemStack: ItemStack): ItemStack
         = ItemFactory.writeTag(itemStack, this)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 fun ItemStack.modifyTag(block: Applicator<NBTTagCompound>): ItemStack
         = ItemFactory.modifyTag(this, block)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 @Throws(UnsupportedOperationException::class)

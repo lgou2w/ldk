@@ -106,7 +106,7 @@ object PacketFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun processPacketTo(packet: Any, vararg players: Player) {
@@ -120,14 +120,14 @@ object PacketFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun processPacketToAll(packet: Any)
             = processPacketTo(packet, *Bukkit.getOnlinePlayers().toTypedArray())
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun processPacketToNearby(packet: Any, center: Location, range: Double) {

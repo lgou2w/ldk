@@ -35,14 +35,14 @@ fun ChatComponent.send(player: Player, action: ChatAction = ChatAction.CHAT)
         = ChatFactory.sendChat(player, this, action)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendTo(players: Array<Player>, action: ChatAction = ChatAction.CHAT)
         = ChatFactory.sendChatTo(players, this, action)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendToAll(action: ChatAction = ChatAction.CHAT)
@@ -56,14 +56,14 @@ fun ChatComponent.sendTitle(player: Player, fadeIn: Int = 10, stay: Int = 70, fa
         = ChatFactory.sendTitle(player, this, fadeIn, stay, fadeOut)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendTitleTo(players: Array<Player>, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
         = ChatFactory.sendTitleTo(players, this, fadeIn, stay, fadeOut)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendTitleToAll(fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
@@ -74,14 +74,14 @@ fun ChatComponent.sendTitle(player: Player, subTitle: ChatComponent?, fadeIn: In
         = ChatFactory.sendTitle(player, this, subTitle, fadeIn, stay, fadeOut)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendTitleTo(players: Array<Player>, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
         = ChatFactory.sendTitleTo(players, this, subTitle, fadeIn, stay, fadeOut)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendTitleToAll(subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
@@ -92,14 +92,14 @@ fun ChatComponent.sendTitleSub(player: Player, fadeIn: Int = 10, stay: Int = 70,
         = ChatFactory.sendTitle(player, ChatComponentText(""), this, fadeIn, stay, fadeOut)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendTitleSubTo(players: Array<Player>, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
         = ChatFactory.sendTitleTo(players, ChatComponentText(""), this, fadeIn, stay, fadeOut)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
 fun ChatComponent.sendTitleSubToAll(fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
