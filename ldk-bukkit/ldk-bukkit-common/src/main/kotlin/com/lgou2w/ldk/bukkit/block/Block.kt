@@ -27,7 +27,7 @@ import org.bukkit.block.Block
  **************************************************************************/
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  * @throws IllegalArgumentException
  */
 @JvmOverloads
@@ -36,7 +36,7 @@ fun Block.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
         = BlockFactory.readTag(this).also(block)
 
 /**
- * @since 0.1.7-rc3
+ * @since LDK 0.1.7-rc3
  * @throws IllegalArgumentException
  */
 @Throws(IllegalArgumentException::class)

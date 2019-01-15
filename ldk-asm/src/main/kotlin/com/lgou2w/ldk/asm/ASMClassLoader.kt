@@ -22,7 +22,7 @@ package com.lgou2w.ldk.asm
  * @see [ofInstance]
  * @see [ofClassLoader]
  * @author lgou2w
- * @since 0.1.7-rc2
+ * @since LDK 0.1.7-rc2
  */
 abstract class ASMClassLoader private constructor(
         parent: ClassLoader

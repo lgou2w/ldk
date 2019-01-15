@@ -78,7 +78,7 @@ object ChatFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     @JvmOverloads
@@ -96,7 +96,7 @@ object ChatFactory {
             = sendChatTo(arrayOf(player), component, action)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     @JvmOverloads
@@ -106,7 +106,7 @@ object ChatFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     @JvmOverloads
@@ -201,7 +201,7 @@ object ChatFactory {
             = sendTitle(player, title, null, fadeIn, stay, fadeOut)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     @JvmOverloads
@@ -209,7 +209,7 @@ object ChatFactory {
             = sendTitleTo(players, title, null, fadeIn, stay, fadeOut)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     @JvmOverloads
@@ -226,7 +226,7 @@ object ChatFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     @JvmOverloads
@@ -238,7 +238,7 @@ object ChatFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     @JvmOverloads
@@ -256,7 +256,7 @@ object ChatFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleBarTo(players: Array<Player>, title: ChatComponent) {
@@ -268,7 +268,7 @@ object ChatFactory {
     }
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleBarToAll(title: ChatComponent)
@@ -279,14 +279,14 @@ object ChatFactory {
             = sendTitle(player, PACKET_TITLE_ACTION_TIMES, null, fadeIn, stay, fadeOut)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleTimesTo(players: Array<Player>, fadeIn: Int, stay: Int, fadeOut: Int)
             = sendTitleTo(players, PACKET_TITLE_ACTION_TIMES, null, fadeIn, stay, fadeOut)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleTimesToAll(fadeIn: Int, stay: Int, fadeOut: Int)
@@ -297,14 +297,14 @@ object ChatFactory {
             = sendTitle(player, PACKET_TITLE_ACTION_RESET, null)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleResetTo(players: Array<Player>)
             = sendTitleTo(players, PACKET_TITLE_ACTION_RESET, null)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleResetToAll()
@@ -315,14 +315,14 @@ object ChatFactory {
             = sendTitle(player, PACKET_TITLE_ACTION_CLEAR, null)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleClearTo(players: Array<Player>)
             = sendTitleTo(players, PACKET_TITLE_ACTION_CLEAR, null)
 
     /**
-     * @since 0.1.7-rc3
+     * @since LDK 0.1.7-rc3
      */
     @JvmStatic
     fun sendTitleClearToAll(players: Array<Player>)

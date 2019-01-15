@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-rc3</version>
+        <version>0.1.7-rc4</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

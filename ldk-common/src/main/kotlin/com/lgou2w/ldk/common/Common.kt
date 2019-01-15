@@ -29,10 +29,26 @@ package com.lgou2w.ldk.common
 typealias Predicate<T> = (T) -> Boolean
 
 /**
+ * * Predicate of suspend, conditional function type alias.
+ * * 挂起的谓词, 条件函数类型别名.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendPredicate<T> = suspend (T) -> Boolean
+
+/**
  * * Function, with parameters and returned type aliases.
  * * 函数, 具有参数和返回的类型别名.
  */
 typealias Function<T, R> = (T) -> R
+
+/**
+ * * Function of suspend, with parameters and returned type aliases.
+ * * 挂起函数, 具有参数和返回的类型别名.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendFunction<T, R> = suspend (T) -> R
 
 /**
  * * Double-parameter function, with double arguments and returned type aliases.
@@ -41,10 +57,26 @@ typealias Function<T, R> = (T) -> R
 typealias BiFunction<T, U, R> = (T, U) -> R
 
 /**
+ * * Double-parameter function of suspend, with double arguments and returned type aliases.
+ * * 挂起双参函数, 具有双参和返回的类型别名.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendBiFunction<T, U, R> = suspend (T, U) -> R
+
+/**
  * * Consumer type aliases.
  * * 消费者类型别名.
  */
 typealias Consumer<T> = (T) -> Unit
+
+/**
+ * * Consumer type aliases of suspend.
+ * * 挂起消费者类型别名.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendConsumer<T> = suspend (T) -> Unit
 
 /**
  * * Applicator type aliases.
@@ -53,10 +85,26 @@ typealias Consumer<T> = (T) -> Unit
 typealias Applicator<T> = T.() -> Unit
 
 /**
+ * * Applicator type aliases of suspend.
+ * * 挂起应用器类型名称.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendApplicator<T> = suspend T.() -> Unit
+
+/**
  * * The applicator function, with the type alias returned.
  * * 应用器函数, 具有返回的类型别名.
  */
 typealias ApplicatorFunction<T, R> = T.() -> R
+
+/**
+ * * The applicator function of suspend, with the type alias returned.
+ * * 挂起应用器函数, 具有返回的类型别名.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendApplicatorFunction<T, R> = suspend T.() -> R
 
 /**
  * * Callable type aliases.
@@ -65,10 +113,26 @@ typealias ApplicatorFunction<T, R> = T.() -> R
 typealias Callable<T> = () -> T
 
 /**
+ * * Callable type aliases of suspend.
+ * * 挂起可回调类型别名.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendCallable<T> = suspend () -> T
+
+/**
  * * Runnable type aliases.
  * * 可运行类型别名.
  */
 typealias Runnable = () -> Unit
+
+/**
+ * * Runnable type aliases of suspend.
+ * * 挂起可运行类型别名.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+typealias SuspendRunnable = suspend () -> Unit
 
 /**************************************************************************
  *
@@ -85,15 +149,71 @@ inline infix fun <T> Predicate<T>.and(crossinline other: Predicate<T>) : Predica
         = { t : T -> invoke(t) && other.invoke(t) }
 
 /**
+ * @see [java.util.function.Predicate.and]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> Predicate<T>.and(crossinline other: SuspendPredicate<T>) : SuspendPredicate<T>
+        = { t : T -> invoke(t) && other.invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.and]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> SuspendPredicate<T>.and(crossinline other: Predicate<T>): SuspendPredicate<T>
+        = { t : T -> invoke(t) && other.invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.and]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> SuspendPredicate<T>.and(crossinline other: SuspendPredicate<T>): SuspendPredicate<T>
+        = { t : T -> invoke(t) && other.invoke(t) }
+
+/**
  * @see [java.util.function.Predicate.or]
  */
 inline infix fun <T> Predicate<T>.or(crossinline other: Predicate<T>) : Predicate<T>
         = { t : T -> invoke(t) || other.invoke(t) }
 
 /**
+ * @see [java.util.function.Predicate.or]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> Predicate<T>.or(crossinline other: SuspendPredicate<T>) : SuspendPredicate<T>
+        = { t : T -> invoke(t) || other.invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.or]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> SuspendPredicate<T>.or(crossinline other: Predicate<T>): SuspendPredicate<T>
+        = { t : T -> invoke(t) || other.invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.or]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> SuspendPredicate<T>.or(crossinline other: SuspendPredicate<T>): SuspendPredicate<T>
+        = { t : T -> invoke(t) || other.invoke(t) }
+
+/**
  * @see [java.util.function.Predicate.negate]
  */
 fun <T> Predicate<T>.negate() : Predicate<T>
+        = { t : T -> !invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.negate]
+ * @since LDK 0.1.7-rc4
+ */
+fun <T> Predicate<T>.negateSuspend(): SuspendPredicate<T>
+        = { t : T -> !invoke(t) }
+
+/**
+ * @see [java.util.function.Predicate.negate]
+ * @since LDK 0.1.7-rc4
+ */
+fun <T> SuspendPredicate<T>.negate(): SuspendPredicate<T>
         = { t : T -> !invoke(t) }
 
 /**************************************************************************
@@ -112,21 +232,71 @@ inline infix fun <T, R, V> Function<T, R>.compose(crossinline before: Function<V
         = { v : V -> invoke(before.invoke(v)) }
 
 /**
+ * @see [java.util.function.Function.compose]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T, R, V> Function<T, R>.compose(crossinline before: SuspendFunction<V, T>) : SuspendFunction<V, R>
+        = { v : V -> invoke(before.invoke(v)) }
+
+/**
+ * @see [java.util.function.Function.compose]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T, R, V> SuspendFunction<T, R>.compose(crossinline before: Function<V, T>) : SuspendFunction<V, R>
+        = { v : V -> invoke(before.invoke(v)) }
+
+/**
+ * @see [java.util.function.Function.compose]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T, R, V> SuspendFunction<T, R>.compose(crossinline before: SuspendFunction<V, T>) : SuspendFunction<V, R>
+        = { v : V -> invoke(before.invoke(v)) }
+
+/**
  * @see [java.util.function.Function.andThen]
  */
 inline infix fun <T, R, V> Function<T, R>.andThen(crossinline after: Function<R, V>) : Function<T, V>
         = { t : T -> after.invoke(invoke(t)) }
 
 /**
- * @see [java.util.function.Function.identity]
+ * @see [java.util.function.Function.andThen]
+ * @since LDK 0.1.7-rc4
  */
-fun <T, R> Function<T, R>.identity() : Function<T, T>
-        = { t : T -> t }
+inline infix fun <T, R, V> Function<T, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendFunction<T, V>
+        = { t : T -> after.invoke(invoke(t)) }
+
+/**
+ * @see [java.util.function.Function.andThen]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T, R, V> SuspendFunction<T, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendFunction<T, V>
+        = { t : T -> after.invoke(invoke(t)) }
 
 /**
  * @see [java.util.function.BiFunction.andThen]
  */
 inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: Function<R, V>) : BiFunction<T, U, V>
+        = { t : T, u : U -> after.invoke(invoke(t, u)) }
+
+/**
+ * @see [java.util.function.BiFunction.andThen]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendBiFunction<T, U, V>
+        = { t : T, u : U -> after.invoke(invoke(t, u)) }
+
+/**
+ * @see [java.util.function.BiFunction.andThen]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T, U, R, V> SuspendBiFunction<T, U, R>.andThen(crossinline after: Function<R, V>) : SuspendBiFunction<T, U, V>
+        = { t : T, u : U -> after.invoke(invoke(t, u)) }
+
+/**
+ * @see [java.util.function.BiFunction.andThen]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T, U, R, V> SuspendBiFunction<T, U, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendBiFunction<T, U, V>
         = { t : T, u : U -> after.invoke(invoke(t, u)) }
 
 /**************************************************************************
@@ -143,11 +313,40 @@ inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: Fun
 inline infix fun <T> Consumer<T>.andThenConsume(crossinline after: Consumer<T>) : Consumer<T>
         = { t : T -> invoke(t); after.invoke(t) }
 
+/**
+ * @see [java.util.function.Consumer.andThen]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> Consumer<T>.andThenConsume(crossinline after: SuspendConsumer<T>) : SuspendConsumer<T>
+        = { t : T -> invoke(t); after.invoke(t) }
+
+/**
+ * @see [java.util.function.Consumer.andThen]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> SuspendConsumer<T>.andThenConsume(crossinline after: Consumer<T>) : SuspendConsumer<T>
+        = { t : T -> invoke(t); after.invoke(t) }
+
+/**
+ * @see [java.util.function.Consumer.andThen]
+ * @since LDK 0.1.7-rc4
+ */
+inline infix fun <T> SuspendConsumer<T>.andThenConsume(crossinline after: SuspendConsumer<T>) : SuspendConsumer<T>
+        = { t : T -> invoke(t); after.invoke(t) }
+
 /**************************************************************************
  *
  * Extended functions
  *
  **************************************************************************/
+
+/**
+ * * Returns `null` if the receiver is `null`, otherwise returns the receiver itself.
+ * * 如果接收器为 `null` 则返回 `null`, 否则返回接收器自身.
+ *
+ * @since LDK 0.1.7-rc4
+ */
+fun <T> T?.nullable(): T? = this
 
 /**
  * * Throws a [NullPointerException] if the receiver is `null`.
