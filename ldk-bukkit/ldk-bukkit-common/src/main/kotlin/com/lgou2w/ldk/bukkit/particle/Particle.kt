@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.particle
 
 import com.lgou2w.ldk.bukkit.version.API
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
@@ -102,6 +103,11 @@ enum class Particle(
     @API(Level.Minecraft_V1_13) BUBBLE_COLUMN_UP(47, "bubble_column_up", "bubble_column_up"),
     @API(Level.Minecraft_V1_13) NAUTILUS(48, "nautilus", "nautilus"),
     @API(Level.Minecraft_V1_13) DOLPHIN(49, "dolphin", "dolphin"),
+
+    // TODO Minecraft 1.14 Draft
+    @Draft @Deprecated("Draft") @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
+    @Draft @Deprecated("Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
+    @Draft @Deprecated("Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
     ;
 
     constructor(
