@@ -82,6 +82,8 @@ class DefaultRegisteredCommand(
             return false
         mChildren[child.name] = child
         child.isRegistered = true
+        CommandManagerBase
+            .initialize(child, child.manager)
         return true
     }
 

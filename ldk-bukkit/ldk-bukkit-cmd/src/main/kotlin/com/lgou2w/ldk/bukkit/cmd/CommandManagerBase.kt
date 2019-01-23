@@ -23,6 +23,7 @@ import org.bukkit.Server
 import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
 import org.bukkit.plugin.Plugin
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 
@@ -33,7 +34,7 @@ abstract class CommandManagerBase(
 
     protected val mCommands = ConcurrentHashMap<String, RegisteredCommand>()
     override val commands : MutableMap<String, RegisteredCommand>
-        get() = HashMap(mCommands)
+        get() = Collections.unmodifiableMap(mCommands)
 
     override val transforms = Transforms()
     override val completes = Completes()
@@ -45,7 +46,7 @@ abstract class CommandManagerBase(
         if (existed != null)
             throw UnsupportedOperationException("This command '${command.name}' has already been registered.")
         return if (registerBukkitCommand(command)) {
-            initialize(command, this)
+            CommandManagerBase.initialize(command, this)
             mCommands[command.name] = command
             command
         } else {
@@ -59,7 +60,7 @@ abstract class CommandManagerBase(
 
     companion object {
 
-        @JvmStatic private fun initialize(command: RegisteredCommand, manager: CommandManager) {
+        @JvmStatic internal fun initialize(command: RegisteredCommand, manager: CommandManager) {
             val source = command.source
             if (source is Initializable) try {
                 source.initialize(command)
