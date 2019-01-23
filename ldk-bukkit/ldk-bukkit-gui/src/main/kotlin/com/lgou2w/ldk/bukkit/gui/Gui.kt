@@ -18,6 +18,7 @@ package com.lgou2w.ldk.bukkit.gui
 
 import com.lgou2w.ldk.common.Consumer
 import org.bukkit.entity.HumanEntity
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.InventoryHolder
@@ -44,6 +45,14 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
     var onOpened: ((gui: Gui, event: InventoryOpenEvent) -> Unit)?
 
     var onClosed: ((gui: Gui, event: InventoryCloseEvent) -> Unit)?
+
+    /**
+     * * Called when the button click is processed. Can handle non-button items.
+     * * 当按钮点击处理完后被调用. 可以处理非按钮物品.
+     *
+     * @since LDK 0.1.7-rc5
+     */
+    var onClicked: ((gui: Gui, event: InventoryClickEvent) -> Unit)?
 
     /**************************************************************************
      *
@@ -99,35 +108,51 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     fun removeButtons()
 
+    @Throws(IllegalStateException::class)
     fun addButton() : Button
 
+    @Throws(IllegalStateException::class)
     fun addButton(stack: ItemStack? = null) : Button
 
+    @Throws(IllegalStateException::class)
     fun addButton(onClicked: Consumer<ButtonEvent>? = null) : Button
 
+    @Throws(IllegalStateException::class)
     fun addButton(stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(index: Int) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(index: Int, stack: ItemStack? = null) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(index: Int, onClicked: Consumer<ButtonEvent>? = null) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(index: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(x: Int, y: Int) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(x: Int, y: Int, stack: ItemStack? = null) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(x: Int, y: Int, onClicked: Consumer<ButtonEvent>? = null) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setButton(x: Int, y: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
 
+    @Throws(IllegalArgumentException::class)
     fun setSameButton(indexes: IntArray) : ButtonSame
 
+    @Throws(IllegalArgumentException::class)
     fun setSameButton(indexes: IntArray, stack: ItemStack? = null) : ButtonSame
 
+    @Throws(IllegalArgumentException::class)
     fun setSameButton(indexes: IntArray, onClicked: Consumer<ButtonEvent>? = null) : ButtonSame
 
+    @Throws(IllegalArgumentException::class)
     fun setSameButton(indexes: IntArray, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : ButtonSame
 }
