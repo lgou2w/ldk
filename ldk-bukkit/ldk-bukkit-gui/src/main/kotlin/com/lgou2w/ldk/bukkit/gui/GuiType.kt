@@ -29,54 +29,32 @@ enum class GuiType(
     /**
      * A chest inventory, with 54 slots of type CONTAINER.
      */
-    CHEST_6(54, "Chest") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, 54, title)
-        }
-    },
+    CHEST_6(54, "Chest"),
     /**
      * A chest inventory, with 45 slots of type CONTAINER.
      */
-    CHEST_5(45, "Chest") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, 45, title)
-        }
-    },
+    CHEST_5(45, "Chest"),
     /**
      * A chest inventory, with 36 slots of type CONTAINER.
      */
-    CHEST_4(36, "Chest") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, 36, title)
-        }
-    },
+    CHEST_4(36, "Chest"),
     /**
      * A chest inventory, with 27 slots of type CONTAINER.
      */
-    CHEST_3(27, "Chest") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, 27, title)
-        }
-    },
+    CHEST_3(27, "Chest"),
     /**
      * A chest inventory, with 18 slots of type CONTAINER.
      */
-    CHEST_2(18, "Chest") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, 18, title)
-        }
-    },
+    CHEST_2(18, "Chest"),
     /**
      * A chest inventory, with 9 slots of type CONTAINER.
      */
-    CHEST_1(9, "Chest") {
-        override fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-            return Bukkit.createInventory(owner, 9, title)
-        }
-    },
+    CHEST_1(9, "Chest"),
     ;
 
-    abstract fun createInventory(owner: InventoryHolder?, title: String): Inventory
+    fun createInventory(owner: InventoryHolder?, title: String): Inventory {
+        return Bukkit.createInventory(owner, size, title)
+    }
 
     override val value: String
         get() = name

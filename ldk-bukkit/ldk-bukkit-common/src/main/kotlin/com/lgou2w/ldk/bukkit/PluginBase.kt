@@ -50,7 +50,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
                     }
                 }
         ) {
-            logger.log(Level.SEVERE, "Dependency failure when plugin loads, unload dependency: ${failedDependency?.name}.")
+            logger.log(Level.SEVERE, "Dependency failure when plugin enable, unload dependency: ${failedDependency?.name}.")
             failedDependency(failedDependency.notNull())
             server.pluginManager.disablePlugin(this)
             return
@@ -59,15 +59,15 @@ abstract class PluginBase : JavaPlugin, Plugin {
             enable()
         } catch (e: Exception) {
             if (enableExceptionDisabled) {
-                logger.log(Level.SEVERE, "The plugin is disabled due to an exception at load time:", e)
+                logger.log(Level.SEVERE, "The plugin is disabled due to an exception at enable:", e)
                 server.pluginManager.disablePlugin(this)
                 return
             } else
-                logger.log(Level.SEVERE, "Error loading, skip plugin disabled, exception:", e)
+                logger.log(Level.SEVERE, "Error enable, skip plugin disabled, exception:", e)
         }
         if (isEnabled) {
             val endTime = System.currentTimeMillis()
-            logger.info("Plugin $pluginName $pluginVersion successfully loaded, total time: ${endTime - startTime}ms.")
+            logger.info("Plugin $pluginName v$pluginVersion successfully enabled, total time: ${endTime - startTime}ms.")
         }
     }
 
