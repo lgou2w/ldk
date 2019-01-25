@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk-bukkit</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-rc5</version>
+        <version>0.1.7-rc6</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-version</artifactId>
-            <version>0.1.7-rc5</version>
+            <version>0.1.7-rc6</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
