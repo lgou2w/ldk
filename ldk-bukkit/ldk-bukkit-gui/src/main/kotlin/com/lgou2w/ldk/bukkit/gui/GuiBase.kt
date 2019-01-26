@@ -33,12 +33,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.EventExecutor
-import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.PluginBase
-import org.bukkit.plugin.PluginDescriptionFile
-import org.bukkit.plugin.PluginLoader
-import org.bukkit.plugin.RegisteredListener
+import org.bukkit.plugin.*
 import java.io.File
 import java.io.InputStream
 import java.util.*
@@ -88,6 +83,7 @@ abstract class GuiBase : Gui {
 
     final override var onOpened: ((gui: Gui, event: InventoryOpenEvent) -> Unit)? = null
     final override var onClosed: ((gui: Gui, event: InventoryCloseEvent) -> Unit)? = null
+    final override var onClicked: ((gui: Gui, event: InventoryClickEvent) -> Unit)? = null
 
     /**************************************************************************
      *
@@ -162,7 +158,7 @@ abstract class GuiBase : Gui {
     private val buttonList : MutableList<Button> = ArrayList()
     final override val buttons : List<Button>
         get() = synchronized (buttonList) {
-            ArrayList(buttonList)
+            Collections.unmodifiableList(buttonList)
         }
 
     override val buttonSize: Int
@@ -241,7 +237,7 @@ abstract class GuiBase : Gui {
     }
 
     override fun removeButton(index: Int): Boolean {
-        val button = getButton0(index) ?: return false
+        val button = getButton0(index) ?: return true
         return removeButton(button)
     }
 
@@ -388,6 +384,9 @@ abstract class GuiBase : Gui {
                                     button.onClicked?.invoke(buttonEvent)
                                 }
                             }
+                            // Processed after the button
+                            if (gui.onClicked != null)
+                                gui.onClicked?.invoke(gui, event)
                         }
                     }
                 }

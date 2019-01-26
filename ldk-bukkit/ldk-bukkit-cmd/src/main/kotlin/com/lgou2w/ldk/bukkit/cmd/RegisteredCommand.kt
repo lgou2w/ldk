@@ -72,6 +72,16 @@ interface RegisteredCommand {
 
     fun findExecutor(name: String, allowAlias: Boolean = true) : CommandExecutor?
 
+    /**
+     * @since LDK 0.1.7-rc6
+     */
+    fun mappingDescriptions(description: String?, usage: String?)
+
+    /**
+     * @since LDK 0.1.7-rc6
+     */
+    fun mappingExecutorDescriptions(mapping: Map<String, String?>)
+
     /**************************************************************************
      *
      * Significant

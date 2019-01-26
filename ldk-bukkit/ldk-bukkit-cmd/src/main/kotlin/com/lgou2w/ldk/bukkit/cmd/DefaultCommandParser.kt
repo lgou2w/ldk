@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
+import java.util.logging.Level
 
 class DefaultCommandParser : CommandParser {
 
@@ -51,7 +52,11 @@ class DefaultCommandParser : CommandParser {
     }
 
     @Throws(CommandParseException::class)
-    private fun parseRoot(manager: CommandManager, clazz: Class<*>) : CommandRoot {
+    private fun parseRoot(
+            @Suppress("UNUSED_PARAMETER")
+            manager: CommandManager,
+            clazz: Class<*>
+    ) : CommandRoot {
         if (Modifier.isAbstract(clazz.modifiers) || Modifier.isInterface(clazz.modifiers) || clazz.isEnum || clazz.isAnnotation)
             throw CommandParseException("The command $clazz cannot be an abstract, interface, enum, or annotation class.")
         val root = clazz.getAnnotation(CommandRoot::class.java)
@@ -220,6 +225,7 @@ class DefaultCommandParser : CommandParser {
     private fun registerChildren(
             manager: CommandManager,
             parent: DefaultRegisteredCommand?,
+            @Suppress("UNUSED_PARAMETER")
             source: Any,
             clazz: Class<*>
     ) {
@@ -235,7 +241,7 @@ class DefaultCommandParser : CommandParser {
                           Correction: ?
                             class ${child.name} (...) or
                             class ${child.name} { public constructor(...) }
-                    """.trimIndent())
+                    """.trimIndent(), e)
                 null to null
             }
             if (root != null && instance != null) {
@@ -259,9 +265,11 @@ class DefaultCommandParser : CommandParser {
         }
     }
 
-    private fun betterError(manager: CommandManager, message: String) {
+    private fun betterError(manager: CommandManager, message: String, e: Exception? = null) {
         manager.plugin.logger.warning("-------- Command parsing warning -----")
         message.split("\n").forEach { manager.plugin.logger.warning(it) }
+        if (e != null)
+            manager.plugin.logger.log(Level.SEVERE, e.message, e)
     }
 
     private fun buildCommandRegistered(

@@ -30,7 +30,7 @@ class YamlConfigurationAdapter : LanguageAdapter {
     override fun adapt(input: InputStream): Map<String, String> {
         val reader = InputStreamReader(input, Charsets.UTF_8)
         val yaml = YamlConfiguration.loadConfiguration(reader)
-        val keys = yaml.defaultSection.getKeys(false)
+        val keys = yaml.getKeys(false)
         return keys?.associate { it to yaml.get(it).toString()  } ?: LinkedHashMap()
     }
 
@@ -38,8 +38,7 @@ class YamlConfigurationAdapter : LanguageAdapter {
         val yaml = YamlConfiguration()
         entries.forEach { yaml.set(it.key, it.value) }
         val data = yaml.saveToString()
-        OutputStreamWriter(output, Charsets.UTF_8).use { writer ->
-            writer.write(data)
-        }
+        val writer = OutputStreamWriter(output, Charsets.UTF_8)
+        writer.write(data)
     }
 }

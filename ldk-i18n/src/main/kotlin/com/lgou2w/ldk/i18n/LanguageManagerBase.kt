@@ -17,6 +17,8 @@
 package com.lgou2w.ldk.i18n
 
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.*
 
 abstract class LanguageManagerBase(
@@ -35,11 +37,17 @@ abstract class LanguageManagerBase(
 
     protected fun loadEntries(locale: Locale) : Map<String, String> {
         val name = checkName(locale)
+        var input : InputStream? = null
         try {
-            val input = provider.load(name)
+            input = provider.load(name)
             return if (input != null) adapter.adapt(input) else LinkedHashMap()
         } catch (e: Exception) {
             throw IOException("Exception when loading a language file from a provider:", e.cause ?: e)
+        } finally {
+            if (input != null) try {
+                input.close()
+            } catch (e: Exception) {
+            }
         }
     }
 
@@ -50,12 +58,18 @@ abstract class LanguageManagerBase(
 
     final override fun save(language: Language) {
         val name = checkName(language.locale)
+        var output : OutputStream? = null
         try {
-            val output = provider.write(name)
+            output = provider.write(name)
             val values = language.entries.associate { it.key to it.value }.toMutableMap()
             adapter.readapt(output, values)
         } catch (e: Exception) {
             throw IOException("Exception when saving a language file from the supplied adapter:", e.cause ?: e)
+        } finally {
+            if (output != null) try {
+                output.close()
+            } catch (e: Exception) {
+            }
         }
     }
 

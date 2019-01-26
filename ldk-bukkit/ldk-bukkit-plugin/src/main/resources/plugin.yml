@@ -15,6 +15,7 @@
 #
 
 name: LDK
+prefix: LDK
 api-version: 1.13
 main: com.lgou2w.ldk.bukkit.LDKPlugin
 version: ${project.version}-${git.commit.id.abbrev}

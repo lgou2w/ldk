@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit
 import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Runnable
 import org.bukkit.Bukkit
+import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
@@ -107,3 +108,15 @@ fun <T> Plugin.callTaskFutureAsyncLater(callback: Callable<T>, delay: Long) : Co
 
 fun Plugin.registerListener(listener: Listener)
         = Bukkit.getPluginManager().registerEvents(listener, this)
+
+/**
+ * @since LDK 0.1.7-rc5
+ */
+fun Plugin.unregisterListener(listener: Listener)
+        = HandlerList.unregisterAll(listener)
+
+/**
+ * @since LDK 0.1.7-rc5
+ */
+fun Plugin.unregisterListeners()
+        = HandlerList.unregisterAll(this)
