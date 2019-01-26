@@ -43,10 +43,8 @@ class DefaultRegisteredCommand(
     private val mChildren = ConcurrentHashMap<String, DefaultRegisteredCommand>(children)
     private val mExecutors = ConcurrentHashMap<String, DefaultCommandExecutor>(executors)
 
-    override val children: Map<String, RegisteredCommand>
-        get() = HashMap(mChildren)
-    override val executors: Map<String, CommandExecutor>
-        get() = HashMap(mExecutors)
+    override val children: Map<String, RegisteredCommand> get() = Collections.unmodifiableMap(mChildren)
+    override val executors: Map<String, CommandExecutor> get() = Collections.unmodifiableMap(mExecutors)
 
     override var prefix: String = prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
         set(value) { field = value.replace(COMMAND_PLACEHOLDER, name) }
@@ -99,6 +97,18 @@ class DefaultRegisteredCommand(
         if (executor == null && allowAlias)
             executor = mExecutors.values.find { e -> e.aliases.any { alias -> alias == name } }
         return executor
+    }
+
+    override fun mappingDescriptions(description: String?, usage: String?) {
+        this.description = description
+        this.usage = usage
+    }
+
+    override fun mappingExecutorDescriptions(mapping: Map<String, String?>) {
+        mExecutors.values.forEach { executor ->
+            val description = mapping[executor.name]
+            executor.description = description
+        }
     }
 
     /**************************************************************************
