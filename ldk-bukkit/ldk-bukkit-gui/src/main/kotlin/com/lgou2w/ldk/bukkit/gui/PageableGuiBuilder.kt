@@ -65,6 +65,13 @@ interface PageableGuiBuilder : GuiBuilder {
         @JvmStatic
         fun of(type: GuiType, title: String = type.title): PageableGuiBuilder
                 = SimplePageableGuiBuilder(null, PageableGui(type, title))
+
+        /**
+         * @since LDK 0.1.7-rc5
+         */
+        @JvmStatic
+        fun of(gui: PageableGui): PageableGuiBuilder
+                = SimplePageableGuiBuilder(null, gui)
     }
 }
 
