@@ -364,6 +364,22 @@ fun <T> T?.notNull(cause: String = "NPE"): T {
 }
 
 /**
+ * * Throws a [NullPointerException] if the receiver string is `null` or [String.isBlank].
+ * * 如果接收器字符串为 `null` 或为 [String.isBlank] 则抛出空指针异常.
+ *
+ * @param cause Cause
+ * @param cause 原因
+ * @since LDK 0.1.7-rc6
+ */
+@JvmOverloads
+@Throws(NullPointerException::class)
+fun String?.notNullAndBlank(cause: String = "String cannot be null or blank"): String {
+    if (this == null || isBlank())
+        throw NullPointerException(cause)
+    return this
+}
+
+/**
  * * If the receiver is not `null`, then use `this` value as the receiver to call the specified [block] function.
  * * 如果接收器不为 `null`, 那么使用 `this` 值作为接收器调用指定的 [block] 函数.
  */

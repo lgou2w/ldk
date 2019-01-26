@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.common
 
+import java.util.regex.Pattern
+
 /**
  * ## Version (版本)
  *
@@ -75,5 +77,40 @@ open class Version(
 
     override fun toString(): String {
         return "Version(major=$major, minor=$minor, build=$build)"
+    }
+
+    companion object {
+
+        @JvmStatic
+        private val VERSION_PATTERN = Pattern.compile("^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<build>\\d+)$")
+
+        /**
+         * @since LDK 0.1.7-rc6
+         */
+        @JvmStatic
+        @Throws(IllegalArgumentException::class)
+        fun parse(versionOnly: String): Version {
+            val matcher = VERSION_PATTERN.matcher(versionOnly)
+            if (!matcher.matches())
+                throw IllegalArgumentException("Illegal version format, must be: x.y.z")
+            return Version(
+                    matcher.group("major").toInt(),
+                    matcher.group("minor").toInt(),
+                    matcher.group("build").toInt()
+            )
+        }
+
+        /**
+         * @since LDK 0.1.7-rc6
+         */
+        @JvmStatic
+        fun parseSafely(versionOnly: String?): Version? {
+            if (versionOnly == null || versionOnly.isBlank()) return null
+            return try {
+                parse(versionOnly)
+            } catch (e: IllegalArgumentException) {
+                null
+            }
+        }
     }
 }

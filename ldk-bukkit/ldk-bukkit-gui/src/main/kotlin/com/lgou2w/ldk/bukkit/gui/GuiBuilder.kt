@@ -57,6 +57,13 @@ interface GuiBuilder : Builder<Gui> {
         @JvmStatic
         fun of(type: GuiType, title: String = type.title): GuiBuilder
                 = SimpleGuiBuilder(type, title)
+
+        /**
+         * @since LDK 0.1.7-rc6
+         */
+        @JvmStatic
+        fun of(gui: Gui): GuiBuilder
+                = SimpleGuiBuilder(gui)
     }
 }
 
