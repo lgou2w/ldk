@@ -21,7 +21,7 @@ import java.util.*
 
 class MessageFormatter : Formatter {
 
-    override fun format(locale: Locale, value: String, vararg args: Any): String {
+    override fun format(locale: Locale, value: String, vararg args: Any?): String {
         return MessageFormat.format(value, *args)
     }
 }

@@ -44,11 +44,11 @@ interface Language {
 
     operator fun get(key: String) : String?
 
-    fun get(key: String, vararg args: Any) : String?
+    fun get(key: String, vararg args: Any?) : String?
 
     fun getOr(key: String, def: String?) : String?
 
-    fun getOr(key: String, def: String?, vararg args: Any) : String?
+    fun getOr(key: String, def: String?, vararg args: Any?) : String?
 
     operator fun set(key: String, value: String)
 

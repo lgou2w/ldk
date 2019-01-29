@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.i18n
+package com.lgou2w.ldk.bukkit.i18n
 
-import java.util.*
+import com.lgou2w.ldk.i18n.ResourceProvider
+import org.bukkit.plugin.Plugin
+import java.io.FileNotFoundException
+import java.io.InputStream
 
-class StringFormatter : Formatter {
+class PluginResourceProvider(
+        val plugin: Plugin
+) : ResourceProvider(PluginResourceProvider::class.java.classLoader) {
 
-    override fun format(locale: Locale, value: String, vararg args: Any?): String {
-        return String.format(locale, value, *args)
+    override fun isValid(name: String): Boolean {
+        return plugin.getResource(name) != null
+    }
+
+    override fun load(name: String): InputStream? {
+        return plugin.getResource(name)
+               ?: throw FileNotFoundException("The resource file $name in the plugin was not found.")
     }
 }

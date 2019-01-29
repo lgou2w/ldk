@@ -41,12 +41,12 @@ open class SimpleLanguage(
 
     override fun get(key: String): String?
             = getOr(key, null)
-    override fun get(key: String, vararg args: Any): String?
+    override fun get(key: String, vararg args: Any?): String?
             = getOr(key, null, *args)
     override fun getOr(key: String, def: String?): String?
             = getOr(key, def, emptyArray<String>())
 
-    override fun getOr(key: String, def: String?, vararg args: Any): String? {
+    override fun getOr(key: String, def: String?, vararg args: Any?): String? {
         val value = languages[key] ?: def ?: return null
         val formatter = this.formatter ?: manager.globalFormatter
         if (formatter != null && args.isNotEmpty())

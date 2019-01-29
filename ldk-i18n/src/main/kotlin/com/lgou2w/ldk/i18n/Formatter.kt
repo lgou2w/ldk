@@ -20,5 +20,5 @@ import java.util.*
 
 interface Formatter {
 
-    fun format(locale: Locale, value: String, vararg args: Any) : String
+    fun format(locale: Locale, value: String, vararg args: Any?) : String
 }
