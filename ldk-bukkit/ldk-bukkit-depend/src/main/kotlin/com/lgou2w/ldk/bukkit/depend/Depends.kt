@@ -16,29 +16,19 @@
 
 package com.lgou2w.ldk.bukkit.depend
 
+import com.lgou2w.ldk.bukkit.InternalFakePlugin
 import com.lgou2w.ldk.common.Constants
 import org.bukkit.Bukkit
-import org.bukkit.Server
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.configuration.file.FileConfiguration
-import org.bukkit.generator.ChunkGenerator
 import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.PluginBase
-import org.bukkit.plugin.PluginDescriptionFile
-import org.bukkit.plugin.PluginLoader
 import org.bukkit.plugin.ServicePriority
-import java.io.File
-import java.io.InputStream
-import java.util.*
-import java.util.logging.Logger
 
 object Depends {
 
     @JvmStatic
+    @Suppress("DEPRECATION")
     private val PLUGIN : Plugin by lazy {
         val ldk : Plugin? = Bukkit.getPluginManager().getPlugin(Constants.LDK)
-        if (ldk != null && ldk.isEnabled) ldk else InternalFakePlugin()
+        if (ldk != null && ldk.isEnabled) ldk else InternalFakePlugin("LDKDependInternalFakePlugin")
     }
 
     @JvmStatic
@@ -112,36 +102,4 @@ object Depends {
     @JvmStatic
     fun <T: Depend> hasDepend(depend: Class<T>) : Boolean
             = get(depend) != null
-
-    /**
-     * * This makes it possible to implement an object of a fake plugin, but is not sure about the unknown risk.
-     * * Currently in the running environment test everything is normal, and only event processing, and can not query plugin information.
-     *
-     * * 这样虽然能够实现一个虚假插件的对象，但是不确定未知的风险。
-     * * 目前在运行环境测试一切正常，并且只有事件处理，以及无法查询到插件信息。
-     *
-     * @author lgou2w
-     */
-    private class InternalFakePlugin : PluginBase() {
-        override fun getDataFolder(): File? = null
-        override fun getPluginLoader(): PluginLoader? = null
-        override fun getServer(): Server = Bukkit.getServer()
-        override fun isEnabled(): Boolean = true
-        override fun getDescription(): PluginDescriptionFile = PluginDescriptionFile("LDKDependInternalFakePlugin", "0", "0")
-        override fun getConfig(): FileConfiguration? = null
-        override fun reloadConfig() { }
-        override fun saveConfig() { }
-        override fun saveDefaultConfig() { }
-        override fun saveResource(resourcePath: String?, replace: Boolean) { }
-        override fun getResource(filename: String?): InputStream? = null
-        override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean = false
-        override fun onTabComplete(sender: CommandSender?, command: Command?, alias: String?, args: Array<out String>?): MutableList<String> = Collections.emptyList()
-        override fun isNaggable(): Boolean = false
-        override fun setNaggable(canNag: Boolean) { }
-        override fun getLogger(): Logger = Bukkit.getLogger()
-        override fun onLoad() { }
-        override fun onEnable() { }
-        override fun onDisable() { }
-        override fun getDefaultWorldGenerator(worldName: String?, id: String?): ChunkGenerator? = null
-    }
 }

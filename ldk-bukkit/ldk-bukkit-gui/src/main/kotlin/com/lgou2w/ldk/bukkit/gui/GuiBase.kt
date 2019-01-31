@@ -16,29 +16,24 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+import com.lgou2w.ldk.bukkit.InternalFakePlugin
 import com.lgou2w.ldk.common.Constants
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
-import org.bukkit.Server
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.HumanEntity
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
-import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.*
-import java.io.File
-import java.io.InputStream
+import org.bukkit.plugin.EventExecutor
+import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.RegisteredListener
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.logging.Logger
 
 abstract class GuiBase : Gui {
 
@@ -354,6 +349,7 @@ abstract class GuiBase : Gui {
         return "Gui(type=$type, title=$title, size=$size, hasParent=${hasParent()})"
     }
 
+    @Suppress("DEPRECATION")
     companion object {
         @JvmStatic private val registered = AtomicBoolean(false)
         @JvmStatic private fun safeRegisterHandlerListener() {
@@ -390,42 +386,10 @@ abstract class GuiBase : Gui {
                         }
                     }
                 }
-            }, EventPriority.MONITOR, ldk ?: InternalFakePlugin(), false)
+            }, EventPriority.MONITOR, ldk ?: InternalFakePlugin("LDKGuiInternalFakePlugin"), false)
             InventoryOpenEvent.getHandlerList().register(listener)
             InventoryCloseEvent.getHandlerList().register(listener)
             InventoryClickEvent.getHandlerList().register(listener)
-        }
-
-        /**
-         * * This makes it possible to implement an object of a fake plugin, but is not sure about the unknown risk.
-         * * Currently in the running environment test everything is normal, and only event processing, and can not query plugin information.
-         *
-         * * 这样虽然能够实现一个虚假插件的对象，但是不确定未知的风险。
-         * * 目前在运行环境测试一切正常，并且只有事件处理，以及无法查询到插件信息。
-         *
-         * @author lgou2w
-         */
-        private class InternalFakePlugin : PluginBase() {
-            override fun getDataFolder(): File? = null
-            override fun getPluginLoader(): PluginLoader? = null
-            override fun getServer(): Server = Bukkit.getServer()
-            override fun isEnabled(): Boolean = true
-            override fun getDescription(): PluginDescriptionFile = PluginDescriptionFile("LDKGuiInternalFakePlugin", "0", "0")
-            override fun getConfig(): FileConfiguration? = null
-            override fun reloadConfig() { }
-            override fun saveConfig() { }
-            override fun saveDefaultConfig() { }
-            override fun saveResource(resourcePath: String?, replace: Boolean) { }
-            override fun getResource(filename: String?): InputStream? = null
-            override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean = false
-            override fun onTabComplete(sender: CommandSender?, command: Command?, alias: String?, args: Array<out String>?): MutableList<String> = Collections.emptyList()
-            override fun isNaggable(): Boolean = false
-            override fun setNaggable(canNag: Boolean) { }
-            override fun getLogger(): Logger = Bukkit.getLogger()
-            override fun onLoad() { }
-            override fun onEnable() { }
-            override fun onDisable() { }
-            override fun getDefaultWorldGenerator(worldName: String?, id: String?): ChunkGenerator? = null
         }
     }
 }
