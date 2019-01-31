@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import com.lgou2w.ldk.rsa.RSASecurity
 import com.lgou2w.ldk.rsa.RSAUtils
 import org.junit.Ignore
 import org.junit.Test
 import java.io.File
+import java.util.*
 
 class Test {
 
@@ -53,5 +55,26 @@ class Test {
         val result = RSAUtils.verify(publicKey, software, signature)
 
         println("Verify: $result")
+    }
+
+    @Test
+    fun testRSASecurity() {
+        fun base64(data: ByteArray) = Base64.getEncoder().encodeToString(data)
+        val rsaPair = RSASecurity.fromKeyPairGenerator(RSASecurity.BIT_2048, RSASecurity.SIGNATURE_SHA1)
+        val rsaPrivate = rsaPair.first
+        val rsaPublic = rsaPair.second
+
+        // Test Encrypt and Decrypt
+        val msg = "Hello World!".toByteArray(Charsets.UTF_8)
+        val encrypted = rsaPrivate.encrypt(msg) // private encrypt
+        println("Private Encrypt: ${base64(encrypted)}")
+        val decrypted = rsaPublic.decrypt(encrypted) // public decrypt
+        println("Public Decrypt: ${String(decrypted, Charsets.UTF_8)}")
+
+        // Test Signature and Verify
+        val signature = rsaPrivate.signature(msg) // private signature
+        println("Private Signature: ${base64(signature)}")
+        val verify = rsaPublic.verify(msg, signature) // public verify
+        println("Public Verify: $verify")
     }
 }
