@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.depend
 
-import com.lgou2w.ldk.bukkit.InternalFakePlugin
+import com.lgou2w.ldk.bukkit.internal.FakePlugin
 import com.lgou2w.ldk.common.Constants
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
@@ -28,7 +28,7 @@ object Depends {
     @Suppress("DEPRECATION")
     private val PLUGIN : Plugin by lazy {
         val ldk : Plugin? = Bukkit.getPluginManager().getPlugin(Constants.LDK)
-        if (ldk != null && ldk.isEnabled) ldk else InternalFakePlugin("LDKDependInternalFakePlugin")
+        if (ldk != null && ldk.isEnabled) ldk else FakePlugin("LDKDependInternalFakePlugin")
     }
 
     @JvmStatic

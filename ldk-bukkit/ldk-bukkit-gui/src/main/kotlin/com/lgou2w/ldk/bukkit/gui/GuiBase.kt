@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
-import com.lgou2w.ldk.bukkit.InternalFakePlugin
+import com.lgou2w.ldk.bukkit.internal.FakePlugin
 import com.lgou2w.ldk.common.Constants
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.notNull
@@ -386,7 +386,7 @@ abstract class GuiBase : Gui {
                         }
                     }
                 }
-            }, EventPriority.MONITOR, ldk ?: InternalFakePlugin("LDKGuiInternalFakePlugin"), false)
+            }, EventPriority.MONITOR, ldk ?: FakePlugin("LDKGuiInternalFakePlugin"), false)
             InventoryOpenEvent.getHandlerList().register(listener)
             InventoryCloseEvent.getHandlerList().register(listener)
             InventoryClickEvent.getHandlerList().register(listener)
