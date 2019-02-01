@@ -21,6 +21,8 @@ import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
 import com.lgou2w.ldk.common.isOrLater
+import org.bukkit.Location
+import org.bukkit.entity.Player
 import java.util.*
 
 enum class Particle(
@@ -145,4 +147,55 @@ enum class Particle(
         fun fromName(name: String) : Particle
                 = NAME_MAP[name] ?: throw IllegalArgumentException("Unsupported particle effect type: $name")
     }
+
+    /**************************************************************************
+     *
+     * Particle Send Extended
+     *
+     **************************************************************************/
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmOverloads
+    fun display(
+            center: Location,
+            range: Double = 32.0,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) = ParticleFactory.sendParticle(this, center, range, offsetX, offsetY, offsetZ, speed, count, data)
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmOverloads
+    fun display(
+            sender: Player?,
+            center: Location,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) = ParticleFactory.sendParticle(sender, this, center, offsetX, offsetY, offsetZ, speed, count, data)
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmOverloads
+    fun display(
+            players: List<Player>,
+            center: Location,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) = ParticleFactory.sendParticle(players, this, center, offsetX, offsetY, offsetZ, speed, count, data)
 }
