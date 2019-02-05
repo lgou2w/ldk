@@ -19,15 +19,7 @@ package com.lgou2w.ldk.rsa
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
-import java.security.GeneralSecurityException
-import java.security.Key
-import java.security.KeyFactory
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.PrivateKey
-import java.security.PublicKey
-import java.security.SecureRandom
-import java.security.Signature
+import java.security.*
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.*
@@ -40,7 +32,9 @@ import javax.crypto.Cipher
  * * 2048 位 `RSA` 和 `SHA512` 的加解密校验工具类.
  *
  * @author lgou2w
+ * @see [RSASecurity]
  */
+@Deprecated("Deprecated", ReplaceWith("RSASecurity"))
 object RSAUtils {
 
     private const val BIT = 2048

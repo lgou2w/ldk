@@ -20,6 +20,9 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.security.*
 import java.security.interfaces.RSAKey
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
+import java.util.*
 import javax.crypto.Cipher
 
 /**
@@ -33,7 +36,7 @@ class RSASecurity private constructor(
         private val signatureAlgorithm: String
 ) {
 
-    companion object Constants {
+    companion object {
 
         const val RSA = "RSA"
 
@@ -55,11 +58,73 @@ class RSASecurity private constructor(
         const val SIGNATURE_SHA384 = "SHA384WithRSA"
         const val SIGNATURE_SHA512 = "SHA512WithRSA"
 
+        private const val PKCS8_PRIVATE_KEY_BEGIN = "-----BEGIN PRIVATE KEY-----"
+        private const val PKCS8_PRIVATE_KEY_END = "-----END PRIVATE KEY-----"
+        private const val X509_PUBLIC_KEY_BEGIN = "-----BEGIN PUBLIC KEY-----"
+        private const val X509_PUBLIC_KEY_END = "-----END PUBLIC KEY-----"
+        private const val NEWLINE = "\r"
+        private const val NEWLINE2 = "\n"
+        private const val EMPTY = ""
+
+        @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromKey(rsaKey: Key, signatureAlgorithm: String): RSASecurity {
             return RSASecurity(rsaKey, signatureAlgorithm)
         }
 
+        @JvmStatic
+        @Throws(IllegalArgumentException::class)
+        fun fromEncodedPrivateKey(pkcs8NotEncryptedBase64EncodedPrivateKey: String, signatureAlgorithm: String): RSASecurity {
+            val noNewline = pkcs8NotEncryptedBase64EncodedPrivateKey.replace(NEWLINE, EMPTY).replace(NEWLINE2, EMPTY)
+            if (!noNewline.startsWith(PKCS8_PRIVATE_KEY_BEGIN) ||
+                !noNewline.endsWith(PKCS8_PRIVATE_KEY_END)) {
+                throw IllegalArgumentException("Invalid private key header or end.")
+            }
+            val base64EncodedKey = noNewline
+                .replace(PKCS8_PRIVATE_KEY_BEGIN, EMPTY)
+                .replace(PKCS8_PRIVATE_KEY_END, EMPTY)
+            val decodeKey = Base64.getDecoder().decode(base64EncodedKey)
+            return fromEncodedPrivateKey(decodeKey, signatureAlgorithm)
+        }
+
+        @JvmStatic
+        @Throws(IllegalArgumentException::class)
+        fun fromEncodedPrivateKey(pkcs8EncodedPrivateKey: ByteArray, signatureAlgorithm: String): RSASecurity {
+            return try {
+                val privateKey = KeyFactory.getInstance(RSA).generatePrivate(PKCS8EncodedKeySpec(pkcs8EncodedPrivateKey))
+                RSASecurity(privateKey, signatureAlgorithm)
+            } catch (e: GeneralSecurityException) {
+                throw IllegalArgumentException("Not a valid PKCS#8 format private key.", e)
+            }
+        }
+
+        @JvmStatic
+        @Throws(IllegalArgumentException::class)
+        fun fromEncodedPublicKey(x509Base64EncodedPublicKey: String, signatureAlgorithm: String): RSASecurity {
+            val noNewline = x509Base64EncodedPublicKey.replace(NEWLINE, EMPTY).replace(NEWLINE2, EMPTY)
+            if (!noNewline.startsWith(X509_PUBLIC_KEY_BEGIN) ||
+                !noNewline.endsWith(X509_PUBLIC_KEY_END)) {
+                throw IllegalArgumentException("Invalid public key header or end.")
+            }
+            val base64EncodedKey = noNewline
+                .replace(X509_PUBLIC_KEY_BEGIN, EMPTY)
+                .replace(X509_PUBLIC_KEY_END, EMPTY)
+            val decodeKey = Base64.getDecoder().decode(base64EncodedKey)
+            return fromEncodedPublicKey(decodeKey, signatureAlgorithm)
+        }
+
+        @JvmStatic
+        @Throws(IllegalArgumentException::class)
+        fun fromEncodedPublicKey(x509EncodedPublicKey: ByteArray, signatureAlgorithm: String): RSASecurity {
+            return try {
+                val publicKey = KeyFactory.getInstance(RSA).generatePublic(X509EncodedKeySpec(x509EncodedPublicKey))
+                RSASecurity(publicKey, signatureAlgorithm)
+            } catch (e: GeneralSecurityException) {
+                throw IllegalArgumentException("Not a valid X.509 format public key.", e)
+            }
+        }
+
+        @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromKeyPair(rsaKeyPair: KeyPair, signatureAlgorithm: String): Pair<RSASecurity, RSASecurity> {
             val rsaPrivateSecurity = RSASecurity(rsaKeyPair.private, signatureAlgorithm)
@@ -67,6 +132,7 @@ class RSASecurity private constructor(
             return rsaPrivateSecurity to rsaPublicSecurity
         }
 
+        @JvmStatic
         @Suppress("DEPRECATION")
         @Throws(IllegalArgumentException::class)
         fun fromKeyPairGenerator(bit: Int, signatureAlgorithm: String): Pair<RSASecurity, RSASecurity> {
