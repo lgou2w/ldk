@@ -28,7 +28,6 @@ import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatComponentFancy
 import com.lgou2w.ldk.chat.ChatSerializer
 import com.lgou2w.ldk.common.Enums
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.reflect.AccessorConstructor
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.FuzzyReflect
@@ -248,7 +247,7 @@ object ChatFactory {
     // ACTIONBAR => Since Minecraft 1.11
     @JvmStatic
     fun sendTitleBar(player: Player, title: ChatComponent) {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_11_R1)) {
+        if (MinecraftBukkitVersion.isV111OrLater) {
             sendTitle(player, PACKET_TITLE_ACTION_ACTIONBAR, title)
         } else {
             sendTitle(player, title)
@@ -260,7 +259,7 @@ object ChatFactory {
      */
     @JvmStatic
     fun sendTitleBarTo(players: Array<Player>, title: ChatComponent) {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_11_R1)) {
+        if (MinecraftBukkitVersion.isV111OrLater) {
             sendTitleTo(players, PACKET_TITLE_ACTION_ACTIONBAR, title)
         } else {
             sendTitleTo(players, title)

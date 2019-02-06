@@ -19,7 +19,6 @@ package com.lgou2w.ldk.bukkit.potion
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
-import com.lgou2w.ldk.common.isOrLater
 import java.util.*
 
 enum class PotionEffectType(
@@ -71,7 +70,7 @@ enum class PotionEffectType(
 
     fun toBukkit() : org.bukkit.potion.PotionEffectType {
         return org.bukkit.potion.PotionEffectType.getByName(
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                if (MinecraftBukkitVersion.isV113OrLater)
                     type
                 else
                     legacy

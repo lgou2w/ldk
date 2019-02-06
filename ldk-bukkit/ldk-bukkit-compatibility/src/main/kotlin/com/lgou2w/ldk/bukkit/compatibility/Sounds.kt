@@ -275,7 +275,7 @@ enum class Sounds(private vararg val versionDependentNames: String) {
 
     // org.bukkit.SoundCategory -> since Minecraft 1.11
     fun tryPlay(location: Location, category: Category, volume: Float, pitch: Float) : Boolean {
-        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_11_R1)) try {
+        return if (MinecraftBukkitVersion.isV111OrLater) try {
             val bukkit = toBukkit()
             val soundCategory = Enums.ofName(org.bukkit.SoundCategory::class.java, category.name)
             location.world.playSound(location, bukkit, soundCategory, volume, pitch)

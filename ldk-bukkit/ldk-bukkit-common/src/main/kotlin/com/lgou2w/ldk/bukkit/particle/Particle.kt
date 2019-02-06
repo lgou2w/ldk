@@ -20,7 +20,6 @@ import com.lgou2w.ldk.bukkit.version.API
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
-import com.lgou2w.ldk.common.isOrLater
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
@@ -112,7 +111,7 @@ enum class Particle(
     ) : this(equivalent, legacy, legacy)
 
     override val value: Int
-        get() = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        get() = if (MinecraftBukkitVersion.isV113OrLater)
             @Suppress("DEPRECATION")
             Math.abs(internal)
         else
@@ -128,7 +127,7 @@ enum class Particle(
         // Particle > SPIT && CURRENT < 1.13 => skip
 
         init {
-            val isV113OrLater = MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)
+            val isV113OrLater = MinecraftBukkitVersion.isV113OrLater
             Particle.values().forEach { particle ->
                 ID_MAP[particle.value] = particle
                 NAME_MAP[particle.legacy] = particle
