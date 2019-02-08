@@ -74,6 +74,17 @@ class RSASecurity private constructor(
 
         @JvmStatic
         @Throws(IllegalArgumentException::class)
+        fun fromEncodedKey(pkcs8OrX509Base64EncodedKey: String, signatureAlgorithm: String): RSASecurity {
+            val noNewline = pkcs8OrX509Base64EncodedKey.replace(NEWLINE, EMPTY).replace(NEWLINE2, EMPTY)
+            return if (noNewline.startsWith(PKCS8_PRIVATE_KEY_BEGIN) && noNewline.endsWith(PKCS8_PRIVATE_KEY_END))
+                fromEncodedPrivateKey(noNewline, signatureAlgorithm)
+            else if (noNewline.startsWith(X509_PUBLIC_KEY_BEGIN) && noNewline.endsWith(X509_PUBLIC_KEY_END))
+                fromEncodedPublicKey(noNewline, signatureAlgorithm)
+            else throw IllegalArgumentException("Invalid private or public key.")
+        }
+
+        @JvmStatic
+        @Throws(IllegalArgumentException::class)
         fun fromEncodedPrivateKey(pkcs8NotEncryptedBase64EncodedPrivateKey: String, signatureAlgorithm: String): RSASecurity {
             val noNewline = pkcs8NotEncryptedBase64EncodedPrivateKey.replace(NEWLINE, EMPTY).replace(NEWLINE2, EMPTY)
             if (!noNewline.startsWith(PKCS8_PRIVATE_KEY_BEGIN) ||
@@ -133,9 +144,9 @@ class RSASecurity private constructor(
         }
 
         @JvmStatic
-        @Suppress("DEPRECATION")
         @Throws(IllegalArgumentException::class)
         fun fromKeyPairGenerator(bit: Int, signatureAlgorithm: String): Pair<RSASecurity, RSASecurity> {
+            @Suppress("DEPRECATION")
             if (bit < BIT_512)
                 throw IllegalArgumentException("RSA keys must be at least 512 bits long.")
             val rsaKeyPair = try {
@@ -164,7 +175,7 @@ class RSASecurity private constructor(
         try {
             Signature.getInstance(signatureAlgorithm)
         } catch (e: NoSuchAlgorithmException) {
-            throw IllegalArgumentException("Invalid signature algorithm: $signatureAlgorithm")
+            throw IllegalArgumentException("Invalid signature algorithm: $signatureAlgorithm", e)
         }
 
         this.bit = key.modulus.bitLength()
