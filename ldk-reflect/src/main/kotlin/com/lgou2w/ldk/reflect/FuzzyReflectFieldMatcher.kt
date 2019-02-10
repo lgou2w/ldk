@@ -66,7 +66,11 @@ class FuzzyReflectFieldMatcher(
         return this
     }
 
-    override fun withParams(vararg parameters: Class<*>): FuzzyReflectMatcher<Field> {
+    override fun withParams(vararg parameters: Class<*>): FuzzyReflectFieldMatcher {
+        return this // Field does not support parameters
+    }
+
+    override fun withParamsCount(count: Int): FuzzyReflectFieldMatcher {
         return this // Field does not support parameters
     }
 

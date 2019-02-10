@@ -71,6 +71,10 @@ class FuzzyReflectMethodMatcher(
         return with { DataType.compare(it.parameterTypes, primitiveTypes) }
     }
 
+    override fun withParamsCount(count: Int): FuzzyReflectMethodMatcher {
+        return with { it.parameterTypes.size == count }
+    }
+
     override fun resultAccessors(): List<AccessorMethod<Any, Any>>
             = results().map { Accessors.ofMethod<Any, Any>(it) }
 

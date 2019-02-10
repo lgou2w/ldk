@@ -69,6 +69,10 @@ class FuzzyReflectConstructorMatcher<T: Any>(
         return with { DataType.compare(it.parameterTypes, primitiveTypes) }
     }
 
+    override fun withParamsCount(count: Int): FuzzyReflectConstructorMatcher<T> {
+        return with { it.parameterTypes.size == count }
+    }
+
     override fun resultAccessors(): List<AccessorConstructor<T>>
             = results().map { Accessors.ofConstructor(it) }
 
