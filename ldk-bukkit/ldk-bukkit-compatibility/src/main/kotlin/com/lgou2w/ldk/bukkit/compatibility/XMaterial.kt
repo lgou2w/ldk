@@ -1101,3 +1101,38 @@ enum class XMaterial {
         }
     }
 }
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.eq(material: Material): Boolean
+        = toBukkit() == material
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.notEq(material: Material): Boolean
+        = toBukkit() != material
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.eq(stack: ItemStack): Boolean
+        = isSameType(stack)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.notEq(stack: ItemStack): Boolean
+        = !isSameType(stack)
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun ItemStack.eq(xMaterial: XMaterial): Boolean
+        = xMaterial.isSameType(this)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun ItemStack.notEq(xMaterial: XMaterial): Boolean
+        = !xMaterial.isSameType(this)

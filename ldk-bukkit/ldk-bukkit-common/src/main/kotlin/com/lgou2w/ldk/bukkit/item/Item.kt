@@ -60,3 +60,14 @@ fun ItemStack.modifyTag(block: Applicator<NBTTagCompound>): ItemStack
 @Throws(UnsupportedOperationException::class)
 fun XMaterial.builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}): ItemBuilder
         = ItemBuilder.of(toBukkit(), count, durability).also(block)
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun Material.eq(xMaterial: XMaterial): Boolean
+        = this == xMaterial.toBukkit()
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun Material.notEq(xMaterial: XMaterial): Boolean
+        = this != xMaterial.toBukkit()
