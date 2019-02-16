@@ -17,7 +17,7 @@
 package com.lgou2w.ldk.i18n
 
 import java.text.MessageFormat
-import java.util.*
+import java.util.Locale
 
 class MessageFormatter : Formatter {
 

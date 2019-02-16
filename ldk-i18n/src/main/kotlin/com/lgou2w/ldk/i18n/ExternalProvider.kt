@@ -16,7 +16,11 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 class ExternalProvider(
         val directory : File

@@ -17,7 +17,8 @@
 package com.lgou2w.ldk.i18n
 
 import java.io.IOException
-import java.util.*
+import java.util.Collections
+import java.util.Locale
 
 open class DynamicLanguageManager(
         baseName: String,

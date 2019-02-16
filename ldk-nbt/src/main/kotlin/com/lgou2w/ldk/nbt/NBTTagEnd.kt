@@ -16,7 +16,6 @@
 
 package com.lgou2w.ldk.nbt
 
-import com.lgou2w.ldk.nbt.NBTTagEnd.Companion.INSTANCE
 import java.io.DataInput
 import java.io.DataOutput
 

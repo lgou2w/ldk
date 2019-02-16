@@ -25,7 +25,7 @@ import java.nio.file.Path
 import java.sql.Connection
 import java.sql.Driver
 import java.sql.SQLException
-import java.util.*
+import java.util.Properties
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.sql.DataSource
 import kotlin.properties.Delegates

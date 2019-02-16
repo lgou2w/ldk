@@ -32,7 +32,8 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.EventExecutor
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.RegisteredListener
-import java.util.*
+import java.util.Collections
+import java.util.Hashtable
 import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class GuiBase : Gui {

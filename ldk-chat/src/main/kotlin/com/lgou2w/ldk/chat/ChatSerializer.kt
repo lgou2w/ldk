@@ -16,7 +16,17 @@
 
 package com.lgou2w.ldk.chat
 
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonParseException
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import com.google.gson.stream.JsonReader
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
@@ -166,7 +176,7 @@ object ChatSerializer {
 
         init {
             val matcher = pattern.matcher(raw)
-            var match: String? = null
+            var match: String?
             var groupId: Int
             while (matcher.find()) {
                 groupId = 0

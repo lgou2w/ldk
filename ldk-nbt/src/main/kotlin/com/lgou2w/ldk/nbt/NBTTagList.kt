@@ -18,7 +18,7 @@ package com.lgou2w.ldk.nbt
 
 import java.io.DataInput
 import java.io.DataOutput
-import java.util.*
+import java.util.LinkedList
 
 /**
  * ## NBTTagList (集合 NBT 标签)

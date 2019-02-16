@@ -22,7 +22,7 @@ import com.lgou2w.ldk.i18n.ResourceProvider
 import com.lgou2w.ldk.i18n.SimpleLanguageManager
 import org.junit.Test
 import java.io.File
-import java.util.*
+import java.util.Locale
 
 class Test {
 

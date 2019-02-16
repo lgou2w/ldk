@@ -19,7 +19,8 @@ package com.lgou2w.ldk.bukkit.version
 import com.lgou2w.ldk.common.Version
 import com.lgou2w.ldk.common.isOrLater
 import org.bukkit.Bukkit
-import java.util.*
+import java.util.NavigableMap
+import java.util.TreeMap
 import java.util.regex.Pattern
 
 class MinecraftBukkitVersion(

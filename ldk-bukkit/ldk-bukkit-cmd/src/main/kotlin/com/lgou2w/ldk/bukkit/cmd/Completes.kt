@@ -18,7 +18,7 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import java.util.*
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
 open class Completes : Iterable<Completer> {

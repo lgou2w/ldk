@@ -16,7 +16,11 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 class ResourceExternalizableProvider(
         val directory : File,
@@ -31,7 +35,7 @@ class ResourceExternalizableProvider(
                 val input = super.load(name)!!
                 val output = FileOutputStream(external)
                 val buffer = ByteArray(1024)
-                var length = 0
+                var length : Int
                 while (input.read(buffer).apply { length = this } != -1)
                     output.write(buffer, 0, length)
                 output.flush()

@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.sql
 
-import java.util.*
+import java.util.Collections
 
 fun buildConfiguration(block: HikariConfigurationBuilder.() -> Unit) : HikariConfiguration {
     val builder = HikariConfigurationBuilder().also(block)

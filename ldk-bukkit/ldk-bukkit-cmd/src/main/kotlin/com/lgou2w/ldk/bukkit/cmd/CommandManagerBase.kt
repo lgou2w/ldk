@@ -23,7 +23,7 @@ import org.bukkit.Server
 import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
 import org.bukkit.plugin.Plugin
-import java.util.*
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 

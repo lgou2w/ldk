@@ -19,7 +19,7 @@ import com.lgou2w.ldk.i18n.ExternalProvider
 import com.lgou2w.ldk.i18n.SimpleLanguageManager
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
-import java.util.*
+import java.util.Locale
 
 class Demo : JavaPlugin() {
 

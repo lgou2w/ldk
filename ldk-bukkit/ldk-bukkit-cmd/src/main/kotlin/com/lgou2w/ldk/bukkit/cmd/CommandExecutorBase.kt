@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import java.util.*
+import java.util.Arrays
 
 abstract class CommandExecutorBase(
         final override val reference: Any,

@@ -18,7 +18,7 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import java.util.*
+import java.util.Collections
 
 @FunctionalInterface
 interface Completer {

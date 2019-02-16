@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.util.*
+import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
 open class SimpleLanguage(

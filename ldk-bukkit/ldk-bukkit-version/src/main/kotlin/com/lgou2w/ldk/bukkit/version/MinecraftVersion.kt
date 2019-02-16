@@ -19,7 +19,7 @@ package com.lgou2w.ldk.bukkit.version
 import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Version
 import org.bukkit.Bukkit
-import java.util.*
+import java.util.Collections
 import java.util.regex.Pattern
 
 class MinecraftVersion(

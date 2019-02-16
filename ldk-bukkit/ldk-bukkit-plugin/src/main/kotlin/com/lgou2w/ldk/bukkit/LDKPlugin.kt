@@ -23,7 +23,7 @@ import com.lgou2w.ldk.common.isOrLater
 import org.bstats.bukkit.Metrics
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import java.util.*
+import java.util.Collections
 import java.util.logging.Level
 
 class LDKPlugin : PluginBase() {

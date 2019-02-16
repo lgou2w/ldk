@@ -59,7 +59,8 @@ package com.lgou2w.ldk.bukkit.compatibility
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.Collections
+import java.util.Locale
 
 enum class XMaterial {
 

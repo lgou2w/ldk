@@ -17,7 +17,7 @@
 package com.lgou2w.ldk.bukkit.gui
 
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.Arrays
 
 open class ButtonSameBase(
         parent: Gui,

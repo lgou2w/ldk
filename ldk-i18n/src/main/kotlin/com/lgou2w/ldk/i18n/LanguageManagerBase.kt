@@ -19,7 +19,7 @@ package com.lgou2w.ldk.i18n
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.util.*
+import java.util.Locale
 
 abstract class LanguageManagerBase(
         override val baseName: String,
