@@ -636,82 +636,82 @@ interface ItemBuilder : Builder<ItemStack> {
     //<editor-fold desc="ItemBuilder - Banner Pattern" defaultstate="collapsed">
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     var bannerPatterns : List<Pattern>?
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun getBannerPattern(block: (ItemBuilder, List<Pattern>?) -> Unit) : ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun setBannerPattern(patterns: List<Pattern>?): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun setBannerPatternIf(patterns: List<Pattern>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun clearBannerPatten(): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun addBannerPattern(vararg patterns: Pattern): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun addBannerPattern(color: DyeColor, type: PatternType): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun addBannerPattern(pattern: Pair<DyeColor, PatternType>): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun addBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun addBannerPatternIf(pattern: Pattern, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun addBannerPatternIf(color: DyeColor, type: PatternType, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun addBannerPatternIf(pattern: Pair<DyeColor, PatternType>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun removeBannerPattern(vararg patterns: Pattern): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun removeBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun removeBannerPattern(predicate: Predicate<Pattern>? = null): ItemBuilder
 
     /**
-     * @since LDK 0.1.8-beta
+     * @since LDK 0.1.8-rc
      */
     fun removeBannerPatternIndexed(block: BiFunction<Int, Pattern, Boolean>? = null): ItemBuilder
 

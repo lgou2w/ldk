@@ -26,7 +26,7 @@ import org.bukkit.block.banner.Pattern
 import org.bukkit.block.banner.PatternType
 
 /**
- * @since LDK 0.1.8-beta
+ * @since LDK 0.1.8-rc
  */
 data class IllegalPattern(
         val rawColor: Int,
@@ -41,12 +41,12 @@ data class IllegalPattern(
 }
 
 /**
- * @since LDK 0.1.8-beta
+ * @since LDK 0.1.8-rc
  */
 fun Pattern?.isIllegal(): Boolean = this != null && IllegalPattern::class.java.isInstance(this)
 
 /**
- * @since LDK 0.1.8-beta
+ * @since LDK 0.1.8-rc
  */
 fun Pattern.toCompound(): NBTTagCompound {
     @Suppress("DEPRECATION") // Notice if the function is removed
@@ -58,7 +58,7 @@ fun Pattern.toCompound(): NBTTagCompound {
 }
 
 /**
- * @since LDK 0.1.8-beta
+ * @since LDK 0.1.8-rc
  * @return [Pattern] or [IllegalPattern]
  */
 fun NBTTagCompound.toBannerPattern(): Pattern {
