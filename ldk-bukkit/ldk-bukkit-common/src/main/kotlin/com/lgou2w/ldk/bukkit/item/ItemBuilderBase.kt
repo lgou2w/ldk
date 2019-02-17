@@ -28,14 +28,29 @@ import com.lgou2w.ldk.bukkit.potion.PotionEffectType
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatSerializer
-import com.lgou2w.ldk.common.*
-import com.lgou2w.ldk.nbt.*
+import com.lgou2w.ldk.common.ApplicatorFunction
+import com.lgou2w.ldk.common.BiFunction
+import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.common.Predicate
+import com.lgou2w.ldk.common.isTrue
+import com.lgou2w.ldk.common.letIfNotNull
+import com.lgou2w.ldk.nbt.NBT
+import com.lgou2w.ldk.nbt.NBTBase
+import com.lgou2w.ldk.nbt.NBTTagCompound
+import com.lgou2w.ldk.nbt.NBTTagString
+import com.lgou2w.ldk.nbt.NBTType
+import com.lgou2w.ldk.nbt.ofCompound
+import com.lgou2w.ldk.nbt.removeIf
+import com.lgou2w.ldk.nbt.removeIfIndexed
 import org.bukkit.Color
+import org.bukkit.DyeColor
 import org.bukkit.Material
+import org.bukkit.block.banner.Pattern
+import org.bukkit.block.banner.PatternType
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import java.util.*
+import java.util.UUID
 
 abstract class ItemBuilderBase : ItemBuilder {
 
@@ -1708,6 +1723,108 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeFireworkRocketFlight(predicate: Predicate<Int>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
             ?.removeIf(NBT.TAG_FIREWORKS_FLIGHT, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Banner Pattern" defaultstate="collapsed">
+
+    override var bannerPatterns: List<Pattern>?
+        get() {
+            @Suppress("DEPRECATION")
+            return tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+                ?.getListOrNull(NBT.TAG_BANNER_PATTERNS)
+                ?.asElements<NBTTagCompound>()
+                ?.map { it.toBannerPattern() }
+        }
+        set(value) {
+            clearBannerPatten()
+            if (value != null)
+                addBannerPattern(*value.toTypedArray())
+        }
+
+    override fun getBannerPattern(block: (ItemBuilder, List<Pattern>?) -> Unit): ItemBuilder {
+        block(this, bannerPatterns)
+        return this
+    }
+
+    override fun setBannerPattern(patterns: List<Pattern>?): ItemBuilder {
+        this.bannerPatterns = patterns
+        return this
+    }
+
+    override fun setBannerPatternIf(patterns: List<Pattern>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            this.bannerPatterns = patterns
+        return this
+    }
+
+    override fun clearBannerPatten(): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+            ?.remove(NBT.TAG_BANNER_PATTERNS)
+        return this
+    }
+
+    override fun addBannerPattern(vararg patterns: Pattern): ItemBuilder {
+        tag.getCompoundOrDefault(NBT.TAG_BLOCK_ENTITY_TAG)
+            .getListOrDefault(NBT.TAG_BANNER_PATTERNS)
+            .addCompound(*patterns.map { it.toCompound() }.toTypedArray())
+        return this
+    }
+
+    override fun addBannerPattern(color: DyeColor, type: PatternType): ItemBuilder {
+        addBannerPattern(Pattern(color, type))
+        return this
+    }
+
+    override fun addBannerPattern(pattern: Pair<DyeColor, PatternType>): ItemBuilder {
+        addBannerPattern(Pattern(pattern.first, pattern.second))
+        return this
+    }
+
+    override fun addBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder {
+        addBannerPattern(*patterns.map { Pattern(it.first, it.second) }.toTypedArray())
+        return this
+    }
+
+    override fun addBannerPatternIf(pattern: Pattern, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(pattern)
+        return this
+    }
+
+    override fun addBannerPatternIf(color: DyeColor, type: PatternType, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(Pattern(color, type))
+        return this
+    }
+
+    override fun addBannerPatternIf(pattern: Pair<DyeColor, PatternType>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(Pattern(pattern.first, pattern.second))
+        return this
+    }
+
+    override fun removeBannerPattern(vararg patterns: Pattern): ItemBuilder {
+        removeBannerPattern { value -> value in patterns }
+        return this
+    }
+
+    override fun removeBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder {
+        removeBannerPattern(*patterns.map { Pattern(it.first, it.second) }.toTypedArray())
+        return this
+    }
+
+    override fun removeBannerPattern(predicate: Predicate<Pattern>?): ItemBuilder {
+        removeBannerPatternIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeBannerPatternIndexed(block: BiFunction<Int, Pattern, Boolean>?): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+            ?.getListOrNull(NBT.TAG_BANNER_PATTERNS)
+            ?.removeIfIndexed<NBTTagCompound, Pattern>({ it.toBannerPattern() }, block)
         return this
     }
 

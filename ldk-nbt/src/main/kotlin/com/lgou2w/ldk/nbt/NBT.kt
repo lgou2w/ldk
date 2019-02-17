@@ -170,6 +170,7 @@ interface NBT<T> : Cloneable {
         const val TAG_POTION_SHOW_PARTICLES = "ShowParticles"
         const val TAG_POTION_SHOW_ICON = "ShowIcon" // since Minecraft 1.13
         const val TAG_BLOCK_ENTITY_TAG = "BlockEntityTag"
+        const val TAG_BANNER_CUSTOM_NAME = "CustomName"
         const val TAG_BANNER_PATTERNS = "Patterns"
         const val TAG_BANNER_COLOR = "Color"
         const val TAG_BANNER_PATTERN = "Pattern"
