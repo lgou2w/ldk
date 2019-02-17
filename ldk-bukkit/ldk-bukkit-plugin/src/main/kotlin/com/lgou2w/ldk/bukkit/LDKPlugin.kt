@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import com.lgou2w.ldk.common.isOrLater
 import org.bstats.bukkit.Metrics
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import java.util.*
+import java.util.Collections
 import java.util.logging.Level
 
 class LDKPlugin : PluginBase() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.lgou2w.ldk.bukkit.potion
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.ComparisonChain
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
@@ -42,7 +41,7 @@ data class PotionEffectCustom @JvmOverloads constructor(
      */
     @JvmOverloads
     fun applyToEntity(entity: LivingEntity, force: Boolean = false): Boolean {
-        val effect = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        val effect = if (MinecraftBukkitVersion.isV113OrLater)
             PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle, icon)
         else
             PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle)

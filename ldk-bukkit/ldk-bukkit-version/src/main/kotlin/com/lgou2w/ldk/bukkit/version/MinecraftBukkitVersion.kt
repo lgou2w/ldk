@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@
 package com.lgou2w.ldk.bukkit.version
 
 import com.lgou2w.ldk.common.Version
+import com.lgou2w.ldk.common.isOrLater
 import org.bukkit.Bukkit
-import java.util.*
+import java.util.NavigableMap
+import java.util.TreeMap
 import java.util.regex.Pattern
 
 class MinecraftBukkitVersion(
@@ -62,6 +64,29 @@ class MinecraftBukkitVersion(
                 }
                 return field
             }
+
+        // lazy
+
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV19OrLater by lazy { CURRENT.isOrLater(V1_9_R1) }
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV110OrLater by lazy { CURRENT.isOrLater(V1_10_R1) }
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV111OrLater by lazy { CURRENT.isOrLater(V1_11_R1) }
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV112OrLater by lazy { CURRENT.isOrLater(V1_12_R1) }
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV113OrLater by lazy { CURRENT.isOrLater(V1_13_R1) }
 
         private val LOOKUP: NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
         private fun createLookup(): NavigableMap<MinecraftVersion, MinecraftBukkitVersion> {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.util.*
+import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
 open class SimpleLanguage(
@@ -41,12 +41,12 @@ open class SimpleLanguage(
 
     override fun get(key: String): String?
             = getOr(key, null)
-    override fun get(key: String, vararg args: Any): String?
+    override fun get(key: String, vararg args: Any?): String?
             = getOr(key, null, *args)
     override fun getOr(key: String, def: String?): String?
             = getOr(key, def, emptyArray<String>())
 
-    override fun getOr(key: String, def: String?, vararg args: Any): String? {
+    override fun getOr(key: String, def: String?, vararg args: Any?): String? {
         val value = languages[key] ?: def ?: return null
         val formatter = this.formatter ?: manager.globalFormatter
         if (formatter != null && args.isNotEmpty())

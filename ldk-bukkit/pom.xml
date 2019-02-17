@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-rc6-hotfix1</version>
+        <version>0.1.8-beta</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -25,6 +25,9 @@
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
         <module>ldk-bukkit-depend</module>
+        <module>ldk-bukkit-depend-economy</module>
+        <module>ldk-bukkit-depend-placeholderapi</module>
+        <module>ldk-bukkit-depend-worldedit</module>
         <module>ldk-bukkit-rx</module>
         <module>ldk-bukkit-coroutines</module> <!-- coroutines -->
         <module>ldk-bukkit-plugin</module> <!-- runtime -->

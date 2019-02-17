@@ -70,6 +70,9 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
         * [`ldk-bukkit-gui`](/ldk-bukkit/ldk-bukkit-gui)
         * [`ldk-bukkit-region`](/ldk-bukkit/ldk-bukkit-region)
         * [`ldk-bukkit-depend`](/ldk-bukkit/ldk-bukkit-depend)
+        * [`ldk-bukkit-depend-economy`](/ldk-bukkit/ldk-bukkit-depend-economy)
+        * [`ldk-bukkit-depend-placeholderapi`](/ldk-bukkit/ldk-bukkit-depend-placeholderapi)
+        * [`ldk-bukkit-depend-worldedit`](/ldk-bukkit/ldk-bukkit-depend-worldedit)
         * [`ldk-bukkit-rx`](/ldk-bukkit/ldk-bukkit-rx)
         * [`ldk-bukkit-coroutines`](/ldk-bukkit/ldk-bukkit-coroutines)
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
@@ -141,7 +144,7 @@ mvn clean package
 # License
 
 ```
-Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

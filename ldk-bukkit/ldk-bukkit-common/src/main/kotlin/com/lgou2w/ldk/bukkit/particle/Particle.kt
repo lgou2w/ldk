@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@ import com.lgou2w.ldk.bukkit.version.API
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
-import com.lgou2w.ldk.common.isOrLater
+import org.bukkit.Location
+import org.bukkit.entity.Player
 import java.util.*
 
 enum class Particle(
@@ -110,7 +111,7 @@ enum class Particle(
     ) : this(equivalent, legacy, legacy)
 
     override val value: Int
-        get() = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        get() = if (MinecraftBukkitVersion.isV113OrLater)
             @Suppress("DEPRECATION")
             Math.abs(internal)
         else
@@ -126,7 +127,7 @@ enum class Particle(
         // Particle > SPIT && CURRENT < 1.13 => skip
 
         init {
-            val isV113OrLater = MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)
+            val isV113OrLater = MinecraftBukkitVersion.isV113OrLater
             Particle.values().forEach { particle ->
                 ID_MAP[particle.value] = particle
                 NAME_MAP[particle.legacy] = particle
@@ -145,4 +146,55 @@ enum class Particle(
         fun fromName(name: String) : Particle
                 = NAME_MAP[name] ?: throw IllegalArgumentException("Unsupported particle effect type: $name")
     }
+
+    /**************************************************************************
+     *
+     * Particle Send Extended
+     *
+     **************************************************************************/
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmOverloads
+    fun display(
+            center: Location,
+            range: Double = 32.0,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) = ParticleFactory.sendParticle(this, center, range, offsetX, offsetY, offsetZ, speed, count, data)
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmOverloads
+    fun display(
+            sender: Player?,
+            center: Location,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) = ParticleFactory.sendParticle(sender, this, center, offsetX, offsetY, offsetZ, speed, count, data)
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmOverloads
+    fun display(
+            players: List<Player>,
+            center: Location,
+            offsetX: Float = 0f,
+            offsetY: Float = 0f,
+            offsetZ: Float = 0f,
+            speed: Float = 1.0f,
+            count: Int = 1,
+            data: Any? = null
+    ) = ParticleFactory.sendParticle(players, this, center, offsetX, offsetY, offsetZ, speed, count, data)
 }

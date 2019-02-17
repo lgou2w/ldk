@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Predicate
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.reflect.AccessorConstructor
 import com.lgou2w.ldk.reflect.AccessorField
@@ -176,7 +175,7 @@ object ParticleFactory {
             longDistance: Boolean,
             data: Any? = null
     ) : Any {
-        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        return if (MinecraftBukkitVersion.isV113OrLater) {
             createPacketFresh(particle, x, y, z, offsetX, offsetY, offsetZ, speed, count, longDistance, data)
         } else {
             createPacketLegacy(particle, x, y, z, offsetX, offsetY, offsetZ, speed, count, longDistance, data)

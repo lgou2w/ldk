@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,10 +32,13 @@ import com.lgou2w.ldk.common.Builder
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.Color
+import org.bukkit.DyeColor
 import org.bukkit.Material
+import org.bukkit.block.banner.Pattern
+import org.bukkit.block.banner.PatternType
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.UUID
 
 interface ItemBuilder : Builder<ItemStack> {
 
@@ -627,6 +630,90 @@ interface ItemBuilder : Builder<ItemStack> {
     fun removeFireworkRocketFlight() : ItemBuilder
 
     fun removeFireworkRocketFlight(predicate: Predicate<Int>? = null) : ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Banner Pattern" defaultstate="collapsed">
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    var bannerPatterns : List<Pattern>?
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun getBannerPattern(block: (ItemBuilder, List<Pattern>?) -> Unit) : ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun setBannerPattern(patterns: List<Pattern>?): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun setBannerPatternIf(patterns: List<Pattern>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun clearBannerPatten(): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun addBannerPattern(vararg patterns: Pattern): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun addBannerPattern(color: DyeColor, type: PatternType): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun addBannerPattern(pattern: Pair<DyeColor, PatternType>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun addBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun addBannerPatternIf(pattern: Pattern, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun addBannerPatternIf(color: DyeColor, type: PatternType, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun addBannerPatternIf(pattern: Pair<DyeColor, PatternType>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun removeBannerPattern(vararg patterns: Pattern): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun removeBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun removeBannerPattern(predicate: Predicate<Pattern>? = null): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    fun removeBannerPatternIndexed(block: BiFunction<Int, Pattern, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package com.lgou2w.ldk.bukkit.item
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
-import com.lgou2w.ldk.common.isOrLater
 import java.util.*
 
 /**
@@ -242,7 +241,7 @@ enum class Enchantment(
         get() = type
 
     fun toBukkit(): org.bukkit.enchantments.Enchantment {
-        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        return if (MinecraftBukkitVersion.isV113OrLater) {
             org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type))
         } else {
             @Suppress("DEPRECATION")
@@ -274,7 +273,7 @@ enum class Enchantment(
          */
         @JvmStatic
         fun fromBukkit(enchant: org.bukkit.enchantments.Enchantment) : Enchantment {
-            return fromName(if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            return fromName(if (MinecraftBukkitVersion.isV113OrLater)
                 enchant.key.key
             else
                 @Suppress("DEPRECATION")
