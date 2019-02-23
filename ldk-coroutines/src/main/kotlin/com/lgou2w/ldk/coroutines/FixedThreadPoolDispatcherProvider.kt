@@ -18,13 +18,14 @@ package com.lgou2w.ldk.coroutines
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
+import java.io.Closeable
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
 class FixedThreadPoolDispatcherProvider(
         private val threads: Int,
         private val threadName: String
-) : DispatcherProvider {
+) : DispatcherProvider, Closeable {
 
     init {
         if (threads < 1)
@@ -38,4 +39,8 @@ class FixedThreadPoolDispatcherProvider(
 
     override val dispatcher: ExecutorCoroutineDispatcher
             = Executors.newFixedThreadPool(threads, createPoolThread).asCoroutineDispatcher()
+
+    override fun close() {
+        dispatcher.close()
+    }
 }

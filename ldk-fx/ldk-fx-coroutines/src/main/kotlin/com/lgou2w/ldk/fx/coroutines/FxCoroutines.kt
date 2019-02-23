@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.fx.coroutines
 
+import com.lgou2w.ldk.common.SuspendApplicatorFunction
 import com.lgou2w.ldk.coroutines.CoroutineFactoryBase
 import com.lgou2w.ldk.coroutines.DispatcherProvider
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +37,7 @@ class FxDispatcherProvider private constructor() : DispatcherProvider {
     }
 }
 
-suspend inline fun <T> withFx(crossinline block: suspend CoroutineScope.() -> T) : T {
+suspend inline fun <T> withFx(crossinline block: SuspendApplicatorFunction<CoroutineScope, T>) : T {
     return withContext(Dispatchers.JavaFx) {
         block()
     }

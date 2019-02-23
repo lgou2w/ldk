@@ -18,11 +18,12 @@ package com.lgou2w.ldk.coroutines
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
+import java.io.Closeable
 import java.util.concurrent.Executors
 
 class SingleThreadDispatcherProvider(
         private val threadName: String
-) : DispatcherProvider {
+) : DispatcherProvider, Closeable {
 
     private val createPoolThread : (Runnable) -> Thread = { r ->
         Thread(r, threadName)
@@ -30,4 +31,8 @@ class SingleThreadDispatcherProvider(
 
     override val dispatcher: ExecutorCoroutineDispatcher
             = Executors.newSingleThreadExecutor(createPoolThread).asCoroutineDispatcher()
+
+    override fun close() {
+        dispatcher.close()
+    }
 }

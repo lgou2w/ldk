@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.coroutines
 
+import com.lgou2w.ldk.common.SuspendApplicator
 import com.lgou2w.ldk.coroutines.CoroutineFactory
 import com.lgou2w.ldk.coroutines.CoroutineFactoryBase
 import com.lgou2w.ldk.coroutines.CustomizeDispatcherProvider
@@ -38,13 +39,13 @@ open class BukkitCoroutineFactory(
             = NonRepeatingBukkitCoroutineTask(plugin)
 
     @Deprecated("No status.", replaceWith = ReplaceWith("launcher"), level = DeprecationLevel.HIDDEN)
-    override fun launch(block: suspend CoroutineFactory.() -> Unit): Job {
+    override fun launch(block: SuspendApplicator<CoroutineFactory>): Job {
         return launcher(State.SYNC) {
             block()
         }
     }
 
-    fun launcher(initializeState: State, block: suspend BukkitCoroutineFactory.() -> Unit) : Job {
+    fun launcher(initializeState: State, block: SuspendApplicator<BukkitCoroutineFactory>) : Job {
         return GlobalScope.launch(context) {
             try {
                 launching()

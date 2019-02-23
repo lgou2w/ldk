@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.coroutines
 
+import com.lgou2w.ldk.common.SuspendApplicator
+import com.lgou2w.ldk.common.SuspendApplicatorFunction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
@@ -27,15 +29,15 @@ interface CoroutineFactory {
 
     val context : CoroutineContext
 
-    fun launch(block: suspend CoroutineFactory.() -> Unit) : Job
+    fun launch(block: SuspendApplicator<CoroutineFactory>) : Job
 
     // Operating function
 
-    suspend fun <T> with(block: CoroutineScope.() -> T) : T
+    suspend fun <T> with(block: SuspendApplicatorFunction<CoroutineScope, T>) : T
 
-    suspend fun <T> with(ctx: CoroutineContext, block: CoroutineScope.() -> T) : T
+    suspend fun <T> with(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>) : T
 
-    suspend fun <T> async(block: CoroutineScope.() -> T) : Deferred<T>
+    suspend fun <T> async(block: SuspendApplicatorFunction<CoroutineScope, T>) : Deferred<T>
 
-    suspend fun <T> async(ctx: CoroutineContext, block: CoroutineScope.() -> T) : Deferred<T>
+    suspend fun <T> async(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>) : Deferred<T>
 }
