@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
-import com.lgou2w.ldk.common.isOrLater
 import java.util.*
 
 enum class PotionEffectType(
@@ -76,7 +75,7 @@ enum class PotionEffectType(
 
     fun toBukkit() : org.bukkit.potion.PotionEffectType {
         return org.bukkit.potion.PotionEffectType.getByName(
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                if (MinecraftBukkitVersion.isV113OrLater)
                     type
                 else
                     legacy

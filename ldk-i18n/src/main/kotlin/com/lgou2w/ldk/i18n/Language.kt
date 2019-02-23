@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package com.lgou2w.ldk.i18n
 
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 interface Language {
 
@@ -44,11 +44,11 @@ interface Language {
 
     operator fun get(key: String) : String?
 
-    fun get(key: String, vararg args: Any) : String?
+    fun get(key: String, vararg args: Any?) : String?
 
     fun getOr(key: String, def: String?) : String?
 
-    fun getOr(key: String, def: String?, vararg args: Any) : String?
+    fun getOr(key: String, def: String?, vararg args: Any?) : String?
 
     operator fun set(key: String, value: String)
 

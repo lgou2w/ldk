@@ -39,7 +39,7 @@
  */
 
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,8 @@ import com.lgou2w.ldk.common.isOrLater
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.Collections
+import java.util.Locale
 
 enum class XMaterial {
 
@@ -1160,3 +1161,38 @@ enum class XMaterial {
         }
     }
 }
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.eq(material: Material): Boolean
+        = toBukkit() == material
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.notEq(material: Material): Boolean
+        = toBukkit() != material
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.eq(stack: ItemStack): Boolean
+        = isSameType(stack)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.notEq(stack: ItemStack): Boolean
+        = !isSameType(stack)
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun ItemStack.eq(xMaterial: XMaterial): Boolean
+        = xMaterial.isSameType(this)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun ItemStack.notEq(xMaterial: XMaterial): Boolean
+        = !xMaterial.isSameType(this)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.util.*
+import java.util.Locale
 
 class StringFormatter : Formatter {
 
-    override fun format(locale: Locale, value: String, vararg args: Any): String {
+    override fun format(locale: Locale, value: String, vararg args: Any?): String {
         return String.format(locale, value, *args)
     }
 }

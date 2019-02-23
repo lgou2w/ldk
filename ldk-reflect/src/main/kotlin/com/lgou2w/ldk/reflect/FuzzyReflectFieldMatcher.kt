@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Field
-import java.util.*
 
 /**
  * ## FuzzyReflectFieldMatcher (模糊反射字段匹配器)
@@ -66,7 +65,11 @@ class FuzzyReflectFieldMatcher(
         return this
     }
 
-    override fun withParams(vararg parameters: Class<*>): FuzzyReflectMatcher<Field> {
+    override fun withParams(vararg parameters: Class<*>): FuzzyReflectFieldMatcher {
+        return this // Field does not support parameters
+    }
+
+    override fun withParamsCount(count: Int): FuzzyReflectFieldMatcher {
         return this // Field does not support parameters
     }
 

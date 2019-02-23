@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk-fx</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-rc6-hotfix1</version>
+        <version>0.1.8-beta2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-fx-common</artifactId>
-            <version>0.1.7-rc6-hotfix1</version>
+            <version>0.1.8-beta2</version>
             <scope>compile</scope>
         </dependency>
         <!-- FontAwesomeFX -->

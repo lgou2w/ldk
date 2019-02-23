@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.fx.coroutines
 
+import com.lgou2w.ldk.common.SuspendApplicatorFunction
 import com.lgou2w.ldk.coroutines.CoroutineFactoryBase
 import com.lgou2w.ldk.coroutines.DispatcherProvider
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +37,7 @@ class FxDispatcherProvider private constructor() : DispatcherProvider {
     }
 }
 
-suspend inline fun <T> withFx(crossinline block: suspend CoroutineScope.() -> T) : T {
+suspend inline fun <T> withFx(crossinline block: SuspendApplicatorFunction<CoroutineScope, T>) : T {
     return withContext(Dispatchers.JavaFx) {
         block()
     }

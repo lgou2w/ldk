@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.bukkit.coroutines
 
+import com.lgou2w.ldk.common.SuspendApplicator
+import com.lgou2w.ldk.common.SuspendApplicatorFunction
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -33,19 +35,19 @@ fun Dispatchers.bukkit(plugin: Plugin, state: State = State.SYNC)
         = BukkitDispatcher(plugin, state)
 
 @JvmOverloads
-fun Plugin.launcher(initializeState: State = State.SYNC, block: suspend BukkitCoroutineFactory.() -> Unit): Job
+fun Plugin.launcher(initializeState: State = State.SYNC, block: SuspendApplicator<BukkitCoroutineFactory>): Job
         = BukkitCoroutineFactory(this).launcher(initializeState, block)
 
-fun Plugin.launcherAsync(block: suspend BukkitCoroutineFactory.() -> Unit): Job
+fun Plugin.launcherAsync(block: SuspendApplicator<BukkitCoroutineFactory>): Job
         = BukkitCoroutineFactory(this).launcher(State.ASYNC, block)
 
-suspend inline fun <T> Plugin.withBukkit(crossinline block: suspend CoroutineScope.() -> T): T {
+suspend inline fun <T> Plugin.withBukkit(crossinline block: SuspendApplicatorFunction<CoroutineScope, T>): T {
     return withContext(Dispatchers.bukkit(this)) {
         block()
     }
 }
 
-suspend inline fun <T> Plugin.withBukkitAsync(crossinline block: suspend CoroutineScope.() -> T): Deferred<T> {
+suspend inline fun <T> Plugin.withBukkitAsync(crossinline block: SuspendApplicatorFunction<CoroutineScope, T>): Deferred<T> {
     return GlobalScope.async(Dispatchers.bukkit(this, State.ASYNC)) {
         block()
     }

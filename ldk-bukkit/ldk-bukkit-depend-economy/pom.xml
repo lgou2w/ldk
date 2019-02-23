@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>ldk-bukkit</artifactId>
+        <groupId>com.lgou2w</groupId>
+        <version>0.1.8-beta2</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>ldk-bukkit-depend-economy</artifactId>
+
+    <repositories>
+        <!-- LuckPerms mirror -->
+        <repository>
+            <id>lucko-repo</id>
+            <url>https://repo.lucko.me</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- ldk-bukkit-depend -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-bukkit-depend</artifactId>
+            <version>0.1.8-beta2</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- VaultAPI --> <!-- LuckPerms Mirror -->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Vault --> <!-- Get Vault Plugin Class -->
+        <!-- Only 1.2.27 in -> https://repo.md-5.net/content/groups/public/net/milkbowl/vault/Vault -->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.2.27</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>

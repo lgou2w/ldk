@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.AccessibleObject
 import java.lang.reflect.Member
-import java.util.*
 import java.util.regex.Pattern
 
 /**
@@ -52,6 +51,8 @@ abstract class FuzzyReflectMatcher<T>(
      * @param predicate 条件
      */
     open fun with(predicate: Predicate<T>): FuzzyReflectMatcher<T> {
+        if (values.isEmpty()) // if is empty
+            return this
         values = values.asSequence().filter(predicate).toMutableList()
         return this
     }
@@ -67,6 +68,8 @@ abstract class FuzzyReflectMatcher<T>(
      * @since LDK 0.1.7-rc3
      */
     open fun <U> with(initialize: Callable<U>, predicate: BiFunction<T, U, Boolean>): FuzzyReflectMatcher<T> {
+        if (values.isEmpty()) // if is empty
+            return this
         val initializeValue = initialize()
         values = values.asSequence().filter { predicate(it, initializeValue) }.toMutableList()
         return this
@@ -131,6 +134,16 @@ abstract class FuzzyReflectMatcher<T>(
      * @param parameters 参数
      */
     abstract fun withParams(vararg parameters: Class<*>): FuzzyReflectMatcher<T>
+
+    /**
+     * * Matches the reflection value from the given parameter count [count].
+     * * 从给定的参数数量 [count] 匹配反射值.
+     *
+     * @param count Parameter count
+     * @param count 参数数量
+     * @since LDK 0.1.8-rc
+     */
+    abstract fun withParamsCount(count: Int): FuzzyReflectMatcher<T>
 
     /**
      * * Result converter.

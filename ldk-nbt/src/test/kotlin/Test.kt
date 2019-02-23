@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,23 @@
  * limitations under the License.
  */
 
-import com.lgou2w.ldk.nbt.*
+import com.lgou2w.ldk.nbt.NBTBase
+import com.lgou2w.ldk.nbt.NBTStreams
+import com.lgou2w.ldk.nbt.NBTTagByte
+import com.lgou2w.ldk.nbt.NBTTagByteArray
+import com.lgou2w.ldk.nbt.NBTTagCompound
+import com.lgou2w.ldk.nbt.NBTTagDouble
+import com.lgou2w.ldk.nbt.NBTTagFloat
+import com.lgou2w.ldk.nbt.NBTTagInt
+import com.lgou2w.ldk.nbt.NBTTagIntArray
+import com.lgou2w.ldk.nbt.NBTTagList
+import com.lgou2w.ldk.nbt.NBTTagLong
+import com.lgou2w.ldk.nbt.NBTTagLongArray
+import com.lgou2w.ldk.nbt.NBTTagShort
+import com.lgou2w.ldk.nbt.NBTTagString
+import com.lgou2w.ldk.nbt.ofCompound
+import com.lgou2w.ldk.nbt.ofList
+import com.lgou2w.ldk.nbt.removeIf
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 
@@ -23,6 +39,7 @@ class Test {
     private fun Any.println() = println(this)
 
     @Test
+    @Suppress("UNCHECKED_CAST")
     fun test_NBTTo() {
         NBTTagByte().println()
         NBTTagShort().println()
@@ -39,6 +56,7 @@ class Test {
     }
 
     @Test
+    @Suppress("UNCHECKED_CAST")
     fun test_NBTToJson() {
         NBTTagByte().toJson().println()
         NBTTagShort().toJson().println()
@@ -55,6 +73,7 @@ class Test {
     }
 
     @Test
+    @Suppress("UNCHECKED_CAST")
     fun test_NBTToMojangson() {
         NBTTagByte().toMojangson().println()
         NBTTagShort().toMojangson().println()

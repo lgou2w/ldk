@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Constructor
-import java.util.*
 
 /**
  * ## FuzzyReflectConstructorMatcher (模糊反射构造匹配器)
@@ -67,6 +66,10 @@ class FuzzyReflectConstructorMatcher<T: Any>(
     override fun withParams(vararg parameters: Class<*>): FuzzyReflectConstructorMatcher<T> {
         val primitiveTypes = DataType.ofPrimitive(parameters)
         return with { DataType.compare(it.parameterTypes, primitiveTypes) }
+    }
+
+    override fun withParamsCount(count: Int): FuzzyReflectConstructorMatcher<T> {
+        return with { it.parameterTypes.size == count }
     }
 
     override fun resultAccessors(): List<AccessorConstructor<T>>

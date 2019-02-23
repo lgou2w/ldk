@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@ package com.lgou2w.ldk.coroutines
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
+import java.io.Closeable
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
 class FixedThreadPoolDispatcherProvider(
         private val threads: Int,
         private val threadName: String
-) : DispatcherProvider {
+) : DispatcherProvider, Closeable {
 
     init {
         if (threads < 1)
@@ -38,4 +39,8 @@ class FixedThreadPoolDispatcherProvider(
 
     override val dispatcher: ExecutorCoroutineDispatcher
             = Executors.newFixedThreadPool(threads, createPoolThread).asCoroutineDispatcher()
+
+    override fun close() {
+        dispatcher.close()
+    }
 }

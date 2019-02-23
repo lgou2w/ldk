@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import com.lgou2w.ldk.common.ApplicatorFunction
 import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.Predicate
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.isTrue
 import com.lgou2w.ldk.common.letIfNotNull
 import com.lgou2w.ldk.nbt.NBT
@@ -44,11 +43,14 @@ import com.lgou2w.ldk.nbt.ofCompound
 import com.lgou2w.ldk.nbt.removeIf
 import com.lgou2w.ldk.nbt.removeIfIndexed
 import org.bukkit.Color
+import org.bukkit.DyeColor
 import org.bukkit.Material
+import org.bukkit.block.banner.Pattern
+import org.bukkit.block.banner.PatternType
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import java.util.*
+import java.util.UUID
 
 abstract class ItemBuilderBase : ItemBuilder {
 
@@ -158,14 +160,14 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override var durability: Int
         get() {
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            return if (MinecraftBukkitVersion.isV113OrLater)
                 tag.getShortOrNull(NBT.TAG_DAMAGE)?.toInt() ?: 0
             else
                 @Suppress("DEPRECATION")
                 itemStack.durability.toInt()
         }
         set(value) {
-            if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            if (MinecraftBukkitVersion.isV113OrLater)
                 tag.putShort(NBT.TAG_DAMAGE, value)
             else
                 @Suppress("DEPRECATION")
@@ -218,7 +220,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         get() {
             val displayName = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getStringOrNull(NBT.TAG_DISPLAY_NAME)
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            return if (MinecraftBukkitVersion.isV113OrLater)
                 ChatSerializer.fromJsonOrNull(displayName)
             else
                 ChatSerializer.fromRawOrNull(displayName)
@@ -227,7 +229,7 @@ abstract class ItemBuilderBase : ItemBuilder {
             if (value == null)
                 removeDisplayName()
             else {
-                val displayName = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                val displayName = if (MinecraftBukkitVersion.isV113OrLater)
                     value.toJson()
                 else
                     ChatSerializer.toRaw(value)
@@ -271,7 +273,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeDisplayName(predicate: Predicate<ChatComponent>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
             ?.removeIf<String, ChatComponent>(NBT.TAG_DISPLAY_NAME, {
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                if (MinecraftBukkitVersion.isV113OrLater)
                     ChatSerializer.fromJson(it)
                 else
                     ChatSerializer.fromRaw(it)
@@ -285,7 +287,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override var localizedName: ChatComponent?
         get() {
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 displayName
             } else {
                 val value = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
@@ -297,7 +299,7 @@ abstract class ItemBuilderBase : ItemBuilder {
             if (value == null)
                 removeLocalizedName()
             else {
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+                if (MinecraftBukkitVersion.isV113OrLater) {
                     setDisplayName(value)
                 } else {
                     tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
@@ -328,7 +330,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun removeLocalizedName(predicate: Predicate<ChatComponent>?): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             removeDisplayName(predicate)
         } else {
             tag.getCompoundOrNull(NBT.TAG_DISPLAY)
@@ -408,7 +410,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override var enchantments: Map<Enchantment, Int>?
         get() {
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
                     ?.asElements<NBTTagCompound>()
                     ?.associate {
@@ -446,7 +448,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun clearEnchantment(): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             tag.remove(NBT.TAG_ENCH_FRESHLY)
         } else {
             tag.remove(NBT.TAG_ENCH_LEGACY)
@@ -466,7 +468,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun addEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             tag.getListOrDefault(NBT.TAG_ENCH_FRESHLY)
                 .addCompound(ofCompound {
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
@@ -499,7 +501,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun removeEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
                 ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getString(NBT.TAG_ENCH_ID)
@@ -1164,7 +1166,7 @@ abstract class ItemBuilderBase : ItemBuilder {
                 ?.asElements<NBTTagCompound>()
                 ?.associate {
                     val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                    val enchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                    val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                         Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                     else
                         Enchantment.fromId(it.getShort(NBT.TAG_ENCH_ID).toInt())
@@ -1212,7 +1214,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         tag.getListOrDefault(NBT.TAG_STORED_ENCHANTMENTS)
             .addCompound(ofCompound {
                 putShort(NBT.TAG_ENCH_LVL, level)
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                if (MinecraftBukkitVersion.isV113OrLater)
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
                 else
                     putShort(NBT.TAG_ENCH_ID, enchantment.id)
@@ -1240,7 +1242,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
             ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                 val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                val enchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                     Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                 else
                     Enchantment.fromId(it.getShort(NBT.TAG_ENCH_ID).toInt())
@@ -1721,6 +1723,108 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeFireworkRocketFlight(predicate: Predicate<Int>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
             ?.removeIf(NBT.TAG_FIREWORKS_FLIGHT, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Banner Pattern" defaultstate="collapsed">
+
+    override var bannerPatterns: List<Pattern>?
+        get() {
+            @Suppress("DEPRECATION")
+            return tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+                ?.getListOrNull(NBT.TAG_BANNER_PATTERNS)
+                ?.asElements<NBTTagCompound>()
+                ?.map { it.toBannerPattern() }
+        }
+        set(value) {
+            clearBannerPatten()
+            if (value != null)
+                addBannerPattern(*value.toTypedArray())
+        }
+
+    override fun getBannerPattern(block: (ItemBuilder, List<Pattern>?) -> Unit): ItemBuilder {
+        block(this, bannerPatterns)
+        return this
+    }
+
+    override fun setBannerPattern(patterns: List<Pattern>?): ItemBuilder {
+        this.bannerPatterns = patterns
+        return this
+    }
+
+    override fun setBannerPatternIf(patterns: List<Pattern>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            this.bannerPatterns = patterns
+        return this
+    }
+
+    override fun clearBannerPatten(): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+            ?.remove(NBT.TAG_BANNER_PATTERNS)
+        return this
+    }
+
+    override fun addBannerPattern(vararg patterns: Pattern): ItemBuilder {
+        tag.getCompoundOrDefault(NBT.TAG_BLOCK_ENTITY_TAG)
+            .getListOrDefault(NBT.TAG_BANNER_PATTERNS)
+            .addCompound(*patterns.map { it.toCompound() }.toTypedArray())
+        return this
+    }
+
+    override fun addBannerPattern(color: DyeColor, type: PatternType): ItemBuilder {
+        addBannerPattern(Pattern(color, type))
+        return this
+    }
+
+    override fun addBannerPattern(pattern: Pair<DyeColor, PatternType>): ItemBuilder {
+        addBannerPattern(Pattern(pattern.first, pattern.second))
+        return this
+    }
+
+    override fun addBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder {
+        addBannerPattern(*patterns.map { Pattern(it.first, it.second) }.toTypedArray())
+        return this
+    }
+
+    override fun addBannerPatternIf(pattern: Pattern, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(pattern)
+        return this
+    }
+
+    override fun addBannerPatternIf(color: DyeColor, type: PatternType, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(Pattern(color, type))
+        return this
+    }
+
+    override fun addBannerPatternIf(pattern: Pair<DyeColor, PatternType>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(Pattern(pattern.first, pattern.second))
+        return this
+    }
+
+    override fun removeBannerPattern(vararg patterns: Pattern): ItemBuilder {
+        removeBannerPattern { value -> value in patterns }
+        return this
+    }
+
+    override fun removeBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder {
+        removeBannerPattern(*patterns.map { Pattern(it.first, it.second) }.toTypedArray())
+        return this
+    }
+
+    override fun removeBannerPattern(predicate: Predicate<Pattern>?): ItemBuilder {
+        removeBannerPatternIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeBannerPatternIndexed(block: BiFunction<Int, Pattern, Boolean>?): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+            ?.getListOrNull(NBT.TAG_BANNER_PATTERNS)
+            ?.removeIfIndexed<NBTTagCompound, Pattern>({ it.toBannerPattern() }, block)
         return this
     }
 

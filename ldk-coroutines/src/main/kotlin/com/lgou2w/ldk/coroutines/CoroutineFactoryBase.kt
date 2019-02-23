@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.coroutines
 
+import com.lgou2w.ldk.common.SuspendApplicator
+import com.lgou2w.ldk.common.SuspendApplicatorFunction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
@@ -32,7 +34,7 @@ abstract class CoroutineFactoryBase(
     override val context: CoroutineContext
         get() = provider.dispatcher
 
-    override fun launch(block: suspend CoroutineFactory.() -> Unit): Job {
+    override fun launch(block: SuspendApplicator<CoroutineFactory>): Job {
         return GlobalScope.launch(context) {
             launching()
             block()
@@ -42,19 +44,19 @@ abstract class CoroutineFactoryBase(
     protected open suspend fun launching() {
     }
 
-    override suspend fun <T> with(block: CoroutineScope.() -> T) : T
+    override suspend fun <T> with(block: SuspendApplicatorFunction<CoroutineScope, T>) : T
             = with(context, block)
 
-    override suspend fun <T> with(ctx: CoroutineContext, block: CoroutineScope.() -> T): T {
+    override suspend fun <T> with(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>): T {
         return withContext(ctx) {
             block()
         }
     }
 
-    override suspend fun <T> async(block: CoroutineScope.() -> T): Deferred<T>
+    override suspend fun <T> async(block: SuspendApplicatorFunction<CoroutineScope, T>): Deferred<T>
             = async(context, block)
 
-    override suspend fun <T> async(ctx: CoroutineContext, block: CoroutineScope.() -> T): Deferred<T> {
+    override suspend fun <T> async(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>): Deferred<T> {
         return GlobalScope.async(ctx) {
             block()
         }

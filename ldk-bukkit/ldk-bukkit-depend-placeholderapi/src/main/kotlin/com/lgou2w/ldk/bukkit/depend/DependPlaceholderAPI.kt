@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,28 +28,28 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
             return pluginVersion >= "2.8.0"
         }
 
-    fun setPlaceholders(player: Player, text: String) : String {
+    fun setPlaceholders(player: Player?, text: String) : String {
         checkReference()
         return PlaceholderAPI.setPlaceholders(player, text)
     }
 
-    fun setPlaceholders(player: Player, texts: List<String>) : List<String> {
+    fun setPlaceholders(player: Player?, texts: List<String>) : List<String> {
         checkReference()
         return PlaceholderAPI.setPlaceholders(player, texts)
     }
 
-    fun setBracketPlaceholders(player: Player, text: String) : String {
+    fun setBracketPlaceholders(player: Player?, text: String) : String {
         checkReference()
         return PlaceholderAPI.setBracketPlaceholders(player, text)
     }
 
-    fun setBracketPlaceholders(player: Player, texts: List<String>) : List<String> {
+    fun setBracketPlaceholders(player: Player?, texts: List<String>) : List<String> {
         checkReference()
         return PlaceholderAPI.setBracketPlaceholders(player, texts)
     }
 
     @Throws(DependCannotException::class)
-    fun setRelationalPlaceholders(one: Player, two: Player, text: String) : String {
+    fun setRelationalPlaceholders(one: Player?, two: Player?, text: String) : String {
         checkReference()
         if (canSupportRelational) {
             return PlaceholderAPI.setRelationalPlaceholders(one, two, text)
@@ -59,7 +59,7 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
     }
 
     @Throws(DependCannotException::class)
-    fun setRelationalPlaceholders(one: Player, two: Player, texts: List<String>) : List<String> {
+    fun setRelationalPlaceholders(one: Player?, two: Player?, texts: List<String>) : List<String> {
         checkReference()
         if (canSupportRelational) {
             return PlaceholderAPI.setRelationalPlaceholders(one, two, texts)

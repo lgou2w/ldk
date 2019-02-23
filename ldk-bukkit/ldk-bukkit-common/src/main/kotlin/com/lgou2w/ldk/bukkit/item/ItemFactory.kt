@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import com.lgou2w.ldk.bukkit.version.API
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Applicator
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
@@ -197,7 +196,7 @@ object ItemFactory {
 
     @JvmStatic
     fun materialType(material: Material) : String {
-        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        return if (MinecraftBukkitVersion.isV113OrLater) {
             METHOD_MAGIC_NUMBERS_KEY
                 .notNull("OBC.CraftMagicNumbers#key(Material)")
                 .invoke(null, material)
@@ -210,7 +209,7 @@ object ItemFactory {
     @JvmStatic
     fun readItem(itemStack: ItemStack) : NBTTagCompound {
         val root = ofCompound {  }
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             // After version 1.13
             // 1.13 版本之后
             try {

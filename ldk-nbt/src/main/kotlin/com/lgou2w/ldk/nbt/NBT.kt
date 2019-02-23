@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,6 +170,7 @@ interface NBT<T> : Cloneable {
         const val TAG_POTION_SHOW_PARTICLES = "ShowParticles"
         const val TAG_POTION_SHOW_ICON = "ShowIcon" // since Minecraft 1.13
         const val TAG_BLOCK_ENTITY_TAG = "BlockEntityTag"
+        const val TAG_BANNER_CUSTOM_NAME = "CustomName"
         const val TAG_BANNER_PATTERNS = "Patterns"
         const val TAG_BANNER_COLOR = "Color"
         const val TAG_BANNER_PATTERN = "Pattern"
