@@ -839,7 +839,6 @@ enum class XMaterial {
     STONE_PICKAXE("STONE_PICKAXE", 0),
     STONE_PRESSURE_PLATE("STONE_PLATE", 0),
     STONE_SHOVEL("STONE_SPADE", 0),
-    STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     STONE_SWORD("STONE_SWORD", 0),
     STRAY_SPAWN_EGG("MONSTER_EGG", 0),
     STRING("STRING", 0),
@@ -999,9 +998,49 @@ enum class XMaterial {
 
     @Draft @Deprecated("Draft") LEATHER_HORSE_ARMOR("STONE", 0),
 
-    // TODO Slabs
-    // TODO Stairs
-    // TODO Walls
+    // TODO: Before 1.13: Smooth stone slab, After 1.14: Stone slab. Why did do this? Need to test
+    STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
+    @Draft @Deprecated("Draft") ANDESITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_ANDESITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") DIORITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_DIORITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") GRANITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_GRANITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_STONE_BRICK_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_COBBLESTONE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_SANDSTONE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_RED_SANDSTONE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_QUARTZ_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") RED_NETHER_BRICK_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") END_STONE_BRICK_SLAB("STONE", 0),
+
+    @Draft @Deprecated("Draft") STONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") ANDESITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_ANDESITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") DIORITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_DIORITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") GRANITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_GRANITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_STONE_BRICK_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_COBBLESTONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_SANDSTONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_RED_SANDSTONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_QUARTZ_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") RED_NETHER_BRICK_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") END_STONE_BRICK_STAIRS("STONE", 0),
+
+    @Draft @Deprecated("Draft") STONE_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") ANDESITE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") DIORITE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") GRANITE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_STONE_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") SANDSTONE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft")  RED_SANDSTONE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") RED_NETHER_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") END_STONE_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") PRISMARINE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") NETHER_BRICK_WALL("STONE", 0),
     ;
 
     private val aliases : Array<out String>
