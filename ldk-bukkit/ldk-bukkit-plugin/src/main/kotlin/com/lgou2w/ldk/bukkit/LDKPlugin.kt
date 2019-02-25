@@ -71,7 +71,12 @@ class LDKPlugin : PluginBase() {
         updater = null
     }
 
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+    override fun onCommand(
+            sender: CommandSender,
+            command: Command,
+            label: String,
+            args: Array<out String>
+    ): Boolean {
         val first = args.firstOrNull()
         return if (first == null || first.equals("help", true)) {
             sender.sendMessage(arrayOf(
@@ -88,7 +93,12 @@ class LDKPlugin : PluginBase() {
         }
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
+    override fun onTabComplete(
+            sender: CommandSender,
+            command: Command,
+            alias: String,
+            args: Array<out String>
+    ): List<String> {
         if (args.isEmpty())
             return Collections.emptyList()
         val lastWord = args.last()

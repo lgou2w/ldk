@@ -22,8 +22,8 @@ class PostgreConnectionFactory(
         configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
-    override val implementationName: String = "PostgreSQL"
-    override val driverClass: String = "org.postgresql.ds.PGSimpleDataSource"
+    override val implementationName : String = "PostgreSQL"
+    override val driverClass : String = "org.postgresql.ds.PGSimpleDataSource"
 
     override fun appendConfiguration(config: HikariConfig) {
         val address = configuration.address.split(":")

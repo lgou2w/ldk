@@ -19,7 +19,8 @@ package com.lgou2w.ldk.bukkit.item
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
-import java.util.*
+import java.util.HashMap
+import java.util.Locale
 
 /**
  * ## Enchantment (附魔)
@@ -237,7 +238,7 @@ enum class Enchantment(
     VANISHING_CURSE(71, 1, "vanishing_curse", "vanishing_curse", MinecraftVersion.V1_11),
     ;
 
-    override val value: String
+    override val value : String
         get() = type
 
     fun toBukkit(): org.bukkit.enchantments.Enchantment {
@@ -251,8 +252,8 @@ enum class Enchantment(
 
     companion object {
 
-        @JvmStatic private val ID_MAP: MutableMap<Int, Enchantment> = HashMap()
-        @JvmStatic private val NAME_MAP: MutableMap<String, Enchantment> = HashMap()
+        @JvmStatic private val ID_MAP : MutableMap<Int, Enchantment> = HashMap()
+        @JvmStatic private val NAME_MAP : MutableMap<String, Enchantment> = HashMap()
 
         init {
             values().forEach {
@@ -272,7 +273,7 @@ enum class Enchantment(
          * @throws IllegalArgumentException 如果名称不存在.
          */
         @JvmStatic
-        fun fromBukkit(enchant: org.bukkit.enchantments.Enchantment) : Enchantment {
+        fun fromBukkit(enchant: org.bukkit.enchantments.Enchantment): Enchantment {
             return fromName(if (MinecraftBukkitVersion.isV113OrLater)
                 enchant.key.key
             else

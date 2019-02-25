@@ -29,15 +29,15 @@ interface CoroutineFactory {
 
     val context : CoroutineContext
 
-    fun launch(block: SuspendApplicator<CoroutineFactory>) : Job
+    fun launch(block: SuspendApplicator<CoroutineFactory>): Job
 
     // Operating function
 
-    suspend fun <T> with(block: SuspendApplicatorFunction<CoroutineScope, T>) : T
+    suspend fun <T> with(block: SuspendApplicatorFunction<CoroutineScope, T>): T
 
-    suspend fun <T> with(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>) : T
+    suspend fun <T> with(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>): T
 
-    suspend fun <T> async(block: SuspendApplicatorFunction<CoroutineScope, T>) : Deferred<T>
+    suspend fun <T> async(block: SuspendApplicatorFunction<CoroutineScope, T>): Deferred<T>
 
-    suspend fun <T> async(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>) : Deferred<T>
+    suspend fun <T> async(ctx: CoroutineContext, block: SuspendApplicatorFunction<CoroutineScope, T>): Deferred<T>
 }

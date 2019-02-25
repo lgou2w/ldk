@@ -20,12 +20,12 @@ class RegionIteratorFlat(
         private val region: Region
 ) : Iterator<RegionVector2D> {
 
-    private val y: Int
-    private val minX: Int
-    private val maxX: Int
-    private val maxZ: Int
-    private var nextX: Int
-    private var nextZ: Int
+    private val y : Int
+    private val minX : Int
+    private val maxX : Int
+    private val maxZ : Int
+    private var nextX : Int
+    private var nextZ : Int
 
     init {
         val min = region.minimumPoint

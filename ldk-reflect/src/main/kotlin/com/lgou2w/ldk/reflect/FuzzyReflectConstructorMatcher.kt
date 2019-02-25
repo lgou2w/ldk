@@ -73,13 +73,13 @@ class FuzzyReflectConstructorMatcher<T: Any>(
     }
 
     override fun resultAccessors(): List<AccessorConstructor<T>>
-            = results().map { Accessors.ofConstructor(it) }
+            = results().map(Accessors::ofConstructor)
 
     override fun resultAccessor(): AccessorConstructor<T>
             = resultAccessorAs()
 
     override fun resultAccessorOrNull(): AccessorConstructor<T>?
-            = resultOrNull()?.letIfNotNull { Accessors.ofConstructor(this) }
+            = resultOrNull()?.letIfNotNull(Accessors::ofConstructor)
 
     /**
      * * Get the first valid result accessor for this fuzzy reflection matcher.

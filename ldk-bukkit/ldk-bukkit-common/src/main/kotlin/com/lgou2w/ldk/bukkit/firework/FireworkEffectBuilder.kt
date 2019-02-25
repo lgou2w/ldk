@@ -18,38 +18,39 @@ package com.lgou2w.ldk.bukkit.firework
 
 import com.lgou2w.ldk.common.Builder
 import org.bukkit.Color
-import java.util.*
+import java.util.ArrayList
+import java.util.Collections
 
 class FireworkEffectBuilder(
         private var type: FireworkType
 ) : Builder<FireworkEffect> {
 
-    private var canFlicker: Boolean = false
-    private var hasTrail: Boolean = false
-    private var colors: MutableList<Color> = ArrayList()
-    private var fades: MutableList<Color> = ArrayList()
+    private var canFlicker : Boolean = false
+    private var hasTrail : Boolean = false
+    private var colors : MutableList<Color> = ArrayList()
+    private var fades : MutableList<Color> = ArrayList()
 
-    fun with(type: FireworkType) : FireworkEffectBuilder {
+    fun with(type: FireworkType): FireworkEffectBuilder {
         this.type = type
         return this
     }
 
-    fun withFlicker() : FireworkEffectBuilder {
+    fun withFlicker(): FireworkEffectBuilder {
         this.canFlicker = true
         return this
     }
 
-    fun withTrail() : FireworkEffectBuilder {
+    fun withTrail(): FireworkEffectBuilder {
         this.hasTrail = true
         return this
     }
 
-    fun withColors(vararg colors: Color) : FireworkEffectBuilder {
+    fun withColors(vararg colors: Color): FireworkEffectBuilder {
         this.colors.addAll(colors)
         return this
     }
 
-    fun withFades(vararg colors: Color) : FireworkEffectBuilder {
+    fun withFades(vararg colors: Color): FireworkEffectBuilder {
         this.fades.addAll(colors)
         return this
     }

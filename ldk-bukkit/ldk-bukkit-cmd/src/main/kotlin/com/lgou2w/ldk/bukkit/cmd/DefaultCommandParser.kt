@@ -56,7 +56,7 @@ class DefaultCommandParser : CommandParser {
             @Suppress("UNUSED_PARAMETER")
             manager: CommandManager,
             clazz: Class<*>
-    ) : CommandRoot {
+    ): CommandRoot {
         if (Modifier.isAbstract(clazz.modifiers) || Modifier.isInterface(clazz.modifiers) || clazz.isEnum || clazz.isAnnotation)
             throw CommandParseException("The command $clazz cannot be an abstract, interface, enum, or annotation class.")
         val root = clazz.getAnnotation(CommandRoot::class.java)
@@ -71,7 +71,7 @@ class DefaultCommandParser : CommandParser {
             name: String,
             source: Any,
             clazz: Class<*>
-    ) : Map<String, DefaultCommandExecutor> {
+    ): Map<String, DefaultCommandExecutor> {
         return FuzzyReflect.of(clazz, true)
             .useMethodMatcher()
             .withAnnotation(Command::class.java)
@@ -109,7 +109,7 @@ class DefaultCommandParser : CommandParser {
             command: Command,
             method: Method,
             parameters: Array<out java.lang.reflect.Parameter>
-    ) : Boolean {
+    ): Boolean {
         val alias = "${method.declaringClass.canonicalName}#${method.name}"
         // Command name cannot be blank
         if (command.value.isBlank()) {
@@ -152,7 +152,10 @@ class DefaultCommandParser : CommandParser {
         return true
     }
 
-    private fun parseExecutorParameters(manager: CommandManager, method: Method) : Array<out CommandExecutor.Parameter>? {
+    private fun parseExecutorParameters(
+            manager: CommandManager,
+            method: Method
+    ): Array<out CommandExecutor.Parameter>? {
         val parameters = method.parameters
         val processLength = parameters.size - 1
         return parameters.filterIndexed { index, _ -> index != 0 }.mapIndexed { index, parameter ->
@@ -282,7 +285,7 @@ class DefaultCommandParser : CommandParser {
             description: Description?,
             children: Map<String, DefaultRegisteredCommand>,
             executors: Map<String, DefaultCommandExecutor>
-    ) : DefaultRegisteredCommand {
+    ): DefaultRegisteredCommand {
         return DefaultRegisteredCommand(
                 manager,
                 source,
@@ -308,7 +311,7 @@ class DefaultCommandParser : CommandParser {
             method: Method,
             parameters: Array<out CommandExecutor.Parameter>,
             description: String?
-    ) : DefaultCommandExecutor {
+    ): DefaultCommandExecutor {
         return DefaultCommandExecutor(
                 source,
                 name,

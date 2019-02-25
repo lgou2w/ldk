@@ -16,5 +16,7 @@
 
 package com.lgou2w.ldk.sql
 
-data class HikariTestSession(val isConnected: Boolean, val delay: Long) {
-}
+data class HikariTestSession(
+        val isConnected: Boolean,
+        val delay: Long
+)

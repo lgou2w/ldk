@@ -24,10 +24,10 @@ import com.lgou2w.ldk.chat.ChatSerializer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-fun ChatSerializer.toNMS(component: ChatComponent) : Any
+fun ChatSerializer.toNMS(component: ChatComponent): Any
         = ChatFactory.toNMS(component)
 
-fun ChatSerializer.fromNMS(icbc: Any) : ChatComponent
+fun ChatSerializer.fromNMS(icbc: Any): ChatComponent
         = ChatFactory.fromNMS(icbc)
 
 @JvmOverloads
@@ -48,7 +48,7 @@ fun ChatComponent.sendTo(players: Array<Player>, action: ChatAction = ChatAction
 fun ChatComponent.sendToAll(action: ChatAction = ChatAction.CHAT)
         = ChatFactory.sendChatToAll(this, action)
 
-fun ChatComponentFancy.tooltipItem(itemStack: ItemStack) : ChatComponentFancy
+fun ChatComponentFancy.tooltipItem(itemStack: ItemStack): ChatComponentFancy
         = ChatFactory.tooltipItem(this, itemStack)
 
 @JvmOverloads

@@ -31,25 +31,22 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     constructor(name: String, value: MutableMap<String, NBTBase<*>> = LinkedHashMap()) : super(name, value)
     constructor(value: MutableMap<String, NBTBase<*>> = LinkedHashMap()) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_COMPOUND
+    override val type = NBTType.TAG_COMPOUND
 
-    override var value: MutableMap<String, NBTBase<*>>
-        get() = HashMap(super.value0)
-        set(value) { super.value0 = HashMap(value) }
+    override var value : MutableMap<String, NBTBase<*>>
+        get() = super.value0
+        set(value) { super.value0 = LinkedHashMap(value) }
 
     override fun read(input: DataInput) {
-        var tag: NBTBase<*>? = null
-        while (NBTStreams.read(input).apply { tag = this } != NBTTagEnd.INSTANCE) {
-            val value = tag!!
-            put(value.name, value)
-        }
+        var tag : NBTBase<*>
+        while (NBTStreams.read(input).apply { tag = this } != NBTTagEnd.INSTANCE)
+            put(tag.name, tag)
     }
 
     override fun write(output: DataOutput) {
         for (value in values)
             NBTStreams.write(output, value)
-        output.writeByte(0)
+        output.writeByte(0) // NBTTagEnd
     }
 
     override fun clone(): NBTTagCompound {
@@ -226,7 +223,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
      * @throws NoSuchElementException
      * @throws ClassCastException
      */
-    private fun getAndCheck(key: String, expected: Class<out NBTBase<*>>, nullable: Boolean) : NBTBase<*>? {
+    private fun getAndCheck(key: String, expected: Class<out NBTBase<*>>, nullable: Boolean): NBTBase<*>? {
         val tag = get(key)
         if (nullable && tag == null)
             return null

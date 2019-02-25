@@ -39,22 +39,22 @@ open class RegionEllipsoid(
         }
     }
 
-    override val minimumPoint: RegionVector
+    override val minimumPoint : RegionVector
         get() = center - radius
 
-    override val maximumPoint: RegionVector
+    override val maximumPoint : RegionVector
         get() = center + radius
 
-    override val area: Int
+    override val area : Int
         get() = Math.floor((4 / 3 * Math.PI) * radius.x * radius.y * radius.z).toInt()
 
-    override val width: Int
+    override val width : Int
         get() = (radius.x * 2.0).toInt()
 
-    override val height: Int
+    override val height : Int
         get() = (radius.y * 2.0).toInt()
 
-    override val length: Int
+    override val length : Int
         get() = (radius.z * 2.0).toInt()
 
     override fun contains(x: Double, y: Double, z: Double): Boolean

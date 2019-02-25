@@ -78,7 +78,7 @@ abstract class CommandManagerBase(
                 .withType(CommandMap::class.java)
                 .resultAccessorAs<Server, CommandMap>()[Bukkit.getServer()] as CommandMap
         }
-        @JvmStatic private fun registerBukkitCommand(command: RegisteredCommand) : Boolean {
+        @JvmStatic private fun registerBukkitCommand(command: RegisteredCommand): Boolean {
             val description = command.description ?: ""
             val usageMessage = command.usage ?: "/${command.name} help"
             val proxy = object : org.bukkit.command.Command(

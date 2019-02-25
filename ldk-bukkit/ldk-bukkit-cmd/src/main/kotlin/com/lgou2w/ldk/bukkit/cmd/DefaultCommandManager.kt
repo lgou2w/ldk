@@ -22,7 +22,7 @@ class DefaultCommandManager(
         plugin: Plugin
 ) : SimpleCommandManager(plugin, DefaultCommandParser()) {
 
-    override val parser: DefaultCommandParser
+    override val parser : DefaultCommandParser
         get() = super.parser as DefaultCommandParser
 
     override fun registerCommand(source: Any): DefaultRegisteredCommand {

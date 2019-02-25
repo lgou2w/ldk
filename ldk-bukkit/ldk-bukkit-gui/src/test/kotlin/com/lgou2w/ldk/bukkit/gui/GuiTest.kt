@@ -31,8 +31,8 @@ import org.powermock.modules.junit4.PowerMockRunner
 @RunWith(PowerMockRunner::class)
 class GuiTest {
 
-    @Mock lateinit var gui: Gui
-    lateinit var buttons: MutableList<Button>
+    @Mock lateinit var gui : Gui
+    lateinit var buttons : MutableList<Button>
 
     @Before
     fun init() {

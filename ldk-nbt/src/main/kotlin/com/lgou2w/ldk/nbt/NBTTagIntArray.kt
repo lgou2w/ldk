@@ -32,10 +32,9 @@ class NBTTagIntArray : NBTBase<IntArray> {
     constructor(name: String = "", value: IntArray = IntArray(0)) : super(name, value)
     constructor(value: IntArray = IntArray(0)) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_INT_ARRAY
+    override val type = NBTType.TAG_INT_ARRAY
 
-    override var value: IntArray
+    override var value : IntArray
         get() {
             val value = IntArray(value0.size)
             for ((i, el) in value0.withIndex())

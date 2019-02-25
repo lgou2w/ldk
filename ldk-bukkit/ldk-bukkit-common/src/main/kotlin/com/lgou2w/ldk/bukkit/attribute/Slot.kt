@@ -68,6 +68,6 @@ enum class Slot(
     FEET("feet"),
     ;
 
-    override val value: String
+    override val value : String
         get() = type
 }

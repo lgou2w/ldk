@@ -32,7 +32,7 @@ abstract class PlaceholderExpansion {
     abstract val author : String?
     abstract val version : String?
 
-    open val placeholders: MutableList<String>? = null
+    open val placeholders : MutableList<String>? = null
     open val isPersist = false
 
     /**

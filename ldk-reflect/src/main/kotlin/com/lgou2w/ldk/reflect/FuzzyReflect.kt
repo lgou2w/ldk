@@ -71,19 +71,19 @@ class FuzzyReflect private constructor(
     fun useFieldMatcher(): FuzzyReflectFieldMatcher
             = FuzzyReflectFieldMatcher(this, fields)
 
-    override val constructors: Set<Constructor<*>>
+    override val constructors : Set<Constructor<*>>
         get() = if (isForceAccess)
             LinkedHashSet((reference.declaredConstructors + reference.constructors).toMutableList())
         else
             LinkedHashSet(reference.constructors.toMutableList())
 
-    override val methods: Set<Method>
+    override val methods : Set<Method>
         get() = if (isForceAccess)
             LinkedHashSet((reference.declaredMethods + reference.methods).toMutableList())
         else
             LinkedHashSet(reference.methods.toMutableList())
 
-    override val fields: Set<Field>
+    override val fields : Set<Field>
         get() = if (isForceAccess)
             LinkedHashSet((reference.declaredFields + reference.fields).toMutableList())
         else

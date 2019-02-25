@@ -73,7 +73,7 @@ class Test {
     fun test_CallerClass() {
         Reflection.safe()
             .getCallerClasses()
-            .forEach { println(it) }
+            .forEach(::println)
     }
 
     @Test

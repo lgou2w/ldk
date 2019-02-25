@@ -33,7 +33,7 @@ interface CommandManager {
     var globalFeedback : CommandFeedback
 
     @Throws(CommandParseException::class, UnsupportedOperationException::class)
-    fun registerCommand(source: Any) : RegisteredCommand
+    fun registerCommand(source: Any): RegisteredCommand
 
-    fun getCommand(command: String) : RegisteredCommand?
+    fun getCommand(command: String): RegisteredCommand?
 }

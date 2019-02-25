@@ -45,6 +45,7 @@ class RSASecurity private constructor(
         private val signatureAlgorithm: String
 ) {
 
+    @Suppress("unused")
     companion object {
 
         const val RSA = "RSA"

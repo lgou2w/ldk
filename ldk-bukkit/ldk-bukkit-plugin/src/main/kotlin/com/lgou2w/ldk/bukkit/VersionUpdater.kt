@@ -133,7 +133,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         private const val RELEASE_ARTIFACT_ID = "ldk" // JsonObject
 
         @Throws(Exception::class)
-        private fun parseLatestRelease() : Release? {
+        private fun parseLatestRelease(): Release? {
             val content : String
             try {
                 content = URL(API_GITHUB).readText(Charsets.UTF_8)
@@ -155,7 +155,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         }
 
         @Throws(Exception::class)
-        private fun parseLatestReleaseFromJitpack() : Release? {
+        private fun parseLatestReleaseFromJitpack(): Release? {
             val content = URL(API_JITPACK).readText(Charsets.UTF_8)
             val releases = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
             val release = releases[RELEASE_GROUP_ID]?.asJsonObject ?: return null

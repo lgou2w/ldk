@@ -29,7 +29,7 @@ abstract class CommandExecutorBase(
 
     val length = parameters.size
     val max = length
-    val min = max - parameters.count { it.canNullable }
+    val min = max - parameters.count(CommandExecutor.Parameter::canNullable)
 
     override var description: String? = null
 

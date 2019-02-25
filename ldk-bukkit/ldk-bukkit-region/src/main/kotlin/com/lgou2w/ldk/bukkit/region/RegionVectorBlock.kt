@@ -44,7 +44,7 @@ open class RegionVectorBlock : RegionVector {
         return RegionVectorBlock(x, y, z)
     }
 
-    fun getBlock(world: World) : Block
+    fun getBlock(world: World): Block
             = world.getBlockAt(blockX, blockX, blockZ)
 
     override fun toString(): String {

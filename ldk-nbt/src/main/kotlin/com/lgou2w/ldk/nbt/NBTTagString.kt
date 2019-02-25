@@ -31,8 +31,7 @@ class NBTTagString : NBTBase<String> {
     constructor(value: String = "") : super("", value)
     constructor() : super("", "")
 
-    override val type: NBTType
-        get() = NBTType.TAG_STRING
+    override val type = NBTType.TAG_STRING
 
     override fun read(input: DataInput) {
         value = input.readUTF()

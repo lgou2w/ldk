@@ -22,7 +22,7 @@ import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.Color
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import java.util.*
+import java.util.LinkedHashMap
 
 data class FireworkEffect(
         val type: FireworkType,
@@ -52,7 +52,7 @@ data class FireworkEffect(
         return result
     }
 
-    fun toBukkit() : org.bukkit.FireworkEffect {
+    fun toBukkit(): org.bukkit.FireworkEffect {
         return org.bukkit.FireworkEffect.builder()
             .with(Enums.ofName(org.bukkit.FireworkEffect.Type::class.java, type.name))
             .flicker(canFlicker)
@@ -66,7 +66,7 @@ data class FireworkEffect(
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
-        fun deserialize(args: Map<String, Any>) : FireworkEffect {
+        fun deserialize(args: Map<String, Any>): FireworkEffect {
             val type = Enums.ofValuableNotNull(FireworkType::class.java, args["type"].toString().toInt())
             val flicker = args["flicker"]?.toString()?.toBoolean() ?: false
             val trail = args["trail"]?.toString()?.toBoolean() ?: false
@@ -76,7 +76,7 @@ data class FireworkEffect(
         }
 
         @JvmStatic
-        fun deserialize(root: NBTTagCompound) : FireworkEffect {
+        fun deserialize(root: NBTTagCompound): FireworkEffect {
             val type = Enums.ofValuableNotNull(FireworkType::class.java, root.getInt(NBT.TAG_FIREWORKS_TYPE))
             val flicker = root.getBoolean(NBT.TAG_FIREWORKS_FLICKER)
             val trail = root.getBoolean(NBT.TAG_FIREWORKS_TRAIL)
@@ -86,7 +86,7 @@ data class FireworkEffect(
         }
 
         @JvmStatic
-        fun builder(type: FireworkType) : FireworkEffectBuilder
+        fun builder(type: FireworkType): FireworkEffectBuilder
                 = FireworkEffectBuilder(type)
     }
 }

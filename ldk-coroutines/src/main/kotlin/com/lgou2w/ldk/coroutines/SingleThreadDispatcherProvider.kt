@@ -29,7 +29,7 @@ class SingleThreadDispatcherProvider(
         Thread(r, threadName)
     }
 
-    override val dispatcher: ExecutorCoroutineDispatcher
+    override val dispatcher : ExecutorCoroutineDispatcher
             = Executors.newSingleThreadExecutor(createPoolThread).asCoroutineDispatcher()
 
     override fun close() {

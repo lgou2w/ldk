@@ -24,7 +24,7 @@ import org.bukkit.entity.Player
 @FunctionalInterface
 interface Transform<out T> {
 
-    fun transform(parameter: String) : T?
+    fun transform(parameter: String): T?
 
     companion object Constants {
 

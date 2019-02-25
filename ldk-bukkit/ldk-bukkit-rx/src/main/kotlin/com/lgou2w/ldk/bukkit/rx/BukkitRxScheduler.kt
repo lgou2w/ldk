@@ -40,7 +40,13 @@ class BukkitRxScheduler private constructor(
                 = BukkitRxScheduler(plugin, true)
 
         @JvmStatic
-        private fun scheduleOnBukkit(plugin: Plugin, command: Runnable, isAsync: Boolean, delay: Long = 0L, period: Long = -1): BukkitTask {
+        private fun scheduleOnBukkit(
+                plugin: Plugin,
+                command: Runnable,
+                isAsync: Boolean,
+                delay: Long = 0L,
+                period: Long = -1
+        ): BukkitTask {
             val scheduler = Bukkit.getScheduler()
             return when (isAsync) {
                 true-> {
@@ -103,7 +109,7 @@ class BukkitRxScheduler private constructor(
 
         private inner class BukkitDisposableTask(
                 private val task: BukkitTask
-        ) : Disposable {
+        ): Disposable {
 
             private var isDisposed = false
 

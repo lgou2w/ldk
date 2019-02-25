@@ -63,14 +63,14 @@ interface RegisteredCommand {
     val rootParent : RegisteredCommand?
 
     @Throws(IllegalArgumentException::class, CommandParseException::class)
-    fun registerChild(child: Any, forcibly: Boolean = false) : Boolean
+    fun registerChild(child: Any, forcibly: Boolean = false): Boolean
 
     @Throws(IllegalArgumentException::class)
-    fun registerChild(child: RegisteredCommand, forcibly: Boolean = false) : Boolean
+    fun registerChild(child: RegisteredCommand, forcibly: Boolean = false): Boolean
 
-    fun findChild(name: String, allowAlias: Boolean = true) : RegisteredCommand?
+    fun findChild(name: String, allowAlias: Boolean = true): RegisteredCommand?
 
-    fun findExecutor(name: String, allowAlias: Boolean = true) : CommandExecutor?
+    fun findExecutor(name: String, allowAlias: Boolean = true): CommandExecutor?
 
     /**
      * @since LDK 0.1.7-rc6
@@ -88,7 +88,7 @@ interface RegisteredCommand {
      *
      **************************************************************************/
 
-    fun execute(sender: CommandSender, label: String, args: Array<out String>) : Boolean
+    fun execute(sender: CommandSender, label: String, args: Array<out String>): Boolean
 
-    fun complete(sender: CommandSender, alias: String, args: Array<out String>) : List<String>
+    fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String>
 }

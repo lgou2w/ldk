@@ -52,7 +52,7 @@ abstract class Reflection private constructor() {
      * @param depth 深度
      */
     @JvmOverloads
-    open fun getCallerClass(depth: Int? = null) : Class<*>? {
+    open fun getCallerClass(depth: Int? = null): Class<*>? {
         return null
     }
 
@@ -66,7 +66,7 @@ abstract class Reflection private constructor() {
      * @param expected 预期类型
      */
     @JvmOverloads
-    open fun getCallerClasses(depth: Int? = null, expected: Class<*>? = null) : List<Class<*>> {
+    open fun getCallerClasses(depth: Int? = null, expected: Class<*>? = null): List<Class<*>> {
         return emptyList()
     }
 
@@ -82,7 +82,7 @@ abstract class Reflection private constructor() {
          */
         @JvmStatic
         @Deprecated("sun.reflect.Reflection", ReplaceWith("safe"))
-        fun sun() : Reflection
+        fun sun(): Reflection
                 = SunReflection()
 
         /**
@@ -93,7 +93,7 @@ abstract class Reflection private constructor() {
          */
         @JvmStatic
         @Deprecated("It is recommended to use safe to get.", ReplaceWith("safe"))
-        fun thread() : Reflection
+        fun thread(): Reflection
                 = ThreadReflection()
 
         @JvmStatic
@@ -104,7 +104,7 @@ abstract class Reflection private constructor() {
          * * 优先使用 `Sun` 的底层实现, 如果不可用那么使用 `Thread` 的堆栈信息实现的包装反射.
          */
         @JvmStatic
-        fun safe() : Reflection {
+        fun safe(): Reflection {
             if (SAFE == null) {
                 var thread = true
                 try {
@@ -124,7 +124,7 @@ abstract class Reflection private constructor() {
         }
 
         @JvmStatic
-        private fun safeDepth(depth: Int?) : Int {
+        private fun safeDepth(depth: Int?): Int {
             return if (depth == 0x7FFFFFFF)
                 depth
             else

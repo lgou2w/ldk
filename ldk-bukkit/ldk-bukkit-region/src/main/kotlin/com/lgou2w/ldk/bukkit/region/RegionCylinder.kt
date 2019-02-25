@@ -37,10 +37,10 @@ open class RegionCylinder : RegionBase, RegionFlat {
         }
     }
 
-    var center2D: RegionVector2D
-    var radius: RegionVector2D
-    var minY: Int = 0
-    var maxY: Int = 0
+    var center2D : RegionVector2D
+    var radius : RegionVector2D
+    var minY : Int = 0
+    var maxY : Int = 0
 
     private var hasY : Boolean
 
@@ -66,25 +66,25 @@ open class RegionCylinder : RegionBase, RegionFlat {
         this.hasY = true
     }
 
-    override val minimumPoint: RegionVector
+    override val minimumPoint : RegionVector
         get() = (center2D - radius).toRegionVector(minY)
 
-    override val maximumPoint: RegionVector
+    override val maximumPoint : RegionVector
         get() = (center2D + radius).toRegionVector(maxY)
 
-    override val center: RegionVector
+    override val center : RegionVector
         get() = center2D.toRegionVector((maxY + minY) / 2.0)
 
-    override val area: Int
+    override val area : Int
         get() = Math.floor(radius.x * radius.z * Math.PI * height).toInt()
 
-    override val width: Int
+    override val width : Int
         get() = (radius.x * 2.0).toInt()
 
-    override val height: Int
+    override val height : Int
         get() = maxY - minY + 1
 
-    override val length: Int
+    override val length : Int
         get() = (radius.z * 2.0).toInt()
 
     override fun contains(x: Double, y: Double, z: Double): Boolean
@@ -97,14 +97,14 @@ open class RegionCylinder : RegionBase, RegionFlat {
         return ((vector.toRegionVector2D() - center2D) / radius).lengthSq() <= 1.0
     }
 
-    override var minimumY: Int
+    override var minimumY : Int
         get() = minY
         set(value) {
             minY = value
             hasY = true
         }
 
-    override var maximumY: Int
+    override var maximumY : Int
         get() = maxY
         set(value) {
             maxY = value

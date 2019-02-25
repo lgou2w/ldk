@@ -32,10 +32,9 @@ class NBTTagLongArray : NBTBase<LongArray> {
     constructor(name: String = "", value: LongArray = LongArray(0)) : super(name, value)
     constructor(value: LongArray = LongArray(0)) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_LONG_ARRAY
+    override val type = NBTType.TAG_LONG_ARRAY
 
-    override var value: LongArray
+    override var value : LongArray
         get() {
             val value = LongArray(value0.size)
             for ((i, el) in value0.withIndex())

@@ -75,13 +75,13 @@ class FuzzyReflectMethodMatcher(
     }
 
     override fun resultAccessors(): List<AccessorMethod<Any, Any>>
-            = results().map { Accessors.ofMethod<Any, Any>(it) }
+            = results().map(Accessors::ofMethod)
 
     override fun resultAccessor(): AccessorMethod<Any, Any>
             = resultAccessorAs()
 
     override fun resultAccessorOrNull(): AccessorMethod<Any, Any>?
-            = resultOrNull()?.letIfNotNull { Accessors.ofMethod<Any, Any>(this) }
+            = resultOrNull()?.letIfNotNull(Accessors::ofMethod)
 
     /**
      * * Get the first valid result accessor for this fuzzy reflection matcher.

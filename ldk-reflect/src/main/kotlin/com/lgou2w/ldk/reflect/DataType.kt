@@ -98,7 +98,7 @@ enum class DataType(
 
     companion object {
 
-        private val CLASS_MAP: MutableMap<Class<*>, DataType> = HashMap()
+        private val CLASS_MAP : MutableMap<Class<*>, DataType> = HashMap()
 
         init {
             values().forEach {
@@ -150,7 +150,7 @@ enum class DataType(
          */
         @JvmStatic
         fun ofPrimitive(clazz: Array<out Class<*>>): Array<Class<*>>
-                = clazz.map { ofPrimitive(it) }.toTypedArray()
+                = clazz.map(::ofPrimitive).toTypedArray()
 
         /**
          * * Converts the given array class element to a wrapped data class. If the element is not a wrapped data type, then it is an element class.
@@ -161,7 +161,7 @@ enum class DataType(
          */
         @JvmStatic
         fun ofReference(clazz: Array<out Class<*>>): Array<Class<*>>
-                = clazz.map { ofReference(it) }.toTypedArray()
+                = clazz.map(::ofReference).toTypedArray()
 
         /**
          * * Compares the contents of the given [left] and [right] array classes.

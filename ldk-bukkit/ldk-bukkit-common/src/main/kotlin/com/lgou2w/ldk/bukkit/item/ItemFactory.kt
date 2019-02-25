@@ -36,7 +36,7 @@ import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.Visibility
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.Locale
 
 object ItemFactory {
 
@@ -159,18 +159,18 @@ object ItemFactory {
 //    }
 
     @JvmStatic
-    fun asNMSCopy(stack: ItemStack?) : Any? {
+    fun asNMSCopy(stack: ItemStack?): Any? {
         return METHOD_AS_NMSCOPY.invoke(null, stack)
     }
 
     @JvmStatic
-    fun asCraftMirror(origin: Any?) : ItemStack? {
+    fun asCraftMirror(origin: Any?): ItemStack? {
         MinecraftReflection.isExpected(origin, CLASS_ITEMSTACK)
         return METHOD_AS_CRAFTMIRROR.invoke(null, origin) as? ItemStack
     }
 
     @JvmStatic
-    fun asBukkitCopy(origin: Any?) : ItemStack? {
+    fun asBukkitCopy(origin: Any?): ItemStack? {
         MinecraftReflection.isExpected(origin, CLASS_ITEMSTACK)
         return METHOD_AS_BUKKITCOPY.invoke(null, origin)
     }
@@ -181,7 +181,7 @@ object ItemFactory {
     }
 
     @JvmStatic
-    fun readTag(itemStack: ItemStack) : NBTTagCompound? {
+    fun readTag(itemStack: ItemStack): NBTTagCompound? {
         return if (CLASS_CRAFT_ITEMSTACK.isInstance(itemStack)) {
             val nmsStack = FIELD_CRAFT_ITEMSTACK_HANDLE[itemStack]
             val nmsTag = FIELD_ITEMSTACK_TAG[nmsStack] ?: return null
@@ -195,7 +195,7 @@ object ItemFactory {
     }
 
     @JvmStatic
-    fun materialType(material: Material) : String {
+    fun materialType(material: Material): String {
         return if (MinecraftBukkitVersion.isV113OrLater) {
             METHOD_MAGIC_NUMBERS_KEY
                 .notNull("OBC.CraftMagicNumbers#key(Material)")
@@ -207,7 +207,7 @@ object ItemFactory {
     }
 
     @JvmStatic
-    fun readItem(itemStack: ItemStack) : NBTTagCompound {
+    fun readItem(itemStack: ItemStack): NBTTagCompound {
         val root = ofCompound {  }
         if (MinecraftBukkitVersion.isV113OrLater) {
             // After version 1.13

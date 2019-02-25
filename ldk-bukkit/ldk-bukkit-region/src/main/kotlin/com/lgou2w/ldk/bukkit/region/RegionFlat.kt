@@ -22,5 +22,5 @@ interface RegionFlat : Region {
 
     val maximumY : Int
 
-    fun asFlat() : Iterable<RegionVector2D>
+    fun asFlat(): Iterable<RegionVector2D>
 }

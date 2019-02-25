@@ -18,21 +18,21 @@ package com.lgou2w.ldk.bukkit
 
 interface PluginArchive {
 
-    val pluginPrefix: String
+    val pluginPrefix : String
 
-    val pluginName: String
+    val pluginName : String
 
-    val pluginMain: String
+    val pluginMain : String
 
-    val pluginVersion: String
+    val pluginVersion : String
 
-    val pluginWebsite: String
+    val pluginWebsite : String
 
-    val pluginDescription: String
+    val pluginDescription : String
 
-    val pluginAuthors: Set<String>
+    val pluginAuthors : Set<String>
 
-    val pluginDepends: Set<String>
+    val pluginDepends : Set<String>
 
-    val pluginSoftDepends: Set<String>
+    val pluginSoftDepends : Set<String>
 }

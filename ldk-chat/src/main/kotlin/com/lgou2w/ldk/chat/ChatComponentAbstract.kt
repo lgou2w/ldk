@@ -31,10 +31,10 @@ import com.lgou2w.ldk.common.notNull
  */
 abstract class ChatComponentAbstract : ChatComponent {
 
-    private var _style: ChatStyle? = null
-    private var _extras: MutableList<ChatComponent> = ArrayList()
+    private var _style : ChatStyle? = null
+    private var _extras : MutableList<ChatComponent> = ArrayList()
 
-    override var style: ChatStyle
+    override var style : ChatStyle
         get() {
             if (_style == null) {
                 _style = ChatStyle()
@@ -53,10 +53,10 @@ abstract class ChatComponentAbstract : ChatComponent {
         return this
     }
 
-    override val extras: MutableList<ChatComponent>
+    override val extras : MutableList<ChatComponent>
         get() = _extras
 
-    override val extraSize: Int
+    override val extraSize : Int
         get() = extras.size
 
     override fun append(text: String): ChatComponent

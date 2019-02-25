@@ -27,25 +27,25 @@ interface Depend : PluginArchive {
 
     val plugin : Plugin
 
-    val name: String
+    val name : String
 
     /**
      * * Get this dependent plugin data folder object.
      * * 获取此依赖插件的数据目录对象.
      */
-    val dataFolder: File
+    val dataFolder : File
 
     /**
      * * Get this dependent plugin logger object.
      * * 获取此依赖插件的日志对象.
      */
-    val logger: Logger
+    val logger : Logger
 
     /**
      * * Get this dependent plugin configuration object.
      * * 获取此依赖插件的配置文件对象.
      */
-    val config: FileConfiguration?
+    val config : FileConfiguration?
 
     /**
      * * Gets this dependent plugin resource Input stream from the given file name.

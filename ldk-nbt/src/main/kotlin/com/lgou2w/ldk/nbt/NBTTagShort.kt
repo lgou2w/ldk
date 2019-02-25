@@ -31,8 +31,7 @@ class NBTTagShort : NBTTagNumber<Short> {
     constructor(name: String = "", value: Short = 0) : super(name, value)
     constructor(value: Short = 0) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_SHORT
+    override val type = NBTType.TAG_SHORT
 
     override fun read(input: DataInput) {
         value = input.readShort()

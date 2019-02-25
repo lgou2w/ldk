@@ -42,7 +42,7 @@ import java.util.UUID
 
 interface ItemBuilder : Builder<ItemStack> {
 
-    val tag: NBTTagCompound
+    val tag : NBTTagCompound
 
     /**
      * * The material type of this item stack.
@@ -73,27 +73,27 @@ interface ItemBuilder : Builder<ItemStack> {
      * * Rebuilds an [ItemBuilder] object with the given material type data. using the current material type data if not specified.
      * * 以给定的材料类型数据重建一个 [ItemBuilder] 对象, 如果不指定则使用当前材料类型数据.
      */
-    fun reBuilder(material: Material = this.material, count: Int = this.count, durability: Int = this.durability) : ItemBuilder
+    fun reBuilder(material: Material = this.material, count: Int = this.count, durability: Int = this.durability): ItemBuilder
 
     /**
      * @see [reBuilder]
      */
-    fun reBuilder(material: Material = this.material, count: Int = this.count) : ItemBuilder
+    fun reBuilder(material: Material = this.material, count: Int = this.count): ItemBuilder
 
     /**
      * @see [reBuilder]
      */
-    fun reBuilder(material: Material = this.material) : ItemBuilder
+    fun reBuilder(material: Material = this.material): ItemBuilder
 
     /**
      * @see [reBuilder]
      */
-    fun reBuilder(count: Int = this.count) : ItemBuilder
+    fun reBuilder(count: Int = this.count): ItemBuilder
 
     /**
      * @see [reBuilder]
      */
-    fun reBuilder(count: Int = this.count, durability: Int = this.durability) : ItemBuilder
+    fun reBuilder(count: Int = this.count, durability: Int = this.durability): ItemBuilder
 
     //<editor-fold desc="ItemBuilder - Generic" defaultstate="collapsed">
 
@@ -103,19 +103,19 @@ interface ItemBuilder : Builder<ItemStack> {
      */
     var count : Int
 
-    fun getCount(block: (ItemBuilder, Int) -> Unit) : ItemBuilder
+    fun getCount(block: (ItemBuilder, Int) -> Unit): ItemBuilder
 
-    fun setCount(count: Int) : ItemBuilder
+    fun setCount(count: Int): ItemBuilder
 
-    fun setCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun increaseCount(count: Int) : ItemBuilder
+    fun increaseCount(count: Int): ItemBuilder
 
-    fun increaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun increaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun decreaseCount(count: Int) : ItemBuilder
+    fun decreaseCount(count: Int): ItemBuilder
 
-    fun decreaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun decreaseCountIf(count: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     //</editor-fold>
 
@@ -123,19 +123,19 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var durability : Int
 
-    fun getDurability(block: (ItemBuilder, Int) -> Unit) : ItemBuilder
+    fun getDurability(block: (ItemBuilder, Int) -> Unit): ItemBuilder
 
-    fun setDurability(durability: Int) : ItemBuilder
+    fun setDurability(durability: Int): ItemBuilder
 
-    fun setDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun increaseDurability(durability: Int) : ItemBuilder
+    fun increaseDurability(durability: Int): ItemBuilder
 
-    fun increaseDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun increaseDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun decreaseDurability(durability: Int) : ItemBuilder
+    fun decreaseDurability(durability: Int): ItemBuilder
 
-    fun decreaseDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun decreaseDurabilityIf(durability: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     //</editor-fold>
 
@@ -143,19 +143,19 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var displayName : ChatComponent?
 
-    fun getDisplayName(block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
+    fun getDisplayName(block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder
 
-    fun setDisplayName(displayName: String?) : ItemBuilder
+    fun setDisplayName(displayName: String?): ItemBuilder
 
-    fun setDisplayNameIf(displayName: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setDisplayNameIf(displayName: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun setDisplayName(displayName: ChatComponent?) : ItemBuilder
+    fun setDisplayName(displayName: ChatComponent?): ItemBuilder
 
-    fun setDisplayNameIf(displayName: ChatComponent?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setDisplayNameIf(displayName: ChatComponent?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeDisplayName() : ItemBuilder
+    fun removeDisplayName(): ItemBuilder
 
-    fun removeDisplayName(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
+    fun removeDisplayName(predicate: Predicate<ChatComponent>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -163,15 +163,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var localizedName : ChatComponent?
 
-    fun getLocalizedName(block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
+    fun getLocalizedName(block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder
 
-    fun setLocalizedName(localizedName: ChatComponent?) : ItemBuilder
+    fun setLocalizedName(localizedName: ChatComponent?): ItemBuilder
 
-    fun setLocalizedNameIf(localizedName: ChatComponent?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setLocalizedNameIf(localizedName: ChatComponent?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeLocalizedName() : ItemBuilder
+    fun removeLocalizedName(): ItemBuilder
 
-    fun removeLocalizedName(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
+    fun removeLocalizedName(predicate: Predicate<ChatComponent>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -179,21 +179,21 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var lore : List<String>?
 
-    fun getLore(block: (ItemBuilder, List<String>?) -> Unit) : ItemBuilder
+    fun getLore(block: (ItemBuilder, List<String>?) -> Unit): ItemBuilder
 
-    fun setLore(lore: List<String>?) : ItemBuilder
+    fun setLore(lore: List<String>?): ItemBuilder
 
-    fun setLoreIf(lore: List<String>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setLoreIf(lore: List<String>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearLore() : ItemBuilder
+    fun clearLore(): ItemBuilder
 
-    fun addLore(vararg lore: String) : ItemBuilder
+    fun addLore(vararg lore: String): ItemBuilder
 
-    fun addLoreIf(vararg lore: String, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addLoreIf(vararg lore: String, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeLore(predicate: Predicate<String>? = null) : ItemBuilder
+    fun removeLore(predicate: Predicate<String>? = null): ItemBuilder
 
-    fun removeLoreIndexed(block: BiFunction<Int, String, Boolean>? = null) : ItemBuilder
+    fun removeLoreIndexed(block: BiFunction<Int, String, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -201,27 +201,27 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var enchantments : Map<Enchantment, Int>?
 
-    fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit) : ItemBuilder
+    fun getEnchantment(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit): ItemBuilder
 
-    fun setEnchantment(enchantments : Map<Enchantment, Int>?) : ItemBuilder
+    fun setEnchantment(enchantments : Map<Enchantment, Int>?): ItemBuilder
 
-    fun setEnchantmentIf(enchantments: Map<Enchantment, Int>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setEnchantmentIf(enchantments: Map<Enchantment, Int>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearEnchantment() : ItemBuilder
+    fun clearEnchantment(): ItemBuilder
 
-    fun addEnchantment(enchantment: Pair<Enchantment, Int>) : ItemBuilder
+    fun addEnchantment(enchantment: Pair<Enchantment, Int>): ItemBuilder
 
-    fun addEnchantment(enchantment: Enchantment, level: Int) : ItemBuilder
+    fun addEnchantment(enchantment: Enchantment, level: Int): ItemBuilder
 
-    fun addEnchantmentIf(enchantment: Pair<Enchantment, Int>, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addEnchantmentIf(enchantment: Pair<Enchantment, Int>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun addEnchantmentIf(enchantment: Enchantment, level: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addEnchantmentIf(enchantment: Enchantment, level: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeEnchantment(enchantment: Enchantment) : ItemBuilder
+    fun removeEnchantment(enchantment: Enchantment): ItemBuilder
 
-    fun removeEnchantment(predicate: Predicate<Pair<Enchantment, Int>>? = null) : ItemBuilder
+    fun removeEnchantment(predicate: Predicate<Pair<Enchantment, Int>>? = null): ItemBuilder
 
-    fun removeEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>? = null) : ItemBuilder
+    fun removeEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -229,19 +229,19 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var flags : Array<out ItemFlag>?
 
-    fun getFlag(block: (ItemBuilder, Array<out ItemFlag>?) -> Unit) : ItemBuilder
+    fun getFlag(block: (ItemBuilder, Array<out ItemFlag>?) -> Unit): ItemBuilder
 
-    fun setFlag(flags: Array<out ItemFlag>?) : ItemBuilder
+    fun setFlag(flags: Array<out ItemFlag>?): ItemBuilder
 
-    fun setFlagIf(flags: Array<out ItemFlag>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setFlagIf(flags: Array<out ItemFlag>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearFlag() : ItemBuilder
+    fun clearFlag(): ItemBuilder
 
-    fun addFlag(vararg flags: ItemFlag) : ItemBuilder
+    fun addFlag(vararg flags: ItemFlag): ItemBuilder
 
-    fun addFlagIf(vararg flags: ItemFlag, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addFlagIf(vararg flags: ItemFlag, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeFlag(vararg flags: ItemFlag) : ItemBuilder
+    fun removeFlag(vararg flags: ItemFlag): ItemBuilder
 
     //</editor-fold>
 
@@ -249,11 +249,11 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var isUnbreakable : Boolean
 
-    fun isUnbreakable(block: (ItemBuilder, Boolean) -> Unit) : ItemBuilder
+    fun isUnbreakable(block: (ItemBuilder, Boolean) -> Unit): ItemBuilder
 
-    fun setUnbreakable(unbreakable: Boolean) : ItemBuilder
+    fun setUnbreakable(unbreakable: Boolean): ItemBuilder
 
-    fun setUnbreakableIf(unbreakable: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setUnbreakableIf(unbreakable: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     //</editor-fold>
 
@@ -261,17 +261,17 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var attributes : List<AttributeItemModifier>?
 
-    fun getAttribute(block: (ItemBuilder, List<AttributeItemModifier>?) -> Unit) : ItemBuilder
+    fun getAttribute(block: (ItemBuilder, List<AttributeItemModifier>?) -> Unit): ItemBuilder
 
-    fun setAttribute(attributes: List<AttributeItemModifier>?) : ItemBuilder
+    fun setAttribute(attributes: List<AttributeItemModifier>?): ItemBuilder
 
-    fun setAttributeIf(attributes: List<AttributeItemModifier>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setAttributeIf(attributes: List<AttributeItemModifier>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearAttribute() : ItemBuilder
+    fun clearAttribute(): ItemBuilder
 
-    fun addAttribute(attribute: AttributeItemModifier) : ItemBuilder
+    fun addAttribute(attribute: AttributeItemModifier): ItemBuilder
 
-    fun addAttributeIf(attribute: AttributeItemModifier, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addAttributeIf(attribute: AttributeItemModifier, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
     fun addAttribute(type: AttributeType, operation: Operation, amount: Double, uuid: UUID = UUID.randomUUID()): ItemBuilder
 
@@ -281,11 +281,11 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun addAttribute(type: AttributeType, name: String = type.value, operation: Operation, slot: Slot?, amount: Double, uuid: UUID = UUID.randomUUID()): ItemBuilder
 
-    fun removeAttribute(type: AttributeType) : ItemBuilder
+    fun removeAttribute(type: AttributeType): ItemBuilder
 
-    fun removeAttribute(predicate: Predicate<AttributeItemModifier>? = null) : ItemBuilder
+    fun removeAttribute(predicate: Predicate<AttributeItemModifier>? = null): ItemBuilder
 
-    fun removeAttributeIndexed(block: BiFunction<Int, AttributeItemModifier, Boolean>? = null) : ItemBuilder
+    fun removeAttributeIndexed(block: BiFunction<Int, AttributeItemModifier, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -293,23 +293,23 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var canDestroy : List<Material>?
 
-    fun getCanDestroy(block: (ItemBuilder, List<Material>?) -> Unit) : ItemBuilder
+    fun getCanDestroy(block: (ItemBuilder, List<Material>?) -> Unit): ItemBuilder
 
-    fun setCanDestroy(types: List<Material>?) : ItemBuilder
+    fun setCanDestroy(types: List<Material>?): ItemBuilder
 
-    fun setCanDestroyIf(types: List<Material>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setCanDestroyIf(types: List<Material>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearCanDestroy() : ItemBuilder
+    fun clearCanDestroy(): ItemBuilder
 
-    fun addCanDestroy(vararg types: Material) : ItemBuilder
+    fun addCanDestroy(vararg types: Material): ItemBuilder
 
-    fun addCanDestroyIf(vararg types: Material, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addCanDestroyIf(vararg types: Material, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeCanDestroy(vararg types: Material) : ItemBuilder
+    fun removeCanDestroy(vararg types: Material): ItemBuilder
 
-    fun removeCanDestroy(predicate: Predicate<Material>? = null) : ItemBuilder
+    fun removeCanDestroy(predicate: Predicate<Material>? = null): ItemBuilder
 
-    fun removeCanDestroyIndexed(block: BiFunction<Int, Material, Boolean>? = null) : ItemBuilder
+    fun removeCanDestroyIndexed(block: BiFunction<Int, Material, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -317,23 +317,23 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var canPlaceOn : List<Material>?
 
-    fun getCanPlaceOn(block: (ItemBuilder, List<Material>?) -> Unit) : ItemBuilder
+    fun getCanPlaceOn(block: (ItemBuilder, List<Material>?) -> Unit): ItemBuilder
 
-    fun setCanPlaceOn(types: List<Material>?) : ItemBuilder
+    fun setCanPlaceOn(types: List<Material>?): ItemBuilder
 
-    fun setCanPlaceOnIf(types: List<Material>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setCanPlaceOnIf(types: List<Material>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearCanPlaceOn() : ItemBuilder
+    fun clearCanPlaceOn(): ItemBuilder
 
-    fun addCanPlaceOn(vararg types: Material) : ItemBuilder
+    fun addCanPlaceOn(vararg types: Material): ItemBuilder
 
-    fun addCanPlaceOnIf(vararg types: Material, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addCanPlaceOnIf(vararg types: Material, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeCanPlaceOn(vararg types: Material) : ItemBuilder
+    fun removeCanPlaceOn(vararg types: Material): ItemBuilder
 
-    fun removeCanPlaceOn(predicate: Predicate<Material>? = null) : ItemBuilder
+    fun removeCanPlaceOn(predicate: Predicate<Material>? = null): ItemBuilder
 
-    fun removeCanPlaceOnIndexed(block: BiFunction<Int, Material, Boolean>? = null) : ItemBuilder
+    fun removeCanPlaceOnIndexed(block: BiFunction<Int, Material, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -341,15 +341,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var repairCost : Int?
 
-    fun getRepairCost(block: (ItemBuilder, Int?) -> Unit) : ItemBuilder
+    fun getRepairCost(block: (ItemBuilder, Int?) -> Unit): ItemBuilder
 
-    fun setRepairCost(repairCost: Int?) : ItemBuilder
+    fun setRepairCost(repairCost: Int?): ItemBuilder
 
-    fun setRepairCostIf(repairCost: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setRepairCostIf(repairCost: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeRepairCost() : ItemBuilder
+    fun removeRepairCost(): ItemBuilder
 
-    fun removeRepairCost(predicate: Predicate<Int>? = null) : ItemBuilder
+    fun removeRepairCost(predicate: Predicate<Int>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -357,15 +357,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var leatherColor : Color?
 
-    fun getLeatherColor(block: (ItemBuilder, Color?) -> Unit) : ItemBuilder
+    fun getLeatherColor(block: (ItemBuilder, Color?) -> Unit): ItemBuilder
 
-    fun setLeatherColor(leatherColor: Color?) : ItemBuilder
+    fun setLeatherColor(leatherColor: Color?): ItemBuilder
 
-    fun setLeatherColorIf(leatherColor: Color?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setLeatherColorIf(leatherColor: Color?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeLeatherColor() : ItemBuilder
+    fun removeLeatherColor(): ItemBuilder
 
-    fun removeLeatherColor(predicate: Predicate<Color>? = null) : ItemBuilder
+    fun removeLeatherColor(predicate: Predicate<Color>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -373,15 +373,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var bookTitle : String?
 
-    fun getBookTitle(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+    fun getBookTitle(block: (ItemBuilder, String?) -> Unit): ItemBuilder
 
-    fun setBookTitle(title: String?) : ItemBuilder
+    fun setBookTitle(title: String?): ItemBuilder
 
-    fun setBookTitleIf(title: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setBookTitleIf(title: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeBookTitle() : ItemBuilder
+    fun removeBookTitle(): ItemBuilder
 
-    fun removeBookTitle(predicate: Predicate<String>? = null) : ItemBuilder
+    fun removeBookTitle(predicate: Predicate<String>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -389,15 +389,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var bookAuthor : String?
 
-    fun getBookAuthor(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+    fun getBookAuthor(block: (ItemBuilder, String?) -> Unit): ItemBuilder
 
-    fun setBookAuthor(author: String?) : ItemBuilder
+    fun setBookAuthor(author: String?): ItemBuilder
 
-    fun setBookAuthorIf(author: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setBookAuthorIf(author: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeBookAuthor() : ItemBuilder
+    fun removeBookAuthor(): ItemBuilder
 
-    fun removeBookAuthor(predicate: Predicate<String>? = null) : ItemBuilder
+    fun removeBookAuthor(predicate: Predicate<String>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -405,15 +405,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var bookGeneration : Generation?
 
-    fun getBookGeneration(block: (ItemBuilder, Generation?) -> Unit) : ItemBuilder
+    fun getBookGeneration(block: (ItemBuilder, Generation?) -> Unit): ItemBuilder
 
-    fun setBookGeneration(generation: Generation) : ItemBuilder
+    fun setBookGeneration(generation: Generation): ItemBuilder
 
-    fun setBookGenerationIf(generation: Generation, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setBookGenerationIf(generation: Generation, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeBookGeneration() : ItemBuilder
+    fun removeBookGeneration(): ItemBuilder
 
-    fun removeBookGeneration(predicate: Predicate<Generation>? = null) : ItemBuilder
+    fun removeBookGeneration(predicate: Predicate<Generation>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -421,29 +421,29 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var bookPages : List<ChatComponent>?
 
-    fun getBookPages(block: (ItemBuilder, List<ChatComponent>?) -> Unit) : ItemBuilder
+    fun getBookPages(block: (ItemBuilder, List<ChatComponent>?) -> Unit): ItemBuilder
 
-    fun getBookPage(index: Int, block: (ItemBuilder, ChatComponent?) -> Unit) : ItemBuilder
+    fun getBookPage(index: Int, block: (ItemBuilder, ChatComponent?) -> Unit): ItemBuilder
 
     fun getBookPage(index: Int) : ChatComponent?
 
-    fun setBookPages(pages: List<ChatComponent>?) : ItemBuilder
+    fun setBookPages(pages: List<ChatComponent>?): ItemBuilder
 
-    fun setBookPagesIf(pages: List<ChatComponent>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setBookPagesIf(pages: List<ChatComponent>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun setBookPage(index: Int, page: ChatComponent) : ItemBuilder
+    fun setBookPage(index: Int, page: ChatComponent): ItemBuilder
 
-    fun setBookPageIf(index: Int, page: ChatComponent, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setBookPageIf(index: Int, page: ChatComponent, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearBookPages() : ItemBuilder
+    fun clearBookPages(): ItemBuilder
 
-    fun addBookPage(vararg pages: ChatComponent) : ItemBuilder
+    fun addBookPage(vararg pages: ChatComponent): ItemBuilder
 
-    fun addBookPage(vararg pages: ChatComponent, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addBookPage(vararg pages: ChatComponent, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeBookPage(predicate: Predicate<ChatComponent>? = null) : ItemBuilder
+    fun removeBookPage(predicate: Predicate<ChatComponent>? = null): ItemBuilder
 
-    fun removeBookPageIndexed(block: BiFunction<Int, ChatComponent, Boolean>? = null) : ItemBuilder
+    fun removeBookPageIndexed(block: BiFunction<Int, ChatComponent, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -451,27 +451,27 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var storedEnchantments : Map<Enchantment, Int>?
 
-    fun getStoredEnchantments(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit) : ItemBuilder
+    fun getStoredEnchantments(block: (ItemBuilder, Map<Enchantment, Int>?) -> Unit): ItemBuilder
 
-    fun setStoredEnchantments(storedEnchantments: Map<Enchantment, Int>?) : ItemBuilder
+    fun setStoredEnchantments(storedEnchantments: Map<Enchantment, Int>?): ItemBuilder
 
-    fun setStoredEnchantmentsIf(storedEnchantments: Map<Enchantment, Int>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setStoredEnchantmentsIf(storedEnchantments: Map<Enchantment, Int>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearStoredEnchantments() : ItemBuilder
+    fun clearStoredEnchantments(): ItemBuilder
 
-    fun addStoredEnchantment(enchantment: Pair<Enchantment, Int>) : ItemBuilder
+    fun addStoredEnchantment(enchantment: Pair<Enchantment, Int>): ItemBuilder
 
-    fun addStoredEnchantmentIf(enchantment: Pair<Enchantment, Int>, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addStoredEnchantmentIf(enchantment: Pair<Enchantment, Int>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun addStoredEnchantment(enchantment: Enchantment, level: Int) : ItemBuilder
+    fun addStoredEnchantment(enchantment: Enchantment, level: Int): ItemBuilder
 
-    fun addStoredEnchantmentIf(enchantment: Enchantment, level: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addStoredEnchantmentIf(enchantment: Enchantment, level: Int, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeStoredEnchantment(enchantment: Enchantment) : ItemBuilder
+    fun removeStoredEnchantment(enchantment: Enchantment): ItemBuilder
 
-    fun removeStoredEnchantment(predicate: Predicate<Pair<Enchantment, Int>>? = null) : ItemBuilder
+    fun removeStoredEnchantment(predicate: Predicate<Pair<Enchantment, Int>>? = null): ItemBuilder
 
-    fun removeStoredEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>? = null) : ItemBuilder
+    fun removeStoredEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -479,15 +479,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var skullOwner : String?
 
-    fun getSkullOwner(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+    fun getSkullOwner(block: (ItemBuilder, String?) -> Unit): ItemBuilder
 
-    fun setSkullOwner(skullOwner: String?) : ItemBuilder
+    fun setSkullOwner(skullOwner: String?): ItemBuilder
 
-    fun setSkullOwnerIf(skullOwner: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setSkullOwnerIf(skullOwner: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeSkullOwner() : ItemBuilder
+    fun removeSkullOwner(): ItemBuilder
 
-    fun removeSkullOwner(predicate: Predicate<String>? = null) : ItemBuilder
+    fun removeSkullOwner(predicate: Predicate<String>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -495,19 +495,19 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var skullOwnerValue : String?
 
-    fun getSkullOwnerValue(block: (ItemBuilder, String?) -> Unit) : ItemBuilder
+    fun getSkullOwnerValue(block: (ItemBuilder, String?) -> Unit): ItemBuilder
 
-    fun setSkullOwnerValue(value: String?) : ItemBuilder
+    fun setSkullOwnerValue(value: String?): ItemBuilder
 
-    fun setSkullOwnerValueIf(value: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setSkullOwnerValueIf(value: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun setSkullOwnerValue(value: String, name: String?, id: UUID?) : ItemBuilder
+    fun setSkullOwnerValue(value: String, name: String?, id: UUID?): ItemBuilder
 
-    fun setSkullOwnerValue(value: String, name: String?, id: UUID?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setSkullOwnerValue(value: String, name: String?, id: UUID?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeSkullOwnerValue() : ItemBuilder
+    fun removeSkullOwnerValue(): ItemBuilder
 
-    fun removeSkullOwnerValue(predicate: Predicate<String>? = null) : ItemBuilder
+    fun removeSkullOwnerValue(predicate: Predicate<String>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -515,15 +515,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var potionColor : Color?
 
-    fun getPotionColor(block: (ItemBuilder, Color?) -> Unit) : ItemBuilder
+    fun getPotionColor(block: (ItemBuilder, Color?) -> Unit): ItemBuilder
 
-    fun setPotionColor(color: Color) : ItemBuilder
+    fun setPotionColor(color: Color): ItemBuilder
 
-    fun setPotionColorIf(color: Color, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setPotionColorIf(color: Color, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removePotionColor() : ItemBuilder
+    fun removePotionColor(): ItemBuilder
 
-    fun removePotionColor(predicate: Predicate<Color>? = null) : ItemBuilder
+    fun removePotionColor(predicate: Predicate<Color>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -531,15 +531,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var potionBase : PotionBase?
 
-    fun getPotionBase(block: (ItemBuilder, PotionBase?) -> Unit) : ItemBuilder
+    fun getPotionBase(block: (ItemBuilder, PotionBase?) -> Unit): ItemBuilder
 
-    fun setPotionBase(base: PotionBase?) : ItemBuilder
+    fun setPotionBase(base: PotionBase?): ItemBuilder
 
-    fun setPotionBaseIf(base: PotionBase?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setPotionBaseIf(base: PotionBase?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removePotionBase() : ItemBuilder
+    fun removePotionBase(): ItemBuilder
 
-    fun removePotionBase(predicate: Predicate<PotionBase>? = null) : ItemBuilder
+    fun removePotionBase(predicate: Predicate<PotionBase>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -547,29 +547,29 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var potionCustoms : List<PotionEffectCustom>?
 
-    fun getPotionCustoms(block: (ItemBuilder, List<PotionEffectCustom>?) -> Unit) : ItemBuilder
+    fun getPotionCustoms(block: (ItemBuilder, List<PotionEffectCustom>?) -> Unit): ItemBuilder
 
     fun getPotionCustom(type: PotionEffectType) : PotionEffectCustom?
 
-    fun getPotionCustom(type: PotionEffectType, block: (ItemBuilder, PotionEffectCustom?) -> Unit) : ItemBuilder
+    fun getPotionCustom(type: PotionEffectType, block: (ItemBuilder, PotionEffectCustom?) -> Unit): ItemBuilder
 
-    fun setPotionCustoms(customs: List<PotionEffectCustom>?) : ItemBuilder
+    fun setPotionCustoms(customs: List<PotionEffectCustom>?): ItemBuilder
 
-    fun setPotionCustoms(customs: List<PotionEffectCustom>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setPotionCustoms(customs: List<PotionEffectCustom>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearPotionCustoms() : ItemBuilder
+    fun clearPotionCustoms(): ItemBuilder
 
-    fun addPotionCustom(effect: PotionEffectCustom) : ItemBuilder
+    fun addPotionCustom(effect: PotionEffectCustom): ItemBuilder
 
-    fun addPotionCustom(effect: PotionEffectCustom, override: Boolean) : ItemBuilder
+    fun addPotionCustom(effect: PotionEffectCustom, override: Boolean): ItemBuilder
 
-    fun addPotionCustomIf(effect: PotionEffectCustom, override: Boolean = false, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addPotionCustomIf(effect: PotionEffectCustom, override: Boolean = false, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removePotionCustom(type: PotionEffectType) : ItemBuilder
+    fun removePotionCustom(type: PotionEffectType): ItemBuilder
 
-    fun removePotionCustom(predicate: Predicate<PotionEffectCustom>? = null) : ItemBuilder
+    fun removePotionCustom(predicate: Predicate<PotionEffectCustom>? = null): ItemBuilder
 
-    fun removePotionCustomIndexed(block: BiFunction<Int, PotionEffectCustom, Boolean>? = null) : ItemBuilder
+    fun removePotionCustomIndexed(block: BiFunction<Int, PotionEffectCustom, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -577,15 +577,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var fireworkStar : FireworkEffect?
 
-    fun getFireworkStar(block: (ItemBuilder, FireworkEffect?) -> Unit) : ItemBuilder
+    fun getFireworkStar(block: (ItemBuilder, FireworkEffect?) -> Unit): ItemBuilder
 
-    fun setFireworkStar(effect: FireworkEffect?) : ItemBuilder
+    fun setFireworkStar(effect: FireworkEffect?): ItemBuilder
 
-    fun setFireworkStar(effect: FireworkEffect?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setFireworkStar(effect: FireworkEffect?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeFireworkStar() : ItemBuilder
+    fun removeFireworkStar(): ItemBuilder
 
-    fun removeFireworkStar(predicate: Predicate<FireworkEffect>? = null) : ItemBuilder
+    fun removeFireworkStar(predicate: Predicate<FireworkEffect>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -593,27 +593,27 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var fireworkRocketEffects : List<FireworkEffect>?
 
-    fun getFireworkRocketEffects(block: (ItemBuilder, List<FireworkEffect>?) -> Unit) : ItemBuilder
+    fun getFireworkRocketEffects(block: (ItemBuilder, List<FireworkEffect>?) -> Unit): ItemBuilder
 
     fun getFireworkRocketEffect(type: FireworkType) : FireworkEffect?
 
-    fun getFireworkRocketEffect(type: FireworkType, block: (ItemBuilder, FireworkEffect?) -> Unit) : ItemBuilder
+    fun getFireworkRocketEffect(type: FireworkType, block: (ItemBuilder, FireworkEffect?) -> Unit): ItemBuilder
 
-    fun setFireworkRocketEffects(effect: List<FireworkEffect>?) : ItemBuilder
+    fun setFireworkRocketEffects(effect: List<FireworkEffect>?): ItemBuilder
 
-    fun setFireworkRocketEffectsIf(effect: List<FireworkEffect>?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setFireworkRocketEffectsIf(effect: List<FireworkEffect>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun clearFireworkRocketEffects() : ItemBuilder
+    fun clearFireworkRocketEffects(): ItemBuilder
 
-    fun addFireworkRocketEffect(effect: FireworkEffect) : ItemBuilder
+    fun addFireworkRocketEffect(effect: FireworkEffect): ItemBuilder
 
-    fun addFireworkRocketEffectIf(effect: FireworkEffect, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun addFireworkRocketEffectIf(effect: FireworkEffect, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeFireworkRocketEffect(type: FireworkType) : ItemBuilder
+    fun removeFireworkRocketEffect(type: FireworkType): ItemBuilder
 
-    fun removeFireworkRocketEffect(predicate: Predicate<FireworkEffect>? = null) : ItemBuilder
+    fun removeFireworkRocketEffect(predicate: Predicate<FireworkEffect>? = null): ItemBuilder
 
-    fun removeFireworkRocketEffectIndexed(block: BiFunction<Int, FireworkEffect, Boolean>? = null) : ItemBuilder
+    fun removeFireworkRocketEffectIndexed(block: BiFunction<Int, FireworkEffect, Boolean>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -621,15 +621,15 @@ interface ItemBuilder : Builder<ItemStack> {
 
     var fireworkRocketFlight : Int?
 
-    fun getFireworkRocketFlight(block: (ItemBuilder, Int?) -> Unit) : ItemBuilder
+    fun getFireworkRocketFlight(block: (ItemBuilder, Int?) -> Unit): ItemBuilder
 
-    fun setFireworkRocketFlight(flight: Int?) : ItemBuilder
+    fun setFireworkRocketFlight(flight: Int?): ItemBuilder
 
-    fun setFireworkRocketFlightIf(flight: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>) : ItemBuilder
+    fun setFireworkRocketFlightIf(flight: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
-    fun removeFireworkRocketFlight() : ItemBuilder
+    fun removeFireworkRocketFlight(): ItemBuilder
 
-    fun removeFireworkRocketFlight(predicate: Predicate<Int>? = null) : ItemBuilder
+    fun removeFireworkRocketFlight(predicate: Predicate<Int>? = null): ItemBuilder
 
     //</editor-fold>
 
@@ -643,7 +643,7 @@ interface ItemBuilder : Builder<ItemStack> {
     /**
      * @since LDK 0.1.8-rc
      */
-    fun getBannerPattern(block: (ItemBuilder, List<Pattern>?) -> Unit) : ItemBuilder
+    fun getBannerPattern(block: (ItemBuilder, List<Pattern>?) -> Unit): ItemBuilder
 
     /**
      * @since LDK 0.1.8-rc
@@ -722,15 +722,15 @@ interface ItemBuilder : Builder<ItemStack> {
     companion object {
 
         @JvmStatic
-        fun of(itemStack: ItemStack) : ItemBuilder
+        fun of(itemStack: ItemStack): ItemBuilder
                 = SimpleItemBuilder(itemStack)
 
         @JvmStatic
-        fun of(material: Material, count: Int = 1, durability: Int = 0) : ItemBuilder
+        fun of(material: Material, count: Int = 1, durability: Int = 0): ItemBuilder
                 = SimpleItemBuilder(material, count, durability)
 
         @JvmStatic
-        fun <T: ItemBuilder> of(builder: T) : T {
+        fun <T: ItemBuilder> of(builder: T): T {
             return builder
         }
     }

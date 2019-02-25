@@ -16,5 +16,4 @@
 
 package com.lgou2w.ldk.bukkit.event
 
-interface Cancellable : org.bukkit.event.Cancellable {
-}
+interface Cancellable : org.bukkit.event.Cancellable

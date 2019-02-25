@@ -25,24 +25,24 @@ open class ChatStyle {
 
     /** member */
 
-    private var parent: ChatStyle? = null
+    private var parent : ChatStyle? = null
 
-    @JvmField internal var color: ChatColor? = null
-    @JvmField internal var bold: Boolean? = null
-    @JvmField internal var italic: Boolean? = null
-    @JvmField internal var underlined: Boolean? = null
-    @JvmField internal var strikethrough: Boolean? = null
-    @JvmField internal var obfuscated: Boolean? = null
-    @JvmField internal var clickEvent: ChatClickEvent? = null
-    @JvmField internal var hoverEvent: ChatHoverEvent? = null
-    @JvmField internal var insertion: String? = null
+    @JvmField internal var color : ChatColor? = null
+    @JvmField internal var bold : Boolean? = null
+    @JvmField internal var italic : Boolean? = null
+    @JvmField internal var underlined : Boolean? = null
+    @JvmField internal var strikethrough : Boolean? = null
+    @JvmField internal var obfuscated : Boolean? = null
+    @JvmField internal var clickEvent : ChatClickEvent? = null
+    @JvmField internal var hoverEvent : ChatHoverEvent? = null
+    @JvmField internal var insertion : String? = null
 
     /** static */
 
     companion object {
 
         @JvmStatic
-        private val ROOT = object: ChatStyle() {
+        private val ROOT = object : ChatStyle() {
             override fun getColor(): ChatColor?
                     = null
             override fun getBold(): Boolean?

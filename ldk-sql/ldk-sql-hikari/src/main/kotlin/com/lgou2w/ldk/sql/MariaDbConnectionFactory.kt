@@ -22,8 +22,8 @@ class MariaDbConnectionFactory(
         configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
-    override val implementationName: String = "MariaDB"
-    override val driverClass: String = "org.mariadb.jdbc.MariaDbDataSource"
+    override val implementationName : String = "MariaDB"
+    override val driverClass : String = "org.mariadb.jdbc.MariaDbDataSource"
 
     override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
         val entries = configuration.properties.entries

@@ -34,7 +34,7 @@ open class StructureModifier<T : Any> {
 
     lateinit var targetType : Class<out Any>
         private set
-    lateinit var fieldType: Class<out Any>
+    lateinit var fieldType : Class<out Any>
         private set
     lateinit var target : Any
         private set

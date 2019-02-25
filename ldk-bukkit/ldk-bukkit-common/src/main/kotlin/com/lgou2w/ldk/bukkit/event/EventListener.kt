@@ -18,5 +18,4 @@ package com.lgou2w.ldk.bukkit.event
 
 import org.bukkit.event.Listener
 
-interface EventListener : Listener {
-}
+interface EventListener : Listener

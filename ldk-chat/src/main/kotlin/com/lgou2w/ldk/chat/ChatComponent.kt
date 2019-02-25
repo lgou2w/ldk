@@ -41,7 +41,7 @@ interface ChatComponent {
      * @see [setStyle]
      * @see [ChatStyle]
      */
-    var style: ChatStyle
+    var style : ChatStyle
 
     /**
      * * Sets the style of this chat component. If `null` then use the default.
@@ -57,13 +57,13 @@ interface ChatComponent {
      * * Get a list of extra component for this chat component.
      * * 获取此聊天组件的附加组件列表.
      */
-    val extras: MutableList<ChatComponent>
+    val extras : MutableList<ChatComponent>
 
     /**
      * * Get a size of extra component for this chat component.
      * * 获取此聊天组件的附加组件大小.
      */
-    val extraSize: Int
+    val extraSize : Int
 
     /**
      * * Appends the given string as a [ChatComponentText] to the list of extra component.

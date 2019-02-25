@@ -19,5 +19,4 @@ package com.lgou2w.ldk.bukkit.gui
 class SimpleGui(
         type: GuiType,
         title: String = type.title
-) : GuiBase(type, title) {
-}
+) : GuiBase(type, title)

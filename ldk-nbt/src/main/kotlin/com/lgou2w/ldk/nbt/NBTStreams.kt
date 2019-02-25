@@ -52,7 +52,7 @@ object NBTStreams {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun read(input: InputStream): NBTBase<*>? {
+    fun read(input: InputStream): NBTBase<*> {
         return read(DataInputStream(input) as DataInput)
     }
 
@@ -66,7 +66,7 @@ object NBTStreams {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun read(input: DataInput): NBTBase<*>? {
+    fun read(input: DataInput): NBTBase<*> {
         val type = NBTType.fromId(input.readByte().toInt())
         if (type == null || type == NBTType.TAG_END)
             return NBTTagEnd.INSTANCE
@@ -134,7 +134,7 @@ object NBTStreams {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun readBase64(value: String): NBTBase<*>? {
+    fun readBase64(value: String): NBTBase<*> {
         val bytes = Base64.getDecoder().decode(value)
         val stream = ByteArrayInputStream(bytes)
         return read(stream)

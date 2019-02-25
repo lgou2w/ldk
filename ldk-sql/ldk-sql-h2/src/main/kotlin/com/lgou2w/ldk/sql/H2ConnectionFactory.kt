@@ -39,10 +39,10 @@ class H2ConnectionFactory(
     private var connectionWrap : WrappedConnection? = null
     private val initialized = AtomicBoolean(false)
 
-    override val dataSource: DataSource
+    override val dataSource : DataSource
         get() = throw UnsupportedOperationException("The H2 connection factory does not support data sources.")
 
-    override val implementationName: String = "H2"
+    override val implementationName : String = "H2"
 
     override fun initialize() {
         initializeDriver()

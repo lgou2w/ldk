@@ -27,11 +27,11 @@ open class ButtonBase(
         override val index: Int
 ) : Button {
 
-    override var stack: ItemStack?
+    override var stack : ItemStack?
         get() = parent.inventory.getItem(index)
         set(value) { parent.inventory.setItem(index, value) }
 
-    final override var onClicked: Consumer<ButtonEvent>? = null
+    final override var onClicked : Consumer<ButtonEvent>? = null
 
     final override fun stackModify(modifier: Applicator<ItemBuilder>) {
         val stackClone = stack?.clone()

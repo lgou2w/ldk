@@ -19,7 +19,8 @@ package com.lgou2w.ldk.bukkit.potion
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
-import java.util.*
+import java.util.HashMap
+import java.util.Locale
 
 enum class PotionEffectType(
         val id: Int,
@@ -60,10 +61,10 @@ enum class PotionEffectType(
     DOLPHINS_GRACE(30, "dolphins_grace", "dolphins_grace", MinecraftVersion.V1_13),
     ;
 
-    override val value: String
+    override val value : String
         get() = type
 
-    fun isInstant() : Boolean
+    fun isInstant(): Boolean
             = this == INSTANT_HEALTH ||
               this == INSTANT_DAMAGE ||
               this == SATURATION
@@ -91,18 +92,18 @@ enum class PotionEffectType(
         }
 
         @JvmStatic
-        fun fromBukkit(effect: org.bukkit.potion.PotionEffectType) : PotionEffectType
+        fun fromBukkit(effect: org.bukkit.potion.PotionEffectType): PotionEffectType
                 = fromName(effect.name)
 
         @JvmStatic
         @Throws(IllegalArgumentException::class)
-        fun fromName(name: String) : PotionEffectType
+        fun fromName(name: String): PotionEffectType
                 = NAME_MAP[name.toLowerCase(Locale.US)]
                   ?: throw IllegalArgumentException("Invalid effect type name: $name.")
 
         @JvmStatic
         @Throws(IllegalArgumentException::class)
-        fun fromId(id: Int) : PotionEffectType
+        fun fromId(id: Int): PotionEffectType
                 = ID_MAP[id] ?: throw IllegalArgumentException("Invalid effect ID $id value.")
     }
 }

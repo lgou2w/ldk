@@ -41,10 +41,10 @@ open class RegionCuboid(
         }
     }
 
-    override val minimumPoint: RegionVector
+    override val minimumPoint : RegionVector
         get() = RegionVector(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z))
 
-    override val maximumPoint: RegionVector
+    override val maximumPoint : RegionVector
         get() = RegionVector(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z))
 
     override fun contains(x: Double, y: Double, z: Double): Boolean {
@@ -89,10 +89,10 @@ open class RegionCuboid(
         }
     }
 
-    override val minimumY: Int
+    override val minimumY : Int
         get() = Math.min(pos1.blockY, pos2.blockY)
 
-    override val maximumY: Int
+    override val maximumY : Int
         get() = Math.max(pos1.blockY, pos2.blockY)
 
     override fun asFlat(): Iterable<RegionVector2D> {

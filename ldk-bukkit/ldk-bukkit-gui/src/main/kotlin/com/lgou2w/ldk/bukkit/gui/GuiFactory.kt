@@ -21,12 +21,12 @@ import org.bukkit.inventory.Inventory
 object GuiFactory {
 
     @JvmStatic
-    fun fromInventory(inventory: Inventory?) : Gui? {
+    fun fromInventory(inventory: Inventory?): Gui? {
         return inventory?.holder as? Gui
     }
 
     @JvmStatic
-    fun isGui(inventory: Inventory?) : Boolean {
+    fun isGui(inventory: Inventory?): Boolean {
         return fromInventory(inventory) != null
     }
 

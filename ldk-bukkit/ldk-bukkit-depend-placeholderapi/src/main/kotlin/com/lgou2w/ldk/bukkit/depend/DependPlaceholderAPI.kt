@@ -28,28 +28,28 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
             return pluginVersion >= "2.8.0"
         }
 
-    fun setPlaceholders(player: Player?, text: String) : String {
+    fun setPlaceholders(player: Player?, text: String): String {
         checkReference()
         return PlaceholderAPI.setPlaceholders(player, text)
     }
 
-    fun setPlaceholders(player: Player?, texts: List<String>) : List<String> {
+    fun setPlaceholders(player: Player?, texts: List<String>): List<String> {
         checkReference()
         return PlaceholderAPI.setPlaceholders(player, texts)
     }
 
-    fun setBracketPlaceholders(player: Player?, text: String) : String {
+    fun setBracketPlaceholders(player: Player?, text: String): String {
         checkReference()
         return PlaceholderAPI.setBracketPlaceholders(player, text)
     }
 
-    fun setBracketPlaceholders(player: Player?, texts: List<String>) : List<String> {
+    fun setBracketPlaceholders(player: Player?, texts: List<String>): List<String> {
         checkReference()
         return PlaceholderAPI.setBracketPlaceholders(player, texts)
     }
 
     @Throws(DependCannotException::class)
-    fun setRelationalPlaceholders(one: Player?, two: Player?, text: String) : String {
+    fun setRelationalPlaceholders(one: Player?, two: Player?, text: String): String {
         checkReference()
         if (canSupportRelational) {
             return PlaceholderAPI.setRelationalPlaceholders(one, two, text)
@@ -59,7 +59,7 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
     }
 
     @Throws(DependCannotException::class)
-    fun setRelationalPlaceholders(one: Player?, two: Player?, texts: List<String>) : List<String> {
+    fun setRelationalPlaceholders(one: Player?, two: Player?, texts: List<String>): List<String> {
         checkReference()
         if (canSupportRelational) {
             return PlaceholderAPI.setRelationalPlaceholders(one, two, texts)

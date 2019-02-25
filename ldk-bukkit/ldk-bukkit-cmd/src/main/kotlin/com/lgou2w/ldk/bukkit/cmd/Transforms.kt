@@ -46,11 +46,11 @@ open class Transforms : Iterable<Transform<*>> {
         })
     }
 
-    fun removeTransform(type: Class<*>) : Transform<*>? {
+    fun removeTransform(type: Class<*>): Transform<*>? {
         return transforms.remove(type)
     }
 
-    fun <T> getTransform(type: Class<T>) : Transform<T>? {
+    fun <T> getTransform(type: Class<T>): Transform<T>? {
         val transform = transforms[type] ?: return null
         try {
             @Suppress("UNCHECKED_CAST")

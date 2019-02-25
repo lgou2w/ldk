@@ -44,7 +44,7 @@ data class PotionBase(
             .result
     }
 
-    override val value: String
+    override val value : String
         get() = when {
             isUpgraded -> PREFIX_UPGRADED + REPLACEMENT + type.value
             isExtended -> PREFIX_EXTENDED + REPLACEMENT + type.value
@@ -59,7 +59,7 @@ data class PotionBase(
 
         @JvmStatic
         @Throws(IllegalArgumentException::class)
-        fun valueOf(value: String) : PotionBase {
+        fun valueOf(value: String): PotionBase {
             val isUpgraded = value.startsWith(PREFIX_UPGRADED)
             val isExtended = value.startsWith(PREFIX_EXTENDED)
             val replacement = REPLACEMENT.length

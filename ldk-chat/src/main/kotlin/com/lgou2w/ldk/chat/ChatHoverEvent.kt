@@ -40,7 +40,8 @@ data class ChatHoverEvent(
          * * The action value of this chat hover event.
          * * 此聊天移动事件的交互值.
          */
-        val value: ChatComponent) {
+        val value: ChatComponent
+) {
 
     /**
      * ## Action (交互类型)

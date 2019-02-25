@@ -25,7 +25,7 @@ import java.io.OutputStreamWriter
 
 class YamlConfigurationAdapter : LanguageAdapter {
 
-    override val fileExtension: String = "yml"
+    override val fileExtension : String = "yml"
 
     override fun adapt(input: InputStream): Map<String, String> {
         val reader = InputStreamReader(input, Charsets.UTF_8)

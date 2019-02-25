@@ -32,22 +32,22 @@ import java.util.concurrent.FutureTask
  *
  **************************************************************************/
 
-fun Plugin.runTask(task: Runnable) : BukkitTask
+fun Plugin.runTask(task: Runnable): BukkitTask
         = Bukkit.getScheduler().runTask(this, task)
 
-fun Plugin.runTaskLater(task: Runnable, delay: Long) : BukkitTask
+fun Plugin.runTaskLater(task: Runnable, delay: Long): BukkitTask
         = Bukkit.getScheduler().runTaskLater(this, task, delay)
 
-fun Plugin.runTaskTimer(task: Runnable, delay: Long, period: Long) : BukkitTask
+fun Plugin.runTaskTimer(task: Runnable, delay: Long, period: Long): BukkitTask
         = Bukkit.getScheduler().runTaskTimer(this, task, delay, period)
 
-fun Plugin.runTaskAsync(task: Runnable) : BukkitTask
+fun Plugin.runTaskAsync(task: Runnable): BukkitTask
         = Bukkit.getScheduler().runTaskAsynchronously(this, task)
 
-fun Plugin.runTaskAsyncLater(task: Runnable, delay: Long) : BukkitTask
+fun Plugin.runTaskAsyncLater(task: Runnable, delay: Long): BukkitTask
         = Bukkit.getScheduler().runTaskLaterAsynchronously(this, task, delay)
 
-fun Plugin.runTaskAsyncTimer(task: Runnable, delay: Long, period: Long) : BukkitTask
+fun Plugin.runTaskAsyncTimer(task: Runnable, delay: Long, period: Long): BukkitTask
         = Bukkit.getScheduler().runTaskTimerAsynchronously(this, task, delay, period)
 
 fun BukkitTask?.cancelTask()
@@ -59,7 +59,11 @@ fun BukkitTask?.cancelTask()
  *
  **************************************************************************/
 
-private fun <T> Plugin.callTaskFuture(callback: Callable<T>, delay: Long = 0L, async: Boolean = false) : CompletableFuture<T> {
+private fun <T> Plugin.callTaskFuture(
+        callback: Callable<T>,
+        delay: Long = 0L,
+        async: Boolean = false
+): CompletableFuture<T> {
     val future = CompletableFuture<T>()
     val futureTask = FutureTask(callback)
     val task : Runnable = {
@@ -88,16 +92,16 @@ private fun <T> Plugin.callTaskFuture(callback: Callable<T>, delay: Long = 0L, a
     return future
 }
 
-fun <T> Plugin.callTaskFuture(callback: Callable<T>) : CompletableFuture<T>
+fun <T> Plugin.callTaskFuture(callback: Callable<T>): CompletableFuture<T>
         = callTaskFuture(callback, 0L)
 
-fun <T> Plugin.callTaskFutureLater(callback: Callable<T>, delay: Long) : CompletableFuture<T>
+fun <T> Plugin.callTaskFutureLater(callback: Callable<T>, delay: Long): CompletableFuture<T>
         = callTaskFuture(callback, delay)
 
-fun <T> Plugin.callTaskFutureAsync(callback: Callable<T>) : CompletableFuture<T>
+fun <T> Plugin.callTaskFutureAsync(callback: Callable<T>): CompletableFuture<T>
         = callTaskFuture(callback, 0L, true)
 
-fun <T> Plugin.callTaskFutureAsyncLater(callback: Callable<T>, delay: Long) : CompletableFuture<T>
+fun <T> Plugin.callTaskFutureAsyncLater(callback: Callable<T>, delay: Long): CompletableFuture<T>
         = callTaskFuture(callback, delay, true)
 
 /**************************************************************************

@@ -86,7 +86,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
-    protected open val enableExceptionDisabled: Boolean = true
+    protected open val enableExceptionDisabled : Boolean = true
 
     /**************************************************************************
      *
@@ -94,7 +94,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
-    protected open val enableDependencies: Array<PluginDependency> = emptyArray()
+    protected open val enableDependencies : Array<PluginDependency> = emptyArray()
     protected open fun failedDependency(dependency: PluginDependency) { }
 
     protected class PluginDependencyScope {
@@ -121,30 +121,30 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
-    override val pluginPrefix: String
+    override val pluginPrefix : String
         get() = description.prefix
 
-    override val pluginName: String
+    override val pluginName : String
         get() = description.name
 
-    override val pluginMain: String
+    override val pluginMain : String
         get() = description.main
 
-    override val pluginVersion: String
+    override val pluginVersion : String
         get() = description.version
 
-    override val pluginWebsite: String
+    override val pluginWebsite : String
         get() = description.website
 
-    override val pluginDescription: String
+    override val pluginDescription : String
         get() = description.description
 
-    override val pluginAuthors: Set<String>
+    override val pluginAuthors : Set<String>
         get() = description.authors.toSet()
 
-    override val pluginDepends: Set<String>
+    override val pluginDepends : Set<String>
         get() = description.depend.toSet()
 
-    override val pluginSoftDepends: Set<String>
+    override val pluginSoftDepends : Set<String>
         get() = description.softDepend.toSet()
 }

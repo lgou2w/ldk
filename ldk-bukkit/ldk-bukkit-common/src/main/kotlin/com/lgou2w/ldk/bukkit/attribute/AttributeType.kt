@@ -124,7 +124,7 @@ enum class AttributeType(
     ZOMBIE_SPAWN_REINFORCEMENTS("zombie.spawnReinforcements", .0, .0, 1.0),
     ;
 
-    override val value: String
+    override val value : String
         get() = type
 
     /**
@@ -135,7 +135,7 @@ enum class AttributeType(
      * @throws IllegalBukkitVersionException 如果属性类型不支持.
      */
     @Throws(IllegalBukkitVersionException::class)
-    fun canSupport() : Boolean {
+    fun canSupport(): Boolean {
         if (mcVer != null && !MinecraftVersion.CURRENT.isOrLater(mcVer))
             throw IllegalBukkitVersionException("This $this attribute type is not supported in current Bukkit versions.")
         return true

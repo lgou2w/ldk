@@ -33,10 +33,10 @@ abstract class NBTBase<T>(
         protected var value0: T
 ) : NBT<T> {
 
-    override val typeId: Int
+    override val typeId : Int
         get() = type.id
 
-    override var value: T
+    override var value : T
         get() = value0
         set(value) { value0 = value }
 
@@ -69,10 +69,10 @@ abstract class NBTBase<T>(
     public abstract override fun clone(): NBTBase<*>
 
     @Throws(ClassCastException::class)
-    fun asCompound() : NBTTagCompound
+    fun asCompound(): NBTTagCompound
             = this as NBTTagCompound
 
     @Throws(ClassCastException::class)
-    fun asList() : NBTTagList
+    fun asList(): NBTTagList
             = this as NBTTagList
 }

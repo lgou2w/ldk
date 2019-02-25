@@ -64,7 +64,7 @@ open class DynamicLanguageManager(
     val dynamicUnsafe : Language
         get() = dynamic ?: throw NullPointerException("The current dynamic language has not been switched.")
 
-    fun isLoaded(locale: Locale) : Boolean {
+    fun isLoaded(locale: Locale): Boolean {
         return languages.find { it.locale == locale } != null
     }
 

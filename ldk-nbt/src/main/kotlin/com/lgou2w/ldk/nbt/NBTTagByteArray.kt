@@ -32,10 +32,9 @@ class NBTTagByteArray : NBTBase<ByteArray> {
     constructor(name: String = "", value: ByteArray = ByteArray(0)) : super(name, value)
     constructor(value: ByteArray = ByteArray(0)) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_BYTE_ARRAY
+    override val type = NBTType.TAG_BYTE_ARRAY
 
-    override var value: ByteArray
+    override var value : ByteArray
         get() {
             val value = ByteArray(value0.size)
             for ((i, el) in value0.withIndex())

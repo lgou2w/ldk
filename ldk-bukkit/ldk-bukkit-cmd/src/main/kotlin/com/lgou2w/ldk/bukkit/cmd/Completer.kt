@@ -27,7 +27,7 @@ interface Completer {
             parameter: CommandExecutor.Parameter,
             sender: CommandSender,
             value: String
-    ) : List<String>
+    ): List<String>
 
     companion object Constants {
 

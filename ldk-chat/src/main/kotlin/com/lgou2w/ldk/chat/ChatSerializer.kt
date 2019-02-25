@@ -44,7 +44,7 @@ import java.util.regex.Pattern
 object ChatSerializer {
 
     @JvmStatic
-    private val GSON: Gson
+    private val GSON : Gson
 
     init {
         GSON = GsonBuilder()
@@ -170,9 +170,9 @@ object ChatSerializer {
     private class RawMessage(val raw: String) {
 
         private val pattern = Pattern.compile("(§[0-9a-fk-or])", Pattern.CASE_INSENSITIVE)
-        private var currentComponent: ChatComponent? = null
-        private var style: ChatStyle? = null
-        private var currentIndex: Int = 0
+        private var currentComponent : ChatComponent? = null
+        private var style : ChatStyle? = null
+        private var currentIndex : Int = 0
 
         init {
             val matcher = pattern.matcher(raw)

@@ -25,23 +25,23 @@ abstract class RegionBase(
         final override val world: World
 ) : Region {
 
-    override val center: RegionVector
+    override val center : RegionVector
         get() = (minimumPoint + maximumPoint) / 2
 
-    override val area: Int
+    override val area : Int
         get() {
             val min = minimumPoint
             val max = maximumPoint
             return ((max.x - min.x + 1.0) * (max.y - min.y + 1.0) * (max.z - min.z + 1.0)).toInt()
         }
 
-    override val width: Int
+    override val width : Int
         get() = (maximumPoint.x - minimumPoint.x + 1.0).toInt()
 
-    override val height: Int
+    override val height : Int
         get() = (maximumPoint.y - minimumPoint.y + 1.0).toInt()
 
-    override val length: Int
+    override val length : Int
         get() = (maximumPoint.z - minimumPoint.z + 1.0).toInt()
 
     override fun contains(location: Location): Boolean

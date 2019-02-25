@@ -21,10 +21,10 @@ class RegionIteratorFlat3D(
         private val flatIterator: Iterator<RegionVector2D>
 ) : Iterator<RegionVectorBlock> {
 
-    private val minY: Int = region.minimumY
-    private val maxY: Int = region.maximumY
-    private var next2D: RegionVector2D? = if (flatIterator.hasNext()) flatIterator.next() else null
-    private var nextY: Int = minY
+    private val minY : Int = region.minimumY
+    private val maxY : Int = region.maximumY
+    private var next2D : RegionVector2D? = if (flatIterator.hasNext()) flatIterator.next() else null
+    private var nextY : Int = minY
 
     constructor(region: RegionFlat) : this(region, region.asFlat().iterator())
 

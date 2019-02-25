@@ -38,9 +38,9 @@ import org.powermock.modules.junit4.PowerMockRunner
 class BukkitDispatcherTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    lateinit var server: Server
-    @Mock lateinit var scheduler: BukkitScheduler
-    @Mock lateinit var plugin: Plugin
+    lateinit var server : Server
+    @Mock lateinit var scheduler : BukkitScheduler
+    @Mock lateinit var plugin : Plugin
 
     @Before
     fun init() {

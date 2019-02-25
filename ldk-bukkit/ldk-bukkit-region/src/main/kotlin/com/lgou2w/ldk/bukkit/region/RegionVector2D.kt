@@ -63,10 +63,10 @@ open class RegionVector2D(
         return RegionVector2D(x, z)
     }
 
-    val blockX: Int
+    val blockX : Int
         get() = Math.round(x).toInt()
 
-    val blockZ: Int
+    val blockZ : Int
         get() = Math.round(z).toInt()
 
     fun setX(x: Double): RegionVector2D
