@@ -58,7 +58,17 @@ object Depends {
 
     @JvmStatic
     fun unregisterAll() {
-        Bukkit.getServicesManager().unregisterAll(PLUGIN)
+        @Suppress("DEPRECATION")
+        if (PLUGIN is FakePlugin)
+            Bukkit.getServicesManager().unregisterAll(PLUGIN)
+        else {
+            // Is LDK, Only unregister depend
+            Bukkit.getServicesManager().getRegistrations(PLUGIN)
+                .filter { it.provider is Depend }
+                .forEach {
+                    Bukkit.getServicesManager().unregister(it.service, it.provider)
+                }
+        }
     }
 
     @JvmStatic
@@ -90,7 +100,7 @@ object Depends {
                 if (e is DependCannotException)
                     throw e
                 else
-                    throw DependCannotException(e.message, e.cause ?: e)
+                    throw DependCannotException(e.message, e)
             }
         }
     }
