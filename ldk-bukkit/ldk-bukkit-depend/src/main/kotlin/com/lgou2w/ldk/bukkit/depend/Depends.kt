@@ -40,7 +40,7 @@ object Depends {
 
     @JvmStatic
     @Throws(IllegalArgumentException::class)
-    fun <T: Depend> register(depend: Class<T>, implemented: T): Boolean {
+    fun <T : Depend> register(depend: Class<T>, implemented: T): Boolean {
         if (!depend.isInstance(implemented))
             throw IllegalArgumentException("The depend implementation is not an instance object of the $depend class.")
         if (hasDepend(depend))
@@ -50,7 +50,7 @@ object Depends {
     }
 
     @JvmStatic
-    fun <T: Depend> unregister(depend: Class<T>): Boolean {
+    fun <T : Depend> unregister(depend: Class<T>): Boolean {
         val implemented = get(depend) ?: return false
         Bukkit.getServicesManager().unregister(depend, implemented)
         return !hasDepend(depend)
@@ -80,14 +80,14 @@ object Depends {
     }
 
     @JvmStatic
-    operator fun <T: Depend> get(depend: Class<T>): T? {
+    operator fun <T : Depend> get(depend: Class<T>): T? {
         val registration = Bukkit.getServicesManager().getRegistration(depend) ?: return null
         return if (registration.service == depend) registration.provider else null
     }
 
     @JvmStatic
     @Throws(DependCannotException::class)
-    fun <T: Depend> getOrLoad(depend: Class<T>): T {
+    fun <T : Depend> getOrLoad(depend: Class<T>): T {
         val registration = get(depend)
         return if (registration != null)
             registration
@@ -100,7 +100,7 @@ object Depends {
                 if (e is DependCannotException)
                     throw e
                 else
-                    throw DependCannotException(e.message, e)
+                    throw DependCannotException(e)
             }
         }
     }
@@ -110,6 +110,6 @@ object Depends {
             = get(name) != null
 
     @JvmStatic
-    fun <T: Depend> hasDepend(depend: Class<T>): Boolean
+    fun <T : Depend> hasDepend(depend: Class<T>): Boolean
             = get(depend) != null
 }

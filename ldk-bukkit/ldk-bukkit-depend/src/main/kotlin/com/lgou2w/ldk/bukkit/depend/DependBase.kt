@@ -24,7 +24,7 @@ import java.io.InputStream
 import java.lang.ref.WeakReference
 import java.util.logging.Logger
 
-abstract class DependBase<T: Plugin>(
+abstract class DependBase<T : Plugin>(
         target: Plugin?
 ) : Depend {
 
