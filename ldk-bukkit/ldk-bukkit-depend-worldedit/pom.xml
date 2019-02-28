@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk-bukkit</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.8-beta2</version>
+        <version>0.1.8-beta3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,14 +26,14 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-depend</artifactId>
-            <version>0.1.8-beta2</version>
+            <version>0.1.8-beta3</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-region -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-region</artifactId>
-            <version>0.1.8-beta2</version>
+            <version>0.1.8-beta3</version>
             <scope>compile</scope>
         </dependency>
         <!-- WordEdit -->
