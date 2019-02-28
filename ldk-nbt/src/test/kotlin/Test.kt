@@ -31,8 +31,10 @@ import com.lgou2w.ldk.nbt.NBTTagString
 import com.lgou2w.ldk.nbt.ofCompound
 import com.lgou2w.ldk.nbt.ofList
 import com.lgou2w.ldk.nbt.removeIf
+import org.junit.Ignore
 import org.junit.Test
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class Test {
 
@@ -196,5 +198,13 @@ class Test {
             tag.getShort("Damage").toInt()
         }, { it == 10 })
         println(compound)
+    }
+
+    @Test
+    @Ignore // ignore
+    fun test_NBTServer() {
+        val file = File("C:/Users/MoonLake/AppData/Roaming/.minecraft/servers.dat")
+        val nbt = NBTStreams.readFileInfer(file)
+        println(nbt.toJson())
     }
 }
