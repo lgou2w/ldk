@@ -28,32 +28,55 @@ fun ItemStack?.isAir(): Boolean
 fun ItemStack?.isNotAir(): Boolean
         = this != null && type != Material.AIR
 
+/**
+ * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+ */
 @JvmOverloads
+@Throws(UnsupportedOperationException::class)
 inline fun Material.builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}): ItemBuilder
         = ItemBuilder.of(this, count, durability).also(block)
 
+/**
+ * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+ */
 @JvmOverloads
+@Throws(UnsupportedOperationException::class)
 inline fun ItemStack.builder(block: Applicator<ItemBuilder> = {}): ItemBuilder
         = ItemBuilder.of(this).also(block)
 
+/**
+ * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+ */
 @JvmOverloads
+@Throws(UnsupportedOperationException::class)
 inline fun ItemStack.readTag(block: Applicator<NBTTagCompound?> = {}): NBTTagCompound?
         = ItemFactory.readTag(this).also(block)
 
+/**
+ * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+ */
 @JvmOverloads
+@Throws(UnsupportedOperationException::class)
 inline fun ItemStack.readTagSafe(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
         = ItemFactory.readTagSafe(this).also(block)
 
+/**
+ * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+ */
+@Throws(UnsupportedOperationException::class)
 fun NBTTagCompound?.writeTag(itemStack: ItemStack): ItemStack
         = ItemFactory.writeTag(itemStack, this)
 
 /**
+ * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
  * @since LDK 0.1.7-rc3
  */
+@Throws(UnsupportedOperationException::class)
 fun ItemStack.modifyTag(block: Applicator<NBTTagCompound>): ItemStack
         = ItemFactory.modifyTag(this, block)
 
 /**
+ * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
  * @since LDK 0.1.7-rc3
  */
 @JvmOverloads

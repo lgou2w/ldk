@@ -175,22 +175,36 @@ object ItemFactory {
         return METHOD_AS_BUKKITCOPY.invoke(null, origin)
     }
 
+    /**
+     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     */
     @JvmStatic
-    fun readTagSafe(itemStack: ItemStack): NBTTagCompound {
-        return readTag(itemStack) ?: ofCompound(NBT.TAG)
-    }
+    @Throws(UnsupportedOperationException::class)
+    fun readTagSafe(itemStack: ItemStack): NBTTagCompound
+            = readTag(itemStack, itemStack.type) ?: ofCompound(NBT.TAG)
+
+    /**
+     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     */
+    @JvmStatic
+    @Throws(UnsupportedOperationException::class)
+    fun readTag(itemStack: ItemStack): NBTTagCompound?
+            = readTag(itemStack, itemStack.type)
 
     @JvmStatic
-    fun readTag(itemStack: ItemStack): NBTTagCompound? {
+    @Throws(UnsupportedOperationException::class)
+    private fun readTag(itemStack: ItemStack, rawType: Material): NBTTagCompound? {
         return if (CLASS_CRAFT_ITEMSTACK.isInstance(itemStack)) {
             val nmsStack = FIELD_CRAFT_ITEMSTACK_HANDLE[itemStack]
+                           ?: throw UnsupportedOperationException(
+                                   "Illegal item type '$rawType' that does not supported.")
             val nmsTag = FIELD_ITEMSTACK_TAG[nmsStack] ?: return null
             NBTFactory.fromNMS(nmsTag) as? NBTTagCompound
         } else {
             val nmsStack = asNMSCopy(itemStack)
             val obcStack = asCraftMirror(nmsStack) as ItemStack
             obcStack.itemMeta = itemStack.itemMeta
-            readTag(obcStack)
+            readTag(obcStack, itemStack.type)
         }
     }
 
@@ -206,7 +220,11 @@ object ItemFactory {
         }
     }
 
+    /**
+     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     */
     @JvmStatic
+    @Throws(UnsupportedOperationException::class)
     fun readItem(itemStack: ItemStack): NBTTagCompound {
         val root = ofCompound {  }
         if (MinecraftBukkitVersion.isV113OrLater) {
@@ -247,10 +265,21 @@ object ItemFactory {
         return root
     }
 
+    /**
+     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     */
     @JvmStatic
-    fun writeTag(itemStack: ItemStack, tag: NBTTagCompound?): ItemStack {
+    @Throws(UnsupportedOperationException::class)
+    fun writeTag(itemStack: ItemStack, tag: NBTTagCompound?): ItemStack
+            = ItemFactory.writeTag(itemStack, tag, itemStack.type)
+
+    @JvmStatic
+    @Throws(UnsupportedOperationException::class)
+    private fun writeTag(itemStack: ItemStack, tag: NBTTagCompound?, rawType: Material): ItemStack {
         if (CLASS_CRAFT_ITEMSTACK.isInstance(itemStack)) {
             val nmsStack = FIELD_CRAFT_ITEMSTACK_HANDLE[itemStack]
+                           ?: throw UnsupportedOperationException(
+                                   "Illegal item type '$rawType' that does not supported.")
             FIELD_ITEMSTACK_TAG[nmsStack] = if (tag == null) null else NBTFactory.toNMS(tag)
         } else {
             if (tag == null) {
@@ -258,7 +287,7 @@ object ItemFactory {
             } else {
                 val nmsStack = asNMSCopy(itemStack)
                 val obcStack = asCraftMirror(nmsStack) as ItemStack
-                writeTag(obcStack, tag)
+                writeTag(obcStack, tag, itemStack.type)
                 itemStack.itemMeta = obcStack.itemMeta
             }
         }
@@ -266,9 +295,11 @@ object ItemFactory {
     }
 
     /**
+     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
      * @since LDK 0.1.7-rc3
      */
     @JvmStatic
+    @Throws(UnsupportedOperationException::class)
     fun modifyTag(itemStack: ItemStack, applicator: Applicator<NBTTagCompound>): ItemStack {
         val tag = readTagSafe(itemStack)
         applicator(tag)
