@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.i18n
 
 import com.lgou2w.ldk.i18n.LanguageAdapter
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -30,8 +31,10 @@ class YamlConfigurationAdapter : LanguageAdapter {
     override fun adapt(input: InputStream): Map<String, String> {
         val reader = InputStreamReader(input, Charsets.UTF_8)
         val yaml = YamlConfiguration.loadConfiguration(reader)
-        val keys = yaml.getKeys(false)
-        return keys?.associate { it to yaml.get(it).toString()  } ?: LinkedHashMap()
+        return yaml.getKeys(true)
+            ?.map { key -> key to yaml.get(key) }
+            ?.filter { pair -> pair.second !is ConfigurationSection }
+            ?.associate { it.first to it.second.toString() } ?: LinkedHashMap()
     }
 
     override fun readapt(output: OutputStream, entries: MutableMap<String, String>) {
@@ -40,5 +43,6 @@ class YamlConfigurationAdapter : LanguageAdapter {
         val data = yaml.saveToString()
         val writer = OutputStreamWriter(output, Charsets.UTF_8)
         writer.write(data)
+        writer.flush()
     }
 }
