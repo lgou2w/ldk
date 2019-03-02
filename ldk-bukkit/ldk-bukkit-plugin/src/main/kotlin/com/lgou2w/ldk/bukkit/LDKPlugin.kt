@@ -57,7 +57,7 @@ class LDKPlugin : PluginBase() {
         }
         logger.info("A lgou2w development kit of Bukkit.")
         logger.info("Open source: $GITHUB")
-        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${MinecraftBukkitVersion.CURRENT.version}")
+        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${safeCurrent.version}")
         try {
             Metrics(this)
         } catch (e: Exception) {
