@@ -18,6 +18,7 @@ package com.lgou2w.ldk.nbt
 
 import java.io.DataInput
 import java.io.DataOutput
+import java.util.regex.Pattern
 
 /**
  * ## NBTTagCompound (复合 NBT 标签)
@@ -723,6 +724,43 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
      */
     fun getLongArrayOrDefault(key: String): LongArray {
         return getOrDefault(NBTType.TAG_LONG_ARRAY, key)
+    }
+
+    /**
+     * * Lookup for the tag from the given [path], if not found return `null`.
+     * * 从给定的 [path] 中查找标签, 如果未找到则返回 `null`.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun lookup(path: String?): NBTBase<*>? {
+        if (path.isNullOrBlank()) return null
+        val (child, next) = path.split('.', limit = 2).let { it[0] to it.getOrNull(1) }
+        val childList = LIST_PATH.matcher(child)
+        val tag = if (childList.matches()) {
+            val key = childList.group("key")
+            val idx = childList.group("idx").toInt()
+            (get(key) as? NBTTagList)?.getOrNull(idx)
+        } else get(child)
+        return if (next != null && tag is NBTTagCompound) tag.lookup(next)
+        else if (next == null) tag
+        else null
+    }
+
+    /**
+     * * Lookup for the tag value from the given [path], if not found return `null`.
+     * * 从给定的 [path] 中查找标签值, 如果未找到则返回 `null`.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun <T> lookupValue(path: String?): T? {
+        val tag = lookup(path) ?: return null
+        @Suppress("UNCHECKED_CAST")
+        return if (tag.type.isWrapper()) tag as T
+        else tag.value as? T
+    }
+
+    companion object {
+        private val LIST_PATH = Pattern.compile("^(?<key>.*)\\[(?<idx>\\w+)]$") // e.g.: Enchantments[0]
     }
 
     //
