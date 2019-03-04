@@ -35,7 +35,7 @@ import org.bukkit.entity.Player
 
 class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
 
-    fun getSelectRegion(player: Player) : Region? {
+    fun getSelectRegion(player: Player): Region? {
         checkReference()
         val worldWrapped = player.world.toAdapter() as com.sk89q.worldedit.world.World
         val session = plugin.getSession(player)
@@ -59,13 +59,13 @@ class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
 //        checkReference()
 //    }
 
-    private fun World.toAdapter() : BukkitWorld
+    private fun World.toAdapter(): BukkitWorld
             = BukkitWorld(this)
-    private fun Vector.toRegionVectorBlock() : RegionVectorBlock
+    private fun Vector.toRegionVectorBlock(): RegionVectorBlock
             = RegionVectorBlock(x, y, z)
-    private fun Vector.toRegionVector2D() : RegionVector2D
+    private fun Vector.toRegionVector2D(): RegionVector2D
             = RegionVector2D(x, z)
-    private fun Vector2D.toRegionVector2D() : RegionVector2D
+    private fun Vector2D.toRegionVector2D(): RegionVector2D
             = RegionVector2D(x, z)
 
     companion object {

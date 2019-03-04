@@ -23,7 +23,7 @@ interface LanguageAdapter {
 
     val fileExtension : String
 
-    fun adapt(input: InputStream) : Map<String, String>
+    fun adapt(input: InputStream): Map<String, String>
 
     fun readapt(output: OutputStream, entries: MutableMap<String, String>)
 }

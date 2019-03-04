@@ -20,5 +20,4 @@ import kotlin.coroutines.CoroutineContext
 
 open class CustomizeDispatcherProvider(
         override val dispatcher: CoroutineContext
-) : DispatcherProvider {
-}
+) : DispatcherProvider

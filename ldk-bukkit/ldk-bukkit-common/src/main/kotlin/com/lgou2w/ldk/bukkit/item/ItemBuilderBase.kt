@@ -54,7 +54,7 @@ import java.util.UUID
 
 abstract class ItemBuilderBase : ItemBuilder {
 
-    private val itemStack: ItemStack
+    private val itemStack : ItemStack
 
     constructor(itemStack: ItemStack) {
         this.itemStack = itemStack.clone()
@@ -84,15 +84,15 @@ abstract class ItemBuilderBase : ItemBuilder {
         return ItemFactory.writeTag(itemStack, tag)
     }
 
-    final override val tag: NBTTagCompound
+    final override val tag : NBTTagCompound
 
-    final override val material: Material
+    final override val material : Material
         get() = itemStack.type
 
-    final override val maxDurability: Int
+    final override val maxDurability : Int
         get() = itemStack.type.maxDurability.toInt()
 
-    final override val maxStackSize: Int
+    final override val maxStackSize : Int
         get() = itemStack.type.maxStackSize
 
     final override fun reBuilder(material: Material, count: Int, durability: Int): ItemBuilder
@@ -112,7 +112,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Generic" defaultstate="collapsed">
 
-    final override var count: Int
+    final override var count : Int
         get() = itemStack.amount
         set(value) { itemStack.amount = value }
 
@@ -158,7 +158,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
 
-    override var durability: Int
+    override var durability : Int
         get() {
             return if (MinecraftBukkitVersion.isV113OrLater)
                 tag.getShortOrNull(NBT.TAG_DAMAGE)?.toInt() ?: 0
@@ -216,7 +216,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - DisplayName" defaultstate="collapsed">
 
-    override var displayName: ChatComponent?
+    override var displayName : ChatComponent?
         get() {
             val displayName = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getStringOrNull(NBT.TAG_DISPLAY_NAME)
@@ -285,7 +285,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - LocalizedName" defaultstate="collapsed">
 
-    override var localizedName: ChatComponent?
+    override var localizedName : ChatComponent?
         get() {
             return if (MinecraftBukkitVersion.isV113OrLater) {
                 displayName
@@ -345,7 +345,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Lore" defaultstate="collapsed">
 
-    override var lore: List<String>?
+    override var lore : List<String>?
         get() {
             return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
@@ -408,7 +408,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Enchantment" defaultstate="collapsed">
 
-    override var enchantments: Map<Enchantment, Int>?
+    override var enchantments : Map<Enchantment, Int>?
         get() {
             return if (MinecraftBukkitVersion.isV113OrLater) {
                 tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
@@ -543,7 +543,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
-    override var flags: Array<out ItemFlag>?
+    override var flags : Array<out ItemFlag>?
         get() {
             val modifier = tag.getIntOrNull(NBT.TAG_HIDE_FLAGS)
             return getFlags(modifier)
@@ -597,7 +597,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Unbreakable" defaultstate="collapsed">
 
-    override var isUnbreakable: Boolean
+    override var isUnbreakable : Boolean
         get() = tag.getBooleanOrNull(NBT.TAG_UNBREAKABLE) ?: false
         set(value) { tag.putBoolean(NBT.TAG_UNBREAKABLE, value) }
 
@@ -621,7 +621,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Attribute" defaultstate="collapsed">
 
-    override var attributes: List<AttributeItemModifier>?
+    override var attributes : List<AttributeItemModifier>?
         get() {
             return tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
                 ?.asElements<NBTTagCompound>()
@@ -740,7 +740,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
-    override var canDestroy: List<Material>?
+    override var canDestroy : List<Material>?
         get() {
             return tag.getListOrNull(NBT.TAG_CAN_DESTROY)
                 ?.asElements<String>()
@@ -807,7 +807,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - CanPlaceOn" defaultstate="collapsed">
 
-    override var canPlaceOn: List<Material>?
+    override var canPlaceOn : List<Material>?
         get() {
             return tag.getListOrNull(NBT.TAG_CAN_PLACE_ON)
                 ?.asElements<String>()
@@ -874,7 +874,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - RepairCost" defaultstate="collapsed">
 
-    override var repairCost: Int?
+    override var repairCost : Int?
         get() = tag.getIntOrNull(NBT.TAG_REPAIR_COST)
         set(value) {
             removeRepairCost()
@@ -912,7 +912,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - LeatherColor" defaultstate="collapsed">
 
-    override var leatherColor: Color?
+    override var leatherColor : Color?
         get() {
             return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getIntOrNull(NBT.TAG_LEATHER_ARMOR_COLOR)
@@ -958,7 +958,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookTitle" defaultstate="collapsed">
 
-    override var bookTitle: String?
+    override var bookTitle : String?
         get() = tag.getStringOrNull(NBT.TAG_BOOK_TITLE)
         set(value) {
             removeBookTitle()
@@ -996,7 +996,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookAuthor" defaultstate="collapsed">
 
-    override var bookAuthor: String?
+    override var bookAuthor : String?
         get() = tag.getStringOrNull(NBT.TAG_BOOK_AUTHOR)
         set(value) {
             removeBookAuthor()
@@ -1034,7 +1034,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookGeneration" defaultstate="collapsed">
 
-    override var bookGeneration: Generation?
+    override var bookGeneration : Generation?
         get() {
             return tag.getIntOrNull(NBT.TAG_BOOK_GENERATION)
                 ?.letIfNotNull { Enums.ofValuable(Generation::class.java, this) }
@@ -1077,7 +1077,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookPages" defaultstate="collapsed">
 
-    override var bookPages: List<ChatComponent>?
+    override var bookPages : List<ChatComponent>?
         get() {
             return tag.getListOrNull(NBT.TAG_BOOK_PAGES)
                 ?.asElements<String>()
@@ -1160,7 +1160,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - StoredEnchantment" defaultstate="collapsed">
 
-    override var storedEnchantments: Map<Enchantment, Int>?
+    override var storedEnchantments : Map<Enchantment, Int>?
         get() {
             return tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
                 ?.asElements<NBTTagCompound>()
@@ -1255,7 +1255,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - SkullOwner" defaultstate="collapsed">
 
-    override var skullOwner: String?
+    override var skullOwner : String?
         get() {
             val skullOwner = tag[NBT.TAG_SKULL_OWNER] ?: return null
             return if (skullOwner.type == NBTType.TAG_COMPOUND)
@@ -1304,7 +1304,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - SkullOwner Value" defaultstate="collapsed">
 
-    override var skullOwnerValue: String?
+    override var skullOwnerValue : String?
         get() {
             if (tag[NBT.TAG_SKULL_OWNER]?.type == NBTType.TAG_STRING)
                 tag.remove(NBT.TAG_SKULL_OWNER)
@@ -1382,7 +1382,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - PotionColor" defaultstate="collapsed">
 
-    override var potionColor: Color?
+    override var potionColor : Color?
         get() = tag.getIntOrNull(NBT.TAG_CUSTOM_POTION_COLOR).letIfNotNull { Color.fromRGB(this) }
         set(value) {
             removePotionColor()
@@ -1422,7 +1422,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - PotionBase" defaultstate="collapsed">
 
-    override var potionBase: PotionBase?
+    override var potionBase : PotionBase?
         get() = tag.getStringOrNull(NBT.TAG_POTION).letIfNotNull { PotionBase.valueOf(this) }
         set(value) {
             removePotionBase()
@@ -1462,7 +1462,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - PotionCustom" defaultstate="collapsed">
 
-    override var potionCustoms: List<PotionEffectCustom>?
+    override var potionCustoms : List<PotionEffectCustom>?
         get() {
             return tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
                 ?.asElements<NBTTagCompound>()
@@ -1572,7 +1572,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - FireworkStar" defaultstate="collapsed">
 
-    override var fireworkStar: FireworkEffect?
+    override var fireworkStar : FireworkEffect?
         get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS_EXPLOSION).letIfNotNull { FireworkEffect.deserialize(this) }
         set(value) {
             removeFireworkStar()
@@ -1612,7 +1612,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - FireworkRocket Effect" defaultstate="collapsed">
 
-    override var fireworkRocketEffects: List<FireworkEffect>?
+    override var fireworkRocketEffects : List<FireworkEffect>?
         get() {
             return tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
                 ?.getListOrNull(NBT.TAG_FIREWORKS_EXPLOSIONS)
@@ -1691,7 +1691,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - FireworkRocket Flight" defaultstate="collapsed">
 
-    override var fireworkRocketFlight: Int?
+    override var fireworkRocketFlight : Int?
         get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS)?.getIntOrNull(NBT.TAG_FIREWORKS_FLIGHT)
         set(value) {
             removeFireworkRocketFlight()
@@ -1730,7 +1730,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Banner Pattern" defaultstate="collapsed">
 
-    override var bannerPatterns: List<Pattern>?
+    override var bannerPatterns : List<Pattern>?
         get() {
             @Suppress("DEPRECATION")
             return tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)

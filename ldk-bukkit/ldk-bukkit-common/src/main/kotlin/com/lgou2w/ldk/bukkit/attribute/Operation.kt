@@ -25,6 +25,6 @@ enum class Operation : Valuable<Int> {
     MULTIPLY_SCALAR_1,
     ;
 
-    override val value: Int
+    override val value : Int
         get() = ordinal
 }

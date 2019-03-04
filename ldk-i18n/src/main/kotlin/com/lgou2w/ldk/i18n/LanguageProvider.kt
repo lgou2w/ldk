@@ -23,12 +23,12 @@ import java.io.OutputStream
 interface LanguageProvider {
 
     @Throws(IOException::class)
-    fun load(name: String) : InputStream?
+    fun load(name: String): InputStream?
 
-    fun isValid(name: String) : Boolean
+    fun isValid(name: String): Boolean
 
     @Throws(IOException::class, UnsupportedOperationException::class)
-    fun write(name: String) : OutputStream {
+    fun write(name: String): OutputStream {
         throw UnsupportedOperationException("Current provider does not support saving language data.")
     }
 }

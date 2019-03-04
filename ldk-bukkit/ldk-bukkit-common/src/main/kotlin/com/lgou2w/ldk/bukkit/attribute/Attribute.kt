@@ -30,7 +30,7 @@ interface Attribute {
      *
      * @see [AttributeType]
      */
-    val type: AttributeType
+    val type : AttributeType
 
     /**
      * * Get the default value of this attribute.
@@ -38,25 +38,25 @@ interface Attribute {
      *
      * @see [AttributeType.defValue]
      */
-    val defValue: Double
+    val defValue : Double
 
     /**
      * * Gets or sets the base value of this attribute.
      * * 获取或设置此属性的基础值.
      */
-    var baseValue: Double
+    var baseValue : Double
 
     /**
      * * Get the value of this attribute after all associated modifiers have been applied.
      * * 在应用了所有关联的修改器后, 获取此属性的最终值.
      */
-    val value: Double
+    val value : Double
 
     /**
      * * Get all modifiers present on this attribute.
      * * 获取此属性的所有修改器.
      */
-    val modifiers: Collection<AttributeModifier>
+    val modifiers : Collection<AttributeModifier>
 
     /**
      * * Add a modifier to this attribute.

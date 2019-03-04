@@ -28,7 +28,7 @@ import kotlin.coroutines.CoroutineContext
 class FxCoroutineFactory : CoroutineFactoryBase(FxDispatcherProvider.INSTANCE)
 class FxDispatcherProvider private constructor() : DispatcherProvider {
 
-    override val dispatcher: CoroutineContext
+    override val dispatcher : CoroutineContext
         get() = Dispatchers.JavaFx
 
     companion object {
@@ -37,7 +37,7 @@ class FxDispatcherProvider private constructor() : DispatcherProvider {
     }
 }
 
-suspend inline fun <T> withFx(crossinline block: SuspendApplicatorFunction<CoroutineScope, T>) : T {
+suspend inline fun <T> withFx(crossinline block: SuspendApplicatorFunction<CoroutineScope, T>): T {
     return withContext(Dispatchers.JavaFx) {
         block()
     }

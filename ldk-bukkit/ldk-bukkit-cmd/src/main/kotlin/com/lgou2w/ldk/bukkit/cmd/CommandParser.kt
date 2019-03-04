@@ -19,8 +19,8 @@ package com.lgou2w.ldk.bukkit.cmd
 interface CommandParser {
 
     @Throws(CommandParseException::class)
-    fun parse(manager: CommandManager, source: Any) : RegisteredCommand
+    fun parse(manager: CommandManager, source: Any): RegisteredCommand
 
     @Throws(CommandParseException::class)
-    fun parse(manager: CommandManager, parent: RegisteredCommand?, source: Any) : RegisteredCommand
+    fun parse(manager: CommandManager, parent: RegisteredCommand?, source: Any): RegisteredCommand
 }

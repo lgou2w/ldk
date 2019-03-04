@@ -22,7 +22,8 @@ import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import java.util.*
+import java.util.LinkedHashMap
+import java.util.UUID
 
 /**
  * ## AttributeItemModifier (属性物品修改器)
@@ -82,7 +83,7 @@ data class AttributeItemModifier(
         NBTSavable,
         Comparable<AttributeItemModifier> {
 
-    override fun save(root: NBTTagCompound) : NBTTagCompound {
+    override fun save(root: NBTTagCompound): NBTTagCompound {
         root.putString(NBT.TAG_ATTRIBUTE_TYPE, type.value)
         root.putString(NBT.TAG_ATTRIBUTE_NAME, type.value)
         root.putInt(NBT.TAG_ATTRIBUTE_OPERATION, operation.value)

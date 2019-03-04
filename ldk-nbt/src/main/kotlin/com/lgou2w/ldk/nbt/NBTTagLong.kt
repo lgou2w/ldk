@@ -31,8 +31,7 @@ class NBTTagLong : NBTTagNumber<Long> {
     constructor(name: String = "", value: Long = 0L) : super(name, value)
     constructor(value: Long = 0L) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_LONG
+    override val type = NBTType.TAG_LONG
 
     override fun read(input: DataInput) {
         value = input.readLong()

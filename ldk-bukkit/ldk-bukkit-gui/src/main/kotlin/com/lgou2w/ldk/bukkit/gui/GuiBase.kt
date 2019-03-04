@@ -38,10 +38,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class GuiBase : Gui {
 
-    final override var parent: Gui? = null
-    final override val type: GuiType
-    final override val title: String
-    final override val size: Int
+    final override var parent : Gui? = null
+    final override val type : GuiType
+    final override val title : String
+    final override val size : Int
     final override fun hasParent(): Boolean {
         return parent != null
     }
@@ -75,11 +75,11 @@ abstract class GuiBase : Gui {
      *
      **************************************************************************/
 
-    override var isAllowMove: Boolean = true
+    override var isAllowMove : Boolean = true
 
-    final override var onOpened: ((gui: Gui, event: InventoryOpenEvent) -> Unit)? = null
-    final override var onClosed: ((gui: Gui, event: InventoryCloseEvent) -> Unit)? = null
-    final override var onClicked: ((gui: Gui, event: InventoryClickEvent) -> Unit)? = null
+    final override var onOpened : ((gui: Gui, event: InventoryOpenEvent) -> Unit)? = null
+    final override var onClosed : ((gui: Gui, event: InventoryCloseEvent) -> Unit)? = null
+    final override var onClicked : ((gui: Gui, event: InventoryClickEvent) -> Unit)? = null
 
     /**************************************************************************
      *
@@ -88,7 +88,7 @@ abstract class GuiBase : Gui {
      **************************************************************************/
 
     private val propertyTable = Hashtable<String, Any>()
-    final override val properties: Map<String, Any>
+    final override val properties : Map<String, Any>
         get() = synchronized (propertyTable) {
             Hashtable(propertyTable)
         }
@@ -157,7 +157,7 @@ abstract class GuiBase : Gui {
             Collections.unmodifiableList(buttonList)
         }
 
-    override val buttonSize: Int
+    override val buttonSize : Int
         get() = synchronized (buttonList) {
             buttonList.size
         }
@@ -173,7 +173,7 @@ abstract class GuiBase : Gui {
             throw IllegalArgumentException("The same button index $invalid already has a valid button.")
     }
 
-    private fun <T : Button> addButton0(button: T) : T {
+    private fun <T : Button> addButton0(button: T): T {
         canAdd(button)
         synchronized (buttonList) {
             buttonList.add(button)
@@ -181,14 +181,14 @@ abstract class GuiBase : Gui {
         }
     }
 
-    protected open fun getButton0(index: Int) : Button? {
+    protected open fun getButton0(index: Int): Button? {
         var button = buttonList.find { it.index == index }
         if (button == null)
             button = buttonList.asSequence().filterIsInstance(ButtonSame::class.java).find { it.isSame(index) }
         return button
     }
 
-    protected open fun nextAvailableIndex() : Int {
+    protected open fun nextAvailableIndex(): Int {
         synchronized (buttonList) {
             for (index in 0 until size)
                 if (getButton0(index) == null)

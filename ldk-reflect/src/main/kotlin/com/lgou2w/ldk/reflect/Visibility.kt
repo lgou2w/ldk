@@ -52,7 +52,7 @@ enum class Visibility {
      * @param accessible Accessible object
      * @param accessible 可访问对象
      */
-    fun <E> isMatches(accessible: E): Boolean where E : AccessibleObject, E: Member {
+    fun <E> isMatches(accessible: E): Boolean where E : AccessibleObject, E : Member {
         val modifiers = accessible.modifiers
         return when (this) {
             PRIVATE -> Modifier.isPrivate(modifiers)

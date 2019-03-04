@@ -33,12 +33,12 @@ interface LanguageManager {
     var globalFormatter : Formatter?
 
     @Throws(IOException::class)
-    fun load(locale: Locale) : Language
+    fun load(locale: Locale): Language
 
     @Throws(IOException::class, UnsupportedOperationException::class)
     fun save(language: Language)
 
-    fun isValid(locale: Locale) : Boolean
+    fun isValid(locale: Locale): Boolean
 
-    fun isValid(language: Language) : Boolean
+    fun isValid(language: Language): Boolean
 }

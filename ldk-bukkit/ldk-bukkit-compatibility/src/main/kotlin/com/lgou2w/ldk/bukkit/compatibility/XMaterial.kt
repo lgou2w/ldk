@@ -1057,15 +1057,15 @@ enum class XMaterial {
     }
 
     @Throws(UnsupportedOperationException::class)
-    fun toBukkit() : Material
+    fun toBukkit(): Material
             = toBukkit(this)
 
     @Throws(UnsupportedOperationException::class)
-    fun isSameType(itemStack: ItemStack) : Boolean
+    fun isSameType(itemStack: ItemStack): Boolean
             = isSameType(this, itemStack)
 
     @Throws(UnsupportedOperationException::class)
-    fun createStack(count: Int) : ItemStack
+    fun createStack(count: Int): ItemStack
             = createStack(this, count)
 
 //    SEE : ldk-bukkit-common / com.lgou2w.ldk.bukkit.item.ItemKt
@@ -1089,7 +1089,7 @@ enum class XMaterial {
 
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
-        fun toBukkit(xMaterial: XMaterial) : Material {
+        fun toBukkit(xMaterial: XMaterial): Material {
             val value = Material.matchMaterial(xMaterial.name)
             return value ?: xMaterial.aliases.mapNotNull { Material.matchMaterial(it) }.firstOrNull()
                    ?: throw UnsupportedOperationException("Internal error, unsupported '$xMaterial' material type.")
@@ -1097,13 +1097,13 @@ enum class XMaterial {
 
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
-        fun fromBukkit(material: Material) : XMaterial {
+        fun fromBukkit(material: Material): XMaterial {
             return searchByBukkit(material)
                    ?: throw UnsupportedOperationException("Internal error, unsupported '$material' material type.")
         }
 
         @JvmStatic
-        fun searchByBukkit(material: Material) : XMaterial? {
+        fun searchByBukkit(material: Material): XMaterial? {
             val type = material.name.toUpperCase(Locale.US)
             return try {
                 XMaterial.valueOf(type)
@@ -1117,7 +1117,7 @@ enum class XMaterial {
          * * After 1.13 <=> `TYPE`, case: `BLACK_WOOL`, `RED_BED`
          */
         @JvmStatic
-        fun searchByType(type: String) : XMaterial? {
+        fun searchByType(type: String): XMaterial? {
             val typeUpperCase = type.toUpperCase(Locale.US)
             val typeKey = typeUpperCase.split(":").getOrNull(0) ?: typeUpperCase
             val data = typeUpperCase.split(":").getOrNull(1)?.toIntOrNull() // TYPE:DATA
@@ -1148,7 +1148,7 @@ enum class XMaterial {
 
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
-        fun isSameType(xMaterial: XMaterial, itemStack: ItemStack) : Boolean {
+        fun isSameType(xMaterial: XMaterial, itemStack: ItemStack): Boolean {
             val bukkit = toBukkit(xMaterial)
             val type = itemStack.type
             return if (MinecraftBukkitVersion.isV113OrLater) {
@@ -1164,7 +1164,7 @@ enum class XMaterial {
         @JvmStatic
         @JvmOverloads
         @Throws(UnsupportedOperationException::class)
-        fun createStack(xMaterial: XMaterial, count: Int = 1) : ItemStack {
+        fun createStack(xMaterial: XMaterial, count: Int = 1): ItemStack {
             val type = toBukkit(xMaterial)
             return if (MinecraftBukkitVersion.isV113OrLater) {
                 ItemStack(type, count)

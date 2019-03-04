@@ -28,7 +28,7 @@ open class PageableGui(
     var next : PageableGui? = null
 
     @JvmOverloads
-    fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}) : PageableGui {
+    fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui {
         val next = PageableGui(type, title)
         next.parent = this
         this.next = next
@@ -53,7 +53,7 @@ open class PageableGui(
     companion object {
 
         @JvmStatic
-        fun previousPage() : Consumer<ButtonEvent> {
+        fun previousPage(): Consumer<ButtonEvent> {
             return ButtonEvent.cancelThen { event ->
                 val parent = event.button.parent
                 parent.parent?.open(event.clicker)
@@ -61,7 +61,7 @@ open class PageableGui(
         }
 
         @JvmStatic
-        fun nextPage() : Consumer<ButtonEvent> {
+        fun nextPage(): Consumer<ButtonEvent> {
             return ButtonEvent.cancelThen { event ->
                 val parent = event.button.parent as? PageableGui
                 parent?.next?.open(event.clicker)

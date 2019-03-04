@@ -31,8 +31,7 @@ class NBTTagByte : NBTTagNumber<Byte> {
     constructor(name: String = "", value: Byte = 0) : super(name, value)
     constructor(value: Byte = 0) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_BYTE
+    override val type = NBTType.TAG_BYTE
 
     override fun read(input: DataInput) {
         value = input.readByte()

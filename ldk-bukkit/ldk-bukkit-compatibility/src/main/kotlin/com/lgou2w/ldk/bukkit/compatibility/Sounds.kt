@@ -58,7 +58,6 @@ package com.lgou2w.ldk.bukkit.compatibility
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Enums
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -267,7 +266,7 @@ enum class Sounds(private vararg val versionDependentNames: String) {
 
     private var valid : Sound? = null
 
-    fun tryPlay(location: Location, volume: Float, pitch: Float) : Boolean {
+    fun tryPlay(location: Location, volume: Float, pitch: Float): Boolean {
         return try {
             val bukkit = toBukkit()
             location.world.playSound(location, bukkit, volume, pitch)
@@ -278,7 +277,7 @@ enum class Sounds(private vararg val versionDependentNames: String) {
     }
 
     // org.bukkit.SoundCategory -> since Minecraft 1.11
-    fun tryPlay(location: Location, category: Category, volume: Float, pitch: Float) : Boolean {
+    fun tryPlay(location: Location, category: Category, volume: Float, pitch: Float): Boolean {
         return if (MinecraftBukkitVersion.isV111OrLater) try {
             val bukkit = toBukkit()
             val soundCategory = Enums.ofName(org.bukkit.SoundCategory::class.java, category.name)
@@ -298,7 +297,7 @@ enum class Sounds(private vararg val versionDependentNames: String) {
      *
      * @return [Sound]
      */
-    fun toBukkit() : Sound {
+    fun toBukkit(): Sound {
         if (valid == null) {
             for (name in versionDependentNames) try {
                 valid = Sound.valueOf(name)

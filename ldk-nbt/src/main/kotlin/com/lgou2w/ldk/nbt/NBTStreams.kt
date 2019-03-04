@@ -24,6 +24,7 @@ import java.io.DataOutput
 import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -31,6 +32,7 @@ import java.io.OutputStream
 import java.util.Base64
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
+import java.util.zip.ZipException
 
 /**
  * ## NBTStreams (NBT 流工具)
@@ -52,7 +54,7 @@ object NBTStreams {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun read(input: InputStream): NBTBase<*>? {
+    fun read(input: InputStream): NBTBase<*> {
         return read(DataInputStream(input) as DataInput)
     }
 
@@ -66,7 +68,7 @@ object NBTStreams {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun read(input: DataInput): NBTBase<*>? {
+    fun read(input: DataInput): NBTBase<*> {
         val type = NBTType.fromId(input.readByte().toInt())
         if (type == null || type == NBTType.TAG_END)
             return NBTTagEnd.INSTANCE
@@ -134,7 +136,7 @@ object NBTStreams {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun readBase64(value: String): NBTBase<*>? {
+    fun readBase64(value: String): NBTBase<*> {
         val bytes = Base64.getDecoder().decode(value)
         val stream = ByteArrayInputStream(bytes)
         return read(stream)
@@ -147,21 +149,16 @@ object NBTStreams {
      * @param nbt NBT
      * @param file The file to be written
      * @param file 要写出的文件
-     * @param compress Whether to compress data with `GZip`
-     * @param compress 是否使用 `GZip` 压缩数据
+     * @param compress Whether to compress data with `GZip`. Default `true`
+     * @param compress 是否使用 `GZip` 压缩数据. 默认 `true`
      * @throws IOException I/O
      */
     @JvmStatic
     @JvmOverloads
     @Throws(IOException::class)
     fun writeFile(nbt: NBTBase<*>, file: File, compress: Boolean = true) {
-        var output: OutputStream? = null
-        try {
-            output = if (compress) GZIPOutputStream(FileOutputStream(file)) else FileOutputStream(file)
-            write(output, nbt)
-        } finally {
-            output?.close()
-        }
+        val output = if (compress) GZIPOutputStream(FileOutputStream(file)) else FileOutputStream(file)
+        output.use { write(it, nbt) }
     }
 
     /**
@@ -170,22 +167,36 @@ object NBTStreams {
      *
      * @param file The file to be read
      * @param file 要读取的文件
-     * @param decompress Whether to use `GZip` to decompress data
-     * @param decompress 是否使用 `GZip` 解压缩数据
+     * @param decompress Whether to use `GZip` to decompress data. Default `true`
+     * @param decompress 是否使用 `GZip` 解压缩数据. 默认 `true`
      * @throws IOException I/O
      */
     @JvmStatic
     @JvmOverloads
     @Throws(IOException::class)
-    fun readFile(file: File, decompress: Boolean = true): NBTBase<*>? {
+    fun readFile(file: File, decompress: Boolean = true): NBTBase<*> {
         if (!file.exists() || file.isDirectory)
-            return null
-        var input: InputStream? = null
-        try {
-            input = if (decompress) GZIPInputStream(FileInputStream(file)) else FileInputStream(file)
-            return read(input)
-        } finally {
-            input?.close()
+            throw FileNotFoundException(file.path)
+        val input = if (decompress) GZIPInputStream(FileInputStream(file)) else FileInputStream(file)
+        return input.use(::read)
+    }
+
+    /**
+     * * Automatically infer and read NBT tag from the given file [file].
+     * * 从给定的文件 [file] 中自动推断并读取 NBT 标签.
+     *
+     * @param file The file to be read
+     * @param file 要读取的文件
+     * @throws IOException I/O
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @Throws(IOException::class)
+    fun readFileInfer(file: File): NBTBase<*> {
+        return try {
+            readFile(file, true)
+        } catch (e: ZipException) {
+            readFile(file, false) // not gzip
         }
     }
 }

@@ -26,9 +26,9 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class PackageCached {
 
-    private val cached: MutableMap<String, Optional<Class<*>>>
-    private val source: ClassSource
-    private val packageName: String
+    private val cached : MutableMap<String, Optional<Class<*>>>
+    private val source : ClassSource
+    private val packageName : String
 
     /**
      * ## CachedPackage

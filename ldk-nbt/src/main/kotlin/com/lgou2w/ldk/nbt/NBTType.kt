@@ -205,13 +205,13 @@ enum class NBTType(
      * @see [NBTTagList]
      * @see [NBTTagCompound]
      */
-    fun isWrapper() : Boolean
+    fun isWrapper(): Boolean
             = this == TAG_LIST || this == TAG_COMPOUND
 
     companion object {
 
-        private val ID_MAP: MutableMap<Int, NBTType> = HashMap()
-        private val CLASS_MAP: MutableMap<Class<*>, NBTType> = HashMap()
+        private val ID_MAP : MutableMap<Int, NBTType> = HashMap()
+        private val CLASS_MAP : MutableMap<Class<*>, NBTType> = HashMap()
 
         init {
             values().forEach {

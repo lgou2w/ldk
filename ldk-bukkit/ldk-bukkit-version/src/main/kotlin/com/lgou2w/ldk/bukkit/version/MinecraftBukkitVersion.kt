@@ -49,7 +49,7 @@ class MinecraftBukkitVersion(
         private val VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$")
 
         @JvmStatic
-        var CURRENT: MinecraftBukkitVersion = UNKNOWN
+        var CURRENT : MinecraftBukkitVersion = UNKNOWN
             private set
             get() {
                 if (field == UNKNOWN) {
@@ -88,7 +88,7 @@ class MinecraftBukkitVersion(
          */
         @JvmStatic val isV113OrLater by lazy { CURRENT.isOrLater(V1_13_R1) }
 
-        private val LOOKUP: NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
+        private val LOOKUP : NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
         private fun createLookup(): NavigableMap<MinecraftVersion, MinecraftBukkitVersion> {
             val map = object: TreeMap<MinecraftVersion, MinecraftBukkitVersion>() {
                 operator fun set(keys: Array<out MinecraftVersion>, value: MinecraftBukkitVersion)

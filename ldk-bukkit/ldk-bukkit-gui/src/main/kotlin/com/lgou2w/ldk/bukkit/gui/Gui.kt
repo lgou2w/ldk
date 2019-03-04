@@ -34,7 +34,7 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     val size : Int
 
-    val buttons: List<Button>
+    val buttons : List<Button>
 
     val buttonSize : Int
 
@@ -42,9 +42,9 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     var isAllowMove : Boolean
 
-    var onOpened: ((gui: Gui, event: InventoryOpenEvent) -> Unit)?
+    var onOpened : ((gui: Gui, event: InventoryOpenEvent) -> Unit)?
 
-    var onClosed: ((gui: Gui, event: InventoryCloseEvent) -> Unit)?
+    var onClosed : ((gui: Gui, event: InventoryCloseEvent) -> Unit)?
 
     /**
      * * Called when the button click is processed. Can handle non-button items.
@@ -52,7 +52,7 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
      *
      * @since LDK 0.1.7-rc5
      */
-    var onClicked: ((gui: Gui, event: InventoryClickEvent) -> Unit)?
+    var onClicked : ((gui: Gui, event: InventoryClickEvent) -> Unit)?
 
     /**************************************************************************
      *
@@ -62,23 +62,23 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     val properties : Map<String, Any>
 
-    fun setProperty(key: String, value: Any) : Any?
+    fun setProperty(key: String, value: Any): Any?
 
-    fun getProperty(key: String, def: Any? = null) : Any?
+    fun getProperty(key: String, def: Any? = null): Any?
 
-    fun getProperty(key: String) : Any?
+    fun getProperty(key: String): Any?
 
-    fun <T> getPropertyAs(key: String, def: T? = null) : T?
+    fun <T> getPropertyAs(key: String, def: T? = null): T?
 
-    fun <T> getPropertyAs(key: String) : T?
+    fun <T> getPropertyAs(key: String): T?
 
-    fun <T> getPropertyAsNotNull(key: String, def: T) : T
+    fun <T> getPropertyAsNotNull(key: String, def: T): T
 
-    fun <T> getPropertyAsNotNull(key: String) : T
+    fun <T> getPropertyAsNotNull(key: String): T
 
-    fun containsProperty(key: String) : Boolean
+    fun containsProperty(key: String): Boolean
 
-    fun removeProperty(key: String) : Any?
+    fun removeProperty(key: String): Any?
 
     fun clearProperties()
 
@@ -90,69 +90,69 @@ interface Gui : InventoryHolder, Iterable<ItemStack> {
 
     fun open(human: HumanEntity)
 
-    fun hasButton() : Boolean
+    fun hasButton(): Boolean
 
-    fun getButton(index: Int) : Button?
+    fun getButton(index: Int): Button?
 
-    fun getButton(x: Int, y: Int) : Button?
+    fun getButton(x: Int, y: Int): Button?
 
-    fun isButton(index: Int) : Boolean
+    fun isButton(index: Int): Boolean
 
-    fun isButton(x: Int, y: Int) : Boolean
+    fun isButton(x: Int, y: Int): Boolean
 
-    fun removeButton(button: Button) : Boolean
+    fun removeButton(button: Button): Boolean
 
-    fun removeButton(index: Int) : Boolean
+    fun removeButton(index: Int): Boolean
 
-    fun removeButton(x: Int, y: Int) : Boolean
+    fun removeButton(x: Int, y: Int): Boolean
 
     fun removeButtons()
 
     @Throws(IllegalStateException::class)
-    fun addButton() : Button
+    fun addButton(): Button
 
     @Throws(IllegalStateException::class)
-    fun addButton(stack: ItemStack? = null) : Button
+    fun addButton(stack: ItemStack? = null): Button
 
     @Throws(IllegalStateException::class)
-    fun addButton(onClicked: Consumer<ButtonEvent>? = null) : Button
+    fun addButton(onClicked: Consumer<ButtonEvent>? = null): Button
 
     @Throws(IllegalStateException::class)
-    fun addButton(stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
+    fun addButton(stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(index: Int) : Button
+    fun setButton(index: Int): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(index: Int, stack: ItemStack? = null) : Button
+    fun setButton(index: Int, stack: ItemStack? = null): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(index: Int, onClicked: Consumer<ButtonEvent>? = null) : Button
+    fun setButton(index: Int, onClicked: Consumer<ButtonEvent>? = null): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(index: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
+    fun setButton(index: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(x: Int, y: Int) : Button
+    fun setButton(x: Int, y: Int): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(x: Int, y: Int, stack: ItemStack? = null) : Button
+    fun setButton(x: Int, y: Int, stack: ItemStack? = null): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(x: Int, y: Int, onClicked: Consumer<ButtonEvent>? = null) : Button
+    fun setButton(x: Int, y: Int, onClicked: Consumer<ButtonEvent>? = null): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setButton(x: Int, y: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : Button
+    fun setButton(x: Int, y: Int, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null): Button
 
     @Throws(IllegalArgumentException::class)
-    fun setSameButton(indexes: IntArray) : ButtonSame
+    fun setSameButton(indexes: IntArray): ButtonSame
 
     @Throws(IllegalArgumentException::class)
-    fun setSameButton(indexes: IntArray, stack: ItemStack? = null) : ButtonSame
+    fun setSameButton(indexes: IntArray, stack: ItemStack? = null): ButtonSame
 
     @Throws(IllegalArgumentException::class)
-    fun setSameButton(indexes: IntArray, onClicked: Consumer<ButtonEvent>? = null) : ButtonSame
+    fun setSameButton(indexes: IntArray, onClicked: Consumer<ButtonEvent>? = null): ButtonSame
 
     @Throws(IllegalArgumentException::class)
-    fun setSameButton(indexes: IntArray, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null) : ButtonSame
+    fun setSameButton(indexes: IntArray, stack: ItemStack? = null, onClicked: Consumer<ButtonEvent>? = null): ButtonSame
 }

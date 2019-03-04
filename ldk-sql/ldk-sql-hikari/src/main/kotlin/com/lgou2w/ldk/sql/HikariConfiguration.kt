@@ -27,5 +27,4 @@ data class HikariConfiguration(
         val maxLifetime: Long,
         val connectionTimeout: Long,
         val properties: Map<String, String>
-) {
-}
+)

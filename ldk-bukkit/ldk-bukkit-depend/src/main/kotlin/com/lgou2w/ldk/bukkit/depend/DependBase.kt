@@ -24,7 +24,7 @@ import java.io.InputStream
 import java.lang.ref.WeakReference
 import java.util.logging.Logger
 
-abstract class DependBase<T: Plugin>(
+abstract class DependBase<T : Plugin>(
         target: Plugin?
 ) : Depend {
 
@@ -41,7 +41,7 @@ abstract class DependBase<T: Plugin>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    final override val plugin: T
+    final override val plugin : T
         get() {
             val ref = reference.get()
             return if (ref != null && ref.isEnabled) {
@@ -68,43 +68,43 @@ abstract class DependBase<T: Plugin>(
             Depends.register(this)
     }
 
-    final override val name: String
+    final override val name : String
         get() = targetName
 
-    final override val pluginPrefix: String
+    final override val pluginPrefix : String
         get() = plugin.description.prefix
 
-    final override val pluginName: String
+    final override val pluginName : String
         get() = plugin.description.name
 
-    final override val pluginMain: String
+    final override val pluginMain : String
         get() = plugin.description.main
 
-    final override val pluginVersion: String
+    final override val pluginVersion : String
         get() = plugin.description.version
 
-    final override val pluginWebsite: String
+    final override val pluginWebsite : String
         get() = plugin.description.website
 
-    final override val pluginDescription: String
+    final override val pluginDescription : String
         get() = plugin.description.description
 
-    final override val pluginAuthors: Set<String>
+    final override val pluginAuthors : Set<String>
         get() = plugin.description.authors.toSet()
 
-    final override val pluginDepends: Set<String>
+    final override val pluginDepends : Set<String>
         get() = plugin.description.depend.toSet()
 
-    final override val pluginSoftDepends: Set<String>
+    final override val pluginSoftDepends : Set<String>
         get() = plugin.description.softDepend.toSet()
 
-    final override val dataFolder: File
+    final override val dataFolder : File
         get() = plugin.dataFolder
 
-    final override val logger: Logger
+    final override val logger : Logger
         get() = plugin.logger
 
-    final override val config: FileConfiguration?
+    final override val config : FileConfiguration?
         get() = plugin.config
 
     final override fun getResource(filename: String): InputStream?
@@ -129,7 +129,7 @@ abstract class DependBase<T: Plugin>(
     companion object {
 
         @JvmStatic
-        fun getPlugin(name: String) : Plugin?
+        fun getPlugin(name: String): Plugin?
                 = Bukkit.getPluginManager().getPlugin(name)
     }
 }

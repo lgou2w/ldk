@@ -20,13 +20,13 @@ class RegionIterator(
         private val region: Region
 ) : Iterator<RegionVectorBlock> {
 
-    private val maxX: Int
-    private val maxY: Int
-    private val maxZ: Int
-    private val min: RegionVector
-    private var nextX: Int
-    private var nextY: Int
-    private var nextZ: Int
+    private val maxX : Int
+    private val maxY : Int
+    private val maxZ : Int
+    private val min : RegionVector
+    private var nextX : Int
+    private var nextY : Int
+    private var nextZ : Int
 
     init {
         val max = region.maximumPoint

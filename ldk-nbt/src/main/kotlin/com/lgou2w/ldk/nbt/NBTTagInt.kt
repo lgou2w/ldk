@@ -31,8 +31,7 @@ class NBTTagInt : NBTTagNumber<Int> {
     constructor(name: String = "", value: Int = 0) : super(name, value)
     constructor(value: Int = 0) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_INT
+    override val type = NBTType.TAG_INT
 
     override fun read(input: DataInput) {
         value = input.readInt()

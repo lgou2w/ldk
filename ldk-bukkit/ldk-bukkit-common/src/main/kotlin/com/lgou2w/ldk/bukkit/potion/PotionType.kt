@@ -48,9 +48,9 @@ enum class PotionType(
     SLOW_FALLING("slow_falling", PotionEffectType.SLOW_FALLING, false, true),
     ;
 
-    override val value: String
+    override val value : String
         get() = type
 
-    fun isInstant() : Boolean
+    fun isInstant(): Boolean
             = effect != null && effect.isInstant()
 }

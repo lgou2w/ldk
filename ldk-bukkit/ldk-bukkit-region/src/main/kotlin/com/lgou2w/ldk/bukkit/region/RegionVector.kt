@@ -67,13 +67,13 @@ open class RegionVector(
         return RegionVector(x, y, z)
     }
 
-    val blockX: Int
+    val blockX : Int
         get() = Math.round(x).toInt()
 
-    val blockY: Int
+    val blockY : Int
         get() = Math.round(y).toInt()
 
-    val blockZ: Int
+    val blockZ : Int
         get() = Math.round(z).toInt()
 
     fun setX(x: Double): RegionVector

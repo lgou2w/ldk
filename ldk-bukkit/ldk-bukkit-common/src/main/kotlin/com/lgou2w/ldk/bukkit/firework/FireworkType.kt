@@ -42,6 +42,6 @@ enum class FireworkType : Valuable<Int> {
     BURST,
     ;
 
-    override val value: Int
+    override val value : Int
         get() = ordinal
 }

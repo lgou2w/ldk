@@ -21,5 +21,4 @@ import org.bukkit.plugin.Plugin
 open class SimpleCommandManager(
         plugin: Plugin,
         parser: CommandParser
-) : CommandManagerBase(plugin, parser) {
-}
+) : CommandManagerBase(plugin, parser)

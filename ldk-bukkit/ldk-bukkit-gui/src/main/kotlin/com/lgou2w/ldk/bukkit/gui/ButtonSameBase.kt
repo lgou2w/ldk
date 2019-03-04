@@ -25,13 +25,13 @@ open class ButtonSameBase(
 ) : ButtonBase(parent, values.first()),
         ButtonSame {
 
-    override var stack: ItemStack?
+    override var stack : ItemStack?
         get() = super.stack
         set(value) { values.forEach { parent.inventory.setItem(it, value) } }
 
-    final override val indexes: IntArray = values.clone()
+    final override val indexes : IntArray = values.clone()
 
-    final override val stacks: List<ItemStack?>
+    final override val stacks : List<ItemStack?>
         get() = values.map { parent.inventory.getItem(it) }
 
     final override fun isSame(index: Int): Boolean {

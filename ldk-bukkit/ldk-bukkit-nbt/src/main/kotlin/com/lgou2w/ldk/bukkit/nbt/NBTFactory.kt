@@ -165,7 +165,7 @@ object NBTFactory {
     }
 
     @JvmStatic
-    fun createInternal(type: NBTType, value: Any? = null) : Any {
+    fun createInternal(type: NBTType, value: Any? = null): Any {
         val instance = METHOD_NBT_CREATE.invoke(null, type.id.toByte())
         val valueAccessor = NBT_TYPE_FIELD(type)
         if (value != null)
@@ -173,15 +173,15 @@ object NBTFactory {
         return instance as Any
     }
 
-    private val NBT_END_INSTANCE: Any by lazy {
+    private val NBT_END_INSTANCE : Any by lazy {
         FuzzyReflect.of(MinecraftReflection.getMinecraftClass("NBTTagEnd"), true)
                 .useConstructorMatcher()
                 .resultAccessor()
                 .newInstance()
     }
 
-    private val NBT_TYPE_FIELD_ACCESSORS: MutableMap<NBTType, AccessorField<Any, Any>> = HashMap()
-    private val NBT_TYPE_FIELD: (NBTType) -> AccessorField<Any, Any> = { type ->
+    private val NBT_TYPE_FIELD_ACCESSORS : MutableMap<NBTType, AccessorField<Any, Any>> = HashMap()
+    private val NBT_TYPE_FIELD : (NBTType) -> AccessorField<Any, Any> = { type ->
         var accessor = NBT_TYPE_FIELD_ACCESSORS[type]
         if (accessor == null) {
             if (type == NBTType.TAG_END)

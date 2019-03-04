@@ -42,17 +42,17 @@ interface Language {
     @Throws(IOException::class)
     fun save()
 
-    operator fun get(key: String) : String?
+    operator fun get(key: String): String?
 
-    fun get(key: String, vararg args: Any?) : String?
+    fun get(key: String, vararg args: Any?): String?
 
-    fun getOr(key: String, def: String?) : String?
+    fun getOr(key: String, def: String?): String?
 
-    fun getOr(key: String, def: String?, vararg args: Any?) : String?
+    fun getOr(key: String, def: String?, vararg args: Any?): String?
 
     operator fun set(key: String, value: String)
 
-    fun has(key: String) : Boolean
+    fun has(key: String): Boolean
 
     fun clear()
 

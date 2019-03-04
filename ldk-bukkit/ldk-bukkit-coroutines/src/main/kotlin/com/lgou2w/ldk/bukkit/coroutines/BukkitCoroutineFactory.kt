@@ -45,7 +45,7 @@ open class BukkitCoroutineFactory(
         }
     }
 
-    fun launcher(initializeState: State, block: SuspendApplicator<BukkitCoroutineFactory>) : Job {
+    fun launcher(initializeState: State, block: SuspendApplicator<BukkitCoroutineFactory>): Job {
         return GlobalScope.launch(context) {
             try {
                 launching()
@@ -69,7 +69,7 @@ open class BukkitCoroutineFactory(
         delegate.currentTask?.cancel()
     }
 
-    suspend fun wait(tick: Long) : Long {
+    suspend fun wait(tick: Long): Long {
         return suspendCoroutine { continuation ->
             delegate.wait(tick) { value ->
                 continuation.resume(value)
@@ -77,7 +77,7 @@ open class BukkitCoroutineFactory(
         }
     }
 
-    suspend fun yield() : Long {
+    suspend fun yield(): Long {
         return suspendCoroutine { continuation ->
             delegate.yield() { value ->
                 continuation.resume(value)
@@ -101,7 +101,7 @@ open class BukkitCoroutineFactory(
         }
     }
 
-    suspend fun repeating(interval: Long) : Long {
+    suspend fun repeating(interval: Long): Long {
         return suspendCoroutine { continuation ->
             delegate = RepeatingBukkitCoroutineTask(plugin, interval)
             delegate.newState(State.currentState()) {

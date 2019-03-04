@@ -74,13 +74,13 @@ class FuzzyReflectFieldMatcher(
     }
 
     override fun resultAccessors(): List<AccessorField<Any, Any>>
-            = results().map { Accessors.ofField<Any, Any>(it) }
+            = results().map(Accessors::ofField)
 
     override fun resultAccessor(): AccessorField<Any, Any>
             = resultAccessorAs()
 
     override fun resultAccessorOrNull(): AccessorField<Any, Any>?
-            = resultOrNull()?.letIfNotNull { Accessors.ofField<Any, Any>(this) }
+            = resultOrNull()?.letIfNotNull(Accessors::ofField)
 
     /**
      * * Get the first valid result accessor for this fuzzy reflection matcher.

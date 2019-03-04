@@ -31,8 +31,11 @@ import com.lgou2w.ldk.nbt.NBTTagString
 import com.lgou2w.ldk.nbt.ofCompound
 import com.lgou2w.ldk.nbt.ofList
 import com.lgou2w.ldk.nbt.removeIf
+import org.junit.Assert
+import org.junit.Ignore
 import org.junit.Test
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class Test {
 
@@ -196,5 +199,37 @@ class Test {
             tag.getShort("Damage").toInt()
         }, { it == 10 })
         println(compound)
+    }
+
+    @Test
+    @Ignore // ignore
+    fun test_NBTServer() {
+        val file = File("C:/Users/MoonLake/AppData/Roaming/.minecraft/servers.dat")
+        val nbt = NBTStreams.readFileInfer(file)
+        println(nbt.toJson())
+    }
+
+    @Test
+    fun test_NBTLookup() {
+        val compound = ofCompound {
+            putString("id", "minecraft:diamond_sword")
+            put("tag", ofCompound {
+                put("Enchantments", ofList {
+                    addCompound(ofCompound {
+                        putString("id", "minecraft:sharpness")
+                        putShort("lvl", 5)
+                    })
+                    addCompound(ofCompound {
+                        putString("id", "minecraft:unbreaking")
+                        putShort("lvl", 3)
+                    })
+                })
+            })
+        }
+        Assert.assertTrue(compound.lookup("id") is NBTTagString)
+        Assert.assertTrue(compound.lookup("tag.Enchantments") is NBTTagList)
+        Assert.assertTrue(compound.lookup("tag.Enchantments[0]") is NBTTagCompound)
+        Assert.assertTrue(compound.lookupValue<String>("tag.Enchantments[1].id") is String)
+        Assert.assertTrue(compound.lookupValue<Short>("tag.Enchantments[1].lvl") is Short)
     }
 }

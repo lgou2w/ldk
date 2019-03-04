@@ -31,8 +31,7 @@ class NBTTagDouble : NBTTagNumber<Double> {
     constructor(name: String = "", value: Double = 0.0) : super(name, value)
     constructor(value: Double = 0.0) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_DOUBLE
+    override val type = NBTType.TAG_DOUBLE
 
     override fun read(input: DataInput) {
         value = input.readDouble()

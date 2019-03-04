@@ -105,7 +105,7 @@ class IteratorChain<T> private constructor(
          * @param iterators 迭代器数组
          */
         @JvmStatic
-        fun <T> concat(vararg iterators: Iterator<T>) : IteratorChain<T>
+        fun <T> concat(vararg iterators: Iterator<T>): IteratorChain<T>
                 = IteratorChain(iterators)
 
         /**
@@ -116,7 +116,7 @@ class IteratorChain<T> private constructor(
          * @param iterators 迭代器集合
          */
         @JvmStatic
-        fun <T> concat(iterators: Collection<Iterator<T>>) : IteratorChain<T>
+        fun <T> concat(iterators: Collection<Iterator<T>>): IteratorChain<T>
                 = IteratorChain(iterators.toTypedArray())
     }
 }

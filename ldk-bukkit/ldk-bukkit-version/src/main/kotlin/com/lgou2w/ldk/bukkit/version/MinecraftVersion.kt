@@ -26,7 +26,10 @@ class MinecraftVersion(
         major: Int,
         minor: Int,
         build: Int,
-        private val pre: Int? = null
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        val pre: Int? = null
 ) : Version(major, minor, build),
         Comparable<Version> {
 
@@ -45,7 +48,7 @@ class MinecraftVersion(
         private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC.\\s*([a-zA-Z0-9\\-.]+)\\s*\\)")
 
         @JvmStatic
-        var CURRENT: MinecraftVersion = UNKNOWN
+        var CURRENT : MinecraftVersion = UNKNOWN
             private set
             get() {
                 if (field == UNKNOWN) {
@@ -96,7 +99,7 @@ class MinecraftVersion(
         }
     }
 
-    val isPre: Boolean
+    val isPre : Boolean
         get() = pre != null
 
     override val version: String

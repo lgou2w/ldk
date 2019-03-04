@@ -113,7 +113,7 @@ object ChatFactory {
             = sendChatTo(Bukkit.getOnlinePlayers().toTypedArray(), component, action)
 
     @JvmStatic
-    fun tooltipItem(fancy: ChatComponentFancy, itemStack: ItemStack) : ChatComponentFancy {
+    fun tooltipItem(fancy: ChatComponentFancy, itemStack: ItemStack): ChatComponentFancy {
         val mojangson = ItemFactory.readItem(itemStack).toMojangson()
         return fancy.tooltipItem(mojangson)
     }

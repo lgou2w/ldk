@@ -40,7 +40,7 @@ class ScheduledThreadPoolDispatcherProvider(
         Thread(r, if (threads == 1) threadName else threadName + "-" + threadNo.incrementAndGet())
     }
 
-    override val dispatcher: ExecutorCoroutineDispatcher
+    override val dispatcher : ExecutorCoroutineDispatcher
             = Executors.newScheduledThreadPool(threads, createPoolThread).asCoroutineDispatcher()
 
     override fun close() {

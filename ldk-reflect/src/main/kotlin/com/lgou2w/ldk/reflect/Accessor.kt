@@ -28,7 +28,7 @@ import java.lang.reflect.Member
  * @see [AccessorField]
  * @author lgou2w
  */
-interface Accessor<out T> where T: AccessibleObject, T: Member {
+interface Accessor<out T> where T : AccessibleObject, T : Member {
 
     /**
      * * The source object of the accessor.
@@ -38,5 +38,5 @@ interface Accessor<out T> where T: AccessibleObject, T: Member {
      * @see [java.lang.reflect.Method]
      * @see [java.lang.reflect.Field]
      */
-    val source: T
+    val source : T
 }

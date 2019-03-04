@@ -36,10 +36,10 @@ class SQLiteConnectionFactory(
     private var connectionWrap : WrappedConnection? = null
     private val initialized = AtomicBoolean(false)
 
-    override val dataSource: DataSource
+    override val dataSource : DataSource
         get() = throw UnsupportedOperationException("The SQLite connection factory does not support data sources.")
 
-    override val implementationName: String = "SQLite"
+    override val implementationName : String = "SQLite"
 
     override fun initialize() {
         initializeDriver()

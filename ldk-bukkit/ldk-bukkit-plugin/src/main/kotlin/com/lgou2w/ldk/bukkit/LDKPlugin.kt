@@ -57,7 +57,7 @@ class LDKPlugin : PluginBase() {
         }
         logger.info("A lgou2w development kit of Bukkit.")
         logger.info("Open source: $GITHUB")
-        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${MinecraftBukkitVersion.CURRENT.version}")
+        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${safeCurrent.version}")
         try {
             Metrics(this)
         } catch (e: Exception) {
@@ -71,7 +71,12 @@ class LDKPlugin : PluginBase() {
         updater = null
     }
 
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+    override fun onCommand(
+            sender: CommandSender,
+            command: Command,
+            label: String,
+            args: Array<out String>
+    ): Boolean {
         val first = args.firstOrNull()
         return if (first == null || first.equals("help", true)) {
             sender.sendMessage(arrayOf(
@@ -88,7 +93,12 @@ class LDKPlugin : PluginBase() {
         }
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
+    override fun onTabComplete(
+            sender: CommandSender,
+            command: Command,
+            alias: String,
+            args: Array<out String>
+    ): List<String> {
         if (args.isEmpty())
             return Collections.emptyList()
         val lastWord = args.last()

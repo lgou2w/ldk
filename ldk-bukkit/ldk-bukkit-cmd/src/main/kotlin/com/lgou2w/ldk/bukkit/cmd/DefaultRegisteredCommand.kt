@@ -44,14 +44,14 @@ class DefaultRegisteredCommand(
     private val mChildren = ConcurrentHashMap<String, DefaultRegisteredCommand>(children)
     private val mExecutors = ConcurrentHashMap<String, DefaultCommandExecutor>(executors)
 
-    override val children: Map<String, RegisteredCommand> get() = Collections.unmodifiableMap(mChildren)
-    override val executors: Map<String, CommandExecutor> get() = Collections.unmodifiableMap(mExecutors)
+    override val children : Map<String, RegisteredCommand> get() = Collections.unmodifiableMap(mChildren)
+    override val executors : Map<String, CommandExecutor> get() = Collections.unmodifiableMap(mExecutors)
 
-    override var prefix: String = prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
+    override var prefix : String = prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
         set(value) { field = value.replace(COMMAND_PLACEHOLDER, name) }
 
-    override var feedback: CommandFeedback? = null
-    override var isAllowCompletion: Boolean = true
+    override var feedback : CommandFeedback? = null
+    override var isAllowCompletion : Boolean = true
 
     /**************************************************************************
      *
@@ -61,7 +61,7 @@ class DefaultRegisteredCommand(
 
     internal var isRegistered : Boolean = false
 
-    override val rootParent: RegisteredCommand?
+    override val rootParent : RegisteredCommand?
         get() = getRootParent(this)
 
     override fun registerChild(child: Any, forcibly: Boolean): Boolean {
@@ -118,7 +118,7 @@ class DefaultRegisteredCommand(
      *
      **************************************************************************/
 
-    private fun getRootParent(command: RegisteredCommand?) : RegisteredCommand? {
+    private fun getRootParent(command: RegisteredCommand?): RegisteredCommand? {
         val parent = command?.parent
         return if (parent == null)
             command
@@ -126,14 +126,14 @@ class DefaultRegisteredCommand(
             getRootParent(parent)
     }
 
-    private fun compareWithAliases(source: String) : Boolean {
+    private fun compareWithAliases(source: String): Boolean {
         var result = source == name
         if (!result)
             result = aliases.contains(source)
         return result
     }
 
-    override fun execute(sender: CommandSender, label: String, args: Array<out String>) : Boolean {
+    override fun execute(sender: CommandSender, label: String, args: Array<out String>): Boolean {
         if (!testPermissionIfFailed(sender, permission) {
                     (feedback ?: manager.globalFeedback)
                         .onPermission(sender, label, this, null, args, it)
@@ -154,7 +154,11 @@ class DefaultRegisteredCommand(
         }
     }
 
-    private fun invokeExecutor(executor: DefaultCommandExecutor?, sender: CommandSender, args: Array<out String>) : Boolean {
+    private fun invokeExecutor(
+            executor: DefaultCommandExecutor?,
+            sender: CommandSender,
+            args: Array<out String>
+    ): Boolean {
         val commandExecutor = executor ?: findExecutor(args.first())
         val arguments = if (args.isEmpty()) emptyArray() else pollArgument(args)
         if (commandExecutor != null && compareWithAliases(commandExecutor.name) && args.isNotEmpty()) {
@@ -188,7 +192,7 @@ class DefaultRegisteredCommand(
             sender: CommandSender,
             args: Array<out String>,
             parameterValues: MutableList<Any?>
-    ) : Boolean {
+    ): Boolean {
         if (!testPermissionIfFailed(sender, executor.permission) {
                     feedback.onPermission(sender, name, this, executor, args, it) }) {
             return false
@@ -246,7 +250,7 @@ class DefaultRegisteredCommand(
         }
     }
 
-    private fun pollArgument(args: Array<out String>) : Array<out String> {
+    private fun pollArgument(args: Array<out String>): Array<out String> {
         return if (args.size <= 1)
             emptyArray()
         else
@@ -281,7 +285,7 @@ class DefaultRegisteredCommand(
         }
     }
 
-    private fun invokeExecutorComplete(sender: CommandSender, args: Array<out String>) : List<String> {
+    private fun invokeExecutorComplete(sender: CommandSender, args: Array<out String>): List<String> {
         val executor = findExecutor(args.first())
         return if (executor == null || !testPermissionIfFailed(sender, executor.permission))
             emptyList()

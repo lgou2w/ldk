@@ -26,7 +26,7 @@ enum class State {
 
     companion object {
         @JvmStatic
-        fun currentState() : State
+        fun currentState(): State
                 = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
     }
 }

@@ -42,40 +42,40 @@ interface Region : ConfigurationSerializable, Iterable<RegionVectorBlock> {
 
     val length : Int
 
-    fun contains(x: Double, y: Double, z: Double) : Boolean
+    fun contains(x: Double, y: Double, z: Double): Boolean
 
-    fun contains(vector: RegionVector) : Boolean
+    fun contains(vector: RegionVector): Boolean
 
-    fun contains(location: Location) : Boolean
+    fun contains(location: Location): Boolean
 
-    fun contains(entity: Entity) : Boolean
+    fun contains(entity: Entity): Boolean
 
-    fun contains(block: Block) : Boolean
+    fun contains(block: Block): Boolean
 }
 
-fun Location.toRegionVector() : RegionVector
+fun Location.toRegionVector(): RegionVector
         = RegionVector(x, y, z)
 
-fun Location.toRegionVectorBlock() : RegionVectorBlock
+fun Location.toRegionVectorBlock(): RegionVectorBlock
         = RegionVectorBlock(x, y, z)
 
-fun Location.toRegionVector2D() : RegionVector2D
+fun Location.toRegionVector2D(): RegionVector2D
         = RegionVector2D(x, z)
 
-fun World.createRegionCuboid(pos1: RegionVector, pos2: RegionVector) : RegionCuboid
+fun World.createRegionCuboid(pos1: RegionVector, pos2: RegionVector): RegionCuboid
         = RegionCuboid(this, pos1, pos2)
 
-fun World.createRegionCylinder(center2D: RegionVector2D, radius: RegionVector2D) : RegionCylinder
+fun World.createRegionCylinder(center2D: RegionVector2D, radius: RegionVector2D): RegionCylinder
         = RegionCylinder(this, center2D, radius)
 
-fun World.createRegionCylinder(center2D: RegionVector2D, radius: RegionVector2D, minY: Int, maxY: Int) : RegionCylinder
+fun World.createRegionCylinder(center2D: RegionVector2D, radius: RegionVector2D, minY: Int, maxY: Int): RegionCylinder
         = RegionCylinder(this, center2D, radius, minY, maxY)
 
-fun World.createRegionEllipsoid(center: RegionVector, radius: RegionVector) : RegionEllipsoid
+fun World.createRegionEllipsoid(center: RegionVector, radius: RegionVector): RegionEllipsoid
         = RegionEllipsoid(this, center, radius)
 
 @JvmOverloads
-fun Region.createWorldBorder(block: Applicator<WorldBorder> = {}) : WorldBorder {
+fun Region.createWorldBorder(block: Applicator<WorldBorder> = {}): WorldBorder {
     val border = world.worldBorder
     border.center = center.toLocation(world)
     border.setSize(length.toDouble(), 0L)

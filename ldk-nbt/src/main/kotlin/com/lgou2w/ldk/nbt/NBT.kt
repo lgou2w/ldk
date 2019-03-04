@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.nbt
 
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
@@ -36,7 +37,7 @@ interface NBT<T> : Cloneable {
      * * The name of this NBT tag.
      * * 此 NBT 标签的名称.
      */
-    val name: String
+    val name : String
 
     /**
      * * The type of this NBT tag.
@@ -44,19 +45,19 @@ interface NBT<T> : Cloneable {
      *
      * @see [NBTType]
      */
-    val type: NBTType
+    val type : NBTType
 
     /**
      * * The type id of this NBT tag.
      * * 此 NBT 标签的类型 Id.
      */
-    val typeId: Int
+    val typeId : Int
 
     /**
      * * The value of this NBT tag.
      * * 此 NBT 标签的值.
      */
-    var value: T
+    var value : T
 
     /**
      * * Reads the NBT tag from the given [input] data input.
@@ -202,8 +203,8 @@ interface NBT<T> : Cloneable {
 @JvmOverloads
 inline fun ofList(
         name: String = "",
-        block: NBTTagList.() -> Unit = {}
-) : NBTTagList {
+        block: Applicator<NBTTagList> = {}
+): NBTTagList {
     val list = NBTTagList(name)
     list.block()
     return list
@@ -222,8 +223,8 @@ inline fun ofList(
 @JvmOverloads
 inline fun ofCompound(
         name: String = "",
-        block: NBTTagCompound.() -> Unit = {}
-) : NBTTagCompound {
+        block: Applicator<NBTTagCompound> = {}
+): NBTTagCompound {
     val compound = NBTTagCompound(name)
     compound.block()
     return compound
@@ -232,7 +233,11 @@ inline fun ofCompound(
 fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?)
         = removeIf<T, T>(key, { it }, predicate)
 
-fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?): NBTTagCompound {
+fun <T, R> NBTTagCompound.removeIf(
+        key: String,
+        transform: Function<T, R>,
+        predicate: Predicate<R>?
+): NBTTagCompound {
     if (predicate == null) {
         remove(key)
     } else {
@@ -255,7 +260,10 @@ fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R
 fun <T> NBTTagList.removeIfIndexed(block: BiFunction<Int, T, Boolean>?)
         = removeIfIndexed<T, T>({ it }, block)
 
-fun <T, R> NBTTagList.removeIfIndexed(transform: Function<T, R>, block: BiFunction<Int, R, Boolean>?): NBTTagList {
+fun <T, R> NBTTagList.removeIfIndexed(
+        transform: Function<T, R>,
+        block: BiFunction<Int, R, Boolean>?
+): NBTTagList {
     if (block == null) {
         clear()
     } else {

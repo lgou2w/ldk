@@ -27,7 +27,7 @@ interface Button {
 
     val index : Int
 
-    var stack: ItemStack?
+    var stack : ItemStack?
 
     var onClicked : Consumer<ButtonEvent>?
 

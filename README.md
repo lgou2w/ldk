@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3%2b-brightgreen.svg"></a>
+<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3.21-blue.svg"></a>
 <a href="https://travis-ci.org/lgou2w/ldk"><img src="https://travis-ci.org/lgou2w/ldk.svg?branch=develop" /></a>
 <a href="https://codebeat.co/projects/github-com-lgou2w-ldk-develop"><img alt="codebeat badge" src="https://codebeat.co/badges/7c8fccc7-6096-4f12-81e3-98b1f39a3875" /></a>
 <a href="https://jitpack.io/#lgou2w/ldk"><img src="https://jitpack.io/v/lgou2w/ldk.svg" /></a>
@@ -140,6 +140,13 @@ git clone https://github.com/lgou2w/ldk.git
 cd ldk
 mvn clean package
 ```
+
+# Donates
+
+Thank you very much for your donate.
+
+* [LywLover](https://github.com/LywLover)
+* [EnTIv](https://github.com/EnTIv)
 
 # License
 

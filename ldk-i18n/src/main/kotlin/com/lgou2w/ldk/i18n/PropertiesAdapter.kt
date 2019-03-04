@@ -26,7 +26,7 @@ import java.util.Properties
 
 class PropertiesAdapter : LanguageAdapter {
 
-    override val fileExtension: String = "properties"
+    override val fileExtension : String = "properties"
 
     override fun adapt(input: InputStream): Map<String, String> {
         val properties = LinkedProperties()
@@ -48,7 +48,7 @@ class PropertiesAdapter : LanguageAdapter {
         companion object {
             private const val serialVersionUID = -4334218671926846212L
         }
-        override val keys: MutableSet<Any>
+        override val keys : MutableSet<Any>
                 = Collections.synchronizedSet(LinkedHashSet<Any>())
         override fun keys(): Enumeration<Any> {
             return Collections.enumeration(keys)

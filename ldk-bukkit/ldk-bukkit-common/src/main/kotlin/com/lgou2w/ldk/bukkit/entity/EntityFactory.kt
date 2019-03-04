@@ -105,7 +105,7 @@ object EntityFactory {
     }
 
     @JvmStatic
-    fun readTag(entity: Entity) : NBTTagCompound {
+    fun readTag(entity: Entity): NBTTagCompound {
         val nmsEntity = asNMS(entity)
         val handle = NBTFactory.createInternal(NBTType.TAG_COMPOUND)
         val nms = METHOD_ENTITY_SAVE_TAG.invoke(nmsEntity, handle)
@@ -132,7 +132,7 @@ object EntityFactory {
     }
 
     @JvmStatic
-    fun getItemInHand(entity: LivingEntity) : ItemStack? {
+    fun getItemInHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
             getItemInMainHand(entity)
         else
@@ -150,7 +150,7 @@ object EntityFactory {
     }
 
     @JvmStatic
-    fun getItemInMainHand(entity: LivingEntity) : ItemStack? {
+    fun getItemInMainHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
             entity.equipment.itemInMainHand
         else
@@ -166,7 +166,7 @@ object EntityFactory {
     }
 
     @JvmStatic
-    fun getItemInOffHand(entity: LivingEntity) : ItemStack? {
+    fun getItemInOffHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
             entity.equipment.itemInOffHand
         else

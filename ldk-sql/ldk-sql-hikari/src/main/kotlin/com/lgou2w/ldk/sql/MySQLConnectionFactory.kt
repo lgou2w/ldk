@@ -22,8 +22,8 @@ class MySQLConnectionFactory(
         configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
-    override val implementationName: String = "MySQL"
-    override val driverClass: String = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+    override val implementationName : String = "MySQL"
+    override val driverClass : String = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
 
     override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
         config.addDataSourceProperty("cachePrepStmts", "true")

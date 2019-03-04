@@ -23,7 +23,7 @@ import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import java.util.*
+import java.util.HashMap
 
 enum class Particle(
         private val internal: Int,
@@ -116,7 +116,7 @@ enum class Particle(
             equivalent: Int
     ) : this(equivalent, legacy, legacy)
 
-    override val value: Int
+    override val value : Int
         get() = if (MinecraftBukkitVersion.isV113OrLater)
             @Suppress("DEPRECATION")
             Math.abs(internal)
@@ -145,11 +145,11 @@ enum class Particle(
         }
 
         @JvmStatic
-        fun fromId(id: Int) : Particle
+        fun fromId(id: Int): Particle
                 = ID_MAP[id] ?: throw IllegalArgumentException("Unsupported particle effect type: $id")
 
         @JvmStatic
-        fun fromName(name: String) : Particle
+        fun fromName(name: String): Particle
                 = NAME_MAP[name] ?: throw IllegalArgumentException("Unsupported particle effect type: $name")
     }
 

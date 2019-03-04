@@ -28,7 +28,7 @@ abstract class HikariConnectionFactory(
 
     private var hikari : HikariDataSource? = null
 
-    override val dataSource: HikariDataSource
+    override val dataSource : HikariDataSource
         get() = hikari.notNull("Connection factory has not been initialized.")
 
     /**
@@ -74,7 +74,7 @@ abstract class HikariConnectionFactory(
         }
     }
 
-    fun testSession() : HikariTestSession {
+    fun testSession(): HikariTestSession {
         var success = true
         val start = System.currentTimeMillis()
         try {

@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack
 
 interface ButtonSame : Button {
 
-    val indexes: IntArray
+    val indexes : IntArray
 
     val stacks : List<ItemStack?>
 

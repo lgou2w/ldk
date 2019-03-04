@@ -174,7 +174,7 @@ object ParticleFactory {
             count: Int,
             longDistance: Boolean,
             data: Any? = null
-    ) : Any {
+    ): Any {
         return if (MinecraftBukkitVersion.isV113OrLater) {
             createPacketFresh(particle, x, y, z, offsetX, offsetY, offsetZ, speed, count, longDistance, data)
         } else {
@@ -195,7 +195,7 @@ object ParticleFactory {
             count: Int,
             longDistance: Boolean,
             data: Any?
-    ) : Any {
+    ): Any {
         val nms = METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, particle.type)
         var overrideOffsetX = offsetX
         val param = if (particle == Particle.ITEM) {
@@ -256,7 +256,7 @@ object ParticleFactory {
             count: Int,
             longDistance: Boolean,
             data: Any?
-    ) : Any {
+    ): Any {
         val nms = METHOD_GET_PARTICLE_LEGACY.notNull().invoke(null, particle.value)
                   ?: throw IllegalArgumentException("This particle $particle is not supported by the server version.")
         var overrideOffsetX = offsetX

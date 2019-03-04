@@ -37,7 +37,7 @@ class FixedThreadPoolDispatcherProvider(
         Thread(r, if (threads == 1) threadName else threadName + "-" + threadNo.incrementAndGet())
     }
 
-    override val dispatcher: ExecutorCoroutineDispatcher
+    override val dispatcher : ExecutorCoroutineDispatcher
             = Executors.newFixedThreadPool(threads, createPoolThread).asCoroutineDispatcher()
 
     override fun close() {

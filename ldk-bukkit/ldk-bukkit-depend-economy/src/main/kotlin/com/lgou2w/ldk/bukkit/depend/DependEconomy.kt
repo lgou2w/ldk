@@ -212,7 +212,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         }
     }
 
-    val banks: List<String>
+    val banks : List<String>
         get() = economy.banks
 
     companion object {
@@ -221,7 +221,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         @JvmField val NULL = Response(.0, .0, Response.Type.NULL, null)
     }
 
-    private fun EconomyResponse?.toAdapter() : Response {
+    private fun EconomyResponse?.toAdapter(): Response {
         return  if (this?.type == null) {
             NULL
         } else {

@@ -26,5 +26,4 @@ package com.lgou2w.ldk.bukkit.particle
  *
  * @author lgou2w
  */
-data class ParticleNote(val value: Int) {
-}
+data class ParticleNote(val value: Int)

@@ -16,5 +16,4 @@
 
 package com.lgou2w.ldk.bukkit
 
-interface Plugin : org.bukkit.plugin.Plugin, PluginArchive {
-}
+interface Plugin : org.bukkit.plugin.Plugin, PluginArchive

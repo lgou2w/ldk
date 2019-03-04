@@ -55,7 +55,7 @@ abstract class ClassSource {
          * @param classLoader 类加载器
          */
         @JvmStatic
-        fun fromClassLoader(classLoader: ClassLoader): ClassSource = object: ClassSource() {
+        fun fromClassLoader(classLoader: ClassLoader): ClassSource = object : ClassSource() {
             override fun loadClass(name: String): Class<*>
                     = classLoader.loadClass(name)
         }
@@ -68,7 +68,7 @@ abstract class ClassSource {
          * @param map 键值对 Map
          */
         @JvmStatic
-        fun fromMap(map: Map<String, Class<*>>): ClassSource = object: ClassSource() {
+        fun fromMap(map: Map<String, Class<*>>): ClassSource = object : ClassSource() {
             override fun loadClass(name: String): Class<*>
                     = map[name] ?: throw ClassNotFoundException("The specified class does not exist in this Map.")
         }

@@ -25,6 +25,6 @@ class BukkitDispatcherProvider(
         state: State
 ) : DispatcherProvider {
 
-    override val dispatcher: CoroutineContext
+    override val dispatcher : CoroutineContext
             = BukkitDispatcher(plugin, state)
 }

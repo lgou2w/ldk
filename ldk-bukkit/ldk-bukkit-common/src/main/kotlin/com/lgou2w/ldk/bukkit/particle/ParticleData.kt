@@ -18,5 +18,4 @@ package com.lgou2w.ldk.bukkit.particle
 
 import org.bukkit.Material
 
-data class ParticleData(val type: Material, val data: Int) {
-}
+data class ParticleData(val type: Material, val data: Int)
