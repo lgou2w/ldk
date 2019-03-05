@@ -1103,6 +1103,12 @@ enum class XMaterial {
     }
 }
 
+// See: https://github.com/lgou2w/ldk/issues/61
+/**
+ * @since LDK 0.1.8-rc
+ */
+typealias Materials = XMaterial
+
 /**
  * @since LDK 0.1.8-rc
  */
