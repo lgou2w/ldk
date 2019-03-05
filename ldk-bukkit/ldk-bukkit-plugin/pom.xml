@@ -18,10 +18,10 @@
     </properties>
 
     <repositories>
-        <!-- bStats.org -->
+        <!-- bStats.org - CodeMC-repo -->
         <repository>
-            <id>bstats-repo</id>
-            <url>http://repo.bstats.org/content/repositories/releases/</url>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
     </repositories>
 
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.2</version>
+            <version>1.4</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
