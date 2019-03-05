@@ -56,6 +56,7 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -959,8 +960,9 @@ enum class XMaterial {
     fun isSameType(itemStack: ItemStack): Boolean
             = isSameType(this, itemStack)
 
+    @JvmOverloads
     @Throws(UnsupportedOperationException::class)
-    fun createStack(count: Int): ItemStack
+    fun createStack(count: Int = 1): ItemStack
             = createStack(this, count)
 
 //    SEE : ldk-bukkit-common / com.lgou2w.ldk.bukkit.item.ItemKt
@@ -970,17 +972,6 @@ enum class XMaterial {
 //            = toBukkit().builder(count, durability, block)
 
     companion object {
-
-        private const val V1_13_VERSION_CHECK_TYPE = "RED_WOOL"
-
-        @JvmStatic
-        private val isV113OrLater: Boolean by lazy {
-            try {
-                Material.matchMaterial(V1_13_VERSION_CHECK_TYPE) != null
-            } catch (e: IllegalArgumentException) {
-                false
-            }
-        }
 
         /**
          * ### Before 1.13 <=> TYPE:DATA
@@ -1057,7 +1048,7 @@ enum class XMaterial {
         fun isSameType(xMaterial: XMaterial, itemStack: ItemStack): Boolean {
             val bukkit = toBukkit(xMaterial)
             val type = itemStack.type
-            return if (isV113OrLater) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 bukkit == type
             } else {
                 // Before version 1.13
@@ -1072,7 +1063,7 @@ enum class XMaterial {
         @Throws(UnsupportedOperationException::class)
         fun createStack(xMaterial: XMaterial, count: Int = 1): ItemStack {
             val type = toBukkit(xMaterial)
-            return if (isV113OrLater) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 ItemStack(type, count)
             } else {
                 // Before version 1.13
