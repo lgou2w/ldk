@@ -1027,13 +1027,13 @@ enum class XMaterial {
                 try {
                     matched = XMaterial.valueOf(typeKey)
                     val validate = matched.toBukkit()
-                    if (validate.name.toUpperCase() != typeKey)
+                    if (matched.name != validate.name && !matched.aliases.any { it == validate.name })
                         matched = null
-                } catch (e: IllegalArgumentException) {
+                } catch (e: Exception) {
                     matched = null
                 }
                 if (matched == null || (data != null && matched.data != data))
-                    matched = XMaterial.values().find { it.aliases.contains(typeKey) && (data == null || it.data == data) }
+                    matched = XMaterial.values().find { it.aliases.contains(typeKey) && it.data == data ?: 0 }
                 return if (matched != null) {
                     LOOKUPS[lookupKey] = matched
                     matched
