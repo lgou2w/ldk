@@ -21,6 +21,14 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.Locale
 
+/**
+ * ## LanguageManagerBase (语言管理器基础)
+ *
+ * @see [LanguageManager]
+ * @see [SimpleLanguageManager]
+ * @see [DynamicLanguageManager]
+ * @author lgou2w
+ */
 abstract class LanguageManagerBase(
         override val baseName: String,
         override val adapter: LanguageAdapter,
@@ -29,12 +37,23 @@ abstract class LanguageManagerBase(
 
     override var globalFormatter : Formatter? = null
 
+    /**
+     * * Check the given local [locale] and get the name.
+     * * 检查给定的本地 [locale] 并获取名称.
+     */
     protected open fun checkName(locale: Locale): String {
         val fileExtension = adapter.fileExtension.toLowerCase(Locale.US)
         val name = if (locale != Locale.ROOT) "_$locale" else ""
         return "$baseName$name.$fileExtension"
     }
 
+    /**
+     * * Loads a language key-value pair map from the given local [locale].
+     * * 从给定的本地 [locale] 加载语言键值对映射.
+     *
+     * @throws [IOException] I/O
+     */
+    @Throws(IOException::class)
     protected fun loadEntries(locale: Locale): Map<String, String> {
         val name = checkName(locale)
         var input : InputStream? = null

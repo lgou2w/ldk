@@ -18,6 +18,13 @@ package com.lgou2w.ldk.sql
 
 import com.zaxxer.hikari.HikariConfig
 
+/**
+ * ## MySQLConnectionFactory (MySQL 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @see [HikariConnectionFactory]
+ * @author lgou2w
+ */
 class MySQLConnectionFactory(
         configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {

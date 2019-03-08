@@ -85,6 +85,11 @@ open class Version(
         private val VERSION_PATTERN = Pattern.compile("^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<build>\\d+)$")
 
         /**
+         * * Parse the version object from the given version string [versionOnly].
+         * * 从给定的版本字符串 [versionOnly] 解析版本对象.
+         *
+         * @throws [IllegalArgumentException] If the version string is not in `x.y.z` format.
+         * @throws [IllegalArgumentException] 如果版本字符串不是 `x.y.z` 格式
          * @since LDK 0.1.7-rc6
          */
         @JvmStatic
@@ -101,6 +106,9 @@ open class Version(
         }
 
         /**
+         * * Safely parsing the version object from the given version string [versionOnly], return `null` if the parsing failed.
+         * * 安全的从给定的版本字符串 [versionOnly] 解析版本对象, 如果解析失败则返回 `null`.
+         *
          * @since LDK 0.1.7-rc6
          */
         @JvmStatic

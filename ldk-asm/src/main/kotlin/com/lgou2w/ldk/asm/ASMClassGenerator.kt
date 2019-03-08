@@ -16,7 +16,17 @@
 
 package com.lgou2w.ldk.asm
 
+/**
+ * ## ASMClassGenerator (字节码类生成器)
+ *
+ * @author lgou2w
+ * @since LDK 0.1.7-rc2
+ */
 interface ASMClassGenerator {
 
+    /**
+     * * Generate key-value pair mappings for class name and bytecode.
+     * * 生成类名和字节码的键值对映射.
+     */
     fun generate(): Map<String, ByteArray>
 }

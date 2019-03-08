@@ -18,6 +18,13 @@ package com.lgou2w.ldk.sql
 
 import java.util.Collections
 
+/**
+ * * Build the HikariCP configuration object.
+ * * 构建 HikariCP 配置对象.
+ *
+ * @see [HikariConfiguration]
+ * @see [HikariConfigurationBuilder]
+ */
 fun buildConfiguration(block: HikariConfigurationBuilder.() -> Unit) : HikariConfiguration {
     val builder = HikariConfigurationBuilder().also(block)
     return HikariConfiguration(

@@ -18,7 +18,18 @@ package com.lgou2w.ldk.i18n
 
 import java.util.Locale
 
+/**
+ * ## Formatter (格式化)
+ *
+ * @see [StringFormatter]
+ * @see [MessageFormatter]
+ * @author lgou2w
+ */
 interface Formatter {
 
+    /**
+     * * Format the given value [value] with locale [locale] and argument [args].
+     * * 将给定的值 [value] 用本地化 [locale] 和参数 [args] 进行格式化处理.
+     */
     fun format(locale: Locale, value: String, vararg args: Any?) : String
 }

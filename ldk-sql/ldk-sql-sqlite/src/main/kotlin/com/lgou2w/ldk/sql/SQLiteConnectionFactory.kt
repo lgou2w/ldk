@@ -28,8 +28,22 @@ import java.util.Properties
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.sql.DataSource
 
+/**
+ * ## SQLiteConnectionFactory (SQLite 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @author lgou2w
+ */
 class SQLiteConnectionFactory(
+        /**
+         * * The data file path of this connection factory.
+         * * 此连接工厂的数据文件路径.
+         */
         val file: Path,
+        /**
+         * * The properties of this connection factory.
+         * * 此连接工厂的属性.
+         */
         val properties: Properties = Properties()
 ) : ConnectionFactory {
 

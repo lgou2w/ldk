@@ -18,6 +18,13 @@ package com.lgou2w.ldk.i18n
 
 import java.util.Locale
 
+/**
+ * ## StringFormatter (字符串格式化)
+ *
+ * @see [Formatter]
+ * @see [String.format]
+ * @author lgou2w
+ */
 class StringFormatter : Formatter {
 
     override fun format(locale: Locale, value: String, vararg args: Any?): String {

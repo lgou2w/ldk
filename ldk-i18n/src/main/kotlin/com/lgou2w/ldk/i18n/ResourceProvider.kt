@@ -19,7 +19,17 @@ package com.lgou2w.ldk.i18n
 import java.io.FileNotFoundException
 import java.io.InputStream
 
+/**
+ * ## ResourceProvider (资源语言提供者)
+ *
+ * @see [LanguageProvider]
+ * @author lgou2w
+ */
 open class ResourceProvider(
+        /**
+         * * The class loader for this resource language provider.
+         * * 此资源语言提供者的类加载器.
+         */
         val classLoader: ClassLoader = ResourceProvider::class.java.classLoader
 ) : LanguageProvider {
 

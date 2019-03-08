@@ -16,6 +16,14 @@
 
 package com.lgou2w.ldk.sql
 
+/**
+ * ## HikariConfiguration (HikariCP 配置)
+ *
+ * @see [buildConfiguration]
+ * @see [HikariConfigurationBuilder]
+ * @see [HikariConnectionFactory]
+ * @author lgou2w
+ */
 data class HikariConfiguration(
         val poolName: String?,
         val address: String,

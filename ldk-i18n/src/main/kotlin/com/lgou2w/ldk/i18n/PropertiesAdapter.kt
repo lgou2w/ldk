@@ -24,6 +24,12 @@ import java.util.Collections
 import java.util.Enumeration
 import java.util.Properties
 
+/**
+ * ## PropertiesAdapter (属性文件适配器)
+ *
+ * @see [LanguageAdapter]
+ * @author lgou2w
+ */
 class PropertiesAdapter : LanguageAdapter {
 
     override val fileExtension : String = "properties"
