@@ -21,7 +21,17 @@ import org.bukkit.plugin.Plugin
 import java.io.FileNotFoundException
 import java.io.InputStream
 
+/**
+ * ## PluginResourceProvider (插件资源语言提供者)
+ *
+ * @see [ResourceProvider]
+ * @author lgou2w
+ */
 class PluginResourceProvider(
+        /**
+         * * Plugin object for this plugin resource language provider.
+         * * 此插件资源语言提供者的插件对象.
+         */
         val plugin: Plugin
 ) : ResourceProvider(PluginResourceProvider::class.java.classLoader) {
 

@@ -63,6 +63,12 @@ import org.bukkit.inventory.ItemStack
 import java.util.Collections
 import java.util.Locale
 
+/**
+ * ## XMaterial (材料)
+ *
+ * @see [Material]
+ * @author Hex_27, 25, lgou2w
+ */
 enum class XMaterial {
 
     // TODO Minecraft 1.14
@@ -952,14 +958,36 @@ enum class XMaterial {
         this.data = data
     }
 
+    /**
+     * * Convert this material compatible enum to Bukkit material.
+     * * 将此材料兼容枚举转换为 Bukkit 的材料.
+     *
+     * @see [Material]
+     * @throws [UnsupportedOperationException] If the material is not compatible.
+     * @throws [UnsupportedOperationException] 如果材料不兼容.
+     */
     @Throws(UnsupportedOperationException::class)
     fun toBukkit(): Material
             = toBukkit(this)
 
+    /**
+     * * Compare the given [itemStack] with this material for the same material type.
+     * * 将给定的物品栈 [itemStack] 和此材料对比是否为相同的材料类型.
+     *
+     * @throws [UnsupportedOperationException] If the material is not compatible.
+     * @throws [UnsupportedOperationException] 如果材料不兼容.
+     */
     @Throws(UnsupportedOperationException::class)
     fun isSameType(itemStack: ItemStack): Boolean
             = isSameType(this, itemStack)
 
+    /**
+     * * Create this item stack object with the given [count].
+     * * 将此材料用给定的数量 [count] 创建物品栈对象.
+     *
+     * @throws [UnsupportedOperationException] If the material is not compatible.
+     * @throws [UnsupportedOperationException] 如果材料不兼容.
+     */
     @JvmOverloads
     @Throws(UnsupportedOperationException::class)
     fun createStack(count: Int = 1): ItemStack
@@ -984,6 +1012,13 @@ enum class XMaterial {
         @JvmStatic
         private val LOOKUPS : MutableMap<String, XMaterial> = Collections.synchronizedMap(HashMap())
 
+        /**
+         * * Converts a given material compatible enumeration [xMaterial] to Bukkit material.
+         * * 将给定的材料兼容枚举 [xMaterial] 转换为 Bukkit 的材料.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
         fun toBukkit(xMaterial: XMaterial): Material {
@@ -992,6 +1027,13 @@ enum class XMaterial {
                    ?: throw UnsupportedOperationException("Internal error, unsupported '$xMaterial' material type.")
         }
 
+        /**
+         * * Convert a given [material] to a material compatible enumeration.
+         * * 将给定的材料 [material] 转换为材料兼容枚举.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
         fun fromBukkit(material: Material): XMaterial {
@@ -999,6 +1041,10 @@ enum class XMaterial {
                    ?: throw UnsupportedOperationException("Internal error, unsupported '$material' material type.")
         }
 
+        /**
+         * * Search for material compatible enumerations from the given [material]. If found, return `null`.
+         * * 从给定的材料 [material] 搜索材料兼容枚举. 如果为找到则返回 `null`.
+         */
         @JvmStatic
         fun searchByBukkit(material: Material): XMaterial? {
             val type = material.name.toUpperCase(Locale.US)
@@ -1009,9 +1055,11 @@ enum class XMaterial {
             }
         }
 
+         // Before 1.13 <=> `TYPE:DATA`, case: `WOOL:15` == `BLACK_WOOL`
+         // After 1.13 <=> `TYPE`, case: `BLACK_WOOL`, `RED_BED`
         /**
-         * * Before 1.13 <=> `TYPE:DATA`, case: `WOOL:15` == `BLACK_WOOL`
-         * * After 1.13 <=> `TYPE`, case: `BLACK_WOOL`, `RED_BED`
+         * * Search for material compatible enumerations from the given [type] name. If found, return `null`.
+         * * 从给定的类型名称 [type] 搜索材料兼容枚举. 如果为找到则返回 `null`.
          */
         @JvmStatic
         fun searchByType(type: String): XMaterial? {
@@ -1043,6 +1091,13 @@ enum class XMaterial {
             }
         }
 
+        /**
+         * * Compare the given [xMaterial] with the [itemStack] for the same material type.
+         * * 将给定的材料 [xMaterial] 和物品栈 [itemStack] 对比是否为相同的材料类型.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
         fun isSameType(xMaterial: XMaterial, itemStack: ItemStack): Boolean {
@@ -1058,6 +1113,13 @@ enum class XMaterial {
             }
         }
 
+        /**
+         * * Creates the item stack object for the given [xMaterial] and the given [count].
+         * * 将给定的材料 [xMaterial] 和给定的数量 [count] 创建物品栈对象.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @JvmOverloads
         @Throws(UnsupportedOperationException::class)

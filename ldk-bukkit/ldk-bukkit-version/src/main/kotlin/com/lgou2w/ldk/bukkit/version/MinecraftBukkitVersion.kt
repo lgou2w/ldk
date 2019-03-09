@@ -23,6 +23,13 @@ import java.util.NavigableMap
 import java.util.TreeMap
 import java.util.regex.Pattern
 
+/**
+ * ## MinecraftBukkitVersion (Minecraft Bukkit 版本)
+ *
+ * @see [Version]
+ * @see [Comparable]
+ * @author lgou2w
+ */
 class MinecraftBukkitVersion(
         major: Int,
         minor: Int,
@@ -48,6 +55,10 @@ class MinecraftBukkitVersion(
         @JvmStatic
         private val VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$")
 
+        /**
+         * * Get the current version of the Minecraft Bukkit implementation of the Bukkit server.
+         * * 获取当前 Bukkit 服务器的 Minecraft Bukkit 实现版本.
+         */
         @JvmStatic
         var CURRENT : MinecraftBukkitVersion = UNKNOWN
             private set
@@ -68,22 +79,41 @@ class MinecraftBukkitVersion(
         // lazy
 
         /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.9` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.9` 或之后的实现版本.
+         *
          * @since LDK 0.1.8-rc
          */
         @JvmStatic val isV19OrLater by lazy { CURRENT.isOrLater(V1_9_R1) }
+
         /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.10` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.10` 或之后的实现版本.
+         *
          * @since LDK 0.1.8-rc
          */
         @JvmStatic val isV110OrLater by lazy { CURRENT.isOrLater(V1_10_R1) }
+
         /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.11` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.11` 或之后的实现版本.
+         *
          * @since LDK 0.1.8-rc
          */
         @JvmStatic val isV111OrLater by lazy { CURRENT.isOrLater(V1_11_R1) }
+
         /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.12` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.12` 或之后的实现版本.
+         *
          * @since LDK 0.1.8-rc
          */
         @JvmStatic val isV112OrLater by lazy { CURRENT.isOrLater(V1_12_R1) }
+
         /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.13` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.16` 或之后的实现版本.
+         *
          * @since LDK 0.1.8-rc
          */
         @JvmStatic val isV113OrLater by lazy { CURRENT.isOrLater(V1_13_R1) }
@@ -158,6 +188,10 @@ class MinecraftBukkitVersion(
             return map
         }
 
+        /**
+         * * Get the Bukkit implementation version from the given Minecraft version [mcVer].
+         * * 从给定的 Minecraft 版本 [mcVer] 获取 Bukkit 实现版本.
+         */
         @JvmStatic
         fun lookup(mcVer: MinecraftVersion): MinecraftBukkitVersion {
             val compilerVer = if (mcVer.isPre) MinecraftVersion(mcVer.major, mcVer.minor, mcVer.build) else mcVer

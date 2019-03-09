@@ -22,11 +22,21 @@ import org.bukkit.Bukkit
 import java.util.Collections
 import java.util.regex.Pattern
 
+/**
+ * ## MinecraftVersion (Minecraft 版本)
+ *
+ * @see [Version]
+ * @see [Comparable]
+ * @author lgou2w
+ */
 class MinecraftVersion(
         major: Int,
         minor: Int,
         build: Int,
         /**
+         * * Indicates the `Preview` version number of this Minecraft version.
+         * * 表示此 Minecraft 版本的 `Preview` 版本号.
+         *
          * @since LDK 0.1.8-rc
          */
         val pre: Int? = null
@@ -47,6 +57,10 @@ class MinecraftVersion(
         @JvmStatic
         private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC.\\s*([a-zA-Z0-9\\-.]+)\\s*\\)")
 
+        /**
+         * * Get the current version of the Minecraft for the Bukkit server.
+         * * 获取当前 Bukkit 服务器的 Minecraft 版本.
+         */
         @JvmStatic
         var CURRENT : MinecraftVersion = UNKNOWN
             private set
@@ -92,6 +106,10 @@ class MinecraftVersion(
                         Level.Minecraft_V1_14 to V1_14
                 ))
 
+        /**
+         * * Get the Minecraft version object from the given Bukkit API level [level].
+         * * 从给定的 Bukkit API 等级 [level] 获取 Minecraft 版本对象.
+         */
         @JvmStatic
         fun fromLevel(level: Level) : MinecraftVersion {
             val value = LOOKUP_LEVEL[level]
@@ -99,6 +117,12 @@ class MinecraftVersion(
         }
     }
 
+    /**
+     * * Get this version of Minecraft as a preview.
+     * * 获取此 Minecraft 版本是否为预览版.
+     *
+     * @see [pre]
+     */
     val isPre : Boolean
         get() = pre != null
 

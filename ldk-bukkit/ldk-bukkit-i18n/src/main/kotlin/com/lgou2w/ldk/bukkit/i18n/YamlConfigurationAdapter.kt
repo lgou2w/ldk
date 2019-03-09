@@ -24,6 +24,12 @@ import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.OutputStreamWriter
 
+/**
+ * ## YamlConfigurationAdapter (Yaml 配置文件语言适配器)
+ *
+ * @see [LanguageAdapter]
+ * @author lgou2w
+ */
 class YamlConfigurationAdapter : LanguageAdapter {
 
     override val fileExtension : String = "yml"

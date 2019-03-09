@@ -20,6 +20,12 @@ import com.lgou2w.ldk.coroutines.DispatcherProvider
 import org.bukkit.plugin.Plugin
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## BukkitDispatcherProvider (Bukkit 调度程序提供者)
+ *
+ * @see [DispatcherProvider]
+ * @author lgou2w
+ */
 class BukkitDispatcherProvider(
         plugin: Plugin,
         state: State

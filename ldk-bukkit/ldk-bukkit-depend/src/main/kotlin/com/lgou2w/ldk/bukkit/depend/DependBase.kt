@@ -24,6 +24,12 @@ import java.io.InputStream
 import java.lang.ref.WeakReference
 import java.util.logging.Logger
 
+/**
+ * ## DependBase (插件依赖基础)
+ *
+ * @see [Depend]
+ * @author lgou2w
+ */
 abstract class DependBase<T : Plugin>(
         target: Plugin?
 ) : Depend {
@@ -58,6 +64,10 @@ abstract class DependBase<T : Plugin>(
             }
         }
 
+    /**
+     * * Check plugin object reference.
+     * * 检查插件对象引用.
+     */
     @Throws(DependCannotException::class)
     protected fun checkReference() {
         plugin.isEnabled

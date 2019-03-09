@@ -46,7 +46,7 @@ open class Version(
 ) : Comparable<Version> {
 
     /**
-     * * The string value of the version number. E.g: `1.0.0`
+     * * The string value of the version number. E.g.: `1.0.0`
      * * 版本号的字符串值. 例如: `1.0.0`
      */
     open val version: String

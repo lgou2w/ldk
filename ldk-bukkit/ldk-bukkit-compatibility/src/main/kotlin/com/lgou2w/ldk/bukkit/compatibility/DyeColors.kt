@@ -36,6 +36,10 @@ import com.lgou2w.ldk.common.notNull
 import org.bukkit.DyeColor
 
 /**
+ * ## DyeColors (染料颜色)
+ *
+ * @see [DyeColor]
+ * @author 25, lgou2w
  * @since LDK 0.1.8-rc
  */
 enum class DyeColors(private val alias: String? = null) {
@@ -60,6 +64,12 @@ enum class DyeColors(private val alias: String? = null) {
 
     private var valid : DyeColor? = null
 
+    /**
+     * * Convert this dye color compatible enumeration to the dye color of Bukkit.
+     * * 将此染料颜色兼容枚举转换为 Bukkit 的染料颜色.
+     *
+     * @see [DyeColor]
+     */
     fun toBukkit(): DyeColor {
         return if (valid == null) {
             valid = try {

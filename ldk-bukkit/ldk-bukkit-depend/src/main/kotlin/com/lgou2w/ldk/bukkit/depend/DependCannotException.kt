@@ -16,6 +16,12 @@
 
 package com.lgou2w.ldk.bukkit.depend
 
+/**
+ * ## DependCannotException (插件依赖不可用异常)
+ *
+ * @see [Depend]
+ * @author lgou2w
+ */
 class DependCannotException : UnsupportedOperationException {
 
     constructor() : super()

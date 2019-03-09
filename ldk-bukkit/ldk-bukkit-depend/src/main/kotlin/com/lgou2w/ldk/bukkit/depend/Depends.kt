@@ -22,6 +22,12 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.ServicePriority
 
+/**
+ * ## Depends (插件依赖)
+ *
+ * @see [Depend]
+ * @author lgou2w
+ */
 object Depends {
 
     @JvmStatic
@@ -31,6 +37,10 @@ object Depends {
         if (ldk != null && ldk.isEnabled) ldk else FakePlugin("LDKDependInternalFakePlugin")
     }
 
+    /**
+     * * Register the given plugin dependency [depend].
+     * * 将给定的插件依赖 [depend] 进行注册.
+     */
     @JvmStatic
     fun register(depend: Depend): Boolean {
         val type = depend::class.java
@@ -38,6 +48,13 @@ object Depends {
         return register(type as Class<Depend>, depend)
     }
 
+    /**
+     * * Register the given plugin dependency class [depend] and implementation instance [implemented].
+     * * 将给定的插件依赖类 [depend] 和实现实例 [implemented] 进行注册.
+     *
+     * @throws [IllegalArgumentException] If the implementation instance [implemented] is not an instance object of the [depend] class.
+     * @throws [IllegalArgumentException] 如果实现实例 [implemented] 不是 [depend] 类的实例对象.
+     */
     @JvmStatic
     @Throws(IllegalArgumentException::class)
     fun <T : Depend> register(depend: Class<T>, implemented: T): Boolean {
@@ -49,6 +66,10 @@ object Depends {
         return hasDepend(depend)
     }
 
+    /**
+     * * Unregister with the given plugin dependency class [depend].
+     * * 将给定的插件依赖类 [depend] 进行卸载注销.
+     */
     @JvmStatic
     fun <T : Depend> unregister(depend: Class<T>): Boolean {
         val implemented = get(depend) ?: return false
@@ -56,6 +77,10 @@ object Depends {
         return !hasDepend(depend)
     }
 
+    /**
+     * * Unregister all plugin dependencies.
+     * * 将所有的插件依赖卸载注销.
+     */
     @JvmStatic
     fun unregisterAll() {
         @Suppress("DEPRECATION")
@@ -71,6 +96,10 @@ object Depends {
         }
     }
 
+    /**
+     * * Gets the plugin dependency object from the given name [name]. Returns `null` if it doesn't exist.
+     * * 从给定的名称 [name] 获取插件依赖对象. 如果不存在则返回 `null`.
+     */
     @JvmStatic
     operator fun get(name: String): Depend? {
         val registrations = Bukkit.getServicesManager().getRegistrations(PLUGIN)
@@ -79,12 +108,23 @@ object Depends {
             ?.provider as? Depend
     }
 
+    /**
+     * * Get the plugin dependency object from the given plugin dependency class [depend]. Returns `null` if it doesn't exist.
+     * * 从给定的插件依赖类 [depend] 获取插件依赖对象. 如果不存在则返回 `null`.
+     */
     @JvmStatic
     operator fun <T : Depend> get(depend: Class<T>): T? {
         val registration = Bukkit.getServicesManager().getRegistration(depend) ?: return null
         return if (registration.service == depend) registration.provider else null
     }
 
+    /**
+     * * Gets or loads a plugin dependency object from the given plugin dependency class [depend].
+     * * 从给定的插件依赖类 [depend] 获取或加载插件依赖对象.
+     *
+     * @throws [DependCannotException] If the plugin dependency is not available.
+     * @throws [DependCannotException] 如果插件依赖不可用.
+     */
     @JvmStatic
     @Throws(DependCannotException::class)
     fun <T : Depend> getOrLoad(depend: Class<T>): T {
@@ -105,10 +145,18 @@ object Depends {
         }
     }
 
+    /**
+     * * Gets whether the plugin dependency object exists from the given name [name].
+     * * 从给定的名称 [name] 获取插件依赖对象是否存在.
+     */
     @JvmStatic
     fun hasDepend(name: String): Boolean
             = get(name) != null
 
+    /**
+     * * Gets whether the plugin dependent object exists from the given plugin dependency class [depend].
+     * * 从给定的插件依赖类 [depend] 获取插件依赖对象是否存在.
+     */
     @JvmStatic
     fun <T : Depend> hasDepend(depend: Class<T>): Boolean
             = get(depend) != null
