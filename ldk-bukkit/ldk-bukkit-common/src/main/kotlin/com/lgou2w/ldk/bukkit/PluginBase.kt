@@ -159,7 +159,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
-    override val pluginPrefix : String
+    override val pluginPrefix : String?
         get() = description.prefix
 
     override val pluginName : String
@@ -171,10 +171,10 @@ abstract class PluginBase : JavaPlugin, Plugin {
     override val pluginVersion : String
         get() = description.version
 
-    override val pluginWebsite : String
+    override val pluginWebsite : String?
         get() = description.website
 
-    override val pluginDescription : String
+    override val pluginDescription : String?
         get() = description.description
 
     override val pluginAuthors : Set<String>

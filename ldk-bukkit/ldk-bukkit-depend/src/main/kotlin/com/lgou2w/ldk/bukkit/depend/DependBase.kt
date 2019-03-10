@@ -81,7 +81,7 @@ abstract class DependBase<T : Plugin>(
     final override val name : String
         get() = targetName
 
-    final override val pluginPrefix : String
+    final override val pluginPrefix : String?
         get() = plugin.description.prefix
 
     final override val pluginName : String
@@ -93,10 +93,10 @@ abstract class DependBase<T : Plugin>(
     final override val pluginVersion : String
         get() = plugin.description.version
 
-    final override val pluginWebsite : String
+    final override val pluginWebsite : String?
         get() = plugin.description.website
 
-    final override val pluginDescription : String
+    final override val pluginDescription : String?
         get() = plugin.description.description
 
     final override val pluginAuthors : Set<String>

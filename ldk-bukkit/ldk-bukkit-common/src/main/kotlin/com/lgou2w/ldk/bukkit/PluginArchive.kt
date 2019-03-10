@@ -28,7 +28,7 @@ interface PluginArchive {
      * * The prefix of this plugin.
      * * 此插件的前缀.
      */
-    val pluginPrefix : String
+    val pluginPrefix : String?
 
     /**
      * * The name of this plugin.
@@ -52,13 +52,13 @@ interface PluginArchive {
      * * The website of this plugin.
      * * 此插件的网站.
      */
-    val pluginWebsite : String
+    val pluginWebsite : String?
 
     /**
      * * The description of this plugin.
      * * 此插件的说明.
      */
-    val pluginDescription : String
+    val pluginDescription : String?
 
     /**
      * * The author set of this plugin.

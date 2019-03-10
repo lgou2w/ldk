@@ -86,7 +86,6 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
      */
     @Throws(DependCannotException::class)
     fun setRelationalPlaceholders(one: Player?, two: Player?, text: String): String {
-        checkReference()
         if (canSupportRelational) {
             return PlaceholderAPI.setRelationalPlaceholders(one, two, text)
         } else {
@@ -103,7 +102,6 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
      */
     @Throws(DependCannotException::class)
     fun setRelationalPlaceholders(one: Player?, two: Player?, texts: List<String>): List<String> {
-        checkReference()
         if (canSupportRelational) {
             return PlaceholderAPI.setRelationalPlaceholders(one, two, texts)
         } else {

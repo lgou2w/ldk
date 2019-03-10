@@ -129,19 +129,15 @@ object Depends {
     @Throws(DependCannotException::class)
     fun <T : Depend> getOrLoad(depend: Class<T>): T {
         val registration = get(depend)
-        return if (registration != null)
-            registration
-        else {
-            try {
-                val implemented = depend.newInstance()
-                register(depend, implemented)
-                implemented
-            } catch (e: Exception) {
-                if (e is DependCannotException)
-                    throw e
-                else
-                    throw DependCannotException(e)
-            }
+        return registration ?: try {
+            val implemented = depend.newInstance()
+            register(depend, implemented)
+            implemented
+        } catch (e: Exception) {
+            if (e is DependCannotException)
+                throw e
+            else
+                throw DependCannotException(e)
         }
     }
 

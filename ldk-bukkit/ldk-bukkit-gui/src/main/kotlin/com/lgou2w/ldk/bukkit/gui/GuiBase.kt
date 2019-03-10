@@ -169,9 +169,15 @@ abstract class GuiBase : Gui {
         }
 
     private fun canAdd(button: Button) {
-        val sameMax = (button as? ButtonSame)?.indexes?.max()
-        if (button.index < 0 || button.index + 1 > size || (sameMax != null && sameMax + 1 > size))
-            throw IllegalArgumentException("Invalid button index: ${sameMax ?: button.index} (should: >= 0 || <= ${size - 1})")
+        if (button.index < 0 || button.index + 1 > size)
+            throw IllegalArgumentException("Invalid button index: ${button.index} (should: >= 0 || <= ${size - 1})")
+        if (button is ButtonSame) {
+            val indexes = button.indexes
+            val min = indexes.min()
+            val max = indexes.max()
+            if ((min != null && min < 0) || (max != null && max > size))
+                throw IllegalArgumentException("Invalid button index: ${if (min != null && min < 0) min else max} (should: >= 0 || <= ${size - 1})")
+        }
         if (isButton(button.index))
             throw IllegalArgumentException("The current index ${button.index} already has a valid button.")
         var invalid = 0
