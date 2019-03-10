@@ -36,6 +36,12 @@ import java.util.Collections
 import java.util.Hashtable
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * ## GuiBase (界面基础)
+ *
+ * @see [Gui]
+ * @author lgou2w
+ */
 abstract class GuiBase : Gui {
 
     final override var parent : Gui? = null
@@ -181,6 +187,10 @@ abstract class GuiBase : Gui {
         }
     }
 
+    /**
+     * * Get the button object from the given [index]. Note the list synchronization problem.
+     * * 从给定的索引 [index] 获取按钮对象. 注意列表同步问题.
+     */
     protected open fun getButton0(index: Int): Button? {
         var button = buttonList.find { it.index == index }
         if (button == null)
@@ -188,6 +198,11 @@ abstract class GuiBase : Gui {
         return button
     }
 
+    /**
+     * * Get the next available index value for this Gui button. If not, throws an [IllegalStateException] exception.
+     * * 获取此 Gui 按钮的下一个可用索引值. 如果没有则抛出 [IllegalStateException] 异常.
+     */
+    @Throws(IllegalStateException::class)
     protected open fun nextAvailableIndex(): Int {
         synchronized (buttonList) {
             for (index in 0 until size)

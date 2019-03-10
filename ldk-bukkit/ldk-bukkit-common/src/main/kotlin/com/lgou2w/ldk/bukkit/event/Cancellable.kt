@@ -16,4 +16,10 @@
 
 package com.lgou2w.ldk.bukkit.event
 
+/**
+ * ## Cancellable (事件可阻止)
+ *
+ * @see [org.bukkit.event.Cancellable]
+ * @author lgou2w
+ */
 interface Cancellable : org.bukkit.event.Cancellable

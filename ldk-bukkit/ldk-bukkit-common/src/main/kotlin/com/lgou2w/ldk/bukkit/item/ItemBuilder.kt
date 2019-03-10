@@ -40,6 +40,14 @@ import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import java.util.UUID
 
+/**
+ * ## ItemBuilder (物品构建者)
+ *
+ * @see [Builder]
+ * @see [ItemBuilderBase]
+ * @see [SimpleItemBuilder]
+ * @author lgou2w
+ */
 interface ItemBuilder : Builder<ItemStack> {
 
     val tag : NBTTagCompound

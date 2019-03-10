@@ -21,6 +21,10 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 /**
+ * ## PlaceholderExpansion (占位符扩展)
+ *
+ * @see [DependPlaceholderAPI]
+ * @author lgou2w
  * @since LDK 0.1.8-rc
  */
 abstract class PlaceholderExpansion {

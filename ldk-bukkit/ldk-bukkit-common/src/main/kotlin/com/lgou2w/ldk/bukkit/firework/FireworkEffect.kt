@@ -24,11 +24,39 @@ import org.bukkit.Color
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import java.util.LinkedHashMap
 
+/**
+ * ## FireworkEffect (烟花效果)
+ *
+ * @see [FireworkEffectBuilder]
+ * @author lgou2w
+ */
 data class FireworkEffect(
+        /**
+         * * The type of this firework effect.
+         * * 此烟花效果的类型.
+         *
+         * @see [FireworkType]
+         */
         val type: FireworkType,
+        /**
+         * * Indicates whether this firework effect can be flicker.
+         * * 表示此烟花效果是否可以闪烁.
+         */
         val canFlicker: Boolean,
+        /**
+         * * Indicates whether this firework effect has a trail.
+         * * 表示此烟花效果是否有尾迹.
+         */
         val hasTrail: Boolean,
+        /**
+         * * A list of colors for this firework effect.
+         * * 此烟花效果的颜色列表.
+         */
         val colors: List<Color>,
+        /**
+         * * A list of fade colors for this firework effect.
+         * * 此烟花效果的淡化颜色列表.
+         */
         val fades: List<Color>
 ) : ConfigurationSerializable,
         NBTSavable {
@@ -52,6 +80,12 @@ data class FireworkEffect(
         return result
     }
 
+    /**
+     * * Convert this firework effect to Bukkit firework effect object.
+     * * 将此烟花效果转换为 Bukkit 的烟花效果对象.
+     *
+     * @see [org.bukkit.FireworkEffect]
+     */
     fun toBukkit(): org.bukkit.FireworkEffect {
         return org.bukkit.FireworkEffect.builder()
             .with(Enums.ofName(org.bukkit.FireworkEffect.Type::class.java, type.name))
@@ -85,6 +119,12 @@ data class FireworkEffect(
             return FireworkEffect(type, flicker, trail, colors, fades)
         }
 
+        /**
+         * * Create a firework effect builder from a given firework type.
+         * * 从给定的烟花类型创建一个烟花效果构建者.
+         *
+         * @see [FireworkEffectBuilder]
+         */
         @JvmStatic
         fun builder(type: FireworkType): FireworkEffectBuilder
                 = FireworkEffectBuilder(type)

@@ -16,6 +16,13 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+/**
+ * ## SimpleGui (简单界面)
+ *
+ * @see [Gui]
+ * @see [GuiBase]
+ * @author lgou2w
+ */
 class SimpleGui(
         type: GuiType,
         title: String = type.title

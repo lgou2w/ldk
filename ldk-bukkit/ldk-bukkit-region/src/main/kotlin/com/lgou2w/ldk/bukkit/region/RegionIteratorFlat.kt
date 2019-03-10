@@ -16,6 +16,13 @@
 
 package com.lgou2w.ldk.bukkit.region
 
+/**
+ * ## RegionIteratorFlat (平面区域迭代器)
+ *
+ * @see [RegionVector2D]
+ * @see [Iterator]
+ * @author lgou2w
+ */
 class RegionIteratorFlat(
         private val region: Region
 ) : Iterator<RegionVector2D> {

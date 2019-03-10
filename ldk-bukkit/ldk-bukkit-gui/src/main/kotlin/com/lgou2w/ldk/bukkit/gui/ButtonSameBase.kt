@@ -19,6 +19,12 @@ package com.lgou2w.ldk.bukkit.gui
 import org.bukkit.inventory.ItemStack
 import java.util.Arrays
 
+/**
+ * ## ButtonSameBase (相同类型按钮基础)
+ *
+ * @see [ButtonSame]
+ * @author lgou2w
+ */
 open class ButtonSameBase(
         parent: Gui,
         protected val values: IntArray
