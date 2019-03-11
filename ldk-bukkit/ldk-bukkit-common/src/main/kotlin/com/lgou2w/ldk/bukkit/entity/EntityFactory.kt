@@ -33,6 +33,11 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## EntityFactory (实体工厂)
+ *
+ * @author lgou2w
+ */
 object EntityFactory {
 
     @JvmStatic val CLASS_ENTITY by lazyMinecraftClass("Entity")
@@ -83,20 +88,36 @@ object EntityFactory {
             .resultAccessor()
     }
 
+    /**
+     * * Get the `NMS` object of the given [entity].
+     * * 获取给定实体 [entity] 的 `NMS` 对象.
+     */
     @JvmStatic
     fun asNMS(entity: Entity?): Any? {
         if (entity == null) return null
         return METHOD_GET_HANDLE.invoke(entity)
     }
 
+    /**
+     * * Get the Bukkit wrapper object for the given `NMS` entity.
+     * * 获取给定 `NMS` 实体的 Bukkit 包装对象.
+     *
+     * @throws [IllegalArgumentException] If the entity object [nms] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果实体对象 [nms] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
+    @Throws(IllegalArgumentException::class)
     fun asBukkit(nms: Any?): Entity? {
         if (nms == null) return null
         MinecraftReflection.isExpected(nms, CLASS_ENTITY)
         return METHOD_GET_BUKKIT_ENTITY.invoke(nms)
     }
 
+    /**
+     * @see [asBukkit]
+     */
     @JvmStatic
+    @Throws(IllegalArgumentException::class)
     inline fun <reified T : Entity> asBukkitEntity(nms: Any?): T? {
         val entity = asBukkit(nms) ?: return null
         return if (T::class.java.isInstance(entity)) T::class.java.cast(entity)
@@ -104,6 +125,10 @@ object EntityFactory {
                 "The entity type ${entity::class.java.simpleName} does not match the expected ${T::class.java.simpleName}.")
     }
 
+    /**
+     * * Read NBT tag data from the given [entity].
+     * * 从给定的实体 [entity] 读取 NBT 标签数据.
+     */
     @JvmStatic
     fun readTag(entity: Entity): NBTTagCompound {
         val nmsEntity = asNMS(entity)
@@ -113,6 +138,10 @@ object EntityFactory {
         ?: ofCompound(NBT.TAG_ENTITY_TAG)
     }
 
+    /**
+     * * Write the given NBT [tag] to the given [entity].
+     * * 将给定的 NBT 标签数据 [tag] 写入到给定的实体 [entity] 中.
+     */
     @JvmStatic
     fun writeTag(entity: Entity, tag: NBTTagCompound) {
         val nmsEntity = asNMS(entity)
@@ -121,6 +150,9 @@ object EntityFactory {
     }
 
     /**
+     * * Modify the NBT tag data for the given [entity].
+     * * 将给定的实体 [entity] 进行 NBT 标签数据的修改.
+     *
      * @since LDK 0.1.7-rc3
      */
     @JvmStatic
@@ -131,6 +163,10 @@ object EntityFactory {
         return entity
     }
 
+    /**
+     * * Get the item stack in main hand for the given [LivingEntity].
+     * * 获取给定 [LivingEntity] 主手中的物品栈.
+     */
     @JvmStatic
     fun getItemInHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
@@ -140,6 +176,10 @@ object EntityFactory {
             entity.equipment.itemInHand
     }
 
+    /**
+     * * Set the item stack in main hand for the given [LivingEntity].
+     * * 设置给定 [LivingEntity] 主手中的物品栈.
+     */
     @JvmStatic
     fun setItemInHand(entity: LivingEntity, stack: ItemStack?) {
         if (MinecraftBukkitVersion.isV19OrLater)
@@ -149,6 +189,10 @@ object EntityFactory {
             entity.equipment.itemInHand = stack
     }
 
+    /**
+     * * Get the item stack in main hand for the given [LivingEntity].
+     * * 获取给定 [LivingEntity] 主手中的物品栈.
+     */
     @JvmStatic
     fun getItemInMainHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
@@ -157,6 +201,10 @@ object EntityFactory {
             getItemInHand(entity)
     }
 
+    /**
+     * * Set the item stack in main hand for the given [LivingEntity].
+     * * 设置给定 [LivingEntity] 主手中的物品栈.
+     */
     @JvmStatic
     fun setItemInMainHand(entity: LivingEntity, stack: ItemStack?) {
         if (MinecraftBukkitVersion.isV19OrLater)
@@ -165,6 +213,10 @@ object EntityFactory {
             setItemInHand(entity, stack)
     }
 
+    /**
+     * * Get the item stack in off hand for the given [LivingEntity].
+     * * 获取给定 [LivingEntity] 副手中的物品栈.
+     */
     @JvmStatic
     fun getItemInOffHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
@@ -173,6 +225,10 @@ object EntityFactory {
             getItemInHand(entity)
     }
 
+    /**
+     * * Set the item stack in off hand for the given [LivingEntity].
+     * * 设置给定 [LivingEntity] 副手中的物品栈.
+     */
     @JvmStatic
     fun setItemInOffHand(entity: LivingEntity, stack: ItemStack?) {
         if (MinecraftBukkitVersion.isV19OrLater)

@@ -38,6 +38,11 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.util.Locale
 
+/**
+ * ## ItemFactory (物品工厂)
+ *
+ * @author lgou2w
+ */
 object ItemFactory {
 
     @JvmStatic val CLASS_ITEM by lazyMinecraftClass("Item")

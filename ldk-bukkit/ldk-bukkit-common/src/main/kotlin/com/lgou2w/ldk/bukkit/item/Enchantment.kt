@@ -241,6 +241,12 @@ enum class Enchantment(
     override val value : String
         get() = type
 
+    /**
+     * * Convert this enchant to the enchant of Bukkit.
+     * * 将此附魔转换为 Bukkit 的附魔.
+     *
+     * @see [org.bukkit.enchantments.Enchantment]
+     */
     fun toBukkit(): org.bukkit.enchantments.Enchantment {
         return if (MinecraftBukkitVersion.isV113OrLater) {
             org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type))

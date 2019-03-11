@@ -112,7 +112,7 @@ class MinecraftBukkitVersion(
 
         /**
          * * Gets whether the current Bukkit server is an implementation version of `1.13` or later.
-         * * 获取当前 Bukkit 服务器是否是 `1.16` 或之后的实现版本.
+         * * 获取当前 Bukkit 服务器是否是 `1.13` 或之后的实现版本.
          *
          * @since LDK 0.1.8-rc
          */

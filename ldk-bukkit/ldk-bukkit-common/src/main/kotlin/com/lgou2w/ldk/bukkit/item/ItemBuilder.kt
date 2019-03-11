@@ -46,6 +46,7 @@ import java.util.UUID
  * @see [Builder]
  * @see [ItemBuilderBase]
  * @see [SimpleItemBuilder]
+ * @see [of]
  * @author lgou2w
  */
 interface ItemBuilder : Builder<ItemStack> {

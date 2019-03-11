@@ -106,12 +106,11 @@ object NBTFactory {
     }
 
     /**
-     * * Converts the given `NMS` NBT object [nms] to an implementation of the `NBTBase` wrapper.
-     * * 将给定的 `NMS` NBT 对象 [nms] 转换为 `NBTBase` 包装的实现.
+     * * Converts the given `NMS` NBT object [nms] to an implementation of the [NBTBase] wrapper.
+     * * 将给定的 `NMS` NBT 对象 [nms] 转换为 [NBTBase] 包装的实现.
      *
      * @throws [IllegalArgumentException] If the NBT object [nms] is not the expected `NMS` instance.
      * @throws [IllegalArgumentException] 如果 NBT 对象 [nms] 不是预期的 `NMS` 实例.
-     * @see [NBTBase]
      */
     @JvmStatic
     fun fromNMS(nms: Any?): NBTBase<*>? {
@@ -150,8 +149,8 @@ object NBTFactory {
     }
 
     /**
-     * * Converts the given `NBTBase` object [nbt] to an implementation of `NMS`.
-     * * 将给定的 `NBTBase` 对象 [nbt] 转换为 `NMS` 的实现.
+     * * Converts the given [NBTBase] object [nbt] to an implementation of `NMS`.
+     * * 将给定的 [NBTBase] 对象 [nbt] 转换为 `NMS` 的实现.
      */
     @JvmStatic
     fun toNMS(nbt: NBTBase<*>?): Any? {
