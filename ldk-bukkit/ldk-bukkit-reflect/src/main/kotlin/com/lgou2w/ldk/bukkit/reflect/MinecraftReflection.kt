@@ -145,7 +145,7 @@ object MinecraftReflection {
     }
 
     /**
-     * * Determines if the given argument is the expected instance object, otherwise throws an exception.
+     * * Determine if the given argument is the expected instance object, otherwise throws an exception.
      * * 判断给定的参数是否为预期的实例对象, 否则抛出异常.
      *
      * @throws IllegalArgumentException If the argument is not an instance of the expected type.

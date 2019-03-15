@@ -24,6 +24,7 @@ package com.lgou2w.ldk.bukkit.particle
  * * 设置音符粒子的颜色. 值为 `0 ~ 24` 范围.
  *      * 需要将 `count` 数量设置为 `0` 颜色才会生效.
  *
+ * @see [Particle.NOTE]
  * @author lgou2w
  */
 data class ParticleNote(val value: Int)

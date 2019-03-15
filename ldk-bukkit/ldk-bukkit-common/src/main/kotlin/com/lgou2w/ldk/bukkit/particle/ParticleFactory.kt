@@ -36,6 +36,12 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## ParticleFactory (粒子工厂)
+ *
+ * @see [Particle]
+ * @author lgou2w
+ */
 object ParticleFactory {
 
     @JvmStatic private val CLASS_PACKET_OUT_PARTICLES by lazyMinecraftClass("PacketPlayOutWorldParticles")

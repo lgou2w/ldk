@@ -26,6 +26,11 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
+/**
+ * ## PacketFactory (数据包工厂)
+ *
+ * @author lgou2w
+ */
 object PacketFactory {
 
     @JvmStatic val CLASS_PACKET by lazyMinecraftClass("Packet")
@@ -66,6 +71,13 @@ object PacketFactory {
                 .resultAccessor()
     }
 
+    /**
+     * * Send the given [packet] to the given [player] client.
+     * * 将给定的数据包 [packet] 发送到给定的玩家 [player] 客户端.
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun sendPacket(player: Player, packet: Any) {
         MinecraftReflection.isExpected(packet, CLASS_PACKET)
@@ -74,6 +86,13 @@ object PacketFactory {
         METHOD_PACKET_SEND.invoke(connection, packet)
     }
 
+    /**
+     * * Let the server process the [packet] sent by the given [player] client.
+     * * 让服务端处理给定玩家 [player] 客户端发送的数据包 [packet].
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun processPacket(packet: Any, player: Player) {
         MinecraftReflection.isExpected(packet, CLASS_PACKET)
@@ -82,6 +101,13 @@ object PacketFactory {
         METHOD_PACKET_PROCESS.invoke(packet, connection)
     }
 
+    /**
+     * * Send the given [packet] to the given [players] client.
+     * * 将给定的数据包 [packet] 发送到给定的玩家 [players] 客户端.
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun sendPacketTo(packet: Any, vararg players: Player) {
         MinecraftReflection.isExpected(packet, CLASS_PACKET)
@@ -93,10 +119,24 @@ object PacketFactory {
         }
     }
 
+    /**
+     * * Send the given [packet] to all online players client.
+     * * 将给定的数据包 [packet] 发送到所有在线玩家客户端.
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun sendPacketToAll(packet: Any)
             = sendPacketTo(packet, *Bukkit.getOnlinePlayers().toTypedArray())
 
+    /**
+     * * Send the given [packet] to the nearby of the given [center] and [range] location.
+     * * 将给定的数据包 [packet] 发送到给定中心 [center] 的附近 [range] 范围位置.
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun sendPacketToNearby(packet: Any, center: Location, range: Double) {
         MinecraftReflection.isExpected(packet, CLASS_PACKET)
@@ -106,6 +146,11 @@ object PacketFactory {
     }
 
     /**
+     * * Let the server process the [packet] sent by the given [players] client.
+     * * 让服务端处理给定玩家 [players] 客户端发送的数据包 [packet].
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
      * @since LDK 0.1.7-rc3
      */
     @JvmStatic
@@ -120,6 +165,11 @@ object PacketFactory {
     }
 
     /**
+     * * Let the server process the [packet] sent by all online players client.
+     * * 让服务端处理所有玩家客户端发送的数据包 [packet].
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
      * @since LDK 0.1.7-rc3
      */
     @JvmStatic
@@ -127,6 +177,11 @@ object PacketFactory {
             = processPacketTo(packet, *Bukkit.getOnlinePlayers().toTypedArray())
 
     /**
+     * * Let the server process the [packet] sent by the player client in the [range] location of the given [center].
+     * * 让服务端处理给定中心 [center] 的范围 [range]位置的玩家客户端发送的数据包 [packet].
+     *
+     * @throws [IllegalArgumentException] If the [packet] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果数据包 [packet] 不是预期的 `NMS` 实例.
      * @since LDK 0.1.7-rc3
      */
     @JvmStatic

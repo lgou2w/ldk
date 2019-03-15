@@ -19,6 +19,13 @@ package com.lgou2w.ldk.bukkit.item
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## SimpleItemBuilder (简单物品构建者)
+ *
+ * @see [ItemBuilder]
+ * @see [ItemBuilderBase]
+ * @author lgou2w
+ */
 class SimpleItemBuilder : ItemBuilderBase {
 
     constructor(itemStack: ItemStack) : super(itemStack)

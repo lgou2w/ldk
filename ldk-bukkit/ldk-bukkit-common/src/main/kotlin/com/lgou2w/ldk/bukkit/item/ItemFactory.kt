@@ -163,17 +163,35 @@ object ItemFactory {
 //        return METHOD_ITEM_GET_BY_ID.invoke(null, id)
 //    }
 
+    /**
+     * * Converts the given item [stack] to an instance object of `NMS`.
+     * * 将给定的物品栈 [stack] 转换为  `NMS` 的实例对象.
+     */
     @JvmStatic
     fun asNMSCopy(stack: ItemStack?): Any? {
         return METHOD_AS_NMSCOPY.invoke(null, stack)
     }
 
+    /**
+     * * Convert the given `NMS` item stack [origin] to the `CraftItemStack` object.
+     * * 将给定 `NMS` 物品栈 [origin] 转换为 `CraftItemStack` 对象.
+     *
+     * @throws [IllegalArgumentException] If the item stack object [origin] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果物品栈对象 [origin] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun asCraftMirror(origin: Any?): ItemStack? {
         MinecraftReflection.isExpected(origin, CLASS_ITEMSTACK)
         return METHOD_AS_CRAFTMIRROR.invoke(null, origin) as? ItemStack
     }
 
+    /**
+     * * Convert the given `NMS` item stack [origin] to the [ItemStack] object.
+     * * 将给定 `NMS` 物品栈 [origin] 转换为 [ItemStack] 对象.
+     *
+     * @throws [IllegalArgumentException] If the item stack object [origin] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果物品栈对象 [origin] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun asBukkitCopy(origin: Any?): ItemStack? {
         MinecraftReflection.isExpected(origin, CLASS_ITEMSTACK)
@@ -181,7 +199,12 @@ object ItemFactory {
     }
 
     /**
-     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     * * Safely read NBT tag data from a given [itemStack].
+     * * 从给定的物品栈 [itemStack] 安全的读取 NBT 标签数据.
+     *
+     * @throws [UnsupportedOperationException] If the item material is illegal. e.g.: `WALL_BANNER`.
+     * @throws [UnsupportedOperationException] 如果物品材料是非法的. 例如: `WALL_BANNER`.
+     * @see [readTag]
      */
     @JvmStatic
     @Throws(UnsupportedOperationException::class)
@@ -189,7 +212,12 @@ object ItemFactory {
             = readTag(itemStack, itemStack.type) ?: ofCompound(NBT.TAG)
 
     /**
-     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     * * Read NBT tag data from a given [itemStack].
+     * * 从给定的物品栈 [itemStack] 读取 NBT 标签数据.
+     *
+     * @throws [UnsupportedOperationException] If the item material is illegal. e.g.: `WALL_BANNER`.
+     * @throws [UnsupportedOperationException] 如果物品材料是非法的. 例如: `WALL_BANNER`.
+     * @see [readTagSafe]
      */
     @JvmStatic
     @Throws(UnsupportedOperationException::class)
@@ -213,6 +241,10 @@ object ItemFactory {
         }
     }
 
+    /**
+     * * Get the Minecraft standard type name from the given [material] type.
+     * * 从给定的材料类型 [material] 获取 Minecraft 标准类型名.
+     */
     @JvmStatic
     fun materialType(material: Material): String {
         return if (MinecraftBukkitVersion.isV113OrLater) {
@@ -226,7 +258,11 @@ object ItemFactory {
     }
 
     /**
-     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     * * Read NBT data from the given item stack [itemStack].
+     * * 从给定的物品栈 [itemStack] 读取 NBT 数据.
+     *
+     * @throws [UnsupportedOperationException] If the item material is illegal. e.g.: `WALL_BANNER`.
+     * @throws [UnsupportedOperationException] 如果物品材料是非法的. 例如: `WALL_BANNER`.
      */
     @JvmStatic
     @Throws(UnsupportedOperationException::class)
@@ -271,7 +307,11 @@ object ItemFactory {
     }
 
     /**
-     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     * * Write the given NBT tag data [tag] to the given item stack [itemStack].
+     * * 将给定的 NBT 标签数据 [tag] 写入到给定的物品栈 [itemStack] 中.
+     *
+     * @throws [UnsupportedOperationException] If the item material is illegal. e.g.: `WALL_BANNER`.
+     * @throws [UnsupportedOperationException] 如果物品材料是非法的. 例如: `WALL_BANNER`.
      */
     @JvmStatic
     @Throws(UnsupportedOperationException::class)
@@ -300,7 +340,11 @@ object ItemFactory {
     }
 
     /**
-     * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+     * * Modify the NBT tag data for the given item stack [itemStack].
+     * * 将给定的物品栈 [itemStack] 进行 NBT 标签数据的修改.
+     *
+     * @throws [UnsupportedOperationException] If the item material is illegal. e.g.: `WALL_BANNER`.
+     * @throws [UnsupportedOperationException] 如果物品材料是非法的. 例如: `WALL_BANNER`.
      * @since LDK 0.1.7-rc3
      */
     @JvmStatic
