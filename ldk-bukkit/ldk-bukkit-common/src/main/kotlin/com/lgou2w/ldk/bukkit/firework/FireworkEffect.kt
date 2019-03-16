@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.firework
 
 import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
@@ -87,8 +88,9 @@ data class FireworkEffect(
      * @see [org.bukkit.FireworkEffect]
      */
     fun toBukkit(): org.bukkit.FireworkEffect {
+        val type = Enums.ofName(org.bukkit.FireworkEffect.Type::class.java, type.name).notNull()
         return org.bukkit.FireworkEffect.builder()
-            .with(Enums.ofName(org.bukkit.FireworkEffect.Type::class.java, type.name))
+            .with(type)
             .flicker(canFlicker)
             .trail(hasTrail)
             .withColor(colors)

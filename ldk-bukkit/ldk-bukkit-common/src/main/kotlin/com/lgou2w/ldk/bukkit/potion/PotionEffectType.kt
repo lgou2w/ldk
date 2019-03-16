@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.potion
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
+import com.lgou2w.ldk.common.notNull
 import java.util.HashMap
 import java.util.Locale
 
@@ -106,7 +107,7 @@ enum class PotionEffectType(
                     type
                 else
                     legacy
-        )
+        ).notNull()
     }
 
     companion object {

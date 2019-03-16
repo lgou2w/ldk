@@ -22,6 +22,7 @@ import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Applicator
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.NBTType
@@ -173,7 +174,7 @@ object EntityFactory {
             getItemInMainHand(entity)
         else
             @Suppress("DEPRECATION")
-            entity.equipment.itemInHand
+            entity.equipment.notNull().itemInHand
     }
 
     /**
@@ -186,7 +187,7 @@ object EntityFactory {
             setItemInMainHand(entity, stack)
         else
             @Suppress("DEPRECATION")
-            entity.equipment.itemInHand = stack
+            entity.equipment.notNull().setItemInHand(stack)
     }
 
     /**
@@ -196,7 +197,7 @@ object EntityFactory {
     @JvmStatic
     fun getItemInMainHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
-            entity.equipment.itemInMainHand
+            entity.equipment.notNull().itemInMainHand
         else
             getItemInHand(entity)
     }
@@ -208,7 +209,7 @@ object EntityFactory {
     @JvmStatic
     fun setItemInMainHand(entity: LivingEntity, stack: ItemStack?) {
         if (MinecraftBukkitVersion.isV19OrLater)
-            entity.equipment.itemInMainHand = stack
+            entity.equipment.notNull().setItemInMainHand(stack)
         else
             setItemInHand(entity, stack)
     }
@@ -220,7 +221,7 @@ object EntityFactory {
     @JvmStatic
     fun getItemInOffHand(entity: LivingEntity): ItemStack? {
         return if (MinecraftBukkitVersion.isV19OrLater)
-            entity.equipment.itemInOffHand
+            entity.equipment.notNull().itemInOffHand
         else
             getItemInHand(entity)
     }
@@ -232,7 +233,7 @@ object EntityFactory {
     @JvmStatic
     fun setItemInOffHand(entity: LivingEntity, stack: ItemStack?) {
         if (MinecraftBukkitVersion.isV19OrLater)
-            entity.equipment.itemInOffHand = stack
+            entity.equipment.notNull().setItemInOffHand(stack)
         else
             setItemInHand(entity, stack)
     }

@@ -57,6 +57,7 @@ abstract class PlaceholderExpansion {
     @Throws(DependCannotException::class)
     fun canRegister(): Boolean {
         checkApiLoaded()
+        val requiredPlugin = this.requiredPlugin
         return requiredPlugin == null || Bukkit.getPluginManager().getPlugin(requiredPlugin) != null
     }
 
@@ -64,7 +65,7 @@ abstract class PlaceholderExpansion {
     fun register(): Boolean {
         val identifier = this.identifier.notNull("Placeholder identifier can not be null!")
         checkApiLoaded()
-        return if (Bukkit.getPluginManager().getPlugin(DependPlaceholderAPI.NAME).description.version < "2.8.7")
+        return if (Bukkit.getPluginManager().getPlugin(DependPlaceholderAPI.NAME).notNull().description.version < "2.8.7")
             me.clip.placeholderapi.PlaceholderAPI.registerPlaceholderHook(identifier, proxy)
         else
             me.clip.placeholderapi.PlaceholderAPI.registerExpansion(proxy) // since PlaceholderAPI 2.8.7

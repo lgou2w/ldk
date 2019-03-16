@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.packet
 import com.lgou2w.ldk.bukkit.entity.EntityFactory
 import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.FuzzyReflect
@@ -140,8 +141,9 @@ object PacketFactory {
     @JvmStatic
     fun sendPacketToNearby(packet: Any, center: Location, range: Double) {
         MinecraftReflection.isExpected(packet, CLASS_PACKET)
+        val world = center.world.notNull()
         val squared = if (range < 1.0) 1.0 else range * range
-        val receivers = center.world.players.filter { it.location.distanceSquared(center) <= squared }
+        val receivers = world.players.filter { it.location.distanceSquared(center) <= squared }
         sendPacketTo(packet, *receivers.toTypedArray())
     }
 
@@ -187,8 +189,9 @@ object PacketFactory {
     @JvmStatic
     fun processPacketToNearby(packet: Any, center: Location, range: Double) {
         MinecraftReflection.isExpected(packet, CLASS_PACKET)
+        val world = center.world.notNull()
         val squared = if (range < 1.0) 1.0 else range * range
-        val senders = center.world.players.filter { it.location.distanceSquared(center) <= squared }
+        val senders = world.players.filter { it.location.distanceSquared(center) <= squared }
         processPacketTo(packet, *senders.toTypedArray())
     }
 }

@@ -57,6 +57,7 @@
 package com.lgou2w.ldk.bukkit.compatibility
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -1108,7 +1109,7 @@ enum class XMaterial {
             } else {
                 // Before version 1.13
                 @Suppress("DEPRECATION")
-                val data = itemStack.data.data.toInt()
+                val data = itemStack.data.notNull().data.toInt()
                 bukkit == type && xMaterial.data == data
             }
         }

@@ -274,8 +274,9 @@ enum class Sounds(private vararg val versionDependentNames: String) {
      */
     fun tryPlay(location: Location, volume: Float, pitch: Float): Boolean {
         return try {
+            val world = location.world.notNull()
             val bukkit = toBukkit()
-            location.world.playSound(location, bukkit, volume, pitch)
+            world.playSound(location, bukkit, volume, pitch)
             true
         } catch (e: IllegalArgumentException) {
             false
@@ -292,9 +293,10 @@ enum class Sounds(private vararg val versionDependentNames: String) {
      */
     fun tryPlay(location: Location, category: Category, volume: Float, pitch: Float): Boolean {
         return if (MinecraftBukkitVersion.isV111OrLater) try {
+            val world = location.world.notNull()
             val bukkit = toBukkit()
-            val soundCategory = Enums.ofName(org.bukkit.SoundCategory::class.java, category.name)
-            location.world.playSound(location, bukkit, soundCategory, volume, pitch)
+            val soundCategory = Enums.ofName(org.bukkit.SoundCategory::class.java, category.name).notNull()
+            world.playSound(location, bukkit, soundCategory, volume, pitch)
             true
         } catch (e: Exception) {
             // if error try normal

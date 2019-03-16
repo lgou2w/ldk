@@ -270,7 +270,7 @@ object ParticleFactory {
         var overrideOffsetZ = offsetZ
         val packetData = if (particle == Particle.ITEM) {
             val (type, value) = when (data) {
-                is ItemStack -> data.type to data.data.data.toInt()
+                is ItemStack -> data.type to data.data.notNull().data.toInt()
                 is Material -> data to 0
                 is ParticleData -> data.type to data.data
                 else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
@@ -352,7 +352,8 @@ object ParticleFactory {
             count: Int = 1,
             data: Any? = null
     ) {
-        sendParticle(center.world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
+        val world = center.world.notNull()
+        sendParticle(world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
     }
 
     /**
