@@ -268,9 +268,15 @@ class DefaultRegisteredCommand(
         val root = rootParent ?: this
         val usage = usage
         if (usage == null || usage.isEmpty())
-            sender.sendMessage(root.prefix + ChatColor.RED + "Unknown command. Type \"/${root.name} help\" for help.")
+            sender.sendMessage(root.prefix + ChatColor.RED + betterDefaultTypeHelp(root.name))
         else
             sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
+    }
+
+    private fun betterDefaultTypeHelp(name: String): String {
+        val chinese = manager.globalFeedback is SimpleChineseCommandFeedback || feedback is SimpleChineseCommandFeedback
+        return if (!chinese) "Unknown command. Type \"/$name help\" for help."
+        else "未知命令. 输入 \"/$name help\" 查看帮助."
     }
 
     override fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
