@@ -277,14 +277,19 @@ class DefaultRegisteredCommand(
         if (!isAllowCompletion || !testPermissionIfFailed(sender, permission))
             return emptyList()
         return if (args.size <= 1) {
-            (mChildren.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key } +
-            mExecutors.filter { testPermissionIfFailed(sender, it.value.permission) && it.key != name }.map { it.key })
+            (mChildren.asSequence()
+                 .filter { testPermissionIfFailed(sender, it.value.permission) }
+                 .map { it.key } +
+            mExecutors.asSequence()
+                .filter { testPermissionIfFailed(sender, it.value.permission) && it.key != name }
+                .map { it.key }
+            )
                 .filter {
                     val first = args.firstOrNull()
                     (first == null || it.startsWith(first))
                 }
                 .toMutableList()
-                .apply { sort() }
+                .sorted()
         } else {
             val child = findChild(args.first())
             child?.complete(sender, alias, pollArgument(args))

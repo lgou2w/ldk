@@ -52,13 +52,8 @@ interface Transform<out T> {
         @JvmField val TRANSFORM_FLOAT : Function<String, Float?> = { it.toFloatOrNull() }
         @JvmField val TRANSFORM_DOUBLE : Function<String, Double?> = { it.toDoubleOrNull() }
         @JvmField val TRANSFORM_BOOLEAN : Function<String, Boolean?> = {
-            if (it.equals("null", true))
-                null    // Nullable
-            else try {
-                it.toBoolean()
-            } catch (e: Exception) {
-                null
-            }
+            if (it.equals("null", true)) null // Nullable
+            else it.toBoolean()
         }
 
         // Specially

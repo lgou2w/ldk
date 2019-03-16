@@ -109,8 +109,10 @@ object CommandHelper {
             .map { "$SLASH$name$BLANK$PARAMETER${it.key}${description(it.value.description, newLineDesc)}" }
             .toMutableList()
         val executorsTooltips = executors
+            .asSequence()
             .filter { it.key != command.name }
             .map { "$SLASH$name$BLANK$PARAMETER${it.key}${createSimpleExecutorUsage(it.value)}${description(it.value.description, newLineDesc)}" }
+            .toMutableList()
         val sortedTooltips = when (sorted) {
             Sorted.NONE -> childrenTooltips + executorsTooltips
             Sorted.DEFAULT -> (childrenTooltips + executorsTooltips).sorted()

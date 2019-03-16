@@ -116,11 +116,13 @@ open class Completes : Iterable<Completer> {
     companion object {
         @JvmStatic fun matchOnlinePlayers(sender: CommandSender, value: String) : List<String> {
             val senderPlayer = sender as? Player
-            val matchedPlayers = sender.server.onlinePlayers.filter { player ->
-                (senderPlayer == null || senderPlayer.canSee(player)) && player.name.startsWith(value)
-            }.map { player ->
-                player.name
-            }
+            val matchedPlayers = sender.server.onlinePlayers
+                .asSequence()
+                .filter { player ->
+                    (senderPlayer == null || senderPlayer.canSee(player)) && player.name.startsWith(value)
+                }
+                .map(Player::getName)
+                .toList()
             Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER)
             return matchedPlayers
         }
