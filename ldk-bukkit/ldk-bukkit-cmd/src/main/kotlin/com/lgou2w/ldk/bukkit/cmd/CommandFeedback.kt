@@ -18,8 +18,18 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
 
+/**
+ * ## CommandFeedback (命令反馈)
+ *
+ * @see [SimpleCommandFeedback]
+ * @author lgou2w
+ */
 interface CommandFeedback {
 
+    /**
+     * * Called when the executor has no permission.
+     * * 当执行者没有权限时被调用.
+     */
     fun onPermission(
             sender: CommandSender,
             name: String,
@@ -29,6 +39,10 @@ interface CommandFeedback {
             permission: String
     )
 
+    /**
+     * * Called when the console execute only the player executable command.
+     * * 当控制台执行仅玩家可执行命令时被调用.
+     */
     fun onPlayable(
             sender: CommandSender,
             name: String,
@@ -37,6 +51,10 @@ interface CommandFeedback {
             args: Array<out String>
     )
 
+    /**
+     * * Called when the length of the parameter executed by the executor does not match.
+     * * 当执行者执行的参数长度不符合时被调用.
+     */
     fun onMinimum(
             sender: CommandSender,
             name: String,
@@ -47,6 +65,10 @@ interface CommandFeedback {
             min: Int
     )
 
+    /**
+     * * Called when the executor parameter transform and the expected does not match.
+     * * 当执行器参数转变后和预期不匹配时被调用.
+     */
     fun onTransform(
             sender: CommandSender,
             name: String,
@@ -58,6 +80,10 @@ interface CommandFeedback {
             transformed: Any?
     )
 
+    /**
+     * * Called when an unhandled exception is thrown.
+     * * 当不可处理的异常抛出时被调用.
+     */
     fun onUnhandled(
             sender: CommandSender,
             name: String,

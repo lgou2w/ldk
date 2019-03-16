@@ -20,6 +20,12 @@ import com.lgou2w.ldk.chat.ChatColor
 import org.bukkit.command.CommandException
 import org.bukkit.command.CommandSender
 
+/**
+ * ## SimpleCommandFeedback (简单命令反馈)
+ *
+ * @see [CommandFeedback]
+ * @author lgou2w
+ */
 open class SimpleCommandFeedback : CommandFeedback {
 
     protected fun sendMessage(

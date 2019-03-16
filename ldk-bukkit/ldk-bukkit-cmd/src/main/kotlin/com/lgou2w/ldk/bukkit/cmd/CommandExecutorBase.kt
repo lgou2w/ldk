@@ -18,6 +18,13 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import java.util.Arrays
 
+/**
+ * ## CommandExecutorBase (命令执行器基础)
+ *
+ * @see [CommandExecutor]
+ * @see [DefaultCommandExecutor]
+ * @author lgou2w
+ */
 abstract class CommandExecutorBase(
         final override val reference: Any,
         final override val name: String,
@@ -27,8 +34,20 @@ abstract class CommandExecutorBase(
         final override val parameters: Array<out CommandExecutor.Parameter>
 ) : CommandExecutor {
 
+    /**
+     * * The length of the parameter of this executor.
+     * * 此执行器的参数长度.
+     */
     val length = parameters.size
+    /**
+     * * The maximum parameter length of this executor.
+     * * 此执行器的最大参数长度.
+     */
     val max = length
+    /**
+     * * The minimum parameter length of this executor.
+     * * 此执行器的最小参数长度.
+     */
     val min = max - parameters.count(CommandExecutor.Parameter::canNullable)
 
     override var description: String? = null

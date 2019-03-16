@@ -26,6 +26,13 @@ import java.util.Arrays
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * ## DefaultRegisteredCommand (默认已注册命令)
+ *
+ * @see [RegisteredCommand]
+ * @see [DefaultCommandManager]
+ * @author lgou2w
+ */
 class DefaultRegisteredCommand(
         override val manager: CommandManager,
         override val source: Any,

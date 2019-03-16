@@ -24,6 +24,12 @@ import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 import java.util.logging.Level
 
+/**
+ * ## DefaultCommandParser (默认命令解析器)
+ *
+ * @see [CommandParser]
+ * @author lgou2w
+ */
 class DefaultCommandParser : CommandParser {
 
     override fun parse(manager: CommandManager, source: Any): DefaultRegisteredCommand {

@@ -20,6 +20,11 @@ import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.applyIfNotNull
 import org.bukkit.command.CommandSender
 
+/**
+ * ## CommandHelper (命令帮助器)
+ *
+ * @author lgou2w
+ */
 object CommandHelper {
 
     private val PARAMETER = "${ChatColor.AQUA}"

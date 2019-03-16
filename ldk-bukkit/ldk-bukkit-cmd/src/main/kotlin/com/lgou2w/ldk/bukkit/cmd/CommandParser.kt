@@ -16,11 +16,31 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+/**
+ * ## CommandParser (命令解析器)
+ *
+ * @see [CommandManager.parser]
+ * @author lgou2w
+ */
 interface CommandParser {
 
+    /**
+     * * Parse the given command source [source] object.
+     * * 解析给定的命令源 [source] 对象.
+     *
+     * @throws [CommandParseException] If parsing error.
+     * @throws [CommandParseException] 如果解析时错误.
+     */
     @Throws(CommandParseException::class)
     fun parse(manager: CommandManager, source: Any): RegisteredCommand
 
+    /**
+     * * Parse the given command source [source] object.
+     * * 解析给定的命令源 [source] 对象.
+     *
+     * @throws [CommandParseException] If parsing error.
+     * @throws [CommandParseException] 如果解析时错误.
+     */
     @Throws(CommandParseException::class)
     fun parse(manager: CommandManager, parent: RegisteredCommand?, source: Any): RegisteredCommand
 }

@@ -21,9 +21,22 @@ import org.bukkit.Bukkit
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
+/**
+ * ## Transform (转变器)
+ *
+ * @see [Transforms]
+ * @author lgou2w
+ */
 @FunctionalInterface
 interface Transform<out T> {
 
+    /**
+     * * Called when the parameter needs to be transformed.
+     * * 当参数需要进行转变时调用.
+     *
+     * @param parameter Parameter.
+     * @param parameter 参数.
+     */
     fun transform(parameter: String): T?
 
     companion object Constants {
