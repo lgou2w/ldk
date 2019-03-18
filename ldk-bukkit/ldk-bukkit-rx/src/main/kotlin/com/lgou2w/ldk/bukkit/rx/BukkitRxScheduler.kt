@@ -38,7 +38,7 @@ class BukkitRxScheduler private constructor(
     companion object {
 
         /**
-         * * Create an synchronous executed `Reactivex` scheduler from the given plugin [plugin].
+         * * Create an synchronous executed `Reactivex` scheduler from the given [plugin].
          * * 从给定的插件 [plugin] 创建一个同步执行的 `Reactivex` 调度器.
          */
         @JvmStatic
@@ -46,7 +46,7 @@ class BukkitRxScheduler private constructor(
                 = BukkitRxScheduler(plugin, false)
 
         /**
-         * * Create an asynchronously executed `Reactivex` scheduler from the given plugin [plugin].
+         * * Create an asynchronously executed `Reactivex` scheduler from the given [plugin].
          * * 从给定的插件 [plugin] 创建一个异步执行的 `Reactivex` 调度器.
          */
         @JvmStatic

@@ -47,10 +47,10 @@ object MinecraftReflection {
             by lazy { ClassSource.fromClassLoader() }
 
     /**
-     * * Gets the specified class object under the `NMS` package from the given class name [className].
+     * * Gets the specified class object under the `NMS` package from the given [className].
      * * 从给定的类名 [className] 获取 `NMS` 包下的指定类对象.
      *
-     * @throws [ClassNotFoundException] If the given class name [className] does not exist.
+     * @throws [ClassNotFoundException] If the given [className] does not exist.
      * @throws [ClassNotFoundException] 如果给定的类名 [className] 未存在.
      */
     @JvmStatic
@@ -59,10 +59,10 @@ object MinecraftReflection {
             = PACKAGE_CACHED_MINECRAFT.getPackageClass(className)
 
     /**
-     * * Gets the specified class object under the `NMS` package from the given class name [className] and aliases [aliases].
+     * * Gets the specified class object under the `NMS` package from the given [className] and [aliases].
      * * 从给定的类名 [className] 和别名 [aliases] 获取 `NMS` 包下的指定类对象.
      *
-     * @throws [ClassNotFoundException] If the given class name [className] and aliases [aliases] do not exist.
+     * @throws [ClassNotFoundException] If the given [className] and [aliases] do not exist.
      * @throws [ClassNotFoundException] 如果给定的类名 [className] 和别名 [aliases] 未存在.
      */
     @JvmStatic
@@ -80,7 +80,7 @@ object MinecraftReflection {
     }
 
     /**
-     * * Gets the specified class object under the `NMS` package from the given class name [className], and returns `null` if it is not found.
+     * * Gets the specified class object under the `NMS` package from the given [className], and returns `null` if it is not found.
      * * 从给定的类名 [className] 获取 `NMS` 包下的指定类对象, 如果未找到则返回 `null`.
      */
     @JvmStatic
@@ -91,7 +91,7 @@ object MinecraftReflection {
     }
 
     /**
-     * * Gets the specified class object under the `NMS` package from the given class name [className] and aliases [aliases], and returns `null` if not found.
+     * * Gets the specified class object under the `NMS` package from the given [className] and [aliases], and returns `null` if not found.
      * * 从给定的类名 [className] 和别名 [aliases] 获取 `NMS` 包下的指定类对象, 如果未找到则返回 `null`.
      */
     @JvmStatic
@@ -102,7 +102,7 @@ object MinecraftReflection {
     }
 
     /**
-     * * Set the given class name [className] in the `NMS` package under the class object [clazz].
+     * * Set the given [className] in the `NMS` package under the [clazz] object.
      * * 设置给定类名 [className] 在 `NMS` 包下的类对象 [clazz].
      */
     @JvmStatic
@@ -112,10 +112,10 @@ object MinecraftReflection {
     }
 
     /**
-     * * Gets the specified class object under the `CraftBukkit` package from the given class name [className].
+     * * Gets the specified class object under the `CraftBukkit` package from the given [className].
      * * 从给定的类名 [className] 获取 `CraftBukkit` 包下的指定类对象.
      *
-     * @throws [ClassNotFoundException] If the given class name [className] does not exist.
+     * @throws [ClassNotFoundException] If the given [className] does not exist.
      * @throws [ClassNotFoundException] 如果给定的类名 [className] 未存在.
      */
     @JvmStatic
@@ -124,7 +124,7 @@ object MinecraftReflection {
             = PACKAGE_CACHED_CRAFTBUKKIT.getPackageClass(className)
 
     /**
-     * * Gets the specified class object under the `CraftBukkit` package from the given class name [className], and returns `null` if it is not found.
+     * * Gets the specified class object under the `CraftBukkit` package from the given [className], and returns `null` if it is not found.
      * * 从给定的类名 [className] 获取 `CraftBukkit` 包下的指定类对象, 如果未找到则返回 `null`.
      */
     @JvmStatic
@@ -135,7 +135,7 @@ object MinecraftReflection {
     }
 
     /**
-     * * Set the given class name [className] in the `CraftBukkit` package under the class object [clazz].
+     * * Set the given [className] in the `CraftBukkit` package under the [clazz] object.
      * * 设置给定类名 [className] 在 `CraftBukkit` 包下的类对象 [clazz].
      */
     @JvmStatic

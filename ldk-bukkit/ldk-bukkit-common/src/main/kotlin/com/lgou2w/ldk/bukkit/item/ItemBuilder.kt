@@ -726,12 +726,14 @@ interface ItemBuilder : Builder<ItemStack> {
 
     //</editor-fold>
 
-    // TODO More...
-
     companion object {
 
         /**
-         * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+         * * Create an Item Builder [ItemBuilder] object from the given item stack.
+         * * 从给定的物品栈创建一个物品构建者 [ItemBuilder] 对象.
+         *
+         * @throws [UnsupportedOperationException] If the item material is illegal. e.g.: `WALL_BANNER`.
+         * @throws [UnsupportedOperationException] 如果物品材料是非法的. 例如: `WALL_BANNER`.
          */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
@@ -739,7 +741,11 @@ interface ItemBuilder : Builder<ItemStack> {
                 = SimpleItemBuilder(itemStack)
 
         /**
-         * @throws [UnsupportedOperationException] If the item type is illegal, e.g. `WALL_BANNER`
+         * * Create an Item Builder [ItemBuilder] object from the given item material.
+         * * 从给定的物品材料创建一个物品构建者 [ItemBuilder] 对象.
+         *
+         * @throws [UnsupportedOperationException] If the item material is illegal. e.g.: `WALL_BANNER`.
+         * @throws [UnsupportedOperationException] 如果物品材料是非法的. 例如: `WALL_BANNER`.
          */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)

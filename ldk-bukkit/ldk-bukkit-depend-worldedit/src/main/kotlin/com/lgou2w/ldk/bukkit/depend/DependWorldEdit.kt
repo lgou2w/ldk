@@ -43,7 +43,7 @@ import org.bukkit.entity.Player
 class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
 
     /**
-     * * Get the WorldEdit selected region of ​​the given player [player]. If not, return `null`.
+     * * Get the WorldEdit selected region of ​​the given [player]. If not, return `null`.
      * * 获取给定玩家 [player] 的 WorldEdit 选中区域. 如果没有则返回 `null`.
      */
     fun getSelectRegion(player: Player): Region? {

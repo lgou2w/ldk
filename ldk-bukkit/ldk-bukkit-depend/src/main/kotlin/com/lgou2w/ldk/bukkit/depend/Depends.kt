@@ -38,7 +38,7 @@ object Depends {
     }
 
     /**
-     * * Register the given plugin dependency [depend].
+     * * Register the given plugin [depend].
      * * 将给定的插件依赖 [depend] 进行注册.
      */
     @JvmStatic
@@ -49,10 +49,10 @@ object Depends {
     }
 
     /**
-     * * Register the given plugin dependency class [depend] and implementation instance [implemented].
+     * * Register the given plugin [depend] class and [implemented] instance.
      * * 将给定的插件依赖类 [depend] 和实现实例 [implemented] 进行注册.
      *
-     * @throws [IllegalArgumentException] If the implementation instance [implemented] is not an instance object of the [depend] class.
+     * @throws [IllegalArgumentException] If the [implemented] instance is not an instance object of the [depend] class.
      * @throws [IllegalArgumentException] 如果实现实例 [implemented] 不是 [depend] 类的实例对象.
      */
     @JvmStatic
@@ -67,7 +67,7 @@ object Depends {
     }
 
     /**
-     * * Unregister with the given plugin dependency class [depend].
+     * * Unregister with the given plugin [depend] class.
      * * 将给定的插件依赖类 [depend] 进行卸载注销.
      */
     @JvmStatic
@@ -97,7 +97,7 @@ object Depends {
     }
 
     /**
-     * * Gets the plugin dependency object from the given name [name]. Returns `null` if it doesn't exist.
+     * * Gets the plugin dependency object from the given [name]. Returns `null` if it doesn't exist.
      * * 从给定的名称 [name] 获取插件依赖对象. 如果不存在则返回 `null`.
      */
     @JvmStatic
@@ -109,7 +109,7 @@ object Depends {
     }
 
     /**
-     * * Get the plugin dependency object from the given plugin dependency class [depend]. Returns `null` if it doesn't exist.
+     * * Get the plugin dependency object from the given plugin [depend] class. Returns `null` if it doesn't exist.
      * * 从给定的插件依赖类 [depend] 获取插件依赖对象. 如果不存在则返回 `null`.
      */
     @JvmStatic
@@ -119,7 +119,7 @@ object Depends {
     }
 
     /**
-     * * Gets or loads a plugin dependency object from the given plugin dependency class [depend].
+     * * Gets or loads a plugin dependency object from the given plugin [depend] class.
      * * 从给定的插件依赖类 [depend] 获取或加载插件依赖对象.
      *
      * @throws [DependCannotException] If the plugin dependency is not available.
@@ -142,7 +142,7 @@ object Depends {
     }
 
     /**
-     * * Gets whether the plugin dependency object exists from the given name [name].
+     * * Gets whether the plugin dependency object exists from the given [name].
      * * 从给定的名称 [name] 获取插件依赖对象是否存在.
      */
     @JvmStatic
@@ -150,7 +150,7 @@ object Depends {
             = get(name) != null
 
     /**
-     * * Gets whether the plugin dependent object exists from the given plugin dependency class [depend].
+     * * Gets whether the plugin dependent object exists from the given plugin depend class.
      * * 从给定的插件依赖类 [depend] 获取插件依赖对象是否存在.
      */
     @JvmStatic

@@ -42,7 +42,7 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
         }
 
     /**
-     * * Placeholders processing for the given player [player] and text [text]. Pattern: `%identifier_params%`
+     * * Placeholders processing for the given [player] and [text]. Pattern: `%identifier_params%`
      * * 将给定的玩家 [player] 和文本 [text] 进行占位符处理. 模式: `%identifier_params%`
      */
     fun setPlaceholders(player: Player?, text: String): String {
@@ -51,7 +51,7 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
     }
 
     /**
-     * * Placeholders processing for the given player [player] and text collection [texts]. Pattern: `%identifier_params%`
+     * * Placeholders processing for the given [player] and text collection [texts]. Pattern: `%identifier_params%`
      * * 将给定的玩家 [player] 和文本集合 [texts] 进行占位符处理. 模式: `%identifier_params%`
      */
     fun setPlaceholders(player: Player?, texts: List<String>): List<String> {
@@ -60,7 +60,7 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
     }
 
     /**
-     * * Placeholders processing for the given player [player] and text [text]. Pattern: `{identifier_params}`
+     * * Placeholders processing for the given [player] and [text]. Pattern: `{identifier_params}`
      * * 将给定的玩家 [player] 和文本 [text] 进行占位符处理. 模式: `{identifier_params}`
      */
     fun setBracketPlaceholders(player: Player?, text: String): String {
@@ -69,7 +69,7 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
     }
 
     /**
-     * * Placeholders processing for the given player [player] and text collection [texts]. Pattern: `{identifier_params}`
+     * * Placeholders processing for the given [player] and text collection [texts]. Pattern: `{identifier_params}`
      * * 将给定的玩家 [player] 和文本集合 [texts] 进行占位符处理. 模式: `{identifier_params}`
      */
     fun setBracketPlaceholders(player: Player?, texts: List<String>): List<String> {
@@ -78,7 +78,7 @@ class DependPlaceholderAPI : DependBase<PlaceholderAPIPlugin>(getPlugin(NAME)) {
     }
 
     /**
-     * * Relational placeholder processing for given players [one], [two], and text [text]. Pattern: `%rel_identifier_params%`
+     * * Relational placeholder processing for given players [one], [two], and [text]. Pattern: `%rel_identifier_params%`
      * * 将给定的玩家 [one]、[two] 和文本 [text] 进行关系占位符处理. 模式: `%rel_identifier_params%`
      *
      * @throws [DependCannotException] If the PlaceholderAPI plugin is smaller than the `2.8.0` version.

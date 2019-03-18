@@ -180,7 +180,7 @@ object NBTFactory {
     }
 
     /**
-     * * Create an implementation instance object of `NMS` from the given NBT type [type] and value [value].
+     * * Create an implementation instance object of `NMS` from the given NBT [type] and [value].
      * * 从给定的 NBT 类型 [type] 和值 [value] 创建一个 `NMS` 的实现实例对象.
      */
     @JvmStatic

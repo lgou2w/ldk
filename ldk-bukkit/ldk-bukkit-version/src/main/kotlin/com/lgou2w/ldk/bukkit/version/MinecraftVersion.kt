@@ -107,7 +107,7 @@ class MinecraftVersion(
                 ))
 
         /**
-         * * Get the Minecraft version object from the given Bukkit API level [level].
+         * * Get the Minecraft version object from the given Bukkit API [level].
          * * 从给定的 Bukkit API 等级 [level] 获取 Minecraft 版本对象.
          */
         @JvmStatic

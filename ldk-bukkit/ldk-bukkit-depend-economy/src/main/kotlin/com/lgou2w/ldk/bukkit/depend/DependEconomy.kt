@@ -42,8 +42,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         if (registrations.size > 1)
             plugin.logger.info("[LDK] There are multiple economic services, using maximum priority.")
         val registered = registrations.sortedBy { it.priority }.lastOrNull() // Maximum priority
-        if (registered == null || registered.provider == null)
-            throw DependCannotException("The Vault does not have a registered Economy service.")
+                         ?: throw DependCannotException("The Vault does not have a registered Economy service.")
         economy = registered.provider
         plugin.logger.info("[LDK] Uses ${economy.name} as an economy dependency.")
     }

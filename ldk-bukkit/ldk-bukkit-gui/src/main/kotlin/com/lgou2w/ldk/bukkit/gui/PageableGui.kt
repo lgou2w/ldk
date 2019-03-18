@@ -39,11 +39,20 @@ open class PageableGui(
     var next : PageableGui? = null
 
     /**
-     * * Add the next page of the Gui object to this page to pageable Gui object.
-     * * 添加下一页 Gui 对象到此可翻页 Gui 对象.
+     * * Set the next page of the Gui object to this page to pageable Gui object.
+     * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
      */
     @JvmOverloads
-    fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui {
+    @Deprecated("RENAMED", replaceWith = ReplaceWith("setPage"))
+    fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui
+            = setPage(type, title, initializer)
+
+    /**
+     * * Set the next page of the Gui object to this page to pageable Gui object.
+     * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
+     */
+    @JvmOverloads
+    fun setPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui {
         val next = PageableGui(type, title)
         next.parent = this
         this.next = next
