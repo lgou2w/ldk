@@ -73,7 +73,7 @@ interface LanguageManager {
      * * Save the given language object [language].
      * * 将给定的语言对象 [language] 进行保存.
      *
-     * @throws [UnsupportedOperationException] This operation is not supported by the language provider [provider].
+     * @throws [UnsupportedOperationException] This operation is not supported by the language [provider].
      * @throws [UnsupportedOperationException] 如果语言提供者 [provider] 不支持此操作.
      * @throws [IOException] I/O
      */

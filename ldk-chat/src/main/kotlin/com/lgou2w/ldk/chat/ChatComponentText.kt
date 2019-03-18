@@ -32,7 +32,6 @@ class ChatComponentText(
          * * 获取或设置此聊天组件文本的文本对象.
          */
         var text: String
-
 ) : ChatComponentAbstract() {
 
     /**

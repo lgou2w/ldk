@@ -38,7 +38,7 @@ abstract class LanguageManagerBase(
     override var globalFormatter : Formatter? = null
 
     /**
-     * * Check the given local [locale] and get the name.
+     * * Check the given [locale] and get the name.
      * * 检查给定的本地 [locale] 并获取名称.
      */
     protected open fun checkName(locale: Locale): String {
@@ -48,7 +48,7 @@ abstract class LanguageManagerBase(
     }
 
     /**
-     * * Loads a language key-value pair map from the given local [locale].
+     * * Loads a language key-value pair map from the given [locale].
      * * 从给定的本地 [locale] 加载语言键值对映射.
      *
      * @throws [IOException] I/O

@@ -20,6 +20,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.OutputStreamWriter
+import java.nio.charset.Charset
 import java.util.Collections
 import java.util.Enumeration
 import java.util.Properties
@@ -30,14 +31,20 @@ import java.util.Properties
  * @see [LanguageAdapter]
  * @author lgou2w
  */
-class PropertiesAdapter : LanguageAdapter {
+class PropertiesAdapter @JvmOverloads constructor(
+        /**
+         * * The encoding of this property file.
+         * * 此属性文件的编码.
+         */
+        val charset: Charset = Charsets.UTF_8
+) : LanguageAdapter {
 
     override val fileExtension : String = "properties"
 
     override fun adapt(input: InputStream): Map<String, String> {
         val properties = LinkedProperties()
         val entries = LinkedHashMap<String, String>()
-        properties.load(InputStreamReader(input, Charsets.UTF_8))
+        properties.load(InputStreamReader(input, charset))
         properties.keys.forEach { entries[it.toString()] = properties.getProperty(it.toString()) }
         properties.clear()
         return entries
@@ -46,7 +53,7 @@ class PropertiesAdapter : LanguageAdapter {
     override fun readapt(output: OutputStream, entries: MutableMap<String, String>) {
         val properties = LinkedProperties()
         entries.forEach { properties.setProperty(it.key, it.value) }
-        properties.store(OutputStreamWriter(output, Charsets.UTF_8), null)
+        properties.store(OutputStreamWriter(output, charset), null)
         properties.clear()
     }
 

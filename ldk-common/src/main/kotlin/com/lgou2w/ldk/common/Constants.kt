@@ -16,6 +16,11 @@
 
 package com.lgou2w.ldk.common
 
+/**
+ * ## Constants (常量)
+ *
+ * @author lgou2w
+ */
 object Constants {
 
     /**

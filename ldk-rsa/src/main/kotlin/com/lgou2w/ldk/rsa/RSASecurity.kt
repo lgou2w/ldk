@@ -196,7 +196,7 @@ class RSASecurity private constructor(
         }
 
         /**
-         * * Create a security class from the given bit length [bit] with the key pair generator.
+         * * Create a security class from the given [bit] length with the key pair generator.
          * * 从给定的位长度 [bit] 用密钥对生成器创建安全类.
          *
          * @throws [IllegalArgumentException] If the bit length [bit] is less than [BIT_512].
@@ -351,7 +351,7 @@ class RSASecurity private constructor(
     private val encryptBlockSize = (bit shr 3) - 0x0B
 
     /**
-     * * Encrypt the given data [data].
+     * * Encrypt the given [data].
      * * 将给定的数据 [data] 进行加密.
      *
      * @throws [IOException] I/O
@@ -360,7 +360,7 @@ class RSASecurity private constructor(
     fun encrypt(data: ByteArray) = runEncryption(Cipher.ENCRYPT_MODE, encryptBlockSize, data)
 
     /**
-     * * Decrypt the given data [data].
+     * * Decrypt the given [data].
      * * 将给定的数据 [data] 进行解密.
      *
      * @throws [IOException] I/O
@@ -396,13 +396,13 @@ class RSASecurity private constructor(
      **************************************************************************/
 
     /**
-     * * Indicates whether this RSA key [key] is a private key.
+     * * Indicates whether this RSA [key] is a private key.
      * * 表示此 RSA 密钥 [key] 是否为私钥.
      */
     val isPrivateKey = key is PrivateKey
 
     /**
-     * * The given data [data] is signed with the key [key].
+     * * The given [data] is signed with the [key].
      * * 将给定的数据 [data] 使用密钥 [key] 进行签名.
      *
      * @throws [UnsupportedOperationException] If the key [key] is not a private key.
@@ -424,7 +424,7 @@ class RSASecurity private constructor(
     }
 
     /**
-     * * Verify the given data [data] and signature [sign].
+     * * Verify the given [data] and [sign].
      * * 将给定的数据 [data] 和签名 [sign] 进行验证.
      *
      * @throws [UnsupportedOperationException] If the key [key] is not a public key.

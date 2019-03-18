@@ -35,7 +35,7 @@ interface LanguageAdapter {
     val fileExtension : String
 
     /**
-     * * Adapt the given input stream [input] to a language key-value pair map.
+     * * Adapt the given [input] stream to a language key-value pair map.
      * * 将给定的输入流 [input] 适配为语言键值对映射.
      *
      * **Note: The caller close the input stream.**
@@ -43,7 +43,7 @@ interface LanguageAdapter {
     fun adapt(input: InputStream): Map<String, String>
 
     /**
-     * * Re-adapt the given language key-value mapping to the output stream [output].
+     * * Re-adapt the given language key-value mapping to the [output] stream.
      * * 将给定的语言键值对映射重新适配到输出流 [output] 中.
      *
      * **Note: The caller close the output stream.**

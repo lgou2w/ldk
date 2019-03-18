@@ -45,7 +45,7 @@ open class DynamicLanguageManager(
     }
 
     /**
-     * * Load all languages ​​from the given local array [locales].
+     * * Load all languages ​​from the given locale array [locales].
      * * 从给定的本地数组 [locales] 加载所有语言.
      *
      * @throws [IOException] I/O
@@ -57,7 +57,7 @@ open class DynamicLanguageManager(
     }
 
     /**
-     * * Reload the given local [locale].
+     * * Reload the given [locale].
      * * 将给定的本地 [locale] 进行重新加载.
      *
      * @throws [IOException] I/O
@@ -94,7 +94,7 @@ open class DynamicLanguageManager(
         get() = dynamic ?: throw NullPointerException("The current dynamic language has not been switched.")
 
     /**
-     * * Gets whether it has been loaded from the given local [locale].
+     * * Gets whether it has been loaded from the given [locale].
      * * 从给定的本地 [locale] 获取是否已经加载.
      */
     fun isLoaded(locale: Locale): Boolean {
@@ -102,7 +102,7 @@ open class DynamicLanguageManager(
     }
 
     /**
-     * * Switch the current dynamic language [dynamic] to the given local [locale].
+     * * Switch the current dynamic language [dynamic] to the given [locale].
      * * 将当前动态语言 [dynamic] 切换为给定的本地 [locale].
      *
      * @throws [IOException] I/O

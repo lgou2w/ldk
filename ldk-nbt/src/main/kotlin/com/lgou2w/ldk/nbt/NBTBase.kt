@@ -17,7 +17,7 @@
 package com.lgou2w.ldk.nbt
 
 /**
- * ## NBTBase
+ * ## NBTBase (NBT 基础)
  *
  * @see [NBTType]
  * @author lgou2w

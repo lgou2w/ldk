@@ -31,7 +31,7 @@ import java.io.OutputStream
 interface LanguageProvider {
 
     /**
-     * * Get the language data input stream from the given name [name].
+     * * Get the language data input stream from the given [name].
      * * 从给定的名称 [name] 获取语言数据输入流.
      *
      * @throws [IOException] I/O
@@ -40,13 +40,13 @@ interface LanguageProvider {
     fun load(name: String): InputStream?
 
     /**
-     * * Gets whether the language data is valid from the given name [name].
+     * * Gets whether the language data is valid from the given [name].
      * * 从给定的名称 [name] 获取语言数据是否有效.
      */
     fun isValid(name: String): Boolean
 
     /**
-     * * Get the language data output stream from the given name [name].
+     * * Get the language data output stream from the given [name].
      * * 从给定的名称 [name] 获取语言数据输出流.
      *
      * @throws [UnsupportedOperationException] If the language provider does not support this operation.

@@ -94,7 +94,6 @@ object NBTFactory {
                 .resultAccessor()
     }
 
-
     // NMS.NBTCompressedStreamTools -> public static void write(NMS.NBTBase, DataOutput)
     @JvmStatic val METHOD_NBT_WRITE: AccessorMethod<Any, Any> by lazy {
         FuzzyReflect.of(CLASS_NBT_STREAM, true)

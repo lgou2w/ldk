@@ -37,7 +37,7 @@ import java.lang.reflect.Modifier
 object Accessors {
 
     /**
-     * * Create a constructor accessor for the given constructor [constructor].
+     * * Create a constructor accessor for the given [constructor].
      * * 将给定的构造函数 [constructor] 创建一个构造访问器.
      *
      * @param constructor Constructor
@@ -48,7 +48,7 @@ object Accessors {
             = AccessorConstructorImpl(constructor)
 
     /**
-     * * Create a method accessor for the given method [method].
+     * * Create a method accessor for the given [method].
      * * 将给定的方法 [method] 创建一个方法访问器.
      *
      * @param method Method
@@ -59,7 +59,7 @@ object Accessors {
             = AccessorMethodImpl(method)
 
     /**
-     * * Create a field accessor for the given field [field].
+     * * Create a field accessor for the given [field].
      * * 将给定的字段 [field] 创建一个字段访问器.
      *
      * @param field Field
@@ -70,7 +70,7 @@ object Accessors {
             = AccessorFieldImpl(field)
 
     /**
-     * * Create a unsafe field accessor for the given field [field].
+     * * Create a unsafe field accessor for the given [field].
      * * 将给定的字段 [field] 创建一个不安全的字段访问器.
      *
      * @param field Field

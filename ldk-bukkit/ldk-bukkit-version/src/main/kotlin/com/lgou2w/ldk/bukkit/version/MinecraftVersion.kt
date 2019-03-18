@@ -127,7 +127,7 @@ class MinecraftVersion(
         get() = pre != null
 
     override val version: String
-        get() = super.version + if (pre != null) "-pre$pre" else ""
+        get() = if (pre != null) "${super.version}-pre$pre" else super.version
 
     override fun compareTo(other: Version): Int {
         return if (other is MinecraftVersion)
@@ -151,7 +151,7 @@ class MinecraftVersion(
         if (other === this)
             return true
         if (other is MinecraftVersion)
-            return super.equals(other) && isPre == other.isPre
+            return super.equals(other) && pre == other.pre
         return false
     }
 

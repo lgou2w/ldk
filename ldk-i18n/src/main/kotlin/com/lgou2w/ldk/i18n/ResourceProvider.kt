@@ -25,7 +25,7 @@ import java.io.InputStream
  * @see [LanguageProvider]
  * @author lgou2w
  */
-open class ResourceProvider(
+open class ResourceProvider @JvmOverloads constructor(
         /**
          * * The class loader for this resource language provider.
          * * 此资源语言提供者的类加载器.

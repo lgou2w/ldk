@@ -39,7 +39,6 @@ class ChatComponentTranslation(
          * * 获取或设置此聊天组件翻译的参数列表对象.
          */
         var withs: MutableList<Any> = ArrayList()
-
 ) : ChatComponentAbstract() {
 
     /**

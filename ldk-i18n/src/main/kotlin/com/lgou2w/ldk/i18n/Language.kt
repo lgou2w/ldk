@@ -76,37 +76,37 @@ interface Language {
     fun save()
 
     /**
-     * * Get the language value from the given key [key].
+     * * Get the language value from the given [key].
      * * 从给定的键 [key] 获取语言值.
      */
     operator fun get(key: String): String?
 
     /**
-     * * Get the language value from the given key [key] and the parameter [args].
+     * * Get the language value from the given [key] and the [args].
      * * 从给定的键 [key] 和参数 [args] 获取语言值.
      */
     fun get(key: String, vararg args: Any?): String?
 
     /**
-     * * Gets the language value from the given key [key], or returns the [def] value if it does not exist.
+     * * Gets the language value from the given [key], or returns the [def] value if it does not exist.
      * * 从给定的键 [key] 获取语言值, 如果不存在则返回 [def] 值.
      */
     fun getOr(key: String, def: String?): String?
 
     /**
-     * * Gets the language value from the given key [key] and the parameter [args], and returns the [def] value if it does not exist.
+     * * Gets the language value from the given [key] and the [args], and returns the [def] value if it does not exist.
      * * 从给定的键 [key] 和参数 [args] 获取语言值, 如果不存在则返回 [def] 值.
      */
     fun getOr(key: String, def: String?, vararg args: Any?): String?
 
     /**
-     * * Set the given key [key] to the given language value [value].
+     * * Set the given [key] to the given language [value].
      * * 将给定的键 [key] 设置给定的语言值 [value].
      */
     operator fun set(key: String, value: String)
 
     /**
-     * * Gets the given key [key] if there is a language value.
+     * * Gets the given [key] if there is a language value.
      * * 获取给定的键 [key] 是否存在语言值.
      */
     fun has(key: String): Boolean

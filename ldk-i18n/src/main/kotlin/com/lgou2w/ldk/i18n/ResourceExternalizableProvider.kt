@@ -29,7 +29,7 @@ import java.io.OutputStream
  * @see [ResourceProvider]
  * @author lgou2w
  */
-class ResourceExternalizableProvider(
+class ResourceExternalizableProvider @JvmOverloads constructor(
         /**
          * * A directory of resource externalizable language provider.
          * * 此资源可外部语言提供者的目录.

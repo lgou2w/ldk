@@ -29,7 +29,7 @@ abstract class ASMClassLoader private constructor(
 ) : ClassLoader(parent) {
 
     /**
-     * * Define the given class name [name] and bytecode [byteArray] as class.
+     * * Define the given class [name] and bytecode [byteArray] as class.
      * * 将给定的类名 [name] 和字节码 [byteArray] 定义为类.
      */
     abstract fun defineClass(name: String, byteArray: ByteArray): Class<*>
@@ -63,7 +63,7 @@ abstract class ASMClassLoader private constructor(
                 = instance
 
         /**
-         * * Create a bytecode class loader object from the given class loader [classLoader].
+         * * Create a bytecode class loader object from the given [classLoader].
          * * 从给定的类加载器 [classLoader] 创建一个字节码类加载器对象.
          */
         @JvmStatic

@@ -44,7 +44,7 @@ abstract class FuzzyReflectMatcher<T>(
             else ArrayList()
 
     /**
-     * * Match reflection values ​​from a given predicate condition [predicate].
+     * * Match reflection values ​​from a given [predicate] condition.
      * * 从给定的谓词条件 [predicate] 中匹配反射值.
      *
      * @param predicate Condition
@@ -58,7 +58,7 @@ abstract class FuzzyReflectMatcher<T>(
     }
 
     /**
-     * * Initialize the given value first, then match the reflection value from the given predicate condition [predicate].
+     * * Initialize the given value first, then match the reflection value from the given [predicate] condition.
      * * 首先初始化给定值, 然后从给定的谓词条件 [predicate] 中匹配反射值.
      *
      * @param initialize Initialize value
@@ -76,10 +76,10 @@ abstract class FuzzyReflectMatcher<T>(
     }
 
     /**
-     * * Match reflection values ​​from a given visibility [visibilities].
+     * * Match reflection values ​​from a given [visibilities].
      * * 从给定的可见性 [visibilities] 中匹配反射值.
      *
-     * @param visibilities Visibility
+     * @param visibilities Visibilities
      * @param visibilities 可见性
      */
     open fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectMatcher<T>
@@ -96,7 +96,7 @@ abstract class FuzzyReflectMatcher<T>(
             = with({ Pattern.compile(regex) }) { it, pattern -> pattern.matcher(it.name).matches() }
 
     /**
-     * * Match reflection values ​​from the given annotation class [annotation].
+     * * Match reflection values ​​from the given [annotation] class.
      * * 从给定的注解类 [annotation] 匹配反射值.
      *
      * @param annotation Annotation class
@@ -106,7 +106,7 @@ abstract class FuzzyReflectMatcher<T>(
             = with { it.getAnnotation(annotation) != null }
 
     /**
-     * * Matches the reflection value from the given annotation class [annotation] and with the specified predicate condition [block].
+     * * Matches the reflection value from the given [annotation] class and with the specified predicate condition [block].
      * * 从给定的注解类 [annotation] 并以指定谓词条件 [block] 匹配反射值.
      *
      * @param annotation Annotation class
@@ -136,7 +136,7 @@ abstract class FuzzyReflectMatcher<T>(
     abstract fun withParams(vararg parameters: Class<*>): FuzzyReflectMatcher<T>
 
     /**
-     * * Matches the reflection value from the given parameter count [count].
+     * * Matches the reflection value from the given parameter [count].
      * * 从给定的参数数量 [count] 匹配反射值.
      *
      * @param count Parameter count
