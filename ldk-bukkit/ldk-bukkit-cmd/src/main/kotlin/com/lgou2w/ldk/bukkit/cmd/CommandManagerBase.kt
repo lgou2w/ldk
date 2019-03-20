@@ -17,11 +17,13 @@
 package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
+import org.bukkit.command.SimpleCommandMap
 import org.bukkit.plugin.Plugin
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
@@ -85,26 +87,49 @@ abstract class CommandManagerBase(
                 .resultAccessorAs<Server, CommandMap>()[Bukkit.getServer()] as CommandMap
         }
         @JvmStatic private fun registerBukkitCommand(command: RegisteredCommand): Boolean {
-            val description = command.description ?: ""
-            val usageMessage = command.usage ?: "/${command.name} help"
-            val proxy = object : org.bukkit.command.Command(
-                    command.name, description, usageMessage, command.aliases.toMutableList()
-            ) {
-                init {
-                    permission = command.permission?.joinToString(";")
-                }
-                override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
-                    return command.execute(sender, name, args)
-                }
-                override fun tabComplete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
-                    return command.complete(sender, alias, args)
-                }
-            }
             return try {
-                bukkitCommandMap.register(command.name, command.fallbackPrefix, proxy)
+                val existed = bukkitCommandMap.getCommand(command.name)
+                if (existed != null && existed !is CommandProxy)
+                    throw UnsupportedOperationException("The command '${command.name}' already exists and cannot be override.")
+                if (existed != null)
+                    removeBukkitCommand(command.name, existed)
+                bukkitCommandMap.register(command.name, command.fallbackPrefix, CommandProxy(command))
             } catch (e: Exception) {
                 command.manager.plugin.logger.log(Level.SEVERE, e.message, e)
                 false
+            }
+        }
+        @JvmStatic private val simpleCommandMapKnownCommands by lazy {
+            FuzzyReflect.of(SimpleCommandMap::class.java, true)
+                .useFieldMatcher()
+                .withType(Map::class.java)
+                .withName("knownCommands")
+                .resultAccessorAs<SimpleCommandMap, MutableMap<String, org.bukkit.command.Command>>()
+        }
+        @JvmStatic private fun removeBukkitCommand(name: String, command: org.bukkit.command.Command) {
+            val simpleCommandMap = bukkitCommandMap as? SimpleCommandMap ?: return
+            val knownCommands = simpleCommandMapKnownCommands[simpleCommandMap].notNull()
+            val existed = knownCommands[name] ?: return
+            if (existed == command)
+                knownCommands.remove(name)
+        }
+
+        private class CommandProxy(
+                val command: RegisteredCommand
+        ) : org.bukkit.command.Command(
+                command.name,
+                command.description ?: command.name,
+                command.usage ?: "/${command.name} help",
+                command.aliases.toMutableList()
+        ) {
+            init {
+                permission = command.permission?.joinToString(";")
+            }
+            override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
+                return command.execute(sender, name, args)
+            }
+            override fun tabComplete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
+                return command.complete(sender, alias, args)
             }
         }
     }
