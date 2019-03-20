@@ -40,7 +40,8 @@ data class ChatClickEvent(
          * * The action value of this chat click event.
          * * 此聊天点击事件的交互值.
          */
-        val value: String) {
+        val value: String
+) {
 
     /**
      * ## Action (交互类型)

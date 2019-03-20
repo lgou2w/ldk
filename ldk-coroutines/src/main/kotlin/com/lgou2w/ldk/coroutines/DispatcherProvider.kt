@@ -18,7 +18,20 @@ package com.lgou2w.ldk.coroutines
 
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## DispatcherProvider (调度程序提供者)
+ *
+ * @see [CustomizeDispatcherProvider]
+ * @see [SingleThreadDispatcherProvider]
+ * @see [FixedThreadPoolDispatcherProvider]
+ * @see [ScheduledThreadPoolDispatcherProvider]
+ * @author lgou2w
+ */
 interface DispatcherProvider {
 
+    /**
+     * * The coroutine context object for this dispatcher provider.
+     * * 此调度程序提供者的协程上下文对象.
+     */
     val dispatcher : CoroutineContext
 }

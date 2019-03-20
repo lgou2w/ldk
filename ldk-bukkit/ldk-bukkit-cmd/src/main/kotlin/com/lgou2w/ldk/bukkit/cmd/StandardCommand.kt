@@ -19,8 +19,18 @@ package com.lgou2w.ldk.bukkit.cmd
 import com.lgou2w.ldk.chat.toColor
 import org.bukkit.command.CommandSender
 
+/**
+ * ## StandardCommand (标准命令)
+ *
+ * @see [Initializable]
+ * @author lgou2w
+ */
 abstract class StandardCommand : Initializable {
 
+    /**
+     * * Registered command object for this standard command.
+     * * 此标准命令的已注册命令对象.
+     */
     lateinit var command : RegisteredCommand private set
 
     final override fun initialize(command: RegisteredCommand) {
@@ -28,6 +38,10 @@ abstract class StandardCommand : Initializable {
         this.initialize()
     }
 
+    /**
+     * * Initialize this standard command.
+     * * 初始化此标准命令.
+     */
     protected open fun initialize() { }
 
     fun CommandSender.send(message: String) {

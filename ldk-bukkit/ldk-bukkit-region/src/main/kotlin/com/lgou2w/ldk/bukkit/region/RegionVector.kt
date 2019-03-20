@@ -21,6 +21,11 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 
+/**
+ * ## RegionVector (区域向量)
+ *
+ * @author lgou2w
+ */
 open class RegionVector(
         val x: Double,
         val y: Double,

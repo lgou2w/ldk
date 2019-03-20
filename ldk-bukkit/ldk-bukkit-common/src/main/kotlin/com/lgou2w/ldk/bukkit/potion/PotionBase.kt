@@ -20,9 +20,28 @@ import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.Valuable
 
+/**
+ * ## PotionBase (药水基础)
+ *
+ * @see [Valuable]
+ * @see [PotionType]
+ * @author lgou2w
+ */
 data class PotionBase(
+        /**
+         * * The potion type of this potion.
+         * * 此药水的药水类型.
+         */
         val type: PotionType,
+        /**
+         * * Indicate whether this potion is can upgraded.
+         * * 表示此药水是否可升级.
+         */
         val isUpgraded: Boolean,
+        /**
+         * * Indicate whether this potion is can extended.
+         * * 表示此药水是否可延长.
+         */
         val isExtended: Boolean
 ) : Valuable<String>,
         Comparable<PotionBase> {

@@ -16,4 +16,12 @@
 
 package com.lgou2w.ldk.bukkit
 
+/**
+ * ## Plugin (插件)
+ *
+ * @see [PluginBase]
+ * @see [org.bukkit.plugin.Plugin]
+ * @see [PluginArchive]
+ * @author lgou2w
+ */
 interface Plugin : org.bukkit.plugin.Plugin, PluginArchive

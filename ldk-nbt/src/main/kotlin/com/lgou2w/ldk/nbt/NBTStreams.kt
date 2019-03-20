@@ -45,7 +45,7 @@ import java.util.zip.ZipException
 object NBTStreams {
 
     /**
-     * * Read the NBT tag from the given [input] input stream.
+     * * Read the NBT tag from the given [input] stream.
      * * 从给定的 [input] 输入流中读取 NBT 标签.
      *
      * @param input Input stream
@@ -59,7 +59,7 @@ object NBTStreams {
     }
 
     /**
-     * * Read the NBT tag from the given [input] data input.
+     * * Read the NBT tag from the given data [input].
      * * 从给定的 [input] 数据输入中读取 NBT 标签.
      *
      * @param input Data input
@@ -79,7 +79,7 @@ object NBTStreams {
     }
 
     /**
-     * * Write the given [nbt] NBT tag to the [output] output stream.
+     * * Write the given [nbt] NBT tag to the [output] stream.
      * * 将给定 [nbt] NBT 标签写入到 [output] 输出流中.
      *
      * @param output Output stream
@@ -94,7 +94,7 @@ object NBTStreams {
     }
 
     /**
-     * * Write the given [nbt] NBT tag to the [output] data output.
+     * * Write the given [nbt] NBT tag to the data [output].
      * * 将给定 [nbt] NBT 标签写入到 [output] 数据输出中.
      *
      * @param output Data output
@@ -113,7 +113,7 @@ object NBTStreams {
     }
 
     /**
-     * * Write the given [nbt] NBT tag in `Base64` format.
+     * * Write the given [nbt] tag in `Base64` format.
      * * 将给定的 [nbt] NBT 标签以 `Base64` 格式写出.
      *
      * @param nbt NBT
@@ -143,7 +143,7 @@ object NBTStreams {
     }
 
     /**
-     * * Write the given [nbt] NBT tag in file.
+     * * Write the given [nbt] tag in file.
      * * 将给定的 [nbt] NBT 标签以文件写出.
      *
      * @param nbt NBT
@@ -182,7 +182,7 @@ object NBTStreams {
     }
 
     /**
-     * * Automatically infer and read NBT tag from the given file [file].
+     * * Automatically infer and read NBT tag from the given [file].
      * * 从给定的文件 [file] 中自动推断并读取 NBT 标签.
      *
      * @param file The file to be read

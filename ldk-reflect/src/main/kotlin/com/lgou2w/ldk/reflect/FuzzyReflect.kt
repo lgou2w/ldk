@@ -92,7 +92,7 @@ class FuzzyReflect private constructor(
     companion object {
 
         /**
-         * * Create a fuzzy reflector from the given reference class [reference].
+         * * Create a fuzzy reflector from the given [reference] class.
          * * 从给定的引用类 [reference] 创建一个模糊反射器.
          *
          * @param reference Reference class
@@ -107,7 +107,7 @@ class FuzzyReflect private constructor(
         }
 
         /**
-         * * Create a fuzzy reflector from the given reference object [reference].
+         * * Create a fuzzy reflector from the given [reference] object.
          * * 从给定的引用对象 [reference] 创建一个模糊反射器.
          *
          * @param reference Reference object

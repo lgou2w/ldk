@@ -16,6 +16,13 @@
 
 package com.lgou2w.ldk.bukkit.region
 
+/**
+ * ## RegionIterator (区域迭代器)
+ *
+ * @see [RegionVectorBlock]
+ * @see [Iterator]
+ * @author lgou2w
+ */
 class RegionIterator(
         private val region: Region
 ) : Iterator<RegionVectorBlock> {

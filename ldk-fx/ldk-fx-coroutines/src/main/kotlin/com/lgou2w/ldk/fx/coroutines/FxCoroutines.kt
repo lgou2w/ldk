@@ -25,18 +25,41 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## FxCoroutineFactory (JavaFx 协程工厂)
+ *
+ * @see [CoroutineFactoryBase]
+ * @author lgou2w
+ */
 class FxCoroutineFactory : CoroutineFactoryBase(FxDispatcherProvider.INSTANCE)
+
+/**
+ * ## FxDispatcherProvider (JavaFx 调度程序提供者)
+ *
+ * @see [INSTANCE]
+ * @see [DispatcherProvider]
+ * @author lgou2w
+ */
 class FxDispatcherProvider private constructor() : DispatcherProvider {
 
     override val dispatcher : CoroutineContext
         get() = Dispatchers.JavaFx
 
     companion object {
+        /**
+         * * A singleton object for this JavaFx dispatcher provider.
+         * * 此 JavaFx 调度程序提供者的单例对象.
+         */
         @JvmField
         val INSTANCE = FxDispatcherProvider()
     }
 }
 
+/**
+ * * Use the JavaFx dispatcher context [Dispatchers.JavaFx] to call the specified suspending block,
+ *      suspend until completion and return the result.
+ * * 使用 JavaFx 调度程序上下文 [Dispatchers.JavaFx] 调用指定的挂起块, 挂起直到完成然后返回结果.
+ */
 suspend inline fun <T> withFx(crossinline block: SuspendApplicatorFunction<CoroutineScope, T>): T {
     return withContext(Dispatchers.JavaFx) {
         block()

@@ -45,7 +45,7 @@ package com.lgou2w.ldk.reflect
 abstract class Reflection private constructor() {
 
     /**
-     * * Get the caller class for the given depth [depth].
+     * * Get the caller class for the given [depth].
      * * 获取给定深度 [depth] 的调用者类.
      *
      * @param depth Depth
@@ -57,7 +57,7 @@ abstract class Reflection private constructor() {
     }
 
     /**
-     * * Get the expected class from `0` to the given depth [depth].
+     * * Get the expected class from `0` to the given [depth].
      * * 获取从 `0` 到给定深度 [depth] 的预期类.
      *
      * @param depth Depth

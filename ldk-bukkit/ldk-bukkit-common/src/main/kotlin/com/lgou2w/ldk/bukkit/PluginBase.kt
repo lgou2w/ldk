@@ -24,6 +24,13 @@ import org.bukkit.plugin.java.JavaPluginLoader
 import java.io.File
 import java.util.logging.Level
 
+/**
+ * ## PluginBase (插件基础)
+ *
+ * @see [Plugin]
+ * @see [JavaPlugin]
+ * @author lgou2w
+ */
 abstract class PluginBase : JavaPlugin, Plugin {
 
     constructor() : super()
@@ -76,8 +83,22 @@ abstract class PluginBase : JavaPlugin, Plugin {
         disable()
     }
 
+    /**
+     * * Called when the plugin is load.
+     * * 当插件加载时调用.
+     */
     protected abstract fun load()
+
+    /**
+     * * Called when the plugin is enable.
+     * * 当插件启用时调用.
+     */
     protected abstract fun enable()
+
+    /**
+     * * Called when the plugin is disable.
+     * * 当插件禁用时调用.
+     */
     protected abstract fun disable()
 
     /**************************************************************************
@@ -86,6 +107,10 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
+    /**
+     * * Indicates an exception when the plugin is enabled. Then whether to disable the plugin.
+     * * 表示当插件启用时异常. 那么是否禁用插件.
+     */
     protected open val enableExceptionDisabled : Boolean = true
 
     /**************************************************************************
@@ -94,7 +119,20 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
+    /**
+     * * Indicates that the plugin enables the required plugin dependency item.
+     * * 表示插件启用所需求的插件依赖项.
+     *
+     * @see [PluginDependency]
+     */
     protected open val enableDependencies : Array<PluginDependency> = emptyArray()
+
+    /**
+     * * Called when a plugin dependency fails to load.
+     * * 当一个插件依赖项加载失败时被调用.
+     *
+     * @see [PluginDependency]
+     */
     protected open fun failedDependency(dependency: PluginDependency) { }
 
     protected class PluginDependencyScope {
@@ -121,7 +159,7 @@ abstract class PluginBase : JavaPlugin, Plugin {
      *
      **************************************************************************/
 
-    override val pluginPrefix : String
+    override val pluginPrefix : String?
         get() = description.prefix
 
     override val pluginName : String
@@ -133,10 +171,10 @@ abstract class PluginBase : JavaPlugin, Plugin {
     override val pluginVersion : String
         get() = description.version
 
-    override val pluginWebsite : String
+    override val pluginWebsite : String?
         get() = description.website
 
-    override val pluginDescription : String
+    override val pluginDescription : String?
         get() = description.description
 
     override val pluginAuthors : Set<String>

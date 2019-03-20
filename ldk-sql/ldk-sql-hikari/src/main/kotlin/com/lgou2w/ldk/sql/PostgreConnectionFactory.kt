@@ -18,6 +18,13 @@ package com.lgou2w.ldk.sql
 
 import com.zaxxer.hikari.HikariConfig
 
+/**
+ * ## PostgreConnectionFactory (Postgre 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @see [HikariConnectionFactory]
+ * @author lgou2w
+ */
 class PostgreConnectionFactory(
         configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {

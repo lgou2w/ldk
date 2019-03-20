@@ -17,25 +17,15 @@
 package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.chat.ChatColor
-import org.bukkit.command.CommandException
 import org.bukkit.command.CommandSender
 
 /**
- * ## SimpleCommandFeedback (简单命令反馈)
+ * ## SimpleChineseCommandFeedback (简单中文命令反馈)
  *
- * @see [CommandFeedback]
+ * @see [SimpleCommandFeedback]
  * @author lgou2w
  */
-open class SimpleCommandFeedback : CommandFeedback {
-
-    protected fun sendMessage(
-            command: RegisteredCommand,
-            sender: CommandSender,
-            message: String
-    ) {
-        val prefix = command.rootParent?.prefix ?: command.prefix
-        sender.sendMessage(prefix + message)
-    }
+class SimpleChineseCommandFeedback : SimpleCommandFeedback() {
 
     override fun onPermission(
             sender: CommandSender,
@@ -45,7 +35,7 @@ open class SimpleCommandFeedback : CommandFeedback {
             args: Array<out String>,
             permission: String
     ) {
-        sendMessage(command, sender, ChatColor.RED + "You do not have permission to use this command.")
+        sendMessage(command, sender, ChatColor.RED + "你没有权限使用此命令.")
     }
 
     override fun onPlayable(
@@ -55,7 +45,7 @@ open class SimpleCommandFeedback : CommandFeedback {
             executor: CommandExecutor,
             args: Array<out String>
     ) {
-        sendMessage(command, sender, ChatColor.RED + "The console cannot execute this command.")
+        sendMessage(command, sender, ChatColor.RED + "控制台无法执行此命令.")
     }
 
     override fun onMinimum(
@@ -70,7 +60,7 @@ open class SimpleCommandFeedback : CommandFeedback {
         sendMessage(
                 command,
                 sender,
-                ChatColor.RED + "The arg length is less than the command min length. (Current: $current, Min: $min)"
+                ChatColor.RED + "参数长度小于命令最小长度. (当前: $current, 最小: $min)"
         )
     }
 
@@ -87,22 +77,7 @@ open class SimpleCommandFeedback : CommandFeedback {
         sendMessage(
                 command,
                 sender,
-                ChatColor.RED + "Transformed '$value' to '$transformed' type does not match. (Expected: ${expected.simpleName})"
+                ChatColor.RED + "转变 '$value' 到 '$transformed' 类型不匹配. (预期: ${expected.simpleName})"
         )
-    }
-
-    @Throws(CommandException::class)
-    override fun onUnhandled(
-            sender: CommandSender,
-            name: String,
-            command: RegisteredCommand,
-            executor: CommandExecutor,
-            args: Array<out String>,
-            e: Exception
-    ) {
-        if (e is CommandException)
-            throw e
-        else
-            throw CommandException(e.message, e)
     }
 }

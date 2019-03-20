@@ -18,6 +18,12 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.plugin.Plugin
 
+/**
+ * ## DefaultCommandManager (默认命令管理器)
+ *
+ * @see [SimpleCommandManager]
+ * @author lgou2w
+ */
 class DefaultCommandManager(
         plugin: Plugin
 ) : SimpleCommandManager(plugin, DefaultCommandParser()) {

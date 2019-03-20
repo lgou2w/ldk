@@ -24,6 +24,12 @@ import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 import java.util.logging.Level
 
+/**
+ * ## DefaultCommandParser (默认命令解析器)
+ *
+ * @see [CommandParser]
+ * @author lgou2w
+ */
 class DefaultCommandParser : CommandParser {
 
     override fun parse(manager: CommandManager, source: Any): DefaultRegisteredCommand {
@@ -158,71 +164,72 @@ class DefaultCommandParser : CommandParser {
     ): Array<out CommandExecutor.Parameter>? {
         val parameters = method.parameters
         val processLength = parameters.size - 1
-        return parameters.filterIndexed { index, _ -> index != 0 }.mapIndexed { index, parameter ->
-            val type = parameter.type as Class<*>
-            val name = parameter.getAnnotation(Parameter::class.java)?.value
-            val optional = parameter.getAnnotation(Optional::class.java)
-            val nullable = parameter.getAnnotation(Nullable::class.java)
-            val playerName = parameter.getAnnotation(Playername::class.java)
-            val vararg = parameter.getAnnotation(Vararg::class.java)?.value?.java
-            val alias = "${method.declaringClass.canonicalName}#${method.name}"
-            val param = name ?: parameter.name
-            if (optional != null && nullable != null) {
-                betterError(manager, """
-                    The parameter '$param' Optional or nullable annotations can only have one, filtered.
-                      Correction: ?
-                        $alias(@Optional $param: ${type.name}) or
-                        $alias(@Nullable $param: ${type.name})
-                """.trimIndent())
-                return null
-            }
-            if (vararg != null) {
-                if (index + 1 != processLength) {
+        return parameters
+            .filterIndexed { index, _ -> index != 0 }
+            .mapIndexed { index, parameter ->
+                val type = parameter.type as Class<*>
+                val name = parameter.getAnnotation(Parameter::class.java)?.value
+                val optional = parameter.getAnnotation(Optional::class.java)
+                val nullable = parameter.getAnnotation(Nullable::class.java)
+                val playerName = parameter.getAnnotation(Playername::class.java)
+                val vararg = parameter.getAnnotation(Vararg::class.java)?.value?.java
+                val alias = "${method.declaringClass.canonicalName}#${method.name}"
+                val param = name ?: parameter.name
+                if (optional != null && nullable != null) {
                     betterError(manager, """
-                        The variable length parameter '$param' can only be in the last position of the actuator, filtered.
+                        The parameter '$param' Optional or nullable annotations can only have one, filtered.
                           Correction: ?
-                            fun $alias(..., $param: List<${vararg.name}>)
-                    """)
-                    return null
-                }
-                if (type != List::class.java) {
-                    betterError(manager, """
-                        The variable length parameter '$alias' must be a List type, filtered.
-                          Correction: ?
-                            fun $alias(..., $param: List<${vararg.name}>)
+                            $alias(@Optional $param: ${type.name}) or
+                            $alias(@Nullable $param: ${type.name})
                     """.trimIndent())
                     return null
                 }
-                val genericParameter = method.genericParameterTypes[index + 1] as ParameterizedType
-                val transformedType = genericParameter.actualTypeArguments.first() as Class<*>
-                if (transformedType != vararg) {
+                if (vararg != null) {
+                    if (index + 1 != processLength) {
+                        betterError(manager, """
+                            The variable length parameter '$param' can only be in the last position of the actuator, filtered.
+                              Correction: ?
+                                fun $alias(..., $param: List<${vararg.name}>)
+                        """)
+                        return null
+                    }
+                    if (type != List::class.java) {
+                        betterError(manager, """
+                            The variable length parameter '$alias' must be a List type, filtered.
+                              Correction: ?
+                                fun $alias(..., $param: List<${vararg.name}>)
+                        """.trimIndent())
+                        return null
+                    }
+                    val genericParameter = method.genericParameterTypes[index + 1] as ParameterizedType
+                    val transformedType = genericParameter.actualTypeArguments.first() as Class<*>
+                    if (transformedType != vararg) {
+                        betterError(manager, """
+                            The expected type of the variable length parameter '$param' does not match the List type, filtered.
+                              Correction: ?
+                                fun $alias(..., $param: List<${vararg.name}>)
+                        """.trimIndent())
+                        return null
+                    }
+                }
+                if (playerName != null && type != String::class.java) {
                     betterError(manager, """
-                        The expected type of the variable length parameter '$param' does not match the List type, filtered.
-                          Correction: ?
-                            fun $alias(..., $param: List<${vararg.name}>)
-                    """.trimIndent())
+                            The parameter '$param' matches the player name, but the type is not a string.
+                              Correction: ?
+                                fun $alias(..., @Playername $param: String)
+                        """.trimIndent())
                     return null
                 }
-            }
-            if (playerName != null && type != String::class.java) {
-                betterError(manager, """
-                        The parameter '$param' matches the player name, but the type is not a string.
-                          Correction: ?
-                            fun $alias(..., @Playername $param: String)
-                    """.trimIndent())
-                return null
-            }
-            CommandExecutor.Parameter(
-                    index,
-                    type,
-                    name,
-                    optional?.def,
-                    nullable != null,
-                    type == String::class.java && playerName != null,
-                    vararg
-            )
-        }
-            .toTypedArray()
+                CommandExecutor.Parameter(
+                        index,
+                        type,
+                        name,
+                        optional?.def,
+                        nullable != null,
+                        type == String::class.java && playerName != null,
+                        vararg
+                )
+        }.toTypedArray()
     }
 
     private fun registerChildren(
@@ -268,59 +275,65 @@ class DefaultCommandParser : CommandParser {
         }
     }
 
-    private fun betterError(manager: CommandManager, message: String, e: Exception? = null) {
-        manager.plugin.logger.warning("-------- Command parsing warning -----")
-        message.split("\n").forEach { manager.plugin.logger.warning(it) }
-        if (e != null)
-            manager.plugin.logger.log(Level.SEVERE, e.message, e)
-    }
+    companion object {
 
-    private fun buildCommandRegistered(
-            manager: CommandManager,
-            source: Any,
-            parent: DefaultRegisteredCommand?,
-            name: String,
-            aliases: Array<out String>,
-            permission: Array<out String>?,
-            description: Description?,
-            children: Map<String, DefaultRegisteredCommand>,
-            executors: Map<String, DefaultCommandExecutor>
-    ): DefaultRegisteredCommand {
-        return DefaultRegisteredCommand(
-                manager,
-                source,
-                parent,
-                name,
-                aliases,
-                permission,
-                description?.fallbackPrefix ?: "",
-                description?.description,
-                description?.usage,
-                description?.prefix,
-                children,
-                executors
-        )
-    }
+        @JvmStatic
+        private fun betterError(manager: CommandManager, message: String, e: Exception? = null) {
+            manager.plugin.logger.warning("-------- Command parsing warning -----")
+            message.split("\n").forEach { manager.plugin.logger.warning(it) }
+            if (e != null)
+                manager.plugin.logger.log(Level.SEVERE, e.message, e)
+        }
 
-    private fun buildCommandExecutor(
-            source: Any,
-            name: String,
-            aliases: Array<out String>,
-            permission: Array<out String>?,
-            isPlayable: Boolean,
-            method: Method,
-            parameters: Array<out CommandExecutor.Parameter>,
-            description: String?
-    ): DefaultCommandExecutor {
-        return DefaultCommandExecutor(
-                source,
-                name,
-                aliases,
-                permission,
-                isPlayable,
-                parameters,
-                Accessors.ofMethod(method),
-                description
-        )
+        @JvmStatic
+        private fun buildCommandRegistered(
+                manager: CommandManager,
+                source: Any,
+                parent: DefaultRegisteredCommand?,
+                name: String,
+                aliases: Array<out String>,
+                permission: Array<out String>?,
+                description: Description?,
+                children: Map<String, DefaultRegisteredCommand>,
+                executors: Map<String, DefaultCommandExecutor>
+        ): DefaultRegisteredCommand {
+            return DefaultRegisteredCommand(
+                    manager,
+                    source,
+                    parent,
+                    name,
+                    aliases,
+                    permission,
+                    description?.fallbackPrefix ?: "",
+                    description?.description,
+                    description?.usage,
+                    description?.prefix,
+                    children,
+                    executors
+            )
+        }
+
+        @JvmStatic
+        private fun buildCommandExecutor(
+                source: Any,
+                name: String,
+                aliases: Array<out String>,
+                permission: Array<out String>?,
+                isPlayable: Boolean,
+                method: Method,
+                parameters: Array<out CommandExecutor.Parameter>,
+                description: String?
+        ): DefaultCommandExecutor {
+            return DefaultCommandExecutor(
+                    source,
+                    name,
+                    aliases,
+                    permission,
+                    isPlayable,
+                    parameters,
+                    Accessors.ofMethod(method),
+                    description
+            )
+        }
     }
 }

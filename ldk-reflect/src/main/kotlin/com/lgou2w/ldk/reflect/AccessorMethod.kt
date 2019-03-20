@@ -29,12 +29,12 @@ import java.lang.reflect.Method
 interface AccessorMethod<T, R> : Accessor<Method> {
 
     /**
-     * * Invoke this method from the given instance object [instance] with the given parameter [params].
+     * * Invoke this method from the given [instance] object with the given [params].
      * * 从给定的实例对象 [instance] 以给定的参数 [params] 调用此函数.
      *
      * @param instance Instance object
      * @param instance 实例对象
-     * @param params Parameter
+     * @param params Parameters
      * @param params 参数
      * @throws RuntimeException Throws an exception if a method or internal error cannot be used.
      * @throws RuntimeException 如果无法使用函数或内部错误则抛出异常.

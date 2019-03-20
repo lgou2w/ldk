@@ -20,9 +20,20 @@ import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
 
+/**
+ * ## RegionEllipsoid (椭圆区域)
+ *
+ * @see [Region]
+ * @see [RegionBase]
+ * @author lgou2w
+ */
 open class RegionEllipsoid(
         world: World,
         override var center: RegionVector,
+        /**
+         * * The radius vector of this ellipsoid region.
+         * * 此椭圆区域的半径向量.
+         */
         var radius: RegionVector
 ) : RegionBase(world) {
 

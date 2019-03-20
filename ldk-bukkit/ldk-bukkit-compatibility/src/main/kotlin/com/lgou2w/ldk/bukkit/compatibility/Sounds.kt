@@ -62,6 +62,12 @@ import com.lgou2w.ldk.common.notNull
 import org.bukkit.Location
 import org.bukkit.Sound
 
+/**
+ * ## Sounds (音效)
+ *
+ * @see [Sound]
+ * @author MrBlobman, 25, lgou2w
+ */
 enum class Sounds(private vararg val versionDependentNames: String) {
 
     AMBIENCE_CAVE("AMBIENCE_CAVE", "AMBIENT_CAVE"),
@@ -262,10 +268,15 @@ enum class Sounds(private vararg val versionDependentNames: String) {
 
     private var valid : Sound? = null
 
+    /**
+     * * Use this sound with the given [volume] and [pitch] Try playing to the given [location].
+     * * 将此音效用给定的音量 [volume] 和音高 [pitch] 尝试播放到给定的位置 [location].
+     */
     fun tryPlay(location: Location, volume: Float, pitch: Float): Boolean {
         return try {
+            val world = location.world.notNull()
             val bukkit = toBukkit()
-            location.world.playSound(location, bukkit, volume, pitch)
+            world.playSound(location, bukkit, volume, pitch)
             true
         } catch (e: IllegalArgumentException) {
             false
@@ -273,11 +284,19 @@ enum class Sounds(private vararg val versionDependentNames: String) {
     }
 
     // org.bukkit.SoundCategory -> since Minecraft 1.11
+    /**
+     * * Use this sound effect for the given [category] [volume] and [pitch] Try playing to the given [location].
+     * * 将此音效用给定的类别 [category] 音量 [volume] 和音高 [pitch] 尝试播放到给定的位置 [location].
+     *
+     * @see [Category]
+     * @see [tryPlay]
+     */
     fun tryPlay(location: Location, category: Category, volume: Float, pitch: Float): Boolean {
         return if (MinecraftBukkitVersion.isV111OrLater) try {
+            val world = location.world.notNull()
             val bukkit = toBukkit()
-            val soundCategory = Enums.ofName(org.bukkit.SoundCategory::class.java, category.name)
-            location.world.playSound(location, bukkit, soundCategory, volume, pitch)
+            val soundCategory = Enums.ofName(org.bukkit.SoundCategory::class.java, category.name).notNull()
+            world.playSound(location, bukkit, soundCategory, volume, pitch)
             true
         } catch (e: Exception) {
             // if error try normal
@@ -289,9 +308,10 @@ enum class Sounds(private vararg val versionDependentNames: String) {
     }
 
     /**
-     * * Get the bukkit sound for current server version Caches sound on first call.
+     * * Convert this sound compatible enum to Bukkit sound.
+     * * 将此音效兼容枚举转换为 Bukkit 的音效.
      *
-     * @return [Sound]
+     * @see [Sound]
      */
     fun toBukkit(): Sound {
         if (valid == null) {
@@ -306,6 +326,11 @@ enum class Sounds(private vararg val versionDependentNames: String) {
         }
     }
 
+    /**
+     * ## Category (音效类别)
+     *
+     * @author lgou2w
+     */
     enum class Category {
         MASTER,
         MUSIC,

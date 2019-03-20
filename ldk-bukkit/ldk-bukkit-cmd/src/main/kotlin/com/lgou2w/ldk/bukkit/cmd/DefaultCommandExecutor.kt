@@ -20,6 +20,12 @@ import com.lgou2w.ldk.reflect.AccessorMethod
 import java.lang.reflect.Modifier
 import java.util.Arrays
 
+/**
+ * ## DefaultCommandExecutor (默认命令执行器)
+ *
+ * @see [CommandExecutorBase]
+ * @author lgou2w
+ */
 class DefaultCommandExecutor(
         reference: Any,
         name: String,
@@ -27,10 +33,20 @@ class DefaultCommandExecutor(
         permission: Array<out String>?,
         isPlayable: Boolean,
         parameters: Array<out CommandExecutor.Parameter>,
+        /**
+         * * The method accessor object for this executor.
+         * * 此执行器的方法访问器对象.
+         *
+         * @see [AccessorMethod]
+         */
         val executor: AccessorMethod<Any, Any>,
         override var description: String?
 ) : CommandExecutorBase(reference, name, aliases, permission, isPlayable, parameters) {
 
+    /**
+     * * Indicate whether this executor method is static.
+     * * 表示此执行器的方法是否为静态的.
+     */
     val isStatic = Modifier.isStatic(executor.source.modifiers)
 
     override fun execute(vararg args: Any?): Any? {

@@ -16,6 +16,13 @@
 
 package com.lgou2w.ldk.coroutines
 
+/**
+ * ## SimpleCoroutineFactory (简单协程工厂)
+ *
+ * @see [CoroutineFactory]
+ * @see [CoroutineFactoryBase]
+ * @author lgou2w
+ */
 class SimpleCoroutineFactory(
         provider: DispatcherProvider
 ) : CoroutineFactoryBase(provider)

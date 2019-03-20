@@ -21,9 +21,25 @@ import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
 
+/**
+ * ## RegionCuboid (长方块区域)
+ *
+ * @see [Region]
+ * @see [RegionBase]
+ * @see [RegionFlat]
+ * @author lgou2w
+ */
 open class RegionCuboid(
         world: World,
+        /**
+         * * Indicates the vector 1 of this cuboid region.
+         * * 表示此长方块区域的向量 1.
+         */
         var pos1: RegionVector,
+        /**
+         * * Indicates the vector 2 of this cuboid region.
+         * * 表示此长方块区域的向量 2.
+         */
         var pos2: RegionVector
 ) : RegionBase(world),
         RegionFlat {
@@ -121,6 +137,10 @@ open class RegionCuboid(
         }
     }
 
+    /**
+     * * Get the block vector of all faces of this cuboid region.
+     * * 获取此长方体区域的所有面的方块向量.
+     */
     val faces : Iterable<RegionVectorBlock>
         get() {
             return object : Iterable<RegionVectorBlock> {

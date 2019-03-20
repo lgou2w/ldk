@@ -16,6 +16,12 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+/**
+ * ## CommandParseException (命令解析异常)
+ *
+ * @see [CommandParser]
+ * @author lgou2w
+ */
 class CommandParseException : RuntimeException {
 
     constructor() : super()

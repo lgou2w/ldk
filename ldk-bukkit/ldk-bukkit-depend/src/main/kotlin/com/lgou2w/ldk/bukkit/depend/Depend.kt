@@ -23,10 +23,26 @@ import java.io.File
 import java.io.InputStream
 import java.util.logging.Logger
 
+/**
+ * ## Depend (插件依赖)
+ *
+ * @see [Depends]
+ * @see [DependBase]
+ * @see [PluginArchive]
+ * @author lgou2w
+ */
 interface Depend : PluginArchive {
 
+    /**
+     * * The plugin object that this plugin depends on.
+     * * 此插件依赖的插件对象.
+     */
     val plugin : Plugin
 
+    /**
+     * * The plugin name that this plugin depends on.
+     * * 此插件依赖的插件名称.
+     */
     val name : String
 
     /**

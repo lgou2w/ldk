@@ -19,6 +19,12 @@ package com.lgou2w.ldk.i18n
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * ## SimpleLanguage (简单语言)
+ *
+ * @see [Language]
+ * @author lgou2w
+ */
 open class SimpleLanguage(
         override val manager: LanguageManager,
         override val locale: Locale,

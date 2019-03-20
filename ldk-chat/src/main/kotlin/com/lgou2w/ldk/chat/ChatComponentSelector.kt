@@ -32,7 +32,6 @@ class ChatComponentSelector(
          * * 获取或设置此聊天组件选择器的选择器对象.
          */
         var selector: String
-
 ) : ChatComponentAbstract() {
 
     /**

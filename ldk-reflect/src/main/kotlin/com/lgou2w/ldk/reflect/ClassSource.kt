@@ -48,7 +48,7 @@ abstract class ClassSource {
                 = fromClassLoader(ClassSource::class.java.classLoader)
 
         /**
-         * * Create a class source loaded from the given class loader [classLoader].
+         * * Create a class source loaded from the given [classLoader].
          * * 创建一个从给定类加载器 [classLoader] 中加载的类源.
          *
          * @param classLoader Class loader

@@ -35,14 +35,22 @@ import java.util.Base64
 import javax.crypto.Cipher
 
 /**
- * ## RSASecurity
+ * ## RSASecurity (RSA 安全类)
  *
  * @author lgou2w
  * @since LDK 0.1.8-rc
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class RSASecurity private constructor(
+        /**
+         * * The key object of this RSA.
+         * * 此 RSA 的密钥对象.
+         */
         val key: Key,
+        /**
+         * * The signature algorithm used by this RSA.
+         * * 此 RSA 使用的签名算法.
+         */
         val signatureAlgorithm: String
 ) {
 
@@ -77,12 +85,30 @@ class RSASecurity private constructor(
         private const val NEWLINE2 = "\n"
         private const val EMPTY = ""
 
+        /**
+         * * Create a security class object from the given RSA key [rsaKey].
+         * * 从给定的 RSA 密钥 [rsaKey] 创建安全类对象.
+         *
+         * @throws [IllegalArgumentException] If [rsaKey] is not an RSA key.
+         * @throws [IllegalArgumentException] 如果 [rsaKey] 不是 RSA 密钥.
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromKey(rsaKey: Key, signatureAlgorithm: String): RSASecurity {
             return RSASecurity(rsaKey, signatureAlgorithm)
         }
 
+        /**
+         * * Create a security class object from the `Base64` encoded public or private key of the given `PKCS#8` or `X.509`.
+         * * 从给定的 `PKCS#8` 或 `X.509` 的 `Base64` 编码公私钥创建安全类对象.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid public and private key.
+         * @throws [IllegalArgumentException] 如果不是有效的公私钥.
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromEncodedKey(pkcs8OrX509Base64EncodedKey: String, signatureAlgorithm: String): RSASecurity {
@@ -90,6 +116,15 @@ class RSASecurity private constructor(
             return RSASecurity(key, signatureAlgorithm)
         }
 
+        /**
+         * * Create a security class object from the given `PKCS#8` unencrypted `Base64` encoded private key.
+         * * 从给定的 `PKCS#8` 未加密 `Base64` 编码私钥创建安全类对象.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid private key.
+         * @throws [IllegalArgumentException] 如果不是有效的私钥.
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromEncodedPrivateKey(pkcs8NotEncryptedBase64EncodedPrivateKey: String, signatureAlgorithm: String): RSASecurity {
@@ -97,6 +132,15 @@ class RSASecurity private constructor(
             return RSASecurity(privateKey, signatureAlgorithm)
         }
 
+        /**
+         * * Create a security class object from the given `PKCS#8` unencrypted private key.
+         * * 从给定的 `PKCS#8` 未加密私钥创建安全类对象.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid private key.
+         * @throws [IllegalArgumentException] 如果不是有效的私钥.
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromEncodedPrivateKey(pkcs8EncodedPrivateKey: ByteArray, signatureAlgorithm: String): RSASecurity {
@@ -104,6 +148,15 @@ class RSASecurity private constructor(
             return RSASecurity(privateKey, signatureAlgorithm)
         }
 
+        /**
+         * * Create a security class object from the `Base64` encoded public key of the given `X.509`.
+         * * 从给定的 `X.509` 的 `Base64` 编码公钥创建安全类对象.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid public key.
+         * @throws [IllegalArgumentException] 如果不是有效的公钥.
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromEncodedPublicKey(x509Base64EncodedPublicKey: String, signatureAlgorithm: String): RSASecurity {
@@ -111,6 +164,15 @@ class RSASecurity private constructor(
             return RSASecurity(publicKey, signatureAlgorithm)
         }
 
+        /**
+         * * Create a security class object from the given X.509 public key.
+         * * 从给定的 X.509 公钥创建安全类对象.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid public key.
+         * @throws [IllegalArgumentException] 如果不是有效的公钥.
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromEncodedPublicKey(x509EncodedPublicKey: ByteArray, signatureAlgorithm: String): RSASecurity {
@@ -118,6 +180,13 @@ class RSASecurity private constructor(
             return RSASecurity(publicKey, signatureAlgorithm)
         }
 
+        /**
+         * * Create a security class from the given key pair [rsaKeyPair].
+         * * 从给定的密钥对 [rsaKeyPair] 创建安全类.
+         *
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromKeyPair(rsaKeyPair: KeyPair, signatureAlgorithm: String): Pair<RSASecurity, RSASecurity> {
@@ -126,6 +195,17 @@ class RSASecurity private constructor(
             return rsaPrivateSecurity to rsaPublicSecurity
         }
 
+        /**
+         * * Create a security class from the given [bit] length with the key pair generator.
+         * * 从给定的位长度 [bit] 用密钥对生成器创建安全类.
+         *
+         * @throws [IllegalArgumentException] If the bit length [bit] is less than [BIT_512].
+         * @throws [IllegalArgumentException] 如果位长度 [bit] 小于 [BIT_512].
+         * @throws [IllegalArgumentException] If the key pair generator is not available.
+         * @throws [IllegalArgumentException] 如果密钥对生成器不可用.
+         * @throws [IllegalArgumentException] If [signatureAlgorithm] is invalid.
+         * @throws [IllegalArgumentException] 如果 [signatureAlgorithm] 是无效的.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun fromKeyPairGenerator(bit: Int, signatureAlgorithm: String): Pair<RSASecurity, RSASecurity> {
@@ -142,6 +222,13 @@ class RSASecurity private constructor(
             return fromKeyPair(rsaKeyPair, signatureAlgorithm)
         }
 
+        /**
+         * * Decode the `Base64` encoded public or private key of the given `PKCS#8` or `X.509`.
+         * * 将给定的 `PKCS#8` 或 `X.509` 的 `Base64` 编码公私钥进行解码.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid public and private key.
+         * @throws [IllegalArgumentException] 如果不是有效的公私钥.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun decodeKey(pkcs8OrX509Base64EncodedKey: String): Key {
@@ -153,6 +240,13 @@ class RSASecurity private constructor(
             else throw IllegalArgumentException("Invalid private or public key.")
         }
 
+        /**
+         * * Decode the given `PKCS#8` unencrypted `Base64` encoded private key.
+         * * 将给定的 `PKCS#8` 未加密 `Base64` 编码私钥进行解码.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid private key.
+         * @throws [IllegalArgumentException] 如果不是有效的私钥.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun decodePrivateKey(pkcs8NotEncryptedBase64EncodedPrivateKey: String): PrivateKey {
@@ -168,6 +262,13 @@ class RSASecurity private constructor(
             return decodePrivateKey(pkcs8EncodedPrivateKey)
         }
 
+        /**
+         * * Decode the `Base64` encoded public key of the given `X.509`.
+         * * 将给定的 `X.509` 的 `Base64` 编码公钥进行解码.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid public key.
+         * @throws [IllegalArgumentException] 如果不是有效的公钥.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun decodePublicKey(x509Base64EncodedPublicKey: String): PublicKey {
@@ -183,6 +284,13 @@ class RSASecurity private constructor(
             return decodePublicKey(x509EncodedPublicKey)
         }
 
+        /**
+         * * Decode the given `PKCS#8` unencrypted private key.
+         * * 将给定的 `PKCS#8` 未加密私钥进行解码.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid private key.
+         * @throws [IllegalArgumentException] 如果不是有效的私钥.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun decodePrivateKey(pkcs8EncodedPrivateKey: ByteArray): PrivateKey {
@@ -193,6 +301,13 @@ class RSASecurity private constructor(
             }
         }
 
+        /**
+         * * Decode the given `X.509` public key.
+         * * 将给定的 `X.509` 公钥进行解码.
+         *
+         * @throws [IllegalArgumentException] If it is not a valid public key.
+         * @throws [IllegalArgumentException] 如果不是有效的公钥.
+         */
         @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun decodePublicKey(x509EncodedPublicKey: ByteArray): PublicKey {
@@ -205,7 +320,8 @@ class RSASecurity private constructor(
     }
 
     /**
-     * RSA key bit length
+     * * RSA key bit length.
+     * * RSA 密钥位长度.
      */
     val bit : Int
 
@@ -234,9 +350,21 @@ class RSASecurity private constructor(
     private val decryptBlockSize = (bit shr 3)
     private val encryptBlockSize = (bit shr 3) - 0x0B
 
+    /**
+     * * Encrypt the given [data].
+     * * 将给定的数据 [data] 进行加密.
+     *
+     * @throws [IOException] I/O
+     */
     @Throws(IOException::class)
     fun encrypt(data: ByteArray) = runEncryption(Cipher.ENCRYPT_MODE, encryptBlockSize, data)
 
+    /**
+     * * Decrypt the given [data].
+     * * 将给定的数据 [data] 进行解密.
+     *
+     * @throws [IOException] I/O
+     */
     @Throws(IOException::class)
     fun decrypt(data: ByteArray) = runEncryption(Cipher.DECRYPT_MODE, decryptBlockSize, data)
 
@@ -267,8 +395,20 @@ class RSASecurity private constructor(
      *
      **************************************************************************/
 
+    /**
+     * * Indicates whether this RSA [key] is a private key.
+     * * 表示此 RSA 密钥 [key] 是否为私钥.
+     */
     val isPrivateKey = key is PrivateKey
 
+    /**
+     * * The given [data] is signed with the [key].
+     * * 将给定的数据 [data] 使用密钥 [key] 进行签名.
+     *
+     * @throws [UnsupportedOperationException] If the key [key] is not a private key.
+     * @throws [UnsupportedOperationException] 如果密钥 [key] 不是私钥.
+     * @throws [IOException] I/O
+     */
     @Throws(IOException::class, UnsupportedOperationException::class)
     fun signature(data: ByteArray): ByteArray {
         if (!isPrivateKey)
@@ -283,6 +423,14 @@ class RSASecurity private constructor(
         }
     }
 
+    /**
+     * * Verify the given [data] and [sign].
+     * * 将给定的数据 [data] 和签名 [sign] 进行验证.
+     *
+     * @throws [UnsupportedOperationException] If the key [key] is not a public key.
+     * @throws [UnsupportedOperationException] 如果密钥 [key] 不是公钥.
+     * @throws [IOException] I/O
+     */
     @Throws(UnsupportedOperationException::class)
     fun verify(data: ByteArray, sign: ByteArray): Boolean {
         if (isPrivateKey)
