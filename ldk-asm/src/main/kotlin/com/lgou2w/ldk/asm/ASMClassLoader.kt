@@ -28,8 +28,19 @@ abstract class ASMClassLoader private constructor(
         parent: ClassLoader
 ) : ClassLoader(parent) {
 
+    /**
+     * * Define the given class [name] and bytecode [byteArray] as class.
+     * * 将给定的类名 [name] 和字节码 [byteArray] 定义为类.
+     */
     abstract fun defineClass(name: String, byteArray: ByteArray): Class<*>
 
+    /**
+     * * Defines the class name and bytecode key-value mapping [classes] as a class collection.
+     * * 将给定的类名和字节码的键值对映射 [classes] 定义为类集合.
+     *
+     * @see [ASMClassGenerator]
+     * @see [ASMClassGenerator.generate]
+     */
     fun defineClasses(classes: Map<String, ByteArray>): List<Class<*>>
             = classes.map { defineClass(it.key, it.value) }
 
@@ -43,10 +54,18 @@ abstract class ASMClassLoader private constructor(
             }
         }
 
+        /**
+         * * Get the singleton object of the current bytecode class loader.
+         * * 获取当前字节码类加载器的单例对象.
+         */
         @JvmStatic
         fun ofInstance(): ASMClassLoader
                 = instance
 
+        /**
+         * * Create a bytecode class loader object from the given [classLoader].
+         * * 从给定的类加载器 [classLoader] 创建一个字节码类加载器对象.
+         */
         @JvmStatic
         fun ofClassLoader(classLoader: ClassLoader): ASMClassLoader
                 = object : ASMClassLoader(classLoader) {

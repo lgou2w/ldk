@@ -20,9 +20,26 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import java.util.Collections
 
+/**
+ * ## Completer (补全器)
+ *
+ * @see [Completes]
+ * @author lgou2w
+ */
 @FunctionalInterface
 interface Completer {
 
+    /**
+     * * Called when the parameter needs to be TAB completion.
+     * * 当参数需要进行 TAB 补全时调用.
+     *
+     * @param parameter Executor parameter.
+     * @param parameter 执行器参数.
+     * @param parameter Executor.
+     * @param sender 执行者.
+     * @param value Completion value.
+     * @param value 补全值.
+     */
     fun onComplete(
             parameter: CommandExecutor.Parameter,
             sender: CommandSender,
@@ -31,6 +48,10 @@ interface Completer {
 
     companion object Constants {
 
+        /**
+         * * An empty completer.
+         * * 表示空的补全器.
+         */
         @JvmField
         val EMPTY = object : Completer {
             override fun onComplete(
@@ -42,6 +63,10 @@ interface Completer {
             }
         }
 
+        /**
+         * * Indicate the default generic type completer.
+         * * 表示默认通用类型补全器.
+         */
         @JvmField
         val DEFAULT = object : Completer {
             override fun onComplete(
@@ -66,6 +91,10 @@ interface Completer {
             }
         }
 
+        /**
+         * * Indicate the player [org.bukkit.entity.Player] type completer.
+         * * 表示玩家 [org.bukkit.entity.Player] 类型补全器.
+         */
         @JvmField
         val PLAYER = object : Completer {
             override fun onComplete(
@@ -77,6 +106,10 @@ interface Completer {
             }
         }
 
+        /**
+         * * Indicate the enum [Enum] type completer.
+         * * 表示枚举 [Enum] 类型补全器.
+         */
         @JvmField
         val ENUM = object : Completer {
             override fun onComplete(
@@ -97,6 +130,10 @@ interface Completer {
             }
         }
 
+        /**
+         * * Indicate the boolean [Boolean] type completer.
+         * * 表示布尔 [Boolean] 类型补全器.
+         */
         @JvmField
         val BOOLEAN = object : Completer {
             override fun onComplete(

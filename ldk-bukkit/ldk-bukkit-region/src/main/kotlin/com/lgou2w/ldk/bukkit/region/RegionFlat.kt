@@ -16,10 +16,24 @@
 
 package com.lgou2w.ldk.bukkit.region
 
+/**
+ * ## RegionFlat (平面区域)
+ *
+ * @see [Region]
+ * @author lgou2w
+ */
 interface RegionFlat : Region {
 
+    /**
+     * * The minimum Y coordinate of this flat region.
+     * * 此平面区域的最小 Y 坐标.
+     */
     val minimumY : Int
 
+    /**
+     * * The maximum Y coordinate of this flat region.
+     * * 此平面区域的最大 Y 坐标.
+     */
     val maximumY : Int
 
     fun asFlat(): Iterable<RegionVector2D>

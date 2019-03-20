@@ -18,6 +18,12 @@ package com.lgou2w.ldk.coroutines
 
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## CustomizeDispatcherProvider (自定义调度程序提供者)
+ *
+ * @see [DispatcherProvider]
+ * @author lgou2w
+ */
 open class CustomizeDispatcherProvider(
         override val dispatcher: CoroutineContext
 ) : DispatcherProvider

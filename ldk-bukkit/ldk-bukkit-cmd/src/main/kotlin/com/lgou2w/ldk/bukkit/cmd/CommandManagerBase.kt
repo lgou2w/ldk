@@ -27,6 +27,12 @@ import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 
+/**
+ * ## CommandManagerBase (命令管理器基础)
+ *
+ * @see [CommandManager]
+ * @author lgou2w
+ */
 abstract class CommandManagerBase(
         final override val plugin: Plugin,
         override val parser: CommandParser

@@ -33,8 +33,19 @@ import com.sk89q.worldedit.regions.EllipsoidRegion
 import org.bukkit.World
 import org.bukkit.entity.Player
 
+/**
+ * ## DependWorldEdit (WorldEdit 插件依赖)
+ *
+ * @see [Depend]
+ * @see [DependBase]
+ * @author lgou2w
+ */
 class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
 
+    /**
+     * * Get the WorldEdit selected region of ​​the given [player]. If not, return `null`.
+     * * 获取给定玩家 [player] 的 WorldEdit 选中区域. 如果没有则返回 `null`.
+     */
     fun getSelectRegion(player: Player): Region? {
         checkReference()
         val worldWrapped = player.world.toAdapter() as com.sk89q.worldedit.world.World

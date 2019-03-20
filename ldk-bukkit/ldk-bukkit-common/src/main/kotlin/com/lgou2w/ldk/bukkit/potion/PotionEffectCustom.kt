@@ -25,6 +25,12 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.LivingEntity
 import org.bukkit.potion.PotionEffect
 
+/**
+ * ## PotionEffectCustom (自定义药水效果)
+ *
+ * @see [PotionEffectType]
+ * @author lgou2w
+ */
 data class PotionEffectCustom @JvmOverloads constructor(
         val type: PotionEffectType,
         val amplifier: Int,

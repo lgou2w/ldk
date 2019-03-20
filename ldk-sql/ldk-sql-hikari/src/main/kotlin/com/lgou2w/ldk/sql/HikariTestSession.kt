@@ -16,7 +16,20 @@
 
 package com.lgou2w.ldk.sql
 
+/**
+ * ## HikariTestSession (HikariCP 测试会话)
+ *
+ * @author lgou2w
+ */
 data class HikariTestSession(
+        /**
+         * * Indicates if this test session is connected.
+         * * 表示此测试会话是否已连接.
+         */
         val isConnected: Boolean,
+        /**
+         * * Indicates the connection delay for this test session.
+         * * 表示此测试会话的连接延迟.
+         */
         val delay: Long
 )

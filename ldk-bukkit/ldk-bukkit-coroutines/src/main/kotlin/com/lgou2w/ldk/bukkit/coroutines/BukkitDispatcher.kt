@@ -30,33 +30,68 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * * Create a Bukkit coroutine dispatcher from the given [plugin] with the given [state].
+ * * 从给定的插件 [plugin] 以给定的状态 [state] 创建一个 Bukkit 协程调度程序.
+ */
 @JvmOverloads
 fun Dispatchers.bukkit(plugin: Plugin, state: State = State.SYNC)
         = BukkitDispatcher(plugin, state)
 
+/**
+ * * Launches new coroutine with the plugin in the given [initializeState], and return the reference to the coroutine as [Job].
+ * * 以插件用给定的状态启动新的协同程序, 并将协程的引用作为 [Job] 返回.
+ */
 @JvmOverloads
 fun Plugin.launcher(
         initializeState: State = State.SYNC,
         block: SuspendApplicator<BukkitCoroutineFactory>
 ): Job = BukkitCoroutineFactory(this).launcher(initializeState, block)
 
+/**
+ * * Launches new coroutine with the plugin in asynchronous state, and return the reference to the coroutine as [Job].
+ * * 以插件用异步状态启动新的协同程序, 并将协程的引用作为 [Job] 返回.
+ */
 fun Plugin.launcherAsync(block: SuspendApplicator<BukkitCoroutineFactory>): Job
         = BukkitCoroutineFactory(this).launcher(State.ASYNC, block)
 
+/**
+ * * Use the Bukkit synchronization dispatcher context [Dispatchers.bukkit] to call the specified suspending block,
+ *      suspend until completion and return the result.
+ * * 使用 Bukkit 同步调度程序上下文 [Dispatchers.bukkit] 调用指定的挂起块, 挂起直到完成然后返回结果.
+ */
 suspend inline fun <T> Plugin.withBukkit(
         crossinline block: SuspendApplicatorFunction<CoroutineScope, T>
 ): T = withContext(Dispatchers.bukkit(this)) {
     block()
 }
 
+/**
+ * * Use the Bukkit asynchronous dispatcher context to create a new coroutine and return its future results as an implementation of [Deferred].
+ * * 使用 Bukkit 异步调度上下文来创建新的协同程序并将其未来结果作为 [Deferred] 的实现返回.
+ */
 suspend inline fun <T> Plugin.withBukkitAsync(
         crossinline block: SuspendApplicatorFunction<CoroutineScope, T>
 ): Deferred<T> = GlobalScope.async(Dispatchers.bukkit(this, State.ASYNC)) {
     block()
 }
 
+/**
+ * ## BukkitDispatcher (Bukkit 协程调度程序)
+ *
+ * @see [CoroutineDispatcher]
+ * @author lgou2w
+ */
 class BukkitDispatcher(
+        /**
+         * * The plugin object of this coroutine dispatcher.
+         * * 此协程调度程序的插件对象.
+         */
         val plugin: Plugin,
+        /**
+         * * The state object of this coroutine dispatcher.
+         * * 此协程调度程序的状态对象.
+         */
         val state: State
 ) : CoroutineDispatcher() {
 

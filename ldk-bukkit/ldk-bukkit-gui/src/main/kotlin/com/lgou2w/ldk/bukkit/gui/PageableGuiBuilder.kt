@@ -148,7 +148,7 @@ open class SimplePageableGuiBuilder(
     }
 
     override fun nextPage(type: GuiType, title: String): PageableGuiBuilder {
-        val next = gui.addPage(type, title)
+        val next = gui.setPage(type, title)
         return SimplePageableGuiBuilder(this, next)
     }
 }

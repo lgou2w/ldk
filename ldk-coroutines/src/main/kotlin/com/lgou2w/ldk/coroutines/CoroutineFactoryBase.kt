@@ -27,6 +27,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## CoroutineFactoryBase (协程工厂基础)
+ *
+ * @see [CoroutineFactory]
+ * @see [SimpleCoroutineFactory]
+ * @author lgou2w
+ */
 abstract class CoroutineFactoryBase(
         final override val provider: DispatcherProvider
 ) : CoroutineFactory {
@@ -41,6 +48,10 @@ abstract class CoroutineFactoryBase(
         }
     }
 
+    /**
+     * * Called after the suspend block of the [launch] coroutine is executed after startup.
+     * * 在启动后 [launch] 协同程序的挂起块执行之前被调用.
+     */
     protected open suspend fun launching() {
     }
 
@@ -55,11 +66,11 @@ abstract class CoroutineFactoryBase(
         block()
     }
 
-    override suspend fun <T> async(
+    override fun <T> async(
             block: SuspendApplicatorFunction<CoroutineScope, T>
     ): Deferred<T> = async(context, block)
 
-    override suspend fun <T> async(
+    override fun <T> async(
             ctx: CoroutineContext,
             block: SuspendApplicatorFunction<CoroutineScope, T>
     ): Deferred<T> = GlobalScope.async(ctx) {

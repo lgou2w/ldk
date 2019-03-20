@@ -60,7 +60,7 @@ interface NBT<T> : Cloneable {
     var value : T
 
     /**
-     * * Reads the NBT tag from the given [input] data input.
+     * * Reads the NBT tag from the given data [input].
      * * 从给定的 [input] 数据输入读取 NBT 标签.
      *
      * @param input Input stream
@@ -71,7 +71,7 @@ interface NBT<T> : Cloneable {
     fun read(input: DataInput)
 
     /**
-     * * Write the given [output] data output to this NBT tag.
+     * * Write the given data [output] to this NBT tag.
      * * 将给定的 [output] 数据输出写入此 NBT 标签.
      *
      * @param output Output stream

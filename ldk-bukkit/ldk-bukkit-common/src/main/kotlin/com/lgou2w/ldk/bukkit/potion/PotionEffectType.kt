@@ -20,13 +20,35 @@ import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
+import com.lgou2w.ldk.common.notNull
 import java.util.HashMap
 import java.util.Locale
 
+/**
+ * ## PotionEffectType (药水效果类型)
+ *
+ * @author lgou2w
+ */
 enum class PotionEffectType(
+        /**
+         * * This type of Id value.
+         * * 此类型的 Id 值.
+         */
         val id: Int,
+        /**
+         * * The legacy type name of this type.
+         * * 此类型的旧类型名.
+         */
         val legacy: String,
+        /**
+         * * The type name of this type.
+         * * 此类型的旧类型名.
+         */
         val type: String,
+        /**
+         * * Minecraft version of this type with minimum requirement.
+         * * 此类型最低需求的 Minecraft 版本.
+         */
         var mcVer: MinecraftVersion? = null
 ) : Valuable<String> {
 
@@ -69,18 +91,28 @@ enum class PotionEffectType(
     override val value : String
         get() = type
 
+    /**
+     * * Indicate whether this potion effect is instantaneous.
+     * * 表示此药水效果是否是即时的.
+     */
     fun isInstant(): Boolean
             = this == INSTANT_HEALTH ||
               this == INSTANT_DAMAGE ||
               this == SATURATION
 
+    /**
+     * * Convert this potion effect type to Bukkit potion effect type.
+     * * 将此药水效果类型转换为 Bukkit 的药水效果类型.
+     *
+     * @see [org.bukkit.potion.PotionEffectType]
+     */
     fun toBukkit() : org.bukkit.potion.PotionEffectType {
         return org.bukkit.potion.PotionEffectType.getByName(
                 if (MinecraftBukkitVersion.isV113OrLater)
                     type
                 else
                     legacy
-        )
+        ).notNull()
     }
 
     companion object {

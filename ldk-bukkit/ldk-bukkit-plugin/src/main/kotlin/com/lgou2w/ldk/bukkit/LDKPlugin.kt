@@ -26,6 +26,12 @@ import org.bukkit.command.CommandSender
 import java.util.Collections
 import java.util.logging.Level
 
+/**
+ * ## LDKPlugin (LDK 插件)
+ *
+ * @see [PluginBase]
+ * @author lgou2w
+ */
 class LDKPlugin : PluginBase() {
 
     companion object Constants {

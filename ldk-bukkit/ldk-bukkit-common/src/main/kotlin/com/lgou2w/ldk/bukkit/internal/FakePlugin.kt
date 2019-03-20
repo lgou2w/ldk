@@ -27,7 +27,7 @@ import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.PluginLoader
 import java.io.File
 import java.io.InputStream
-import java.util.*
+import java.util.Collections
 import java.util.logging.Logger
 
 /**
@@ -43,24 +43,24 @@ import java.util.logging.Logger
 @Deprecated("INTERNAL ONLY")
 class FakePlugin(name: String) : PluginBase() {
     private val pdf = PluginDescriptionFile(name, "0", "0")
-    override fun getDataFolder(): File? = null
-    override fun getPluginLoader(): PluginLoader? = null
+    override fun getDataFolder(): File = throw UnsupportedOperationException()
+    override fun getPluginLoader(): PluginLoader = throw UnsupportedOperationException()
     override fun getServer(): Server = Bukkit.getServer()
     override fun isEnabled(): Boolean = true // must
     override fun getDescription(): PluginDescriptionFile = pdf // must
-    override fun getConfig(): FileConfiguration? = null
+    override fun getConfig(): FileConfiguration = throw UnsupportedOperationException()
     override fun reloadConfig() { }
     override fun saveConfig() { }
     override fun saveDefaultConfig() { }
-    override fun saveResource(resourcePath: String?, replace: Boolean) { }
-    override fun getResource(filename: String?): InputStream? = null
-    override fun onCommand(sender: CommandSender?, cmd: Command?, label: String?, args: Array<out String>?): Boolean = false
-    override fun onTabComplete(sender: CommandSender?, cmd: Command?, alias: String?, args: Array<out String>?): MutableList<String> = Collections.emptyList()
+    override fun saveResource(resourcePath: String, replace: Boolean) { }
+    override fun getResource(filename: String): InputStream? = null
+    override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>): Boolean = false
+    override fun onTabComplete(sender: CommandSender, cmd: Command, alias: String, args: Array<out String>): MutableList<String> = Collections.emptyList()
     override fun isNaggable(): Boolean = false
     override fun setNaggable(canNag: Boolean) { }
     override fun getLogger(): Logger = Bukkit.getLogger()
     override fun onLoad() { }
     override fun onEnable() { }
     override fun onDisable() { }
-    override fun getDefaultWorldGenerator(worldName: String?, id: String?): ChunkGenerator? = null
+    override fun getDefaultWorldGenerator(worldName: String, id: String?): ChunkGenerator? = null
 }

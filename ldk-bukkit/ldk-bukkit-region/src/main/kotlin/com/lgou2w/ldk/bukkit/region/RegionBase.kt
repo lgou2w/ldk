@@ -21,6 +21,12 @@ import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.entity.Entity
 
+/**
+ * ## RegionBase (区域基础)
+ *
+ * @see [Region]
+ * @author lgou2w
+ */
 abstract class RegionBase(
         final override val world: World
 ) : Region {

@@ -25,6 +25,13 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.HashMap
 
+/**
+ * ## Particle (粒子效果)
+ *
+ * @see [Valuable]
+ * @see [ParticleFactory]
+ * @author lgou2w
+ */
 enum class Particle(
         private val internal: Int,
         val legacy: String,

@@ -18,6 +18,12 @@ package com.lgou2w.ldk.bukkit.coroutines
 
 import org.bukkit.Bukkit
 
+/**
+ * ## State (Bukkit 线程状态)
+ *
+ * @see [currentState]
+ * @author lgou2w
+ */
 enum class State {
 
     SYNC,
@@ -25,6 +31,12 @@ enum class State {
     ;
 
     companion object {
+        /**
+         * * Gets whether the current thread is the Bukkit main thread state.
+         * * 获取当前线程是否为 Bukkit 主线程状态.
+         *
+         * @see [Bukkit.isPrimaryThread]
+         */
         @JvmStatic
         fun currentState(): State
                 = if (Bukkit.isPrimaryThread()) SYNC else ASYNC

@@ -21,23 +21,47 @@ import org.bukkit.entity.Player
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * ## Completes (补全器)
+ *
+ * @see [Iterable]
+ * @see [Completer]
+ * @author lgou2w
+ */
 open class Completes : Iterable<Completer> {
 
     protected val completes : MutableMap<Class<*>, Completer> = ConcurrentHashMap()
 
+    /**
+     * @see [Map.keys]
+     */
     val keys : MutableSet<Class<*>>
         get() = completes.keys
 
+    /**
+     * @see [Map.values]
+     */
     val values : MutableCollection<Completer>
         get() = completes.values
 
+    /**
+     * @see [Map.entries]
+     */
     val entries : MutableSet<MutableMap.MutableEntry<Class<*>, Completer>>
         get() = completes.entries
 
+    /**
+     * * Add a completer of the given type [type].
+     * * 添加给定类型 [type] 的补全器.
+     */
     fun addCompleter(type: Class<*>, completer: Completer) {
         completes[type] = completer
     }
 
+    /**
+     * * Add a completer of the given type [type].
+     * * 添加给定类型 [type] 的补全器.
+     */
     fun addCompleter(type: Class<*>, completer: (
             parameter: CommandExecutor.Parameter,
             sender: CommandSender,
@@ -54,10 +78,18 @@ open class Completes : Iterable<Completer> {
         })
     }
 
+    /**
+     * * Remove the completer of the given type [type].
+     * * 移除给定类型 [type] 的补全器.
+     */
     fun removeCompleter(type: Class<*>): Completer? {
         return completes.remove(type)
     }
 
+    /**
+     * * Get the completer of the given type [type].
+     * * 获取给定类型 [type] 的补全器.
+     */
     fun getCompleter(type: Class<*>): Completer? {
         return completes[type]
     }
@@ -66,6 +98,14 @@ open class Completes : Iterable<Completer> {
         return completes.values.iterator()
     }
 
+    /**
+     * * Add the default type completer.
+     * * 添加默认的类型补全器.
+     *
+     * @see [Completer.PLAYER]
+     * @see [Completer.ENUM]
+     * @see [Completer.BOOLEAN]
+     */
     fun addDefaultCompletes() {
         addCompleter(Player::class.java, Completer.PLAYER)
         addCompleter(Enum::class.java, Completer.ENUM)
@@ -76,11 +116,13 @@ open class Completes : Iterable<Completer> {
     companion object {
         @JvmStatic fun matchOnlinePlayers(sender: CommandSender, value: String) : List<String> {
             val senderPlayer = sender as? Player
-            val matchedPlayers = sender.server.onlinePlayers.filter { player ->
-                (senderPlayer == null || senderPlayer.canSee(player)) && player.name.startsWith(value)
-            }.map { player ->
-                player.name
-            }
+            val matchedPlayers = sender.server.onlinePlayers
+                .asSequence()
+                .filter { player ->
+                    (senderPlayer == null || senderPlayer.canSee(player)) && player.name.startsWith(value)
+                }
+                .map(Player::getName)
+                .toList()
             Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER)
             return matchedPlayers
         }

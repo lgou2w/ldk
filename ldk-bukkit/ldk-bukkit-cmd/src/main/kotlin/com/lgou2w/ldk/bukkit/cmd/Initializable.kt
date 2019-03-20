@@ -16,7 +16,17 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+/**
+ * ## Initializable (可初始化)
+ *
+ * @see [StandardCommand]
+ * @author lgou2w
+ */
 interface Initializable {
 
+    /**
+     * * Initialize the command.
+     * * 进行命令的初始化.
+     */
     fun initialize(command: RegisteredCommand)
 }

@@ -7,20 +7,17 @@
     <parent>
         <artifactId>ldk-bukkit</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.8-beta3</version>
+        <version>0.1.8-rc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ldk-bukkit-depend-economy</artifactId>
 
     <repositories>
-        <!-- LuckPerms mirror -->
+        <!-- PlaceholderAPI-public-repo -->
         <repository>
-            <id>lucko-repo</id>
-            <url>https://repo.lucko.me</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>placeholderapi-public-repo</id>
+            <url>http://repo.extendedclip.com/content/repositories/public/</url>
         </repository>
     </repositories>
 
@@ -29,22 +26,14 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-depend</artifactId>
-            <version>0.1.8-beta3</version>
+            <version>0.1.8-rc</version>
             <scope>compile</scope>
         </dependency>
-        <!-- VaultAPI --> <!-- LuckPerms Mirror -->
+        <!-- Vault --> <!-- PlaceHolderAPI-public-repo -->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Vault --> <!-- Get Vault Plugin Class -->
-        <!-- Only 1.2.27 in -> https://repo.md-5.net/content/groups/public/net/milkbowl/vault/Vault -->
-        <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
-            <version>1.2.27</version>
+            <groupId>net.milkbowl</groupId>
+            <artifactId>vault</artifactId>
+            <version>1.5.6</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -18,6 +18,14 @@ package com.lgou2w.ldk.bukkit.attribute
 
 import com.lgou2w.ldk.common.Valuable
 
+/**
+ * ## Operation (运算方式)
+ *
+ * @see [Valuable]
+ * @see [AttributeModifier]
+ * @see [AttributeItemModifier]
+ * @author lgou2w
+ */
 enum class Operation : Valuable<Int> {
 
     ADD_NUMBER,

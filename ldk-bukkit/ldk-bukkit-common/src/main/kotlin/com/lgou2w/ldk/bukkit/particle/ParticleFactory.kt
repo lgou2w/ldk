@@ -36,6 +36,12 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## ParticleFactory (粒子工厂)
+ *
+ * @see [Particle]
+ * @author lgou2w
+ */
 object ParticleFactory {
 
     @JvmStatic private val CLASS_PACKET_OUT_PARTICLES by lazyMinecraftClass("PacketPlayOutWorldParticles")
@@ -159,10 +165,15 @@ object ParticleFactory {
      */
 
     /**
+     * * Create a particle effect packet with the given [particle].
+     * * 将给定的粒子效果 [particle] 以给定的参数创建粒子效果数据包.
+     *
      * @param data [Material] | [ItemStack] | [Block] | [ParticleDust] | [Color]
+     * @throws [IllegalArgumentException] If wrong particle data.
+     * @since LDK 0.1.8-rc
      */
     @Throws(IllegalArgumentException::class)
-    private fun createPacket(
+    fun createPacket(
             particle: Particle,
             x: Float,
             y: Float,
@@ -264,7 +275,7 @@ object ParticleFactory {
         var overrideOffsetZ = offsetZ
         val packetData = if (particle == Particle.ITEM) {
             val (type, value) = when (data) {
-                is ItemStack -> data.type to data.data.data.toInt()
+                is ItemStack -> data.type to data.data.notNull().data.toInt()
                 is Material -> data to 0
                 is ParticleData -> data.type to data.data
                 else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
@@ -346,7 +357,8 @@ object ParticleFactory {
             count: Int = 1,
             data: Any? = null
     ) {
-        sendParticle(center.world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
+        val world = center.world.notNull()
+        sendParticle(world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
     }
 
     /**

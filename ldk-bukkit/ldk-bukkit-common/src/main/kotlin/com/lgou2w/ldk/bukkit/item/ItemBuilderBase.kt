@@ -52,6 +52,13 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import java.util.UUID
 
+/**
+ * ## ItemBuilderBase (物品构建者基础)
+ *
+ * @see [ItemBuilder]
+ * @see [SimpleItemBuilder]
+ * @author lgou2w
+ */
 abstract class ItemBuilderBase : ItemBuilder {
 
     private val itemStack : ItemStack

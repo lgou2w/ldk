@@ -16,9 +16,23 @@
 
 package com.lgou2w.ldk.bukkit.version
 
+/**
+ * * The minimum required Bukkit API version to indicate a feature.
+ * * 用于指示一个功能的最低需求 Bukkit API 版本.
+ *
+ * @see [Level]
+ * @author lgou2w
+ */
 @Retention(AnnotationRetention.RUNTIME)
 annotation class API(val level: Level)
 
+/**
+ * * Level enumeration for the Bukkit API.
+ * * 用于 Bukkit API 的等级枚举.
+ *
+ * @see [API]
+ * @author lgou2w
+ */
 @Suppress("EnumEntryName")
 enum class Level {
 
@@ -31,6 +45,12 @@ enum class Level {
     Minecraft_V1_14,
     ;
 
+    /**
+     * * Get the version of Minecraft for this Bukkit API level.
+     * * 获取此 Bukkit API 等级的 Minecraft 版本.
+     *
+     * @see [MinecraftVersion]
+     */
     val version : MinecraftVersion
         get() = MinecraftVersion.fromLevel(this)
 }

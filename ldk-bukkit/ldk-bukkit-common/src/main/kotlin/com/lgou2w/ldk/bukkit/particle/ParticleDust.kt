@@ -18,4 +18,10 @@ package com.lgou2w.ldk.bukkit.particle
 
 import org.bukkit.Color
 
+/**
+ * ## ParticleDust (粒子尘埃)
+ *
+ * @see [Particle.DUST]
+ * @author lgou2w
+ */
 data class ParticleDust(val color: Color, val size: Float = 1f)

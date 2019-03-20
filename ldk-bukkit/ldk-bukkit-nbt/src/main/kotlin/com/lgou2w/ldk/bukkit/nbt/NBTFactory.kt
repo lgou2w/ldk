@@ -41,6 +41,11 @@ import com.lgou2w.ldk.reflect.Visibility
 import java.io.DataInput
 import java.io.DataOutput
 
+/**
+ * ## NBTFactory (NBT 工厂)
+ *
+ * @author lgou2w
+ */
 object NBTFactory {
 
     @JvmStatic val CLASS_NBT_BASE by lazyMinecraftClass("NBTBase")
@@ -89,7 +94,6 @@ object NBTFactory {
                 .resultAccessor()
     }
 
-
     // NMS.NBTCompressedStreamTools -> public static void write(NMS.NBTBase, DataOutput)
     @JvmStatic val METHOD_NBT_WRITE: AccessorMethod<Any, Any> by lazy {
         FuzzyReflect.of(CLASS_NBT_STREAM, true)
@@ -100,6 +104,13 @@ object NBTFactory {
                 .resultAccessor()
     }
 
+    /**
+     * * Converts the given `NMS` NBT object [nms] to an implementation of the [NBTBase] wrapper.
+     * * 将给定的 `NMS` NBT 对象 [nms] 转换为 [NBTBase] 包装的实现.
+     *
+     * @throws [IllegalArgumentException] If the NBT object [nms] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果 NBT 对象 [nms] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun fromNMS(nms: Any?): NBTBase<*>? {
         if (nms == null)
@@ -136,6 +147,10 @@ object NBTFactory {
         }
     }
 
+    /**
+     * * Converts the given [NBTBase] object [nbt] to an implementation of `NMS`.
+     * * 将给定的 [NBTBase] 对象 [nbt] 转换为 `NMS` 的实现.
+     */
     @JvmStatic
     fun toNMS(nbt: NBTBase<*>?): Any? {
         if (nbt == null)
@@ -164,6 +179,10 @@ object NBTFactory {
         }
     }
 
+    /**
+     * * Create an implementation instance object of `NMS` from the given NBT [type] and [value].
+     * * 从给定的 NBT 类型 [type] 和值 [value] 创建一个 `NMS` 的实现实例对象.
+     */
     @JvmStatic
     fun createInternal(type: NBTType, value: Any? = null): Any {
         val instance = METHOD_NBT_CREATE.invoke(null, type.id.toByte())

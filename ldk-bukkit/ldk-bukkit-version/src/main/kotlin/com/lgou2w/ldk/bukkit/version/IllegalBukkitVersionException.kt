@@ -16,6 +16,13 @@
 
 package com.lgou2w.ldk.bukkit.version
 
+/**
+ * ## IllegalBukkitVersionException (非法 Bukkit 版本异常)
+ *
+ * @see [MinecraftVersion]
+ * @see [MinecraftBukkitVersion]
+ * @author lgou2w
+ */
 class IllegalBukkitVersionException : IllegalStateException {
 
     constructor() : super()

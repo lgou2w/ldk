@@ -18,6 +18,13 @@ package com.lgou2w.ldk.bukkit.potion
 
 import com.lgou2w.ldk.common.Valuable
 
+/**
+ * ## PotionType (药水类型)
+ *
+ * @see [Valuable]
+ * @see [PotionEffectType]
+ * @author lgou2w
+ */
 enum class PotionType(
         val type: String,
         val effect: PotionEffectType?,
@@ -51,6 +58,9 @@ enum class PotionType(
     override val value : String
         get() = type
 
+    /**
+     * @see [PotionEffectType.isInstant]
+     */
     fun isInstant(): Boolean
             = effect != null && effect.isInstant()
 }

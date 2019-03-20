@@ -46,7 +46,6 @@ class ChatComponentScore(
          * * 获取或设置此聊天组件分数的分数值对象.
          */
         var value: String? = null
-
 ) : ChatComponentAbstract() {
 
     /**

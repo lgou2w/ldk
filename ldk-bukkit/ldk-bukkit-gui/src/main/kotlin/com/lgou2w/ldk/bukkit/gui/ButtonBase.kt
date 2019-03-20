@@ -22,6 +22,12 @@ import com.lgou2w.ldk.common.Consumer
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## ButtonBase (按钮基础)
+ *
+ * @see [Button]
+ * @author lgou2w
+ */
 open class ButtonBase(
         override val parent: Gui,
         override val index: Int

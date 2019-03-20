@@ -21,8 +21,24 @@ import org.bukkit.Bukkit
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 
+/**
+ * ## GuiType (界面类型)
+ *
+ * @see [Gui]
+ * @see [Gui.type]
+ * @see [Valuable]
+ * @author lgou2w
+ */
 enum class GuiType(
+        /**
+         * * The size of this Gui type.
+         * * 此界面类型的大小.
+         */
         val size: Int,
+        /**
+         * * The title of this Gui type.
+         * * 此界面类型的标题.
+         */
         val title: String
 ) : Valuable<String> {
 

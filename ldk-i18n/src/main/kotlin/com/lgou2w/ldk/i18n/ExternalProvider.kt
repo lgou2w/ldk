@@ -22,7 +22,17 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 
+/**
+ * ## ExternalProvider (外部语言提供者)
+ *
+ * @see [LanguageProvider]
+ * @author lgou2w
+ */
 class ExternalProvider(
+        /**
+         * * A directory of external language provider.
+         * * 此外部语言提供者的目录.
+         */
         val directory : File
 ) : LanguageProvider {
 

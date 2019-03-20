@@ -23,6 +23,11 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
+ * ## ScheduledThreadPoolDispatcherProvider (定长线程池调度程序提供者)
+ *
+ * @see [DispatcherProvider]
+ * @see [Closeable]
+ * @see [Executors.newScheduledThreadPool]
  * @since LDK 0.1.8-rc
  */
 class ScheduledThreadPoolDispatcherProvider(

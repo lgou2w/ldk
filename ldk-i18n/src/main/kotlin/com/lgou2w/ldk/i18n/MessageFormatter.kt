@@ -19,6 +19,13 @@ package com.lgou2w.ldk.i18n
 import java.text.MessageFormat
 import java.util.Locale
 
+/**
+ * ## MessageFormatter (消息格式化)
+ *
+ * @see [Formatter]
+ * @see [MessageFormat.format]
+ * @author lgou2w
+ */
 class MessageFormatter : Formatter {
 
     override fun format(locale: Locale, value: String, vararg args: Any?): String {

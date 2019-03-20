@@ -30,6 +30,10 @@ import org.bukkit.inventory.ItemStack
  **************************************************************************/
 
 /**
+ * * Read NBT tag data from the given entity.
+ * * 从给定的实体读取 NBT 标签数据.
+ *
+ * @see [EntityFactory.readTag]
  * @since LDK 0.1.7-rc3
  */
 @JvmOverloads
@@ -37,20 +41,40 @@ fun Entity.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
         = EntityFactory.readTag(this).also(block)
 
 /**
+ * * Modify the NBT tag data for the given entity.
+ * * 将给定的实体进行 NBT 标签数据的修改.
+ *
+ * @see [EntityFactory.modifyTag]
  * @since LDK 0.1.7-rc3
  */
 fun <T : Entity> T.modifyTag(block: Applicator<NBTTagCompound>): T
         = EntityFactory.modifyTag(this, block)
 
+/**
+ * * Get a list of entities within the [x], [y], [z] radius near a given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内的实体列表.
+ */
 fun Entity.getNearbyEntities(x: Double, y: Double, z: Double): List<Entity>
         = world.getNearbyEntities(location, x, y, z).toList()
 
+/**
+ * * Get a list of entities within the [range] radius near a given entity.
+ * * 获取给定实体附近 [range] 半径内的实体列表.
+ */
 fun Entity.getNearbyEntities(range: Double): List<Entity>
         = world.getNearbyEntities(location, range, range, range).toList()
 
+/**
+ * * Get a list of entities of the specified type [type] within the [x], [y], [z] radius near the given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内指定类型 [type] 的实体列表.
+ */
 fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, x: Double, y: Double, z: Double): List<T>
         = getNearbyEntities(x, y, z).filterIsInstance(type)
 
+/**
+ * * Get a list of entities of the specified type [type] within the [range] radius near the given entity.
+ * * 获取给定实体附近 [range] 半径内指定类型 [type] 的实体列表.
+ */
 fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, range: Double): List<T>
         = getNearbyEntities(range).filterIsInstance(type)
 
@@ -60,12 +84,20 @@ fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, range: Double): List<T
  *
  **************************************************************************/
 
+/**
+ * * Determine if the given [target] entity is in front of the given entity.
+ * * 判断给定的目标实体 [target] 是否在给定实体前面.
+ */
 fun Entity.isInFront(target: Entity): Boolean {
     val facing = location.direction
     val relative = target.location.subtract(location).toVector().normalize()
     return facing.dot(relative) >= .0
 }
 
+/**
+ * * Determine if the given [target] entity is in front of the given entity.
+ * * 判断给定的目标实体 [target] 是否在给定实体前面.
+ */
 fun Entity.isInFront(target: Entity, angle: Double): Boolean {
     if (angle <= .0) return false
     if (angle >= 360.0) return true
@@ -75,9 +107,17 @@ fun Entity.isInFront(target: Entity, angle: Double): Boolean {
     return facing.dot(relative) >= dotTarget
 }
 
+/**
+ * * Determine if the given [target] entity is in behind of the given entity.
+ * * 判断给定的目标实体 [target] 是否在给定实体后面.
+ */
 fun Entity.isBehind(target: Entity): Boolean
         = !isInFront(target)
 
+/**
+ * * Determine if the given [target] entity is in behind of the given entity.
+ * * 判断给定的目标实体 [target] 是否在给定实体后面.
+ */
 fun Entity.isBehind(target: Entity, angle: Double): Boolean {
     if (angle <= .0) return false
     if (angle >= 360.0) return true
@@ -87,14 +127,26 @@ fun Entity.isBehind(target: Entity, angle: Double): Boolean {
     return facing.dot(relative) >= dotTarget
 }
 
+/**
+ * * Get the list of entities in front of the [x], [y], [z] radius near the given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内面前的实体列表.
+ */
 @JvmOverloads
 fun Entity.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<Entity>
         = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
 
+/**
+ * * Get the list of entities in front of the [range] radius near the given entity.
+ * * 获取给定实体附近 [range] 半径内面前的实体列表.
+ */
 @JvmOverloads
 fun Entity.getNearbyTargets(range: Double, tolerance: Double = 4.0): List<Entity>
         = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
 
+/**
+ * * Get the list of specified [type] entities in front of the [x], [y], [z] radius near the given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内面前的指定类型 [type] 实体列表.
+ */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<T> {
     val facing = location.direction
@@ -115,18 +167,34 @@ fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z
         .toList()
 }
 
+/**
+ * * Get the list of specified [type] entities in front of the [range] radius near the given entity.
+ * * 获取给定实体附近 [range] 半径内面前的指定类型 [type] 实体列表.
+ */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, range: Double, tolerance: Double = 4.0): List<T>
         = getNearbyTargets(type, range, range, range, tolerance)
 
+/**
+ * * Get the nearest entity in front of the [x], [y], [z] radius near the given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内最近的实体.
+ */
 @JvmOverloads
 fun Entity.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double = 4.0): Entity?
         = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
 
+/**
+ * * Get the nearest entity in front of the [range] radius near the given entity.
+ * * 获取给定实体附近 [range] 半径内最近的实体.
+ */
 @JvmOverloads
 fun Entity.getNearbyTarget(range: Double, tolerance: Double = 4.0): Entity?
         = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
 
+/**
+ * * Get the nearest of specified [type] entity in front of the [x], [y], [z] radius near the given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内最近的指定类型 [type] 实体.
+ */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): T? {
     val targets = getNearbyTargets(type, x, y, z, tolerance)
@@ -148,6 +216,10 @@ fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z:
     }
 }
 
+/**
+ * * Get the nearest of specified [type] entity in front of the [range] radius near the given entity.
+ * * 获取给定实体附近 [range] 半径内最近的指定类型 [type] 实体.
+ */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, range: Double, tolerance: Double = 4.0): T?
         = getNearbyTarget(type, range, range, range, tolerance)
@@ -158,14 +230,26 @@ fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, range: Double, tolerance
  *
  **************************************************************************/
 
+/**
+ * * Indicate the item stack in main hand of the given [LivingEntity].
+ * * 表示此 [LivingEntity] 主手中的物品栈.
+ */
 var LivingEntity.itemInHand: ItemStack?
     get() = EntityFactory.getItemInHand(this)
     set(value) { EntityFactory.setItemInHand(this, value) }
 
+/**
+ * * Indicate the item stack in main hand of the given [LivingEntity].
+ * * 表示此 [LivingEntity] 主手中的物品栈.
+ */
 var LivingEntity.itemInMainHand: ItemStack?
     get() = EntityFactory.getItemInMainHand(this)
     set(value) { EntityFactory.setItemInMainHand(this, value) }
 
+/**
+ * * Indicate the item stack in off hand of the given [LivingEntity].
+ * * 表示此 [LivingEntity] 副手中的物品栈.
+ */
 var LivingEntity.itemInOffHand: ItemStack?
     get() = EntityFactory.getItemInOffHand(this)
     set(value) { EntityFactory.setItemInOffHand(this, value) }

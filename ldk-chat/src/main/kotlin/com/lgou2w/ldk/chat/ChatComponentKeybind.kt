@@ -32,7 +32,6 @@ class ChatComponentKeybind(
          * * 获取或设置此聊天组件按键的按键对象.
          */
         var keybind: String
-
 ) : ChatComponentAbstract() {
 
     /**

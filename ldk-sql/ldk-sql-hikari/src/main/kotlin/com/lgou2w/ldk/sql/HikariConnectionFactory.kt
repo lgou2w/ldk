@@ -22,6 +22,15 @@ import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
 import java.sql.SQLException
 
+/**
+ * ## HikariConnectionFactory (HikariCP 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @see [MySQLConnectionFactory]
+ * @see [MariaDbConnectionFactory]
+ * @see [PostgreConnectionFactory]
+ * @author lgou2w
+ */
 abstract class HikariConnectionFactory(
         protected val configuration: HikariConfiguration
 ) : ConnectionFactory {
@@ -74,6 +83,10 @@ abstract class HikariConnectionFactory(
         }
     }
 
+    /**
+     * * Test if the connection factory session is available.
+     * * 测试连接工厂会话是否可用.
+     */
     fun testSession(): HikariTestSession {
         var success = true
         val start = System.currentTimeMillis()

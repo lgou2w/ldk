@@ -30,8 +30,22 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.sql.DataSource
 import kotlin.properties.Delegates
 
+/**
+ * ## H2ConnectionFactory (H2 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @author lgou2w
+ */
 class H2ConnectionFactory(
+        /**
+         * * The connection path of this connection factory.
+         * * 此连接工厂的连接路径.
+         */
         val path: Path,
+        /**
+         * * The properties of this connection factory.
+         * * 此连接工厂的属性.
+         */
         val properties: Properties = Properties()
 ) : ConnectionFactory {
 

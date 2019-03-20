@@ -20,6 +20,14 @@ import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
 
+/**
+ * ## RegionCylinder (圆柱区域)
+ *
+ * @see [Region]
+ * @see [RegionBase]
+ * @see [RegionFlat]
+ * @author lgou2w
+ */
 open class RegionCylinder : RegionBase, RegionFlat {
 
     companion object {
@@ -37,9 +45,23 @@ open class RegionCylinder : RegionBase, RegionFlat {
         }
     }
 
+    /**
+     * * The center point vector of this cylinder region.
+     * * 此圆柱区域的中心点向量.
+     */
     var center2D : RegionVector2D
+    /**
+     * * The radius vector of this cylinder region.
+     * * 此圆柱区域的半径向量.
+     */
     var radius : RegionVector2D
+    /**
+     * @see [minimumY]
+     */
     var minY : Int = 0
+    /**
+     * @see [maximumY]
+     */
     var maxY : Int = 0
 
     private var hasY : Boolean

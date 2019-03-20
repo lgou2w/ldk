@@ -18,4 +18,9 @@ package com.lgou2w.ldk.bukkit.particle
 
 import org.bukkit.Material
 
+/**
+ * ## ParticleData (粒子数据)
+ *
+ * @author lgou2w
+ */
 data class ParticleData(val type: Material, val data: Int)

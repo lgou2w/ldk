@@ -18,4 +18,10 @@ package com.lgou2w.ldk.bukkit.event
 
 import org.bukkit.event.Listener
 
+/**
+ * ## EventListener (事件监听器)
+ *
+ * @see [Listener]
+ * @author lgou2w
+ */
 interface EventListener : Listener

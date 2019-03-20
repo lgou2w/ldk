@@ -22,7 +22,18 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 
-class ResourceExternalizableProvider(
+/**
+ * ## ResourceExternalizableProvider (资源可外部语言提供者)
+ *
+ * @see [LanguageProvider]
+ * @see [ResourceProvider]
+ * @author lgou2w
+ */
+class ResourceExternalizableProvider @JvmOverloads constructor(
+        /**
+         * * A directory of resource externalizable language provider.
+         * * 此资源可外部语言提供者的目录.
+         */
         val directory : File,
         classLoader: ClassLoader = ResourceExternalizableProvider::class.java.classLoader
 ) : ResourceProvider(classLoader) {

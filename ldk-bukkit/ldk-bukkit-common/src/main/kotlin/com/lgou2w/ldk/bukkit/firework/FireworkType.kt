@@ -18,26 +18,38 @@ package com.lgou2w.ldk.bukkit.firework
 
 import com.lgou2w.ldk.common.Valuable
 
+/**
+ * ## FireworkType (烟花类型)
+ *
+ * @see [Valuable]
+ * @see [FireworkEffect]
+ * @author lgou2w
+ */
 enum class FireworkType : Valuable<Int> {
 
     /**
-     * A small ball effect.
+     * * A small ball effect.
+     * * 小球型效果.
      */
     BALL,
     /**
-     * A large ball effect.
+     * * A large ball effect.
+     * * 大球型效果.
      */
     BALL_LARGE,
     /**
-     * A star-shaped effect.
+     * * A star-shaped effect.
+     * * 星形效果.
      */
     STAR,
     /**
-     * A creeper-face effect.
+     * * A creeper-face effect.
+     * * 苦力怕脸型效果.
      */
     CREEPER,
     /**
-     * A burst effect.
+     * * A burst effect.
+     * * 爆裂型效果.
      */
     BURST,
     ;

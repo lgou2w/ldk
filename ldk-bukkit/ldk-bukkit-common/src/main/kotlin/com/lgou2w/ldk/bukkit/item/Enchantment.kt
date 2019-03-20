@@ -20,6 +20,7 @@ import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
+import com.lgou2w.ldk.common.notNull
 import java.util.HashMap
 import java.util.Locale
 
@@ -256,12 +257,18 @@ enum class Enchantment(
     override val value : String
         get() = type
 
+    /**
+     * * Convert this enchant to the enchant of Bukkit.
+     * * 将此附魔转换为 Bukkit 的附魔.
+     *
+     * @see [org.bukkit.enchantments.Enchantment]
+     */
     fun toBukkit(): org.bukkit.enchantments.Enchantment {
         return if (MinecraftBukkitVersion.isV113OrLater) {
-            org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type))
+            org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type)).notNull()
         } else {
             @Suppress("DEPRECATION")
-            org.bukkit.enchantments.Enchantment.getByName(legacy)
+            org.bukkit.enchantments.Enchantment.getByName(legacy).notNull()
         }
     }
 

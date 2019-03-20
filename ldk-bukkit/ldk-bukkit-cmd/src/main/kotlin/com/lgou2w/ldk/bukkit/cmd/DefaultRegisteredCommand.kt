@@ -26,6 +26,13 @@ import java.util.Arrays
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * ## DefaultRegisteredCommand (默认已注册命令)
+ *
+ * @see [RegisteredCommand]
+ * @see [DefaultCommandManager]
+ * @author lgou2w
+ */
 class DefaultRegisteredCommand(
         override val manager: CommandManager,
         override val source: Any,
@@ -261,23 +268,34 @@ class DefaultRegisteredCommand(
         val root = rootParent ?: this
         val usage = usage
         if (usage == null || usage.isEmpty())
-            sender.sendMessage(root.prefix + ChatColor.RED + "Unknown command. Type \"/${root.name} help\" for help.")
+            sender.sendMessage(root.prefix + ChatColor.RED + betterDefaultTypeHelp(root.name))
         else
             sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
+    }
+
+    private fun betterDefaultTypeHelp(name: String): String {
+        val chinese = manager.globalFeedback is SimpleChineseCommandFeedback || feedback is SimpleChineseCommandFeedback
+        return if (!chinese) "Unknown command. Type \"/$name help\" for help."
+        else "未知命令. 输入 \"/$name help\" 查看帮助."
     }
 
     override fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
         if (!isAllowCompletion || !testPermissionIfFailed(sender, permission))
             return emptyList()
         return if (args.size <= 1) {
-            (mChildren.filter { testPermissionIfFailed(sender, it.value.permission) }.map { it.key } +
-            mExecutors.filter { testPermissionIfFailed(sender, it.value.permission) && it.key != name }.map { it.key })
+            (mChildren.asSequence()
+                 .filter { testPermissionIfFailed(sender, it.value.permission) }
+                 .map { it.key } +
+            mExecutors.asSequence()
+                .filter { testPermissionIfFailed(sender, it.value.permission) && it.key != name }
+                .map { it.key }
+            )
                 .filter {
                     val first = args.firstOrNull()
                     (first == null || it.startsWith(first))
                 }
                 .toMutableList()
-                .apply { sort() }
+                .sorted()
         } else {
             val child = findChild(args.first())
             child?.complete(sender, alias, pollArgument(args))

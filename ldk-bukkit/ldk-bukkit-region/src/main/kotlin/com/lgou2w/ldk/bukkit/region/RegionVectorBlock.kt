@@ -19,6 +19,12 @@ package com.lgou2w.ldk.bukkit.region
 import org.bukkit.World
 import org.bukkit.block.Block
 
+/**
+ * ## RegionVectorBlock (区域方块向量)
+ *
+ * @see [RegionVector]
+ * @author lgou2w
+ */
 open class RegionVectorBlock : RegionVector {
 
     companion object {

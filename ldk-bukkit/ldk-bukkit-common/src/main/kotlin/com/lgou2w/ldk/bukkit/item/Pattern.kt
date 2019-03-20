@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.item
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.ofCompound
@@ -32,7 +33,7 @@ data class IllegalPattern(
         val rawColor: Int,
         val rawType: String
 ) : Pattern(
-        DyeColor.getByColor(Color.fromRGB(0x45, 0x52, 0x52)), // ERR
+        DyeColor.getByColor(Color.fromRGB(0x45, 0x52, 0x52)).notNull(), // ERR
         PatternType.BASE
 ) {
     private val msg = "The banner pattern is not compatible with the server. (rawColor=$rawColor, rawType=$rawType)"
