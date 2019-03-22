@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import org.bukkit.permissions.PermissionDefault
 import java.util.Arrays
 
 /**
@@ -30,6 +31,8 @@ abstract class CommandExecutorBase(
         final override val name: String,
         final override val aliases: Array<out String>,
         final override val permission: Array<out String>?,
+        final override val permissionDefault: PermissionDefault?,
+        final override val sorted: Int?,
         final override val isPlayable: Boolean,
         final override val parameters: Array<out CommandExecutor.Parameter>
 ) : CommandExecutor {

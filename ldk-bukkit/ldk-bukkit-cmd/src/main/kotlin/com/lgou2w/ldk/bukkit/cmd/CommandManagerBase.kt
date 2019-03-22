@@ -21,9 +21,13 @@ import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import org.bukkit.Bukkit
 import org.bukkit.Server
+import org.bukkit.command.CommandException
 import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
+import org.bukkit.command.PluginCommand
 import org.bukkit.command.SimpleCommandMap
+import org.bukkit.permissions.Permission
+import org.bukkit.permissions.PermissionDefault
 import org.bukkit.plugin.Plugin
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
@@ -89,14 +93,37 @@ abstract class CommandManagerBase(
         @JvmStatic private fun registerBukkitCommand(command: RegisteredCommand): Boolean {
             return try {
                 val existed = bukkitCommandMap.getCommand(command.name)
-                if (existed != null && existed !is CommandProxy)
-                    throw UnsupportedOperationException("The command '${command.name}' already exists and cannot be override.")
-                if (existed != null)
+                if (existed != null) {
+                    if (existed is PluginCommand && existed.plugin != command.manager.plugin)
+                        throw UnsupportedOperationException("The command '${command.name}' has been registered by another plugin and cannot be override.")
+                    if (existed !is PluginCommand && existed !is CommandProxy)
+                        throw UnsupportedOperationException("The command '${command.name}' already exists and cannot be override.")
                     removeBukkitCommand(command.name, existed)
-                bukkitCommandMap.register(command.name, command.fallbackPrefix, CommandProxy(command))
+                }
+                val result = bukkitCommandMap.register(command.name, command.fallbackPrefix, CommandProxy(command))
+                if (result) // register permission default
+                    registerPermissionDefault(command)
+                result
             } catch (e: Exception) {
                 command.manager.plugin.logger.log(Level.SEVERE, e.message, e)
                 false
+            }
+        }
+        @JvmStatic private fun registerPermissionDefault(command: RegisteredCommand) {
+            registerPermissionDefault0(command.permission, command.permissionDefault)
+            command.executors.values.forEach { executor ->
+                registerPermissionDefault0(executor.permission, executor.permissionDefault)
+            }
+            command.children.values
+                .forEach(::registerPermissionDefault)
+        }
+        @JvmStatic private fun registerPermissionDefault0(permissions: Array<out String>?, permissionDefault: PermissionDefault?) {
+            if (permissions != null && permissions.isNotEmpty() && permissionDefault != null) {
+                permissions.forEach { permission ->
+                    val existed = Bukkit.getPluginManager().getPermission(permission)
+                    if (existed == null)
+                        Bukkit.getPluginManager().addPermission(Permission(permission, permissionDefault))
+                }
             }
         }
         @JvmStatic private val simpleCommandMapKnownCommands by lazy {
@@ -125,10 +152,14 @@ abstract class CommandManagerBase(
             init {
                 permission = command.permission?.joinToString(";")
             }
-            override fun execute(sender: CommandSender, name: String, args: Array<out String>): Boolean {
-                return command.execute(sender, name, args)
+            override fun execute(sender: CommandSender, label: String, args: Array<out String>): Boolean {
+                if (!command.manager.plugin.isEnabled)
+                    throw CommandException("Cannot execute command '$label' in plugin ${command.manager.plugin.description.fullName} - plugin is disabled.")
+                return command.execute(sender, label, args)
             }
             override fun tabComplete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
+                if (!command.manager.plugin.isEnabled)
+                    return emptyList()
                 return command.complete(sender, alias, args)
             }
         }

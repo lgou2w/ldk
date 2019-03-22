@@ -20,9 +20,11 @@ import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.nbt.NBTType
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.permissions.PermissionDefault
 
 @CommandRoot("sample", aliases = ["sp"])
 @Permission("sample")
+@PermissionDefaultValue(PermissionDefault.TRUE)
 @Deprecated("USELESS")
 class Sample : StandardCommand() {
 
@@ -42,20 +44,27 @@ class Sample : StandardCommand() {
 
     @Command("help")
     @CommandDescription("View sample command help.")
+    @Sorted(1)
     fun help(sender: CommandSender) {
-        CommandHelper.sendSimpleCommandTooltips(sender, command, false, true, CommandHelper.Sorted.C_T_E)
+        CommandHelper.sendSimpleCommandTooltips(sender, command,
+                newLineDesc = true, named = true, permission = true,
+                sorted = CommandHelper.Sorted.ANNOTATION
+        )
     }
 
     @Command("sample")
     @CommandDescription("Sample command.")
+    @Sorted(0)
     fun sample(sender: CommandSender) {
         // => /sample
         sender.send("invoke sample")
     }
 
     @Command("hello", aliases = ["hi", "nh"])
-    @Permission("sample.hello")
     @CommandDescription("Test and say Hello world.")
+    @Permission("sample.hello")
+    @PermissionDefaultValue(PermissionDefault.TRUE)
+    @Sorted(2)
     fun hello(sender: CommandSender) {
         // => /sample hello
         sender.send("hello world ~")
@@ -63,6 +72,7 @@ class Sample : StandardCommand() {
 
     @Command("tell")
     @CommandDescription("Send a private chat message to the specified target player.")
+    @Sorted(3)
     fun tell(sender: CommandSender, target: Player, @Optional("hi~") @Vararg(String::class) msgs: List<String>) {
         // => /sample tell <target> [msgs...]
         val msg = msgs.joinToString(" ")
@@ -73,6 +83,7 @@ class Sample : StandardCommand() {
     @CommandRoot("user", aliases = ["u"])
     @Permission("sample.user")
     @Description(description = "View sample user command.")
+    @Sorted(4)
     class User : StandardCommand() {
 
         @Command("user")
@@ -109,6 +120,7 @@ class Sample : StandardCommand() {
     @CommandRoot("nbt")
     @Permission("sample.nbt")
     @Description(description = "View sample nbt command.")
+    @Sorted(5)
     class NBT : StandardCommand() {
 
         @Command("type")
