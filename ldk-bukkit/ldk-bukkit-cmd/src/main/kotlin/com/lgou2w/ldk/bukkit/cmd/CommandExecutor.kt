@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import org.bukkit.permissions.PermissionDefault
+
 /**
  * ## CommandExecutor (命令执行器)
  *
@@ -48,6 +50,22 @@ interface CommandExecutor {
      * * 此执行器的权限.
      */
     val permission : Array<out String>?
+
+    /**
+     * * The permission default of this executor.
+     * * 此执行器的权限默认.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    val permissionDefault : PermissionDefault?
+
+    /**
+     * * The sort index of this executor.
+     * * 此执行器的排序索引.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    val sorted : Int?
 
     /**
      * * Indicate whether this executor can only be executed by the [org.bukkit.entity.Player].

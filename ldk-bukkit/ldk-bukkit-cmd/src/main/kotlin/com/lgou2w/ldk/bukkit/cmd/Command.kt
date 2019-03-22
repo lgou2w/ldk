@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import org.bukkit.permissions.PermissionDefault
 import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.CLASS)
@@ -48,6 +49,20 @@ annotation class CommandDescription(val value: String)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Permission(vararg val values: String)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class PermissionDefaultValue(val value: PermissionDefault)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Sorted(val value: Int)
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)

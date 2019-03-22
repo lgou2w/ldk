@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.reflect.AccessorMethod
+import org.bukkit.permissions.PermissionDefault
 import java.lang.reflect.Modifier
 import java.util.Arrays
 
@@ -31,6 +32,8 @@ class DefaultCommandExecutor(
         name: String,
         aliases: Array<out String>,
         permission: Array<out String>?,
+        permissionDefault: PermissionDefault?,
+        sorted: Int?,
         isPlayable: Boolean,
         parameters: Array<out CommandExecutor.Parameter>,
         /**
@@ -41,7 +44,16 @@ class DefaultCommandExecutor(
          */
         val executor: AccessorMethod<Any, Any>,
         override var description: String?
-) : CommandExecutorBase(reference, name, aliases, permission, isPlayable, parameters) {
+) : CommandExecutorBase(
+        reference,
+        name,
+        aliases,
+        permission,
+        permissionDefault,
+        sorted,
+        isPlayable,
+        parameters
+) {
 
     /**
      * * Indicate whether this executor method is static.

@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.cmd
 import com.lgou2w.ldk.reflect.Accessors
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import org.bukkit.command.CommandSender
+import org.bukkit.permissions.PermissionDefault
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
@@ -40,6 +41,8 @@ class DefaultCommandParser : CommandParser {
         val clazz = source.javaClass
         val commandRoot = parseRoot(manager, clazz)
         val permission = clazz.getAnnotation(Permission::class.java)
+        val permissionDefault = clazz.getAnnotation(PermissionDefaultValue::class.java)
+        val sorted = clazz.getAnnotation(Sorted::class.java)
         val description = clazz.getAnnotation(Description::class.java)
         val executors = parseExecutors(manager, commandRoot.value, source, clazz)
         val command = buildCommandRegistered(
@@ -49,6 +52,8 @@ class DefaultCommandParser : CommandParser {
                 commandRoot.value,
                 commandRoot.aliases,
                 permission?.values,
+                permissionDefault?.value,
+                sorted?.value,
                 description,
                 emptyMap(),
                 executors
@@ -91,6 +96,8 @@ class DefaultCommandParser : CommandParser {
             .mapNotNull { method ->
                 val command = method.getAnnotation(Command::class.java)
                 val permission = method.getAnnotation(Permission::class.java)
+                val permissionDefault = method.getAnnotation(PermissionDefaultValue::class.java)
+                val sorted = method.getAnnotation(Sorted::class.java)
                 val isPlayable = method.getAnnotation(Playable::class.java) != null
                 val parameters = parseExecutorParameters(manager, method)
                 val description = method.getAnnotation(CommandDescription::class.java)?.value
@@ -99,6 +106,8 @@ class DefaultCommandParser : CommandParser {
                         command.value,
                         command.aliases,
                         permission?.values,
+                        permissionDefault?.value,
+                        sorted?.value,
                         isPlayable,
                         method,
                         parameters,
@@ -256,6 +265,8 @@ class DefaultCommandParser : CommandParser {
             }
             if (root != null && instance != null) {
                 val childPermission = child.getAnnotation(Permission::class.java)
+                val childPermissionDefault = child.getAnnotation(PermissionDefaultValue::class.java)
+                val childSorted = child.getAnnotation(Sorted::class.java)
                 val childDescription = child.getAnnotation(Description::class.java)
                 val childExecutors = parseExecutors(manager, root.value, instance, child)
                 val childCommand = buildCommandRegistered(
@@ -265,6 +276,8 @@ class DefaultCommandParser : CommandParser {
                         root.value,
                         root.aliases,
                         childPermission?.values,
+                        childPermissionDefault?.value,
+                        childSorted?.value,
                         childDescription,
                         emptyMap(),
                         childExecutors
@@ -293,6 +306,8 @@ class DefaultCommandParser : CommandParser {
                 name: String,
                 aliases: Array<out String>,
                 permission: Array<out String>?,
+                permissionDefault: PermissionDefault?,
+                sorted: Int?,
                 description: Description?,
                 children: Map<String, DefaultRegisteredCommand>,
                 executors: Map<String, DefaultCommandExecutor>
@@ -304,6 +319,8 @@ class DefaultCommandParser : CommandParser {
                     name,
                     aliases,
                     permission,
+                    permissionDefault,
+                    sorted,
                     description?.fallbackPrefix ?: "",
                     description?.description,
                     description?.usage,
@@ -319,6 +336,8 @@ class DefaultCommandParser : CommandParser {
                 name: String,
                 aliases: Array<out String>,
                 permission: Array<out String>?,
+                permissionDefault: PermissionDefault?,
+                sorted: Int?,
                 isPlayable: Boolean,
                 method: Method,
                 parameters: Array<out CommandExecutor.Parameter>,
@@ -329,6 +348,8 @@ class DefaultCommandParser : CommandParser {
                     name,
                     aliases,
                     permission,
+                    permissionDefault,
+                    sorted,
                     isPlayable,
                     parameters,
                     Accessors.ofMethod(method),

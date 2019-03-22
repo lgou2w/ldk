@@ -50,8 +50,23 @@ object CommandHelper {
             newLineDesc: Boolean = false,
             named: Boolean = true,
             sorted: Sorted = Sorted.NONE
+    ) = sendSimpleCommandTooltip(receiver, command, index, split, newLineDesc, named, false, sorted)
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    fun sendSimpleCommandTooltip(
+            receiver: CommandSender,
+            command: RegisteredCommand,
+            index: Int,
+            split: Int = 4,
+            newLineDesc: Boolean = false,
+            named: Boolean = true,
+            permission: Boolean = false,
+            sorted: Sorted = Sorted.NONE
     ) {
-        val tooltips = createSimpleCommandTooltip(command, index, split, newLineDesc, named, sorted)
+        val tooltips = createSimpleCommandTooltip(receiver, command, index, split, newLineDesc, named, permission, sorted)
         tooltips.forEach { tooltip ->
             if (tooltip.contains(NEWLINE)) receiver.sendMessage(tooltip.split(NEWLINE).toTypedArray())
             else receiver.sendMessage(tooltip)
@@ -65,8 +80,21 @@ object CommandHelper {
             newLineDesc: Boolean = false,
             named: Boolean = true,
             sorted: Sorted = Sorted.NONE
+    ) = sendSimpleCommandTooltips(receiver, command, newLineDesc, named, false, sorted)
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    fun sendSimpleCommandTooltips(
+            receiver: CommandSender,
+            command: RegisteredCommand,
+            newLineDesc: Boolean = false,
+            named: Boolean = true,
+            permission: Boolean = false,
+            sorted: Sorted = Sorted.NONE
     ) {
-        val tooltips = createSimpleCommandTooltips(command, newLineDesc, named, sorted)
+        val tooltips = createSimpleCommandTooltips(receiver, command, newLineDesc, named, permission, sorted)
         tooltips.forEach { tooltip ->
             if (tooltip.contains(NEWLINE)) receiver.sendMessage(tooltip.split(NEWLINE).toTypedArray())
             else receiver.sendMessage(tooltip)
@@ -81,9 +109,22 @@ object CommandHelper {
             newLineDesc: Boolean = false,
             named: Boolean = true,
             sorted: Sorted = Sorted.NONE
+    ): List<String>
+            = createSimpleCommandTooltip(null, command, index, split, newLineDesc, false, named, sorted)
+
+    @JvmStatic
+    private fun createSimpleCommandTooltip(
+            receiver: CommandSender?,
+            command: RegisteredCommand,
+            index: Int,
+            split: Int = 4,
+            newLineDesc: Boolean = false,
+            named: Boolean = true,
+            permission: Boolean = false,
+            sorted: Sorted = Sorted.NONE
     ): List<String> {
         val betterSplit = if (newLineDesc) split else split * 2
-        val tooltips = createSimpleCommandTooltips(command, newLineDesc, named, sorted).chunked(betterSplit)
+        val tooltips = createSimpleCommandTooltips(receiver, command, newLineDesc, named, permission, sorted).chunked(betterSplit)
         if (tooltips.isEmpty())
             return emptyList()
         return when {
@@ -99,25 +140,43 @@ object CommandHelper {
             newLineDesc: Boolean = false,
             named: Boolean = true,
             sorted: Sorted = Sorted.NONE
-    ) : List<String> {
+    ): List<String>
+            = createSimpleCommandTooltips(null, command, newLineDesc, false, named, sorted)
+
+    @JvmStatic
+    private fun createSimpleCommandTooltips(
+            receiver: CommandSender?,
+            command: RegisteredCommand,
+            newLineDesc: Boolean = false,
+            named: Boolean = true,
+            permission: Boolean = false,
+            sorted: Sorted = Sorted.NONE
+    ): List<String> {
         val name = if (named) named(command) else command.name
         val children = command.children
         val executors = command.executors
         if (children.isEmpty() && executors.isEmpty())
             return emptyList()
         val childrenTooltips = children
-            .map { "$SLASH$name$BLANK$PARAMETER${it.key}${description(it.value.description, newLineDesc)}" }
+            .asSequence()
+            .filter { !permission || hasPermission(receiver, it.value.permission) }
+            .map { it.value.sorted to "$SLASH$name$BLANK$PARAMETER${it.key}${description(it.value.description, newLineDesc)}" }
             .toMutableList()
         val executorsTooltips = executors
             .asSequence()
-            .filter { it.key != command.name }
-            .map { "$SLASH$name$BLANK$PARAMETER${it.key}${createSimpleExecutorUsage(it.value)}${description(it.value.description, newLineDesc)}" }
+            .filter { it.key != command.name && (!permission || hasPermission(receiver, it.value.permission)) }
+            .map { it.value.sorted to "$SLASH$name$BLANK$PARAMETER${it.key}${createSimpleExecutorUsage(it.value)}${description(it.value.description, newLineDesc)}" }
             .toMutableList()
         val sortedTooltips = when (sorted) {
-            Sorted.NONE -> childrenTooltips + executorsTooltips
-            Sorted.DEFAULT -> (childrenTooltips + executorsTooltips).sorted()
-            Sorted.C_T_E -> childrenTooltips.sorted() + executorsTooltips.sorted()
-            Sorted.E_T_C -> executorsTooltips.sorted() + childrenTooltips.sorted()
+            Sorted.NONE -> (childrenTooltips.map { it.second } + executorsTooltips.map { it.second })
+            Sorted.ANNOTATION -> (childrenTooltips + executorsTooltips)
+                .asSequence()
+                .sortedBy { it.first }
+                .map { it.second }
+                .toMutableList()
+            Sorted.DEFAULT -> (childrenTooltips + executorsTooltips).map { it.second }.sorted()
+            Sorted.C_T_E -> childrenTooltips.map { it.second }.sorted() + executorsTooltips.map { it.second }.sorted()
+            Sorted.E_T_C -> executorsTooltips.map { it.second }.sorted() + childrenTooltips.map { it.second }.sorted()
         }.toMutableList()
         whetherCommandMapping(command, executors, newLineDesc)
             .applyIfNotNull { sortedTooltips.add(0, "$SLASH$name$this") }
@@ -142,6 +201,11 @@ object CommandHelper {
         } else {
             EMPTY
         }
+    }
+
+    private fun hasPermission(receiver: CommandSender?, permission: Array<out String>?): Boolean {
+        return if (receiver == null || permission == null || permission.isEmpty()) true
+        else permission.all(receiver::hasPermission)
     }
 
     private fun whetherCommandMapping(
@@ -169,6 +233,10 @@ object CommandHelper {
     enum class Sorted {
 
         NONE,
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        ANNOTATION,
         DEFAULT,
         C_T_E,
         E_T_C,

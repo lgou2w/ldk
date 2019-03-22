@@ -5,27 +5,34 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>ldk-sql</artifactId>
+        <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
         <version>0.1.8-beta6</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-sql-hikari</artifactId>
+    <artifactId>ldk-exposed</artifactId>
+
+    <repositories>
+        <repository>
+            <id>exposed</id>
+            <url>https://dl.bintray.com/kotlin/exposed</url>
+        </repository>
+    </repositories>
 
     <dependencies>
-        <!-- ldk-sql-api -->
+        <!-- ldk-common -->
         <dependency>
             <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-sql-api</artifactId>
+            <artifactId>ldk-common</artifactId>
             <version>0.1.8-beta6</version>
             <scope>compile</scope>
         </dependency>
-        <!-- HikariCP -->
+        <!-- Exposed -->
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.3.1</version>
+            <groupId>org.jetbrains.exposed</groupId>
+            <artifactId>exposed</artifactId>
+            <version>0.13.5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
