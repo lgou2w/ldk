@@ -96,15 +96,15 @@ abstract class CommandManagerBase(
                 if (existed != null) {
                     if (existed is PluginCommand && existed.plugin != command.manager.plugin)
                         throw UnsupportedOperationException("The command '${command.name}' has been registered by another plugin and cannot be override.")
-                    if (existed !is PluginCommand && existed !is CommandProxy)
-                        throw UnsupportedOperationException("The command '${command.name}' already exists and cannot be override.")
-                    removeBukkitCommand(command.name, existed)
+                    removeBukkitCommand(command.name)
                 }
                 val result = bukkitCommandMap.register(command.name, command.fallbackPrefix, CommandProxy(command))
                 if (result) // register permission default
                     registerPermissionDefault(command)
                 result
             } catch (e: Exception) {
+                if (e is UnsupportedOperationException)
+                    throw e
                 command.manager.plugin.logger.log(Level.SEVERE, e.message, e)
                 false
             }
@@ -133,12 +133,10 @@ abstract class CommandManagerBase(
                 .withName("knownCommands")
                 .resultAccessorAs<SimpleCommandMap, MutableMap<String, org.bukkit.command.Command>>()
         }
-        @JvmStatic private fun removeBukkitCommand(name: String, command: org.bukkit.command.Command) {
+        @JvmStatic private fun removeBukkitCommand(name: String) {
             val simpleCommandMap = bukkitCommandMap as? SimpleCommandMap ?: return
             val knownCommands = simpleCommandMapKnownCommands[simpleCommandMap].notNull()
-            val existed = knownCommands[name] ?: return
-            if (existed == command)
-                knownCommands.remove(name)
+            knownCommands.remove(name)
         }
 
         private class CommandProxy(
