@@ -30,6 +30,27 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>lgou2w</id>
+            <name>MoonLake</name>
+            <email>lgou2w@hotmail.com</email>
+            <url>https://lgou2w.com</url>
+            <timezone>+8</timezone>
+            <roles>
+                <role>Owner</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>25</name>
+            <url>https://github.com/25</url>
+        </contributor>
+    </contributors>
+
     <properties>
         <kotlin.version>1.3.21</kotlin.version>
         <dokka.version>0.9.17</dokka.version>
