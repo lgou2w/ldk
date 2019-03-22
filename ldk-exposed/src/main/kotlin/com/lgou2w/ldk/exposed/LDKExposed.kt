@@ -27,5 +27,6 @@ import java.util.UUID
  * @see [UnsignedUUIDColumnType]
  * @since LDK 0.1.8-rc
  */
-fun Table.unsignedUUID(name: String = "")
-        = registerColumn<UUID>(name, UnsignedUUIDColumnType())
+@JvmOverloads
+fun Table.unsignedUUID(name: String = "", nullable: Boolean = false)
+        = registerColumn<UUID>(name, UnsignedUUIDColumnType(nullable))
