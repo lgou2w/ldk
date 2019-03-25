@@ -22,6 +22,7 @@ import com.lgou2w.ldk.reflect.DataType
 import org.bukkit.command.CommandException
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.permissions.PermissionDefault
 import java.util.Arrays
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
@@ -40,6 +41,8 @@ class DefaultRegisteredCommand(
         override val name: String,
         override val aliases: Array<out String>,
         override val permission: Array<out String>?,
+        override val permissionDefault: PermissionDefault?,
+        override val sorted: Int?,
         override val fallbackPrefix: String,
         override var description: String? = null,
         override var usage: String? = null,
@@ -283,19 +286,23 @@ class DefaultRegisteredCommand(
         if (!isAllowCompletion || !testPermissionIfFailed(sender, permission))
             return emptyList()
         return if (args.size <= 1) {
-            (mChildren.asSequence()
+            (mChildren
+                 .asSequence()
                  .filter { testPermissionIfFailed(sender, it.value.permission) }
-                 .map { it.key } +
-            mExecutors.asSequence()
+                 .map { it.key to it.value.sorted }
+             +
+            mExecutors
+                .asSequence()
                 .filter { testPermissionIfFailed(sender, it.value.permission) && it.key != name }
-                .map { it.key }
+                .map { it.key to it.value.sorted }
             )
                 .filter {
                     val first = args.firstOrNull()
-                    (first == null || it.startsWith(first))
+                    (first == null || it.first.startsWith(first))
                 }
+                .sortedBy { it.second }
+                .map { it.first }
                 .toMutableList()
-                .sorted()
         } else {
             val child = findChild(args.first())
             child?.complete(sender, alias, pollArgument(args))

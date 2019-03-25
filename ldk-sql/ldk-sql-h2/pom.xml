@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ldk-sql</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.8-rc</version>
+        <version>0.1.8-beta6-hotfix2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,14 +18,14 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-sql-api</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-beta6-hotfix2</version>
             <scope>compile</scope>
         </dependency>
         <!-- h2database -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.197</version>
+            <version>1.4.199</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

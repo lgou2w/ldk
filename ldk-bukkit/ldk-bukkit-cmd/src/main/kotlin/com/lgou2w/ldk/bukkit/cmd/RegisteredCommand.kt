@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.command.CommandSender
+import org.bukkit.permissions.PermissionDefault
 
 /**
  * ## RegisteredCommand (已注册命令)
@@ -79,6 +80,22 @@ interface RegisteredCommand {
      * * 此命令的权限.
      */
     val permission : Array<out String>?
+
+    /**
+     * * The permission default of this command.
+     * * 此命令的权限默认.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    val permissionDefault : PermissionDefault?
+
+    /**
+     * * The sort index of this command.
+     * * 此命令的排序索引.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    val sorted : Int?
 
     /**
      * * The fallback prefix of this command.

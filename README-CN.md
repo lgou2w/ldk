@@ -59,6 +59,7 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
         * [`ldk-sql-hikari`](/ldk-sql/ldk-sql-hikari)
         * [`ldk-sql-sqlite`](/ldk-sql/ldk-sql-sqlite)
         * [`ldk-sql-h2`](/ldk-sql/ldk-sql-h2)
+    * [`ldk-exposed`](/ldk-exposed)
     * [`ldk-bukkit`](/ldk-bukkit)
         * [`ldk-bukkit-version`](/ldk-bukkit/ldk-bukkit-version)
         * [`ldk-bukkit-reflect`](/ldk-bukkit/ldk-bukkit-reflect)

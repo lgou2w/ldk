@@ -92,4 +92,22 @@ class Test {
         sm.withType(Int::class.java).write(0, 23)
         println(instance)
     }
+
+    @Test
+    fun test_GenericType() {
+        class Data {
+            private var name : String = "Data"
+            private val list : List<String> = emptyList()
+            private val map : Map<String, Int> = emptyMap()
+            private val pair : Pair<String, Double> = "" to .0
+            private val triple : Triple<String, Float, String> = Triple("", 1f, "")
+        }
+        FuzzyReflect.of(Data::class.java, true)
+            .useFieldMatcher()
+            .withParameterizedType(null, String::class.java, Number::class.java)
+            .results()
+            .forEach {
+                println(it)
+            }
+    }
 }
