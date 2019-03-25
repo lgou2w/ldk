@@ -77,6 +77,30 @@ interface CommandManager {
     fun registerCommand(source: Any): RegisteredCommand
 
     /**
+     * * Unregister the given command name [command].
+     * * 将给定的命令名 [command] 进行卸载注销.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun unregisterCommand(command: String): Boolean
+
+    /**
+     * * Unregister the given command [command].
+     * * 将给定的命令 [command] 进行卸载注销.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun unregisterCommand(command: RegisteredCommand): Boolean
+
+    /**
+     * * Unregister all commands of this command manager.
+     * * 将此命令管理器的所有命令进行卸载注销.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun unregisterCommands(): Boolean
+
+    /**
      * * Get the registered command from the given command name [command].
      * * 从给定的命令名 [command] 获取已注册的命令.
      */
