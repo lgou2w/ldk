@@ -33,8 +33,8 @@ object Enums {
      **************************************************************************/
 
     /**
-     * * Finds the matching item from the specified condition from the given enum class.
-     * * 将给定的枚举类从指定条件内查找匹配项.
+     * * Find the matching enum item from the specified condition [predicate] from the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定条件 [predicate] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -50,8 +50,29 @@ object Enums {
     }
 
     /**
-     * * Finds the matching item from the given enum name for the given enum class.
-     * * 将给定的枚举类从指定枚举名称内查找匹配项.
+     * * Find the matching enum item from the specified condition [predicate] from the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定条件 [predicate] 内查找匹配枚举项.
+     *
+     * @param clazz Enum class
+     * @param clazz 枚举类
+     * @param predicate Condition
+     * @param predicate 条件
+     * @param def Default value, The default is `null`
+     * @param def 默认值, 默认为 `null` 值
+     * @throws [NoSuchElementException] If no matching enum item are found.
+     * @throws [NoSuchElementException] 如果未找到匹配枚举项.
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @JvmOverloads
+    @Throws(NoSuchElementException::class)
+    fun <T : Enum<T>> ofNotNull(clazz: Class<T>, predicate: Predicate<T>, def: T? = null): T
+            = of(clazz, predicate, def)
+              ?: throw NoSuchElementException("Cannot find type $clazz enumeration.")
+
+    /**
+     * * Find the matching enum item from the given enum [name] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举名称 [name] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -67,8 +88,30 @@ object Enums {
             = of(clazz, { it.name == name }, def)
 
     /**
-     * * Finds the matching item from the given enum origin for the given enum class.
-     * * 将给定的枚举类从指定枚举序数内查找匹配项.
+     * * Find the matching enum item from the given enum [name] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举名称 [name] 内查找匹配枚举项.
+     *
+     * @param clazz Enum class
+     * @param clazz 枚举类
+     * @param name 名称
+     * @param name 名称
+     * @param def Default value, The default is `null`
+     * @param def 默认值, 默认为 `null` 值
+     * @throws [NoSuchElementException] If no matching enum item are found.
+     * @throws [NoSuchElementException] 如果未找到匹配枚举项.
+     * @see [Enum.name]
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @JvmOverloads
+    @Throws(NoSuchElementException::class)
+    fun <T : Enum<T>> ofNameNotNull(clazz: Class<T>, name: String, def: T? = null): T
+            = ofName(clazz, name, def)
+              ?: throw NoSuchElementException("Cannot find type $clazz enumeration name: $name")
+
+    /**
+     * * Find the matching enum item from the given enum [origin] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举序数 [origin] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -84,8 +127,30 @@ object Enums {
             = of(clazz, { it.ordinal == origin }, def)
 
     /**
-     * * Finds the matching item from the specified [value] in the [Valuable] interface of the given enum class.
-     * * 将给定的枚举类以它实现的 [Valuable] 接口中从指定的 [value] 内查找匹配项.
+     * * Find the matching enum item from the given enum [origin] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举序数 [origin] 内查找匹配枚举项.
+     *
+     * @param clazz Enum class
+     * @param clazz 枚举类
+     * @param origin Ordinal
+     * @param origin 序数
+     * @param def Default value, The default is `null`
+     * @param def 默认值, 默认为 `null` 值
+     * @throws [NoSuchElementException] If no matching enum item are found.
+     * @throws [NoSuchElementException] 如果未找到匹配枚举项.
+     * @see [Enum.ordinal]
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @JvmOverloads
+    @Throws(NoSuchElementException::class)
+    fun <T : Enum<T>> ofOriginNotNull(clazz: Class<T>, origin: Int, def: T? = null): T
+            = ofOrigin(clazz, origin, def)
+              ?: throw NoSuchElementException("Cannot find type $clazz enumeration origin: $origin")
+
+    /**
+     * * Find the matching enum item from the specified [value] in the [Valuable] interface of the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 以它实现的 [Valuable] 接口中从指定的 [value] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -102,8 +167,8 @@ object Enums {
             = of(clazz, { it.value == value }, def)
 
     /**
-     * * Finds the matching item from the specified [value] in the [Valuable] interface of the given enum class.
-     * * 将给定的枚举类以它实现的 [Valuable] 接口中从指定的 [value] 内查找匹配项.
+     * * Find the matching enum item from the specified [value] in the [Valuable] interface of the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 以它实现的 [Valuable] 接口中从指定的 [value] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -111,15 +176,15 @@ object Enums {
      * @param value 指定值
      * @param def Default value, The default is `null`
      * @param def 默认值, 默认为 `null` 值
-     * @throws NullPointerException If no matching items are found.
-     * @throws NullPointerException 如果未找到匹配项.
+     * @throws [NoSuchElementException] If no matching enum item are found.
+     * @throws [NoSuchElementException] 如果未找到匹配枚举项.
      * @see [Valuable]
      * @see [Valuable.value]
      * @see [ofValuable]
      */
     @JvmStatic
     @JvmOverloads
-    @Throws(NullPointerException::class)
+    @Throws(NoSuchElementException::class)
     fun <V, T> ofValuableNotNull(clazz: Class<T>, value: V?, def: T? = null): T where T : Enum<T>, T : Valuable<V>
             = ofValuable(clazz, value, def)
               ?: throw NullPointerException("The value of type $clazz was not found successfully: $value.")
@@ -131,8 +196,8 @@ object Enums {
      **************************************************************************/
 
     /**
-     * * Finds the matching item from the specified condition from the given enum class.
-     * * 将给定的枚举类从指定条件内查找匹配项.
+     * * Find the matching enum item from the specified condition [predicate] from the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定条件 [predicate] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -152,8 +217,8 @@ object Enums {
     }
 
     /**
-     * * Finds the matching item from the specified [value] in the [Valuable] interface of the given enum class.
-     * * 将给定的枚举类以它实现的 [Valuable] 接口中从指定的 [value] 内查找匹配项.
+     * * Finds the matching enum item from the specified [value] in the [Valuable] interface of the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 以它实现的 [Valuable] 接口中从指定的 [value] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -163,8 +228,8 @@ object Enums {
      * @param def 默认值, 默认为 `null` 值
      * @throws IllegalArgumentException If [clazz] is not an enum class.
      * @throws IllegalArgumentException 如果 [clazz] 不是一个枚举类.
-     * @throws IllegalArgumentException If [clazz] does not implement the [Valuable] interface
-     * @throws IllegalArgumentException 如果 [clazz] 未实现 [Valuable] 接口
+     * @throws IllegalArgumentException If [clazz] does not implement the [Valuable] interface.
+     * @throws IllegalArgumentException 如果 [clazz] 未实现 [Valuable] 接口.
      * @see [Valuable]
      * @see [Valuable.value]
      */
@@ -179,8 +244,8 @@ object Enums {
     }
 
     /**
-     * * Finds the matching item from the given enum name for the given enum class.
-     * * 将给定的枚举类从指定枚举名称内查找匹配项.
+     * * Finds the matching enum item from the given enum [name] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举名称 [name] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
@@ -198,8 +263,8 @@ object Enums {
             = from(clazz, { it.name == name }, def)
 
     /**
-     * * Finds the matching item from the given enum origin for the given enum class.
-     * * 将给定的枚举类从指定枚举序数内查找匹配项.
+     * * Finds the matching enum item from the given enum [origin] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举序数 [origin] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
