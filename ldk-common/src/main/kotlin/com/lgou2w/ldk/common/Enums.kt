@@ -187,7 +187,7 @@ object Enums {
     @Throws(NoSuchElementException::class)
     fun <V, T> ofValuableNotNull(clazz: Class<T>, value: V?, def: T? = null): T where T : Enum<T>, T : Valuable<V>
             = ofValuable(clazz, value, def)
-              ?: throw NullPointerException("The value of type $clazz was not found successfully: $value.")
+              ?: throw NoSuchElementException("Cannot find type $clazz enumeration value: $value")
 
     /**************************************************************************
      *
