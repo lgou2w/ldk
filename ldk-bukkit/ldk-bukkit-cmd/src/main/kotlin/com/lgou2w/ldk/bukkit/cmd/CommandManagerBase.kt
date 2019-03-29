@@ -66,6 +66,22 @@ abstract class CommandManagerBase(
         }
     }
 
+    override fun unregisterCommand(command: String): Boolean {
+        val existed = mCommands[command] ?: return true
+        return unregisterCommand(existed)
+    }
+
+    override fun unregisterCommand(command: RegisteredCommand): Boolean {
+        return if (mCommands.containsKey(command.name))
+            unregisterBukkitCommand(command) && mCommands.remove(command.name, command)
+        else
+            false
+    }
+
+    override fun unregisterCommands(): Boolean {
+        return mCommands.values.all(::unregisterCommand)
+    }
+
     override fun getCommand(command: String): RegisteredCommand? {
         return mCommands[command]
     }
@@ -96,9 +112,10 @@ abstract class CommandManagerBase(
                 if (existed != null) {
                     if (existed is PluginCommand && existed.plugin != command.manager.plugin)
                         throw UnsupportedOperationException("The command '${command.name}' has been registered by another plugin and cannot be override.")
-                    removeBukkitCommand(command)
+                    unregisterBukkitCommand(command)
                 }
-                val result = bukkitCommandMap.register(command.name, command.fallbackPrefix, CommandProxy(command))
+                val betterFallbackPrefix = command.fallbackPrefix.let { if (it.isBlank()) command.manager.plugin.name else it }
+                val result = bukkitCommandMap.register(command.name, betterFallbackPrefix, CommandProxy(command))
                 if (result) // register permission default
                     registerPermissionDefault(command)
                 result
@@ -133,11 +150,20 @@ abstract class CommandManagerBase(
                 .withName("knownCommands")
                 .resultAccessorAs<SimpleCommandMap, MutableMap<String, org.bukkit.command.Command>>()
         }
-        @JvmStatic private fun removeBukkitCommand(command: RegisteredCommand) {
-            val simpleCommandMap = bukkitCommandMap as? SimpleCommandMap ?: return
+        @JvmStatic private fun unregisterBukkitCommand(command: RegisteredCommand): Boolean {
+            val simpleCommandMap = bukkitCommandMap as? SimpleCommandMap ?: return false
             val knownCommands = simpleCommandMapKnownCommands[simpleCommandMap].notNull()
-            knownCommands.remove(command.name)
-            command.aliases.forEach { knownCommands.remove(it) } // fixed in 0.1.8-beta6-hotfix2
+            val label = command.name.toLowerCase()
+            val betterFallbackPrefix = command.fallbackPrefix.let { if (it.isBlank()) command.manager.plugin.name else it }
+            return if (knownCommands.remove(label) != null) {
+                knownCommands.remove("$betterFallbackPrefix:$label")
+                command.aliases.map(String::toLowerCase).forEach {
+                    knownCommands.remove(it)
+                    knownCommands.remove("$betterFallbackPrefix:$it")
+                }
+                true
+            } else
+                false
         }
 
         private class CommandProxy(
