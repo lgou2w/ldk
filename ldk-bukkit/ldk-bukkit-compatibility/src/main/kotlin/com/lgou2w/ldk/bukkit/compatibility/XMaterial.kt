@@ -947,6 +947,7 @@ enum class XMaterial {
 
     // TODO Minecraft 1.14
     // Warning: Not yet released, just based on the draft of the wiki.
+    // Link: https://minecraft.gamepedia.com/1.14
 
     @Draft @Deprecated("Draft") BAMBOO("STONE", 0),
     @Draft @Deprecated("Draft") BARREL("STONE", 0),
@@ -974,6 +975,7 @@ enum class XMaterial {
     @Draft @Deprecated("Draft") CREEPER_BANNER_PATTERN("PAPER", 0),
     @Draft @Deprecated("Draft") SKULL_BANNER_PATTERN("PAPER", 0),
     @Draft @Deprecated("Draft") MOJANG_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") GLOBE_BANNER_PATTERN("PAPER", 0), // since 19w11a
     @Draft @Deprecated("Draft") CROSSBOW("BOW", 0),
     @Draft @Deprecated("Draft") SUSPICIOUS_STEW("STONE", 0),
     @Draft @Deprecated("Draft") SWEET_BERRIES("STONE", 0),
@@ -1048,6 +1050,9 @@ enum class XMaterial {
     @Draft @Deprecated("Draft") PRISMARINE_WALL("STONE", 0),
     @Draft @Deprecated("Draft") BRICK_WALL("STONE", 0),
     @Draft @Deprecated("Draft") NETHER_BRICK_WALL("STONE", 0),
+
+    @Draft @Deprecated("Draft") CUT_SANDSTONE_SLAB("STONE", 0), // since 19w12a
+    @Draft @Deprecated("Draft") CUT_RED_SANDSTONE_SLAB("STONE", 0), // since 19w12a
     ;
 
     private val aliases : Array<out String>
