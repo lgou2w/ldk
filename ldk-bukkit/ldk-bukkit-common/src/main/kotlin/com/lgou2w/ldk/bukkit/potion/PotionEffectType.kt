@@ -83,9 +83,11 @@ enum class PotionEffectType(
     CONDUIT_POWER(29, "conduit_power", "conduit_power", MinecraftVersion.V1_13),
     DOLPHINS_GRACE(30, "dolphins_grace", "dolphins_grace", MinecraftVersion.V1_13),
 
-    @Draft
-    @Deprecated("Draft")
+    @Draft @Deprecated("Draft")
     BAD_OMEN(31, "bad_omen", "bad_omen", MinecraftVersion.V1_14),
+
+    @Draft @Deprecated("Draft")
+    HERO_OF_THE_VILLAGE(32, "hero_of_the_village", "hero_of_the_village", MinecraftVersion.V1_14), // since 19w13a
     ;
 
     override val value : String
