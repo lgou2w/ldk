@@ -244,14 +244,17 @@ class DefaultCommandParser : CommandParser {
     private fun registerChildren(
             manager: CommandManager,
             parent: DefaultRegisteredCommand?,
-            @Suppress("UNUSED_PARAMETER")
             source: Any,
             clazz: Class<*>
     ) {
         clazz.declaredClasses.forEach { child ->
             val (root, instance) = try {
                 val root = parseRoot(manager, child)
-                val instance = child.newInstance()
+                val instance = try {
+                    child.getConstructor().newInstance()
+                } catch (e: NoSuchMethodException) { // java inner class : Parent$Child(Parent), wtf?
+                    child.getConstructor(child.declaringClass).newInstance(source)
+                }
                 root to instance
             } catch (e: Exception) {
                 if (e !is CommandParseException)
