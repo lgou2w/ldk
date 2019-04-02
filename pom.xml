@@ -4,17 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgou2w</groupId>
     <artifactId>ldk</artifactId>
     <version>0.1.8-beta8</version>
     <packaging>pom</packaging>
+    <name>ldk</name>
     <description>A multi-platform lgou2w development kit</description>
     <url>https://github.com/lgou2w/ldk</url>
 
@@ -61,13 +56,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <name>Maven Central Snapshot Repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <name>Maven Central Staging Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
@@ -174,6 +167,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Jar Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <!-- Generate empty javadoc jar -->
+                        <id>empty-javadoc-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <skipIfEmpty>false</skipIfEmpty>
+                            <classifier>javadoc</classifier>
+                            <classesDirectory>${basedir}/javadoc</classesDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Dokka Plugin -->
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
@@ -190,6 +204,33 @@
                 <configuration>
                     <outputFormat>html</outputFormat>
                     <jdkVersion>8</jdkVersion>
+                </configuration>
+            </plugin>
+            <!-- GPG Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Nexus Staging Plugin -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
