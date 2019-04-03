@@ -59,14 +59,15 @@
                 <role>Developer</role>
             </roles>
         </developer>
-    </developers>
-
-    <contributors>
-        <contributor>
+        <developer>
             <name>25</name>
             <url>https://github.com/25</url>
-        </contributor>
-    </contributors>
+            <timezone>-5</timezone>
+            <roles>
+                <role>Contributor</role>
+            </roles>
+        </developer>
+    </developers>
 
     <distributionManagement>
         <snapshotRepository>
