@@ -22,6 +22,7 @@ import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.LinkedHashMap
 import java.util.UUID
 
@@ -116,6 +117,10 @@ data class AttributeItemModifier(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(AttributeItemModifier::class.java)
+        }
 
         /**
          * @see [ConfigurationSerializable]

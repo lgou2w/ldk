@@ -23,6 +23,7 @@ import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.Color
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.LinkedHashMap
 
 /**
@@ -99,6 +100,10 @@ data class FireworkEffect(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(FireworkEffect::class.java)
+        }
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")

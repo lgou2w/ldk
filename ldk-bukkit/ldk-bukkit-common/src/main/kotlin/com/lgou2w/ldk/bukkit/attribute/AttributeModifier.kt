@@ -20,6 +20,7 @@ import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.LinkedHashMap
 import java.util.UUID
 
@@ -80,6 +81,10 @@ data class AttributeModifier(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(AttributeModifier::class.java)
+        }
 
         /**
          * @see [ConfigurationSerializable]

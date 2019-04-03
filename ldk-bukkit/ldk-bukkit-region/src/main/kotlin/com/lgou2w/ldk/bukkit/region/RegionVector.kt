@@ -20,6 +20,7 @@ import com.lgou2w.ldk.common.ComparisonChain
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
 /**
  * ## RegionVector (区域向量)
@@ -35,6 +36,10 @@ open class RegionVector(
         Cloneable {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionVector::class.java)
+        }
 
         @JvmField val ZERO = RegionVector(.0, .0, .0)
 

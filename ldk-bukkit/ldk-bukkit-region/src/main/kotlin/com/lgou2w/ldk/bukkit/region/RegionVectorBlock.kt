@@ -18,6 +18,7 @@ package com.lgou2w.ldk.bukkit.region
 
 import org.bukkit.World
 import org.bukkit.block.Block
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
 /**
  * ## RegionVectorBlock (区域方块向量)
@@ -28,6 +29,10 @@ import org.bukkit.block.Block
 open class RegionVectorBlock : RegionVector {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionVectorBlock::class.java)
+        }
 
         @JvmField val ZERO = RegionVectorBlock(.0, .0, .0)
 

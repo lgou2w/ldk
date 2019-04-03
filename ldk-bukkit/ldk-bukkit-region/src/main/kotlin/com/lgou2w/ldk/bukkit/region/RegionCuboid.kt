@@ -20,6 +20,7 @@ import com.lgou2w.ldk.common.IteratorChain
 import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
 /**
  * ## RegionCuboid (长方块区域)
@@ -45,6 +46,10 @@ open class RegionCuboid(
         RegionFlat {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionCuboid::class.java)
+        }
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")

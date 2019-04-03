@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.region
 import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
 /**
  * ## RegionCylinder (圆柱区域)
@@ -31,6 +32,10 @@ import org.bukkit.World
 open class RegionCylinder : RegionBase, RegionFlat {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionCylinder::class.java)
+        }
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")

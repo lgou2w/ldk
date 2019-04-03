@@ -22,6 +22,7 @@ import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.LivingEntity
 import org.bukkit.potion.PotionEffect
 
@@ -114,6 +115,10 @@ data class PotionEffectCustom @JvmOverloads constructor(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(PotionEffectCustom::class.java)
+        }
 
         /**
          * @see [ConfigurationSerializable]
