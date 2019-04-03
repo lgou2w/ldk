@@ -55,7 +55,6 @@ enum class AttributeType(
          * * 此属性类型支持的 Minecraft 版本. 如果 `null` 则支持所有.
          */
         val mcVer: MinecraftVersion? = null
-
 ) : Valuable<String> {
 
     /**

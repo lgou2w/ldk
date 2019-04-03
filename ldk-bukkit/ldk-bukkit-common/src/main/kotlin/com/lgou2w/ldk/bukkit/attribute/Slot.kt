@@ -33,7 +33,6 @@ enum class Slot(
          * * 枚举类型名称.
          */
         val type: String
-
 ) : Valuable<String> {
 
     /**

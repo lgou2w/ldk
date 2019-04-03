@@ -19,28 +19,33 @@ package com.lgou2w.ldk.bukkit.item
 import com.lgou2w.ldk.common.Valuable
 
 /**
- * ## Generation
+ * ## Generation (成书代)
  *
- * * Represents the generation (or level of copying) of a written book
+ * * Represents the generation (or level of copying) of a written book.
+ * * 表示成书的代 (或复制级别).
  *
  * @author lgou2w
  */
 enum class Generation : Valuable<Int> {
 
     /**
-     * Book written into a book-and-quill. Can be copied. (Default value)
+     * * Book written into a book-and-quill. Can be copied. (Default value)
+     * * 书与笔写成的成书. 可以复制. (默认值)
      */
     ORIGINAL,
     /**
-     * Book that was copied from an original. Can be copied.
+     * * Book that was copied from an original. Can be copied.
+     * * 从原件复制的书. 可以复制.
      */
     COPY_OF_ORIGINAL,
     /**
-     * Book that was copied from a copy of an original. Can't be copied.
+     * * Book that was copied from a copy of an original. Can't be copied.
+     * * 从原件副本复制的书. 无法复制.
      */
     COPY_OF_COPY,
     /**
-     * Unused; unobtainable by players. Can't be copied.
+     * * Unused; unobtainable by players. Can't be copied.
+     * * 没用过; 玩家无法获得. 无法复制.
      */
     TATTERED,
     ;

@@ -38,7 +38,7 @@ package com.lgou2w.ldk.common
  */
 
 /**
- * * ## ComparisonChain (链式比较器)
+ * ## ComparisonChain (链式比较器)
  *
  * * Chain comparison separated by Google's `Guava` library.
  *      Used to compare the properties of the current class and an object.

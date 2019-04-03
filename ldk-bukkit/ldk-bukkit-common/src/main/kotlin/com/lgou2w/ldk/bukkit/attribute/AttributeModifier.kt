@@ -20,7 +20,8 @@ import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import java.util.*
+import java.util.LinkedHashMap
+import java.util.UUID
 
 /**
  * ## AttributeModifier (属性修改器)
@@ -57,7 +58,6 @@ data class AttributeModifier(
          * * 此修改器的唯一 Id.
          */
         val uuid: UUID = UUID.randomUUID()
-
 ) : ConfigurationSerializable,
         Comparable<AttributeModifier> {
 

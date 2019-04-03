@@ -24,4 +24,15 @@ import org.bukkit.Color
  * @see [Particle.DUST]
  * @author lgou2w
  */
-data class ParticleDust(val color: Color, val size: Float = 1f)
+data class ParticleDust(
+        /**
+         * * The color of this particle dust.
+         * * 此粒子尘埃的颜色.
+         */
+        val color: Color,
+        /**
+         * * The size of this particle dust.
+         * * 此粒子尘埃的大小.
+         */
+        val size: Float = 1f
+)

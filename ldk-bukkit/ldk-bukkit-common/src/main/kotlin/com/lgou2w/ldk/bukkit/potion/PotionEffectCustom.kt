@@ -32,17 +32,44 @@ import org.bukkit.potion.PotionEffect
  * @author lgou2w
  */
 data class PotionEffectCustom @JvmOverloads constructor(
+        /**
+         * * The type of potion effect of this custom potion.
+         * * 此自定义药水的药水效果类型.
+         */
         val type: PotionEffectType,
+        /**
+         * * The potion amplifier of this custom potion.
+         * * 此自定义药水的药水强度.
+         */
         val amplifier: Int,
+        /**
+         * * The potion duration of this custom potion.
+         * * 此自定义药水的药水时间.
+         */
         val duration: Int,
+        /**
+         * * Makes potion effect produce more, translucent, particles.
+         * * 此自定义药水是否产生更多的半透明粒子.
+         */
         val ambient: Boolean = true,
+        /**
+         * * Whether this custom potion have a particle.
+         * * 此自定义药水是否有粒子效果.
+         */
         val particle: Boolean = true,
+        /**
+         * * Whether this custom potion have a icon.
+         * * 此自定义药水是否有图标.
+         */
         val icon: Boolean = true
 ) : ConfigurationSerializable,
         NBTSavable,
         Comparable<PotionEffectCustom> {
 
     /**
+     * * Apply this custom potion effect to the given [entity].
+     * * 将此自定义药水效果应用到给定的实体 [entity] 中.
+     *
      * @since LDK 0.1.7-rc3
      */
     @JvmOverloads

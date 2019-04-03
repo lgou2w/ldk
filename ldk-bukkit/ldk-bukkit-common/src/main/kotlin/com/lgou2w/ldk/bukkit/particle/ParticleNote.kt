@@ -19,12 +19,18 @@ package com.lgou2w.ldk.bukkit.particle
 /**
  * ## ParticleNote (粒子音符)
  *
- * * Sets the color of the note particle. The value is `0 ~ 24` range.
+ * * Set the color of the note particle. The [value] is `0 ~ 24` range.
  *      * Need to set the number of `count` to `0` color to take effect.
- * * 设置音符粒子的颜色. 值为 `0 ~ 24` 范围.
+ * * 设置音符粒子的颜色. 值 [value] 为 `0 ~ 24` 范围.
  *      * 需要将 `count` 数量设置为 `0` 颜色才会生效.
  *
  * @see [Particle.NOTE]
  * @author lgou2w
  */
-data class ParticleNote(val value: Int)
+data class ParticleNote(
+        /**
+         * * The value of this particle note.
+         * * 此粒子音符的值.
+         */
+        val value: Int
+)

@@ -78,7 +78,6 @@ data class AttributeItemModifier(
          * * 此修改器的唯一 Id.
          */
         val uuid: UUID
-
 ) : ConfigurationSerializable,
         NBTSavable,
         Comparable<AttributeItemModifier> {

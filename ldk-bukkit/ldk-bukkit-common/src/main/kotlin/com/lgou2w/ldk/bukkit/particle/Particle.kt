@@ -33,7 +33,15 @@ import java.util.HashMap
  */
 enum class Particle(
         private val internal: Int,
+        /**
+         * * The old version name of this particle.
+         * * 此粒子的旧版本名称.
+         */
         val legacy: String,
+        /**
+         * * The new version name of this particle.
+         * * 此粒子的新版本名称.
+         */
         val type: String
 ) : Valuable<Int> {
 

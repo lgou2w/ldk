@@ -21,6 +21,21 @@ import org.bukkit.Material
 /**
  * ## ParticleData (粒子数据)
  *
+ * @see [Particle.ITEM]
+ * @see [Particle.BLOCK]
+ * @see [Particle.BLOCKDUST]
+ * @see [Particle.FALLING_DUST]
  * @author lgou2w
  */
-data class ParticleData(val type: Material, val data: Int)
+data class ParticleData(
+        /**
+         * * The material type of this particle data.
+         * * 此粒子数据的材料类型.
+         */
+        val type: Material,
+        /**
+         * * The material data of this particle data.
+         * * 此粒子数据的材料数据.
+         */
+        val data: Int
+)
