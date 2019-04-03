@@ -101,8 +101,8 @@ enum class PotionType(
      */
     SWIFTNESS("swiftness", PotionEffectType.SPEED, true, true),
     /**
-     * * Potion type:
-     * * 药水类型:
+     * * Potion type: Slowness
+     * * 药水类型: 缓慢药水
      */
     SLOWNESS("slowness", PotionEffectType.SLOWNESS, false, true),
     /**
