@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.Color
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.LinkedHashMap
 
 /**
@@ -99,6 +100,10 @@ data class FireworkEffect(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(FireworkEffect::class.java)
+        }
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")

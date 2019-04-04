@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import java.util.*
+import org.bukkit.configuration.serialization.ConfigurationSerialization
+import java.util.LinkedHashMap
+import java.util.UUID
 
 /**
  * ## AttributeModifier (属性修改器)
@@ -57,7 +59,6 @@ data class AttributeModifier(
          * * 此修改器的唯一 Id.
          */
         val uuid: UUID = UUID.randomUUID()
-
 ) : ConfigurationSerializable,
         Comparable<AttributeModifier> {
 
@@ -80,6 +81,10 @@ data class AttributeModifier(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(AttributeModifier::class.java)
+        }
 
         /**
          * @see [ConfigurationSerializable]
