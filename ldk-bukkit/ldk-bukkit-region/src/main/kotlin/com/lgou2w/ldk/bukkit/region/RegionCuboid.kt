@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.lgou2w.ldk.common.IteratorChain
 import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
 /**
  * ## RegionCuboid (长方块区域)
@@ -45,6 +46,10 @@ open class RegionCuboid(
         RegionFlat {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionCuboid::class.java)
+        }
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")

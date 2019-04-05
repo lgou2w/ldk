@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -244,14 +244,17 @@ class DefaultCommandParser : CommandParser {
     private fun registerChildren(
             manager: CommandManager,
             parent: DefaultRegisteredCommand?,
-            @Suppress("UNUSED_PARAMETER")
             source: Any,
             clazz: Class<*>
     ) {
         clazz.declaredClasses.forEach { child ->
             val (root, instance) = try {
                 val root = parseRoot(manager, child)
-                val instance = child.newInstance()
+                val instance = try {
+                    child.getConstructor().newInstance()
+                } catch (e: NoSuchMethodException) { // java inner class : Parent$Child(Parent), wtf?
+                    child.getConstructor(child.declaringClass).newInstance(source)
+                }
                 root to instance
             } catch (e: Exception) {
                 if (e !is CommandParseException)

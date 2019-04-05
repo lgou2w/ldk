@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,21 @@ import org.bukkit.Material
 /**
  * ## ParticleData (粒子数据)
  *
+ * @see [Particle.ITEM]
+ * @see [Particle.BLOCK]
+ * @see [Particle.BLOCKDUST]
+ * @see [Particle.FALLING_DUST]
  * @author lgou2w
  */
-data class ParticleData(val type: Material, val data: Int)
+data class ParticleData(
+        /**
+         * * The material type of this particle data.
+         * * 此粒子数据的材料类型.
+         */
+        val type: Material,
+        /**
+         * * The material data of this particle data.
+         * * 此粒子数据的材料数据.
+         */
+        val data: Int
+)

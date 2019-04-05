@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.chat.ChatAction
 import com.lgou2w.ldk.chat.ChatComponent
 import com.lgou2w.ldk.chat.ChatComponentFancy
+import com.lgou2w.ldk.chat.ChatComponentTranslation
 import com.lgou2w.ldk.chat.ChatSerializer
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.reflect.AccessorConstructor
@@ -240,7 +241,7 @@ object ChatFactory {
      * @param [fadeIn] 淡入时间刻
      * @param [stay] Stay time tick
      * @param [stay] 停留时间刻
-     *  @param [fadeOut] Fade out time tick
+     * @param [fadeOut] Fade out time tick
      * @param [fadeOut] 淡出时间刻
      */
     @JvmStatic
@@ -258,7 +259,7 @@ object ChatFactory {
      * @param [fadeIn] 淡入时间刻
      * @param [stay] Stay time tick
      * @param [stay] 停留时间刻
-     *  @param [fadeOut] Fade out time tick
+     * @param [fadeOut] Fade out time tick
      * @param [fadeOut] 淡出时间刻
      * @since LDK 0.1.7-rc3
      */
@@ -277,7 +278,7 @@ object ChatFactory {
      * @param [fadeIn] 淡入时间刻
      * @param [stay] Stay time tick
      * @param [stay] 停留时间刻
-     *  @param [fadeOut] Fade out time tick
+     * @param [fadeOut] Fade out time tick
      * @param [fadeOut] 淡出时间刻
      * @since LDK 0.1.7-rc3
      */
@@ -298,7 +299,7 @@ object ChatFactory {
      * @param [fadeIn] 淡入时间刻
      * @param [stay] Stay time tick
      * @param [stay] 停留时间刻
-     *  @param [fadeOut] Fade out time tick
+     * @param [fadeOut] Fade out time tick
      * @param [fadeOut] 淡出时间刻
      */
     @JvmStatic
@@ -322,7 +323,7 @@ object ChatFactory {
      * @param [fadeIn] 淡入时间刻
      * @param [stay] Stay time tick
      * @param [stay] 停留时间刻
-     *  @param [fadeOut] Fade out time tick
+     * @param [fadeOut] Fade out time tick
      * @param [fadeOut] 淡出时间刻
      * @since LDK 0.1.7-rc3
      */
@@ -347,7 +348,7 @@ object ChatFactory {
      * @param [fadeIn] 淡入时间刻
      * @param [stay] Stay time tick
      * @param [stay] 停留时间刻
-     *  @param [fadeOut] Fade out time tick
+     * @param [fadeOut] Fade out time tick
      * @param [fadeOut] 淡出时间刻
      * @since LDK 0.1.7-rc3
      */
@@ -438,6 +439,100 @@ object ChatFactory {
     @JvmStatic
     fun sendTitleClearToAll()
             = sendTitleClearTo(Bukkit.getOnlinePlayers().toTypedArray())
+
+    //</editor-fold>
+
+    //<editor-fold desc="PlayerListHeaderFooter - Temporary implements" defaultstate="collapsed">
+
+    @JvmStatic private val CLASS_PACKET_OUT_PLAYER_LIST_HEADER_FOOTER by lazyMinecraftClass("PacketPlayOutPlayerListHeaderFooter")
+
+    // NMS.PacketPlayOutPlayerListHeaderFooter -> public constructor()
+    @JvmStatic private val CONSTRUCTOR_PACKET_OUT_PLAYER_LIST_HEADER_FOOTER : AccessorConstructor<Any> by lazy {
+        FuzzyReflect.of(CLASS_PACKET_OUT_PLAYER_LIST_HEADER_FOOTER, true)
+            .useConstructorMatcher()
+            .withParamsCount(0) // No parameter constructor
+            .resultAccessor()
+    }
+
+    // NMS.PacketPlayOutPlayerListHeaderFooter -> private or public NMS.IChatBaseComponent header
+    @JvmStatic private val FIELD_PACKET_OUT_PLAYER_LIST_HEADER : AccessorField<Any, Any> by lazy {
+        FuzzyReflect.of(CLASS_PACKET_OUT_PLAYER_LIST_HEADER_FOOTER, true)
+            .useFieldMatcher()
+            .withType(CLASS_ICHAT_BASE_COMPONENT)
+            .resultAccessor()
+    }
+
+    // NMS.PacketPlayOutPlayerListHeaderFooter -> private or public NMS.IChatBaseComponent footer
+    @JvmStatic private val FIELD_PACKET_OUT_PLAYER_LIST_FOOTER : AccessorField<Any, Any> by lazy {
+        FuzzyReflect.of(CLASS_PACKET_OUT_PLAYER_LIST_HEADER_FOOTER, true)
+            .useFieldMatcher()
+            .withType(CLASS_ICHAT_BASE_COMPONENT)
+            .resultAccessors()
+            .last()
+    }
+
+    @JvmStatic
+    private fun createPlayerListHeaderFooterPacket(
+            header: ChatComponent?,
+            footer: ChatComponent?
+    ): Any {
+        val packet = CONSTRUCTOR_PACKET_OUT_PLAYER_LIST_HEADER_FOOTER.newInstance()
+        val header0 = ChatFactory.toNMS(header ?: ChatComponentTranslation("")) // empty translate to remove
+        val footer0 = ChatFactory.toNMS(footer ?: ChatComponentTranslation("")) // empty translate to remove
+        FIELD_PACKET_OUT_PLAYER_LIST_HEADER[packet] = header0
+        FIELD_PACKET_OUT_PLAYER_LIST_FOOTER[packet] = footer0
+        return packet
+    }
+
+    /**
+     * * Send the player list [header] and [footer] message to the given [player].
+     * * 将给定的玩家 [player] 发送玩家列表页眉 [header] 和页脚 [footer] 消息.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendPlayerListHeaderFooter(
+            player: Player,
+            header: ChatComponent?,
+            footer: ChatComponent? = null
+    ) {
+        val packet = createPlayerListHeaderFooterPacket(header, footer)
+        PacketFactory.sendPacketTo(packet, player)
+    }
+
+    /**
+     * * Send the player list [header] and [footer] message to the given [players].
+     * * 将给定的玩家 [players] 发送玩家列表页眉 [header] 和页脚 [footer] 消息.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendPlayerListHeaderFooterTo(
+            players: Array<Player>,
+            header: ChatComponent?,
+            footer: ChatComponent? = null
+    ) {
+        val packet = createPlayerListHeaderFooterPacket(header, footer)
+        PacketFactory.sendPacketTo(packet, *players)
+    }
+
+    /**
+     * * Sends a list [header] and [footer] message to all online players.
+     * * 将在线的所有玩家发送玩家列表页眉 [header] 和页脚 [footer] 消息.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun sendPlayerListHeaderFooterToAll(
+            header: ChatComponent?,
+            footer: ChatComponent? = null
+    ) {
+        val packet = createPlayerListHeaderFooterPacket(header, footer)
+        PacketFactory.sendPacketTo(packet, *Bukkit.getOnlinePlayers().toTypedArray())
+    }
 
     //</editor-fold>
 }

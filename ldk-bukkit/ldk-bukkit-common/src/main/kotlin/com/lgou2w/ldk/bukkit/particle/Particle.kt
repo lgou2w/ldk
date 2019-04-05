@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,15 @@ import java.util.HashMap
  */
 enum class Particle(
         private val internal: Int,
+        /**
+         * * The old version name of this particle.
+         * * 此粒子的旧版本名称.
+         */
         val legacy: String,
+        /**
+         * * The new version name of this particle.
+         * * 此粒子的新版本名称.
+         */
         val type: String
 ) : Valuable<Int> {
 
