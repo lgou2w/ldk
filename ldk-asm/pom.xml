@@ -33,6 +33,13 @@
     </properties>
 
     <dependencies>
+        <!-- ldk-common -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-common</artifactId>
+            <version>0.1.8-beta10</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- ASM -->
         <dependency>
             <groupId>org.ow2.asm</groupId>
