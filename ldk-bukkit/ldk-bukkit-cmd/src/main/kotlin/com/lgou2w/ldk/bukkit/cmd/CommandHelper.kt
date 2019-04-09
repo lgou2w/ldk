@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.cmd
 
 import com.lgou2w.ldk.chat.ChatColor
+import com.lgou2w.ldk.chat.toColor
 import com.lgou2w.ldk.common.applyIfNotNull
 import org.bukkit.command.CommandSender
 
@@ -218,8 +219,9 @@ object CommandHelper {
     }
 
     private fun description(description: String?, newLineDesc: Boolean): String {
-        return if (newLineDesc) "$NEWLINE$BLANK$DASH$BLANK${description ?: NOT_SET}"
-        else "$BLANK$DASH$BLANK${description ?: NOT_SET}"
+        val colorDescription = description?.toColor()
+        return if (newLineDesc) "$NEWLINE$BLANK$DASH$BLANK${colorDescription ?: NOT_SET}"
+        else "$BLANK$DASH$BLANK${colorDescription ?: NOT_SET}"
     }
 
     private fun named(command: RegisteredCommand?): String {
