@@ -226,17 +226,17 @@ object ParticleFactory {
             }
             CONSTRUCTOR_PARAM_BLOCK.notNull().newInstance(nms, block)
         } else if (particle == Particle.DUST) {
-            val dust = when (data) {
-                is ParticleDust -> data
-                is Color -> ParticleDust(data)
-                null -> ParticleDust(Color.WHITE) // nullable
+            val (color, size) = when (data) {
+                is ParticleDust -> data.color to data.size
+                is Color -> data to 1f
+                null -> Color.WHITE to 1f // nullable
                 else -> throw IllegalArgumentException("Particle DUST data can only be ParticleDust | Color.")
             }
             CONSTRUCTOR_PARAM_REDSTONE.notNull().newInstance(
-                    dust.color.red / 255.0f,
-                    dust.color.green / 255.0f,
-                    dust.color.blue / 255.0f,
-                    dust.size)
+                    color.red / 255.0f,
+                    color.green / 255.0f,
+                    color.blue / 255.0f,
+                    size)
         } else {
             nms
         }
@@ -292,8 +292,8 @@ object ParticleFactory {
         } else {
             intArrayOf()
         }
-        if (particle == Particle.DUST && (data is ParticleDust || data is Color)) {
-            val color = (data as? ParticleDust)?.color ?: data as Color
+        if (particle == Particle.DUST && (data is ParticleDust || data is Color || data == null)) {
+            val color = (data as? ParticleDust)?.color ?: data as? Color ?: Color.WHITE
             overrideOffsetX = color.red / 255.0f
             overrideOffsetY = color.green / 255.0f
             overrideOffsetZ = color.blue / 255.0f
