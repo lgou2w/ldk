@@ -22,6 +22,7 @@ import com.google.gson.JsonObject
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Callable
+import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.isTrue
 import org.bukkit.Bukkit
@@ -96,7 +97,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
             if (release == null) {
                 receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.RED + "Internal error, check is not available.")
             } else {
-                if (currentVersion >= release.tag)
+                if (!needUpdate(release.tag))
                     receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GREEN + "You are using the latest version of the LDK plugin.")
                 else
                     pushed(release)
@@ -113,6 +114,69 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
             val fileName: String?,
             val fileDownloadUrl: String?
     )
+
+    private fun needUpdate(tag: String): Boolean {
+        val currentVersion = parseVersion(currentVersion)
+        val tagVersion = parseVersion(tag)
+        return currentVersion < tagVersion
+    }
+
+    private fun parseVersion(versionOnly: String): Version {
+        return if (versionOnly < "1.0") {
+            // e.g.: 0.1.8-beta10, 0.2.0-alpha2
+            val versions = versionOnly.split('-')
+            val ver = versions[0]
+            val (type, typeVer) = parseZeroVersionType(versions.getOrNull(1))
+            Version.ZeroVersion(ver, type, typeVer)
+        } else {
+            // e.g.: 1.0, 1.0.1-rc
+            val versions = versionOnly.split('-')
+            val ver = versions[0]
+            val type = versions.getOrNull(1)
+            Version.ReleaseVersion(ver, type)
+        }
+    }
+
+    private fun parseZeroVersionType(zeroVersionTypeOnly: String?): Pair<String, Int> {
+        if (zeroVersionTypeOnly == null) return "rc" to 0
+        val idx = zeroVersionTypeOnly.indexOfFirst { it in '0'..'9' }
+        if (idx == -1)
+            return zeroVersionTypeOnly to 0
+        val type = zeroVersionTypeOnly.substring(0, idx)
+        val typeVer = zeroVersionTypeOnly.substring(idx)
+        return type to (typeVer.toIntOrNull() ?: 0)
+    }
+
+    private sealed class Version(val ver: String) : Comparable<Version> {
+        class ZeroVersion(ver: String, val type: String, val typeVer: Int) : Version(ver)
+        class ReleaseVersion(ver: String, val type: String?) : Version(ver)
+        override fun compareTo(other: Version): Int = compareVersion(this, other)
+        companion object {
+            private fun compareVersion(left: Version, right: Version): Int {
+                return when (left) {
+                    is ZeroVersion -> when (right) {
+                        is ReleaseVersion -> -1
+                        is ZeroVersion -> {
+                            ComparisonChain.start()
+                                .compare(left.ver, right.ver)
+                                .compare(left.type, right.type)
+                                .compare(left.typeVer, right.typeVer)
+                                .result
+                        }
+                    }
+                    is ReleaseVersion -> when (right) {
+                        is ZeroVersion -> 1
+                        is ReleaseVersion -> {
+                            ComparisonChain.start()
+                                .compare(left.ver, right.ver)
+                                .compare(left.type ?: "", right.type ?: "")
+                                .result
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     companion object Constants {
 
