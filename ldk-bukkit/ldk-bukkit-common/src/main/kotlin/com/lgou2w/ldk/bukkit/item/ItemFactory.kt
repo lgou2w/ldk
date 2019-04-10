@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.item
 
+import com.lgou2w.ldk.bukkit.compatibility.XMaterial
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory
 import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
@@ -304,6 +305,32 @@ object ItemFactory {
                 root[NBT.TAG] = tag
         }
         return root
+    }
+
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @Deprecated("Draft")
+    fun createItem(root: NBTTagCompound): ItemStack {
+        val id = root.getStringOrNull(NBT.TAG_ID)?.replaceFirst("minecraft:", "") // e.g.: minecraft:diamond -> diamond
+                 ?: throw IllegalArgumentException("Illegal item nbt.")
+        val count = root.getByteOrNull(NBT.TAG_COUNT) ?: 1
+        val tag = root.getCompoundOrNull(NBT.TAG)
+        val type = if (MinecraftBukkitVersion.isV113OrLater) {
+            // After version 1.13
+            // 1.13 版本之后
+            XMaterial.searchByType(id).notNull("Invalid item id: $id")
+        } else {
+            // Before version 1.13
+            // 1.13 版本之前
+            val damage = root.getShortOrNull(NBT.TAG_DAMAGE) ?: 0 // if not existed
+            XMaterial.searchByType("$id:$damage").notNull("Invalid item: $id:$damage")
+        }.toBukkit()
+        return ItemStack(type, count.toInt()).apply {
+            if (tag != null)
+                writeTag(this, tag)
+        }
     }
 
     /**
