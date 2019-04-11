@@ -308,10 +308,15 @@ object ItemFactory {
     }
 
     /**
+     * * Create item stack object from the given NBT data [root].
+     * * 从给定的 NBT 数据 [root] 创建物品栈对象.
+     *
+     * @throws [UnsupportedOperationException] If the item material is illegal.
+     * @throws [UnsupportedOperationException] 如果物品材料是非法的.
      * @since LDK 0.1.8-rc
      */
     @JvmStatic
-    @Deprecated("Draft")
+    @Throws(UnsupportedOperationException::class)
     fun createItem(root: NBTTagCompound): ItemStack {
         val id = root.getStringOrNull(NBT.TAG_ID)?.replaceFirst("minecraft:", "") // e.g.: minecraft:diamond -> diamond
                  ?: throw IllegalArgumentException("Illegal item nbt.")
@@ -320,12 +325,12 @@ object ItemFactory {
         val type = if (MinecraftBukkitVersion.isV113OrLater) {
             // After version 1.13
             // 1.13 版本之后
-            XMaterial.searchByType(id).notNull("Invalid item id: $id")
+            XMaterial.searchByType(id) ?: throw UnsupportedOperationException("Invalid item id: $id")
         } else {
             // Before version 1.13
             // 1.13 版本之前
             val damage = root.getShortOrNull(NBT.TAG_DAMAGE) ?: 0 // if not existed
-            XMaterial.searchByType("$id:$damage").notNull("Invalid item: $id:$damage")
+            XMaterial.searchByType("$id:$damage") ?: throw UnsupportedOperationException("Invalid item: $id:$damage")
         }.toBukkit()
         return ItemStack(type, count.toInt()).apply {
             if (tag != null)
