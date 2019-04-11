@@ -232,4 +232,11 @@ class Test {
         Assert.assertTrue(compound.lookupValue<String>("tag.Enchantments[1].id") is String)
         Assert.assertTrue(compound.lookupValue<Short>("tag.Enchantments[1].lvl") is Short)
     }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun test_NotNBTTagCompound() {
+        val str = NBTTagString("key", "value")
+        val base64 = NBTStreams.writeBase64(str)
+        NBTStreams.readBase64Compound(base64) // Exception, base64 is not TAG_COMPOUND
+    }
 }
