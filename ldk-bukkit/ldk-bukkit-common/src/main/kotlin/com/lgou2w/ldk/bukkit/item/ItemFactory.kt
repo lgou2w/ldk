@@ -319,7 +319,7 @@ object ItemFactory {
     @Throws(UnsupportedOperationException::class)
     fun createItem(root: NBTTagCompound): ItemStack {
         val id = root.getStringOrNull(NBT.TAG_ID)?.replaceFirst("minecraft:", "") // e.g.: minecraft:diamond -> diamond
-                 ?: throw IllegalArgumentException("Illegal item nbt.")
+                 ?: throw UnsupportedOperationException("Illegal item nbt.")
         val count = root.getByteOrNull(NBT.TAG_COUNT) ?: 1
         val tag = root.getCompoundOrNull(NBT.TAG)
         val type = if (MinecraftBukkitVersion.isV113OrLater) {
