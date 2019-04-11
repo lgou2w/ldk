@@ -21,6 +21,7 @@ import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.toColor
 import com.lgou2w.ldk.common.isOrLater
 import org.bstats.bukkit.Metrics
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import java.util.Collections
@@ -64,13 +65,24 @@ class LDKPlugin : PluginBase() {
         logger.info("A lgou2w development kit of Bukkit.")
         logger.info("Open source: $GITHUB")
         logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${safeCurrent.version}")
-        try {
-            Metrics(this)
-        } catch (e: Exception) {
-            logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
-        }
         updater = VersionUpdater(this)
         updater?.firstCheck()
+        setupMetrics()
+    }
+
+    private fun setupMetrics() {
+        try {
+            Metrics(this).apply {
+                addCustomChart(Metrics.AdvancedPie("plugin_dependents") {
+                    val plugins = Bukkit.getPluginManager().plugins
+                    val hard = plugins.count { it.description.depend.contains(NAME) }
+                    val soft = plugins.count { it.description.softDepend.contains(NAME) }
+                    mapOf("Hard" to hard, "Soft" to soft)
+                })
+            }
+        } catch (e: Exception) {
+            logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e)
+        }
     }
 
     override fun disable() {
