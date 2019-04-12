@@ -143,6 +143,22 @@ object NBTStreams {
     }
 
     /**
+     * * Read the [NBTTagCompound] tag from the given `Base64` [value].
+     * * 从给定的 `Base64` 值 [value] 中读取 [NBTTagCompound] 标签.
+     *
+     * @param value Base64 value
+     * @throws IOException I/O
+     * @throws [IllegalArgumentException] If the [value] is not a `TAG_COMPOUND` tag.
+     * @throws [IllegalArgumentException] 如果值 [value] 不是一个 `TAG_COMPOUND` 标签.
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @Throws(IOException::class, IllegalArgumentException::class)
+    fun readBase64Compound(value: String): NBTTagCompound
+            = readBase64(value) as? NBTTagCompound
+              ?: throw IllegalArgumentException("This Base64 value is not a TAG_COMPOUND tag.")
+
+    /**
      * * Write the given [nbt] tag in file.
      * * 将给定的 [nbt] NBT 标签以文件写出.
      *
@@ -182,6 +198,26 @@ object NBTStreams {
     }
 
     /**
+     * * Read the [NBTTagCompound] tag from the given [file].
+     * * 从给定的文件 [file] 中读取 [NBTTagCompound] 标签.
+     *
+     * @param file The file to be read
+     * @param file 要读取的文件
+     * @param decompress Whether to use `GZip` to decompress data. Default `true`
+     * @param decompress 是否使用 `GZip` 解压缩数据. 默认 `true`
+     * @throws IOException I/O
+     * @throws [IllegalArgumentException] If the [file] data is not a `TAG_COMPOUND` tag.
+     * @throws [IllegalArgumentException] 如果文件数据 [file] 不是一个 `TAG_COMPOUND` 标签.
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @JvmOverloads
+    @Throws(IOException::class, IllegalArgumentException::class)
+    fun readFileCompound(file: File, decompress: Boolean = true): NBTTagCompound
+            = readFile(file, decompress) as? NBTTagCompound
+              ?: throw IllegalArgumentException("This file data is not a TAG_COMPOUND tag.")
+
+    /**
      * * Automatically infer and read NBT tag from the given [file].
      * * 从给定的文件 [file] 中自动推断并读取 NBT 标签.
      *
@@ -199,4 +235,21 @@ object NBTStreams {
             readFile(file, false) // not gzip
         }
     }
+
+    /**
+     * * Automatically infer and read [NBTTagCompound] tag from the given [file].
+     * * 从给定的文件 [file] 中自动推断并读取 [NBTTagCompound] 标签.
+     *
+     * @param file The file to be read
+     * @param file 要读取的文件
+     * @throws IOException I/O
+     * @throws [IllegalArgumentException] If the [file] data is not a `TAG_COMPOUND` tag.
+     * @throws [IllegalArgumentException] 如果文件数据 [file] 不是一个 `TAG_COMPOUND` 标签.
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @Throws(IOException::class, IllegalArgumentException::class)
+    fun readFileInferCompound(file: File): NBTTagCompound
+            = readFileInfer(file) as? NBTTagCompound
+              ?: throw IllegalArgumentException("This file data is not a TAG_COMPOUND tag.")
 }
