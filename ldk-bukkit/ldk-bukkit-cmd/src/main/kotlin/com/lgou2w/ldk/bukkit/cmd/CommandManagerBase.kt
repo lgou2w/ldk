@@ -75,7 +75,7 @@ abstract class CommandManagerBase(
         return if (mCommands.containsKey(command.name))
             unregisterBukkitCommand(command) && mCommands.remove(command.name, command)
         else
-            false
+            true
     }
 
     override fun unregisterCommands(): Boolean {
