@@ -218,9 +218,18 @@ enum class PotionEffectType(
      */
     DOLPHINS_GRACE(30, "dolphins_grace", "dolphins_grace", MinecraftVersion.V1_13),
 
+    // TODO Minecraft 1.14 Draft
+
+    /**
+     * * Potion effect type: Bad Omen
+     * * 药水效果类型: 不祥之兆
+     */
     @Draft @Deprecated("Draft")
     BAD_OMEN(31, "bad_omen", "bad_omen", MinecraftVersion.V1_14),
-
+    /**
+     * * Potion effect type: Hero of the Village
+     * * 药水效果类型: 村庄英雄
+     */
     @Draft @Deprecated("Draft")
     HERO_OF_THE_VILLAGE(32, "hero_of_the_village", "hero_of_the_village", MinecraftVersion.V1_14), // since 19w13a
     ;

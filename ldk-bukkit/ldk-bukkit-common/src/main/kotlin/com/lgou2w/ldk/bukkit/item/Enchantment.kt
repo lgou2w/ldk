@@ -241,14 +241,24 @@ enum class Enchantment(
 
     // TODO Id is negative number because of uncertainty.
 
+    /**
+     * * Enchantment: Multishot
+     * * 附魔类型: 多重射击
+     */
     @Draft
     @Deprecated("Draft")
     MULTISHOT(-1, 1, "multishot", "multishot", MinecraftVersion.V1_14),
-
+    /**
+     * * Enchantment: Quick Charge
+     * * 附魔类型: 快速装填
+     */
     @Draft
     @Deprecated("Draft")
     QUICK_CHARGE(-2, 3, "quick_charge", "quick_charge", MinecraftVersion.V1_14),
-
+    /**
+     * * Enchantment: Piercing
+     * * 附魔类型: 穿透
+     */
     @Draft
     @Deprecated("Draft")
     PIERCING(-3, 4, "piercing", "piercing", MinecraftVersion.V1_14),
