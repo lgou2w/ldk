@@ -56,6 +56,7 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
@@ -69,6 +70,8 @@ import org.bukkit.Sound
  * @author MrBlobman, 25, lgou2w
  */
 enum class Sounds(private vararg val versionDependentNames: String) {
+
+    //<editor-fold desc="Sounds" defaultstate="collapsed">
 
     AMBIENCE_CAVE("AMBIENCE_CAVE", "AMBIENT_CAVE"),
     AMBIENCE_RAIN("AMBIENCE_RAIN", "WEATHER_RAIN"),
@@ -264,6 +267,16 @@ enum class Sounds(private vararg val versionDependentNames: String) {
     VILLAGER_IDLE("VILLAGER_IDLE", "ENTITY_VILLAGER_AMBIENT"),
     VILLAGER_NO("VILLAGER_NO", "ENTITY_VILLAGER_NO"),
     VILLAGER_YES("VILLAGER_YES", "ENTITY_VILLAGER_YES"),
+
+    //</editor-fold>
+
+    // Minecraft 1.14
+
+    @Draft @Deprecated("Draft") NOTE_IRON_XYLOPHONE("BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"),
+    @Draft @Deprecated("Draft") NOTE_COW_BELL("BLOCK_NOTE_BLOCK_COW_BELL"),
+    @Draft @Deprecated("Draft") NOTE_DIDGERIDOO("BLOCK_NOTE_BLOCK_DIDGERIDOO"),
+    @Draft @Deprecated("Draft") NOTE_BIT("BLOCK_NOTE_BLOCK_BIT"),
+    @Draft @Deprecated("Draft") NOTE_BANJO("BLOCK_NOTE_BLOCK_BANJO"),
     ;
 
     private var valid : Sound? = null

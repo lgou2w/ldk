@@ -56,6 +56,7 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
@@ -72,7 +73,7 @@ import java.util.Locale
  */
 enum class XMaterial {
 
-    // TODO Minecraft 1.14
+    //<editor-fold desc="XMaterials" defaultstate="collapsed">
 
     ACACIA_BOAT("BOAT_ACACIA", 0),
     ACACIA_BUTTON("WOOD_BUTTON", 0),
@@ -796,7 +797,6 @@ enum class XMaterial {
     SHULKER_BOX("PURPLE_SHULKER_BOX", 0),
     SHULKER_SHELL("SHULKER_SHELL", 0),
     SHULKER_SPAWN_EGG("MONSTER_EGG", 0),
-    SIGN("SIGN", 0),
     SILVERFISH_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_HORSE_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_SKULL(0, "SKULL", "SKULL_ITEM"),
@@ -846,7 +846,6 @@ enum class XMaterial {
     STONE_PICKAXE("STONE_PICKAXE", 0),
     STONE_PRESSURE_PLATE("STONE_PLATE", 0),
     STONE_SHOVEL("STONE_SPADE", 0),
-    STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     STONE_SWORD("STONE_SWORD", 0),
     STRAY_SPAWN_EGG("MONSTER_EGG", 0),
     STRING("STRING", 0),
@@ -894,7 +893,6 @@ enum class XMaterial {
     VINDICATOR_SPAWN_EGG("MONSTER_EGG", 0),
     VINE("VINE", 0),
     VOID_AIR("AIR", 0),
-    WALL_SIGN(0, "WALL_SIGN", "SIGN_POST"),
     WALL_TORCH("TORCH", 1),
     WATER(0, "WATER", "STATIONARY_WATER"),
     WATER_BUCKET("WATER_BUCKET", 0),
@@ -944,6 +942,120 @@ enum class XMaterial {
     ZOMBIE_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 2),
+
+    //</editor-fold>
+
+    // TODO Minecraft 1.14
+    // Warning: Not yet released, just based on the draft of the wiki.
+    // Link: https://minecraft.gamepedia.com/1.14
+
+    @Draft @Deprecated("Draft") BAMBOO("STONE", 0),
+    @Draft @Deprecated("Draft") BARREL("STONE", 0),
+    @Draft @Deprecated("Draft") BELL("STONE", 0),
+    @Draft @Deprecated("Draft") BLAST_FURNACE("STONE", 0),
+    @Draft @Deprecated("Draft") CAMPFIRE("STONE", 0),
+    @Draft @Deprecated("Draft") CARTOGRAPHY_TABLE("STONE", 0),
+    @Draft @Deprecated("Draft") COMPOSTER("STONE", 0),
+    @Draft @Deprecated("Draft") FLETCHING_TABLE("STONE", 0),
+    @Draft @Deprecated("Draft") SMITHING_TABLE("STONE", 0),
+    @Draft @Deprecated("Draft") STONECUTTER("STONE", 0),
+    @Draft @Deprecated("Draft") CORNFLOWER("STONE", 0),
+    @Draft @Deprecated("Draft") LILY_OF_THE_VALLEY("STONE", 0),
+    @Draft @Deprecated("Draft") WITHER_ROSE("STONE", 0),
+    @Draft @Deprecated("Draft") GRINDSTONE("STONE", 0),
+    @Draft @Deprecated("Draft") JIGSAW("STONE", 0),
+    @Draft @Deprecated("Draft") LANTERN("STONE", 0),
+    @Draft @Deprecated("Draft") LECTERN("STONE", 0),
+    @Draft @Deprecated("Draft") LOOM("STONE", 0),
+    @Draft @Deprecated("Draft") SCAFFOLDING("STONE", 0),
+    @Draft @Deprecated("Draft") SMOKER("STONE", 0),
+    @Draft @Deprecated("Draft") SWEET_BERRY_BUSH("STONE", 0),
+
+    @Draft @Deprecated("Draft") FLOWER_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") CREEPER_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") SKULL_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") MOJANG_BANNER_PATTERN("PAPER", 0),
+    @Draft @Deprecated("Draft") GLOBE_BANNER_PATTERN("PAPER", 0), // since 19w11a
+    @Draft @Deprecated("Draft") CROSSBOW("BOW", 0),
+    @Draft @Deprecated("Draft") SUSPICIOUS_STEW("STONE", 0),
+    @Draft @Deprecated("Draft") SWEET_BERRIES("STONE", 0),
+
+    SIGN(0, "OAK_SIGN", "SIGN"), // TODO Need to test
+    WALL_SIGN(0, "OAK_WALL_SIGN", "WALL_SIGN", "SIGN_POST"),
+    @Draft @Deprecated("Draft") OAK_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") OAK_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") BIRCH_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") BIRCH_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") JUNGLE_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") JUNGEL_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") ACACIA_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") ACACIA_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") DARK_OAK_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") DARK_OAK_WALL_SIGN("WALL_SIGN", 0),
+    @Draft @Deprecated("Draft") SPRUCE_SIGN("SIGN", 0),
+    @Draft @Deprecated("Draft") SPRUCE_WALL_SIGN("WALL_SIGN", 0),
+
+    @Draft @Deprecated("Draft") BLUE_DYE("STONE", 0),
+    @Draft @Deprecated("Draft") BROWN_DYE("STONE", 0),
+    @Draft @Deprecated("Draft") BLACK_DYE("STONE", 0),
+    @Draft @Deprecated("Draft") WHITE_DYE("STONE", 0),
+
+    @Draft @Deprecated("Draft") CAT_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") FOX_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") RAVAGER_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") PANDA_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") PILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") TRADER_LLAMA_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") WANDERING_TRADER_SPAWN_EGG("MONSTER_EGG", 0),
+
+    @Draft @Deprecated("Draft") LEATHER_HORSE_ARMOR("STONE", 0),
+
+    // TODO: Before 1.13: Smooth stone slab, After 1.14: Stone slab. Why did do this? Need to test
+    STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
+    @Draft @Deprecated("Draft") ANDESITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_ANDESITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") DIORITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_DIORITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") GRANITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_GRANITE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_STONE_BRICK_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_COBBLESTONE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_SANDSTONE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_RED_SANDSTONE_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_QUARTZ_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") RED_NETHER_BRICK_SLAB("STONE", 0),
+    @Draft @Deprecated("Draft") END_STONE_BRICK_SLAB("STONE", 0),
+
+    @Draft @Deprecated("Draft") STONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") ANDESITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_ANDESITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") DIORITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_DIORITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") GRANITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") POLISHED_GRANITE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_STONE_BRICK_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_COBBLESTONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_SANDSTONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_RED_SANDSTONE_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") SMOOTH_QUARTZ_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") RED_NETHER_BRICK_STAIRS("STONE", 0),
+    @Draft @Deprecated("Draft") END_STONE_BRICK_STAIRS("STONE", 0),
+
+    @Draft @Deprecated("Draft") STONE_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") ANDESITE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") DIORITE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") GRANITE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") MOSSY_STONE_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") SANDSTONE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft")  RED_SANDSTONE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") RED_NETHER_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") END_STONE_BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") PRISMARINE_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") BRICK_WALL("STONE", 0),
+    @Draft @Deprecated("Draft") NETHER_BRICK_WALL("STONE", 0),
+
+    @Draft @Deprecated("Draft") CUT_SANDSTONE_SLAB("STONE", 0), // since 19w12a
+    @Draft @Deprecated("Draft") CUT_RED_SANDSTONE_SLAB("STONE", 0), // since 19w12a
     ;
 
     private val aliases : Array<out String>
