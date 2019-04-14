@@ -1001,9 +1001,12 @@ enum class XMaterial {
     @Draft @Deprecated("Draft") WHITE_DYE("STONE", 0),
 
     @Draft @Deprecated("Draft") CAT_SPAWN_EGG("MONSTER_EGG", 0),
-    @Draft @Deprecated("Draft") ILLAGER_BEAST_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") FOX_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") RAVAGER_SPAWN_EGG("MONSTER_EGG", 0),
     @Draft @Deprecated("Draft") PANDA_SPAWN_EGG("MONSTER_EGG", 0),
     @Draft @Deprecated("Draft") PILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") TRADER_LLAMA_SPAWN_EGG("MONSTER_EGG", 0),
+    @Draft @Deprecated("Draft") WANDERING_TRADER_SPAWN_EGG("MONSTER_EGG", 0),
 
     @Draft @Deprecated("Draft") LEATHER_HORSE_ARMOR("STONE", 0),
 
