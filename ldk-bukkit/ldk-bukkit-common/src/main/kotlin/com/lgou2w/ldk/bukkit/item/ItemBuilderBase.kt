@@ -422,7 +422,9 @@ abstract class ItemBuilderBase : ItemBuilder {
                     ?.asElements<NBTTagCompound>()
                     ?.associate {
                         val id = it.getString(NBT.TAG_ENCH_ID)
-                        Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                        val lvl = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                            it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                        Enchantment.fromName(id) to lvl
                     }
             } else {
                 tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
@@ -479,7 +481,9 @@ abstract class ItemBuilderBase : ItemBuilder {
             tag.getListOrDefault(NBT.TAG_ENCH_FRESHLY)
                 .addCompound(ofCompound {
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
-                    putShort(NBT.TAG_ENCH_LVL, level)
+                    if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        putInt(NBT.TAG_ENCH_LVL, level)
+                    else putShort(NBT.TAG_ENCH_LVL, level)
                 })
         } else {
             tag.getListOrDefault(NBT.TAG_ENCH_LEGACY)
@@ -512,7 +516,9 @@ abstract class ItemBuilderBase : ItemBuilder {
             tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
                 ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getString(NBT.TAG_ENCH_ID)
-                    Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    val lvl = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    Enchantment.fromName(id) to lvl
                 }, block)
         } else {
             tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
@@ -1172,7 +1178,8 @@ abstract class ItemBuilderBase : ItemBuilder {
             return tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
                 ?.asElements<NBTTagCompound>()
                 ?.associate {
-                    val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    val level = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
                     val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                         Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                     else
@@ -1220,7 +1227,10 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun addStoredEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
         tag.getListOrDefault(NBT.TAG_STORED_ENCHANTMENTS)
             .addCompound(ofCompound {
-                putShort(NBT.TAG_ENCH_LVL, level)
+                if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                    putInt(NBT.TAG_ENCH_LVL, level)
+                else
+                    putShort(NBT.TAG_ENCH_LVL, level)
                 if (MinecraftBukkitVersion.isV113OrLater)
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
                 else
@@ -1248,7 +1258,8 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeStoredEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
             ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
-                val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                val level = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                    it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
                 val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                     Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                 else

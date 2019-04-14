@@ -118,6 +118,14 @@ class MinecraftBukkitVersion(
          */
         @JvmStatic val isV113OrLater by lazy { CURRENT.isOrLater(V1_13_R1) }
 
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.14` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.14` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV114OrLater by lazy { CURRENT.isOrLater(V1_14_R1) }
+
         private val LOOKUP : NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
         private fun createLookup(): NavigableMap<MinecraftVersion, MinecraftBukkitVersion> {
             val map = object: TreeMap<MinecraftVersion, MinecraftBukkitVersion>() {
