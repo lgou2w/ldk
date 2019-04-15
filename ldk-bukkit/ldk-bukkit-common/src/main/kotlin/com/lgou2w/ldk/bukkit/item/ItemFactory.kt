@@ -348,7 +348,7 @@ object ItemFactory {
     @JvmStatic
     @Throws(UnsupportedOperationException::class)
     fun writeTag(itemStack: ItemStack, tag: NBTTagCompound?): ItemStack
-            = ItemFactory.writeTag(itemStack, tag, itemStack.type)
+            = writeTag(itemStack, tag, itemStack.type)
 
     @JvmStatic
     @Throws(UnsupportedOperationException::class)

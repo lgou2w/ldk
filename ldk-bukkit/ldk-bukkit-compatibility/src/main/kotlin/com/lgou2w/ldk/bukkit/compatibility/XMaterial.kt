@@ -1162,7 +1162,7 @@ enum class XMaterial {
         fun searchByBukkit(material: Material): XMaterial? {
             val type = material.name.toUpperCase(Locale.US)
             return try {
-                XMaterial.valueOf(type)
+                valueOf(type)
             } catch (e: IllegalArgumentException) {
                 searchByType(type)
             }
@@ -1186,7 +1186,7 @@ enum class XMaterial {
             } else {
                 var matched : XMaterial?
                 try {
-                    matched = XMaterial.valueOf(typeKey)
+                    matched = valueOf(typeKey)
                     val validate = matched.toBukkit()
                     if (matched.name != validate.name && !matched.aliases.any { it == validate.name })
                         matched = null
@@ -1194,7 +1194,7 @@ enum class XMaterial {
                     matched = null
                 }
                 if (matched == null || (data != null && matched.data != data))
-                    matched = XMaterial.values().find { it.aliases.contains(typeKey) && it.data == data ?: 0 }
+                    matched = values().find { it.aliases.contains(typeKey) && it.data == data ?: 0 }
                 return if (matched != null) {
                     LOOKUPS[lookupKey] = matched
                     matched
@@ -1252,8 +1252,8 @@ enum class XMaterial {
         fun runtimeTest() {
             var unsupportedCount = 0
             Bukkit.getLogger().warning("-------- * XMaterial Runtime Test * -----")
-            Material.values().forEach { type ->
-                val xMaterial = XMaterial.searchByBukkit(type)
+            org.bukkit.Material.values().forEach { type ->
+                val xMaterial = searchByBukkit(type)
                 if (xMaterial == null) {
                     Bukkit.getLogger().warning("> Material.${type.name} = Unsupported")
                     unsupportedCount++

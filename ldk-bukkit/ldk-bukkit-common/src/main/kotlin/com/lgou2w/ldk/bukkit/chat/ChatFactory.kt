@@ -82,8 +82,8 @@ object ChatFactory {
      * * Convert the given `NMS` chat object to an implementation of the [ChatComponent] wrapper.
      * * 将给定的 `NMS` 聊天对象转换为 [ChatComponent] 包装的实现.
      *
-     * @throws [IllegalArgumentException] If the chat component object [icbs] is not the expected `NMS` instance.
-     * @throws [IllegalArgumentException] 如果聊天组件对象 [icbs] 不是预期的 `NMS` 实例.
+     * @throws [IllegalArgumentException] If the chat component object [icbc] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果聊天组件对象 [icbc] 不是预期的 `NMS` 实例.
      */
     @JvmStatic
     fun fromNMS(icbc: Any): ChatComponent {
@@ -190,7 +190,7 @@ object ChatFactory {
     ): Any {
         val enumAction = Enums.fromName(CLASS_ENUM_TITLE_ACTION, action)
         return when {
-            value != null -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, ChatFactory.toNMS(value), -1, -1, -1)
+            value != null -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, toNMS(value), -1, -1, -1)
             action == PACKET_TITLE_ACTION_TIMES -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, null, fadeIn, stay, fadeOut)
             else -> CONSTRUCTOR_PACKET_OUT_TITLE.newInstance(enumAction, null, -1, -1, -1)
         }
@@ -477,8 +477,8 @@ object ChatFactory {
             footer: ChatComponent?
     ): Any {
         val packet = CONSTRUCTOR_PACKET_OUT_PLAYER_LIST_HEADER_FOOTER.newInstance()
-        val header0 = ChatFactory.toNMS(header ?: ChatComponentTranslation("")) // empty translate to remove
-        val footer0 = ChatFactory.toNMS(footer ?: ChatComponentTranslation("")) // empty translate to remove
+        val header0 = toNMS(header ?: ChatComponentTranslation("")) // empty translate to remove
+        val footer0 = toNMS(footer ?: ChatComponentTranslation("")) // empty translate to remove
         FIELD_PACKET_OUT_PLAYER_LIST_HEADER[packet] = header0
         FIELD_PACKET_OUT_PLAYER_LIST_FOOTER[packet] = footer0
         return packet

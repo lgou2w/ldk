@@ -149,7 +149,7 @@ enum class Particle(
 
         init {
             val isV113OrLater = MinecraftBukkitVersion.isV113OrLater
-            Particle.values().forEach { particle ->
+            values().forEach { particle ->
                 ID_MAP[particle.value] = particle
                 NAME_MAP[particle.legacy] = particle
                 NAME_MAP[particle.type] = particle

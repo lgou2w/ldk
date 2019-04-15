@@ -58,7 +58,7 @@ abstract class CommandManagerBase(
         if (existed != null)
             throw UnsupportedOperationException("This command '${command.name}' has already been registered.")
         return if (registerBukkitCommand(command)) {
-            CommandManagerBase.initialize(command, this)
+            initialize(command, this)
             mCommands[command.name] = command
             command
         } else {

@@ -422,7 +422,7 @@ object ChatSerializer {
                     jsonObjectStyle.entrySet().forEach { jsonObject.add(it.key, it.value) }
                 }
             }
-            if (!src.extras.isEmpty()) {
+            if (src.extras.isNotEmpty()) {
                 val jsonArray = JsonArray()
                 src.extras.forEach { jsonArray.add(serialize(it, it::class.java, context)) }
                 jsonObject.add("extra", jsonArray)
@@ -431,7 +431,7 @@ object ChatSerializer {
                 jsonObject.addProperty("text", src.text)
             } else if (src is ChatComponentTranslation) {
                 jsonObject.addProperty("translate", src.key)
-                if (!src.withs.isEmpty()) {
+                if (src.withs.isNotEmpty()) {
                     val jsonArray = JsonArray()
                     src.withs.forEach {
                         if (it is ChatComponent)
