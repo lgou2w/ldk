@@ -16,6 +16,10 @@
 
 package com.lgou2w.ldk.bukkit
 
+import com.lgou2w.ldk.bukkit.anvil.AnvilWindowBase
+import com.lgou2w.ldk.bukkit.compatibility.XMaterial
+import com.lgou2w.ldk.bukkit.event.registerListeners
+import com.lgou2w.ldk.bukkit.item.builder
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.toColor
@@ -24,6 +28,7 @@ import org.bstats.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import java.util.Collections
 import java.util.logging.Level
 
@@ -68,6 +73,18 @@ class LDKPlugin : PluginBase() {
         updater = VersionUpdater(this)
         updater?.firstCheck()
         setupMetrics()
+
+        // FIXME: DEBUG CODE
+        registerListeners {
+            event<PlayerCommandPreprocessEvent> {
+                if (message == "/anvilwindow" && player.isOp) {
+                    val anvilWindow = AnvilWindowBase.of(plugin)
+                    anvilWindow.open(player)
+                    anvilWindow.inventory.setItem(0, XMaterial.NAME_TAG.builder { setDisplayName("&6输入您的新昵称:") }.build())
+                    isCancelled = true
+                }
+            }
+        }
     }
 
     private fun setupMetrics() {

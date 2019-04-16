@@ -80,12 +80,12 @@
         </dependency>
         <!-- Maybe you need to build it yourself -->
         <!-- CraftBukkit Dependency -->
-        <!--<dependency>-->
-            <!--<groupId>org.bukkit</groupId>-->
-            <!--<artifactId>craftbukkit</artifactId>-->
-            <!--<version>${bukkit.version}</version>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>${bukkit.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
