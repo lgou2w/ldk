@@ -16,7 +16,8 @@
 
 package com.lgou2w.ldk.bukkit
 
-import com.lgou2w.ldk.bukkit.anvil.AnvilWindowBase
+import com.lgou2w.ldk.bukkit.anvil.AnvilWindow
+import com.lgou2w.ldk.bukkit.anvil.AnvilWindowSlot
 import com.lgou2w.ldk.bukkit.compatibility.XMaterial
 import com.lgou2w.ldk.bukkit.event.registerListeners
 import com.lgou2w.ldk.bukkit.item.builder
@@ -78,9 +79,14 @@ class LDKPlugin : PluginBase() {
         registerListeners {
             event<PlayerCommandPreprocessEvent> {
                 if (message == "/anvilwindow" && player.isOp) {
-                    val anvilWindow = AnvilWindowBase.of(plugin)
+                    val anvilWindow = AnvilWindow.of(plugin)
+                    anvilWindow.onOpened { event -> event.player.sendMessage("铁砧窗口打开了") }
+                    anvilWindow.onClosed { event -> event.player.sendMessage("铁砧窗口关闭了") }
+                    anvilWindow.onClicked { event -> event.player.sendMessage("你点击的铁砧窗口: ${event.slot.value} 槽位") }
+                    anvilWindow.onInputted { event -> event.player.sendMessage("你输入铁砧窗口: ${event.value}") }
+                    anvilWindow.isAllowMove = false
                     anvilWindow.open(player)
-                    anvilWindow.inventory.setItem(0, XMaterial.NAME_TAG.builder { setDisplayName("&6输入您的新昵称:") }.build())
+                    anvilWindow.setItem(AnvilWindowSlot.INPUT_LEFT, XMaterial.NAME_TAG.builder { setDisplayName("&6输入您的新昵称:") }.build())
                     isCancelled = true
                 }
             }
