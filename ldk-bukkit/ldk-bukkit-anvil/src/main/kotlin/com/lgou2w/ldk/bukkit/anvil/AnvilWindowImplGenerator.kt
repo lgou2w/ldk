@@ -18,6 +18,8 @@ package com.lgou2w.ldk.bukkit.anvil
 
 import com.lgou2w.ldk.asm.ASMClassGenerator
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.bukkit.version.MinecraftVersion
+import com.lgou2w.ldk.common.isOrLater
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Label
 import org.objectweb.asm.Opcodes
@@ -32,6 +34,120 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
     private fun nmsDescriptor(className: String) = "L${nmsName(className)};"
     private fun obcName(className: String) = "org/bukkit/craftbukkit/$VER/$className"
     private fun obcDescriptor(className: String) = "L${obcName(className)};"
+
+    // AnvilWindowImpl.java - Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+    /*
+    package com.lgou2w.ldk.bukkit.anvil;
+
+    import net.minecraft.server.v1_13_R2.BlockAnvil;
+    import net.minecraft.server.v1_13_R2.BlockPosition;
+    import net.minecraft.server.v1_13_R2.Container;
+    import net.minecraft.server.v1_13_R2.ContainerAnvil;
+    import net.minecraft.server.v1_13_R2.EntityHuman;
+    import net.minecraft.server.v1_13_R2.EntityPlayer;
+    import net.minecraft.server.v1_13_R2.PlayerInventory;
+    import net.minecraft.server.v1_13_R2.World;
+    import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+    import org.bukkit.entity.Player;
+    import org.bukkit.inventory.Inventory;
+    import org.bukkit.plugin.Plugin;
+
+    public class AnvilWindowImpl extends AnvilWindowBase {
+
+        private ContainerImpl handle;
+
+        public AnvilWindowImpl(Plugin plugin) {
+            super(plugin);
+        }
+
+        @Override
+        public void open(Player player) {
+            super.open(player);
+            EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
+            TileEntityImpl tileEntity = new TileEntityImpl(this, playerHandle.world);
+            playerHandle.openTileEntity(tileEntity);
+        }
+
+        @Override
+        protected Object getHandle() {
+            return handle;
+        }
+
+        @Override
+        protected void setHandle(Object handle) {
+            this.handle = (ContainerImpl) handle;
+        }
+
+        @Override
+        protected Inventory getInventory() {
+            return handle.getBukkitView().getTopInventory();
+        }
+
+        private class TileEntityImpl extends BlockAnvil.TileEntityContainerAnvil {
+
+            private AnvilWindowImpl anvilWindow;
+
+            TileEntityImpl(AnvilWindowImpl anvilWindow, World world) {
+                super(world, BlockPosition.ZERO);
+                this.anvilWindow = anvilWindow;
+            }
+
+            @Override
+            public Container createContainer(PlayerInventory inventory, EntityHuman human) {
+                ContainerImpl container = new ContainerImpl(anvilWindow, inventory, human);
+                anvilWindow.setHandle(container);
+                anvilWindow.callOpenedEvent();
+                return container;
+            }
+        }
+
+        private class ContainerImpl extends ContainerAnvil {
+
+            private AnvilWindowImpl anvilWindow;
+
+            ContainerImpl(AnvilWindowImpl anvilWindow, PlayerInventory inventory, EntityHuman human) {
+                super(inventory, human.world, BlockPosition.ZERO, human);
+                this.anvilWindow = anvilWindow;
+            }
+
+            public AnvilWindowBase getAnvilWindow() {
+                return anvilWindow;
+            }
+
+            @Override
+            public boolean canUse(EntityHuman human) {
+                return true;
+            }
+
+            @Override
+            public void a(String value) {
+                AnvilWindowInputEvent event = anvilWindow.callInputtedEvent(value);
+                if (event == null)
+                    super.a(value);
+                else if (!event.isCancelled())
+                    super.a(event.getValue());
+            }
+
+            @Override
+            public void b(EntityHuman human) {
+                anvilWindow.callClosedEvent();
+                anvilWindow.release();
+                super.b(human);
+            }
+        }
+    }
+    */
+
+    // Since 1.8.3 TileEntityContainerAnvil has become an inner class of BlockAnvil
+    private val isAdapterTileEntityInner = MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_8_R2)
+    private fun adapterTileEntityInner(): String {
+        return if (isAdapterTileEntityInner) "BlockAnvil\$TileEntityContainerAnvil"
+        else "TileEntityContainerAnvil"
+    }
+    private fun adapterCanUse(): String {
+        return if (MinecraftVersion.CURRENT.isOrLater(MinecraftVersion(1, 12, 2)))
+            "canUse" else "a" // Versions after 1.12.2 are: canUse
+    }
 
     override fun generate(): Map<String, ByteArray> {
         val classes = LinkedHashMap<String, ByteArray>(3)
@@ -144,7 +260,7 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
                 visitVarInsn(Opcodes.ALOAD, 0)
                 visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl"), "handle", anvilDescriptor("AnvilWindowImpl\$ContainerImpl"))
                 visitMethodInsn(Opcodes.INVOKEVIRTUAL, anvilName("AnvilWindowImpl\$ContainerImpl"), "getBukkitView", "()${obcDescriptor("inventory/CraftInventoryView")}", false)
-                visitMethodInsn(Opcodes.INVOKEVIRTUAL, obcDescriptor("inventory/CraftInventoryView"), "getTopInventory", "()Lorg/bukkit/inventory/Inventory;", false)
+                visitMethodInsn(Opcodes.INVOKEVIRTUAL, obcName("inventory/CraftInventoryView"), "getTopInventory", "()Lorg/bukkit/inventory/Inventory;", false)
                 visitInsn(Opcodes.ARETURN)
                 val l1 = Label()
                 visitLabel(l1)
@@ -156,7 +272,7 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
             visitInnerClass(anvilName("AnvilWindowImpl\$TileEntityImpl"), "AnvilWindowImpl", "TileEntityImpl", Opcodes.ACC_PUBLIC)
         }.toByteArray()
         val anvilWindowImplTileEntityImpl = ClassWriter(0x00).apply {
-            visit(Opcodes.V1_8, Opcodes.ACC_SUPER, anvilName("AnvilWindowImpl\$TileEntityImpl"), null, nmsName("BlockAnvil\$TileEntityContainerAnvil"), null)
+            visit(Opcodes.V1_8, Opcodes.ACC_SUPER, anvilName("AnvilWindowImpl\$TileEntityImpl"), null, nmsName(adapterTileEntityInner()), null)
             visitSource("AnvilWindowImpl.java", null)
             visitField(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL, "anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, null)
             visitMethod(0x00, "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("World")})V", null, null).apply {
@@ -167,7 +283,7 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
                 visitVarInsn(Opcodes.ALOAD, 0)
                 visitVarInsn(Opcodes.ALOAD, 2)
                 visitFieldInsn(Opcodes.GETSTATIC, nmsName("BlockPosition"), "ZERO", nmsDescriptor("BlockPosition"))
-                visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName("BlockAnvil\$TileEntityContainerAnvil"), "<init>", "(${nmsDescriptor("World")}${nmsDescriptor("BlockPosition")})V", false)
+                visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName(adapterTileEntityInner()), "<init>", "(${nmsDescriptor("World")}${nmsDescriptor("BlockPosition")})V", false)
                 val l1 = Label()
                 visitLabel(l1)
                 visitLineNumber(52, l1)
@@ -229,7 +345,8 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
             }
             visitInnerClass(anvilName("AnvilWindowImpl\$TileEntityImpl"), "AnvilWindowImpl", "TileEntityImpl", Opcodes.ACC_PUBLIC)
             visitInnerClass(anvilName("AnvilWindowImpl\$ContainerImpl"), "AnvilWindowImpl", "ContainerImpl", Opcodes.ACC_PUBLIC)
-            visitInnerClass(nmsName("BlockAnvil\$TileEntityContainerAnvil"), "BlockAnvil", "TileEntityContainerAnvil", Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC)
+            if (isAdapterTileEntityInner) // When it is an inner class
+                visitInnerClass(nmsName("BlockAnvil\$TileEntityContainerAnvil"), "BlockAnvil", "TileEntityContainerAnvil", Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC)
         }.toByteArray()
         val anvilWindowImplContainerImpl = ClassWriter(0x00).apply {
             visit(Opcodes.V1_8, Opcodes.ACC_SUPER, anvilName("AnvilWindowImpl\$ContainerImpl"), null, nmsName("ContainerAnvil"), null)
@@ -280,7 +397,7 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
                 visitMaxs(1, 1)
                 visitEnd()
             }
-            visitMethod(Opcodes.ACC_PUBLIC, "canUse", "(${nmsDescriptor("EntityHuman")})Z", null, null).apply {
+            visitMethod(Opcodes.ACC_PUBLIC, adapterCanUse(), "(${nmsDescriptor("EntityHuman")})Z", null, null).apply {
                 visitCode()
                 val l0 = Label()
                 visitLabel(l0)

@@ -81,8 +81,8 @@ class LDKPlugin : PluginBase() {
                 if (message == "/anvilwindow" && player.isOp) {
                     val anvilWindow = AnvilWindow.of(plugin)
                     anvilWindow.onOpened { event -> event.player.sendMessage("铁砧窗口打开了") }
-                    anvilWindow.onClosed { event -> event.player.sendMessage("铁砧窗口关闭了") }
-                    anvilWindow.onClicked { event -> event.player.sendMessage("你点击的铁砧窗口: ${event.slot.value} 槽位") }
+                    anvilWindow.onClosed { event -> event.player.sendMessage("铁砧窗口关闭了"); event.anvilWindow.clearItems() }
+                    anvilWindow.onClicked { event -> event.player.sendMessage("你点击的铁砧窗口: ${event.slot} 槽位") }
                     anvilWindow.onInputted { event -> event.player.sendMessage("你输入铁砧窗口: ${event.value}") }
                     anvilWindow.isAllowMove = false
                     anvilWindow.open(player)
