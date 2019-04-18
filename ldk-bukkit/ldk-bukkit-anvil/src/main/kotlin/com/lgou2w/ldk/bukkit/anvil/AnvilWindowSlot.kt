@@ -18,10 +18,29 @@ package com.lgou2w.ldk.bukkit.anvil
 
 import com.lgou2w.ldk.common.Valuable
 
+/**
+ * ## AnvilWindowSlot (铁砧窗口槽位)
+ *
+ * @see [Valuable]
+ * @author lgou2w
+ * @since LDK 0.1.8-rc
+ */
 enum class AnvilWindowSlot(override val value: Int) : Valuable<Int> {
 
+    /**
+     * * Indicates the left input slot of the anvil window.
+     * * 表示铁砧窗口的左输入槽位.
+     */
     INPUT_LEFT(0),
+    /**
+     * * Indicates the right input slot of the anvil window.
+     * * 表示铁砧窗口的右输入槽位.
+     */
     INPUT_RIGHT(1),
+    /**
+     * * Indicates the output slot of the anvil window.
+     * * 表示铁砧窗口的输出槽位.
+     */
     OUTPUT(2),
     ;
 }

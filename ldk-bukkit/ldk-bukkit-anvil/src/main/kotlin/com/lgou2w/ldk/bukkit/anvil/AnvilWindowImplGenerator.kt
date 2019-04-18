@@ -24,6 +24,14 @@ import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Label
 import org.objectweb.asm.Opcodes
 
+/**
+ * ## AnvilWindowImplGenerator (铁砧窗口实现类生成器)
+ *
+ * @see [ASMClassGenerator]
+ * @author lgou2w
+ * @since LDK 0.1.8-rc
+ */
+@Suppress("INTERNAL ONLY")
 object AnvilWindowImplGenerator : ASMClassGenerator {
 
     private val VER = MinecraftBukkitVersion.CURRENT.version

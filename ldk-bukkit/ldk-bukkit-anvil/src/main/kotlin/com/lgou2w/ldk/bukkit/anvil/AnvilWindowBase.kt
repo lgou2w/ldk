@@ -43,6 +43,13 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.RegisteredListener
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * ## AnvilWindowBase (铁砧窗口基础)
+ *
+ * @see [AnvilWindow]
+ * @author lgou2w
+ * @since LDK 0.1.8-rc
+ */
 @Suppress("UNUSED") // ASM ONLY
 abstract class AnvilWindowBase(
         final override val plugin: Plugin
@@ -54,7 +61,7 @@ abstract class AnvilWindowBase(
     private var onInputted : Consumer<AnvilWindowInputEvent>? = null
 
     override var isAllowMove : Boolean = true
-    override val isOpened: Boolean get() = handle != null
+    override val isOpened : Boolean get() = handle != null
 
     override fun open(player: Player) {
         if (isOpened)
@@ -134,6 +141,7 @@ abstract class AnvilWindowBase(
         }
 
         @JvmStatic private fun getInventoryAnvilWindow(view: InventoryView): AnvilWindowBase? {
+            if (view.topInventory.type != InventoryType.ANVIL) return null // Only as anvil inventory
             val container = METHOD_INVENTORY_VIEW_GET_HANDLE.invoke(view)
             return if (CLASS_ANVIL_WINDOW_CONTAINER_IMPL.isInstance(container)) {
                 METHOD_ANVIL_WINDOW_CONTAINER_IMPL_GET_ANVIL_WINDOW.invoke(container)
