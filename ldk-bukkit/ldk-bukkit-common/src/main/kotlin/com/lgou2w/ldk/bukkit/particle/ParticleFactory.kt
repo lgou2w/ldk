@@ -331,7 +331,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
@@ -354,7 +354,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
@@ -377,7 +377,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {

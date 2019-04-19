@@ -184,7 +184,7 @@ enum class Particle(
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) = ParticleFactory.sendParticle(this, center, range, offsetX, offsetY, offsetZ, speed, count, data)
@@ -199,7 +199,7 @@ enum class Particle(
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) = ParticleFactory.sendParticle(sender, this, center, offsetX, offsetY, offsetZ, speed, count, data)
@@ -214,7 +214,7 @@ enum class Particle(
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) = ParticleFactory.sendParticle(players, this, center, offsetX, offsetY, offsetZ, speed, count, data)
