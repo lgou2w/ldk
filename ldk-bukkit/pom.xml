@@ -36,6 +36,7 @@
         <module>ldk-bukkit-compatibility</module> <!-- compatibility -->
         <module>ldk-bukkit-common</module> <!-- common -->
         <module>ldk-bukkit-i18n</module> <!-- extended... -->
+        <module>ldk-bukkit-anvil</module>
         <module>ldk-bukkit-cmd</module>
         <module>ldk-bukkit-gui</module>
         <module>ldk-bukkit-region</module>
@@ -81,10 +82,10 @@
         <!-- Maybe you need to build it yourself -->
         <!-- CraftBukkit Dependency -->
         <!--<dependency>-->
-            <!--<groupId>org.bukkit</groupId>-->
-            <!--<artifactId>craftbukkit</artifactId>-->
-            <!--<version>${bukkit.version}</version>-->
-            <!--<scope>provided</scope>-->
+        <!--<groupId>org.bukkit</groupId>-->
+        <!--<artifactId>craftbukkit</artifactId>-->
+        <!--<version>${bukkit.version}</version>-->
+        <!--<scope>provided</scope>-->
         <!--</dependency>-->
     </dependencies>
 

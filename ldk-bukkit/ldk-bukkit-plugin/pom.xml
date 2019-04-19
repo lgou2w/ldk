@@ -69,6 +69,13 @@
             <version>0.1.8-rc</version>
             <scope>compile</scope>
         </dependency>
+        <!-- ldk-bukkit-anvil -->
+        <dependency>
+            <groupId>com.lgou2w</groupId>
+            <artifactId>ldk-bukkit-anvil</artifactId>
+            <version>0.1.8-rc</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- ldk-bukkit-cmd -->
         <dependency>
             <groupId>com.lgou2w</groupId>
