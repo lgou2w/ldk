@@ -31,7 +31,7 @@ import java.util.UUID
  * @author lgou2w
  * @since LDK 0.1.8-rc
  */
-class UnsignedUUIDTable @JvmOverloads constructor(
+open class UnsignedUUIDTable @JvmOverloads constructor(
         name: String = "",
         columnName: String = ""
 ) : IdTable<UUID>(name) {
