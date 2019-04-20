@@ -116,9 +116,10 @@ class DefaultRegisteredCommand(
     }
 
     override fun mappingExecutorDescriptions(mapping: Map<String, String?>) {
-        mExecutors.values.forEach { executor ->
-            val description = mapping[executor.name]
-            executor.description = description
+        mapping.forEach { (name, description) ->
+            val executor = mExecutors[name]
+            if (executor != null)
+                executor.description = description
         }
     }
 
