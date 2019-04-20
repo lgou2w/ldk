@@ -66,7 +66,15 @@ annotation class Sorted(val value: Int)
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
+@Deprecated("RENAME", replaceWith = ReplaceWith("PlayerOnly"))
 annotation class Playable
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class PlayerOnly
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)

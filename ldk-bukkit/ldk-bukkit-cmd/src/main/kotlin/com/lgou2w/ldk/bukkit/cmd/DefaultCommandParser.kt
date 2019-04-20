@@ -98,7 +98,8 @@ class DefaultCommandParser : CommandParser {
                 val permission = method.getAnnotation(Permission::class.java)
                 val permissionDefault = method.getAnnotation(PermissionDefaultValue::class.java)
                 val sorted = method.getAnnotation(Sorted::class.java)
-                val isPlayable = method.getAnnotation(Playable::class.java) != null
+                @Suppress("DEPRECATION") // RENAME
+                val isPlayable = method.getAnnotation(Playable::class.java) != null || method.getAnnotation(PlayerOnly::class.java) != null
                 val parameters = parseExecutorParameters(manager, method)
                 val description = method.getAnnotation(CommandDescription::class.java)?.value
                 if (parameters == null) null else command.value to buildCommandExecutor(
