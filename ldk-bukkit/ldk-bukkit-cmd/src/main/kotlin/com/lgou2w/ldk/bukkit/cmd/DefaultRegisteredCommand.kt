@@ -207,7 +207,9 @@ class DefaultRegisteredCommand(
                     feedback.onPermission(sender, name, this, executor, args, it) }) {
             return false
         }
-        if (executor.isPlayable && sender !is Player) {
+        if ((executor.isPlayable && sender !is Player) ||
+            (Player::class.java.isAssignableFrom(executor.senderType) && sender !is Player)
+        ) {
             feedback.onPlayable(sender, name, this, executor, args)
             return false
         }
