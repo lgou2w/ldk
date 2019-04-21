@@ -297,9 +297,10 @@ object ItemFactory {
             val count = itemStack.amount
             @Suppress("DEPRECATION")
             val damage = itemStack.durability   // do not worry about it, 不用担心弃用
-            root.putShort(NBT.TAG_DAMAGE, damage)
             root.putString(NBT.TAG_ID, "minecraft:$id")
             root.putByte(NBT.TAG_COUNT, count)
+            if (damage > 0) // SEE -> https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/c3749a
+                root.putShort(NBT.TAG_DAMAGE, damage)
             val tag = readTag(itemStack)
             if (tag != null)
                 root[NBT.TAG] = tag

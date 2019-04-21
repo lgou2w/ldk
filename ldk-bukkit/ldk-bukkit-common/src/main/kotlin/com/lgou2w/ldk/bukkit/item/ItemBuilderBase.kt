@@ -174,9 +174,12 @@ abstract class ItemBuilderBase : ItemBuilder {
                 itemStack.durability.toInt()
         }
         set(value) {
-            if (MinecraftBukkitVersion.isV113OrLater)
-                tag.putShort(NBT.TAG_DAMAGE, value)
-            else
+            if (MinecraftBukkitVersion.isV113OrLater) {
+                val before = tag.getShortOrNull(NBT.TAG_DAMAGE) ?: 0
+                if (before <= 0 && value <= 0) // SEE -> https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/c3749a
+                    tag.remove(NBT.TAG_DAMAGE)
+                else tag.putShort(NBT.TAG_DAMAGE, value)
+            } else
                 @Suppress("DEPRECATION")
                 itemStack.durability = value.toShort()
         }
@@ -891,7 +894,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         get() = tag.getIntOrNull(NBT.TAG_REPAIR_COST)
         set(value) {
             removeRepairCost()
-            if (value != null)
+            if (value != null && value != 0) // SEE -> https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/c3749a
                 tag.putInt(NBT.TAG_REPAIR_COST, value)
         }
 
