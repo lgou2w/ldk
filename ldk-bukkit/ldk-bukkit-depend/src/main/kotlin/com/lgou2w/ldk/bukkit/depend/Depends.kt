@@ -97,7 +97,7 @@ object Depends {
     }
 
     /**
-     * * Gets the plugin dependency object from the given [name]. Returns `null` if it doesn't exist.
+     * * Get the plugin dependency object from the given [name]. Returns `null` if it doesn't exist.
      * * 从给定的名称 [name] 获取插件依赖对象. 如果不存在则返回 `null`.
      */
     @JvmStatic
@@ -119,7 +119,7 @@ object Depends {
     }
 
     /**
-     * * Gets or loads a plugin dependency object from the given plugin [depend] class.
+     * * Get or load plugin dependency object from the given plugin [depend] class.
      * * 从给定的插件依赖类 [depend] 获取或加载插件依赖对象.
      *
      * @throws [DependCannotException] If the plugin dependency is not available.
@@ -142,7 +142,7 @@ object Depends {
     }
 
     /**
-     * * Gets whether the plugin dependency object exists from the given [name].
+     * * Get whether the plugin dependency object exists from the given [name].
      * * 从给定的名称 [name] 获取插件依赖对象是否存在.
      */
     @JvmStatic
@@ -150,7 +150,7 @@ object Depends {
             = get(name) != null
 
     /**
-     * * Gets whether the plugin dependent object exists from the given plugin depend class.
+     * * Get whether the plugin dependent object exists from the given plugin depend class.
      * * 从给定的插件依赖类 [depend] 获取插件依赖对象是否存在.
      */
     @JvmStatic

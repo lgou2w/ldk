@@ -17,6 +17,8 @@
 package com.lgou2w.ldk.bukkit.depend
 
 import com.lgou2w.ldk.bukkit.PluginArchive
+import com.lgou2w.ldk.common.ApplicatorFunction
+import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.Plugin
 import java.io.File
@@ -71,4 +73,58 @@ interface Depend : PluginArchive {
      * @param filename 文件名.
      */
     fun getResource(filename: String): InputStream?
+
+    companion object Factory {
+
+        /**
+         * * Get or load plugin dependency object from the given plugin [depend] class.
+         * * 从给定的插件依赖类 [depend] 获取或加载插件依赖对象.
+         *
+         * @throws [DependCannotException] If the plugin dependency is not available.
+         * @throws [DependCannotException] 如果插件依赖不可用.
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic
+        @Throws(DependCannotException::class)
+        fun <T : Depend> of(depend: Class<T>): T
+                = Depends.getOrLoad(depend)
+
+        /**
+         * * Safely get or load plugin dependency object from the given plugin [depend] class.
+         * * 安全的从给定的插件依赖类 [depend] 获取或加载插件依赖对象.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic
+        fun <T : Depend> ofSafely(depend: Class<T>): T? = try {
+            of(depend)
+        } catch (e: DependCannotException) {
+            null
+        }
+
+        /**
+         * * Get or load plugin dependency object from the given plugin [depend] class. Then apply and return the result [R].
+         * * 从给定的插件依赖类 [depend] 获取或加载插件依赖对象. 然后应用并返回结果 [R].
+         *
+         * @throws [DependCannotException] If the plugin dependency is not available.
+         * @throws [DependCannotException] 如果插件依赖不可用.
+         * @see [of]
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic
+        @Throws(DependCannotException::class)
+        fun <T : Depend, R> ofApply(depend: Class<T>, applicator: ApplicatorFunction<T, R>): R
+                = of(depend).let(applicator)
+
+        /**
+         * * Safely get or load plugin dependency object from the given plugin [depend] class. Then apply and return the result [R] or `null`.
+         * * 安全的从给定的插件依赖类 [depend] 获取或加载插件依赖对象. 然后应用并返回结果 [R] 或 `null`.
+         *
+         * @see [ofSafely]
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic
+        fun <T : Depend, R> ofSafelyApply(depend: Class<T>, applicator: ApplicatorFunction<T, R>): R?
+                = ofSafely(depend).letIfNotNull(applicator)
+    }
 }
