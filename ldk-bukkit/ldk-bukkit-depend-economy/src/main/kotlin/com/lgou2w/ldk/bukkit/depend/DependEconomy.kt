@@ -372,19 +372,18 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         const val NAME = "Vault"
         const val EXCEPTION_METHOD_REMOVED = "Error, method has deprecated and removed."
         @JvmField val NULL = Response(.0, .0, Response.Type.NULL, null)
-    }
-
-    private fun EconomyResponse?.toAdapter(): Response {
-        return  if (this?.type == null) {
-            NULL
-        } else {
-            val adapterType = when (type) {
-                EconomyResponse.ResponseType.FAILURE -> Response.Type.FAILURE
-                EconomyResponse.ResponseType.SUCCESS -> Response.Type.SUCCESS
-                EconomyResponse.ResponseType.NOT_IMPLEMENTED -> Response.Type.NOT_IMPLEMENTED
-                else -> Response.Type.NULL
+        private fun EconomyResponse?.toAdapter(): Response {
+            return  if (this?.type == null) {
+                NULL
+            } else {
+                val adapterType = when (type) {
+                    EconomyResponse.ResponseType.FAILURE -> Response.Type.FAILURE
+                    EconomyResponse.ResponseType.SUCCESS -> Response.Type.SUCCESS
+                    EconomyResponse.ResponseType.NOT_IMPLEMENTED -> Response.Type.NOT_IMPLEMENTED
+                    else -> Response.Type.NULL
+                }
+                Response(amount, balance, adapterType, errorMessage)
             }
-            Response(amount, balance, adapterType, errorMessage)
         }
     }
 
