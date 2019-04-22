@@ -21,6 +21,7 @@ import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
 import com.lgou2w.ldk.common.notNull
+import java.util.Collections
 import java.util.HashMap
 import java.util.Locale
 
@@ -284,17 +285,21 @@ enum class Enchantment(
 
     companion object {
 
-        @JvmStatic private val ID_MAP : MutableMap<Int, Enchantment> = HashMap()
-        @JvmStatic private val NAME_MAP : MutableMap<String, Enchantment> = HashMap()
+        @JvmStatic private val ID_MAP : Map<Int, Enchantment>
+        @JvmStatic private val NAME_MAP : Map<String, Enchantment>
 
         init {
+            val idMap = HashMap<Int, Enchantment>()
+            val nameMap = HashMap<String, Enchantment>()
             values().forEach {
-                ID_MAP[it.id] = it
+                idMap[it.id] = it
                 // Maximize compatibility with old and new version type names
                 // 最大化兼容旧版本和新版本的类型名称
-                NAME_MAP[it.legacy] = it
-                NAME_MAP[it.type] = it
+                nameMap[it.legacy] = it
+                nameMap[it.type] = it
             }
+            ID_MAP = Collections.unmodifiableMap(idMap)
+            NAME_MAP = Collections.unmodifiableMap(nameMap)
         }
 
         /**

@@ -23,6 +23,7 @@ import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import java.util.Collections
 import java.util.HashMap
 
 /**
@@ -141,19 +142,23 @@ enum class Particle(
     companion object {
 
         @JvmStatic var COMPATIBILITIES : Array<Particle> private set
-        @JvmStatic private val ID_MAP : MutableMap<Int, Particle> = HashMap()
-        @JvmStatic private val NAME_MAP : MutableMap<String, Particle> = HashMap()
+        @JvmStatic private val ID_MAP : Map<Int, Particle>
+        @JvmStatic private val NAME_MAP : Map<String, Particle>
 
         // internal < 0 => skip
         // Particle > SPIT && CURRENT < 1.13 => skip
 
         init {
             val isV113OrLater = MinecraftBukkitVersion.isV113OrLater
+            val idMap = HashMap<Int, Particle>()
+            val nameMap = HashMap<String, Particle>()
             values().forEach { particle ->
-                ID_MAP[particle.value] = particle
-                NAME_MAP[particle.legacy] = particle
-                NAME_MAP[particle.type] = particle
+                idMap[particle.value] = particle
+                nameMap[particle.legacy] = particle
+                nameMap[particle.type] = particle
             }
+            ID_MAP = Collections.unmodifiableMap(idMap)
+            NAME_MAP = Collections.unmodifiableMap(nameMap)
             COMPATIBILITIES = ID_MAP.values
                 .filter { (isV113OrLater && it.internal >= 0) || (!isV113OrLater && it.ordinal <= SPIT.ordinal) }
                 .toTypedArray()
