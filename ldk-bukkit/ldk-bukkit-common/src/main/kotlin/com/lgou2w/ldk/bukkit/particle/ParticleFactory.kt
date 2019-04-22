@@ -402,7 +402,7 @@ object ParticleFactory {
             .asSequence()
             .filter {
                 val result = filter(it)
-                if (result && it.location.distanceSquared(center) >= 256.0)
+                if (result && !longDistance && it.location.distanceSquared(center) >= 256.0)
                     longDistance = true
                 result
             }

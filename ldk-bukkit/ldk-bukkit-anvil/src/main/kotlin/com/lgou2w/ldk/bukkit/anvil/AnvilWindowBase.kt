@@ -65,7 +65,7 @@ abstract class AnvilWindowBase(
 
     override fun open(player: Player) {
         if (isOpened)
-            throw IllegalStateException("The anvil window is already opened.")
+            throw IllegalStateException("Anvil window is already opened.")
         safeRegisterListenerHandler()
     }
 
@@ -102,7 +102,6 @@ abstract class AnvilWindowBase(
 
         @JvmStatic private val CLASS_CONTAINER by lazyMinecraftClass("Container")
         @JvmStatic private val CLASS_CONTAINER_ANVIL by lazyMinecraftClass("ContainerAnvil")
-        @JvmStatic private val CLASS_ENTITY_HUMAN by lazyMinecraftClass("EntityHuman")
         @JvmStatic private val CLASS_CRAFT_INVENTORY_VIEW by lazyCraftBukkitClass("inventory.CraftInventoryView")
 
         @JvmStatic private val CLASSES by lazy { ASMClassLoader.ofInstance().defineClasses(AnvilWindowImplGenerator.generate()) }
@@ -131,7 +130,7 @@ abstract class AnvilWindowBase(
         @JvmStatic private val FIELD_CONTAINER_ANVIL_PLAYER : AccessorField<Any, Any> by lazy {
             FuzzyReflect.of(CLASS_CONTAINER_ANVIL, true)
                 .useFieldMatcher()
-                .withType(CLASS_ENTITY_HUMAN)
+                .withType(EntityFactory.CLASS_ENTITY_HUMAN)
                 .resultAccessor()
         }
 
