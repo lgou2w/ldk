@@ -122,9 +122,9 @@ enum class Particle(
     @API(Level.Minecraft_V1_13) DOLPHIN(49, "dolphin", "dolphin"),
 
     // TODO Minecraft 1.14 Draft
-    @Draft @Deprecated("Draft") @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
-    @Draft @Deprecated("Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
-    @Draft @Deprecated("Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
     ;
 
     constructor(

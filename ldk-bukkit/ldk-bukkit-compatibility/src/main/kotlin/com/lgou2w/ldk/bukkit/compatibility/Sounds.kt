@@ -272,11 +272,11 @@ enum class Sounds(private vararg val versionDependentNames: String) {
 
     // Minecraft 1.14
 
-    @Draft @Deprecated("Draft") NOTE_IRON_XYLOPHONE("BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"),
-    @Draft @Deprecated("Draft") NOTE_COW_BELL("BLOCK_NOTE_BLOCK_COW_BELL"),
-    @Draft @Deprecated("Draft") NOTE_DIDGERIDOO("BLOCK_NOTE_BLOCK_DIDGERIDOO"),
-    @Draft @Deprecated("Draft") NOTE_BIT("BLOCK_NOTE_BLOCK_BIT"),
-    @Draft @Deprecated("Draft") NOTE_BANJO("BLOCK_NOTE_BLOCK_BANJO"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_IRON_XYLOPHONE("BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_COW_BELL("BLOCK_NOTE_BLOCK_COW_BELL"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_DIDGERIDOO("BLOCK_NOTE_BLOCK_DIDGERIDOO"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_BIT("BLOCK_NOTE_BLOCK_BIT"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_BANJO("BLOCK_NOTE_BLOCK_BANJO"),
     ;
 
     private var valid : Sound? = null
