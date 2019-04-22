@@ -53,6 +53,10 @@ class MinecraftVersion(
         @JvmField val V1_12 = MinecraftVersion(1, 12, 0)
         @JvmField val V1_13 = MinecraftVersion(1, 13, 0)
         @JvmField val V1_14 = MinecraftVersion(1, 14, 0)
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        @JvmField val V1_15 = MinecraftVersion(1, 15, 0)
 
         @JvmStatic
         private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC.\\s*([a-zA-Z0-9\\-.]+)\\s*\\)")
@@ -103,7 +107,8 @@ class MinecraftVersion(
                         Level.Minecraft_V1_11 to V1_11,
                         Level.Minecraft_V1_12 to V1_12,
                         Level.Minecraft_V1_13 to V1_13,
-                        Level.Minecraft_V1_14 to V1_14
+                        Level.Minecraft_V1_14 to V1_14,
+                        Level.Minecraft_V1_15 to V1_15
                 ))
 
         /**

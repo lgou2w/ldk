@@ -43,6 +43,10 @@ enum class Level {
     Minecraft_V1_12,
     Minecraft_V1_13,
     Minecraft_V1_14,
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    Minecraft_V1_15,
     ;
 
     /**
@@ -55,5 +59,8 @@ enum class Level {
         get() = MinecraftVersion.fromLevel(this)
 }
 
+/**
+ * @since LDK 0.1.8-rc
+ */
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Draft
