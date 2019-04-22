@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.reflect.AccessorMethod
 import org.bukkit.permissions.PermissionDefault
 import java.lang.reflect.Modifier
@@ -60,6 +61,15 @@ class DefaultCommandExecutor(
      * * 表示此执行器的方法是否为静态的.
      */
     val isStatic = Modifier.isStatic(executor.source.modifiers)
+
+    /**
+     * * Indicate the method sender parameter type for this executor.
+     * * 表示此执行器的方法执行者参数类型.
+     *
+     * @see [org.bukkit.command.CommandSender]
+     * @since LDK 0.1.8-rc
+     */
+    val senderType = executor.source.parameters.first().type.notNull()
 
     override fun execute(vararg args: Any?): Any? {
         return if (isStatic)

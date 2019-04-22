@@ -163,7 +163,7 @@ fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z
             val dSquared = rLengthSq * sinSquared
             dSquared < tolerance
         }
-        .map { type.cast(it) }
+        .map(type::cast)
         .toList()
 }
 
@@ -255,6 +255,7 @@ var LivingEntity.itemInOffHand: ItemStack?
     set(value) { EntityFactory.setItemInOffHand(this, value) }
 
 /**
+ * @see [PotionEffectCustom.applyToEntity]
  * @since LDK 0.1.7-rc3
  */
 @JvmOverloads

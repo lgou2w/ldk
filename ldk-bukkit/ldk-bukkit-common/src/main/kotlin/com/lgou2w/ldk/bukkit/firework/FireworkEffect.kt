@@ -67,8 +67,8 @@ data class FireworkEffect(
         root.putByte(NBT.TAG_FIREWORKS_TYPE, type.value)
         root.putBoolean(NBT.TAG_FIREWORKS_FLICKER, canFlicker)
         root.putBoolean(NBT.TAG_FIREWORKS_TRAIL, hasTrail)
-        root.putIntArray(NBT.TAG_FIREWORKS_COLORS, colors.map { it.asRGB() }.toIntArray())
-        root.putIntArray(NBT.TAG_FIREWORKS_FADE_COLORS, fades.map { it.asRGB() }.toIntArray())
+        root.putIntArray(NBT.TAG_FIREWORKS_COLORS, colors.map(Color::asRGB).toIntArray())
+        root.putIntArray(NBT.TAG_FIREWORKS_FADE_COLORS, fades.map(Color::asRGB).toIntArray())
         return root
     }
 
@@ -77,8 +77,8 @@ data class FireworkEffect(
         result["type"] = type.value
         result["flicker"] = canFlicker
         result["trail"] = hasTrail
-        result["colors"] = colors.map { it.asRGB() }
-        result["fades"] = fades.map { it.asRGB() }
+        result["colors"] = colors.map(Color::asRGB)
+        result["fades"] = fades.map(Color::asRGB)
         return result
     }
 
@@ -111,8 +111,8 @@ data class FireworkEffect(
             val type = Enums.ofValuableNotNull(FireworkType::class.java, args["type"].toString().toInt())
             val flicker = args["flicker"]?.toString()?.toBoolean() ?: false
             val trail = args["trail"]?.toString()?.toBoolean() ?: false
-            val colors = (args["colors"] as? List<Int>)?.map { Color.fromRGB(it) } ?: emptyList()
-            val fadeColors = (args["fades"] as? List<Int>)?.map { Color.fromRGB(it) } ?: emptyList()
+            val colors = (args["colors"] as? List<Int>)?.map(Color::fromRGB) ?: emptyList()
+            val fadeColors = (args["fades"] as? List<Int>)?.map(Color::fromRGB) ?: emptyList()
             return FireworkEffect(type, flicker, trail, colors, fadeColors)
         }
 
@@ -121,8 +121,8 @@ data class FireworkEffect(
             val type = Enums.ofValuableNotNull(FireworkType::class.java, root.getInt(NBT.TAG_FIREWORKS_TYPE))
             val flicker = root.getBoolean(NBT.TAG_FIREWORKS_FLICKER)
             val trail = root.getBoolean(NBT.TAG_FIREWORKS_TRAIL)
-            val colors = root.getList(NBT.TAG_FIREWORKS_COLORS).asElements<Int>().map { Color.fromRGB(it) }
-            val fades = root.getList(NBT.TAG_FIREWORKS_FADE_COLORS).asElements<Int>().map { Color.fromRGB(it) }
+            val colors = root.getList(NBT.TAG_FIREWORKS_COLORS).asElements<Int>().map(Color::fromRGB)
+            val fades = root.getList(NBT.TAG_FIREWORKS_FADE_COLORS).asElements<Int>().map(Color::fromRGB)
             return FireworkEffect(type, flicker, trail, colors, fades)
         }
 

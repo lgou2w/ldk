@@ -174,9 +174,12 @@ abstract class ItemBuilderBase : ItemBuilder {
                 itemStack.durability.toInt()
         }
         set(value) {
-            if (MinecraftBukkitVersion.isV113OrLater)
-                tag.putShort(NBT.TAG_DAMAGE, value)
-            else
+            if (MinecraftBukkitVersion.isV113OrLater) {
+                val before = tag.getShortOrNull(NBT.TAG_DAMAGE) ?: 0
+                if (before <= 0 && value <= 0) // SEE -> https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/c3749a
+                    tag.remove(NBT.TAG_DAMAGE)
+                else tag.putShort(NBT.TAG_DAMAGE, value)
+            } else
                 @Suppress("DEPRECATION")
                 itemStack.durability = value.toShort()
         }
@@ -422,7 +425,9 @@ abstract class ItemBuilderBase : ItemBuilder {
                     ?.asElements<NBTTagCompound>()
                     ?.associate {
                         val id = it.getString(NBT.TAG_ENCH_ID)
-                        Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                        val lvl = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                            it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                        Enchantment.fromName(id) to lvl
                     }
             } else {
                 tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
@@ -479,7 +484,9 @@ abstract class ItemBuilderBase : ItemBuilder {
             tag.getListOrDefault(NBT.TAG_ENCH_FRESHLY)
                 .addCompound(ofCompound {
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
-                    putShort(NBT.TAG_ENCH_LVL, level)
+                    if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        putInt(NBT.TAG_ENCH_LVL, level)
+                    else putShort(NBT.TAG_ENCH_LVL, level)
                 })
         } else {
             tag.getListOrDefault(NBT.TAG_ENCH_LEGACY)
@@ -512,7 +519,9 @@ abstract class ItemBuilderBase : ItemBuilder {
             tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
                 ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getString(NBT.TAG_ENCH_ID)
-                    Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    val lvl = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    Enchantment.fromName(id) to lvl
                 }, block)
         } else {
             tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
@@ -885,7 +894,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         get() = tag.getIntOrNull(NBT.TAG_REPAIR_COST)
         set(value) {
             removeRepairCost()
-            if (value != null)
+            if (value != null && value != 0) // SEE -> https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/c3749a
                 tag.putInt(NBT.TAG_REPAIR_COST, value)
         }
 
@@ -1172,7 +1181,8 @@ abstract class ItemBuilderBase : ItemBuilder {
             return tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
                 ?.asElements<NBTTagCompound>()
                 ?.associate {
-                    val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    val level = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
                     val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                         Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                     else
@@ -1220,7 +1230,10 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun addStoredEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
         tag.getListOrDefault(NBT.TAG_STORED_ENCHANTMENTS)
             .addCompound(ofCompound {
-                putShort(NBT.TAG_ENCH_LVL, level)
+                if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                    putInt(NBT.TAG_ENCH_LVL, level)
+                else
+                    putShort(NBT.TAG_ENCH_LVL, level)
                 if (MinecraftBukkitVersion.isV113OrLater)
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
                 else
@@ -1248,7 +1261,8 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeStoredEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
             ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
-                val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                val level = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                    it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
                 val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                     Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                 else

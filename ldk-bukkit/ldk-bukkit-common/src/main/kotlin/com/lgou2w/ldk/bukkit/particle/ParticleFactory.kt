@@ -161,14 +161,13 @@ object ParticleFactory {
      *     * BLOCK_CRACK | BLOCK_DUST | FALLING_DUST
      *          * => Block Id ^ Data << 12
      *     * RED_DUST => RED / 255F = offsetX, GREEN / 255F = offsetY, BLUE / 255F = offsetZ
-     *          * if (RED == 0) offsetX = Float.MIN_NORMAL
      */
 
     /**
      * * Create a particle effect packet with the given [particle].
      * * 将给定的粒子效果 [particle] 以给定的参数创建粒子效果数据包.
      *
-     * @param data [Material] | [ItemStack] | [Block] | [ParticleDust] | [Color]
+     * @param data [Material] | [ItemStack] | [Block] | [ParticleDust] | [Color] | `null`
      * @throws [IllegalArgumentException] If wrong particle data.
      * @since LDK 0.1.8-rc
      */
@@ -214,6 +213,7 @@ object ParticleFactory {
                 is ItemStack -> data
                 is Material -> ItemStack(data)
                 is ParticleData -> ItemStack(data.type)
+                null -> ItemStack(Material.AIR) // nullable
                 else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
             }
             CONSTRUCTOR_PARAM_ITEM.notNull().newInstance(nms, ItemFactory.asNMSCopy(stack))
@@ -222,6 +222,7 @@ object ParticleFactory {
                 is Block -> FIELD_CRAFT_BLOCK_DATA_STATE.notNull()[data.blockData]
                 is Material -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, data, 0.toByte())
                 is ParticleData -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, data.type, data.data.toByte())
+                null -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, Material.AIR, 0.toByte()) // nullable
                 else -> throw IllegalArgumentException("Particle BLOCK | BLOCKDUST | FALLING_DUST data can only be Material | Block | ParticleData.")
             }
             CONSTRUCTOR_PARAM_BLOCK.notNull().newInstance(nms, block)
@@ -278,6 +279,7 @@ object ParticleFactory {
                 is ItemStack -> data.type to data.data.notNull().data.toInt()
                 is Material -> data to 0
                 is ParticleData -> data.type to data.data
+                null -> Material.AIR to 0 // nullable
                 else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
             }
             intArrayOf(type.id, value)
@@ -286,6 +288,7 @@ object ParticleFactory {
                 is Block -> data.type to data.data.toInt()
                 is Material -> data to 0
                 is ParticleData -> data.type to data.data
+                null -> Material.AIR to 0 // nullable
                 else -> throw IllegalArgumentException("Particle BLOCK | BLOCKDUST | FALLING_DUST data can only be Material | Block | ParticleData.")
             }
             intArrayOf(type.id or (value shl 12))
@@ -297,8 +300,6 @@ object ParticleFactory {
             overrideOffsetX = color.red / 255.0f
             overrideOffsetY = color.green / 255.0f
             overrideOffsetZ = color.blue / 255.0f
-            if (color.red == 0)
-                overrideOffsetX = Float.MIN_VALUE
         }
         if (particle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
             overrideOffsetX = data.value / 24f
@@ -316,8 +317,8 @@ object ParticleFactory {
     }
 
     /**
-     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
-     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData] | `null`
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData] | `null`
      * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
      * @param data [Particle.NOTE] => [ParticleNote] | `null`
      */
@@ -330,7 +331,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
@@ -339,8 +340,8 @@ object ParticleFactory {
     }
 
     /**
-     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
-     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData] | `null`
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData] | `null`
      * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
      * @param data [Particle.NOTE] => [ParticleNote] | `null`
      */
@@ -353,7 +354,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
@@ -362,8 +363,8 @@ object ParticleFactory {
     }
 
     /**
-     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
-     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData] | `null`
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData] | `null`
      * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
      * @param data [Particle.NOTE] => [ParticleNote] | `null`
      */
@@ -376,7 +377,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
@@ -401,7 +402,7 @@ object ParticleFactory {
             .asSequence()
             .filter {
                 val result = filter(it)
-                if (result && it.location.distanceSquared(center) >= 256.0)
+                if (result && !longDistance && it.location.distanceSquared(center) >= 256.0)
                     longDistance = true
                 result
             }

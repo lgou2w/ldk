@@ -116,9 +116,10 @@ class DefaultRegisteredCommand(
     }
 
     override fun mappingExecutorDescriptions(mapping: Map<String, String?>) {
-        mExecutors.values.forEach { executor ->
-            val description = mapping[executor.name]
-            executor.description = description
+        mapping.forEach { (name, description) ->
+            val executor = mExecutors[name]
+            if (executor != null)
+                executor.description = description
         }
     }
 
@@ -128,33 +129,18 @@ class DefaultRegisteredCommand(
      *
      **************************************************************************/
 
-    private fun getRootParent(command: RegisteredCommand?): RegisteredCommand? {
-        val parent = command?.parent
-        return if (parent == null)
-            command
-        else
-            getRootParent(parent)
-    }
-
-    private fun compareWithAliases(source: String): Boolean {
-        var result = source == name
-        if (!result)
-            result = aliases.contains(source)
-        return result
-    }
-
     override fun execute(sender: CommandSender, label: String, args: Array<out String>): Boolean {
         if (!testPermissionIfFailed(sender, permission) {
                     (feedback ?: manager.globalFeedback)
                         .onPermission(sender, label, this, null, args, it)
                 })
             return true
-        return if (args.isEmpty() || (compareWithAliases(label) && args.isEmpty())) {
+        return if (args.isEmpty() || (compareWithAliases(this, label) && args.isEmpty())) {
             val childSameExecutor = findExecutor(name)
             if (childSameExecutor != null)
                 invokeExecutor(childSameExecutor, sender, emptyArray()) // mapping not have arguments
             else {
-                typeHelp(sender)
+                typeHelp(this, sender)
                 true
             }
         } else {
@@ -171,9 +157,9 @@ class DefaultRegisteredCommand(
     ): Boolean {
         val commandExecutor = executor ?: findExecutor(args.first())
         val arguments = if (args.isEmpty()) emptyArray() else pollArgument(args)
-        if (commandExecutor != null && compareWithAliases(commandExecutor.name) && args.isNotEmpty()) {
+        if (commandExecutor != null && compareWithAliases(this, commandExecutor.name) && args.isNotEmpty()) {
             // mapping not have arguments
-            typeHelp(sender)
+            typeHelp(this, sender)
             return true
         }
         if (commandExecutor != null) try {
@@ -191,7 +177,7 @@ class DefaultRegisteredCommand(
         } catch (e: Exception) {
             throw CommandException(e.message, e)
         } else {
-            typeHelp(sender)
+            typeHelp(this, sender)
             return true
         }
     }
@@ -207,7 +193,9 @@ class DefaultRegisteredCommand(
                     feedback.onPermission(sender, name, this, executor, args, it) }) {
             return false
         }
-        if (executor.isPlayable && sender !is Player) {
+        if ((executor.isPlayable && sender !is Player) ||
+            (Player::class.java.isAssignableFrom(executor.senderType) && sender !is Player)
+        ) {
             feedback.onPlayable(sender, name, this, executor, args)
             return false
         }
@@ -245,41 +233,6 @@ class DefaultRegisteredCommand(
             parameterValues.add(ArrayList(varArguments)) // vararg
         }
         return true
-    }
-
-    private fun testPermissionIfFailed(
-            sender: CommandSender,
-            permission: Array<out String>?,
-            block: Consumer<String>? = null
-    ): Boolean {
-        return permission == null || permission.all {
-            val result = sender.hasPermission(it)
-            if (!result && block != null)
-                block(it)
-            result
-        }
-    }
-
-    private fun pollArgument(args: Array<out String>): Array<out String> {
-        return if (args.size <= 1)
-            emptyArray()
-        else
-            args.copyOfRange(1, args.size)
-    }
-
-    private fun typeHelp(sender: CommandSender) {
-        val root = rootParent ?: this
-        val usage = usage
-        if (usage == null || usage.isEmpty())
-            sender.sendMessage(root.prefix + ChatColor.RED + betterDefaultTypeHelp(root.name))
-        else
-            sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
-    }
-
-    private fun betterDefaultTypeHelp(name: String): String {
-        val chinese = manager.globalFeedback is SimpleChineseCommandFeedback || feedback is SimpleChineseCommandFeedback
-        return if (!chinese) "Unknown command. Type \"/$name help\" for help."
-        else "未知命令. 输入 \"/$name help\" 查看帮助."
     }
 
     override fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
@@ -357,6 +310,58 @@ class DefaultRegisteredCommand(
     }
 
     companion object Constants {
+
         const val COMMAND_PLACEHOLDER = "<command>"
+
+        private fun getRootParent(command: RegisteredCommand?): RegisteredCommand? {
+            val parent = command?.parent
+            return if (parent == null)
+                command
+            else
+                getRootParent(parent)
+        }
+
+        private fun compareWithAliases(command: RegisteredCommand, source: String): Boolean {
+            var result = source == command.name
+            if (!result)
+                result = command.aliases.contains(source)
+            return result
+        }
+
+        private fun testPermissionIfFailed(
+                sender: CommandSender,
+                permission: Array<out String>?,
+                block: Consumer<String>? = null
+        ): Boolean {
+            return permission == null || permission.all {
+                val result = sender.hasPermission(it)
+                if (!result && block != null)
+                    block(it)
+                result
+            }
+        }
+
+        private fun pollArgument(args: Array<out String>): Array<out String> {
+            return if (args.size <= 1)
+                emptyArray()
+            else
+                args.copyOfRange(1, args.size)
+        }
+
+        private fun typeHelp(command: DefaultRegisteredCommand, sender: CommandSender) {
+            val root = command.rootParent ?: command
+            val usage = command.usage
+            if (usage == null || usage.isEmpty())
+                sender.sendMessage(root.prefix + ChatColor.RED + betterDefaultTypeHelp(command, root.name))
+            else
+                sender.sendMessage(root.prefix + usage.replace(COMMAND_PLACEHOLDER, root.name))
+        }
+
+        private fun betterDefaultTypeHelp(command: DefaultRegisteredCommand, name: String): String {
+            val chinese = command.manager.globalFeedback is SimpleChineseCommandFeedback ||
+                          command.feedback is SimpleChineseCommandFeedback
+            return if (!chinese) "Unknown command. Type \"/$name help\" for help."
+            else "未知命令. 输入 \"/$name help\" 查看帮助."
+        }
     }
 }

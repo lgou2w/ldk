@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3.21-blue.svg"></a>
+<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3.30-blue.svg"></a>
 <a href="https://travis-ci.org/lgou2w/ldk"><img src="https://travis-ci.org/lgou2w/ldk.svg?branch=develop" /></a>
 <a href="https://codebeat.co/projects/github-com-lgou2w-ldk-develop"><img alt="codebeat badge" src="https://codebeat.co/badges/7c8fccc7-6096-4f12-81e3-98b1f39a3875" /></a>
 <a href="https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"><img src="https://img.shields.io/maven-central/v/com.lgou2w/ldk.svg?color=%231081c2" /></a>
@@ -67,6 +67,7 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
         * [`ldk-bukkit-common`](/ldk-bukkit/ldk-bukkit-common)
         * [`ldk-bukkit-compatibility`](/ldk-bukkit/ldk-bukkit-compatibility)
         * [`ldk-bukkit-i18n`](/ldk-bukkit/ldk-bukkit-i18n)
+        * [`ldk-bukkit-anvil`](/ldk-bukkit/ldk-bukkit-anvil)
         * [`ldk-bukkit-cmd`](/ldk-bukkit/ldk-bukkit-cmd)
         * [`ldk-bukkit-gui`](/ldk-bukkit/ldk-bukkit-gui)
         * [`ldk-bukkit-region`](/ldk-bukkit/ldk-bukkit-region)

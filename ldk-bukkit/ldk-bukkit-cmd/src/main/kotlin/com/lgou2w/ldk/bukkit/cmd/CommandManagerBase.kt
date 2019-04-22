@@ -45,12 +45,12 @@ abstract class CommandManagerBase(
 ) : CommandManager {
 
     protected val mCommands = ConcurrentHashMap<String, RegisteredCommand>()
-    override val commands : MutableMap<String, RegisteredCommand>
+    override val commands : Map<String, RegisteredCommand>
         get() = Collections.unmodifiableMap(mCommands)
 
     override val transforms = Transforms()
     override val completes = Completes()
-    override var globalFeedback: CommandFeedback = SimpleCommandFeedback()
+    override var globalFeedback : CommandFeedback = SimpleCommandFeedback()
 
     override fun registerCommand(source: Any): RegisteredCommand {
         val command = parser.parse(this, source)
@@ -58,7 +58,7 @@ abstract class CommandManagerBase(
         if (existed != null)
             throw UnsupportedOperationException("This command '${command.name}' has already been registered.")
         return if (registerBukkitCommand(command)) {
-            CommandManagerBase.initialize(command, this)
+            initialize(command, this)
             mCommands[command.name] = command
             command
         } else {
@@ -75,7 +75,7 @@ abstract class CommandManagerBase(
         return if (mCommands.containsKey(command.name))
             unregisterBukkitCommand(command) && mCommands.remove(command.name, command)
         else
-            false
+            true
     }
 
     override fun unregisterCommands(): Boolean {

@@ -16,10 +16,12 @@
 
 package com.lgou2w.ldk.bukkit.item
 
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
 import com.lgou2w.ldk.common.notNull
+import java.util.Collections
 import java.util.HashMap
 import java.util.Locale
 
@@ -237,6 +239,30 @@ enum class Enchantment(
      * * 附魔类型: 消失诅咒
      */
     VANISHING_CURSE(71, 1, "vanishing_curse", "vanishing_curse", MinecraftVersion.V1_11),
+
+    // TODO Id is negative number because of uncertainty.
+
+    /**
+     * * Enchantment: Multishot
+     * * 附魔类型: 多重射击
+     */
+    @Draft
+    @Deprecated("Minecraft 1.14 Draft")
+    MULTISHOT(-1, 1, "multishot", "multishot", MinecraftVersion.V1_14),
+    /**
+     * * Enchantment: Quick Charge
+     * * 附魔类型: 快速装填
+     */
+    @Draft
+    @Deprecated("Minecraft 1.14 Draft")
+    QUICK_CHARGE(-2, 3, "quick_charge", "quick_charge", MinecraftVersion.V1_14),
+    /**
+     * * Enchantment: Piercing
+     * * 附魔类型: 穿透
+     */
+    @Draft
+    @Deprecated("Minecraft 1.14 Draft")
+    PIERCING(-3, 4, "piercing", "piercing", MinecraftVersion.V1_14),
     ;
 
     override val value : String
@@ -259,17 +285,21 @@ enum class Enchantment(
 
     companion object {
 
-        @JvmStatic private val ID_MAP : MutableMap<Int, Enchantment> = HashMap()
-        @JvmStatic private val NAME_MAP : MutableMap<String, Enchantment> = HashMap()
+        @JvmStatic private val ID_MAP : Map<Int, Enchantment>
+        @JvmStatic private val NAME_MAP : Map<String, Enchantment>
 
         init {
+            val idMap = HashMap<Int, Enchantment>()
+            val nameMap = HashMap<String, Enchantment>()
             values().forEach {
-                ID_MAP[it.id] = it
+                idMap[it.id] = it
                 // Maximize compatibility with old and new version type names
                 // 最大化兼容旧版本和新版本的类型名称
-                NAME_MAP[it.legacy] = it
-                NAME_MAP[it.type] = it
+                nameMap[it.legacy] = it
+                nameMap[it.type] = it
             }
+            ID_MAP = Collections.unmodifiableMap(idMap)
+            NAME_MAP = Collections.unmodifiableMap(nameMap)
         }
 
         /**

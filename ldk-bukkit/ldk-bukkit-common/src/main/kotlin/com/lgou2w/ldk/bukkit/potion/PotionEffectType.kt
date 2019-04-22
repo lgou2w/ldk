@@ -16,10 +16,12 @@
 
 package com.lgou2w.ldk.bukkit.potion
 
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
 import com.lgou2w.ldk.common.notNull
+import java.util.Collections
 import java.util.HashMap
 import java.util.Locale
 
@@ -216,6 +218,21 @@ enum class PotionEffectType(
      * @since [MinecraftVersion.V1_13]
      */
     DOLPHINS_GRACE(30, "dolphins_grace", "dolphins_grace", MinecraftVersion.V1_13),
+
+    // TODO Minecraft 1.14 Draft
+
+    /**
+     * * Potion effect type: Bad Omen
+     * * 药水效果类型: 不祥之兆
+     */
+    @Draft @Deprecated("Minecraft 1.14 Draft")
+    BAD_OMEN(31, "bad_omen", "bad_omen", MinecraftVersion.V1_14),
+    /**
+     * * Potion effect type: Hero of the Village
+     * * 药水效果类型: 村庄英雄
+     */
+    @Draft @Deprecated("Minecraft 1.14 Draft")
+    HERO_OF_THE_VILLAGE(32, "hero_of_the_village", "hero_of_the_village", MinecraftVersion.V1_14), // since 19w13a
     ;
 
     override val value : String
@@ -247,15 +264,19 @@ enum class PotionEffectType(
 
     companion object {
 
-        @JvmStatic private val ID_MAP : MutableMap<Int, PotionEffectType> = HashMap()
-        @JvmStatic private val NAME_MAP : MutableMap<String, PotionEffectType> = HashMap()
+        @JvmStatic private val ID_MAP : Map<Int, PotionEffectType>
+        @JvmStatic private val NAME_MAP : Map<String, PotionEffectType>
 
         init {
+            val idMap = HashMap<Int, PotionEffectType>()
+            val nameMap = HashMap<String, PotionEffectType>()
             values().forEach {
-                ID_MAP[it.id] = it
-                NAME_MAP[it.legacy] = it
-                NAME_MAP[it.type] = it
+                idMap[it.id] = it
+                nameMap[it.legacy] = it
+                nameMap[it.type] = it
             }
+            ID_MAP = Collections.unmodifiableMap(idMap)
+            NAME_MAP = Collections.unmodifiableMap(nameMap)
         }
 
         /**

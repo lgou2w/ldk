@@ -22,4 +22,9 @@ package com.lgou2w.ldk.bukkit.event
  * @see [org.bukkit.event.Cancellable]
  * @author lgou2w
  */
-interface Cancellable : org.bukkit.event.Cancellable
+interface Cancellable : org.bukkit.event.Cancellable {
+
+    override fun isCancelled(): Boolean
+
+    override fun setCancelled(cancel: Boolean)
+}

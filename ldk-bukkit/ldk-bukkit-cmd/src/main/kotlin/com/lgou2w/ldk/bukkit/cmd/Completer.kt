@@ -35,7 +35,7 @@ interface Completer {
      *
      * @param parameter Executor parameter.
      * @param parameter 执行器参数.
-     * @param parameter Executor.
+     * @param sender Executor.
      * @param sender 执行者.
      * @param value Completion value.
      * @param value 补全值.

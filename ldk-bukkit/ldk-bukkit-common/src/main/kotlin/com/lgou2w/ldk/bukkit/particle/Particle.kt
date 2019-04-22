@@ -17,11 +17,13 @@
 package com.lgou2w.ldk.bukkit.particle
 
 import com.lgou2w.ldk.bukkit.version.API
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import java.util.Collections
 import java.util.HashMap
 
 /**
@@ -118,6 +120,11 @@ enum class Particle(
     @API(Level.Minecraft_V1_13) BUBBLE_COLUMN_UP(47, "bubble_column_up", "bubble_column_up"),
     @API(Level.Minecraft_V1_13) NAUTILUS(48, "nautilus", "nautilus"),
     @API(Level.Minecraft_V1_13) DOLPHIN(49, "dolphin", "dolphin"),
+
+    // TODO Minecraft 1.14 Draft
+    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
+    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
     ;
 
     constructor(
@@ -135,19 +142,23 @@ enum class Particle(
     companion object {
 
         @JvmStatic var COMPATIBILITIES : Array<Particle> private set
-        @JvmStatic private val ID_MAP : MutableMap<Int, Particle> = HashMap()
-        @JvmStatic private val NAME_MAP : MutableMap<String, Particle> = HashMap()
+        @JvmStatic private val ID_MAP : Map<Int, Particle>
+        @JvmStatic private val NAME_MAP : Map<String, Particle>
 
         // internal < 0 => skip
         // Particle > SPIT && CURRENT < 1.13 => skip
 
         init {
             val isV113OrLater = MinecraftBukkitVersion.isV113OrLater
-            Particle.values().forEach { particle ->
-                ID_MAP[particle.value] = particle
-                NAME_MAP[particle.legacy] = particle
-                NAME_MAP[particle.type] = particle
+            val idMap = HashMap<Int, Particle>()
+            val nameMap = HashMap<String, Particle>()
+            values().forEach { particle ->
+                idMap[particle.value] = particle
+                nameMap[particle.legacy] = particle
+                nameMap[particle.type] = particle
             }
+            ID_MAP = Collections.unmodifiableMap(idMap)
+            NAME_MAP = Collections.unmodifiableMap(nameMap)
             COMPATIBILITIES = ID_MAP.values
                 .filter { (isV113OrLater && it.internal >= 0) || (!isV113OrLater && it.ordinal <= SPIT.ordinal) }
                 .toTypedArray()
@@ -178,7 +189,7 @@ enum class Particle(
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) = ParticleFactory.sendParticle(this, center, range, offsetX, offsetY, offsetZ, speed, count, data)
@@ -193,7 +204,7 @@ enum class Particle(
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) = ParticleFactory.sendParticle(sender, this, center, offsetX, offsetY, offsetZ, speed, count, data)
@@ -208,7 +219,7 @@ enum class Particle(
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) = ParticleFactory.sendParticle(players, this, center, offsetX, offsetY, offsetZ, speed, count, data)

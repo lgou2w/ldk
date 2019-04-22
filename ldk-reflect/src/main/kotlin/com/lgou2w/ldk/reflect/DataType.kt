@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.reflect
 
+import java.util.Collections
+
 /**
  * ## DataType (数据类型)
  *
@@ -98,13 +100,15 @@ enum class DataType(
 
     companion object {
 
-        private val CLASS_MAP : MutableMap<Class<*>, DataType> = HashMap()
+        private val CLASS_MAP : Map<Class<*>, DataType>
 
         init {
+            val classMap = HashMap<Class<*>, DataType>()
             values().forEach {
-                CLASS_MAP[it.primitive] = it
-                CLASS_MAP[it.reference] = it
+                classMap[it.primitive] = it
+                classMap[it.reference] = it
             }
+            CLASS_MAP = Collections.unmodifiableMap(classMap)
         }
 
         /**

@@ -70,16 +70,11 @@ class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
 //        checkReference()
 //    }
 
-    private fun World.toAdapter(): BukkitWorld
-            = BukkitWorld(this)
-    private fun Vector.toRegionVectorBlock(): RegionVectorBlock
-            = RegionVectorBlock(x, y, z)
-    private fun Vector.toRegionVector2D(): RegionVector2D
-            = RegionVector2D(x, z)
-    private fun Vector2D.toRegionVector2D(): RegionVector2D
-            = RegionVector2D(x, z)
-
     companion object {
         const val NAME = "WorldEdit"
+        private fun World.toAdapter() = BukkitWorld(this)
+        private fun Vector.toRegionVectorBlock() = RegionVectorBlock(x, y, z)
+        private fun Vector.toRegionVector2D() = RegionVector2D(x, z)
+        private fun Vector2D.toRegionVector2D() = RegionVector2D(x, z)
     }
 }

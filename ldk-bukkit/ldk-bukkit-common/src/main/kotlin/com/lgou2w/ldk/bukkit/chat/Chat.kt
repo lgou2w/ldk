@@ -37,8 +37,8 @@ fun ChatSerializer.toNMS(component: ChatComponent): Any
  * * Convert the given `NMS` chat object to an implementation of the [ChatComponent] wrapper.
  * * 将给定的 `NMS` 聊天对象转换为 [ChatComponent] 包装的实现.
  *
- * @throws [IllegalArgumentException] If the chat component object [icbs] is not the expected `NMS` instance.
- * @throws [IllegalArgumentException] 如果聊天组件对象 [icbs] 不是预期的 `NMS` 实例.
+ * @throws [IllegalArgumentException] If the chat component object [icbc] is not the expected `NMS` instance.
+ * @throws [IllegalArgumentException] 如果聊天组件对象 [icbc] 不是预期的 `NMS` 实例.
  * @see [ChatFactory.fromNMS]
  */
 @Throws(IllegalArgumentException::class)

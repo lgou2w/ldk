@@ -62,238 +62,238 @@ class DefaultCommandParser : CommandParser {
         return command
     }
 
-    @Throws(CommandParseException::class)
-    private fun parseRoot(
-            @Suppress("UNUSED_PARAMETER")
-            manager: CommandManager,
-            clazz: Class<*>
-    ): CommandRoot {
-        if (Modifier.isAbstract(clazz.modifiers) || Modifier.isInterface(clazz.modifiers) || clazz.isEnum || clazz.isAnnotation)
-            throw CommandParseException("The command $clazz cannot be an abstract, interface, enum, or annotation class.")
-        val root = clazz.getAnnotation(CommandRoot::class.java)
-               ?: throw CommandParseException("The command $clazz must be annotated by CommandRoot.")
-        if (root.value.isBlank())
-            throw CommandParseException("The command $clazz name is blank.")
-        return root
-    }
+    companion object {
 
-    private fun parseExecutors(
-            manager: CommandManager,
-            name: String,
-            source: Any,
-            clazz: Class<*>
-    ): Map<String, DefaultCommandExecutor> {
-        return FuzzyReflect.of(clazz, true)
-            .useMethodMatcher()
-            .withAnnotation(Command::class.java)
-            .results()
-            .asReversed()
-            .filter { method ->
-                val command = method.getAnnotation(Command::class.java)
-                val parameters = method.parameters
-                isValidExecutor(manager, name, clazz, command, method, parameters)
-            }
-            .mapNotNull { method ->
-                val command = method.getAnnotation(Command::class.java)
-                val permission = method.getAnnotation(Permission::class.java)
-                val permissionDefault = method.getAnnotation(PermissionDefaultValue::class.java)
-                val sorted = method.getAnnotation(Sorted::class.java)
-                val isPlayable = method.getAnnotation(Playable::class.java) != null
-                val parameters = parseExecutorParameters(manager, method)
-                val description = method.getAnnotation(CommandDescription::class.java)?.value
-                if (parameters == null) null else command.value to buildCommandExecutor(
-                        source,
-                        command.value,
-                        command.aliases,
-                        permission?.values,
-                        permissionDefault?.value,
-                        sorted?.value,
-                        isPlayable,
-                        method,
-                        parameters,
-                        description
-                )
-            }
-            .associate { it }
-    }
+        @Throws(CommandParseException::class)
+        private fun parseRoot(
+                @Suppress("UNUSED_PARAMETER")
+                manager: CommandManager,
+                clazz: Class<*>
+        ): CommandRoot {
+            if (Modifier.isAbstract(clazz.modifiers) || Modifier.isInterface(clazz.modifiers) || clazz.isEnum || clazz.isAnnotation)
+                throw CommandParseException("The command $clazz cannot be an abstract, interface, enum, or annotation class.")
+            val root = clazz.getAnnotation(CommandRoot::class.java)
+                       ?: throw CommandParseException("The command $clazz must be annotated by CommandRoot.")
+            if (root.value.isBlank())
+                throw CommandParseException("The command $clazz name is blank.")
+            return root
+        }
 
-    private fun isValidExecutor(
-            manager: CommandManager,
-            name: String,
-            clazz: Class<*>,
-            command: Command,
-            method: Method,
-            parameters: Array<out java.lang.reflect.Parameter>
-    ): Boolean {
-        val alias = "${method.declaringClass.canonicalName}#${method.name}"
-        // Command name cannot be blank
-        if (command.value.isBlank()) {
-            betterError(manager, """
+        private fun parseExecutors(
+                manager: CommandManager,
+                name: String,
+                source: Any,
+                clazz: Class<*>
+        ): Map<String, DefaultCommandExecutor> {
+            return FuzzyReflect.of(clazz, true)
+                .useMethodMatcher()
+                .withAnnotation(Command::class.java)
+                .results()
+                .asReversed()
+                .filter { method ->
+                    val command = method.getAnnotation(Command::class.java)
+                    val parameters = method.parameters
+                    isValidExecutor(manager, name, clazz, command, method, parameters)
+                }
+                .mapNotNull { method ->
+                    val command = method.getAnnotation(Command::class.java)
+                    val permission = method.getAnnotation(Permission::class.java)
+                    val permissionDefault = method.getAnnotation(PermissionDefaultValue::class.java)
+                    val sorted = method.getAnnotation(Sorted::class.java)
+                    @Suppress("DEPRECATION") // RENAME
+                    val isPlayable = method.getAnnotation(Playable::class.java) != null || method.getAnnotation(PlayerOnly::class.java) != null
+                    val parameters = parseExecutorParameters(manager, method)
+                    val description = method.getAnnotation(CommandDescription::class.java)?.value
+                    if (parameters == null) null else command.value to buildCommandExecutor(
+                            source,
+                            command.value,
+                            command.aliases,
+                            permission?.values,
+                            permissionDefault?.value,
+                            sorted?.value,
+                            isPlayable,
+                            method,
+                            parameters,
+                            description
+                    )
+                }
+                .associate { it }
+        }
+
+        private fun isValidExecutor(
+                manager: CommandManager,
+                name: String,
+                clazz: Class<*>,
+                command: Command,
+                method: Method,
+                parameters: Array<out java.lang.reflect.Parameter>
+        ): Boolean {
+            val alias = "${method.declaringClass.canonicalName}#${method.name}"
+            // Command name cannot be blank
+            if (command.value.isBlank()) {
+                betterError(manager, """
                 Command '${clazz.simpleName}#${method.name}' executor name is blank. filtered.
                   Correction: ?
                     @Command("${method.name}")
             """.trimIndent())
-            return false
-        }
-        // Command executor parameters cannot be empty and the first must be of type CommandSender
-        // fun sample (sender: CommandSender, ...)
-        if (parameters.isNotEmpty() &&
-            !CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)) {
-            betterError(manager, """
+                return false
+            }
+            // Command executor parameters cannot be empty and the first must be of type CommandSender
+            // fun sample (sender: CommandSender, ...)
+            if (parameters.isNotEmpty() &&
+                !CommandSender::class.java.isAssignableFrom(parameters.first().parameterizedType as Class<*>)) {
+                betterError(manager, """
                 Command '${command.value}' executor first parameter is not CommandSender type. filtered.
                   Correction: ?
                     fun $alias(sender: CommandSender, ...) {...}
             """.trimIndent())
-            return false
-        }
-        // The parameter mapping can only be a CommandSender type.
-        if (command.value == name && parameters.size > 1) {
-            betterError(manager, """
+                return false
+            }
+            // The parameter mapping can only be a CommandSender type.
+            if (command.value == name && parameters.size > 1) {
+                betterError(manager, """
                 Command '${command.value}' executor and command mapping, parameters must only be one CommandSender. filtered.
                   Correction: ?
                     fun $alias(sender: CommandSender) {...}
             """.trimIndent())
-            return false
-        }
-        // Variable length parameters cannot have multiple
-        if (parameters.count { parameter -> parameter.getAnnotation(Vararg::class.java) != null } > 1) {
-            betterError(manager, """
+                return false
+            }
+            // Variable length parameters cannot have multiple
+            if (parameters.count { parameter -> parameter.getAnnotation(Vararg::class.java) != null } > 1) {
+                betterError(manager, """
                 Command '${command.value}' executor variable length parameters cannot have multiple. filtered.
                   Correction: ?
                     fun $alias(sender: CommandSender, ..., @Vararg parameter: List) {...}
             """.trimIndent())
-            return false
+                return false
+            }
+            return true
         }
-        return true
-    }
 
-    private fun parseExecutorParameters(
-            manager: CommandManager,
-            method: Method
-    ): Array<out CommandExecutor.Parameter>? {
-        val parameters = method.parameters
-        val processLength = parameters.size - 1
-        return parameters
-            .filterIndexed { index, _ -> index != 0 }
-            .mapIndexed { index, parameter ->
-                val type = parameter.type as Class<*>
-                val name = parameter.getAnnotation(Parameter::class.java)?.value
-                val optional = parameter.getAnnotation(Optional::class.java)
-                val nullable = parameter.getAnnotation(Nullable::class.java)
-                val playerName = parameter.getAnnotation(Playername::class.java)
-                val vararg = parameter.getAnnotation(Vararg::class.java)?.value?.java
-                val alias = "${method.declaringClass.canonicalName}#${method.name}"
-                val param = name ?: parameter.name
-                if (optional != null && nullable != null) {
-                    betterError(manager, """
+        private fun parseExecutorParameters(
+                manager: CommandManager,
+                method: Method
+        ): Array<out CommandExecutor.Parameter>? {
+            val parameters = method.parameters
+            val processLength = parameters.size - 1
+            return parameters
+                .filterIndexed { index, _ -> index != 0 }
+                .mapIndexed { index, parameter ->
+                    val type = parameter.type as Class<*>
+                    val name = parameter.getAnnotation(Parameter::class.java)?.value
+                    val optional = parameter.getAnnotation(Optional::class.java)
+                    val nullable = parameter.getAnnotation(Nullable::class.java)
+                    val playerName = parameter.getAnnotation(Playername::class.java)
+                    val vararg = parameter.getAnnotation(Vararg::class.java)?.value?.java
+                    val alias = "${method.declaringClass.canonicalName}#${method.name}"
+                    val param = name ?: parameter.name
+                    if (optional != null && nullable != null) {
+                        betterError(manager, """
                         The parameter '$param' Optional or nullable annotations can only have one, filtered.
                           Correction: ?
                             $alias(@Optional $param: ${type.name}) or
                             $alias(@Nullable $param: ${type.name})
                     """.trimIndent())
-                    return null
-                }
-                if (vararg != null) {
-                    if (index + 1 != processLength) {
-                        betterError(manager, """
+                        return null
+                    }
+                    if (vararg != null) {
+                        if (index + 1 != processLength) {
+                            betterError(manager, """
                             The variable length parameter '$param' can only be in the last position of the actuator, filtered.
                               Correction: ?
                                 fun $alias(..., $param: List<${vararg.name}>)
                         """)
-                        return null
-                    }
-                    if (type != List::class.java) {
-                        betterError(manager, """
+                            return null
+                        }
+                        if (type != List::class.java) {
+                            betterError(manager, """
                             The variable length parameter '$alias' must be a List type, filtered.
                               Correction: ?
                                 fun $alias(..., $param: List<${vararg.name}>)
                         """.trimIndent())
-                        return null
-                    }
-                    val genericParameter = method.genericParameterTypes[index + 1] as ParameterizedType
-                    val transformedType = genericParameter.actualTypeArguments.first() as Class<*>
-                    if (transformedType != vararg) {
-                        betterError(manager, """
+                            return null
+                        }
+                        val genericParameter = method.genericParameterTypes[index + 1] as ParameterizedType
+                        val transformedType = genericParameter.actualTypeArguments.first() as Class<*>
+                        if (transformedType != vararg) {
+                            betterError(manager, """
                             The expected type of the variable length parameter '$param' does not match the List type, filtered.
                               Correction: ?
                                 fun $alias(..., $param: List<${vararg.name}>)
                         """.trimIndent())
-                        return null
+                            return null
+                        }
                     }
-                }
-                if (playerName != null && type != String::class.java) {
-                    betterError(manager, """
+                    if (playerName != null && type != String::class.java) {
+                        betterError(manager, """
                             The parameter '$param' matches the player name, but the type is not a string.
                               Correction: ?
                                 fun $alias(..., @Playername $param: String)
                         """.trimIndent())
-                    return null
-                }
-                CommandExecutor.Parameter(
-                        index,
-                        type,
-                        name,
-                        optional?.def,
-                        nullable != null,
-                        type == String::class.java && playerName != null,
-                        vararg
-                )
-        }.toTypedArray()
-    }
+                        return null
+                    }
+                    CommandExecutor.Parameter(
+                            index,
+                            type,
+                            name,
+                            optional?.def,
+                            nullable != null,
+                            type == String::class.java && playerName != null,
+                            vararg
+                    )
+                }.toTypedArray()
+        }
 
-    private fun registerChildren(
-            manager: CommandManager,
-            parent: DefaultRegisteredCommand?,
-            source: Any,
-            clazz: Class<*>
-    ) {
-        clazz.declaredClasses.forEach { child ->
-            val (root, instance) = try {
-                val root = parseRoot(manager, child)
-                val instance = try {
-                    child.getConstructor().newInstance()
-                } catch (e: NoSuchMethodException) { // java inner class : Parent$Child(Parent), wtf?
-                    child.getConstructor(child.declaringClass).newInstance(source)
-                }
-                root to instance
-            } catch (e: Exception) {
-                if (e !is CommandParseException)
-                    betterError(manager, """
+        private fun registerChildren(
+                manager: CommandManager,
+                parent: DefaultRegisteredCommand?,
+                source: Any,
+                clazz: Class<*>
+        ) {
+            clazz.declaredClasses.forEach { child ->
+                val (root, instance) = try {
+                    val root = parseRoot(manager, child)
+                    val instance = try {
+                        child.getConstructor().newInstance()
+                    } catch (e: NoSuchMethodException) { // java inner class : Parent$Child(Parent), wtf?
+                        child.getConstructor(child.declaringClass).newInstance(source)
+                    }
+                    root to instance
+                } catch (e: Exception) {
+                    if (e !is CommandParseException)
+                        betterError(manager, """
                         Unable to access constructor of the $child, confirm the declaration and 'public' modifier. filtered
                           Correction: ?
                             class ${child.name} (...) or
                             class ${child.name} { public constructor(...) }
                     """.trimIndent(), e)
-                null to null
-            }
-            if (root != null && instance != null) {
-                val childPermission = child.getAnnotation(Permission::class.java)
-                val childPermissionDefault = child.getAnnotation(PermissionDefaultValue::class.java)
-                val childSorted = child.getAnnotation(Sorted::class.java)
-                val childDescription = child.getAnnotation(Description::class.java)
-                val childExecutors = parseExecutors(manager, root.value, instance, child)
-                val childCommand = buildCommandRegistered(
-                        manager,
-                        instance,
-                        parent,
-                        root.value,
-                        root.aliases,
-                        childPermission?.values,
-                        childPermissionDefault?.value,
-                        childSorted?.value,
-                        childDescription,
-                        emptyMap(),
-                        childExecutors
-                )
-                parent?.registerChild(childCommand, true)
-                registerChildren(manager, childCommand, instance, child)
+                    null to null
+                }
+                if (root != null && instance != null) {
+                    val childPermission = child.getAnnotation(Permission::class.java)
+                    val childPermissionDefault = child.getAnnotation(PermissionDefaultValue::class.java)
+                    val childSorted = child.getAnnotation(Sorted::class.java)
+                    val childDescription = child.getAnnotation(Description::class.java)
+                    val childExecutors = parseExecutors(manager, root.value, instance, child)
+                    val childCommand = buildCommandRegistered(
+                            manager,
+                            instance,
+                            parent,
+                            root.value,
+                            root.aliases,
+                            childPermission?.values,
+                            childPermissionDefault?.value,
+                            childSorted?.value,
+                            childDescription,
+                            emptyMap(),
+                            childExecutors
+                    )
+                    parent?.registerChild(childCommand, true)
+                    registerChildren(manager, childCommand, instance, child)
+                }
             }
         }
-    }
 
-    companion object {
-
-        @JvmStatic
         private fun betterError(manager: CommandManager, message: String, e: Exception? = null) {
             manager.plugin.logger.warning("-------- Command parsing warning -----")
             message.split("\n").forEach { manager.plugin.logger.warning(it) }
@@ -301,7 +301,6 @@ class DefaultCommandParser : CommandParser {
                 manager.plugin.logger.log(Level.SEVERE, e.message, e)
         }
 
-        @JvmStatic
         private fun buildCommandRegistered(
                 manager: CommandManager,
                 source: Any,
@@ -333,7 +332,6 @@ class DefaultCommandParser : CommandParser {
             )
         }
 
-        @JvmStatic
         private fun buildCommandExecutor(
                 source: Any,
                 name: String,

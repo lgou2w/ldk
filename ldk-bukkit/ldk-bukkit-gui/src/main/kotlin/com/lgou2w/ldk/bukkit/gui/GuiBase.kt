@@ -168,25 +168,8 @@ abstract class GuiBase : Gui {
             buttonList.size
         }
 
-    private fun canAdd(button: Button) {
-        if (button.index < 0 || button.index + 1 > size)
-            throw IllegalArgumentException("Invalid button index: ${button.index} (should: >= 0 || <= ${size - 1})")
-        if (button is ButtonSame) {
-            val indexes = button.indexes
-            val min = indexes.min()
-            val max = indexes.max()
-            if ((min != null && min < 0) || (max != null && max > size))
-                throw IllegalArgumentException("Invalid button index: ${if (min != null && min < 0) min else max} (should: >= 0 || <= ${size - 1})")
-        }
-        if (isButton(button.index))
-            throw IllegalArgumentException("The current index ${button.index} already has a valid button.")
-        var invalid = 0
-        if (button is ButtonSame && button.indexes.any { invalid = it; isButton(it) })
-            throw IllegalArgumentException("The same button index $invalid already has a valid button.")
-    }
-
     private fun <T : Button> addButton0(button: T): T {
-        canAdd(button)
+        canAdd(this, button)
         synchronized (buttonList) {
             buttonList.add(button)
             return button
@@ -373,6 +356,26 @@ abstract class GuiBase : Gui {
 
     @Suppress("DEPRECATION")
     companion object {
+
+        @Throws(IllegalArgumentException::class)
+        private fun canAdd(gui: Gui, button: Button) {
+            val size = gui.size
+            if (button.index < 0 || button.index + 1 > size)
+                throw IllegalArgumentException("Invalid button index: ${button.index} (should: >= 0 || <= ${size - 1})")
+            if (button is ButtonSame) {
+                val indexes = button.indexes
+                val min = indexes.min()
+                val max = indexes.max()
+                if ((min != null && min < 0) || (max != null && max > size))
+                    throw IllegalArgumentException("Invalid button index: ${if (min != null && min < 0) min else max} (should: >= 0 || <= ${size - 1})")
+            }
+            if (gui.isButton(button.index))
+                throw IllegalArgumentException("The current index ${button.index} already has a valid button.")
+            var invalid = 0
+            if (button is ButtonSame && button.indexes.any { invalid = it; gui.isButton(it) })
+                throw IllegalArgumentException("The same button index $invalid already has a valid button.")
+        }
+
         @JvmStatic private val registered = AtomicBoolean(false)
         @JvmStatic private fun safeRegisterHandlerListener() {
             if (!registered.compareAndSet(false, true))

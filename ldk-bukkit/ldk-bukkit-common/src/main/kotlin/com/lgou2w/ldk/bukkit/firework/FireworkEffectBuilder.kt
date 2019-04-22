@@ -34,8 +34,8 @@ class FireworkEffectBuilder(
 
     private var canFlicker : Boolean = false
     private var hasTrail : Boolean = false
-    private var colors : MutableList<Color> = ArrayList()
-    private var fades : MutableList<Color> = ArrayList()
+    private val colors : MutableList<Color> = ArrayList()
+    private val fades : MutableList<Color> = ArrayList()
 
     /**
      * * With a given [type] of firework.
@@ -84,10 +84,9 @@ class FireworkEffectBuilder(
 
     override fun build(): FireworkEffect {
         return FireworkEffect(
-                type,
-                canFlicker,
-                hasTrail,
+                type, canFlicker, hasTrail,
                 Collections.unmodifiableList(colors),
-                Collections.unmodifiableList(fades))
+                Collections.unmodifiableList(fades)
+        )
     }
 }

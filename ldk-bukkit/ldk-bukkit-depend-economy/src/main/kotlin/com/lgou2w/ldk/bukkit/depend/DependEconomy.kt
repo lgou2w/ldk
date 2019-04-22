@@ -104,7 +104,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.hasAccount(playerName, world)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -131,7 +131,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.createPlayerAccount(playerName, world)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -158,7 +158,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.getBalance(playerName, world)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -185,7 +185,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.has(playerName, world, value)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -212,7 +212,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.withdrawPlayer(playerName, world, value).toAdapter()
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -239,7 +239,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.depositPlayer(playerName, world, value).toAdapter()
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -271,7 +271,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.createBank(name, owner).toAdapter()
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -331,7 +331,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.isBankOwner(name, player).toAdapter()
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -356,7 +356,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         return try {
             @Suppress("DEPRECATION")
             economy.isBankMember(name, player).toAdapter()
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw DependCannotException(EXCEPTION_METHOD_REMOVED)
         }
     }
@@ -372,19 +372,18 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         const val NAME = "Vault"
         const val EXCEPTION_METHOD_REMOVED = "Error, method has deprecated and removed."
         @JvmField val NULL = Response(.0, .0, Response.Type.NULL, null)
-    }
-
-    private fun EconomyResponse?.toAdapter(): Response {
-        return  if (this?.type == null) {
-            NULL
-        } else {
-            val adapterType = when (type) {
-                EconomyResponse.ResponseType.FAILURE -> Response.Type.FAILURE
-                EconomyResponse.ResponseType.SUCCESS -> Response.Type.SUCCESS
-                EconomyResponse.ResponseType.NOT_IMPLEMENTED -> Response.Type.NOT_IMPLEMENTED
-                else -> Response.Type.NULL
+        private fun EconomyResponse?.toAdapter(): Response {
+            return  if (this?.type == null) {
+                NULL
+            } else {
+                val adapterType = when (type) {
+                    EconomyResponse.ResponseType.FAILURE -> Response.Type.FAILURE
+                    EconomyResponse.ResponseType.SUCCESS -> Response.Type.SUCCESS
+                    EconomyResponse.ResponseType.NOT_IMPLEMENTED -> Response.Type.NOT_IMPLEMENTED
+                    else -> Response.Type.NULL
+                }
+                Response(amount, balance, adapterType, errorMessage)
             }
-            Response(amount, balance, adapterType, errorMessage)
         }
     }
 

@@ -22,7 +22,7 @@
     <parent>
         <artifactId>ldk</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.8-beta10</version>
+        <version>0.1.8-rc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

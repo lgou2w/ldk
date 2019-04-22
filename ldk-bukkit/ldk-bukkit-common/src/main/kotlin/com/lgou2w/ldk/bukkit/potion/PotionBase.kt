@@ -87,7 +87,7 @@ data class PotionBase(
                 isExtended -> Enums.ofValuableNotNull(PotionType::class.java, value.substring(PREFIX_EXTENDED.length + replacement))
                 else -> PotionType.WATER
             }
-            return if (type == PotionType.WATER) PotionBase(PotionType.WATER, false, false)
+            return if (type == PotionType.WATER) PotionBase(PotionType.WATER, isUpgraded = false, isExtended = false)
             else PotionBase(type, isUpgraded, isExtended)
         }
     }
