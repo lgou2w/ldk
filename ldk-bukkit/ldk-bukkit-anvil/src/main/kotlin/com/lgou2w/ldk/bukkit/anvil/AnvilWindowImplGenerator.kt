@@ -146,6 +146,112 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
     }
     */
 
+    // Since Minecraft 1.14 Pre-Release 5
+    // AnvilWindowImpl.java - Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+    /*
+    package com.lgou2w.ldk.bukkit.anvil;
+
+    import net.minecraft.server.v1_14_R1.BlockPosition;
+    import net.minecraft.server.v1_14_R1.ChatMessage;
+    import net.minecraft.server.v1_14_R1.Container;
+    import net.minecraft.server.v1_14_R1.ContainerAnvil;
+    import net.minecraft.server.v1_14_R1.EntityHuman;
+    import net.minecraft.server.v1_14_R1.EntityPlayer;
+    import net.minecraft.server.v1_14_R1.ITileEntityContainer;
+    import net.minecraft.server.v1_14_R1.PlayerInventory;
+    import net.minecraft.server.v1_14_R1.TileInventory;
+    import net.minecraft.server.v1_14_R1.World;
+    import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+    import org.bukkit.entity.Player;
+    import org.bukkit.inventory.Inventory;
+    import org.bukkit.plugin.Plugin;
+
+    public class AnvilWindowImpl extends AnvilWindowBase {
+
+        private ContainerImpl handle;
+
+        public AnvilWindowImpl(Plugin plugin) {
+            super(plugin);
+        }
+
+        @Override
+        public void open(Player player) {
+            super.open(player);
+            EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
+            TileInventory inventory = new TileInventory(new TileEntityImpl(this), new ChatMessage("container.repair"));
+            playerHandle.openContainer(inventory);
+        }
+
+        @Override
+        protected Object getHandle() {
+            return handle;
+        }
+
+        @Override
+        protected void setHandle(Object handle) {
+            this.handle = (ContainerImpl) handle;
+        }
+
+        @Override
+        protected Inventory getInventory() {
+            return handle.getBukkitView().getTopInventory();
+        }
+
+        private class TileEntityImpl implements ITileEntityContainer {
+
+            private AnvilWindowImpl anvilWindow;
+
+            TileEntityImpl(AnvilWindowImpl anvilWindow) {
+                super();
+                this.anvilWindow = anvilWindow;
+            }
+
+            @Override
+            public Container createMenu(int counter, PlayerInventory inventory, EntityHuman human) {
+                ContainerImpl container = new ContainerImpl(anvilWindow, inventory, human.world, counter);
+                anvilWindow.setHandle(container);
+                anvilWindow.callOpenedEvent();
+                return container;
+            }
+        }
+
+        private class ContainerImpl extends ContainerAnvil {
+
+            private AnvilWindowImpl anvilWindow;
+
+            ContainerImpl(AnvilWindowImpl anvilWindow, PlayerInventory inventory, World world, int counter) {
+                super(counter, inventory, ContainerAccess.at(world, BlockPosition.ZERO));
+                this.anvilWindow = anvilWindow;
+            }
+
+            public AnvilWindowBase getAnvilWindow() {
+                return anvilWindow;
+            }
+
+            @Override
+            public boolean canUse(EntityHuman human) {
+                return true;
+            }
+
+            @Override
+            public void a(String value) {
+                AnvilWindowInputEvent event = anvilWindow.callInputtedEvent(value);
+                if (event == null)
+                    super.a(value);
+                else if (!event.isCancelled())
+                    super.a(event.getValue());
+            }
+
+            @Override
+            public void b(EntityHuman human) {
+                anvilWindow.callClosedEvent();
+                anvilWindow.release();
+                super.b(human);
+            }
+        }
+    }
+    */
+
     // Since 1.8.3 TileEntityContainerAnvil has become an inner class of BlockAnvil
     private val isAdapterTileEntityInner = MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_8_R2)
     private fun adapterTileEntityInner(): String {
@@ -200,30 +306,66 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
                 val l2 = Label()
                 visitLabel(l2)
                 visitLineNumber(28, l2)
-                visitTypeInsn(Opcodes.NEW, anvilName("AnvilWindowImpl\$TileEntityImpl"))
-                visitInsn(Opcodes.DUP)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitVarInsn(Opcodes.ALOAD, 2)
-                visitFieldInsn(Opcodes.GETFIELD, nmsName("EntityPlayer"), "world", nmsDescriptor("World"))
-                visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowImpl\$TileEntityImpl"), "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("World")})V", false)
-                visitVarInsn(Opcodes.ASTORE, 3)
-                val l3 = Label()
-                visitLabel(l3)
-                visitLineNumber(29, l3)
-                visitVarInsn(Opcodes.ALOAD, 2)
-                visitVarInsn(Opcodes.ALOAD, 3)
-                visitMethodInsn(Opcodes.INVOKEVIRTUAL, nmsName("EntityPlayer"), "openTileEntity", "(${nmsDescriptor("ITileEntityContainer")})V", false)
-                val l4 = Label()
-                visitLabel(l4)
-                visitLineNumber(30, l4)
-                visitInsn(Opcodes.RETURN)
-                val l5 = Label()
-                visitLabel(l5)
-                visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl"), null, l0, l5, 0)
-                visitLocalVariable("player", "Lorg/bukkit/entity/Player;", null, l0, l5, 1)
-                visitLocalVariable("playerHandle", nmsDescriptor("EntityPlayer"), null, l2, l5, 2)
-                visitLocalVariable("tileEntity", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l3, l5, 3)
-                visitMaxs(4, 4)
+                if (MinecraftBukkitVersion.isV114OrLater) {
+                    // Since Minecraft 1.14 Pre-Release 5
+                    visitTypeInsn(Opcodes.NEW, nmsName("TileInventory"))
+                    visitInsn(Opcodes.DUP)
+                    visitTypeInsn(Opcodes.NEW, anvilName("AnvilWindowImpl\$TileEntityImpl"))
+                    visitInsn(Opcodes.DUP)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowImpl\$TileEntityImpl"), "<init>", "(${anvilDescriptor("AnvilWindowImpl")})V", false)
+                    visitTypeInsn(Opcodes.NEW, nmsName("ChatMessage"))
+                    visitInsn(Opcodes.DUP)
+                    visitLdcInsn("container.repair")
+                    visitInsn(Opcodes.ICONST_0)
+                    visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object")
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName("ChatMessage"), "<init>", "(Ljava/lang/String;[Ljava/lang/Object;)V", false)
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName("TileInventory"), "<init>", "(${nmsDescriptor("ITileEntityContainer")}${nmsDescriptor("IChatBaseComponent")})V", false)
+                    visitVarInsn(Opcodes.ASTORE, 3)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLineNumber(29, l3)
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitMethodInsn(Opcodes.INVOKEVIRTUAL, nmsName("EntityPlayer"), "openContainer", "(${nmsDescriptor("ITileInventory")})Ljava/util/OptionalInt;", false)
+                    visitInsn(Opcodes.POP)
+                    val l4 = Label()
+                    visitLabel(l4)
+                    visitLineNumber(30, l4)
+                    visitInsn(Opcodes.RETURN)
+                    val l5 = Label()
+                    visitLabel(l5)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl"), null, l0, l5, 0)
+                    visitLocalVariable("player", "Lorg/bukkit/entity/Player;", null, l0, l5, 1)
+                    visitLocalVariable("playerHandle", nmsDescriptor("EntityPlayer"), null, l2, l5, 2)
+                    visitLocalVariable("inventory", nmsDescriptor("TileInventory"), null, l3, l5, 3)
+                    visitMaxs(7, 4)
+                } else {
+                    visitTypeInsn(Opcodes.NEW, anvilName("AnvilWindowImpl\$TileEntityImpl"))
+                    visitInsn(Opcodes.DUP)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitFieldInsn(Opcodes.GETFIELD, nmsName("EntityPlayer"), "world", nmsDescriptor("World"))
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowImpl\$TileEntityImpl"), "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("World")})V", false)
+                    visitVarInsn(Opcodes.ASTORE, 3)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLineNumber(29, l3)
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitMethodInsn(Opcodes.INVOKEVIRTUAL, nmsName("EntityPlayer"), "openTileEntity", "(${nmsDescriptor("ITileEntityContainer")})V", false)
+                    val l4 = Label()
+                    visitLabel(l4)
+                    visitLineNumber(30, l4)
+                    visitInsn(Opcodes.RETURN)
+                    val l5 = Label()
+                    visitLabel(l5)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl"), null, l0, l5, 0)
+                    visitLocalVariable("player", "Lorg/bukkit/entity/Player;", null, l0, l5, 1)
+                    visitLocalVariable("playerHandle", nmsDescriptor("EntityPlayer"), null, l2, l5, 2)
+                    visitLocalVariable("tileEntity", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l3, l5, 3)
+                    visitMaxs(4, 4)
+                }
                 visitEnd()
             }
             visitMethod(Opcodes.ACC_PROTECTED, "getHandle", "()Ljava/lang/Object;", null, null).apply {
@@ -280,116 +422,228 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
             visitInnerClass(anvilName("AnvilWindowImpl\$TileEntityImpl"), "AnvilWindowImpl", "TileEntityImpl", Opcodes.ACC_PUBLIC)
         }.toByteArray()
         val anvilWindowImplTileEntityImpl = ClassWriter(0x00).apply {
-            visit(Opcodes.V1_8, Opcodes.ACC_SUPER, anvilName("AnvilWindowImpl\$TileEntityImpl"), null, nmsName(adapterTileEntityInner()), null)
+            if (MinecraftBukkitVersion.isV114OrLater) {
+                // Since Minecraft 1.14 Pre-Release 5
+                visit(Opcodes.V1_8, Opcodes.ACC_SUPER, anvilName("AnvilWindowImpl\$TileEntityImpl"), null, "java/lang/Object", arrayOf(nmsName("ITileEntityContainer")))
+            } else
+                visit(Opcodes.V1_8, Opcodes.ACC_SUPER, anvilName("AnvilWindowImpl\$TileEntityImpl"), null, nmsName(adapterTileEntityInner()), null)
             visitSource("AnvilWindowImpl.java", null)
             visitField(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL, "anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, null)
-            visitMethod(0x00, "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("World")})V", null, null).apply {
-                visitCode()
-                val l0 = Label()
-                visitLabel(l0)
-                visitLineNumber(51, l0)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitVarInsn(Opcodes.ALOAD, 2)
-                visitFieldInsn(Opcodes.GETSTATIC, nmsName("BlockPosition"), "ZERO", nmsDescriptor("BlockPosition"))
-                visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName(adapterTileEntityInner()), "<init>", "(${nmsDescriptor("World")}${nmsDescriptor("BlockPosition")})V", false)
-                val l1 = Label()
-                visitLabel(l1)
-                visitLineNumber(52, l1)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitVarInsn(Opcodes.ALOAD, 1)
-                visitFieldInsn(Opcodes.PUTFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
-                val l2 = Label()
-                visitLabel(l2)
-                visitLineNumber(53, l2)
-                visitInsn(Opcodes.RETURN)
-                val l3 = Label()
-                visitLabel(l3)
-                visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l0, l3, 0)
-                visitLocalVariable("anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, l0, l3, 1)
-                visitLocalVariable("world", nmsDescriptor("World"), null, l0, l3, 2)
-                visitMaxs(3, 3)
-                visitEnd()
-            }
-            visitMethod(Opcodes.ACC_PUBLIC, "createContainer", "(${nmsDescriptor("PlayerInventory")}${nmsDescriptor("EntityHuman")})${nmsDescriptor("Container")}", null, null).apply {
-                visitCode()
-                val l0 = Label()
-                visitLabel(l0)
-                visitLineNumber(58, l0)
-                visitTypeInsn(Opcodes.NEW, anvilName("AnvilWindowImpl\$ContainerImpl"))
-                visitInsn(Opcodes.DUP)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
-                visitVarInsn(Opcodes.ALOAD, 1)
-                visitVarInsn(Opcodes.ALOAD, 2)
-                visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowImpl\$ContainerImpl"), "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("PlayerInventory")}${nmsDescriptor("EntityHuman")})V", false)
-                visitVarInsn(Opcodes.ASTORE, 3)
-                val l1 = Label()
-                visitLabel(l1)
-                visitLineNumber(59, l1)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
-                visitVarInsn(Opcodes.ALOAD, 3)
-                visitMethodInsn(Opcodes.INVOKEVIRTUAL, anvilName("AnvilWindowImpl"), "setHandle", "(Ljava/lang/Object;)V", false)
-                val l2 = Label()
-                visitLabel(l2)
-                visitLineNumber(60, l2)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
-                visitMethodInsn(Opcodes.INVOKEVIRTUAL, anvilName("AnvilWindowImpl"), "callOpenedEvent", "()${anvilDescriptor("AnvilWindowOpenEvent")}", false)
-                visitInsn(Opcodes.POP)
-                val l3 = Label()
-                visitLabel(l3)
-                visitLineNumber(61, l3)
-                visitVarInsn(Opcodes.ALOAD, 3)
-                visitInsn(Opcodes.ARETURN)
-                val l4 = Label()
-                visitLabel(l4)
-                visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l0, l4, 0)
-                visitLocalVariable("inventory", nmsDescriptor("PlayerInventory"), null, l0, l4, 1)
-                visitLocalVariable("human", nmsDescriptor("EntityHuman"), null, l0, l4, 2)
-                visitLocalVariable("container", anvilDescriptor("AnvilWindowImpl\$ContainerImpl"), null, l1, l4, 3)
-                visitMaxs(5, 4)
-                visitEnd()
+            if (MinecraftBukkitVersion.isV114OrLater) {
+                // Since Minecraft 1.14 Pre-Release 5
+                visitMethod(0x00, "<init>", "(${anvilDescriptor("AnvilWindowImpl")})V", null, null).apply {
+                    visitCode()
+                    val l0 = Label()
+                    visitLabel(l0)
+                    visitLineNumber(51, l0)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false)
+                    val l1 = Label()
+                    visitLabel(l1)
+                    visitLineNumber(52, l1)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ALOAD, 1)
+                    visitFieldInsn(Opcodes.PUTFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    val l2 = Label()
+                    visitLabel(l2)
+                    visitLineNumber(53, l2)
+                    visitInsn(Opcodes.RETURN)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l0, l3, 0)
+                    visitLocalVariable("anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, l0, l3, 1)
+                    visitMaxs(2, 2)
+                    visitEnd()
+                }
+                visitMethod(Opcodes.ACC_PUBLIC, "createMenu", "(I${nmsDescriptor("PlayerInventory")}${nmsDescriptor("EntityHuman")})${nmsDescriptor("Container")}", null, null).apply {
+                    visitCode()
+                    val l0 = Label()
+                    visitLabel(l0)
+                    visitLineNumber(58, l0)
+                    visitTypeInsn(Opcodes.NEW, anvilName("AnvilWindowImpl\$ContainerImpl"))
+                    visitInsn(Opcodes.DUP)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitFieldInsn(Opcodes.GETFIELD, nmsName("EntityHuman"), "world", nmsDescriptor("World"))
+                    visitVarInsn(Opcodes.ILOAD, 1)
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowImpl\$ContainerImpl"), "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("PlayerInventory")}${nmsDescriptor("World")}I)V", false)
+                    visitVarInsn(Opcodes.ASTORE, 4)
+                    val l1 = Label()
+                    visitLabel(l1)
+                    visitLineNumber(59, l1)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    visitVarInsn(Opcodes.ALOAD, 4)
+                    visitMethodInsn(Opcodes.INVOKEVIRTUAL, anvilName("AnvilWindowImpl"), "setHandle", "(Ljava/lang/Object;)V", false)
+                    val l2 = Label()
+                    visitLabel(l2)
+                    visitLineNumber(60, l2)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    visitMethodInsn(Opcodes.INVOKEVIRTUAL, anvilName("AnvilWindowImpl"), "callOpenedEvent", "()${anvilDescriptor("AnvilWindowOpenEvent")}", false)
+                    visitInsn(Opcodes.POP)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLineNumber(61, l3)
+                    visitVarInsn(Opcodes.ALOAD, 4)
+                    visitInsn(Opcodes.ARETURN)
+                    val l4 = Label()
+                    visitLabel(l4)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l0, l4, 0)
+                    visitLocalVariable("counter", "I", null, l0, l4, 1)
+                    visitLocalVariable("inventory", nmsDescriptor("PlayerInventory"), null, l0, l4, 2)
+                    visitLocalVariable("human", nmsDescriptor("EntityHuman"), null, l0, l4, 3)
+                    visitLocalVariable("container", anvilDescriptor("AnvilWindowImpl\$ContainerImpl"), null, l1, l4, 4)
+                    visitMaxs(7, 5)
+                    visitEnd()
+                }
+            } else {
+                visitMethod(0x00, "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("World")})V", null, null).apply {
+                    visitCode()
+                    val l0 = Label()
+                    visitLabel(l0)
+                    visitLineNumber(51, l0)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitFieldInsn(Opcodes.GETSTATIC, nmsName("BlockPosition"), "ZERO", nmsDescriptor("BlockPosition"))
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName(adapterTileEntityInner()), "<init>", "(${nmsDescriptor("World")}${nmsDescriptor("BlockPosition")})V", false)
+                    val l1 = Label()
+                    visitLabel(l1)
+                    visitLineNumber(52, l1)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ALOAD, 1)
+                    visitFieldInsn(Opcodes.PUTFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    val l2 = Label()
+                    visitLabel(l2)
+                    visitLineNumber(53, l2)
+                    visitInsn(Opcodes.RETURN)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l0, l3, 0)
+                    visitLocalVariable("anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, l0, l3, 1)
+                    visitLocalVariable("world", nmsDescriptor("World"), null, l0, l3, 2)
+                    visitMaxs(3, 3)
+                    visitEnd()
+                }
+                visitMethod(Opcodes.ACC_PUBLIC, "createContainer", "(${nmsDescriptor("PlayerInventory")}${nmsDescriptor("EntityHuman")})${nmsDescriptor("Container")}", null, null).apply {
+                    visitCode()
+                    val l0 = Label()
+                    visitLabel(l0)
+                    visitLineNumber(58, l0)
+                    visitTypeInsn(Opcodes.NEW, anvilName("AnvilWindowImpl\$ContainerImpl"))
+                    visitInsn(Opcodes.DUP)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    visitVarInsn(Opcodes.ALOAD, 1)
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowImpl\$ContainerImpl"), "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("PlayerInventory")}${nmsDescriptor("EntityHuman")})V", false)
+                    visitVarInsn(Opcodes.ASTORE, 3)
+                    val l1 = Label()
+                    visitLabel(l1)
+                    visitLineNumber(59, l1)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitMethodInsn(Opcodes.INVOKEVIRTUAL, anvilName("AnvilWindowImpl"), "setHandle", "(Ljava/lang/Object;)V", false)
+                    val l2 = Label()
+                    visitLabel(l2)
+                    visitLineNumber(60, l2)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitFieldInsn(Opcodes.GETFIELD, anvilName("AnvilWindowImpl\$TileEntityImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    visitMethodInsn(Opcodes.INVOKEVIRTUAL, anvilName("AnvilWindowImpl"), "callOpenedEvent", "()${anvilDescriptor("AnvilWindowOpenEvent")}", false)
+                    visitInsn(Opcodes.POP)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLineNumber(61, l3)
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitInsn(Opcodes.ARETURN)
+                    val l4 = Label()
+                    visitLabel(l4)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l0, l4, 0)
+                    visitLocalVariable("inventory", nmsDescriptor("PlayerInventory"), null, l0, l4, 1)
+                    visitLocalVariable("human", nmsDescriptor("EntityHuman"), null, l0, l4, 2)
+                    visitLocalVariable("container", anvilDescriptor("AnvilWindowImpl\$ContainerImpl"), null, l1, l4, 3)
+                    visitMaxs(5, 4)
+                    visitEnd()
+                }
             }
             visitInnerClass(anvilName("AnvilWindowImpl\$TileEntityImpl"), "AnvilWindowImpl", "TileEntityImpl", Opcodes.ACC_PUBLIC)
             visitInnerClass(anvilName("AnvilWindowImpl\$ContainerImpl"), "AnvilWindowImpl", "ContainerImpl", Opcodes.ACC_PUBLIC)
-            if (isAdapterTileEntityInner) // When it is an inner class
+            if (isAdapterTileEntityInner && !MinecraftBukkitVersion.isV114OrLater) // When it is an inner class
                 visitInnerClass(nmsName("BlockAnvil\$TileEntityContainerAnvil"), "BlockAnvil", "TileEntityContainerAnvil", Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC)
         }.toByteArray()
         val anvilWindowImplContainerImpl = ClassWriter(0x00).apply {
             visit(Opcodes.V1_8, Opcodes.ACC_SUPER, anvilName("AnvilWindowImpl\$ContainerImpl"), null, nmsName("ContainerAnvil"), null)
             visitSource("AnvilWindowImpl.java", null)
             visitField(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL, "anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, null)
-            visitMethod(0x00, "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("PlayerInventory")}${nmsDescriptor("EntityHuman")})V", null, null).apply {
-                visitCode()
-                val l0 = Label()
-                visitLabel(l0)
-                visitLineNumber(69, l0)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitVarInsn(Opcodes.ALOAD, 2)
-                visitVarInsn(Opcodes.ALOAD, 3)
-                visitFieldInsn(Opcodes.GETFIELD, nmsName("EntityHuman"), "world", nmsDescriptor("World"))
-                visitFieldInsn(Opcodes.GETSTATIC, nmsName("BlockPosition"), "ZERO", nmsDescriptor("BlockPosition"))
-                visitVarInsn(Opcodes.ALOAD, 3)
-                visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName("ContainerAnvil"), "<init>", "(${nmsDescriptor("PlayerInventory")}${nmsDescriptor("World")}${nmsDescriptor("BlockPosition")}${nmsDescriptor("EntityHuman")})V", false)
-                val l1 = Label()
-                visitLabel(l1)
-                visitLineNumber(70, l1)
-                visitVarInsn(Opcodes.ALOAD, 0)
-                visitVarInsn(Opcodes.ALOAD, 1)
-                visitFieldInsn(Opcodes.PUTFIELD, anvilName("AnvilWindowImpl\$ContainerImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
-                val l2 = Label()
-                visitLabel(l2)
-                visitLineNumber(71, l2)
-                visitInsn(Opcodes.RETURN)
-                val l3 = Label()
-                visitLabel(l3)
-                visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$ContainerImpl"), null, l0, l3, 0)
-                visitLocalVariable("anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, l0, l3, 1)
-                visitLocalVariable("inventory", nmsDescriptor("PlayerInventory"), null, l0, l3, 2)
-                visitLocalVariable("human", nmsDescriptor("EntityHuman"), null, l0, l3, 3)
-                visitMaxs(5, 4)
-                visitEnd()
+            if (MinecraftBukkitVersion.isV114OrLater) {
+                // Since Minecraft 1.14 Pre-Release 5
+                visitMethod(0x00, "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("PlayerInventory")}${nmsDescriptor("World")}I)V", null, null).apply {
+                    visitCode()
+                    val l0 = Label()
+                    visitLabel(l0)
+                    visitLineNumber(69, l0)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ILOAD, 4)
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitFieldInsn(Opcodes.GETSTATIC, nmsName("BlockPosition"), "ZERO", nmsDescriptor("BlockPosition"))
+                    visitMethodInsn(Opcodes.INVOKESTATIC, nmsName("ContainerAccess"), "at", "(${nmsDescriptor("World")}${nmsDescriptor("BlockPosition")})${nmsDescriptor("ContainerAccess")}", true)
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName("ContainerAnvil"), "<init>", "(I${nmsDescriptor("PlayerInventory")}${nmsDescriptor("ContainerAccess")})V", false)
+                    val l1 = Label()
+                    visitLabel(l1)
+                    visitLineNumber(70, l1)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ALOAD, 1)
+                    visitFieldInsn(Opcodes.PUTFIELD, anvilName("AnvilWindowImpl\$ContainerImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    val l2 = Label()
+                    visitLabel(l2)
+                    visitLineNumber(71, l2)
+                    visitInsn(Opcodes.RETURN)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$ContainerImpl"), null, l0, l3, 0)
+                    visitLocalVariable("anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, l0, l3, 1)
+                    visitLocalVariable("inventory", nmsDescriptor("PlayerInventory"), null, l0, l3, 2)
+                    visitLocalVariable("world", nmsDescriptor("World"), null, l0, l3, 3)
+                    visitLocalVariable("counter", "I", null, l0, l3, 4)
+                    visitMaxs(5, 6)
+                    visitEnd()
+                }
+            } else {
+                visitMethod(0x00, "<init>", "(${anvilDescriptor("AnvilWindowImpl")}${nmsDescriptor("PlayerInventory")}${nmsDescriptor("EntityHuman")})V", null, null).apply {
+                    visitCode()
+                    val l0 = Label()
+                    visitLabel(l0)
+                    visitLineNumber(69, l0)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ALOAD, 2)
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitFieldInsn(Opcodes.GETFIELD, nmsName("EntityHuman"), "world", nmsDescriptor("World"))
+                    visitFieldInsn(Opcodes.GETSTATIC, nmsName("BlockPosition"), "ZERO", nmsDescriptor("BlockPosition"))
+                    visitVarInsn(Opcodes.ALOAD, 3)
+                    visitMethodInsn(Opcodes.INVOKESPECIAL, nmsName("ContainerAnvil"), "<init>", "(${nmsDescriptor("PlayerInventory")}${nmsDescriptor("World")}${nmsDescriptor("BlockPosition")}${nmsDescriptor("EntityHuman")})V", false)
+                    val l1 = Label()
+                    visitLabel(l1)
+                    visitLineNumber(70, l1)
+                    visitVarInsn(Opcodes.ALOAD, 0)
+                    visitVarInsn(Opcodes.ALOAD, 1)
+                    visitFieldInsn(Opcodes.PUTFIELD, anvilName("AnvilWindowImpl\$ContainerImpl"), "anvilWindow", anvilDescriptor("AnvilWindowImpl"))
+                    val l2 = Label()
+                    visitLabel(l2)
+                    visitLineNumber(71, l2)
+                    visitInsn(Opcodes.RETURN)
+                    val l3 = Label()
+                    visitLabel(l3)
+                    visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl\$ContainerImpl"), null, l0, l3, 0)
+                    visitLocalVariable("anvilWindow", anvilDescriptor("AnvilWindowImpl"), null, l0, l3, 1)
+                    visitLocalVariable("inventory", nmsDescriptor("PlayerInventory"), null, l0, l3, 2)
+                    visitLocalVariable("human", nmsDescriptor("EntityHuman"), null, l0, l3, 3)
+                    visitMaxs(5, 4)
+                    visitEnd()
+                }
             }
             visitMethod(Opcodes.ACC_PUBLIC, "getAnvilWindow", "()${anvilDescriptor("AnvilWindowBase")}", null, null).apply {
                 visitCode()
