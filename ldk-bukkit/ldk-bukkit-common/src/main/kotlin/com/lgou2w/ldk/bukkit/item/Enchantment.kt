@@ -16,7 +16,6 @@
 
 package com.lgou2w.ldk.bukkit.item
 
-import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
@@ -240,29 +239,26 @@ enum class Enchantment(
      */
     VANISHING_CURSE(71, 1, "vanishing_curse", "vanishing_curse", MinecraftVersion.V1_11),
 
-    // TODO Id is negative number because of uncertainty.
+    ///
+    /// WARNING: From here on, these enchantment IDs are all maintained by LDK, since Minecraft 1.13 has completely removed the ID.
+    /// 警告: 从这里开始, 这些附魔的 ID 都由 LDK 自行维护, 因为自从 Minecraft 1.13 已经完全移除 ID 了.
+    ///
 
     /**
      * * Enchantment: Multishot
      * * 附魔类型: 多重射击
      */
-    @Draft
-    @Deprecated("Minecraft 1.14 Draft")
-    MULTISHOT(-1, 1, "multishot", "multishot", MinecraftVersion.V1_14),
+    MULTISHOT(200, 1, "multishot", "multishot", MinecraftVersion.V1_14),
     /**
      * * Enchantment: Quick Charge
      * * 附魔类型: 快速装填
      */
-    @Draft
-    @Deprecated("Minecraft 1.14 Draft")
-    QUICK_CHARGE(-2, 3, "quick_charge", "quick_charge", MinecraftVersion.V1_14),
+    QUICK_CHARGE(201, 3, "quick_charge", "quick_charge", MinecraftVersion.V1_14),
     /**
      * * Enchantment: Piercing
      * * 附魔类型: 穿透
      */
-    @Draft
-    @Deprecated("Minecraft 1.14 Draft")
-    PIERCING(-3, 4, "piercing", "piercing", MinecraftVersion.V1_14),
+    PIERCING(202, 4, "piercing", "piercing", MinecraftVersion.V1_14),
     ;
 
     override val value : String
