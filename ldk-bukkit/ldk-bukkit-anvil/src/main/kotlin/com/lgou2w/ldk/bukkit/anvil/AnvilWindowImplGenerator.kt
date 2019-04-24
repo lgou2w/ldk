@@ -609,7 +609,7 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
                     visitLocalVariable("inventory", nmsDescriptor("PlayerInventory"), null, l0, l3, 2)
                     visitLocalVariable("world", nmsDescriptor("World"), null, l0, l3, 3)
                     visitLocalVariable("counter", "I", null, l0, l3, 4)
-                    visitMaxs(5, 6)
+                    visitMaxs(5, 5)
                     visitEnd()
                 }
             } else {
