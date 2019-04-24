@@ -39,6 +39,7 @@ object BlockFactory {
     @JvmStatic val CLASS_WORLD by lazyMinecraftClass("World")
     @JvmStatic val CLASS_TILE_ENTITY by lazyMinecraftClass("TileEntity")
     @JvmStatic val CLASS_BLOCK_POSITION by lazyMinecraftClass("BlockPosition")
+    @JvmStatic val CLASS_IBLOCK_ACCESS by lazyMinecraftClass("IBlockAccess")
 
     @JvmStatic val CLASS_CRAFT_WORLD by lazyCraftBukkitClass("CraftWorld")
 
@@ -58,9 +59,10 @@ object BlockFactory {
             .resultAccessor()
     }
 
-    // NMS.World -> public NMS.TileEntity getTileEntity(NMS.BlockPosition)
-    @JvmStatic val METHOD_WORLD_GET_TILE_ENTITY : AccessorMethod<Any, Any?> by lazy {
-        FuzzyReflect.of(CLASS_WORLD)
+    // Since Minecraft 1.14 Pre-Release 5
+    // NMS.IBlockAccess -> public NMS.TileEntity getTileEntity(NMS.BlockPosition)
+    @JvmStatic val METHOD_IBLOCK_ACCESS_GET_TILE_ENTITY : AccessorMethod<Any, Any?> by lazy {
+        FuzzyReflect.of(CLASS_IBLOCK_ACCESS)
             .useMethodMatcher()
             .withName("getTileEntity")
             .withType(CLASS_TILE_ENTITY)
@@ -107,7 +109,7 @@ object BlockFactory {
         val z = block.z
         val world = METHOD_CRAFT_WORLD_HANDLE.invoke(block.world)
         val position = CONSTRUCTOR_BLOCK_POSITION.newInstance(x, y, z)
-        return METHOD_WORLD_GET_TILE_ENTITY.invoke(world, position)
+        return METHOD_IBLOCK_ACCESS_GET_TILE_ENTITY.invoke(world, position)
     }
 
     /**
