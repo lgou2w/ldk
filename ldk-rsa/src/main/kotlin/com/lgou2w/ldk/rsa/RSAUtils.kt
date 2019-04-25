@@ -86,7 +86,7 @@ object RSAUtils {
             .replace(PUBLIC_KEY_ENDER, EMPTY)
         decodePublicKey(Base64.getDecoder().decode(value))
     } catch (e: Exception) {
-        throw IOException("Unable to decrypt the public key.", e.cause ?: e)
+        throw IOException("Unable to decrypt the public key.", e)
     }
 
     @JvmStatic
@@ -107,7 +107,7 @@ object RSAUtils {
             .replace(PRIVATE_KEY_ENDER, EMPTY)
         decodePrivateKey(Base64.getDecoder().decode(value))
     } catch (e: Exception) {
-        throw IOException("Unable to decrypt the private key.", e.cause ?: e)
+        throw IOException("Unable to decrypt the private key.", e)
     }
 
     @JvmStatic
@@ -126,7 +126,7 @@ object RSAUtils {
     fun signature(privateKey: PrivateKey, file: File): ByteArray = try {
         signature(privateKey, file.readBytes())
     } catch (e: Exception) {
-        throw IOException("Unable to signature the data.", e.cause ?: e)
+        throw IOException("Unable to signature the data.", e)
     }
 
     @JvmStatic

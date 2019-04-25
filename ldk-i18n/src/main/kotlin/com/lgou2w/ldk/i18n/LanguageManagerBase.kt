@@ -61,7 +61,7 @@ abstract class LanguageManagerBase(
             input = provider.load(name)
             return if (input != null) adapter.adapt(input) else LinkedHashMap()
         } catch (e: Exception) {
-            throw IOException("Exception when loading a language file from a provider:", e.cause ?: e)
+            throw IOException("Exception when loading a language file from a provider:", e)
         } finally {
             if (input != null) try {
                 input.close()
@@ -83,7 +83,7 @@ abstract class LanguageManagerBase(
             val values = language.entries.associate { it.key to it.value }.toMutableMap()
             adapter.readapt(output, values)
         } catch (e: Exception) {
-            throw IOException("Exception when saving a language file from the supplied adapter:", e.cause ?: e)
+            throw IOException("Exception when saving a language file from the supplied adapter:", e)
         } finally {
             if (output != null) try {
                 output.close()

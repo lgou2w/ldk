@@ -92,13 +92,13 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         plugin.runTaskAsync {
             if (receiver is Player && !(receiver as Player).isOnline)
                 receiver = Bukkit.getConsoleSender()
-            receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GRAY + "The LDK plugin version: ${ChatColor.GREEN}$currentVersion")
+            receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GRAY + "The plugin version: ${ChatColor.GREEN}$currentVersion")
             val release = block()
             if (release == null) {
                 receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.RED + "Internal error, check is not available.")
             } else {
                 if (!needUpdate(release.tag))
-                    receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GREEN + "You are using the latest version of the LDK plugin.")
+                    receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GREEN + "You are using the latest version.")
                 else
                     pushed(release)
             }
@@ -226,7 +226,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
             val tags = release[RELEASE_ARTIFACT_ID]?.asJsonObject ?: return null
             val tag = tags.entrySet().lastOrNull()?.key ?: return null
             val releasedAt = "Unknown, Non github.com source. See download url."
-            val isPreRelease = if (tag < "1.0") !tag.contains("rc") else tag.contains("-")
+            val isPreRelease = if (tag < "1.0") !tag.contains("rc", true) else tag.contains("-")
             val fileDownloadUrl = URL_RELEASE + tag
             return Release(tag, releasedAt, isPreRelease, "lgou2w", "https://github.com/lgou2w", null, fileDownloadUrl)
         }

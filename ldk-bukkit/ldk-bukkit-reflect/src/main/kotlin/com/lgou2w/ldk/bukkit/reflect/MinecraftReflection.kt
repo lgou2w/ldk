@@ -76,7 +76,7 @@ object MinecraftReflection {
         } catch (e: ClassNotFoundException) {
         }
         if (result != null) result.also { setMinecraftClass(className, it) }
-        else throw ClassNotFoundException("The class for $className and the alias ${aliases.joinToString()} was not found.", e.cause ?: e)
+        else throw ClassNotFoundException("The class for $className and the alias ${aliases.joinToString()} was not found.", e)
     }
 
     /**

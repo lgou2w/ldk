@@ -67,7 +67,7 @@ class PackageCached {
             return clazz
         } catch (e: ClassNotFoundException) {
             cached[className] = Optional.empty()
-            throw ClassNotFoundException("Unable to find class: $className", e.cause ?: e)
+            throw e
         }
     }
 
