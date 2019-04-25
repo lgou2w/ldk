@@ -416,6 +416,45 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //</editor-fold>
 
+    //<editor-fold desc="ItemBuilder - CustomModelData" defaultstate="collapsed">
+
+    override var customModelData : Int?
+        get() = tag.getIntOrNull(NBT.TAG_CUSTOM_MODEL_DATA)
+        set(value) {
+            if (value == null)
+                removeCustomModelData()
+            else
+                tag.putInt(NBT.TAG_CUSTOM_MODEL_DATA, value)
+        }
+
+    override fun getCustomModelData(block: (ItemBuilder, Int?) -> Unit): ItemBuilder {
+        block(this, this.customModelData)
+        return this
+    }
+
+    override fun setCustomModelData(customModelData: Int?): ItemBuilder {
+        this.customModelData = customModelData
+        return this
+    }
+
+    override fun setCustomModelDataIf(customModelData: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            this.customModelData = customModelData
+        return this
+    }
+
+    override fun removeCustomModelData(): ItemBuilder {
+        removeCustomModelData(null)
+        return this
+    }
+
+    override fun removeCustomModelData(predicate: Predicate<Int>?): ItemBuilder {
+        tag.removeIf(NBT.TAG_CUSTOM_MODEL_DATA, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="ItemBuilder - Enchantment" defaultstate="collapsed">
 
     override var enchantments : Map<Enchantment, Int>?
