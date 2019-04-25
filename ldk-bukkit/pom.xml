@@ -50,7 +50,7 @@
     </modules>
 
     <properties>
-        <bukkit.version>1.14-pre5-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.14-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <repositories>
