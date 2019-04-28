@@ -132,6 +132,7 @@ interface NBT<T> : Cloneable {
         const val TAG_DISPLAY_LORE = "Lore"
         const val TAG_DISPLAY_NAME = "Name"
         const val TAG_DISPLAY_LOC_NAME = "LocName"  // since 18w01a remove and change to -> Name
+        const val TAG_CUSTOM_MODEL_DATA = "CustomModelData" // since Minecraft 1.14
         const val TAG_ENTITY_TAG = "EntityTag"
         const val TAG_ENTITY_TAG_ID = "id"
         const val TAG_HIDE_FLAGS = "HideFlags"

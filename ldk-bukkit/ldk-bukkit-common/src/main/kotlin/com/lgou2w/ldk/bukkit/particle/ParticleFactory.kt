@@ -117,6 +117,7 @@ object ParticleFactory {
             .resultAccessorOrNull()
     }
 
+    // NMS.Particles -> public static NMS.Particle<?> a(String type)
     @JvmStatic private val METHOD_GET_PARTICLE_FRESH : AccessorMethod<Any, Any>? by lazy {
         FuzzyReflect.of(CLASS_PARTICLES.notNull(), true)
             .useMethodMatcher()
@@ -124,6 +125,22 @@ object ParticleFactory {
             .withType(CLASS_PARTICLE.notNull())
             .withParams(String::class.java)
             .resultAccessorOrNull()
+    }
+
+    // Since Minecraft 1.14 Pre-Release 5
+    // NMS.Particles -> public static final Particle XXX
+    @JvmStatic private val PARTICLE_FIELD_ACCESSORS : MutableMap<Particle, AccessorField<Any, Any>?> = HashMap()
+    @JvmStatic private val PARTICLE_FIELD : (Particle) -> AccessorField<Any, Any>? = { particle ->
+        var accessor = PARTICLE_FIELD_ACCESSORS[particle]
+        if (accessor == null) {
+            accessor = FuzzyReflect.of(CLASS_PARTICLES.notNull(), true)
+                .useFieldMatcher()
+                .withType(CLASS_PARTICLE.notNull())
+                .withVisibilities(Visibility.PUBLIC, Visibility.STATIC, Visibility.FINAL)
+                .withName(particle.type.toUpperCase())
+                .resultAccessorOrNull()
+        }
+        accessor
     }
 
     // NMS.EnumParticle -> public static NMS.EnumParticle getById(int)
@@ -206,7 +223,12 @@ object ParticleFactory {
             longDistance: Boolean,
             data: Any?
     ): Any {
-        val nms = METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, particle.type)
+        val nms = if (MinecraftBukkitVersion.isV114OrLater) {
+            // Since Minecraft 1.14 Pre-Release 5
+            PARTICLE_FIELD(particle)?.get(null).notNull("This particle '$particle' is not supported by the server version.")
+        } else {
+            METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, particle.type)
+        }
         var overrideOffsetX = offsetX
         val param = if (particle == Particle.ITEM) {
             val stack = when (data) {
@@ -270,7 +292,7 @@ object ParticleFactory {
             data: Any?
     ): Any {
         val nms = METHOD_GET_PARTICLE_LEGACY.notNull().invoke(null, particle.value)
-                  ?: throw IllegalArgumentException("This particle $particle is not supported by the server version.")
+                  ?: throw IllegalArgumentException("This particle '$particle' is not supported by the server version.")
         var overrideOffsetX = offsetX
         var overrideOffsetY = offsetY
         var overrideOffsetZ = offsetZ

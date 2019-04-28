@@ -81,7 +81,7 @@ class LDKPlugin : PluginBase() {
                 })
             }
         } catch (e: Exception) {
-            logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e)
+            logger.log(Level.WARNING, "Metrics stats service failed to load.", e)
         }
     }
 

@@ -56,7 +56,6 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
-import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.notNull
@@ -272,11 +271,12 @@ enum class Sounds(private vararg val versionDependentNames: String) {
 
     // Minecraft 1.14
 
-    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_IRON_XYLOPHONE("BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"),
-    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_COW_BELL("BLOCK_NOTE_BLOCK_COW_BELL"),
-    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_DIDGERIDOO("BLOCK_NOTE_BLOCK_DIDGERIDOO"),
-    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_BIT("BLOCK_NOTE_BLOCK_BIT"),
-    @Draft @Deprecated("Minecraft 1.14 Draft") NOTE_BANJO("BLOCK_NOTE_BLOCK_BANJO"),
+    NOTE_IRON_XYLOPHONE("BLOCK_NOTE_BLOCK_IRON_XYLOPHONE"),
+    NOTE_COW_BELL("BLOCK_NOTE_BLOCK_COW_BELL"),
+    NOTE_DIDGERIDOO("BLOCK_NOTE_BLOCK_DIDGERIDOO"),
+    NOTE_BIT("BLOCK_NOTE_BLOCK_BIT"),
+    NOTE_BANJO("BLOCK_NOTE_BLOCK_BANJO"),
+    NOTE_XYLOPHONE("BLOCK_NOTE_BLOCK_XYLOPHONE"),
     ;
 
     private var valid : Sound? = null

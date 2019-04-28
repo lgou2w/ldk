@@ -46,7 +46,7 @@ import java.util.UUID
  * @see [Builder]
  * @see [ItemBuilderBase]
  * @see [SimpleItemBuilder]
- * @see [of]
+ * @see [ItemBuilder.of]
  * @author lgou2w
  */
 interface ItemBuilder : Builder<ItemStack> {
@@ -203,6 +203,40 @@ interface ItemBuilder : Builder<ItemStack> {
     fun removeLore(predicate: Predicate<String>? = null): ItemBuilder
 
     fun removeLoreIndexed(block: BiFunction<Int, String, Boolean>? = null): ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - CustomModelData" defaultstate="collapsed">
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    var customModelData : Int?
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun getCustomModelData(block: (ItemBuilder, Int?) -> Unit): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun setCustomModelData(customModelData: Int?): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun setCustomModelDataIf(customModelData: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun removeCustomModelData(): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun removeCustomModelData(predicate: Predicate<Int>? = null): ItemBuilder
 
     //</editor-fold>
 

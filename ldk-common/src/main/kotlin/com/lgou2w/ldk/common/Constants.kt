@@ -32,4 +32,16 @@ object Constants {
      * * Github open source link for ldk project.
      */
     const val LDK_GITHUB = "https://github.com/lgou2w/ldk"
+
+    /**
+     * * Maven central repository link for ldk project.
+     * @since LDK 0.1.8-rc
+     */
+    const val LDK_MAVEN_REPOSITORY = "https://mvnrepository.com/artifact/com.lgou2w/ldk/latest"
+
+    /**
+     * * Maven sonatype repository link for ldk project.
+     * @since LDK 0.1.8-rc
+     */
+    const val LDK_MAVEN_SONATYPE = "https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"
 }

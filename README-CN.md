@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3.30-blue.svg"></a>
+<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3.31-blue.svg"></a>
 <a href="https://travis-ci.org/lgou2w/ldk"><img src="https://travis-ci.org/lgou2w/ldk.svg?branch=develop" /></a>
 <a href="https://codebeat.co/projects/github-com-lgou2w-ldk-develop"><img alt="codebeat badge" src="https://codebeat.co/badges/7c8fccc7-6096-4f12-81e3-98b1f39a3875" /></a>
 <a href="https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"><img src="https://img.shields.io/maven-central/v/com.lgou2w/ldk.svg?color=%231081c2" /></a>
@@ -25,7 +25,10 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
 
 * 对于 Minecraft 服务器的兼容性.
 
+    <p>
     <a href="https://github.com/lgou2w/ldk"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
+    <a href="https://bstats.org/plugin/bukkit/LDK"><img src="https://img.shields.io/badge/bStats-deployed-3366FF.svg?style=flat"></a>
+    </p>
 
 * Wiki
 

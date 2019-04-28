@@ -17,7 +17,6 @@
 package com.lgou2w.ldk.bukkit.particle
 
 import com.lgou2w.ldk.bukkit.version.API
-import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
@@ -121,10 +120,14 @@ enum class Particle(
     @API(Level.Minecraft_V1_13) NAUTILUS(48, "nautilus", "nautilus"),
     @API(Level.Minecraft_V1_13) DOLPHIN(49, "dolphin", "dolphin"),
 
-    // TODO Minecraft 1.14 Draft
-    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
-    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
-    @Draft @Deprecated("Minecraft 1.14 Draft") @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
+    @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
+    @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
+    @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
+    @API(Level.Minecraft_V1_14) COMPOSTER(53, "composter", "composter"),
+    @API(Level.Minecraft_V1_14) FLASH(54, "flash", "flash"),
+    @API(Level.Minecraft_V1_14) FALLING_LAVA(55, "falling_lava", "falling_lava"),
+    @API(Level.Minecraft_V1_14) LANDING_LAVA(56, "landing_lava", "landing_lava"),
+    @API(Level.Minecraft_V1_14) FALLING_WATER(57, "falling_water", "falling_water"),
     ;
 
     constructor(

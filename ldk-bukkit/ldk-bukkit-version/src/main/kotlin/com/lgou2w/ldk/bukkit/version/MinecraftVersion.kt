@@ -56,10 +56,12 @@ class MinecraftVersion(
         /**
          * @since LDK 0.1.8-rc
          */
+        @Draft
+        @Deprecated("Minecraft 1.15 Draft")
         @JvmField val V1_15 = MinecraftVersion(1, 15, 0)
 
         @JvmStatic
-        private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC.\\s*([a-zA-Z0-9\\-.]+)\\s*\\)")
+        private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC:?.\\s([a-zA-Z0-9\\-.\\\\\\s]+)\\)")
 
         /**
          * * Get the current version of the Minecraft for the Bukkit server.
@@ -70,24 +72,25 @@ class MinecraftVersion(
             private set
             get() {
                 if (field == UNKNOWN) {
-                    val version = Bukkit.getServer().version
+                    val version = Bukkit.getServer().version.trim()
                     val matcher = VERSION_PATTERN.matcher(version)
                     if (!matcher.matches() || matcher.group(1) == null)
                         throw IllegalStateException("Bukkit Minecraft version number not successfully matched: $version.")
                     val versionOnly = matcher.group(1)
                     val numbers = IntArray(3)
-                    var pre: Int? = null
+                    val pre : Int?
                     try {
                         val index = versionOnly.lastIndexOf("-pre")
-                        val elements = if (index == -1)
-                            versionOnly.split(Pattern.compile("\\."))
-                            else versionOnly.substring(0, index).split(Pattern.compile("\\."))
-                        if (elements.size == -1)
-                            throw IllegalStateException("Invalid Bukkit Minecraft version number: $versionOnly")
+                        val elements = if (index == -1) { // e.g.: 1.14 Pre-Release 5
+                            val splitVersions = versionOnly.split(' ')
+                            pre = splitVersions.getOrNull(2)?.toIntOrNull()
+                            splitVersions.first().split('.')
+                        } else {
+                            pre = versionOnly.substring(index + 4).toIntOrNull()
+                            versionOnly.substring(0, index).split('.')
+                        }
                         for (i in 0 until Math.min(numbers.size, elements.size))
                             numbers[i] = elements[i].trim().toInt()
-                        if (index != -1)
-                            pre = versionOnly.substring(index + 4).toInt()
                     } catch (e: Exception) {
                         if (e is NumberFormatException)
                             throw IllegalStateException("Unable to parse Bukkit Minecraft version number: $versionOnly")
