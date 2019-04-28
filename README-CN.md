@@ -25,7 +25,10 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
 
 * 对于 Minecraft 服务器的兼容性.
 
+    <p>
     <a href="https://github.com/lgou2w/ldk"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20PaperSpigot%20%3E%3D%201.8-brightgreen.svg"></a>
+    <a href="https://bstats.org/plugin/bukkit/LDK"><img src="https://img.shields.io/badge/bStats-deployed-3366FF.svg?style=flat"></a>
+    </p>
 
 * Wiki
 
