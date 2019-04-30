@@ -162,7 +162,7 @@ abstract class AnvilWindowBase(
                         } else {
                             val slot = Enums.ofValuable(AnvilWindowSlot::class.java, event.rawSlot)
                             val anvilEvent = anvilWindow.callClickedEvent(slot, event.currentItem)
-                            if ((anvilEvent != null && event.isCancelled) || !anvilWindow.isAllowMove) {
+                            if ((anvilEvent != null && anvilEvent.isCancelled) || !anvilWindow.isAllowMove) {
                                 event.isCancelled = true
                                 event.result = Event.Result.DENY
                             }
