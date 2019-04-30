@@ -153,19 +153,17 @@ abstract class AnvilWindowBase(
                 return
             val ldk : Plugin? = Bukkit.getPluginManager().getPlugin(Constants.LDK)
             val listener = RegisteredListener(object : Listener {}, EventExecutor { _, event ->
-                when (event) {
-                    is InventoryClickEvent -> {
-                        val anvilWindow = getInventoryAnvilWindow(event.view) ?: return@EventExecutor
-                        if ((event.inventory.type != InventoryType.ANVIL || event.inventory != anvilWindow.inventory) && !anvilWindow.isAllowMove) {
+                if (event is InventoryClickEvent) {
+                    val anvilWindow = getInventoryAnvilWindow(event.view) ?: return@EventExecutor
+                    if ((event.inventory.type != InventoryType.ANVIL || event.inventory != anvilWindow.inventory) && !anvilWindow.isAllowMove) {
+                        event.isCancelled = true
+                        event.result = Event.Result.DENY
+                    } else {
+                        val slot = Enums.ofValuable(AnvilWindowSlot::class.java, event.rawSlot)
+                        val anvilEvent = anvilWindow.callClickedEvent(slot, event.currentItem)
+                        if ((anvilEvent != null && anvilEvent.isCancelled) || !anvilWindow.isAllowMove) {
                             event.isCancelled = true
                             event.result = Event.Result.DENY
-                        } else {
-                            val slot = Enums.ofValuable(AnvilWindowSlot::class.java, event.rawSlot)
-                            val anvilEvent = anvilWindow.callClickedEvent(slot, event.currentItem)
-                            if ((anvilEvent != null && anvilEvent.isCancelled) || !anvilWindow.isAllowMove) {
-                                event.isCancelled = true
-                                event.result = Event.Result.DENY
-                            }
                         }
                     }
                 }
