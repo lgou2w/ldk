@@ -36,6 +36,6 @@ internal class PlaceholderExpansionProxy(
     override fun isRegistered(): Boolean = proxy.isRegistered()
     override fun register(): Boolean = proxy.register()
     override fun canRegister(): Boolean = proxy.canRegister()
-    override fun onPlaceholderRequest(player: Player?, identifier: String): String?
-            = proxy.onPlaceholderRequest(player, identifier)
+    override fun onPlaceholderRequest(player: Player?, params: String): String?
+            = proxy.onPlaceholderRequest(player, params)
 }
