@@ -22,7 +22,7 @@
     <parent>
         <artifactId>ldk-fx</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.8-beta12-hotfix1</version>
+        <version>0.1.8-rc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-common</artifactId>
-            <version>0.1.8-beta12-hotfix1</version>
+            <version>0.1.8-rc</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
