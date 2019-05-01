@@ -73,7 +73,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         this.itemStack = try {
             @Suppress("DEPRECATION")
             ItemStack(material, count, durability.toShort())
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             try {
                 ItemStack(material, count).apply { (itemMeta as Damageable).damage = durability }
             } catch (e1: ClassNotFoundException) {

@@ -99,7 +99,7 @@ class H2ConnectionFactory(
         initializeDriver()
         return try {
             driver.connect(url, properties)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw RuntimeException(e)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(e)
