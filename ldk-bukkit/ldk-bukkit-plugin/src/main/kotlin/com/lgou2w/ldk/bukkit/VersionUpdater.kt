@@ -123,13 +123,14 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
 
     private fun parseVersion(versionOnly: String): Version {
         return if (versionOnly < "1.0") {
-            // e.g.: 0.1.8-beta10, 0.2.0-alpha2
+            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1
             val versions = versionOnly.split('-')
             val ver = versions[0]
-            val (type, typeVer) = parseZeroVersionType(versions.getOrNull(1))
-            Version.ZeroVersion(ver, type, typeVer)
+            val (type, value) = parseZeroVersionValue(versions.getOrNull(1))
+            val hotfix = parseZeroVersionHotfix(versions.getOrNull(2))
+            Version.ZeroVersion(ver, type, value, hotfix)
         } else {
-            // e.g.: 1.0, 1.0.1-rc
+            // e.g.: 1.0, 1.0.1-SNAPSHOT
             val versions = versionOnly.split('-')
             val ver = versions[0]
             val type = versions.getOrNull(1)
@@ -137,7 +138,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         }
     }
 
-    private fun parseZeroVersionType(zeroVersionTypeOnly: String?): Pair<String, Int> {
+    private fun parseZeroVersionValue(zeroVersionTypeOnly: String?): Pair<String, Int> {
         if (zeroVersionTypeOnly == null) return "rc" to 0
         val idx = zeroVersionTypeOnly.indexOfFirst { it in '0'..'9' }
         if (idx == -1)
@@ -147,8 +148,16 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         return type to (typeVer.toIntOrNull() ?: 0)
     }
 
+    private fun parseZeroVersionHotfix(zeroVersionHotfixOnly: String?): Int? {
+        if (zeroVersionHotfixOnly == null) return null
+        val idx = zeroVersionHotfixOnly.indexOfFirst { it in '0'..'9' }
+        if (idx == -1)
+            return 0
+        return zeroVersionHotfixOnly.substring(idx).toIntOrNull() ?: 0
+    }
+
     private sealed class Version(val ver: String) : Comparable<Version> {
-        class ZeroVersion(ver: String, val type: String, val typeVer: Int) : Version(ver)
+        class ZeroVersion(ver: String, val type: String, val value: Int, val hotfix: Int?) : Version(ver)
         class ReleaseVersion(ver: String, val type: String?) : Version(ver)
         override fun compareTo(other: Version): Int = compareVersion(this, other)
         companion object {
@@ -160,7 +169,8 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
                             ComparisonChain.start()
                                 .compare(left.ver, right.ver)
                                 .compare(left.type, right.type)
-                                .compare(left.typeVer, right.typeVer)
+                                .compare(left.value, right.value)
+                                .compare(left.hotfix ?: 0, right.hotfix ?: 0)
                                 .result
                         }
                     }
