@@ -186,6 +186,8 @@ interface NBT<T> : Cloneable {
         const val TAG_FIREWORKS_COLORS = "Colors"
         const val TAG_FIREWORKS_FADE_COLORS = "FadeColors"
         const val TAG_KNOWLEDGE_BOOK_RECIPES = "Recipes"
+        const val TAG_CROSSBOW_CHARGED = "Charged" // since Minecraft 1.14
+        const val TAG_CROSSBOW_CHARGED_PROJECTILES = "ChargedProjectiles" // since Minecraft 1.14
 
         //</editor-fold>
     }

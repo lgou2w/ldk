@@ -760,6 +760,74 @@ interface ItemBuilder : Builder<ItemStack> {
 
     //</editor-fold>
 
+    //<editor-fold desc="ItemBuilder - Crossbow Charged" defaultstate="collapsed">
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    var isCrossbowCharged : Boolean
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun isCrossbowCharged(block: (ItemBuilder, Boolean) -> Unit): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun setCrossbowCharged(crossbowCharged: Boolean): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun setCrossbowChargedIf(crossbowCharged: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Crossbow Charged Projectiles" defaultstate="collapsed">
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    var crossbowChargedProjectiles : List<ItemStack>?
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun getCrossbowChargedProjectiles(block: (ItemBuilder, List<ItemStack>?) -> Unit): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun setCrossbowChargedProjectiles(chargedProjectiles: List<ItemStack>?): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun setCrossbowChargedProjectilesIf(chargedProjectiles: List<ItemStack>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun clearCrossbowChargedProjectiles(): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun addCrossbowChargedProjectiles(vararg chargedProjectiles: ItemStack): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun removeCrossbowChargedProjectiles(predicate: Predicate<ItemStack>? = null): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.8-rc
+     */
+    fun removeCrossbowChargedProjectilesIndexed(block: BiFunction<Int, ItemStack, Boolean>?): ItemBuilder
+
+    //</editor-fold>
+
     companion object {
 
         /**

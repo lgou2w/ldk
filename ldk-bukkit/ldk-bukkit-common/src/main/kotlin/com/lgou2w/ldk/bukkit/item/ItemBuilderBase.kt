@@ -1889,4 +1889,82 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Crossbow Charged" defaultstate="collapsed">
+
+    override var isCrossbowCharged : Boolean
+        get() = tag.getBooleanOrNull(NBT.TAG_CROSSBOW_CHARGED) ?: false
+        set(value) { tag.putBoolean(NBT.TAG_CROSSBOW_CHARGED, value) }
+
+    override fun isCrossbowCharged(block: (ItemBuilder, Boolean) -> Unit): ItemBuilder {
+        block(this, this.isCrossbowCharged)
+        return this
+    }
+
+    override fun setCrossbowCharged(crossbowCharged: Boolean): ItemBuilder {
+        this.isCrossbowCharged = crossbowCharged
+        return this
+    }
+
+    override fun setCrossbowChargedIf(crossbowCharged: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.isCrossbowCharged = crossbowCharged
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Crossbow Charged Projectiles" defaultstate="collapsed">
+
+    override var crossbowChargedProjectiles : List<ItemStack>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+                ?.asElements<NBTTagCompound>()
+                ?.map(ItemFactory::createItem)
+        }
+        set(value) {
+            clearCrossbowChargedProjectiles()
+            if (value != null)
+                addCrossbowChargedProjectiles(*value.toTypedArray())
+        }
+
+    override fun getCrossbowChargedProjectiles(block: (ItemBuilder, List<ItemStack>?) -> Unit): ItemBuilder {
+        block(this, this.crossbowChargedProjectiles)
+        return this
+    }
+
+    override fun setCrossbowChargedProjectiles(chargedProjectiles: List<ItemStack>?): ItemBuilder {
+        this.crossbowChargedProjectiles = chargedProjectiles
+        return this
+    }
+
+    override fun setCrossbowChargedProjectilesIf(chargedProjectiles: List<ItemStack>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.crossbowChargedProjectiles = chargedProjectiles
+        return this
+    }
+
+    override fun clearCrossbowChargedProjectiles(): ItemBuilder {
+        tag.remove(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+        return this
+    }
+
+    override fun addCrossbowChargedProjectiles(vararg chargedProjectiles: ItemStack): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+            .addCompound(*chargedProjectiles.map { ItemFactory.readItem(it) }.toTypedArray())
+        return this
+    }
+
+    override fun removeCrossbowChargedProjectiles(predicate: Predicate<ItemStack>?): ItemBuilder {
+        removeCrossbowChargedProjectilesIndexed { _, stack -> predicate?.invoke(stack).isTrue() }
+        return this
+    }
+
+    override fun removeCrossbowChargedProjectilesIndexed(block: BiFunction<Int, ItemStack, Boolean>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+            ?.removeIfIndexed<NBTTagCompound, ItemStack>({ ItemFactory.createItem(it) }, block)
+        return this
+    }
+
+    //</editor-fold>
 }
