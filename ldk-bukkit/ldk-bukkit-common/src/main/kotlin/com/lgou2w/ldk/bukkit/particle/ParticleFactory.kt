@@ -139,6 +139,7 @@ object ParticleFactory {
                 .withVisibilities(Visibility.PUBLIC, Visibility.STATIC, Visibility.FINAL)
                 .withName(particle.type.toUpperCase())
                 .resultAccessorOrNull()
+            PARTICLE_FIELD_ACCESSORS[particle] = accessor
         }
         accessor
     }
