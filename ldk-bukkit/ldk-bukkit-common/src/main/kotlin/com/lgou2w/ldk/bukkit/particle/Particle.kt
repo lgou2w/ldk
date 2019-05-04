@@ -65,7 +65,7 @@ enum class Particle(
     SPLASH(43, "water_splash", "splash"),
     FISHING(22, "water_wake", "fishing"),
     UNDERWATER(42, "suspended", "underwater"),
-    @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("UNDERWATER"))
+    @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.", replaceWith = ReplaceWith("UNDERWATER"))
     UNDERWATER_DEPTH("suspended_depth", -42),
     CRIT(6, "crit", "crit"),
     ENCHANTED_HIT(14, "crit_magic", "enchanted_hit"),
@@ -86,22 +86,22 @@ enum class Particle(
     ENCHANT(15, "enchantment_table", "enchant"),
     FLAME(23, "flame", "flame"),
     LAVA(31, "lava", "lava"),
-    @Deprecated("Removed in Minecraft 1.13")
+    @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.")
     FOOTSTEP("footstep", -2),
     CLOUD(5, "cloud", "cloud"),
     DUST(11, "red_dust", "dust"),
     ITEM_SNOWBALL(29, "snowball", "item_snowball"),
-    @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("ITEM_SNOWBALL"))
+    @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.", replaceWith = ReplaceWith("ITEM_SNOWBALL"))
     ITEM_SNOW_SHOVEL("snow_shovel", -29),
     ITEM_SLIME(28, "slime", "item_slime"),
     HEART(25, "heart", "heart"),
     BARRIER(2, "barrier", "barrier"),
     ITEM(27, "item_crack", "item"),
     BLOCK(3, "block_crack", "block"),
-    @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("BLOCK"))
+    @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.", replaceWith = ReplaceWith("BLOCK"))
     BLOCKDUST("blockdust", -3),
     RAIN(36, "water_drop", "rain"),
-    @Deprecated("Removed in Minecraft 1.13", replaceWith = ReplaceWith("ITEM"))
+    @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.", replaceWith = ReplaceWith("ITEM"))
     TAKE("item_take", -27),
     ELDER_GUARDIAN(13, "mob_appearance", "elder_guardian"),
 
