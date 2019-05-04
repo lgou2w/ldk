@@ -24,7 +24,6 @@ import org.bstats.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import java.util.Collections
 import java.util.logging.Level
 
 /**
@@ -116,11 +115,11 @@ class LDKPlugin : PluginBase() {
             command: Command,
             alias: String,
             args: Array<out String>
-    ): List<String> {
+    ): List<String>? {
         if (args.isEmpty())
-            return Collections.emptyList()
+            return null
         val lastWord = args.last()
         val keyWords = arrayOf("help", "version").filter { it.startsWith(lastWord) }
-        return if (keyWords.isEmpty()) Collections.emptyList() else keyWords
+        return if (keyWords.isEmpty()) null else keyWords
     }
 }

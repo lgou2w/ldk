@@ -65,14 +65,14 @@ open class Completes : Iterable<Completer> {
     fun addCompleter(type: Class<*>, completer: (
             parameter: CommandExecutor.Parameter,
             sender: CommandSender,
-            value: String) -> List<String>
+            value: String) -> List<String>?
     ) {
         addCompleter(type, object : Completer {
             override fun onComplete(
                     parameter: CommandExecutor.Parameter,
                     sender: CommandSender,
                     value: String
-            ): List<String> {
+            ): List<String>? {
                 return completer.invoke(parameter, sender, value)
             }
         })
