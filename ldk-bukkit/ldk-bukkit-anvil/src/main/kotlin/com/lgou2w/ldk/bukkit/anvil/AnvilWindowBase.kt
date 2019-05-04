@@ -35,6 +35,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
+import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
@@ -99,6 +100,8 @@ abstract class AnvilWindowBase(
 
     @Suppress("DEPRECATION")
     companion object {
+
+        private const val FAKE_PLUGIN_NAME = "LDKAnvilInternalFakePlugin"
 
         @JvmStatic private val CLASS_CONTAINER by lazyMinecraftClass("Container")
         @JvmStatic private val CLASS_CONTAINER_ANVIL by lazyMinecraftClass("ContainerAnvil")
@@ -166,9 +169,15 @@ abstract class AnvilWindowBase(
                             event.result = Event.Result.DENY
                         }
                     }
+                } else if (event is PluginDisableEvent) {
+                    if (event.plugin.name == FAKE_PLUGIN_NAME || event.plugin.name == Constants.LDK)
+                        for (player in Bukkit.getOnlinePlayers())
+                            if (getInventoryAnvilWindow(player.openInventory) != null)
+                                player.closeInventory()
                 }
-            }, EventPriority.MONITOR, ldk ?: FakePlugin("LDKAnvilInternalFakePlugin"), false)
+            }, EventPriority.MONITOR, ldk ?: FakePlugin(FAKE_PLUGIN_NAME), false)
             InventoryClickEvent.getHandlerList().register(listener)
+            PluginDisableEvent.getHandlerList().register(listener)
         }
 
         /**

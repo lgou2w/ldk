@@ -27,6 +27,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
+import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.EventExecutor
@@ -357,6 +358,8 @@ abstract class GuiBase : Gui {
     @Suppress("DEPRECATION")
     companion object {
 
+        private const val FAKE_PLUGIN_NAME = "LDKGuiInternalFakePlugin"
+
         @Throws(IllegalArgumentException::class)
         private fun canAdd(gui: Gui, button: Button) {
             val size = gui.size
@@ -410,11 +413,18 @@ abstract class GuiBase : Gui {
                                 gui.onClicked?.invoke(gui, event)
                         }
                     }
+                    is PluginDisableEvent -> {
+                        if (event.plugin.name == FAKE_PLUGIN_NAME || event.plugin.name == Constants.LDK)
+                            for (player in Bukkit.getOnlinePlayers())
+                                if (player.openInventory.topInventory.holder is Gui)
+                                    player.closeInventory()
+                    }
                 }
-            }, EventPriority.MONITOR, ldk ?: FakePlugin("LDKGuiInternalFakePlugin"), false)
+            }, EventPriority.MONITOR, ldk ?: FakePlugin(FAKE_PLUGIN_NAME), false)
             InventoryOpenEvent.getHandlerList().register(listener)
             InventoryCloseEvent.getHandlerList().register(listener)
             InventoryClickEvent.getHandlerList().register(listener)
+            PluginDisableEvent.getHandlerList().register(listener)
         }
     }
 }
