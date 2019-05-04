@@ -61,7 +61,7 @@ object Depends {
         if (!depend.isInstance(implemented))
             throw IllegalArgumentException("The depend implementation is not an instance object of the $depend class.")
         if (hasDepend(depend))
-            return false
+            return true
         Bukkit.getServicesManager().register(depend, implemented, PLUGIN, ServicePriority.Normal)
         return hasDepend(depend)
     }
@@ -72,7 +72,7 @@ object Depends {
      */
     @JvmStatic
     fun <T : Depend> unregister(depend: Class<T>): Boolean {
-        val implemented = get(depend) ?: return false
+        val implemented = get(depend) ?: return true
         Bukkit.getServicesManager().unregister(depend, implemented)
         return !hasDepend(depend)
     }
