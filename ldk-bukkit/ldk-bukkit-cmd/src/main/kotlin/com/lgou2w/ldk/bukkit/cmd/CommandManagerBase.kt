@@ -185,7 +185,7 @@ abstract class CommandManagerBase(
             override fun tabComplete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
                 if (!command.manager.plugin.isEnabled)
                     return emptyList()
-                return command.complete(sender, alias, args)
+                return command.complete(sender, alias, args) ?: emptyList()
             }
         }
     }

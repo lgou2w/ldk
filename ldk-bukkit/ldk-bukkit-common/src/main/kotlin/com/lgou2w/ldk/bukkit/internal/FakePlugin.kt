@@ -27,7 +27,6 @@ import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.PluginLoader
 import java.io.File
 import java.io.InputStream
-import java.util.Collections
 import java.util.logging.Logger
 
 /**
@@ -55,7 +54,7 @@ class FakePlugin(name: String) : PluginBase() {
     override fun saveResource(resourcePath: String, replace: Boolean) { }
     override fun getResource(filename: String): InputStream? = null
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>): Boolean = false
-    override fun onTabComplete(sender: CommandSender, cmd: Command, alias: String, args: Array<out String>): MutableList<String> = Collections.emptyList()
+    override fun onTabComplete(sender: CommandSender, cmd: Command, alias: String, args: Array<out String>): List<String>? = null
     override fun isNaggable(): Boolean = false
     override fun setNaggable(canNag: Boolean) { }
     override fun getLogger(): Logger = Bukkit.getLogger()

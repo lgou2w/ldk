@@ -203,5 +203,5 @@ interface RegisteredCommand {
 
     fun execute(sender: CommandSender, label: String, args: Array<out String>): Boolean
 
-    fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String>
+    fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String>?
 }

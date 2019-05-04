@@ -37,9 +37,9 @@ import java.util.regex.Pattern
 abstract class FuzzyReflectMatcher<T>(
         reflect: FuzzyReflect,
         initialize: Collection<T>? = null
-) where T: AccessibleObject, T: Member {
+) where T : AccessibleObject, T : Member {
 
-    protected var values: MutableList<T> =
+    protected var values : MutableList<T> =
             if (initialize != null) ArrayList(initialize)
             else ArrayList()
 
@@ -92,8 +92,10 @@ abstract class FuzzyReflectMatcher<T>(
      * @param regex Name regex
      * @param regex 名称规则
      */
-    open fun withName(regex: String): FuzzyReflectMatcher<T>
-            = with({ Pattern.compile(regex) }) { it, pattern -> pattern.matcher(it.name).matches() }
+    open fun withName(regex: String): FuzzyReflectMatcher<T> = with(object : Predicate<T> {
+        val pattern = Pattern.compile(regex)
+        override fun invoke(it: T): Boolean = pattern.matcher(it.name).matches()
+    })
 
     /**
      * * Match reflection values ​​from the given [annotation] class.
@@ -102,7 +104,7 @@ abstract class FuzzyReflectMatcher<T>(
      * @param annotation Annotation class
      * @param annotation 注解类
      */
-    open fun <A: Annotation> withAnnotation(annotation: Class<A>): FuzzyReflectMatcher<T>
+    open fun <A : Annotation> withAnnotation(annotation: Class<A>): FuzzyReflectMatcher<T>
             = with { it.getAnnotation(annotation) != null }
 
     /**
@@ -114,7 +116,7 @@ abstract class FuzzyReflectMatcher<T>(
      * @param block Condition
      * @param block 条件
      */
-    open fun <A: Annotation> withAnnotationIf(annotation: Class<A>, block: Predicate<A>): FuzzyReflectMatcher<T>
+    open fun <A : Annotation> withAnnotationIf(annotation: Class<A>, block: Predicate<A>): FuzzyReflectMatcher<T>
             = with { it.getAnnotation(annotation).letIfNotNull(block) == true }
 
     /**

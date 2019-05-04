@@ -113,7 +113,7 @@ abstract class Reflection private constructor() {
                     SAFE?.getCallerClasses(depth = 1)  // test method
                     thread = false
                 } catch (e: ClassNotFoundException) {
-                } catch (e: NoSuchMethodException) {
+                } catch (e: NoSuchMethodError) {
                 } catch (e: Exception) {
                 } finally {
                     if (thread)
@@ -137,10 +137,10 @@ abstract class Reflection private constructor() {
             return try {
                 @Suppress("DEPRECATION")
                 sun.reflect.Reflection.getCallerClass(depth ?: 0)
-            } catch (e: NoSuchMethodException) {
+            } catch (e: NoSuchMethodError) {
                 try {
                     sun.reflect.Reflection.getCallerClass()
-                } catch (e1: NoSuchMethodException) {
+                } catch (e1: NoSuchMethodError) {
                     null
                 }
             }
@@ -155,10 +155,10 @@ abstract class Reflection private constructor() {
                     else if (expected == null) callerClasses.add(clazz)
                 } catch (e: Exception) {
                 }
-            } catch (e: NoSuchMethodException) {
+            } catch (e: NoSuchMethodError) {
                 try {
                     callerClasses.add(sun.reflect.Reflection.getCallerClass())
-                } catch (e1: NoSuchMethodException) {
+                } catch (e1: NoSuchMethodError) {
                 }
             }
             return if (callerClasses.isEmpty()) emptyList() else callerClasses

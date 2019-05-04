@@ -21,6 +21,9 @@ import org.bukkit.Color
 /**
  * ## ParticleDust (粒子尘埃)
  *
+ * * Before the `1.13` version, you need to set the of `count` to `0` and the `speed` to not `0` then the color will take effect.
+ * * 在 `1.13` 版本之前需要将 `count`  数量设置为 `0` 且将 `speed` 速度设置不为 `0` 那么颜色才会生效.
+ *
  * @see [Particle.DUST]
  * @author lgou2w
  */

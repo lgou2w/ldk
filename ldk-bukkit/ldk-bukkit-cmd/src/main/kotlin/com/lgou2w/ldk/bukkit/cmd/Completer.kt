@@ -44,7 +44,7 @@ interface Completer {
             parameter: CommandExecutor.Parameter,
             sender: CommandSender,
             value: String
-    ): List<String>
+    ): List<String>?
 
     companion object Constants {
 
@@ -58,8 +58,8 @@ interface Completer {
                     parameter: CommandExecutor.Parameter,
                     sender: CommandSender,
                     value: String
-            ): List<String> {
-                return emptyList()
+            ): List<String>? {
+                return null
             }
         }
 
@@ -73,7 +73,7 @@ interface Completer {
                     parameter: CommandExecutor.Parameter,
                     sender: CommandSender,
                     value: String
-            ): List<String> {
+            ): List<String>? {
                 val alias = if (parameter.vararg == null) parameter.name ?: parameter.type.simpleName
                     else parameter.name ?: parameter.vararg.simpleName
                 return if (parameter.canNullable) {
@@ -101,7 +101,7 @@ interface Completer {
                     parameter: CommandExecutor.Parameter,
                     sender: CommandSender,
                     value: String
-            ): List<String> {
+            ): List<String>? {
                 return Completes.matchOnlinePlayers(sender, value)
             }
         }
@@ -116,7 +116,7 @@ interface Completer {
                     parameter: CommandExecutor.Parameter,
                     sender: CommandSender,
                     value: String
-            ): List<String> {
+            ): List<String>? {
                 return if (parameter.type.isEnum) {
                     val constants = parameter.type.enumConstants
                     constants.map { it as Enum<*> }.filter { enum ->
@@ -140,7 +140,7 @@ interface Completer {
                     parameter: CommandExecutor.Parameter,
                     sender: CommandSender,
                     value: String
-            ): List<String> {
+            ): List<String>? {
                 val alias = if (parameter.vararg == null) parameter.name ?: "Boolean"
                     else parameter.name ?: parameter.vararg.simpleName
                 val first = when {

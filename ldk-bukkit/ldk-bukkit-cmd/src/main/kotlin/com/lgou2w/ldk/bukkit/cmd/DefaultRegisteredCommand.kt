@@ -235,9 +235,9 @@ class DefaultRegisteredCommand(
         return true
     }
 
-    override fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String> {
+    override fun complete(sender: CommandSender, alias: String, args: Array<out String>): List<String>? {
         if (!isAllowCompletion || !testPermissionIfFailed(sender, permission))
-            return emptyList()
+            return null
         return if (args.size <= 1) {
             (mChildren
                  .asSequence()
@@ -263,10 +263,10 @@ class DefaultRegisteredCommand(
         }
     }
 
-    private fun invokeExecutorComplete(sender: CommandSender, args: Array<out String>): List<String> {
+    private fun invokeExecutorComplete(sender: CommandSender, args: Array<out String>): List<String>? {
         val executor = findExecutor(args.first())
         return if (executor == null || !testPermissionIfFailed(sender, executor.permission))
-            emptyList()
+            null
         else {
             if (args.lastIndex <= executor.max) {
                 val parameter = executor.parameters[args.lastIndex - 1]
@@ -275,7 +275,7 @@ class DefaultRegisteredCommand(
             } else {
                 val vararg = executor.parameters.lastOrNull()
                 if (vararg?.vararg == null)
-                    emptyList()
+                    null
                 else {
                     val completer = manager.completes.getCompleter(vararg.vararg) ?: Completer.DEFAULT
                     completer.onComplete(vararg, sender, args.last())

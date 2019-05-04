@@ -139,6 +139,7 @@ object ParticleFactory {
                 .withVisibilities(Visibility.PUBLIC, Visibility.STATIC, Visibility.FINAL)
                 .withName(particle.type.toUpperCase())
                 .resultAccessorOrNull()
+            PARTICLE_FIELD_ACCESSORS[particle] = accessor
         }
         accessor
     }
@@ -169,6 +170,19 @@ object ParticleFactory {
             .useFieldMatcher()
             .withType(CLASS_IBLOCK_DATA.notNull())
             .resultAccessorOrNull()
+    }
+
+    // Deprecated Adapter for Particles
+    @Suppress("DEPRECATION")
+    @JvmStatic private val PARTICLE_FRESH_ADAPTER : (Particle) -> Particle? = { particle ->
+        when (particle) {
+            Particle.UNDERWATER_DEPTH -> Particle.UNDERWATER
+            Particle.FOOTSTEP -> Particle.BARRIER
+            Particle.ITEM_SNOW_SHOVEL -> Particle.ITEM_SNOWBALL
+            Particle.BLOCKDUST -> Particle.BLOCK
+            Particle.TAKE -> Particle.ITEM
+            else -> null
+        }
     }
 
     /**
@@ -223,14 +237,15 @@ object ParticleFactory {
             longDistance: Boolean,
             data: Any?
     ): Any {
+        val adaptParticle = PARTICLE_FRESH_ADAPTER(particle) ?: particle
         val nms = if (MinecraftBukkitVersion.isV114OrLater) {
             // Since Minecraft 1.14 Pre-Release 5
-            PARTICLE_FIELD(particle)?.get(null).notNull("This particle '$particle' is not supported by the server version.")
+            PARTICLE_FIELD(adaptParticle)?.get(null).notNull("This particle '$adaptParticle' is not supported by the server version.")
         } else {
-            METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, particle.type)
+            METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, adaptParticle.type)
         }
         var overrideOffsetX = offsetX
-        val param = if (particle == Particle.ITEM) {
+        val param = if (adaptParticle == Particle.ITEM) {
             val stack = when (data) {
                 is ItemStack -> data
                 is Material -> ItemStack(data)
@@ -239,7 +254,7 @@ object ParticleFactory {
                 else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
             }
             CONSTRUCTOR_PARAM_ITEM.notNull().newInstance(nms, ItemFactory.asNMSCopy(stack))
-        } else if (particle == Particle.BLOCK || particle == Particle.BLOCKDUST || particle == Particle.FALLING_DUST) {
+        } else if (adaptParticle == Particle.BLOCK || adaptParticle == Particle.BLOCKDUST || adaptParticle == Particle.FALLING_DUST) {
             val block = when (data) {
                 is Block -> FIELD_CRAFT_BLOCK_DATA_STATE.notNull()[data.blockData]
                 is Material -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, data, 0.toByte())
@@ -248,7 +263,7 @@ object ParticleFactory {
                 else -> throw IllegalArgumentException("Particle BLOCK | BLOCKDUST | FALLING_DUST data can only be Material | Block | ParticleData.")
             }
             CONSTRUCTOR_PARAM_BLOCK.notNull().newInstance(nms, block)
-        } else if (particle == Particle.DUST) {
+        } else if (adaptParticle == Particle.DUST) {
             val (color, size) = when (data) {
                 is ParticleDust -> data.color to data.size
                 is Color -> data to 1f
@@ -263,7 +278,7 @@ object ParticleFactory {
         } else {
             nms
         }
-        if (particle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
+        if (adaptParticle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
             overrideOffsetX = data.value / 24f
         }
         return CONSTRUCTOR_FRESH.notNull().newInstance(
