@@ -22,7 +22,7 @@
     <parent>
         <artifactId>ldk-bukkit</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.8-rc</version>
+        <version>0.1.8-rc-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -45,98 +45,98 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-asm</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-rsa -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-rsa</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-sql-hikari -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-sql-hikari</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-common -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-common</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-anvil -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-anvil</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-cmd -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-cmd</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-gui -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-gui</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-region -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-region</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-depend -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-depend</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-depend-economy -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-depend-economy</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-depend-placeholderapi -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-depend-placeholderapi</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-depend-worldedit -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-depend-worldedit</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-i18n -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-i18n</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- ldk-bukkit-coroutines -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-coroutines</artifactId>
-            <version>0.1.8-rc</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- bStats.org -->

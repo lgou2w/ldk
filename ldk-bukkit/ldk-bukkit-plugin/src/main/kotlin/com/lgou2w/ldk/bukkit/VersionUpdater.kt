@@ -123,18 +123,20 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
 
     private fun parseVersion(versionOnly: String): Version {
         return if (versionOnly < "1.0") {
-            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1
+            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1, 0.3.0-rc-SNAPSHOT
             val versions = versionOnly.split('-')
             val ver = versions[0]
             val (type, value) = parseZeroVersionValue(versions.getOrNull(1))
             val hotfix = parseZeroVersionHotfix(versions.getOrNull(2))
-            Version.ZeroVersion(ver, type, value, hotfix)
+            val isSnapshot = versionOnly.endsWith("-SNAPSHOT")
+            Version.ZeroVersion(ver, type, value, hotfix, isSnapshot)
         } else {
             // e.g.: 1.0, 1.0.1-SNAPSHOT
             val versions = versionOnly.split('-')
             val ver = versions[0]
             val type = versions.getOrNull(1)
-            Version.ReleaseVersion(ver, type)
+            val isSnapshot = versionOnly.endsWith("-SNAPSHOT")
+            Version.ReleaseVersion(ver, type, isSnapshot)
         }
     }
 
@@ -156,9 +158,9 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         return zeroVersionHotfixOnly.substring(idx).toIntOrNull() ?: 0
     }
 
-    private sealed class Version(val ver: String) : Comparable<Version> {
-        class ZeroVersion(ver: String, val type: String, val value: Int, val hotfix: Int?) : Version(ver)
-        class ReleaseVersion(ver: String, val type: String?) : Version(ver)
+    private sealed class Version(val ver: String, val isSnapshot: Boolean) : Comparable<Version> {
+        class ZeroVersion(ver: String, val type: String, val value: Int, val hotfix: Int?, isSnapshot: Boolean) : Version(ver, isSnapshot)
+        class ReleaseVersion(ver: String, val type: String?, isSnapshot: Boolean) : Version(ver, isSnapshot)
         override fun compareTo(other: Version): Int = compareVersion(this, other)
         companion object {
             private fun compareVersion(left: Version, right: Version): Int {
@@ -171,6 +173,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
                                 .compare(left.type, right.type)
                                 .compare(left.value, right.value)
                                 .compare(left.hotfix ?: 0, right.hotfix ?: 0)
+                                .compareTrueFirst(left.isSnapshot, right.isSnapshot)
                                 .result
                         }
                     }
@@ -180,6 +183,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
                             ComparisonChain.start()
                                 .compare(left.ver, right.ver)
                                 .compare(left.type ?: "", right.type ?: "")
+                                .compareTrueFirst(left.isSnapshot, right.isSnapshot)
                                 .result
                         }
                     }
@@ -236,7 +240,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
             val tags = release[RELEASE_ARTIFACT_ID]?.asJsonObject ?: return null
             val tag = tags.entrySet().lastOrNull()?.key ?: return null
             val releasedAt = "Unknown, Non github.com source. See download url."
-            val isPreRelease = if (tag < "1.0") !tag.contains("rc", true) else tag.contains("-")
+            val isPreRelease = if (tag < "1.0") !tag.contains("rc", true) || tag.endsWith("-SNAPSHOT") else tag.contains("-")
             val fileDownloadUrl = URL_RELEASE + tag
             return Release(tag, releasedAt, isPreRelease, "lgou2w", "https://github.com/lgou2w", null, fileDownloadUrl)
         }
