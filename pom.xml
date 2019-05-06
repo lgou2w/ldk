@@ -104,6 +104,14 @@
         <module>ldk-bukkit</module>
     </modules>
 
+    <repositories>
+        <!-- jcenter -->
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Kotlin -->
         <dependency>
