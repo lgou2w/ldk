@@ -48,6 +48,7 @@ class CommonTest {
 
     @Test fun `applyIfNotNull - null should return null`() {
         val obj : Any? = null
+        obj shouldEqual null
         obj.applyIfNotNull {  } shouldEqual null
     }
 
@@ -119,26 +120,36 @@ class CommonTest {
         "b".isOrRange("a", "a") shouldEqual false
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private val lazyClassDelegate by lazyClass { Class.forName("java.lang.String") as Class<String> }
+
+    @Suppress("UNCHECKED_CAST")
     @Test fun `lazyClass - new should not be initialized yet`() {
-        @Suppress("UNCHECKED_CAST")
         val lazyClass = lazyClass { Class.forName("java.lang.String") as Class<String> }
         lazyClass.isInitialized() shouldEqual false
         lazyClass.value.simpleName shouldEqual "String"
         lazyClass.isInitialized() shouldEqual true
+        lazyClass.value shouldBe lazyClassDelegate
     }
+
+    private val lazyAnyClassDelegate by lazyAnyClass { Class.forName("java.lang.String") }
 
     @Test fun `lazyAnyClass - new should not be initialized yet`() {
         val lazyAnyClass = lazyAnyClass { Class.forName("java.lang.String") }
         lazyAnyClass.isInitialized() shouldEqual false
         lazyAnyClass.value.simpleName shouldEqual "String"
         lazyAnyClass.isInitialized() shouldEqual true
+        lazyAnyClass.value shouldBe lazyAnyClassDelegate
     }
+
+    private val lazyAnyOrNullClassDelegate by lazyAnyOrNullClass { null }
 
     @Test fun `lazyAnyOrNullClass - new that does not exist should return null`() {
         val lazyAnyOrNullClass = lazyAnyOrNullClass { try { Class.forName("404 Not Found") } catch (e: ClassNotFoundException) { null } }
         lazyAnyOrNullClass.isInitialized() shouldEqual false
         lazyAnyOrNullClass.value shouldEqual null
         lazyAnyOrNullClass.isInitialized() shouldEqual true
+        lazyAnyOrNullClass.value shouldBe lazyAnyOrNullClassDelegate
     }
 
     @Test fun `Predicate - and - or - negate`() {
@@ -184,5 +195,10 @@ class CommonTest {
         (c2 andThenConsume c1).invoke(1); list.size shouldBe 1
         list shouldContain 1
         list.clear()
+    }
+
+    @Test fun `Constants - string`() {
+        Constants shouldBe Constants
+        Constants.LDK shouldEqual "LDK"
     }
 }
