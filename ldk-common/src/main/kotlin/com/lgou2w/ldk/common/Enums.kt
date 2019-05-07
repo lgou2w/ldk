@@ -228,19 +228,15 @@ object Enums {
      * @param def 默认值, 默认为 `null` 值
      * @throws IllegalArgumentException If [clazz] is not an enum class.
      * @throws IllegalArgumentException 如果 [clazz] 不是一个枚举类.
-     * @throws IllegalArgumentException If [clazz] does not implement the [Valuable] interface.
-     * @throws IllegalArgumentException 如果 [clazz] 未实现 [Valuable] 接口.
      * @see [Valuable]
      * @see [Valuable.value]
      */
     @JvmStatic
     @JvmOverloads
-    fun <V, T> fromValuable(clazz: Class<T>, value: V?, def: Enum<*>? = null): Enum<*>? where T : Enum<*>, T : Valuable<V> {
+    fun <V, T> fromValuable(clazz: Class<T>, value: V?, def: Enum<*>? = null): Enum<*>? where T : Valuable<V> {
         if (!clazz.isEnum)
             throw IllegalArgumentException("The parameter class $clazz is not an enum type.")
-        if (clazz.interfaces.find { Valuable::class.java.isAssignableFrom(it) } == null)
-            throw IllegalArgumentException("Enum class $clazz does not implement the Valuable interface.")
-        return clazz.enumConstants?.map { it as T }?.find { it.value == value } ?: def
+        return clazz.enumConstants?.map { it as T }?.find { it.value == value } as? Enum<*> ?: def
     }
 
     /**
