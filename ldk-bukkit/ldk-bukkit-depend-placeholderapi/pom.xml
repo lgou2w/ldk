@@ -22,7 +22,7 @@
     <parent>
         <artifactId>ldk-bukkit</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.8-beta12-hotfix2</version>
+        <version>0.1.8-rc-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-depend</artifactId>
-            <version>0.1.8-beta12-hotfix2</version>
+            <version>0.1.8-rc-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- PlaceholderAPI -->
