@@ -35,6 +35,8 @@ class VersionTest {
         v1 shouldNotEqual v2
         (v1 < v2) shouldEqual true
         (v1 > v2) shouldEqual false
+        v1.equals(v2) shouldEqual false
+        v2.equals(v1) shouldEqual false
         v1 shouldEqual Version(1, 0, 0)
         v2 shouldEqual Version(2, 0, 0)
         Version(1, 0, 1).let { it > v1 && it < v2 } shouldEqual true
@@ -50,11 +52,15 @@ class VersionTest {
         ver.equals(ver) shouldEqual true
         ver.equals("ver") shouldEqual false
         ver.toString() shouldStartWith "Version"
+        ver.equals(Version(1, 0, 1)) shouldEqual true
     }
 
     @Test fun `Version - version parsing`() {
         Version.parse("1.0.1").version shouldEqual "1.0.1"
+        Version.parseSafely("1.0.1") shouldEqual Version.parse("1.0.1")
         Version.parseSafely("error") shouldEqual null
+        Version.parseSafely(null) shouldEqual null
+        Version.parseSafely("") shouldEqual null
         invoking { Version.parse("error") } shouldThrow IllegalArgumentException::class
         invoking { Version.parseSafely("error") } shouldNotThrow IllegalArgumentException::class
     }
