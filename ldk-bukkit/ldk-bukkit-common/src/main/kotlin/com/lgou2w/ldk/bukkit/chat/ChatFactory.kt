@@ -103,7 +103,7 @@ object ChatFactory {
     @JvmOverloads
     fun createChatPacket(component: ChatComponent, action: ChatAction = ChatAction.CHAT): Any {
         val value : Any? =
-                if (CLASS_CHAT_MESSAGE_TYPE != null) Enums.fromOrigin(CLASS_CHAT_MESSAGE_TYPE!!, action.ordinal)
+                if (CLASS_CHAT_MESSAGE_TYPE != null) Enums.fromOrdinal(CLASS_CHAT_MESSAGE_TYPE!!, action.ordinal)
                 else action.id
         val icbc = toNMS(component)
         return CONSTRUCTOR_PACKET_OUT_CHAT.newInstance(icbc, value)

@@ -109,31 +109,45 @@ object Enums {
             = ofName(clazz, name, def)
               ?: throw NoSuchElementException("Cannot find type $clazz enumeration name: $name")
 
+    @JvmStatic
+    @JvmOverloads
+    @Deprecated("RENAME", replaceWith = ReplaceWith("ofOrdinal"))
+    fun <T : Enum<T>> ofOrigin(clazz: Class<T>, ordinal: Int, def: T? = null): T?
+            = ofOrdinal(clazz, ordinal, def)
+
     /**
-     * * Find the matching enum item from the given enum [origin] for the given enum [clazz].
-     * * 将给定的枚举类 [clazz] 从指定枚举序数 [origin] 内查找匹配枚举项.
+     * * Find the matching enum item from the given enum [ordinal] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举序数 [ordinal] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
-     * @param origin Ordinal
-     * @param origin 序数
+     * @param ordinal Ordinal
+     * @param ordinal 序数
      * @param def Default value, The default is `null`
      * @param def 默认值, 默认为 `null` 值
      * @see [Enum.ordinal]
+     * @since LDK 0.1.8-rc
      */
     @JvmStatic
     @JvmOverloads
-    fun <T : Enum<T>> ofOrigin(clazz: Class<T>, origin: Int, def: T? = null): T?
-            = of(clazz, { it.ordinal == origin }, def)
+    fun <T : Enum<T>> ofOrdinal(clazz: Class<T>, ordinal: Int, def: T? = null): T?
+            = of(clazz, { it.ordinal == ordinal }, def)
+
+    @JvmStatic
+    @JvmOverloads
+    @Throws(NoSuchElementException::class)
+    @Deprecated("RENAME", replaceWith = ReplaceWith("ofOrdinalNotNull"))
+    fun <T : Enum<T>> ofOriginNotNull(clazz: Class<T>, ordinal: Int, def: T? = null): T
+            = ofOrdinalNotNull(clazz, ordinal, def)
 
     /**
-     * * Find the matching enum item from the given enum [origin] for the given enum [clazz].
-     * * 将给定的枚举类 [clazz] 从指定枚举序数 [origin] 内查找匹配枚举项.
+     * * Find the matching enum item from the given enum [ordinal] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举序数 [ordinal] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
-     * @param origin Ordinal
-     * @param origin 序数
+     * @param ordinal Ordinal
+     * @param ordinal 序数
      * @param def Default value, The default is `null`
      * @param def 默认值, 默认为 `null` 值
      * @throws [NoSuchElementException] If no matching enum item are found.
@@ -144,9 +158,9 @@ object Enums {
     @JvmStatic
     @JvmOverloads
     @Throws(NoSuchElementException::class)
-    fun <T : Enum<T>> ofOriginNotNull(clazz: Class<T>, origin: Int, def: T? = null): T
-            = ofOrigin(clazz, origin, def)
-              ?: throw NoSuchElementException("Cannot find type $clazz enumeration origin: $origin")
+    fun <T : Enum<T>> ofOrdinalNotNull(clazz: Class<T>, ordinal: Int, def: T? = null): T
+            = ofOrdinal(clazz, ordinal, def)
+              ?: throw NoSuchElementException("Cannot find type $clazz enumeration ordinal: $ordinal")
 
     /**
      * * Find the matching enum item from the specified [value] in the [Valuable] interface of the given enum [clazz].
@@ -258,22 +272,29 @@ object Enums {
     fun <T> fromName(clazz: Class<T>, name: String, def: Enum<*>? = null): Enum<*>?
             = from(clazz, { it.name == name }, def)
 
+    @JvmStatic
+    @JvmOverloads
+    @Deprecated("RENAME", replaceWith = ReplaceWith("fromOrdinal"))
+    fun <T> fromOrigin(clazz: Class<T>, ordinal: Int, def: Enum<*>? = null): Enum<*>?
+            = fromOrdinal(clazz, ordinal, def)
+
     /**
-     * * Finds the matching enum item from the given enum [origin] for the given enum [clazz].
-     * * 将给定的枚举类 [clazz] 从指定枚举序数 [origin] 内查找匹配枚举项.
+     * * Finds the matching enum item from the given enum [ordinal] for the given enum [clazz].
+     * * 将给定的枚举类 [clazz] 从指定枚举序数 [ordinal] 内查找匹配枚举项.
      *
      * @param clazz Enum class
      * @param clazz 枚举类
-     * @param origin Ordinal
-     * @param origin 序数
+     * @param ordinal Ordinal
+     * @param ordinal 序数
      * @param def Default value, The default is `null`
      * @param def 默认值, 默认为 `null` 值
      * @throws IllegalArgumentException If [clazz] is not an enum class.
      * @throws IllegalArgumentException 如果 [clazz] 不是一个枚举类.
      * @see [Enum.ordinal]
+     * @since LDK 0.1.8-rc
      */
     @JvmStatic
     @JvmOverloads
-    fun <T> fromOrigin(clazz: Class<T>, origin: Int, def: Enum<*>? = null): Enum<*>?
-            = from(clazz, { it.ordinal == origin }, def)
+    fun <T> fromOrdinal(clazz: Class<T>, ordinal: Int, def: Enum<*>? = null): Enum<*>?
+            = from(clazz, { it.ordinal == ordinal }, def)
 }
