@@ -272,7 +272,6 @@ fun <T, R> NBTTagList.removeIfIndexed(
     } else {
         val iterator = iterator()
         var index = 0
-        @Suppress("UNCHECKED_CAST")
         while (iterator.hasNext()) {
             val next = iterator.next()
             val value = if (next.type.isWrapper()) next as T else next.value as T

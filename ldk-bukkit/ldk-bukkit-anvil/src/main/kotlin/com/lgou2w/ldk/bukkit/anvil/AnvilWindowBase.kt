@@ -186,7 +186,6 @@ abstract class AnvilWindowBase(
         @JvmStatic
         @Deprecated("INTERNAL ONLY")
         fun of(plugin: Plugin): AnvilWindow {
-            @Suppress("UNCHECKED_CAST")
             val inst = CONSTRUCTOR_ANVIL_WINDOW_IMPL.newInstance(plugin)
             return AnvilWindowBase::class.java.cast(inst)
         }
