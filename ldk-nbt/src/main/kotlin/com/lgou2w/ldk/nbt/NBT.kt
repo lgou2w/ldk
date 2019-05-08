@@ -245,7 +245,7 @@ fun <T, R> NBTTagCompound.removeIf(
         remove(key)
     } else {
         val value = get(key) ?: return this
-        @Suppress("UNCHECKED_CAST")
+        //@Suppress("UNCHECKED_CAST") // SEE : https://github.com/lgou2w/ldk/issues/82
         if (value.type.isWrapper() && predicate(transform(value as T)))
             remove(key)
         else if (predicate(transform(value.value as T)))
@@ -272,7 +272,6 @@ fun <T, R> NBTTagList.removeIfIndexed(
     } else {
         val iterator = iterator()
         var index = 0
-        @Suppress("UNCHECKED_CAST")
         while (iterator.hasNext()) {
             val next = iterator.next()
             val value = if (next.type.isWrapper()) next as T else next.value as T
