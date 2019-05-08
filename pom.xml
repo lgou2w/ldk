@@ -195,6 +195,7 @@
                 </executions>
             </plugin>
             <!-- Jacoco Plugin -->
+            <!-- FIXME: Currently Jacoco can't hit the kotlin top-level inline function -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

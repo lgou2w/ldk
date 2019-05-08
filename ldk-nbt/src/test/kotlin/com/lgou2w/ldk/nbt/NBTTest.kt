@@ -51,4 +51,11 @@ class NBTTest {
         compound.containsKey("key") shouldEqual true
         compound.isEmpty() shouldEqual false
     }
+
+    @Test fun `NBTTagCompound - removeIf - If the predicate is true, the entry should be removed`() {
+        val compound = ofCompound { putShort("key", 1) }
+            .removeIf<Short>("key") { it == 1.toShort() }
+        compound.getShortOrNull("key") shouldEqual null
+        compound.isEmpty() shouldEqual true
+    }
 }

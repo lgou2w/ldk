@@ -112,12 +112,15 @@ class CommonTest {
     @Test fun `isRange - 'b' should be between 'a' and 'c'`() {
         "b".isRange("a", "c") shouldEqual true
         "b".isRange("a", "b") shouldEqual false
+        "b".isRange("a", "a") shouldEqual false
+        "b".isRange("b", "c") shouldEqual false
     }
 
     @Test fun `isOrRange - 'b' should be equal to or between 'a' and 'c'`() {
         "b".isOrRange("a", "c") shouldEqual true
         "b".isOrRange("b", "b") shouldEqual true
         "b".isOrRange("a", "a") shouldEqual false
+        "b".isOrRange("c", "a") shouldEqual false
     }
 
     @Suppress("UNCHECKED_CAST")

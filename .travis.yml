@@ -6,7 +6,7 @@ branches:
     - develop
     - develop-test # test only
 script:
-  - mvn install -Dmaven.javadoc.skip=true -Dkotlin.compile.incremental=false # one only
+  - mvn install -Dmaven.javadoc.skip=true -Dkotlin.compile.incremental=true
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 cache:

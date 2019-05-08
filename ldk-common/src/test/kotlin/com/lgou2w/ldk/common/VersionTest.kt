@@ -70,4 +70,9 @@ class VersionTest {
         zeroVer.version shouldEqual "0.0.0"
         zeroVer.hashCode() shouldEqual 0
     }
+
+    @Test fun `Version - equals`() {
+        Version(1, 0, 1).equals(Version(1, 1, 0)) shouldEqual false
+        Version(1, 0, 1).equals(Version(1, 0, 2)) shouldEqual false
+    }
 }

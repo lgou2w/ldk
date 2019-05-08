@@ -34,6 +34,8 @@ class EnumsTest {
 
     @Test fun `Enums - of - from`() {
         Enums.of(MyEnum::class.java, { it.name == "ENTRY_A" && it.ordinal == 0 }) shouldEqual MyEnum.ENTRY_A
+        Enums.of(MyEnum::class.java, { it.ordinal == 100 }, MyEnum.ENTRY_A) shouldEqual MyEnum.ENTRY_A
+        Enums.ofNotNull(MyEnum::class.java, { it.ordinal == 0 }) shouldEqual MyEnum.ENTRY_A
         invoking { Enums.ofNotNull(MyEnum::class.java, { it.name == "404" }) } shouldThrow NoSuchElementException::class
         Enums.from(MyEnum::class.java, { it.ordinal == 1 }) shouldEqual MyEnum.ENTRY_B
         Enums.fromValuable(MyEnum::class.java, 20) shouldEqual MyEnum.ENTRY_B
@@ -49,6 +51,7 @@ class EnumsTest {
         Enums.ofName(MyEnum::class.java, "ENTRY_A") shouldEqual MyEnum.ENTRY_A
         Enums.ofName(MyEnum::class.java, "ENTRY_B") shouldEqual MyEnum.ENTRY_B
         Enums.ofName(MyEnum::class.java, "404 Not Found") shouldEqual null
+        Enums.ofNameNotNull(MyEnum::class.java, "ENTRY_A") shouldEqual MyEnum.ENTRY_A
         invoking { Enums.ofNameNotNull(MyEnum::class.java, "404") } shouldThrow NoSuchElementException::class
         Enums.fromName(MyEnum::class.java, "ENTRY_A") shouldEqual MyEnum.ENTRY_A
         Enums.fromName(MyEnum::class.java, "ENTRY_B") shouldEqual MyEnum.ENTRY_B
@@ -58,8 +61,10 @@ class EnumsTest {
     @Suppress("DEPRECATION") // FIXME : ofOrigin rename to ofOrdinal
     @Test fun `Enums - ofOrdinal - fromOrdinal`() {
         Enums.ofOrigin(MyEnum::class.java, 0) shouldEqual MyEnum.ENTRY_A // ordinal = 0
+        Enums.ofOriginNotNull(MyEnum::class.java, 1) shouldEqual MyEnum.ENTRY_B // .. = 1
         Enums.ofOrdinal(MyEnum::class.java, 1) shouldEqual MyEnum.ENTRY_B // .. = 1
         Enums.ofOrdinal(MyEnum::class.java, 404) shouldEqual null
+        Enums.ofOrdinalNotNull(MyEnum::class.java, 0) shouldEqual MyEnum.ENTRY_A
         invoking { Enums.ofOriginNotNull(MyEnum::class.java, 404) } shouldThrow NoSuchElementException::class
         invoking { Enums.ofOrdinalNotNull(MyEnum::class.java, 233) } shouldThrow NoSuchElementException::class
         Enums.fromOrigin(MyEnum::class.java, 0) shouldEqual MyEnum.ENTRY_A // ordinal = 0
@@ -71,9 +76,11 @@ class EnumsTest {
         Enums.ofValuable(MyEnum::class.java, 15) shouldEqual MyEnum.ENTRY_A // value = 15
         Enums.ofValuable(MyEnum::class.java, 20) shouldEqual MyEnum.ENTRY_B // .. = 20
         Enums.ofValuable(MyEnum::class.java, 404) shouldEqual null
+        Enums.ofValuableNotNull(MyEnum::class.java, 15) shouldEqual MyEnum.ENTRY_A
         invoking { Enums.ofValuableNotNull(MyEnum::class.java, 404) } shouldThrow NoSuchElementException::class
         Enums.fromValuable(MyEnum::class.java, 15) shouldEqual MyEnum.ENTRY_A // value = 15
         Enums.fromValuable(MyEnum::class.java, 20) shouldEqual MyEnum.ENTRY_B // .. = 20
         Enums.fromValuable(MyEnum::class.java, 404) shouldEqual null
+        Enums.fromValuable(MyEnum::class.java, 233, MyEnum.ENTRY_A) shouldEqual MyEnum.ENTRY_A
     }
 }
