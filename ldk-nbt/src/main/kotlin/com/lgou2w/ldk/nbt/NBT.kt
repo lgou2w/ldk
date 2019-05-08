@@ -20,7 +20,6 @@ import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
-import com.lgou2w.ldk.common.isTrue
 import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
@@ -248,17 +247,19 @@ fun <T, R> NBTTagCompound.removeIf(
         //@Suppress("UNCHECKED_CAST") // SEE : https://github.com/lgou2w/ldk/issues/82
         if (value.type.isWrapper() && predicate(transform(value as T)))
             remove(key)
-        else if (predicate(transform(value.value as T)))
+        else if (!value.type.isWrapper() && predicate(transform(value.value as T)))
             remove(key)
     }
     return this
 }
 
 fun <T> NBTTagList.removeIf(predicate: Predicate<T>?)
-        = removeIfIndexed { _, value: T -> predicate?.invoke(value).isTrue() }
+        = if (predicate == null) removeIfIndexed<T, T>({ it }, null)
+        else removeIfIndexed { _, value: T -> predicate(value) }
 
 fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R>?): NBTTagList
-        = removeIfIndexed { _, value: T -> predicate?.invoke(transform(value)).isTrue() }
+        = if (predicate == null) removeIfIndexed(transform, null)
+        else removeIfIndexed { _, value: T -> predicate(transform(value)) }
 
 fun <T> NBTTagList.removeIfIndexed(block: BiFunction<Int, T, Boolean>?)
         = removeIfIndexed<T, T>({ it }, block)
