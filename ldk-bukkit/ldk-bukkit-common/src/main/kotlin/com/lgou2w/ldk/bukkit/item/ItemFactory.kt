@@ -59,7 +59,7 @@ object ItemFactory {
     @JvmStatic val FIELD_ITEMSTACK_TAG: AccessorField<Any, Any> by lazy {
         FuzzyReflect.of(CLASS_ITEMSTACK, true)
                 .useFieldMatcher()
-                .withVisibilities(Visibility.PRIVATE)
+//                .withVisibilities(Visibility.PRIVATE) // SEE : https://github.com/lgou2w/ldk/issues/83
                 .withName("tag")
                 .withType(NBTFactory.CLASS_NBT_TAG_COMPOUND)
                 .resultAccessor()
