@@ -104,10 +104,27 @@ object NBTStreams {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun write(output: DataOutput, nbt: NBTBase<*>) {
+    fun write(output: DataOutput, nbt: NBTBase<*>)
+            = write(output, nbt, nbt.name)
+
+    /**
+     * * Write the given [nbt] NBT tag to the data [output].
+     * * 将给定 [nbt] NBT 标签写入到 [output] 数据输出中.
+     *
+     * @param output Data output
+     * @param output 输入输出
+     * @param nbt NBT
+     * @param overrideName NBT override name
+     * @param overrideName NBT 覆盖名称
+     * @throws IOException I/O
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    @Throws(IOException::class)
+    fun write(output: DataOutput, nbt: NBTBase<*>, overrideName: String) {
         output.writeByte(nbt.typeId)
         if (nbt.type != NBTType.TAG_END) {
-            output.writeUTF(nbt.name)
+            output.writeUTF(overrideName)
             nbt.write(output)
         }
     }

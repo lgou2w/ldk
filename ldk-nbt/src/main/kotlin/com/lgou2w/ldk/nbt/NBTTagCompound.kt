@@ -45,8 +45,8 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     override fun write(output: DataOutput) {
-        for (value in values)
-            NBTStreams.write(output, value)
+        for ((key, value) in entries)
+            NBTStreams.write(output, value, key)
         output.writeByte(0) // NBTTagEnd
     }
 
@@ -210,6 +210,16 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
      */
     fun putIntArray(key: String, value: IntArray): NBTBase<*>? {
         return put(NBTTagIntArray(key, value))
+    }
+
+    /**
+     * * Add the given long array [value] to [key] in this compound tag.
+     * * 将给定的 [value] 长整数数组值以 [key] 添加到此复合标签内.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun putLongArray(key: String, value: LongArray): NBTBase<*>? {
+        return put(NBTTagLongArray(key, value))
     }
 
     /**
