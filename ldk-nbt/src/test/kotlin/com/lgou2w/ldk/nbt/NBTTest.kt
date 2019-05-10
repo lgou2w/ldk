@@ -106,4 +106,8 @@ class NBTTest {
         list.size shouldEqual 3
         list.asElements<Byte>() shouldContainAll arrayOf<Byte>(0, 1, 2)
     }
+
+    @Test fun `NBT - Constants`() {
+        NBT.Constants shouldBe NBT.Constants
+    }
 }

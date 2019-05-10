@@ -24,6 +24,10 @@ import org.amshove.kluent.shouldNotContain
 import org.amshove.kluent.shouldNotEqual
 import org.amshove.kluent.shouldThrow
 import org.junit.Test
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.DataInputStream
+import java.io.DataOutputStream
 
 class NBTListTest {
 
@@ -148,5 +152,23 @@ class NBTListTest {
         ofList {  }
             .apply { retainAll(ofList {  }) }
             .isEmpty() shouldEqual true
+    }
+
+    @Test fun `NBTTagList - write - If the empty list should be 5 bytes`() {
+        val list = ofList {  }
+        val baos = ByteArrayOutputStream()
+        list.write(DataOutputStream(baos))
+        val bytes = baos.toByteArray()
+        bytes.size shouldEqual 5
+        bytes[0] shouldEqual 0 // elementType : TAG_END
+        bytes.sum() shouldEqual 0 // empty list
+    }
+
+    @Test fun `NBTTagList - read - 5 bytes of zero value should be empty list`() {
+        val bytes = byteArrayOf(127, 0, 0, 0, 0) // If the first byte is invalid, then TAG_END
+        val list = ofList {  }
+        list.read(DataInputStream(ByteArrayInputStream(bytes)))
+        list.size shouldEqual 0
+        list.isEmpty() shouldEqual true
     }
 }
