@@ -207,6 +207,16 @@
                         </goals>
                         <configuration>
                             <destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
+                            <excludes>
+                                <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
+                                <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/fx/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/depend/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/XMaterial*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/Sounds*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/LDKPlugin*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/VersionUpdater*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                     <execution>
@@ -217,6 +227,16 @@
                         </goals>
                         <configuration>
                             <dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
+                            <excludes>
+                                <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
+                                <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/fx/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/depend/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/XMaterial*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/Sounds*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/LDKPlugin*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/VersionUpdater*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
