@@ -266,7 +266,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
                 NBTType.TAG_LONG -> NBTTagLong(key)
                 NBTType.TAG_FLOAT -> NBTTagFloat(key)
                 NBTType.TAG_DOUBLE -> NBTTagDouble(key)
-                NBTType.TAG_STRING -> NBTTagString(key)
+                NBTType.TAG_STRING -> NBTTagString(name = key)
                 NBTType.TAG_LIST -> NBTTagList(key)
                 NBTType.TAG_COMPOUND -> NBTTagCompound(key)
                 NBTType.TAG_INT_ARRAY -> NBTTagIntArray(key)
