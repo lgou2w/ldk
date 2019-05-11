@@ -382,7 +382,7 @@ open class ChatComponentFancy(
      * * 获取此花式组件的附加组件列表大小.
      */
     val size : Int
-            = extras.size
+        get() = extras.size
 
     /**
      * * Clear all the extra component for this fancy component.
