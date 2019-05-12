@@ -273,7 +273,7 @@ object ChatSerializer {
     private class ChatStyleSerializer : JsonDeserializer<ChatStyle>, JsonSerializer<ChatStyle> {
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): ChatStyle? {
             if (json.isJsonObject) {
-                val jsonObject: JsonObject = json.asJsonObject ?: return null
+                val jsonObject : JsonObject = json.asJsonObject
                 val chatStyle = ChatStyle()
                 if (jsonObject.has("color"))
                     chatStyle.color = Enums.ofName(ChatColor::class.java, jsonObject.get("color").asString.toUpperCase(), ChatColor.WHITE)
@@ -290,16 +290,16 @@ object ChatSerializer {
                 if (jsonObject.has("insertion"))
                     chatStyle.insertion = jsonObject.get("insertion").asString
                 if (jsonObject.has("clickEvent")) {
-                    val jsonObjectClickEvent = jsonObject.getAsJsonObject("clickEvent") ?: null
+                    val jsonObjectClickEvent = jsonObject.get("clickEvent") as? JsonObject
                     if (jsonObjectClickEvent != null) {
                         val action = Enums.ofName(ChatClickEvent.Action::class.java, jsonObjectClickEvent.get("action").asString.toUpperCase())
-                        val value = jsonObjectClickEvent.get("value").asString ?: null
+                        val value = jsonObjectClickEvent.get("value")?.asString
                         if (action != null && value != null)
                             chatStyle.clickEvent = ChatClickEvent(action, value)
                     }
                 }
                 if (jsonObject.has("hoverEvent")) {
-                    val jsonObjectHoverEvent = jsonObject.getAsJsonObject("hoverEvent") ?: null
+                    val jsonObjectHoverEvent = jsonObject.get("hoverEvent") as? JsonObject
                     if (jsonObjectHoverEvent != null) {
                         val action = Enums.ofName(ChatHoverEvent.Action::class.java, jsonObjectHoverEvent.get("action").asString.toUpperCase())
                         val value = jsonObjectHoverEvent.get("value") ?: null
@@ -317,7 +317,7 @@ object ChatSerializer {
                 return null
             val jsonObject = JsonObject()
             if (src.color != null)
-                jsonObject.addProperty("color", src.color?.name?.toLowerCase())
+                jsonObject.addProperty("color", src.color.notNull().name.toLowerCase())
             if (src.bold != null)
                 jsonObject.addProperty("bold", src.bold)
             if (src.italic != null)
@@ -331,18 +331,20 @@ object ChatSerializer {
             if (src.insertion != null)
                 jsonObject.add("insertion", context.serialize(src.insertion))
             if (src.clickEvent != null) {
+                val clickEvent = src.clickEvent.notNull()
                 val jsonObjectClickEvent = JsonObject()
-                jsonObjectClickEvent.addProperty("action", src.clickEvent?.action.toString().toLowerCase())
-                jsonObjectClickEvent.addProperty("value", src.clickEvent?.value)
+                jsonObjectClickEvent.addProperty("action", clickEvent.action.toString().toLowerCase())
+                jsonObjectClickEvent.addProperty("value", clickEvent.value)
                 jsonObject.add("clickEvent", jsonObjectClickEvent)
             }
             if (src.hoverEvent != null) {
+                val hoverEvent = src.hoverEvent.notNull()
                 val jsonObjectHoverEvent = JsonObject()
-                jsonObjectHoverEvent.addProperty("action", src.hoverEvent?.action.toString().toLowerCase())
-                if (src.hoverEvent?.value is ChatComponentRaw)
-                    jsonObjectHoverEvent.addProperty("value", (src.hoverEvent?.value as ChatComponentRaw).raw)
+                jsonObjectHoverEvent.addProperty("action", hoverEvent.action.toString().toLowerCase())
+                if (hoverEvent.value is ChatComponentRaw)
+                    jsonObjectHoverEvent.addProperty("value", hoverEvent.value.raw)
                 else
-                    jsonObjectHoverEvent.add("value", context.serialize(src.hoverEvent?.value))
+                    jsonObjectHoverEvent.add("value", context.serialize(hoverEvent.value))
                 jsonObject.add("hoverEvent", jsonObjectHoverEvent)
             }
             return jsonObject
