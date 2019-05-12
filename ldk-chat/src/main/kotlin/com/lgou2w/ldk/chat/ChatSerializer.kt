@@ -29,6 +29,7 @@ import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.stream.JsonReader
 import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.common.isTrue
 import com.lgou2w.ldk.common.notNull
 import java.io.IOException
 import java.io.StringReader
@@ -248,15 +249,15 @@ object ChatSerializer {
             val chatStyle = component.style
             if (chatStyle.color != null)
                 appendColor(builder, chatStyle.color.notNull())
-            if (chatStyle.bold != null)
+            if (chatStyle.bold.isTrue())
                 appendColor(builder, ChatColor.BOLD)
-            if (chatStyle.italic != null)
+            if (chatStyle.italic.isTrue())
                 appendColor(builder, ChatColor.ITALIC)
-            if (chatStyle.strikethrough != null)
+            if (chatStyle.strikethrough.isTrue())
                 appendColor(builder, ChatColor.STRIKETHROUGH)
-            if (chatStyle.underlined != null)
+            if (chatStyle.underlined.isTrue())
                 appendColor(builder, ChatColor.UNDERLINE)
-            if (chatStyle.obfuscated != null)
+            if (chatStyle.obfuscated.isTrue())
                 appendColor(builder, ChatColor.OBFUSCATED)
         }
         if (component is ChatComponentText)
@@ -388,7 +389,7 @@ object ChatSerializer {
             } else if (jsonObject.has("score")) {
                 val jsonObjectScore = jsonObject.getAsJsonObject("score")
                 if (!jsonObjectScore.has("name") || !jsonObjectScore.has("objective"))
-                    throw JsonParseException("The score chat component has at least one name or objective attribute.")
+                    throw JsonParseException("A score component needs a least a name and an objective.")
                 component = ChatComponentScore(jsonObjectScore.get("name").asString, jsonObjectScore.get("objective").asString)
                 if (jsonObjectScore.has("value"))
                     component.setValue(jsonObjectScore.get("value").asString)
