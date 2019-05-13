@@ -170,40 +170,30 @@ object ChatSerializer {
 
     private class RawMessage(val raw: String) {
 
-        private val pattern = Pattern.compile("(§[0-9a-fk-or])", Pattern.CASE_INSENSITIVE)
+        companion object {
+            private val PATTERN = Pattern.compile("(§[0-9a-fk-or])", Pattern.CASE_INSENSITIVE)
+        }
+
         private var currentComponent : ChatComponent? = null
         private var style : ChatStyle? = null
         private var currentIndex : Int = 0
 
         init {
-            val matcher = pattern.matcher(raw)
-            var match: String?
-            var groupId: Int
+            val matcher = PATTERN.matcher(raw)
             while (matcher.find()) {
-                groupId = 0
-                do {
-                    ++groupId
-                } while (matcher.group(groupId).apply { match = this } == null)
-                append(matcher.start(groupId))
-                when (groupId) {
-                    1 -> {
-                        val color = Enums.ofValuable(ChatColor::class.java, match?.toLowerCase()?.get(1))
-                                    ?: ChatColor.WHITE
-                        when {
-                            color == ChatColor.RESET -> style = ChatStyle()
-                            color.isFormat -> when (color) {
-                                ChatColor.OBFUSCATED -> style?.setObfuscated(true)
-                                ChatColor.BOLD -> style?.setBold(true)
-                                ChatColor.STRIKETHROUGH -> style?.setStrikethrough(true)
-                                ChatColor.UNDERLINE -> style?.setUnderlined(true)
-                                ChatColor.ITALIC -> style?.setItalic(true)
-                                else -> throw AssertionError("Invalid color formatter: ${color.code}.")
-                            }
-                            else -> style = ChatStyle().setColor(color)
-                        }
-                    }
+                val match : String = matcher.group(1)
+                append(matcher.start(1))
+                val code = match.notNull().toLowerCase()[1]
+                when (val color = Enums.ofValuable(ChatColor::class.java, code)) {
+                    ChatColor.RESET -> style = ChatStyle()
+                    ChatColor.OBFUSCATED -> style.notNull().setObfuscated(true)
+                    ChatColor.BOLD -> style.notNull().setBold(true)
+                    ChatColor.STRIKETHROUGH -> style.notNull().setStrikethrough(true)
+                    ChatColor.UNDERLINE -> style.notNull().setUnderlined(true)
+                    ChatColor.ITALIC -> style.notNull().setItalic(true)
+                    else -> style = ChatStyle().setColor(color)
                 }
-                currentIndex = matcher.end(groupId)
+                currentIndex = matcher.end(1)
             }
             if (currentIndex < raw.length)
                 append(raw.length)
@@ -216,11 +206,11 @@ object ChatSerializer {
                 style = style?.clone()
                 if (currentComponent == null)
                     currentComponent = ChatComponentText("")
-                currentComponent?.append(extra)
+                currentComponent.notNull().append(extra)
             }
         }
 
-        internal fun get(): ChatComponent
+        fun get(): ChatComponent
                 = currentComponent ?: ChatComponentText("")
     }
 
@@ -363,7 +353,7 @@ object ChatSerializer {
                     if (component == null)
                         component = component1
                     else if (component1 != null)
-                        component?.append(component1)
+                        component.notNull().append(component1)
                 }
                 return component
             }
