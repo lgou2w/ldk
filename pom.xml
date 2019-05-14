@@ -216,6 +216,7 @@
                                 <exclude>**/com/lgou2w/ldk/bukkit/compatibility/Sounds*</exclude>
                                 <exclude>**/com/lgou2w/ldk/bukkit/LDKPlugin*</exclude>
                                 <exclude>**/com/lgou2w/ldk/bukkit/VersionUpdater*</exclude>
+                                <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
@@ -236,6 +237,7 @@
                                 <exclude>**/com/lgou2w/ldk/bukkit/compatibility/Sounds*</exclude>
                                 <exclude>**/com/lgou2w/ldk/bukkit/LDKPlugin*</exclude>
                                 <exclude>**/com/lgou2w/ldk/bukkit/VersionUpdater*</exclude>
+                                <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
