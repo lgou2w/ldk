@@ -211,11 +211,7 @@
                                 <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
                                 <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
                                 <exclude>**/com/lgou2w/ldk/fx/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/depend/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/XMaterial*</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/Sounds*</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/LDKPlugin*</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/VersionUpdater*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/**</exclude>
                                 <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
                             </excludes>
                         </configuration>
@@ -232,11 +228,7 @@
                                 <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
                                 <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
                                 <exclude>**/com/lgou2w/ldk/fx/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/depend/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/XMaterial*</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/compatibility/Sounds*</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/LDKPlugin*</exclude>
-                                <exclude>**/com/lgou2w/ldk/bukkit/VersionUpdater*</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/**</exclude>
                                 <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
                             </excludes>
                         </configuration>
