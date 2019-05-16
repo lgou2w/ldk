@@ -54,6 +54,7 @@ object NBTFactory {
     @JvmStatic val CLASS_NBT_STREAM by lazyMinecraftClass("NBTCompressedStreamTools")
     @JvmStatic val CLASS_NBT_READ_LIMITER by lazyMinecraftClass("NBTReadLimiter")
     @JvmStatic val CLASS_NBT_LONG_ARRAY by lazyMinecraftClassOrNull("NBTTagLongArray") // since Minecraft 1.12
+    @JvmStatic val CLASS_MOJANGSON_PARSER by lazyMinecraftClass("MojangsonParser")
 
     // NMS.NBTList -> private byte type
     @JvmStatic val NBT_LIST_TYPE_FIELD: AccessorField<Any, Byte> by lazy {
@@ -102,6 +103,16 @@ object NBTFactory {
                 .withType(Void::class.java)
                 .withParams(CLASS_NBT_BASE, DataOutput::class.java)
                 .resultAccessor()
+    }
+
+    // NMS.MojangsonParser -> public static NMS.NBTTagCompound parse(String)
+    @JvmStatic val METHOD_MOJANGSON_PARSER : AccessorMethod<Any, Any> by lazy {
+        FuzzyReflect.of(CLASS_MOJANGSON_PARSER, true)
+            .useMethodMatcher()
+            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
+            .withParams(String::class.java)
+            .withType(CLASS_NBT_TAG_COMPOUND)
+            .resultAccessor()
     }
 
     /**
@@ -190,6 +201,27 @@ object NBTFactory {
         if (value != null)
             valueAccessor[instance] = value
         return instance as Any
+    }
+
+    // TODO: Implement the MojangsonParser class
+
+    /**
+     * * Parse the given NBT string in the `Mojang` Gson format to the [NBTTagCompound] object.
+     * * 将给定的 `Mojang` Gson 格式的 NBT 字符串解析为 [NBTTagCompound] 对象.
+     *
+     * @see [NBTTagCompound]
+     * @see [NBTTagCompound.toMojangson]
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    fun fromMojangson(mojangson: String?): NBTTagCompound? {
+        if (mojangson == null || mojangson.isBlank()) return null
+        return try {
+            val handle = METHOD_MOJANGSON_PARSER.invoke(null, mojangson)
+            fromNMS(handle) as? NBTTagCompound
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private val NBT_END_INSTANCE : Any by lazy {
