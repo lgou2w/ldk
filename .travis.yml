@@ -4,7 +4,6 @@ jdk:
 branches:
   only:
     - develop
-    - develop-test # test only
 script:
   - mvn install -Dmaven.javadoc.skip=true -Dkotlin.compile.incremental=true
 after_success:
