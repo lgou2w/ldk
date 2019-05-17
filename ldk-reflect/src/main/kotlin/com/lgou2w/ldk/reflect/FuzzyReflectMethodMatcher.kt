@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Method
-import java.util.*
 
 /**
  * ## FuzzyReflectMethodMatcher (模糊反射函数匹配器)
@@ -71,14 +70,18 @@ class FuzzyReflectMethodMatcher(
         return with { DataType.compare(it.parameterTypes, primitiveTypes) }
     }
 
+    override fun withParamsCount(count: Int): FuzzyReflectMethodMatcher {
+        return with { it.parameterTypes.size == count }
+    }
+
     override fun resultAccessors(): List<AccessorMethod<Any, Any>>
-            = results().map { Accessors.ofMethod<Any, Any>(it) }
+            = results().map(Accessors::ofMethod)
 
     override fun resultAccessor(): AccessorMethod<Any, Any>
             = resultAccessorAs()
 
     override fun resultAccessorOrNull(): AccessorMethod<Any, Any>?
-            = resultOrNull()?.letIfNotNull { Accessors.ofMethod<Any, Any>(this) }
+            = resultOrNull()?.letIfNotNull(Accessors::ofMethod)
 
     /**
      * * Get the first valid result accessor for this fuzzy reflection matcher.

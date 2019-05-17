@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,17 @@ import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.chat.toColor
 import com.lgou2w.ldk.common.isOrLater
 import org.bstats.bukkit.Metrics
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import java.util.*
 import java.util.logging.Level
 
+/**
+ * ## LDKPlugin (LDK 插件)
+ *
+ * @see [PluginBase]
+ * @author lgou2w
+ */
 class LDKPlugin : PluginBase() {
 
     companion object Constants {
@@ -57,21 +63,37 @@ class LDKPlugin : PluginBase() {
         }
         logger.info("A lgou2w development kit of Bukkit.")
         logger.info("Open source: $GITHUB")
-        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${MinecraftBukkitVersion.CURRENT.version}")
-        try {
-            Metrics(this)
-        } catch (e: Exception) {
-            logger.log(Level.WARNING, "Metrics stats service not loaded successfully.", e.cause ?: e)
-        }
+        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${safeCurrent.version}")
         updater = VersionUpdater(this)
         updater?.firstCheck()
+        setupMetrics()
+    }
+
+    private fun setupMetrics() {
+        try {
+            Metrics(this).apply {
+                addCustomChart(Metrics.AdvancedPie("plugin_dependents") {
+                    val plugins = Bukkit.getPluginManager().plugins
+                    val hard = plugins.count { it.description.depend.contains(NAME) }
+                    val soft = plugins.count { it.description.softDepend.contains(NAME) }
+                    mapOf("Hard" to hard, "Soft" to soft)
+                })
+            }
+        } catch (e: Exception) {
+            logger.log(Level.WARNING, "Metrics stats service failed to load.", e)
+        }
     }
 
     override fun disable() {
         updater = null
     }
 
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+    override fun onCommand(
+            sender: CommandSender,
+            command: Command,
+            label: String,
+            args: Array<out String>
+    ): Boolean {
         val first = args.firstOrNull()
         return if (first == null || first.equals("help", true)) {
             sender.sendMessage(arrayOf(
@@ -88,11 +110,16 @@ class LDKPlugin : PluginBase() {
         }
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
+    override fun onTabComplete(
+            sender: CommandSender,
+            command: Command,
+            alias: String,
+            args: Array<out String>
+    ): List<String>? {
         if (args.isEmpty())
-            return Collections.emptyList()
+            return null
         val lastWord = args.last()
         val keyWords = arrayOf("help", "version").filter { it.startsWith(lastWord) }
-        return if (keyWords.isEmpty()) Collections.emptyList() else keyWords
+        return if (keyWords.isEmpty()) null else keyWords
     }
 }

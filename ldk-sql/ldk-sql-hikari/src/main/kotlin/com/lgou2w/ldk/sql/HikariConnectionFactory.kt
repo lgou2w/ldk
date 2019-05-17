@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,22 @@ import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
 import java.sql.SQLException
 
+/**
+ * ## HikariConnectionFactory (HikariCP 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @see [MySQLConnectionFactory]
+ * @see [MariaDbConnectionFactory]
+ * @see [PostgreConnectionFactory]
+ * @author lgou2w
+ */
 abstract class HikariConnectionFactory(
         protected val configuration: HikariConfiguration
 ) : ConnectionFactory {
 
     private var hikari : HikariDataSource? = null
 
-    override val dataSource: HikariDataSource
+    override val dataSource : HikariDataSource
         get() = hikari.notNull("Connection factory has not been initialized.")
 
     /**
@@ -74,7 +83,11 @@ abstract class HikariConnectionFactory(
         }
     }
 
-    fun testSession() : HikariTestSession {
+    /**
+     * * Test if the connection factory session is available.
+     * * 测试连接工厂会话是否可用.
+     */
+    fun testSession(): HikariTestSession {
         var success = true
         val start = System.currentTimeMillis()
         try {

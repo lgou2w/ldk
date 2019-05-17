@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,132 +16,144 @@
 
 package com.lgou2w.ldk.bukkit.depend
 
+import com.lgou2w.ldk.bukkit.internal.FakePlugin
 import com.lgou2w.ldk.common.Constants
 import org.bukkit.Bukkit
-import org.bukkit.Server
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.configuration.file.FileConfiguration
-import org.bukkit.generator.ChunkGenerator
 import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.PluginBase
-import org.bukkit.plugin.PluginDescriptionFile
-import org.bukkit.plugin.PluginLoader
 import org.bukkit.plugin.ServicePriority
-import java.io.File
-import java.io.InputStream
-import java.util.*
-import java.util.logging.Logger
 
+/**
+ * ## Depends (插件依赖)
+ *
+ * @see [Depend]
+ * @author lgou2w
+ */
 object Depends {
 
     @JvmStatic
+    @Suppress("DEPRECATION")
     private val PLUGIN : Plugin by lazy {
         val ldk : Plugin? = Bukkit.getPluginManager().getPlugin(Constants.LDK)
-        if (ldk != null && ldk.isEnabled) ldk else InternalFakePlugin()
+        if (ldk != null && ldk.isEnabled) ldk else FakePlugin("LDKDependInternalFakePlugin")
     }
 
+    /**
+     * * Register the given plugin [depend].
+     * * 将给定的插件依赖 [depend] 进行注册.
+     */
     @JvmStatic
-    fun register(depend: Depend) : Boolean {
+    fun register(depend: Depend): Boolean {
         val type = depend::class.java
         @Suppress("UNCHECKED_CAST")
         return register(type as Class<Depend>, depend)
     }
 
+    /**
+     * * Register the given plugin [depend] class and [implemented] instance.
+     * * 将给定的插件依赖类 [depend] 和实现实例 [implemented] 进行注册.
+     *
+     * @throws [IllegalArgumentException] If the [implemented] instance is not an instance object of the [depend] class.
+     * @throws [IllegalArgumentException] 如果实现实例 [implemented] 不是 [depend] 类的实例对象.
+     */
     @JvmStatic
     @Throws(IllegalArgumentException::class)
-    fun <T: Depend> register(depend: Class<T>, implemented: T) : Boolean {
+    fun <T : Depend> register(depend: Class<T>, implemented: T): Boolean {
         if (!depend.isInstance(implemented))
             throw IllegalArgumentException("The depend implementation is not an instance object of the $depend class.")
         if (hasDepend(depend))
-            return false
+            return true
         Bukkit.getServicesManager().register(depend, implemented, PLUGIN, ServicePriority.Normal)
         return hasDepend(depend)
     }
 
+    /**
+     * * Unregister with the given plugin [depend] class.
+     * * 将给定的插件依赖类 [depend] 进行卸载注销.
+     */
     @JvmStatic
-    fun <T: Depend> unregister(depend: Class<T>) : Boolean {
-        val implemented = get(depend) ?: return false
+    fun <T : Depend> unregister(depend: Class<T>): Boolean {
+        val implemented = get(depend) ?: return true
         Bukkit.getServicesManager().unregister(depend, implemented)
         return !hasDepend(depend)
     }
 
+    /**
+     * * Unregister all plugin dependencies.
+     * * 将所有的插件依赖卸载注销.
+     */
     @JvmStatic
     fun unregisterAll() {
-        Bukkit.getServicesManager().unregisterAll(PLUGIN)
+        @Suppress("DEPRECATION")
+        if (PLUGIN is FakePlugin)
+            Bukkit.getServicesManager().unregisterAll(PLUGIN)
+        else {
+            // Is LDK, Only unregister depend
+            Bukkit.getServicesManager().getRegistrations(PLUGIN)
+                .filter { it.provider is Depend }
+                .forEach {
+                    Bukkit.getServicesManager().unregister(it.service, it.provider)
+                }
+        }
     }
 
+    /**
+     * * Get the plugin dependency object from the given [name]. Returns `null` if it doesn't exist.
+     * * 从给定的名称 [name] 获取插件依赖对象. 如果不存在则返回 `null`.
+     */
     @JvmStatic
-    operator fun get(name: String) : Depend? {
+    operator fun get(name: String): Depend? {
         val registrations = Bukkit.getServicesManager().getRegistrations(PLUGIN)
         return registrations
             .find { it.provider is Depend && (it.provider as Depend).name == name }
             ?.provider as? Depend
     }
 
+    /**
+     * * Get the plugin dependency object from the given plugin [depend] class. Returns `null` if it doesn't exist.
+     * * 从给定的插件依赖类 [depend] 获取插件依赖对象. 如果不存在则返回 `null`.
+     */
     @JvmStatic
-    operator fun <T: Depend> get(depend: Class<T>) : T? {
+    operator fun <T : Depend> get(depend: Class<T>): T? {
         val registration = Bukkit.getServicesManager().getRegistration(depend) ?: return null
         return if (registration.service == depend) registration.provider else null
     }
 
+    /**
+     * * Get or load plugin dependency object from the given plugin [depend] class.
+     * * 从给定的插件依赖类 [depend] 获取或加载插件依赖对象.
+     *
+     * @throws [DependCannotException] If the plugin dependency is not available.
+     * @throws [DependCannotException] 如果插件依赖不可用.
+     */
     @JvmStatic
     @Throws(DependCannotException::class)
-    fun <T: Depend> getOrLoad(depend: Class<T>) : T {
+    fun <T : Depend> getOrLoad(depend: Class<T>): T {
         val registration = get(depend)
-        return if (registration != null)
-            registration
-        else {
-            try {
-                val implemented = depend.newInstance()
-                register(depend, implemented)
-                implemented
-            } catch (e: Exception) {
-                if (e is DependCannotException)
-                    throw e
-                else
-                    throw DependCannotException(e.message, e.cause ?: e)
-            }
+        return registration ?: try {
+            val implemented = depend.newInstance()
+            register(depend, implemented)
+            implemented
+        } catch (e: Exception) {
+            if (e is DependCannotException)
+                throw e
+            else
+                throw DependCannotException(e)
         }
     }
 
+    /**
+     * * Get whether the plugin dependency object exists from the given [name].
+     * * 从给定的名称 [name] 获取插件依赖对象是否存在.
+     */
     @JvmStatic
-    fun hasDepend(name: String) : Boolean
+    fun hasDepend(name: String): Boolean
             = get(name) != null
 
-    @JvmStatic
-    fun <T: Depend> hasDepend(depend: Class<T>) : Boolean
-            = get(depend) != null
-
     /**
-     * * This makes it possible to implement an object of a fake plugin, but is not sure about the unknown risk.
-     * * Currently in the running environment test everything is normal, and only event processing, and can not query plugin information.
-     *
-     * * 这样虽然能够实现一个虚假插件的对象，但是不确定未知的风险。
-     * * 目前在运行环境测试一切正常，并且只有事件处理，以及无法查询到插件信息。
-     *
-     * @author lgou2w
+     * * Get whether the plugin dependent object exists from the given plugin depend class.
+     * * 从给定的插件依赖类 [depend] 获取插件依赖对象是否存在.
      */
-    private class InternalFakePlugin : PluginBase() {
-        override fun getDataFolder(): File? = null
-        override fun getPluginLoader(): PluginLoader? = null
-        override fun getServer(): Server = Bukkit.getServer()
-        override fun isEnabled(): Boolean = true
-        override fun getDescription(): PluginDescriptionFile = PluginDescriptionFile("LDKDependInternalFakePlugin", "0", "0")
-        override fun getConfig(): FileConfiguration? = null
-        override fun reloadConfig() { }
-        override fun saveConfig() { }
-        override fun saveDefaultConfig() { }
-        override fun saveResource(resourcePath: String?, replace: Boolean) { }
-        override fun getResource(filename: String?): InputStream? = null
-        override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean = false
-        override fun onTabComplete(sender: CommandSender?, command: Command?, alias: String?, args: Array<out String>?): MutableList<String> = Collections.emptyList()
-        override fun isNaggable(): Boolean = false
-        override fun setNaggable(canNag: Boolean) { }
-        override fun getLogger(): Logger = Bukkit.getLogger()
-        override fun onLoad() { }
-        override fun onEnable() { }
-        override fun onDisable() { }
-        override fun getDefaultWorldGenerator(worldName: String?, id: String?): ChunkGenerator? = null
-    }
+    @JvmStatic
+    fun <T : Depend> hasDepend(depend: Class<T>): Boolean
+            = get(depend) != null
 }

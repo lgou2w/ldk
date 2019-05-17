@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,42 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
-import java.util.*
+import org.bukkit.permissions.PermissionDefault
+import java.util.Arrays
 
+/**
+ * ## CommandExecutorBase (命令执行器基础)
+ *
+ * @see [CommandExecutor]
+ * @see [DefaultCommandExecutor]
+ * @author lgou2w
+ */
 abstract class CommandExecutorBase(
         final override val reference: Any,
         final override val name: String,
         final override val aliases: Array<out String>,
         final override val permission: Array<out String>?,
+        final override val permissionDefault: PermissionDefault?,
+        final override val sorted: Int?,
         final override val isPlayable: Boolean,
         final override val parameters: Array<out CommandExecutor.Parameter>
 ) : CommandExecutor {
 
+    /**
+     * * The length of the parameter of this executor.
+     * * 此执行器的参数长度.
+     */
     val length = parameters.size
+    /**
+     * * The maximum parameter length of this executor.
+     * * 此执行器的最大参数长度.
+     */
     val max = length
-    val min = max - parameters.count { it.canNullable }
+    /**
+     * * The minimum parameter length of this executor.
+     * * 此执行器的最小参数长度.
+     */
+    val min = max - parameters.count(CommandExecutor.Parameter::canNullable)
 
     override var description: String? = null
 

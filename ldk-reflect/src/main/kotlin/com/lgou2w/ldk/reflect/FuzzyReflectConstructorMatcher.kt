@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Predicate
 import com.lgou2w.ldk.common.letIfNotNull
 import java.lang.reflect.Constructor
-import java.util.*
 
 /**
  * ## FuzzyReflectConstructorMatcher (模糊反射构造匹配器)
@@ -69,14 +68,18 @@ class FuzzyReflectConstructorMatcher<T: Any>(
         return with { DataType.compare(it.parameterTypes, primitiveTypes) }
     }
 
+    override fun withParamsCount(count: Int): FuzzyReflectConstructorMatcher<T> {
+        return with { it.parameterTypes.size == count }
+    }
+
     override fun resultAccessors(): List<AccessorConstructor<T>>
-            = results().map { Accessors.ofConstructor(it) }
+            = results().map(Accessors::ofConstructor)
 
     override fun resultAccessor(): AccessorConstructor<T>
             = resultAccessorAs()
 
     override fun resultAccessorOrNull(): AccessorConstructor<T>?
-            = resultOrNull()?.letIfNotNull { Accessors.ofConstructor(this) }
+            = resultOrNull()?.letIfNotNull(Accessors::ofConstructor)
 
     /**
      * * Get the first valid result accessor for this fuzzy reflection matcher.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,20 @@
 
 package com.lgou2w.ldk.chat
 
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonParseException
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import com.google.gson.stream.JsonReader
 import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.common.isTrue
 import com.lgou2w.ldk.common.notNull
 import java.io.IOException
 import java.io.StringReader
@@ -34,7 +45,7 @@ import java.util.regex.Pattern
 object ChatSerializer {
 
     @JvmStatic
-    private val GSON: Gson
+    private val GSON : Gson
 
     init {
         GSON = GsonBuilder()
@@ -159,40 +170,30 @@ object ChatSerializer {
 
     private class RawMessage(val raw: String) {
 
-        private val pattern = Pattern.compile("(§[0-9a-fk-or])", Pattern.CASE_INSENSITIVE)
-        private var currentComponent: ChatComponent? = null
-        private var style: ChatStyle? = null
-        private var currentIndex: Int = 0
+        companion object {
+            private val PATTERN = Pattern.compile("(§[0-9a-fk-or])", Pattern.CASE_INSENSITIVE)
+        }
+
+        private var currentComponent : ChatComponent? = null
+        private var style : ChatStyle? = null
+        private var currentIndex : Int = 0
 
         init {
-            val matcher = pattern.matcher(raw)
-            var match: String? = null
-            var groupId: Int
+            val matcher = PATTERN.matcher(raw)
             while (matcher.find()) {
-                groupId = 0
-                do {
-                    ++groupId
-                } while (matcher.group(groupId).apply { match = this } == null)
-                append(matcher.start(groupId))
-                when (groupId) {
-                    1 -> {
-                        val color = Enums.ofValuable(ChatColor::class.java, match?.toLowerCase()?.get(1))
-                                    ?: ChatColor.WHITE
-                        when {
-                            color == ChatColor.RESET -> style = ChatStyle()
-                            color.isFormat -> when (color) {
-                                ChatColor.OBFUSCATED -> style?.setObfuscated(true)
-                                ChatColor.BOLD -> style?.setBold(true)
-                                ChatColor.STRIKETHROUGH -> style?.setStrikethrough(true)
-                                ChatColor.UNDERLINE -> style?.setUnderlined(true)
-                                ChatColor.ITALIC -> style?.setItalic(true)
-                                else -> throw AssertionError("Invalid color formatter: ${color.code}.")
-                            }
-                            else -> style = ChatStyle().setColor(color)
-                        }
-                    }
+                val match : String = matcher.group(1)
+                append(matcher.start(1))
+                val code = match.notNull().toLowerCase()[1]
+                when (val color = Enums.ofValuable(ChatColor::class.java, code)) {
+                    ChatColor.RESET -> style = ChatStyle()
+                    ChatColor.OBFUSCATED -> style.notNull().setObfuscated(true)
+                    ChatColor.BOLD -> style.notNull().setBold(true)
+                    ChatColor.STRIKETHROUGH -> style.notNull().setStrikethrough(true)
+                    ChatColor.UNDERLINE -> style.notNull().setUnderlined(true)
+                    ChatColor.ITALIC -> style.notNull().setItalic(true)
+                    else -> style = ChatStyle().setColor(color)
                 }
-                currentIndex = matcher.end(groupId)
+                currentIndex = matcher.end(1)
             }
             if (currentIndex < raw.length)
                 append(raw.length)
@@ -205,11 +206,11 @@ object ChatSerializer {
                 style = style?.clone()
                 if (currentComponent == null)
                     currentComponent = ChatComponentText("")
-                currentComponent?.append(extra)
+                currentComponent.notNull().append(extra)
             }
         }
 
-        internal fun get(): ChatComponent
+        fun get(): ChatComponent
                 = currentComponent ?: ChatComponentText("")
     }
 
@@ -238,15 +239,15 @@ object ChatSerializer {
             val chatStyle = component.style
             if (chatStyle.color != null)
                 appendColor(builder, chatStyle.color.notNull())
-            if (chatStyle.bold != null)
+            if (chatStyle.bold.isTrue())
                 appendColor(builder, ChatColor.BOLD)
-            if (chatStyle.italic != null)
+            if (chatStyle.italic.isTrue())
                 appendColor(builder, ChatColor.ITALIC)
-            if (chatStyle.strikethrough != null)
+            if (chatStyle.strikethrough.isTrue())
                 appendColor(builder, ChatColor.STRIKETHROUGH)
-            if (chatStyle.underlined != null)
+            if (chatStyle.underlined.isTrue())
                 appendColor(builder, ChatColor.UNDERLINE)
-            if (chatStyle.obfuscated != null)
+            if (chatStyle.obfuscated.isTrue())
                 appendColor(builder, ChatColor.OBFUSCATED)
         }
         if (component is ChatComponentText)
@@ -262,7 +263,7 @@ object ChatSerializer {
     private class ChatStyleSerializer : JsonDeserializer<ChatStyle>, JsonSerializer<ChatStyle> {
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): ChatStyle? {
             if (json.isJsonObject) {
-                val jsonObject: JsonObject = json.asJsonObject ?: return null
+                val jsonObject : JsonObject = json.asJsonObject
                 val chatStyle = ChatStyle()
                 if (jsonObject.has("color"))
                     chatStyle.color = Enums.ofName(ChatColor::class.java, jsonObject.get("color").asString.toUpperCase(), ChatColor.WHITE)
@@ -279,16 +280,16 @@ object ChatSerializer {
                 if (jsonObject.has("insertion"))
                     chatStyle.insertion = jsonObject.get("insertion").asString
                 if (jsonObject.has("clickEvent")) {
-                    val jsonObjectClickEvent = jsonObject.getAsJsonObject("clickEvent") ?: null
+                    val jsonObjectClickEvent = jsonObject.get("clickEvent") as? JsonObject
                     if (jsonObjectClickEvent != null) {
                         val action = Enums.ofName(ChatClickEvent.Action::class.java, jsonObjectClickEvent.get("action").asString.toUpperCase())
-                        val value = jsonObjectClickEvent.get("value").asString ?: null
+                        val value = jsonObjectClickEvent.get("value")?.asString
                         if (action != null && value != null)
                             chatStyle.clickEvent = ChatClickEvent(action, value)
                     }
                 }
                 if (jsonObject.has("hoverEvent")) {
-                    val jsonObjectHoverEvent = jsonObject.getAsJsonObject("hoverEvent") ?: null
+                    val jsonObjectHoverEvent = jsonObject.get("hoverEvent") as? JsonObject
                     if (jsonObjectHoverEvent != null) {
                         val action = Enums.ofName(ChatHoverEvent.Action::class.java, jsonObjectHoverEvent.get("action").asString.toUpperCase())
                         val value = jsonObjectHoverEvent.get("value") ?: null
@@ -306,7 +307,7 @@ object ChatSerializer {
                 return null
             val jsonObject = JsonObject()
             if (src.color != null)
-                jsonObject.addProperty("color", src.color?.name?.toLowerCase())
+                jsonObject.addProperty("color", src.color.notNull().name.toLowerCase())
             if (src.bold != null)
                 jsonObject.addProperty("bold", src.bold)
             if (src.italic != null)
@@ -320,18 +321,20 @@ object ChatSerializer {
             if (src.insertion != null)
                 jsonObject.add("insertion", context.serialize(src.insertion))
             if (src.clickEvent != null) {
+                val clickEvent = src.clickEvent.notNull()
                 val jsonObjectClickEvent = JsonObject()
-                jsonObjectClickEvent.addProperty("action", src.clickEvent?.action.toString().toLowerCase())
-                jsonObjectClickEvent.addProperty("value", src.clickEvent?.value)
+                jsonObjectClickEvent.addProperty("action", clickEvent.action.toString().toLowerCase())
+                jsonObjectClickEvent.addProperty("value", clickEvent.value)
                 jsonObject.add("clickEvent", jsonObjectClickEvent)
             }
             if (src.hoverEvent != null) {
+                val hoverEvent = src.hoverEvent.notNull()
                 val jsonObjectHoverEvent = JsonObject()
-                jsonObjectHoverEvent.addProperty("action", src.hoverEvent?.action.toString().toLowerCase())
-                if (src.hoverEvent?.value is ChatComponentRaw)
-                    jsonObjectHoverEvent.addProperty("value", (src.hoverEvent?.value as ChatComponentRaw).raw)
+                jsonObjectHoverEvent.addProperty("action", hoverEvent.action.toString().toLowerCase())
+                if (hoverEvent.value is ChatComponentRaw)
+                    jsonObjectHoverEvent.addProperty("value", hoverEvent.value.raw)
                 else
-                    jsonObjectHoverEvent.add("value", context.serialize(src.hoverEvent?.value))
+                    jsonObjectHoverEvent.add("value", context.serialize(hoverEvent.value))
                 jsonObject.add("hoverEvent", jsonObjectHoverEvent)
             }
             return jsonObject
@@ -350,7 +353,7 @@ object ChatSerializer {
                     if (component == null)
                         component = component1
                     else if (component1 != null)
-                        component?.append(component1)
+                        component.notNull().append(component1)
                 }
                 return component
             }
@@ -378,7 +381,7 @@ object ChatSerializer {
             } else if (jsonObject.has("score")) {
                 val jsonObjectScore = jsonObject.getAsJsonObject("score")
                 if (!jsonObjectScore.has("name") || !jsonObjectScore.has("objective"))
-                    throw JsonParseException("The score chat component has at least one name or objective attribute.")
+                    throw JsonParseException("A score component needs a least a name and an objective.")
                 component = ChatComponentScore(jsonObjectScore.get("name").asString, jsonObjectScore.get("objective").asString)
                 if (jsonObjectScore.has("value"))
                     component.setValue(jsonObjectScore.get("value").asString)
@@ -412,7 +415,7 @@ object ChatSerializer {
                     jsonObjectStyle.entrySet().forEach { jsonObject.add(it.key, it.value) }
                 }
             }
-            if (!src.extras.isEmpty()) {
+            if (src.extras.isNotEmpty()) {
                 val jsonArray = JsonArray()
                 src.extras.forEach { jsonArray.add(serialize(it, it::class.java, context)) }
                 jsonObject.add("extra", jsonArray)
@@ -421,7 +424,7 @@ object ChatSerializer {
                 jsonObject.addProperty("text", src.text)
             } else if (src is ChatComponentTranslation) {
                 jsonObject.addProperty("translate", src.key)
-                if (!src.withs.isEmpty()) {
+                if (src.withs.isNotEmpty()) {
                     val jsonArray = JsonArray()
                     src.withs.forEach {
                         if (it is ChatComponent)

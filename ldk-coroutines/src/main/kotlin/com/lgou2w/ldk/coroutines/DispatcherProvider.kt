@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,20 @@ package com.lgou2w.ldk.coroutines
 
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## DispatcherProvider (调度程序提供者)
+ *
+ * @see [CustomizeDispatcherProvider]
+ * @see [SingleThreadDispatcherProvider]
+ * @see [FixedThreadPoolDispatcherProvider]
+ * @see [ScheduledThreadPoolDispatcherProvider]
+ * @author lgou2w
+ */
 interface DispatcherProvider {
 
+    /**
+     * * The coroutine context object for this dispatcher provider.
+     * * 此调度程序提供者的协程上下文对象.
+     */
     val dispatcher : CoroutineContext
 }

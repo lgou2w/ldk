@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,22 +24,36 @@ import java.lang.reflect.Proxy
 import java.nio.file.Path
 import java.sql.Connection
 import java.sql.SQLException
-import java.util.*
+import java.util.Properties
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.sql.DataSource
 
+/**
+ * ## SQLiteConnectionFactory (SQLite 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @author lgou2w
+ */
 class SQLiteConnectionFactory(
+        /**
+         * * The data file path of this connection factory.
+         * * 此连接工厂的数据文件路径.
+         */
         val file: Path,
+        /**
+         * * The properties of this connection factory.
+         * * 此连接工厂的属性.
+         */
         val properties: Properties = Properties()
 ) : ConnectionFactory {
 
     private var connectionWrap : WrappedConnection? = null
     private val initialized = AtomicBoolean(false)
 
-    override val dataSource: DataSource
+    override val dataSource : DataSource
         get() = throw UnsupportedOperationException("The SQLite connection factory does not support data sources.")
 
-    override val implementationName: String = "SQLite"
+    override val implementationName : String = "SQLite"
 
     override fun initialize() {
         initializeDriver()
@@ -81,7 +95,7 @@ class SQLiteConnectionFactory(
         initializeDriver()
         return try {
             org.sqlite.JDBC.createConnection(url, properties)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw RuntimeException(e)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(e)

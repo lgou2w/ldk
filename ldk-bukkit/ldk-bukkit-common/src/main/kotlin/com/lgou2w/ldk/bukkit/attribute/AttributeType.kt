@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,6 @@ enum class AttributeType(
          * * 此属性类型支持的 Minecraft 版本. 如果 `null` 则支持所有.
          */
         val mcVer: MinecraftVersion? = null
-
 ) : Valuable<String> {
 
     /**
@@ -124,7 +123,7 @@ enum class AttributeType(
     ZOMBIE_SPAWN_REINFORCEMENTS("zombie.spawnReinforcements", .0, .0, 1.0),
     ;
 
-    override val value: String
+    override val value : String
         get() = type
 
     /**
@@ -135,7 +134,7 @@ enum class AttributeType(
      * @throws IllegalBukkitVersionException 如果属性类型不支持.
      */
     @Throws(IllegalBukkitVersionException::class)
-    fun canSupport() : Boolean {
+    fun canSupport(): Boolean {
         if (mcVer != null && !MinecraftVersion.CURRENT.isOrLater(mcVer))
             throw IllegalBukkitVersionException("This $this attribute type is not supported in current Bukkit versions.")
         return true

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,24 @@
 
 package com.lgou2w.ldk.bukkit.region
 
+/**
+ * ## RegionIterator (区域迭代器)
+ *
+ * @see [RegionVectorBlock]
+ * @see [Iterator]
+ * @author lgou2w
+ */
 class RegionIterator(
         private val region: Region
 ) : Iterator<RegionVectorBlock> {
 
-    private val maxX: Int
-    private val maxY: Int
-    private val maxZ: Int
-    private val min: RegionVector
-    private var nextX: Int
-    private var nextY: Int
-    private var nextZ: Int
+    private val maxX : Int
+    private val maxY : Int
+    private val maxZ : Int
+    private val min : RegionVector
+    private var nextX : Int
+    private var nextY : Int
+    private var nextZ : Int
 
     init {
         val max = region.maximumPoint

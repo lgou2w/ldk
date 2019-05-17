@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,29 @@ package com.lgou2w.ldk.coroutines
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
+import java.io.Closeable
 import java.util.concurrent.Executors
 
+/**
+ * ## SingleThreadDispatcherProvider (单线程调度程序提供者)
+ *
+ * @see [DispatcherProvider]
+ * @see [Closeable]
+ * @see [Executors.newSingleThreadExecutor]
+ * @author lgou2w
+ */
 class SingleThreadDispatcherProvider(
         private val threadName: String
-) : DispatcherProvider {
+) : DispatcherProvider, Closeable {
 
     private val createPoolThread : (Runnable) -> Thread = { r ->
         Thread(r, threadName)
     }
 
-    override val dispatcher: ExecutorCoroutineDispatcher
+    override val dispatcher : ExecutorCoroutineDispatcher
             = Executors.newSingleThreadExecutor(createPoolThread).asCoroutineDispatcher()
+
+    override fun close() {
+        dispatcher.close()
+    }
 }

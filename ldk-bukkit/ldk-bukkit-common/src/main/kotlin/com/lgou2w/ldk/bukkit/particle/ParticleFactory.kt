@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Predicate
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.reflect.AccessorConstructor
 import com.lgou2w.ldk.reflect.AccessorField
@@ -37,6 +36,12 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## ParticleFactory (粒子工厂)
+ *
+ * @see [Particle]
+ * @author lgou2w
+ */
 object ParticleFactory {
 
     @JvmStatic private val CLASS_PACKET_OUT_PARTICLES by lazyMinecraftClass("PacketPlayOutWorldParticles")
@@ -112,6 +117,7 @@ object ParticleFactory {
             .resultAccessorOrNull()
     }
 
+    // NMS.Particles -> public static NMS.Particle<?> a(String type)
     @JvmStatic private val METHOD_GET_PARTICLE_FRESH : AccessorMethod<Any, Any>? by lazy {
         FuzzyReflect.of(CLASS_PARTICLES.notNull(), true)
             .useMethodMatcher()
@@ -119,6 +125,23 @@ object ParticleFactory {
             .withType(CLASS_PARTICLE.notNull())
             .withParams(String::class.java)
             .resultAccessorOrNull()
+    }
+
+    // Since Minecraft 1.14 Pre-Release 5
+    // NMS.Particles -> public static final Particle XXX
+    @JvmStatic private val PARTICLE_FIELD_ACCESSORS : MutableMap<Particle, AccessorField<Any, Any>?> = HashMap()
+    @JvmStatic private val PARTICLE_FIELD : (Particle) -> AccessorField<Any, Any>? = { particle ->
+        var accessor = PARTICLE_FIELD_ACCESSORS[particle]
+        if (accessor == null) {
+            accessor = FuzzyReflect.of(CLASS_PARTICLES.notNull(), true)
+                .useFieldMatcher()
+                .withType(CLASS_PARTICLE.notNull())
+                .withVisibilities(Visibility.PUBLIC, Visibility.STATIC, Visibility.FINAL)
+                .withName(particle.type.toUpperCase())
+                .resultAccessorOrNull()
+            PARTICLE_FIELD_ACCESSORS[particle] = accessor
+        }
+        accessor
     }
 
     // NMS.EnumParticle -> public static NMS.EnumParticle getById(int)
@@ -149,6 +172,19 @@ object ParticleFactory {
             .resultAccessorOrNull()
     }
 
+    // Deprecated Adapter for Particles
+    @Suppress("DEPRECATION")
+    @JvmStatic private val PARTICLE_FRESH_ADAPTER : (Particle) -> Particle? = { particle ->
+        when (particle) {
+            Particle.UNDERWATER_DEPTH -> Particle.UNDERWATER
+            Particle.FOOTSTEP -> Particle.BARRIER
+            Particle.ITEM_SNOW_SHOVEL -> Particle.ITEM_SNOWBALL
+            Particle.BLOCKDUST -> Particle.BLOCK
+            Particle.TAKE -> Particle.ITEM
+            else -> null
+        }
+    }
+
     /**
      * After 1.13 => ParticleParam
      * Before 1.13 => Array<Int>
@@ -156,14 +192,18 @@ object ParticleFactory {
      *     * BLOCK_CRACK | BLOCK_DUST | FALLING_DUST
      *          * => Block Id ^ Data << 12
      *     * RED_DUST => RED / 255F = offsetX, GREEN / 255F = offsetY, BLUE / 255F = offsetZ
-     *          * if (RED == 0) offsetX = Float.MIN_NORMAL
      */
 
     /**
-     * @param data [Material] | [ItemStack] | [Block] | [ParticleDust] | [Color]
+     * * Create a particle effect packet with the given [particle].
+     * * 将给定的粒子效果 [particle] 以给定的参数创建粒子效果数据包.
+     *
+     * @param data [Material] | [ItemStack] | [Block] | [ParticleDust] | [Color] | `null`
+     * @throws [IllegalArgumentException] If wrong particle data.
+     * @since LDK 0.1.8-rc
      */
     @Throws(IllegalArgumentException::class)
-    private fun createPacket(
+    fun createPacket(
             particle: Particle,
             x: Float,
             y: Float,
@@ -175,8 +215,8 @@ object ParticleFactory {
             count: Int,
             longDistance: Boolean,
             data: Any? = null
-    ) : Any {
-        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+    ): Any {
+        return if (MinecraftBukkitVersion.isV113OrLater) {
             createPacketFresh(particle, x, y, z, offsetX, offsetY, offsetZ, speed, count, longDistance, data)
         } else {
             createPacketLegacy(particle, x, y, z, offsetX, offsetY, offsetZ, speed, count, longDistance, data)
@@ -196,41 +236,49 @@ object ParticleFactory {
             count: Int,
             longDistance: Boolean,
             data: Any?
-    ) : Any {
-        val nms = METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, particle.type)
+    ): Any {
+        val adaptParticle = PARTICLE_FRESH_ADAPTER(particle) ?: particle
+        val nms = if (MinecraftBukkitVersion.isV114OrLater) {
+            // Since Minecraft 1.14 Pre-Release 5
+            PARTICLE_FIELD(adaptParticle)?.get(null).notNull("This particle '$adaptParticle' is not supported by the server version.")
+        } else {
+            METHOD_GET_PARTICLE_FRESH.notNull().invoke(null, adaptParticle.type)
+        }
         var overrideOffsetX = offsetX
-        val param = if (particle == Particle.ITEM) {
+        val param = if (adaptParticle == Particle.ITEM) {
             val stack = when (data) {
                 is ItemStack -> data
                 is Material -> ItemStack(data)
                 is ParticleData -> ItemStack(data.type)
+                null -> ItemStack(Material.AIR) // nullable
                 else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
             }
             CONSTRUCTOR_PARAM_ITEM.notNull().newInstance(nms, ItemFactory.asNMSCopy(stack))
-        } else if (particle == Particle.BLOCK || particle == Particle.BLOCKDUST || particle == Particle.FALLING_DUST) {
+        } else if (adaptParticle == Particle.BLOCK || adaptParticle == Particle.BLOCKDUST || adaptParticle == Particle.FALLING_DUST) {
             val block = when (data) {
                 is Block -> FIELD_CRAFT_BLOCK_DATA_STATE.notNull()[data.blockData]
                 is Material -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, data, 0.toByte())
                 is ParticleData -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, data.type, data.data.toByte())
+                null -> METHOD_GET_BLOCK_DATA.notNull().invoke(null, Material.AIR, 0.toByte()) // nullable
                 else -> throw IllegalArgumentException("Particle BLOCK | BLOCKDUST | FALLING_DUST data can only be Material | Block | ParticleData.")
             }
             CONSTRUCTOR_PARAM_BLOCK.notNull().newInstance(nms, block)
-        } else if (particle == Particle.DUST) {
-            val dust = when (data) {
-                is ParticleDust -> data
-                is Color -> ParticleDust(data)
-                null -> ParticleDust(Color.WHITE) // nullable
+        } else if (adaptParticle == Particle.DUST) {
+            val (color, size) = when (data) {
+                is ParticleDust -> data.color to data.size
+                is Color -> data to 1f
+                null -> Color.WHITE to 1f // nullable
                 else -> throw IllegalArgumentException("Particle DUST data can only be ParticleDust | Color.")
             }
             CONSTRUCTOR_PARAM_REDSTONE.notNull().newInstance(
-                    dust.color.red / 255.0f,
-                    dust.color.green / 255.0f,
-                    dust.color.blue / 255.0f,
-                    dust.size)
+                    color.red / 255.0f,
+                    color.green / 255.0f,
+                    color.blue / 255.0f,
+                    size)
         } else {
             nms
         }
-        if (particle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
+        if (adaptParticle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
             overrideOffsetX = data.value / 24f
         }
         return CONSTRUCTOR_FRESH.notNull().newInstance(
@@ -257,17 +305,18 @@ object ParticleFactory {
             count: Int,
             longDistance: Boolean,
             data: Any?
-    ) : Any {
+    ): Any {
         val nms = METHOD_GET_PARTICLE_LEGACY.notNull().invoke(null, particle.value)
-                  ?: throw IllegalArgumentException("This particle $particle is not supported by the server version.")
+                  ?: throw IllegalArgumentException("This particle '$particle' is not supported by the server version.")
         var overrideOffsetX = offsetX
         var overrideOffsetY = offsetY
         var overrideOffsetZ = offsetZ
         val packetData = if (particle == Particle.ITEM) {
             val (type, value) = when (data) {
-                is ItemStack -> data.type to data.data.data.toInt()
+                is ItemStack -> data.type to data.data.notNull().data.toInt()
                 is Material -> data to 0
                 is ParticleData -> data.type to data.data
+                null -> Material.AIR to 0 // nullable
                 else-> throw IllegalArgumentException("Particle ITEM data can only be Material | ItemStack | ParticleData.")
             }
             intArrayOf(type.id, value)
@@ -276,19 +325,18 @@ object ParticleFactory {
                 is Block -> data.type to data.data.toInt()
                 is Material -> data to 0
                 is ParticleData -> data.type to data.data
+                null -> Material.AIR to 0 // nullable
                 else -> throw IllegalArgumentException("Particle BLOCK | BLOCKDUST | FALLING_DUST data can only be Material | Block | ParticleData.")
             }
             intArrayOf(type.id or (value shl 12))
         } else {
             intArrayOf()
         }
-        if (particle == Particle.DUST && (data is ParticleDust || data is Color)) {
-            val color = (data as? ParticleDust)?.color ?: data as Color
+        if (particle == Particle.DUST && (data is ParticleDust || data is Color || data == null)) {
+            val color = (data as? ParticleDust)?.color ?: data as? Color ?: Color.WHITE
             overrideOffsetX = color.red / 255.0f
             overrideOffsetY = color.green / 255.0f
             overrideOffsetZ = color.blue / 255.0f
-            if (color.red == 0)
-                overrideOffsetX = Float.MIN_VALUE
         }
         if (particle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
             overrideOffsetX = data.value / 24f
@@ -306,8 +354,8 @@ object ParticleFactory {
     }
 
     /**
-     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
-     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData] | `null`
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData] | `null`
      * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
      * @param data [Particle.NOTE] => [ParticleNote] | `null`
      */
@@ -320,7 +368,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
@@ -329,8 +377,8 @@ object ParticleFactory {
     }
 
     /**
-     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
-     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData] | `null`
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData] | `null`
      * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
      * @param data [Particle.NOTE] => [ParticleNote] | `null`
      */
@@ -343,16 +391,17 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
-        sendParticle(center.world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
+        val world = center.world.notNull()
+        sendParticle(world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
     }
 
     /**
-     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData]
-     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData]
+     * @param data [Particle.ITEM] => [Material] | [ItemStack] | [ParticleData] | `null`
+     * @param data [Particle.BLOCK] | [Particle.BLOCKDUST] | [Particle.FALLING_DUST] => [Material] | [Block] | [ParticleData] | `null`
      * @param data [Particle.DUST] => [Color] | [ParticleDust] | `null`
      * @param data [Particle.NOTE] => [ParticleNote] | `null`
      */
@@ -365,7 +414,7 @@ object ParticleFactory {
             offsetX: Float = 0f,
             offsetY: Float = 0f,
             offsetZ: Float = 0f,
-            speed: Float = 1.0f,
+            speed: Float = 0.0f,
             count: Int = 1,
             data: Any? = null
     ) {
@@ -390,7 +439,7 @@ object ParticleFactory {
             .asSequence()
             .filter {
                 val result = filter(it)
-                if (result && it.location.distanceSquared(center) >= 256.0)
+                if (result && !longDistance && it.location.distanceSquared(center) >= 256.0)
                     longDistance = true
                 result
             }

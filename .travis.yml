@@ -5,7 +5,9 @@ branches:
   only:
     - develop
 script:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+  - mvn install -Dmaven.javadoc.skip=true -Dkotlin.compile.incremental=true
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 cache:
   directories:
     - $HOME/.m2

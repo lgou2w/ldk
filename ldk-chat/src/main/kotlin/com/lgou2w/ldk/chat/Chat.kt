@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,12 +74,12 @@ fun Iterable<String>.stripColor(): List<String>
  * * Converts the given string source to a chat component.
  * * 将给定的字符串源转换为聊天组件.
  */
-fun String.toComponent() : ChatComponent
+fun String.toComponent(): ChatComponent
         = ChatSerializer.fromRaw(this)
 
 /**
  * * Converts the given string source to a chat component.
  * * 将给定的字符串源转换为聊天组件.
  */
-fun String?.toComponentOrNull() : ChatComponent?
+fun String?.toComponentOrNull(): ChatComponent?
         = ChatSerializer.fromRawOrNull(this)

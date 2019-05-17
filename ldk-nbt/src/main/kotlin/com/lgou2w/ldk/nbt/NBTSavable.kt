@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,5 +33,5 @@ interface NBTSavable {
      * * Store the data in the given `root` tag.
      * * 将数据存储到给定的 `root` 标签中.
      */
-    fun save(root: NBTTagCompound) : NBTTagCompound
+    fun save(root: NBTTagCompound): NBTTagCompound
 }

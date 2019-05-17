@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,19 @@ package com.lgou2w.ldk.sql
 
 import com.zaxxer.hikari.HikariConfig
 
+/**
+ * ## PostgreConnectionFactory (Postgre 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @see [HikariConnectionFactory]
+ * @author lgou2w
+ */
 class PostgreConnectionFactory(
         configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
-    override val implementationName: String = "PostgreSQL"
-    override val driverClass: String = "org.postgresql.ds.PGSimpleDataSource"
+    override val implementationName : String = "PostgreSQL"
+    override val driverClass : String = "org.postgresql.ds.PGSimpleDataSource"
 
     override fun appendConfiguration(config: HikariConfig) {
         val address = configuration.address.split(":")

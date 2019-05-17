@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,27 @@
 package com.lgou2w.ldk.bukkit.gui
 
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.Arrays
 
+/**
+ * ## ButtonSameBase (相同类型按钮基础)
+ *
+ * @see [ButtonSame]
+ * @author lgou2w
+ */
 open class ButtonSameBase(
         parent: Gui,
         protected val values: IntArray
 ) : ButtonBase(parent, values.first()),
         ButtonSame {
 
-    override var stack: ItemStack?
+    override var stack : ItemStack?
         get() = super.stack
         set(value) { values.forEach { parent.inventory.setItem(it, value) } }
 
-    final override val indexes: IntArray = values.clone()
+    final override val indexes : IntArray = values.clone()
 
-    final override val stacks: List<ItemStack?>
+    final override val stacks : List<ItemStack?>
         get() = values.map { parent.inventory.getItem(it) }
 
     final override fun isSame(index: Int): Boolean {

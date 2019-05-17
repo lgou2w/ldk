@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ open class ChatComponentFancy(
     /**
      * * Extra component list.
      */
-    protected val extras: MutableList<ChatComponent>
+    protected val extras : MutableList<ChatComponent>
 
     init {
         this.extras = ArrayList()
@@ -70,7 +70,7 @@ open class ChatComponentFancy(
      *
      * @see [extras]
      */
-    protected val last: ChatComponent
+    protected val last : ChatComponent
         get() = extras.last()
 
     /**
@@ -381,8 +381,8 @@ open class ChatComponentFancy(
      * * Gets the extra component list size for this fancy component.
      * * 获取此花式组件的附加组件列表大小.
      */
-    val size: Int
-            = extras.size
+    val size : Int
+        get() = extras.size
 
     /**
      * * Clear all the extra component for this fancy component.

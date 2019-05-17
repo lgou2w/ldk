@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,23 +21,47 @@ import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * ## Transforms (转变器)
+ *
+ * @see [Iterable]
+ * @see [Transform]
+ * @author lgou2w
+ */
 open class Transforms : Iterable<Transform<*>> {
 
     protected val transforms : MutableMap<Class<*>, Transform<*>> = ConcurrentHashMap()
 
+    /**
+     * @see [Map.keys]
+     */
     val keys : MutableSet<Class<*>>
         get() = transforms.keys
 
+    /**
+     * @see [Map.values]
+     */
     val values : MutableCollection<Transform<*>>
         get() = transforms.values
 
+    /**
+     * @see [Map.entries]
+     */
     val entries : MutableSet<MutableMap.MutableEntry<Class<*>, Transform<*>>>
         get() = transforms.entries
 
+    /**
+     * * Add a transform of the given type [type].
+     * * 添加给定类型 [type] 的转变器.
+     */
     fun <T> addTransform(type: Class<T>, transform: Transform<T>) {
         transforms[type] = transform
     }
 
+    /**
+     * * Add a transform of the given type [type].
+     * * 添加给定类型 [type] 的转变器.
+     */
     fun <T> addTransform(type: Class<T>, transform: Function<String, T?>) {
         addTransform(type, object : Transform<T> {
             override fun transform(parameter: String): T? {
@@ -46,11 +70,23 @@ open class Transforms : Iterable<Transform<*>> {
         })
     }
 
-    fun removeTransform(type: Class<*>) : Transform<*>? {
+    /**
+     * * Remove the transform of the given type [type].
+     * * 移除给定类型 [type] 的转变器.
+     */
+    fun removeTransform(type: Class<*>): Transform<*>? {
         return transforms.remove(type)
     }
 
-    fun <T> getTransform(type: Class<T>) : Transform<T>? {
+    /**
+     * * Get the transform of the given type [type].
+     * * 获取给定类型 [type] 的转变器.
+     *
+     * @throws [IllegalArgumentException] If the expected type does not match.
+     * @throws [IllegalArgumentException] 如果预期类型不符合.
+     */
+    @Throws(IllegalArgumentException::class)
+    fun <T> getTransform(type: Class<T>): Transform<T>? {
         val transform = transforms[type] ?: return null
         try {
             @Suppress("UNCHECKED_CAST")
@@ -64,6 +100,22 @@ open class Transforms : Iterable<Transform<*>> {
         return transforms.values.iterator()
     }
 
+    /**
+     * * Add the default type transform.
+     * * 添加默认的类型转变器.
+     *
+     * @see [Transform.TRANSFORM_BYTE]
+     * @see [Transform.TRANSFORM_SHORT]
+     * @see [Transform.TRANSFORM_INT]
+     * @see [Transform.TRANSFORM_LONG]
+     * @see [Transform.TRANSFORM_FLOAT]
+     * @see [Transform.TRANSFORM_DOUBLE]
+     * @see [Transform.TRANSFORM_NUMBER]
+     * @see [Transform.TRANSFORM_BOOLEAN]
+     * @see [Transform.TRANSFORM_STRING]
+     * @see [Transform.TRANSFORM_PLAYER]
+     * @see [Transform.TRANSFORM_CONSOLE]
+     */
     fun addDefaultTransforms() {
         addTransform(Byte::class.java, Transform.TRANSFORM_BYTE)
         addTransform(Short::class.java, Transform.TRANSFORM_SHORT)

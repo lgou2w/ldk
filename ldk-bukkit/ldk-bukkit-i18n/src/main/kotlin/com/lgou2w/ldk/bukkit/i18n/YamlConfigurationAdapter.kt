@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,45 @@
 package com.lgou2w.ldk.bukkit.i18n
 
 import com.lgou2w.ldk.i18n.LanguageAdapter
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.OutputStreamWriter
+import java.nio.charset.Charset
 
-class YamlConfigurationAdapter : LanguageAdapter {
+/**
+ * ## YamlConfigurationAdapter (Yaml 配置文件语言适配器)
+ *
+ * @see [LanguageAdapter]
+ * @author lgou2w
+ */
+class YamlConfigurationAdapter @JvmOverloads constructor(
+        /**
+         * * The encoding of this yaml configuration file.
+         * * 此 YAML 配置文件的编码.
+         */
+        val charset: Charset = Charsets.UTF_8
+) : LanguageAdapter {
 
-    override val fileExtension: String = "yml"
+    override val fileExtension : String = "yml"
 
     override fun adapt(input: InputStream): Map<String, String> {
-        val reader = InputStreamReader(input, Charsets.UTF_8)
+        val reader = InputStreamReader(input, charset)
         val yaml = YamlConfiguration.loadConfiguration(reader)
-        val keys = yaml.getKeys(false)
-        return keys?.associate { it to yaml.get(it).toString()  } ?: LinkedHashMap()
+        return yaml.getKeys(true)
+            .map { key -> key to yaml.get(key) }
+            .filter { pair -> pair.second !is ConfigurationSection }
+            .associate { it.first to it.second.toString() }
     }
 
     override fun readapt(output: OutputStream, entries: MutableMap<String, String>) {
         val yaml = YamlConfiguration()
         entries.forEach { yaml.set(it.key, it.value) }
         val data = yaml.saveToString()
-        val writer = OutputStreamWriter(output, Charsets.UTF_8)
+        val writer = OutputStreamWriter(output, charset)
         writer.write(data)
+        writer.flush()
     }
 }

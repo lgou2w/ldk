@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,22 @@ import com.lgou2w.ldk.common.Consumer
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## ButtonBase (按钮基础)
+ *
+ * @see [Button]
+ * @author lgou2w
+ */
 open class ButtonBase(
         override val parent: Gui,
         override val index: Int
 ) : Button {
 
-    override var stack: ItemStack?
+    override var stack : ItemStack?
         get() = parent.inventory.getItem(index)
         set(value) { parent.inventory.setItem(index, value) }
 
-    final override var onClicked: Consumer<ButtonEvent>? = null
+    final override var onClicked : Consumer<ButtonEvent>? = null
 
     final override fun stackModify(modifier: Applicator<ItemBuilder>) {
         val stackClone = stack?.clone()

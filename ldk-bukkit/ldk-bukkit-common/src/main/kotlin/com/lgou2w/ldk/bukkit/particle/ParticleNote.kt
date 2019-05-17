@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,18 @@ package com.lgou2w.ldk.bukkit.particle
 /**
  * ## ParticleNote (粒子音符)
  *
- * * Sets the color of the note particle. The value is `0 ~ 24` range.
- *      * Need to set the number of `count` to `0` color to take effect.
- * * 设置音符粒子的颜色. 值为 `0 ~ 24` 范围.
- *      * 需要将 `count` 数量设置为 `0` 颜色才会生效.
+ * * Set the color of the note particle. The [value] is `0 ~ 24` range.
+ *      * Need to set the number of `speed` to `1` color to take effect.
+ * * 设置音符粒子的颜色. 值 [value] 为 `0 ~ 24` 范围.
+ *      * 需要将 `speed`  速度设置为 `1` 颜色才会生效.
  *
+ * @see [Particle.NOTE]
  * @author lgou2w
  */
-data class ParticleNote(val value: Int) {
-}
+data class ParticleNote(
+        /**
+         * * The value of this particle note.
+         * * 此粒子音符的值.
+         */
+        val value: Int
+)

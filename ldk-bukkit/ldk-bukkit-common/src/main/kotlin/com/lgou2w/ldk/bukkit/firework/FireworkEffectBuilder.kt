@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,48 +18,75 @@ package com.lgou2w.ldk.bukkit.firework
 
 import com.lgou2w.ldk.common.Builder
 import org.bukkit.Color
-import java.util.*
+import java.util.ArrayList
+import java.util.Collections
 
+/**
+ * ## FireworkEffectBuilder (烟花效果构建者)
+ *
+ * @see [FireworkEffect]
+ * @see [Builder]
+ * @author lgou2w
+ */
 class FireworkEffectBuilder(
         private var type: FireworkType
 ) : Builder<FireworkEffect> {
 
-    private var canFlicker: Boolean = false
-    private var hasTrail: Boolean = false
-    private var colors: MutableList<Color> = ArrayList()
-    private var fades: MutableList<Color> = ArrayList()
+    private var canFlicker : Boolean = false
+    private var hasTrail : Boolean = false
+    private val colors : MutableList<Color> = ArrayList()
+    private val fades : MutableList<Color> = ArrayList()
 
-    fun with(type: FireworkType) : FireworkEffectBuilder {
+    /**
+     * * With a given [type] of firework.
+     * * 具有给定的烟花类型 [type].
+     */
+    fun with(type: FireworkType): FireworkEffectBuilder {
         this.type = type
         return this
     }
 
-    fun withFlicker() : FireworkEffectBuilder {
+    /**
+     * * With a flicker effect.
+     * * 具有闪烁效果.
+     */
+    fun withFlicker(): FireworkEffectBuilder {
         this.canFlicker = true
         return this
     }
 
-    fun withTrail() : FireworkEffectBuilder {
+    /**
+     * * With a trail effect.
+     * * 具有尾迹效果.
+     */
+    fun withTrail(): FireworkEffectBuilder {
         this.hasTrail = true
         return this
     }
 
-    fun withColors(vararg colors: Color) : FireworkEffectBuilder {
+    /**
+     * * With the given [colors].
+     * * 具有给定的颜色 [colors].
+     */
+    fun withColors(vararg colors: Color): FireworkEffectBuilder {
         this.colors.addAll(colors)
         return this
     }
 
-    fun withFades(vararg colors: Color) : FireworkEffectBuilder {
+    /**
+     * * With the given fade [colors].
+     * * 具有给定的淡化颜色 [colors].
+     */
+    fun withFades(vararg colors: Color): FireworkEffectBuilder {
         this.fades.addAll(colors)
         return this
     }
 
     override fun build(): FireworkEffect {
         return FireworkEffect(
-                type,
-                canFlicker,
-                hasTrail,
+                type, canFlicker, hasTrail,
                 Collections.unmodifiableList(colors),
-                Collections.unmodifiableList(fades))
+                Collections.unmodifiableList(fades)
+        )
     }
 }

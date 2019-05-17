@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,17 @@ package com.lgou2w.ldk.bukkit.cmd
 
 import org.bukkit.plugin.Plugin
 
+/**
+ * ## DefaultCommandManager (默认命令管理器)
+ *
+ * @see [SimpleCommandManager]
+ * @author lgou2w
+ */
 class DefaultCommandManager(
         plugin: Plugin
 ) : SimpleCommandManager(plugin, DefaultCommandParser()) {
 
-    override val parser: DefaultCommandParser
+    override val parser : DefaultCommandParser
         get() = super.parser as DefaultCommandParser
 
     override fun registerCommand(source: Any): DefaultRegisteredCommand {

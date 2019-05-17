@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package com.lgou2w.ldk.nbt
 
 /**
- * ## NBTBase
+ * ## NBTBase (NBT 基础)
  *
  * @see [NBTType]
  * @author lgou2w
@@ -33,10 +33,10 @@ abstract class NBTBase<T>(
         protected var value0: T
 ) : NBT<T> {
 
-    override val typeId: Int
+    override val typeId : Int
         get() = type.id
 
-    override var value: T
+    override var value : T
         get() = value0
         set(value) { value0 = value }
 
@@ -69,10 +69,10 @@ abstract class NBTBase<T>(
     public abstract override fun clone(): NBTBase<*>
 
     @Throws(ClassCastException::class)
-    fun asCompound() : NBTTagCompound
+    fun asCompound(): NBTTagCompound
             = this as NBTTagCompound
 
     @Throws(ClassCastException::class)
-    fun asList() : NBTTagList
+    fun asList(): NBTTagList
             = this as NBTTagList
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,22 @@
 
 package com.lgou2w.ldk.bukkit.region
 
+/**
+ * ## RegionIteratorFlat3D (3D 平面区域迭代器)
+ *
+ * @see [RegionVectorBlock]
+ * @see [Iterator]
+ * @author lgou2w
+ */
 class RegionIteratorFlat3D(
         region: RegionFlat,
         private val flatIterator: Iterator<RegionVector2D>
 ) : Iterator<RegionVectorBlock> {
 
-    private val minY: Int = region.minimumY
-    private val maxY: Int = region.maximumY
-    private var next2D: RegionVector2D? = if (flatIterator.hasNext()) flatIterator.next() else null
-    private var nextY: Int = minY
+    private val minY : Int = region.minimumY
+    private val maxY : Int = region.maximumY
+    private var next2D : RegionVector2D? = if (flatIterator.hasNext()) flatIterator.next() else null
+    private var nextY : Int = minY
 
     constructor(region: RegionFlat) : this(region, region.asFlat().iterator())
 

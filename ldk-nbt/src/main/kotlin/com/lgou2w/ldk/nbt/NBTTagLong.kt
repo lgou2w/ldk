@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,7 @@ class NBTTagLong : NBTTagNumber<Long> {
     constructor(name: String = "", value: Long = 0L) : super(name, value)
     constructor(value: Long = 0L) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_LONG
+    override val type = NBTType.TAG_LONG
 
     override fun read(input: DataInput) {
         value = input.readLong()

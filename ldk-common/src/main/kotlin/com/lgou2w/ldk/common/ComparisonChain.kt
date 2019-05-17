@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ package com.lgou2w.ldk.common
  */
 
 /**
- * * ## ComparisonChain (链式比较器)
+ * ## ComparisonChain (链式比较器)
  *
  * * Chain comparison separated by Google's `Guava` library.
  *      Used to compare the properties of the current class and an object.
@@ -65,9 +65,9 @@ abstract class ComparisonChain private constructor() {
 
     companion object {
 
-        private val ACTIVE: ComparisonChain = ActiveComparisonChain()
-        private val LESS: ComparisonChain = InactiveComparisonChain(-1)
-        private val GREATER: ComparisonChain = InactiveComparisonChain(1)
+        private val ACTIVE : ComparisonChain = ActiveComparisonChain()
+        private val LESS : ComparisonChain = InactiveComparisonChain(-1)
+        private val GREATER : ComparisonChain = InactiveComparisonChain(1)
 
         /**
          * * Perform chain comparison.
@@ -84,7 +84,7 @@ abstract class ComparisonChain private constructor() {
      */
 
     private class ActiveComparisonChain : ComparisonChain() {
-        override fun <T: Comparable<T>> compare(left: T, right: T): ComparisonChain
+        override fun <T : Comparable<T>> compare(left: T, right: T): ComparisonChain
                 = classify(left.compareTo(right))
         override fun <T> compare(left: T, right: T, comparator: Comparator<T>): ComparisonChain
                 = classify(comparator.compare(left, right))
@@ -109,7 +109,7 @@ abstract class ComparisonChain private constructor() {
     private class InactiveComparisonChain(
             override val result: Int
     ) : ComparisonChain() {
-        override fun <T: Comparable<T>> compare(left: T, right: T): ComparisonChain
+        override fun <T : Comparable<T>> compare(left: T, right: T): ComparisonChain
                 = this
         override fun <T> compare(left: T, right: T, comparator: Comparator<T>): ComparisonChain
                 = this
@@ -132,7 +132,7 @@ abstract class ComparisonChain private constructor() {
      * by MoonLake on 24/08/2017
      */
 
-    abstract fun <T: Comparable<T>> compare(left: T, right: T): ComparisonChain
+    abstract fun <T : Comparable<T>> compare(left: T, right: T): ComparisonChain
 
     abstract fun <T> compare(left: T, right: T, comparator: Comparator<T>): ComparisonChain
 

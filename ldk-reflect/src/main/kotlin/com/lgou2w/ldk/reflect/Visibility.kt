@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ enum class Visibility {
      * @param accessible Accessible object
      * @param accessible 可访问对象
      */
-    fun <E> isMatches(accessible: E): Boolean where E : AccessibleObject, E: Member {
+    fun <E> isMatches(accessible: E): Boolean where E : AccessibleObject, E : Member {
         val modifiers = accessible.modifiers
         return when (this) {
             PRIVATE -> Modifier.isPrivate(modifiers)

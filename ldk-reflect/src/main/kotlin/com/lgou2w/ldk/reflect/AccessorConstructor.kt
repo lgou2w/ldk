@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ import java.lang.reflect.Constructor
 interface AccessorConstructor<T> : Accessor<Constructor<T>> {
 
     /**
-     * * Create an instance object with the given parameter [params].
+     * * Create an instance object with the given [params].
      * * 以给定的参数 [params] 创建一个实例对象.
      *
-     * @param params Parameter
+     * @param params Parameters
      * @param params 参数
      * @throws RuntimeException Throws an exception if it cannot be used, an internal error, or an instance error.
      * @throws RuntimeException 如果无法使用、内部错误或实例错误时抛出异常.

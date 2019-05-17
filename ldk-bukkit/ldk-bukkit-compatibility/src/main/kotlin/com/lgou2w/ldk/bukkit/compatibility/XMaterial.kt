@@ -39,7 +39,7 @@
  */
 
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,14 +56,23 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.util.*
+import java.util.Collections
+import java.util.Locale
 
+/**
+ * ## XMaterial (材料)
+ *
+ * @see [Material]
+ * @author Hex_27, 25, lgou2w
+ */
 enum class XMaterial {
 
-    // TODO Minecraft 1.14
+    //<editor-fold desc="XMaterials" defaultstate="collapsed">
 
     ACACIA_BOAT("BOAT_ACACIA", 0),
     ACACIA_BUTTON("WOOD_BUTTON", 0),
@@ -115,7 +124,7 @@ enum class XMaterial {
     BIRCH_TRAPDOOR("TRAP_DOOR", 0),
     BIRCH_WOOD("LOG", 2),
     BLACK_BANNER(0, "BANNER", "STANDING_BANNER"),
-    BLACK_BED("BED", 15),
+    BLACK_BED(15, "BED", "BED_BLOCK"),
     BLACK_CARPET("CARPET", 15),
     BLACK_CONCRETE("CONCRETE", 15),
     BLACK_CONCRETE_POWDER("CONCRETE_POWDER", 15),
@@ -130,7 +139,7 @@ enum class XMaterial {
     BLAZE_ROD("BLAZE_ROD", 0),
     BLAZE_SPAWN_EGG("MONSTER_EGG", 0),
     BLUE_BANNER(11, "BANNER", "STANDING_BANNER"),
-    BLUE_BED("BED", 4),
+    BLUE_BED(4, "BED", "BED_BLOCK"),
     BLUE_CARPET("CARPET", 11),
     BLUE_CONCRETE("CONCRETE", 11),
     BLUE_CONCRETE_POWDER("CONCRETE_POWDER", 11),
@@ -161,7 +170,7 @@ enum class XMaterial {
     BRICK_SLAB(4, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     BRICK_STAIRS("BRICK_STAIRS", 0),
     BROWN_BANNER(3, "BANNER", "STANDING_BANNER"),
-    BROWN_BED("BED", 12),
+    BROWN_BED(12, "BED", "BED_BLOCK"),
     BROWN_CARPET("CARPET", 12),
     BROWN_CONCRETE("CONCRETE", 12),
     BROWN_CONCRETE_POWDER("CONCRETE_POWDER", 12),
@@ -181,7 +190,7 @@ enum class XMaterial {
     BUBBLE_CORAL_WALL_FAN("STONE", 0),
     BUCKET("BUCKET", 0),
     CACTUS("CACTUS", 0),
-    CACTUS_GREEN("INK_SACK", 2),
+    CACTUS_GREEN(2, "INK_SACK", "GREEN_DYE"), // Removed since Minecraft 1.14 -> GREEN_DYE
     CAKE(0, "CAKE", "CAKE_BLOCK"),
     CARROT("CARROT_ITEM", 0),
     CARROTS("CARROT", 0),
@@ -247,7 +256,7 @@ enum class XMaterial {
     CUT_RED_SANDSTONE("STONE", 0),
     CUT_SANDSTONE("STONE", 0),
     CYAN_BANNER(6, "BANNER", "STANDING_BANNER"),
-    CYAN_BED("BED", 9),
+    CYAN_BED(9, "BED", "BED_BLOCK"),
     CYAN_CARPET("CARPET", 9),
     CYAN_CONCRETE("CONCRETE", 9),
     CYAN_CONCRETE_POWDER("CONCRETE_POWDER", 9),
@@ -261,7 +270,7 @@ enum class XMaterial {
     CYAN_WOOL("WOOL", 9),
     DAMAGED_ANVIL("ANVIL", 2),
     DANDELION("YELLOW_FLOWER", 0),
-    DANDELION_YELLOW("INK_SACK", 11),
+    DANDELION_YELLOW(11, "INK_SACK", "YELLOW_DYE"), // Removed since Minecraft 1.14 -> YELLOW_DYE
     DARK_OAK_BOAT("BOAT_DARK_OAK", 0),
     DARK_OAK_BUTTON("WOOD_BUTTON", 0),
     DARK_OAK_DOOR(0, "DARK_OAK_DOOR", "DARK_OAK_DOOR_ITEM"),
@@ -355,7 +364,7 @@ enum class XMaterial {
     FARMLAND("SOIL", 0),
     FEATHER("FEATHER", 0),
     FERMENTED_SPIDER_EYE("FERMENTED_SPIDER_EYE", 0),
-    FERN("LONG_GRASS", 2),
+    FERN("LONG_GRASS", 0),
     FILLED_MAP("MAP", 0),
     FIRE("FIRE", 0),
     FIREWORK_ROCKET("FIREWORK", 0),
@@ -402,7 +411,7 @@ enum class XMaterial {
     GRASS_PATH("GRASS_PATH", 0),
     GRAVEL("GRAVEL", 0),
     GRAY_BANNER(8, "BANNER", "STANDING_BANNER"),
-    GRAY_BED("BED", 7),
+    GRAY_BED(7, "BED", "BED_BLOCK"),
     GRAY_CARPET("CARPET", 7),
     GRAY_CONCRETE("CONCRETE", 7),
     GRAY_CONCRETE_POWDER("CONCRETE_POWDER", 7),
@@ -415,7 +424,7 @@ enum class XMaterial {
     GRAY_WALL_BANNER("WALL_BANNER", 0),
     GRAY_WOOL("WOOL", 7),
     GREEN_BANNER(2, "BANNER", "STANDING_BANNER"),
-    GREEN_BED("BED", 13),
+    GREEN_BED(13, "BED", "BED_BLOCK"),
     GREEN_CARPET("CARPET", 13),
     GREEN_CONCRETE("CONCRETE", 13),
     GREEN_CONCRETE_POWDER("CONCRETE_POWDER", 13),
@@ -499,7 +508,7 @@ enum class XMaterial {
     LEATHER_LEGGINGS("LEATHER_LEGGINGS", 0),
     LEVER("LEVER", 0),
     LIGHT_BLUE_BANNER(12, "BANNER", "STANDING_BANNER"),
-    LIGHT_BLUE_BED("BED", 3),
+    LIGHT_BLUE_BED(3, "BED", "BED_BLOCK"),
     LIGHT_BLUE_CARPET("CARPET", 3),
     LIGHT_BLUE_CONCRETE("CONCRETE", 3),
     LIGHT_BLUE_CONCRETE_POWDER("CONCRETE_POWDER", 3),
@@ -512,7 +521,7 @@ enum class XMaterial {
     LIGHT_BLUE_WALL_BANNER("BANNER", 0),
     LIGHT_BLUE_WOOL("WOOL", 3),
     LIGHT_GRAY_BANNER(7, "BANNER", "STANDING_BANNER"),
-    LIGHT_GRAY_BED("BED", 8),
+    LIGHT_GRAY_BED(8, "BED", "BED_BLOCK"),
     LIGHT_GRAY_CARPET("CARPET", 8),
     LIGHT_GRAY_CONCRETE("CONCRETE", 8),
     LIGHT_GRAY_CONCRETE_POWDER("CONCRETE_POWDER", 8),
@@ -528,7 +537,7 @@ enum class XMaterial {
     LILAC("DOUBLE_PLANT", 1),
     LILY_PAD("WATER_LILY", 0),
     LIME_BANNER(10, "BANNER", "STANDING_BANNER"),
-    LIME_BED("BED", 5),
+    LIME_BED(5, "BED", "BED_BLOCK"),
     LIME_CARPET("CARPET", 5),
     LIME_CONCRETE("CONCRETE", 5),
     LIME_CONCRETE_POWDER("CONCRETE_POWDER", 5),
@@ -543,7 +552,7 @@ enum class XMaterial {
     LINGERING_POTION("LINGERING_POTION", 0),
     LLAMA_SPAWN_EGG("MONSTER_EGG", 0),
     MAGENTA_BANNER(13, "BANNER", "STANDING_BANNER"),
-    MAGENTA_BED("BED", 2),
+    MAGENTA_BED(2, "BED", "BED_BLOCK"),
     MAGENTA_CARPET("CARPET", 2),
     MAGENTA_CONCRETE("CONCRETE", 2),
     MAGENTA_CONCRETE_POWDER("CONCRETE_POWDER", 2),
@@ -619,7 +628,7 @@ enum class XMaterial {
     OBSIDIAN("OBSIDIAN", 0),
     OCELOT_SPAWN_EGG("RECORD_12", 0),
     ORANGE_BANNER(14, "BANNER", "STANDING_BANNER"),
-    ORANGE_BED("BED", 1),
+    ORANGE_BED(1, "BED", "BED_BLOCK"),
     ORANGE_CARPET("CARPET", 1),
     ORANGE_CONCRETE("CONCRETE", 1),
     ORANGE_CONCRETE_POWDER("CONCRETE_POWDER", 1),
@@ -643,7 +652,7 @@ enum class XMaterial {
     PHANTOM_SPAWN_EGG("MONSTER_EGG", 0),
     PIG_SPAWN_EGG("MONSTER_EGG", 0),
     PINK_BANNER(9, "BANNER", "STANDING_BANNER"),
-    PINK_BED("BED", 6),
+    PINK_BED(6, "BED", "BED_BLOCK"),
     PINK_CARPET("CARPET", 6),
     PINK_CONCRETE("CONCRETE", 6),
     PINK_CONCRETE_POWDER("CONCRETE_POWDER", 6),
@@ -710,7 +719,7 @@ enum class XMaterial {
     PUMPKIN_SEEDS("PUMPKIN_SEEDS", 0),
     PUMPKIN_STEM("PUMPKIN_STEM", 0),
     PURPLE_BANNER(5, "BANNER", "STANDING_BANNER"),
-    PURPLE_BED("BED", 10),
+    PURPLE_BED(10, "BED", "BED_BLOCK"),
     PURPLE_CARPET("CARPET", 10),
     PURPLE_CONCRETE("CONCRETE", 10),
     PURPLE_CONCRETE_POWDER("CONCRETE_POWDER", 10),
@@ -767,7 +776,7 @@ enum class XMaterial {
     REPEATER(0, "DIODE", "DIODE_BLOCK_ON", "DIODE_BLOCK_OFF"),
     REPEATING_COMMAND_BLOCK("COMMAND_REPEATING", 0),
     ROSE_BUSH("DOUBLE_PLANT", 4),
-    ROSE_RED("INK_SACK", 1),
+    ROSE_RED(1, "INK_SACK", "RED_DYE"), // Removed since Minecraft 1.14 -> RED_DYE
     ROTTEN_FLESH("ROTTEN_FLESH", 0),
     SADDLE("SADDLE", 0),
     SALMON("RAW_FISH", 1),
@@ -787,7 +796,6 @@ enum class XMaterial {
     SHULKER_BOX("PURPLE_SHULKER_BOX", 0),
     SHULKER_SHELL("SHULKER_SHELL", 0),
     SHULKER_SPAWN_EGG("MONSTER_EGG", 0),
-    SIGN("SIGN", 0),
     SILVERFISH_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_HORSE_SPAWN_EGG("MONSTER_EGG", 0),
     SKELETON_SKULL(0, "SKULL", "SKULL_ITEM"),
@@ -837,7 +845,6 @@ enum class XMaterial {
     STONE_PICKAXE("STONE_PICKAXE", 0),
     STONE_PRESSURE_PLATE("STONE_PLATE", 0),
     STONE_SHOVEL("STONE_SPADE", 0),
-    STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
     STONE_SWORD("STONE_SWORD", 0),
     STRAY_SPAWN_EGG("MONSTER_EGG", 0),
     STRING("STRING", 0),
@@ -885,7 +892,6 @@ enum class XMaterial {
     VINDICATOR_SPAWN_EGG("MONSTER_EGG", 0),
     VINE("VINE", 0),
     VOID_AIR("AIR", 0),
-    WALL_SIGN(0, "WALL_SIGN", "SIGN_POST"),
     WALL_TORCH("TORCH", 1),
     WATER(0, "WATER", "STATIONARY_WATER"),
     WATER_BUCKET("WATER_BUCKET", 0),
@@ -893,7 +899,7 @@ enum class XMaterial {
     WHEAT(0, "WHEAT", "CROPS"),
     WHEAT_SEEDS(0, "WHEAT_SEEDS", "SEEDS"),
     WHITE_BANNER(15, "BANNER", "STANDING_BANNER"),
-    WHITE_BED("BED", 0),
+    WHITE_BED(0, "BED", "BED_BLOCK"),
     WHITE_CARPET("CARPET", 0),
     WHITE_CONCRETE("CONCRETE", 0),
     WHITE_CONCRETE_POWDER("CONCRETE_POWDER", 0),
@@ -901,7 +907,7 @@ enum class XMaterial {
     WHITE_SHULKER_BOX("WHITE_SHULKER_BOX", 0),
     WHITE_STAINED_GLASS("STAINED_GLASS", 0),
     WHITE_STAINED_GLASS_PANE("STAINED_GLASS_PANE", 0),
-    WHITE_TERRACOTTA("TERRACOTTA", 0),
+    WHITE_TERRACOTTA("STAINED_CLAY", 0),
     WHITE_TULIP("RED_ROSE", 6),
     WHITE_WALL_BANNER("WALL_BANNER", 0),
     WHITE_WOOL("WOOL", 0),
@@ -918,7 +924,7 @@ enum class XMaterial {
     WRITABLE_BOOK("BOOK_AND_QUILL", 0),
     WRITTEN_BOOK("WRITTEN_BOOK", 0),
     YELLOW_BANNER(11, "BANNER", "STANDING_BANNER"),
-    YELLOW_BED("BED", 4),
+    YELLOW_BED(4, "BED", "BED_BLOCK"),
     YELLOW_CARPET("CARPET", 4),
     YELLOW_CONCRETE("CONCRETE", 4),
     YELLOW_CONCRETE_POWDER("CONCRETE_POWDER", 4),
@@ -935,6 +941,127 @@ enum class XMaterial {
     ZOMBIE_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 2),
+
+    //</editor-fold>
+
+    // Minecraft 1.14 Start
+
+    BAMBOO("STONE", 0),
+    BAMBOO_SAPLING("STONE", 0),
+    BARREL("STONE", 0),
+    BELL("STONE", 0),
+    BLAST_FURNACE("STONE", 0),
+    CAMPFIRE("STONE", 0),
+    CARTOGRAPHY_TABLE("STONE", 0),
+    COMPOSTER("STONE", 0),
+    FLETCHING_TABLE("STONE", 0),
+    SMITHING_TABLE("STONE", 0),
+    STONECUTTER("STONE", 0),
+    CORNFLOWER("STONE", 0),
+    LILY_OF_THE_VALLEY("STONE", 0),
+    WITHER_ROSE("STONE", 0),
+    GRINDSTONE("STONE", 0),
+    JIGSAW("STONE", 0),
+    LANTERN("STONE", 0),
+    LECTERN("STONE", 0),
+    LOOM("STONE", 0),
+    SCAFFOLDING("STONE", 0),
+    SMOKER("STONE", 0),
+    SWEET_BERRY_BUSH("STONE", 0),
+
+    FLOWER_BANNER_PATTERN("STONE", 0),
+    CREEPER_BANNER_PATTERN("STONE", 0),
+    SKULL_BANNER_PATTERN("STONE", 0),
+    MOJANG_BANNER_PATTERN("STONE", 0),
+    GLOBE_BANNER_PATTERN("STONE", 0), // since 19w11a
+    CROSSBOW("STONE", 0),
+    SUSPICIOUS_STEW("STONE", 0),
+    SWEET_BERRIES("STONE", 0),
+
+    SIGN(0, "OAK_SIGN", "SIGN"),
+    WALL_SIGN(0, "OAK_WALL_SIGN", "WALL_SIGN", "SIGN_POST"),
+    OAK_SIGN("SIGN", 0),
+    OAK_WALL_SIGN("WALL_SIGN", 0),
+    BIRCH_SIGN("SIGN", 0),
+    BIRCH_WALL_SIGN("WALL_SIGN", 0),
+    JUNGLE_SIGN("SIGN", 0),
+    JUNGLE_WALL_SIGN("WALL_SIGN", 0),
+    ACACIA_SIGN("SIGN", 0),
+    ACACIA_WALL_SIGN("WALL_SIGN", 0),
+    DARK_OAK_SIGN("SIGN", 0),
+    DARK_OAK_WALL_SIGN("WALL_SIGN", 0),
+    SPRUCE_SIGN("SIGN", 0),
+    SPRUCE_WALL_SIGN("WALL_SIGN", 0),
+
+    BLUE_DYE("STONE", 0),
+    BROWN_DYE("STONE", 0),
+    BLACK_DYE("STONE", 0),
+    WHITE_DYE(15, "INK_SACK", "BONE_MEAL"), // Original bone meal
+    GREEN_DYE(2, "INK_SACK", "CACTUS_GREEN"), // Original cactus green
+    YELLOW_DYE(11, "INK_SACK", "DANDELION_YELLOW"), // Original dandelion yellow
+    RED_DYE(1, "INK_SACK", "ROSE_RED"), // Original rose red
+
+    CAT_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+    FOX_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+    RAVAGER_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+    PANDA_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+    PILLAGER_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+    TRADER_LLAMA_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+    WANDERING_TRADER_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+
+    LEATHER_HORSE_ARMOR("STONE", 0),
+
+    STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"),
+    SMOOTH_STONE_SLAB(0, "STONE_SLAB", "STEP", "DOUBLE_STEP"), // Since Minecraft 1.14
+    ANDESITE_SLAB("STONE", 0),
+    POLISHED_ANDESITE_SLAB("STONE", 0),
+    DIORITE_SLAB("STONE", 0),
+    POLISHED_DIORITE_SLAB("STONE", 0),
+    GRANITE_SLAB("STONE", 0),
+    POLISHED_GRANITE_SLAB("STONE", 0),
+    MOSSY_STONE_BRICK_SLAB("STONE", 0),
+    MOSSY_COBBLESTONE_SLAB("STONE", 0),
+    SMOOTH_SANDSTONE_SLAB("STONE", 0),
+    SMOOTH_RED_SANDSTONE_SLAB("STONE", 0),
+    SMOOTH_QUARTZ_SLAB("STONE", 0),
+    RED_NETHER_BRICK_SLAB("STONE", 0),
+    END_STONE_BRICK_SLAB("STONE", 0),
+
+    STONE_STAIRS("STONE", 0),
+    ANDESITE_STAIRS("STONE", 0),
+    POLISHED_ANDESITE_STAIRS("STONE", 0),
+    DIORITE_STAIRS("STONE", 0),
+    POLISHED_DIORITE_STAIRS("STONE", 0),
+    GRANITE_STAIRS("STONE", 0),
+    POLISHED_GRANITE_STAIRS("STONE", 0),
+    MOSSY_STONE_BRICK_STAIRS("STONE", 0),
+    MOSSY_COBBLESTONE_STAIRS("STONE", 0),
+    SMOOTH_SANDSTONE_STAIRS("STONE", 0),
+    SMOOTH_RED_SANDSTONE_STAIRS("STONE", 0),
+    SMOOTH_QUARTZ_STAIRS("STONE", 0),
+    RED_NETHER_BRICK_STAIRS("STONE", 0),
+    END_STONE_BRICK_STAIRS("STONE", 0),
+
+    STONE_BRICK_WALL("STONE", 0),
+    ANDESITE_WALL("STONE", 0),
+    DIORITE_WALL("STONE", 0),
+    GRANITE_WALL("STONE", 0),
+    MOSSY_STONE_BRICK_WALL("STONE", 0),
+    SANDSTONE_WALL("STONE", 0),
+    RED_SANDSTONE_WALL("STONE", 0),
+    RED_NETHER_BRICK_WALL("STONE", 0),
+    END_STONE_BRICK_WALL("STONE", 0),
+    PRISMARINE_WALL("STONE", 0),
+    BRICK_WALL("STONE", 0),
+    NETHER_BRICK_WALL("STONE", 0),
+
+    CUT_SANDSTONE_SLAB("STONE", 0), // since 19w12a
+    CUT_RED_SANDSTONE_SLAB("STONE", 0), // since 19w12a
+
+    POTTED_BAMBOO("STONE", 0),
+    POTTED_CORNFLOWER("STONE", 0),
+    POTTED_LILY_OF_THE_VALLEY("STONE", 0),
+    POTTED_WITHER_ROSE("STONE", 0),
     ;
 
     private val aliases : Array<out String>
@@ -950,16 +1077,39 @@ enum class XMaterial {
         this.data = data
     }
 
+    /**
+     * * Convert this material compatible enum to Bukkit material.
+     * * 将此材料兼容枚举转换为 Bukkit 的材料.
+     *
+     * @see [Material]
+     * @throws [UnsupportedOperationException] If the material is not compatible.
+     * @throws [UnsupportedOperationException] 如果材料不兼容.
+     */
     @Throws(UnsupportedOperationException::class)
-    fun toBukkit() : Material
+    fun toBukkit(): Material
             = toBukkit(this)
 
+    /**
+     * * Compare the given [itemStack] with this material for the same material type.
+     * * 将给定的物品栈 [itemStack] 和此材料对比是否为相同的材料类型.
+     *
+     * @throws [UnsupportedOperationException] If the material is not compatible.
+     * @throws [UnsupportedOperationException] 如果材料不兼容.
+     */
     @Throws(UnsupportedOperationException::class)
-    fun isSameType(itemStack: ItemStack) : Boolean
+    fun isSameType(itemStack: ItemStack): Boolean
             = isSameType(this, itemStack)
 
+    /**
+     * * Create this item stack object with the given [count].
+     * * 将此材料用给定的数量 [count] 创建物品栈对象.
+     *
+     * @throws [UnsupportedOperationException] If the material is not compatible.
+     * @throws [UnsupportedOperationException] 如果材料不兼容.
+     */
+    @JvmOverloads
     @Throws(UnsupportedOperationException::class)
-    fun createStack(count: Int) : ItemStack
+    fun createStack(count: Int = 1): ItemStack
             = createStack(this, count)
 
 //    SEE : ldk-bukkit-common / com.lgou2w.ldk.bukkit.item.ItemKt
@@ -969,17 +1119,6 @@ enum class XMaterial {
 //            = toBukkit().builder(count, durability, block)
 
     companion object {
-
-        private const val V1_13_VERSION_CHECK_TYPE = "RED_WOOL"
-
-        @JvmStatic
-        private val isV113OrLater : Boolean by lazy {
-            try {
-                Material.matchMaterial(V1_13_VERSION_CHECK_TYPE) != null
-            } catch (e: IllegalArgumentException) {
-                false
-            }
-        }
 
         /**
          * ### Before 1.13 <=> TYPE:DATA
@@ -992,37 +1131,57 @@ enum class XMaterial {
         @JvmStatic
         private val LOOKUPS : MutableMap<String, XMaterial> = Collections.synchronizedMap(HashMap())
 
+        /**
+         * * Converts a given material compatible enumeration [xMaterial] to Bukkit material.
+         * * 将给定的材料兼容枚举 [xMaterial] 转换为 Bukkit 的材料.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
-        fun toBukkit(xMaterial: XMaterial) : Material {
+        fun toBukkit(xMaterial: XMaterial): Material {
             val value = Material.matchMaterial(xMaterial.name)
             return value ?: xMaterial.aliases.mapNotNull { Material.matchMaterial(it) }.firstOrNull()
                    ?: throw UnsupportedOperationException("Internal error, unsupported '$xMaterial' material type.")
         }
 
+        /**
+         * * Convert a given [material] to a material compatible enumeration.
+         * * 将给定的材料 [material] 转换为材料兼容枚举.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
-        fun fromBukkit(material: Material) : XMaterial {
+        fun fromBukkit(material: Material): XMaterial {
             return searchByBukkit(material)
                    ?: throw UnsupportedOperationException("Internal error, unsupported '$material' material type.")
         }
 
+        /**
+         * * Search for material compatible enumerations from the given [material]. If found, return `null`.
+         * * 从给定的材料 [material] 搜索材料兼容枚举. 如果为找到则返回 `null`.
+         */
         @JvmStatic
-        fun searchByBukkit(material: Material) : XMaterial? {
+        fun searchByBukkit(material: Material): XMaterial? {
             val type = material.name.toUpperCase(Locale.US)
             return try {
-                XMaterial.valueOf(type)
+                valueOf(type)
             } catch (e: IllegalArgumentException) {
                 searchByType(type)
             }
         }
 
+         // Before 1.13 <=> `TYPE:DATA`, case: `WOOL:15` == `BLACK_WOOL`
+         // After 1.13 <=> `TYPE`, case: `BLACK_WOOL`, `RED_BED`
         /**
-         * * Before 1.13 <=> `TYPE:DATA`, case: `WOOL:15` == `BLACK_WOOL`
-         * * After 1.13 <=> `TYPE`, case: `BLACK_WOOL`, `RED_BED`
+         * * Search for material compatible enumerations from the given [type] name. If found, return `null`.
+         * * 从给定的类型名称 [type] 搜索材料兼容枚举. 如果为找到则返回 `null`.
          */
         @JvmStatic
-        fun searchByType(type: String) : XMaterial? {
+        fun searchByType(type: String): XMaterial? {
             val typeUpperCase = type.toUpperCase(Locale.US)
             val typeKey = typeUpperCase.split(":").getOrNull(0) ?: typeUpperCase
             val data = typeUpperCase.split(":").getOrNull(1)?.toIntOrNull() // TYPE:DATA
@@ -1033,15 +1192,15 @@ enum class XMaterial {
             } else {
                 var matched : XMaterial?
                 try {
-                    matched = XMaterial.valueOf(typeKey)
+                    matched = valueOf(typeKey)
                     val validate = matched.toBukkit()
-                    if (validate.name.toUpperCase() != typeKey)
+                    if (matched.name != validate.name && !matched.aliases.any { it == validate.name })
                         matched = null
-                } catch (e: IllegalArgumentException) {
+                } catch (e: Exception) {
                     matched = null
                 }
                 if (matched == null || (data != null && matched.data != data))
-                    matched = XMaterial.values().find { it.aliases.contains(typeKey) && (data == null || it.data == data) }
+                    matched = values().find { it.aliases.contains(typeKey) && it.data == data ?: 0 }
                 return if (matched != null) {
                     LOOKUPS[lookupKey] = matched
                     matched
@@ -1051,27 +1210,41 @@ enum class XMaterial {
             }
         }
 
+        /**
+         * * Compare the given [xMaterial] with the [itemStack] for the same material type.
+         * * 将给定的材料 [xMaterial] 和物品栈 [itemStack] 对比是否为相同的材料类型.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @Throws(UnsupportedOperationException::class)
-        fun isSameType(xMaterial: XMaterial, itemStack: ItemStack) : Boolean {
+        fun isSameType(xMaterial: XMaterial, itemStack: ItemStack): Boolean {
             val bukkit = toBukkit(xMaterial)
             val type = itemStack.type
-            return if (isV113OrLater) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 bukkit == type
             } else {
                 // Before version 1.13
                 @Suppress("DEPRECATION")
-                val data = itemStack.data.data.toInt()
+                val data = itemStack.data.notNull().data.toInt()
                 bukkit == type && xMaterial.data == data
             }
         }
 
+        /**
+         * * Creates the item stack object for the given [xMaterial] and the given [count].
+         * * 将给定的材料 [xMaterial] 和给定的数量 [count] 创建物品栈对象.
+         *
+         * @throws [UnsupportedOperationException] If the material is not compatible.
+         * @throws [UnsupportedOperationException] 如果材料不兼容.
+         */
         @JvmStatic
         @JvmOverloads
         @Throws(UnsupportedOperationException::class)
-        fun createStack(xMaterial: XMaterial, count: Int = 1) : ItemStack {
+        fun createStack(xMaterial: XMaterial, count: Int = 1): ItemStack {
             val type = toBukkit(xMaterial)
-            return if (isV113OrLater) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 ItemStack(type, count)
             } else {
                 // Before version 1.13
@@ -1085,8 +1258,8 @@ enum class XMaterial {
         fun runtimeTest() {
             var unsupportedCount = 0
             Bukkit.getLogger().warning("-------- * XMaterial Runtime Test * -----")
-            Material.values().forEach { type ->
-                val xMaterial = XMaterial.searchByBukkit(type)
+            org.bukkit.Material.values().forEach { type ->
+                val xMaterial = searchByBukkit(type)
                 if (xMaterial == null) {
                     Bukkit.getLogger().warning("> Material.${type.name} = Unsupported")
                     unsupportedCount++
@@ -1101,3 +1274,44 @@ enum class XMaterial {
         }
     }
 }
+
+// See: https://github.com/lgou2w/ldk/issues/61
+/**
+ * @since LDK 0.1.8-rc
+ */
+typealias Materials = XMaterial
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.eq(material: Material): Boolean
+        = toBukkit() == material
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.notEq(material: Material): Boolean
+        = toBukkit() != material
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.eq(stack: ItemStack): Boolean
+        = isSameType(stack)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun XMaterial.notEq(stack: ItemStack): Boolean
+        = !isSameType(stack)
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun ItemStack.eq(xMaterial: XMaterial): Boolean
+        = xMaterial.isSameType(this)
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+infix fun ItemStack.notEq(xMaterial: XMaterial): Boolean
+        = !xMaterial.isSameType(this)

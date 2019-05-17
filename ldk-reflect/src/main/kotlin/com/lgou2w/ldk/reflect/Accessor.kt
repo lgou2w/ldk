@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import java.lang.reflect.Member
  * @see [AccessorField]
  * @author lgou2w
  */
-interface Accessor<out T> where T: AccessibleObject, T: Member {
+interface Accessor<out T> where T : AccessibleObject, T : Member {
 
     /**
      * * The source object of the accessor.
@@ -38,5 +38,5 @@ interface Accessor<out T> where T: AccessibleObject, T: Member {
      * @see [java.lang.reflect.Method]
      * @see [java.lang.reflect.Field]
      */
-    val source: T
+    val source : T
 }

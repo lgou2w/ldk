@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,5 +30,5 @@ interface Builder<out R> {
      * * Build a result type object.
      * * 构建一个结果类型对象.
      */
-    fun build() : R
+    fun build(): R
 }

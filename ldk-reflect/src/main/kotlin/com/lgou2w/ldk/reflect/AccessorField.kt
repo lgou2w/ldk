@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import java.lang.reflect.Field
 interface AccessorField<T, R> : Accessor<Field> {
 
     /**
-     * * Get the value of this field from the given instance object [instance].
+     * * Get the value of this field from the given [instance] object.
      * * 从给定的实例对象 [instance] 获取该字段的值.
      *
      * @param instance Instance object
@@ -42,7 +42,7 @@ interface AccessorField<T, R> : Accessor<Field> {
     operator fun get(instance: T?): R?
 
     /**
-     * * Sets the given value [value] to the field of the given instance object [instance].
+     * * Sets the given value [value] to the field of the given [instance] object.
      * * 将给定的值 [value] 设置到给定实例对象 [instance] 的字段中.
      *
      * @param instance Instance object

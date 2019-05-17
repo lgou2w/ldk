@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,27 @@ import java.nio.file.Path
 import java.sql.Connection
 import java.sql.Driver
 import java.sql.SQLException
-import java.util.*
+import java.util.Properties
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.sql.DataSource
 import kotlin.properties.Delegates
 
+/**
+ * ## H2ConnectionFactory (H2 连接工厂)
+ *
+ * @see [ConnectionFactory]
+ * @author lgou2w
+ */
 class H2ConnectionFactory(
+        /**
+         * * The connection path of this connection factory.
+         * * 此连接工厂的连接路径.
+         */
         val path: Path,
+        /**
+         * * The properties of this connection factory.
+         * * 此连接工厂的属性.
+         */
         val properties: Properties = Properties()
 ) : ConnectionFactory {
 
@@ -39,10 +53,10 @@ class H2ConnectionFactory(
     private var connectionWrap : WrappedConnection? = null
     private val initialized = AtomicBoolean(false)
 
-    override val dataSource: DataSource
+    override val dataSource : DataSource
         get() = throw UnsupportedOperationException("The H2 connection factory does not support data sources.")
 
-    override val implementationName: String = "H2"
+    override val implementationName : String = "H2"
 
     override fun initialize() {
         initializeDriver()
@@ -85,7 +99,7 @@ class H2ConnectionFactory(
         initializeDriver()
         return try {
             driver.connect(url, properties)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             throw RuntimeException(e)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(e)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package com.lgou2w.ldk.nbt
 
+import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Function
 import com.lgou2w.ldk.common.Predicate
-import com.lgou2w.ldk.common.isTrue
 import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
@@ -36,7 +36,7 @@ interface NBT<T> : Cloneable {
      * * The name of this NBT tag.
      * * 此 NBT 标签的名称.
      */
-    val name: String
+    val name : String
 
     /**
      * * The type of this NBT tag.
@@ -44,22 +44,22 @@ interface NBT<T> : Cloneable {
      *
      * @see [NBTType]
      */
-    val type: NBTType
+    val type : NBTType
 
     /**
      * * The type id of this NBT tag.
      * * 此 NBT 标签的类型 Id.
      */
-    val typeId: Int
+    val typeId : Int
 
     /**
      * * The value of this NBT tag.
      * * 此 NBT 标签的值.
      */
-    var value: T
+    var value : T
 
     /**
-     * * Reads the NBT tag from the given [input] data input.
+     * * Reads the NBT tag from the given data [input].
      * * 从给定的 [input] 数据输入读取 NBT 标签.
      *
      * @param input Input stream
@@ -70,7 +70,7 @@ interface NBT<T> : Cloneable {
     fun read(input: DataInput)
 
     /**
-     * * Write the given [output] data output to this NBT tag.
+     * * Write the given data [output] to this NBT tag.
      * * 将给定的 [output] 数据输出写入此 NBT 标签.
      *
      * @param output Output stream
@@ -131,6 +131,7 @@ interface NBT<T> : Cloneable {
         const val TAG_DISPLAY_LORE = "Lore"
         const val TAG_DISPLAY_NAME = "Name"
         const val TAG_DISPLAY_LOC_NAME = "LocName"  // since 18w01a remove and change to -> Name
+        const val TAG_CUSTOM_MODEL_DATA = "CustomModelData" // since Minecraft 1.14
         const val TAG_ENTITY_TAG = "EntityTag"
         const val TAG_ENTITY_TAG_ID = "id"
         const val TAG_HIDE_FLAGS = "HideFlags"
@@ -170,6 +171,7 @@ interface NBT<T> : Cloneable {
         const val TAG_POTION_SHOW_PARTICLES = "ShowParticles"
         const val TAG_POTION_SHOW_ICON = "ShowIcon" // since Minecraft 1.13
         const val TAG_BLOCK_ENTITY_TAG = "BlockEntityTag"
+        const val TAG_BANNER_CUSTOM_NAME = "CustomName"
         const val TAG_BANNER_PATTERNS = "Patterns"
         const val TAG_BANNER_COLOR = "Color"
         const val TAG_BANNER_PATTERN = "Pattern"
@@ -183,6 +185,8 @@ interface NBT<T> : Cloneable {
         const val TAG_FIREWORKS_COLORS = "Colors"
         const val TAG_FIREWORKS_FADE_COLORS = "FadeColors"
         const val TAG_KNOWLEDGE_BOOK_RECIPES = "Recipes"
+        const val TAG_CROSSBOW_CHARGED = "Charged" // since Minecraft 1.14
+        const val TAG_CROSSBOW_CHARGED_PROJECTILES = "ChargedProjectiles" // since Minecraft 1.14
 
         //</editor-fold>
     }
@@ -201,8 +205,8 @@ interface NBT<T> : Cloneable {
 @JvmOverloads
 inline fun ofList(
         name: String = "",
-        block: NBTTagList.() -> Unit = {}
-) : NBTTagList {
+        block: Applicator<NBTTagList> = {}
+): NBTTagList {
     val list = NBTTagList(name)
     list.block()
     return list
@@ -221,8 +225,8 @@ inline fun ofList(
 @JvmOverloads
 inline fun ofCompound(
         name: String = "",
-        block: NBTTagCompound.() -> Unit = {}
-) : NBTTagCompound {
+        block: Applicator<NBTTagCompound> = {}
+): NBTTagCompound {
     val compound = NBTTagCompound(name)
     compound.block()
     return compound
@@ -231,36 +235,44 @@ inline fun ofCompound(
 fun <T> NBTTagCompound.removeIf(key: String, predicate: Predicate<T>?)
         = removeIf<T, T>(key, { it }, predicate)
 
-fun <T, R> NBTTagCompound.removeIf(key: String, transform: Function<T, R>, predicate: Predicate<R>?): NBTTagCompound {
+fun <T, R> NBTTagCompound.removeIf(
+        key: String,
+        transform: Function<T, R>,
+        predicate: Predicate<R>?
+): NBTTagCompound {
     if (predicate == null) {
         remove(key)
     } else {
         val value = get(key) ?: return this
-        @Suppress("UNCHECKED_CAST")
+        //@Suppress("UNCHECKED_CAST") // SEE : https://github.com/lgou2w/ldk/issues/82
         if (value.type.isWrapper() && predicate(transform(value as T)))
             remove(key)
-        else if (predicate(transform(value.value as T)))
+        else if (!value.type.isWrapper() && predicate(transform(value.value as T)))
             remove(key)
     }
     return this
 }
 
 fun <T> NBTTagList.removeIf(predicate: Predicate<T>?)
-        = removeIfIndexed { _, value: T -> predicate?.invoke(value).isTrue() }
+        = if (predicate == null) removeIfIndexed<T, T>({ it }, null)
+        else removeIfIndexed { _, value: T -> predicate(value) }
 
 fun <T, R> NBTTagList.removeIf(transform: Function<T, R>, predicate: Predicate<R>?): NBTTagList
-        = removeIfIndexed { _, value: T -> predicate?.invoke(transform(value)).isTrue() }
+        = if (predicate == null) removeIfIndexed(transform, null)
+        else removeIfIndexed { _, value: T -> predicate(transform(value)) }
 
 fun <T> NBTTagList.removeIfIndexed(block: BiFunction<Int, T, Boolean>?)
         = removeIfIndexed<T, T>({ it }, block)
 
-fun <T, R> NBTTagList.removeIfIndexed(transform: Function<T, R>, block: BiFunction<Int, R, Boolean>?): NBTTagList {
+fun <T, R> NBTTagList.removeIfIndexed(
+        transform: Function<T, R>,
+        block: BiFunction<Int, R, Boolean>?
+): NBTTagList {
     if (block == null) {
         clear()
     } else {
         val iterator = iterator()
         var index = 0
-        @Suppress("UNCHECKED_CAST")
         while (iterator.hasNext()) {
             val next = iterator.next()
             val value = if (next.type.isWrapper()) next as T else next.value as T

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,15 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.util.*
+import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * ## SimpleLanguage (简单语言)
+ *
+ * @see [Language]
+ * @author lgou2w
+ */
 open class SimpleLanguage(
         override val manager: LanguageManager,
         override val locale: Locale,
@@ -27,13 +33,10 @@ open class SimpleLanguage(
 
     protected val languages = ConcurrentHashMap(maps)
 
-    override var formatter: Formatter? = null
-    override val size: Int
-        get() = languages.size
-    override val keys: Set<String>
-        get() = languages.keys
-    override val entries: Set<Map.Entry<String, String>>
-        get() = languages.entries
+    override var formatter : Formatter? = null
+    override val size : Int get() = languages.size
+    override val keys : Set<String> get() = languages.keys
+    override val entries : Set<Map.Entry<String, String>> get() = languages.entries
 
     override fun save() {
         manager.save(this)
@@ -41,12 +44,12 @@ open class SimpleLanguage(
 
     override fun get(key: String): String?
             = getOr(key, null)
-    override fun get(key: String, vararg args: Any): String?
+    override fun get(key: String, vararg args: Any?): String?
             = getOr(key, null, *args)
     override fun getOr(key: String, def: String?): String?
             = getOr(key, def, emptyArray<String>())
 
-    override fun getOr(key: String, def: String?, vararg args: Any): String? {
+    override fun getOr(key: String, def: String?, vararg args: Any?): String? {
         val value = languages[key] ?: def ?: return null
         val formatter = this.formatter ?: manager.globalFormatter
         if (formatter != null && args.isNotEmpty())

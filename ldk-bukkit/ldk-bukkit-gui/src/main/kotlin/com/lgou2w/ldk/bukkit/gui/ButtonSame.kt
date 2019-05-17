@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,30 @@ package com.lgou2w.ldk.bukkit.gui
 
 import org.bukkit.inventory.ItemStack
 
+/**
+ * ## ButtonSame (相同类型按钮)
+ *
+ * @see [Button]
+ * @see [ButtonSameBase]
+ * @author lgou2w
+ */
 interface ButtonSame : Button {
 
-    val indexes: IntArray
+    /**
+     * * The indexed array value of this button.
+     * * 此按钮的索引数组值.
+     */
+    val indexes : IntArray
 
+    /**
+     * * A list of indexed item stacks for this button.
+     * * 此按钮的索引物品栈列表.
+     */
     val stacks : List<ItemStack?>
 
+    /**
+     * * Get the same type from the given [index].
+     * * 从给定的索引 [index] 获取是否为相同类型.
+     */
     fun isSame(index: Int): Boolean
 }

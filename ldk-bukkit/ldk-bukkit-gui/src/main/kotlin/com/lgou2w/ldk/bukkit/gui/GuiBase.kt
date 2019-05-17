@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,36 +16,39 @@
 
 package com.lgou2w.ldk.bukkit.gui
 
+import com.lgou2w.ldk.bukkit.internal.FakePlugin
 import com.lgou2w.ldk.common.Constants
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
-import org.bukkit.Server
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.HumanEntity
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
-import org.bukkit.generator.ChunkGenerator
+import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.*
-import java.io.File
-import java.io.InputStream
-import java.util.*
+import org.bukkit.plugin.EventExecutor
+import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.RegisteredListener
+import java.util.Collections
+import java.util.Hashtable
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.logging.Logger
 
+/**
+ * ## GuiBase (界面基础)
+ *
+ * @see [Gui]
+ * @author lgou2w
+ */
 abstract class GuiBase : Gui {
 
-    final override var parent: Gui? = null
-    final override val type: GuiType
-    final override val title: String
-    final override val size: Int
+    final override var parent : Gui? = null
+    final override val type : GuiType
+    final override val title : String
+    final override val size : Int
     final override fun hasParent(): Boolean {
         return parent != null
     }
@@ -79,11 +82,11 @@ abstract class GuiBase : Gui {
      *
      **************************************************************************/
 
-    override var isAllowMove: Boolean = true
+    override var isAllowMove : Boolean = true
 
-    final override var onOpened: ((gui: Gui, event: InventoryOpenEvent) -> Unit)? = null
-    final override var onClosed: ((gui: Gui, event: InventoryCloseEvent) -> Unit)? = null
-    final override var onClicked: ((gui: Gui, event: InventoryClickEvent) -> Unit)? = null
+    final override var onOpened : ((gui: Gui, event: InventoryOpenEvent) -> Unit)? = null
+    final override var onClosed : ((gui: Gui, event: InventoryCloseEvent) -> Unit)? = null
+    final override var onClicked : ((gui: Gui, event: InventoryClickEvent) -> Unit)? = null
 
     /**************************************************************************
      *
@@ -92,7 +95,7 @@ abstract class GuiBase : Gui {
      **************************************************************************/
 
     private val propertyTable = Hashtable<String, Any>()
-    final override val properties: Map<String, Any>
+    final override val properties : Map<String, Any>
         get() = synchronized (propertyTable) {
             Hashtable(propertyTable)
         }
@@ -161,38 +164,36 @@ abstract class GuiBase : Gui {
             Collections.unmodifiableList(buttonList)
         }
 
-    override val buttonSize: Int
+    override val buttonSize : Int
         get() = synchronized (buttonList) {
             buttonList.size
         }
 
-    private fun canAdd(button: Button) {
-        val sameMax = (button as? ButtonSame)?.indexes?.max()
-        if (button.index < 0 || button.index + 1 > size || (sameMax != null && sameMax + 1 > size))
-            throw IllegalArgumentException("Invalid button index: ${sameMax ?: button.index} (should: >= 0 || <= ${size - 1})")
-        if (isButton(button.index))
-            throw IllegalArgumentException("The current index ${button.index} already has a valid button.")
-        var invalid = 0
-        if (button is ButtonSame && button.indexes.any { invalid = it; isButton(it) })
-            throw IllegalArgumentException("The same button index $invalid already has a valid button.")
-    }
-
-    private fun <T : Button> addButton0(button: T) : T {
-        canAdd(button)
+    private fun <T : Button> addButton0(button: T): T {
+        canAdd(this, button)
         synchronized (buttonList) {
             buttonList.add(button)
             return button
         }
     }
 
-    protected open fun getButton0(index: Int) : Button? {
+    /**
+     * * Get the button object from the given [index]. Note the list synchronization problem.
+     * * 从给定的索引 [index] 获取按钮对象. 注意列表同步问题.
+     */
+    protected open fun getButton0(index: Int): Button? {
         var button = buttonList.find { it.index == index }
         if (button == null)
             button = buttonList.asSequence().filterIsInstance(ButtonSame::class.java).find { it.isSame(index) }
         return button
     }
 
-    protected open fun nextAvailableIndex() : Int {
+    /**
+     * * Get the next available index value for this Gui button. If not, throws an [IllegalStateException] exception.
+     * * 获取此 Gui 按钮的下一个可用索引值. 如果没有则抛出 [IllegalStateException] 异常.
+     */
+    @Throws(IllegalStateException::class)
+    protected open fun nextAvailableIndex(): Int {
         synchronized (buttonList) {
             for (index in 0 until size)
                 if (getButton0(index) == null)
@@ -354,7 +355,30 @@ abstract class GuiBase : Gui {
         return "Gui(type=$type, title=$title, size=$size, hasParent=${hasParent()})"
     }
 
+    @Suppress("DEPRECATION")
     companion object {
+
+        private const val FAKE_PLUGIN_NAME = "LDKGuiInternalFakePlugin"
+
+        @Throws(IllegalArgumentException::class)
+        private fun canAdd(gui: Gui, button: Button) {
+            val size = gui.size
+            if (button.index < 0 || button.index + 1 > size)
+                throw IllegalArgumentException("Invalid button index: ${button.index} (should: >= 0 || <= ${size - 1})")
+            if (button is ButtonSame) {
+                val indexes = button.indexes
+                val min = indexes.min()
+                val max = indexes.max()
+                if ((min != null && min < 0) || (max != null && max > size))
+                    throw IllegalArgumentException("Invalid button index: ${if (min != null && min < 0) min else max} (should: >= 0 || <= ${size - 1})")
+            }
+            if (gui.isButton(button.index))
+                throw IllegalArgumentException("The current index ${button.index} already has a valid button.")
+            var invalid = 0
+            if (button is ButtonSame && button.indexes.any { invalid = it; gui.isButton(it) })
+                throw IllegalArgumentException("The same button index $invalid already has a valid button.")
+        }
+
         @JvmStatic private val registered = AtomicBoolean(false)
         @JvmStatic private fun safeRegisterHandlerListener() {
             if (!registered.compareAndSet(false, true))
@@ -389,43 +413,18 @@ abstract class GuiBase : Gui {
                                 gui.onClicked?.invoke(gui, event)
                         }
                     }
+                    is PluginDisableEvent -> {
+                        if (event.plugin.name == FAKE_PLUGIN_NAME || event.plugin.name == Constants.LDK)
+                            for (player in Bukkit.getOnlinePlayers())
+                                if (player.openInventory.topInventory.holder is Gui)
+                                    player.closeInventory()
+                    }
                 }
-            }, EventPriority.MONITOR, ldk ?: InternalFakePlugin(), false)
+            }, EventPriority.MONITOR, ldk ?: FakePlugin(FAKE_PLUGIN_NAME), false)
             InventoryOpenEvent.getHandlerList().register(listener)
             InventoryCloseEvent.getHandlerList().register(listener)
             InventoryClickEvent.getHandlerList().register(listener)
-        }
-
-        /**
-         * * This makes it possible to implement an object of a fake plugin, but is not sure about the unknown risk.
-         * * Currently in the running environment test everything is normal, and only event processing, and can not query plugin information.
-         *
-         * * 这样虽然能够实现一个虚假插件的对象，但是不确定未知的风险。
-         * * 目前在运行环境测试一切正常，并且只有事件处理，以及无法查询到插件信息。
-         *
-         * @author lgou2w
-         */
-        private class InternalFakePlugin : PluginBase() {
-            override fun getDataFolder(): File? = null
-            override fun getPluginLoader(): PluginLoader? = null
-            override fun getServer(): Server = Bukkit.getServer()
-            override fun isEnabled(): Boolean = true
-            override fun getDescription(): PluginDescriptionFile = PluginDescriptionFile("LDKGuiInternalFakePlugin", "0", "0")
-            override fun getConfig(): FileConfiguration? = null
-            override fun reloadConfig() { }
-            override fun saveConfig() { }
-            override fun saveDefaultConfig() { }
-            override fun saveResource(resourcePath: String?, replace: Boolean) { }
-            override fun getResource(filename: String?): InputStream? = null
-            override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean = false
-            override fun onTabComplete(sender: CommandSender?, command: Command?, alias: String?, args: Array<out String>?): MutableList<String> = Collections.emptyList()
-            override fun isNaggable(): Boolean = false
-            override fun setNaggable(canNag: Boolean) { }
-            override fun getLogger(): Logger = Bukkit.getLogger()
-            override fun onLoad() { }
-            override fun onEnable() { }
-            override fun onDisable() { }
-            override fun getDefaultWorldGenerator(worldName: String?, id: String?): ChunkGenerator? = null
+            PluginDisableEvent.getHandlerList().register(listener)
         }
     }
 }

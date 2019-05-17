@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,28 @@ import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.Valuable
 
+/**
+ * ## PotionBase (药水基础)
+ *
+ * @see [Valuable]
+ * @see [PotionType]
+ * @author lgou2w
+ */
 data class PotionBase(
+        /**
+         * * The potion type of this potion.
+         * * 此药水的药水类型.
+         */
         val type: PotionType,
+        /**
+         * * Indicate whether this potion is can upgraded.
+         * * 表示此药水是否可升级.
+         */
         val isUpgraded: Boolean,
+        /**
+         * * Indicate whether this potion is can extended.
+         * * 表示此药水是否可延长.
+         */
         val isExtended: Boolean
 ) : Valuable<String>,
         Comparable<PotionBase> {
@@ -44,7 +63,7 @@ data class PotionBase(
             .result
     }
 
-    override val value: String
+    override val value : String
         get() = when {
             isUpgraded -> PREFIX_UPGRADED + REPLACEMENT + type.value
             isExtended -> PREFIX_EXTENDED + REPLACEMENT + type.value
@@ -59,7 +78,7 @@ data class PotionBase(
 
         @JvmStatic
         @Throws(IllegalArgumentException::class)
-        fun valueOf(value: String) : PotionBase {
+        fun valueOf(value: String): PotionBase {
             val isUpgraded = value.startsWith(PREFIX_UPGRADED)
             val isExtended = value.startsWith(PREFIX_EXTENDED)
             val replacement = REPLACEMENT.length
@@ -68,7 +87,7 @@ data class PotionBase(
                 isExtended -> Enums.ofValuableNotNull(PotionType::class.java, value.substring(PREFIX_EXTENDED.length + replacement))
                 else -> PotionType.WATER
             }
-            return if (type == PotionType.WATER) PotionBase(PotionType.WATER, false, false)
+            return if (type == PotionType.WATER) PotionBase(PotionType.WATER, isUpgraded = false, isExtended = false)
             else PotionBase(type, isUpgraded, isExtended)
         }
     }

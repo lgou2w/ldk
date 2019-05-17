@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package com.lgou2w.ldk.nbt
+
+import java.util.Collections
 
 /**
  * ## NBTType (NBT 标签类型)
@@ -205,21 +207,25 @@ enum class NBTType(
      * @see [NBTTagList]
      * @see [NBTTagCompound]
      */
-    fun isWrapper() : Boolean
+    fun isWrapper(): Boolean
             = this == TAG_LIST || this == TAG_COMPOUND
 
     companion object {
 
-        private val ID_MAP: MutableMap<Int, NBTType> = HashMap()
-        private val CLASS_MAP: MutableMap<Class<*>, NBTType> = HashMap()
+        private val ID_MAP : Map<Int, NBTType>
+        private val CLASS_MAP : Map<Class<*>, NBTType>
 
         init {
+            val idMap = HashMap<Int, NBTType>()
+            val classMap = HashMap<Class<*>, NBTType>()
             values().forEach {
-                ID_MAP[it.id] = it
-                CLASS_MAP[it.primitive] = it
-                CLASS_MAP[it.reference] = it
-                CLASS_MAP[it.wrapped] = it
+                idMap[it.id] = it
+                classMap[it.primitive] = it
+                classMap[it.reference] = it
+                classMap[it.wrapped] = it
             }
+            ID_MAP = Collections.unmodifiableMap(idMap)
+            CLASS_MAP = Collections.unmodifiableMap(classMap)
         }
 
         /**

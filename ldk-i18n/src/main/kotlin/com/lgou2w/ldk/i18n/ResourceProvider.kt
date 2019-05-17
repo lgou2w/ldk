@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,17 @@ package com.lgou2w.ldk.i18n
 import java.io.FileNotFoundException
 import java.io.InputStream
 
-open class ResourceProvider(
+/**
+ * ## ResourceProvider (资源语言提供者)
+ *
+ * @see [LanguageProvider]
+ * @author lgou2w
+ */
+open class ResourceProvider @JvmOverloads constructor(
+        /**
+         * * The class loader for this resource language provider.
+         * * 此资源语言提供者的类加载器.
+         */
         val classLoader: ClassLoader = ResourceProvider::class.java.classLoader
 ) : LanguageProvider {
 

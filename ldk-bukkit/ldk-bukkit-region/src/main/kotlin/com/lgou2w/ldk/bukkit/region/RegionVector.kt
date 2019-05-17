@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,13 @@ import com.lgou2w.ldk.common.ComparisonChain
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
+/**
+ * ## RegionVector (区域向量)
+ *
+ * @author lgou2w
+ */
 open class RegionVector(
         val x: Double,
         val y: Double,
@@ -30,6 +36,10 @@ open class RegionVector(
         Cloneable {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionVector::class.java)
+        }
 
         @JvmField val ZERO = RegionVector(.0, .0, .0)
 
@@ -67,13 +77,13 @@ open class RegionVector(
         return RegionVector(x, y, z)
     }
 
-    val blockX: Int
+    val blockX : Int
         get() = Math.round(x).toInt()
 
-    val blockY: Int
+    val blockY : Int
         get() = Math.round(y).toInt()
 
-    val blockZ: Int
+    val blockZ : Int
         get() = Math.round(z).toInt()
 
     fun setX(x: Double): RegionVector

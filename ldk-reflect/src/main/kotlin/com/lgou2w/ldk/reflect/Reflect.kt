@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ interface Reflect {
      * * Gets whether this reflect is in forced access mode.
      * * 获取此反射器是否为强制访问模式.
      */
-    val isForceAccess: Boolean
+    val isForceAccess : Boolean
 
     /**
      * * Set this reflect to force access mode.
@@ -50,17 +50,17 @@ interface Reflect {
      * * Gets all constructor collections for this reflect reference class.
      * * 获取此反射器引用类的所有构造函数集合.
      */
-    val constructors: Set<Constructor<*>>
+    val constructors : Set<Constructor<*>>
 
     /**
      * * Gets all method collections for this reflect reference class.
      * * 获取此反射器引用类的所有构造函数集合.
      */
-    val methods: Set<Method>
+    val methods : Set<Method>
 
     /**
      * * Gets all field collections for this reflect reference class.
      * * 获取此反射器引用类的所有构造函数集合.
      */
-    val fields: Set<Field>
+    val fields : Set<Field>
 }

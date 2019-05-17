@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,12 @@ package com.lgou2w.ldk.coroutines
 
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## CustomizeDispatcherProvider (自定义调度程序提供者)
+ *
+ * @see [DispatcherProvider]
+ * @author lgou2w
+ */
 open class CustomizeDispatcherProvider(
         override val dispatcher: CoroutineContext
-) : DispatcherProvider {
-}
+) : DispatcherProvider

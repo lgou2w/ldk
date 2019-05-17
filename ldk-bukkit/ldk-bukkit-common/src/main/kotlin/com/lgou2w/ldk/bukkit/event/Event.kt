@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,22 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.plugin.Plugin
 
+/**
+ * ## EventScope (事件范围)
+ *
+ * @author lgou2w
+ */
 class EventScope(
+        /**
+         * * The plugin object for this event scope.
+         * * 此事件范围的插件对象.
+         */
         val plugin: Plugin
 ) {
+    /**
+     * * Register the given event type listener.
+     * * 注册给定的事件类型监听器.
+     */
     @JvmOverloads
     inline fun <reified T : Event> event(
             priority: EventPriority = EventPriority.NORMAL,
@@ -41,6 +54,12 @@ class EventScope(
     }
 }
 
+/**
+ * * Register the event scope listener from the given plugin.
+ * * 从给定的插件注册事件范围监听器.
+ *
+ * @see [EventScope]
+ */
 inline fun Plugin.registerListeners(scope: Applicator<EventScope>) {
     val eventScope = EventScope(this)
     eventScope.scope()

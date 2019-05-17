@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.lgou2w.ldk.nbt
 
 import java.io.DataInput
 import java.io.DataOutput
-import java.util.*
 
 /**
  * ## NBTTagList (集合 NBT 标签)
@@ -38,12 +37,12 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
         private set
 
     @JvmOverloads
-    constructor(name: String = "", value: MutableList<NBTBase<*>> = LinkedList()) : super(name, value) {
+    constructor(name: String = "", value: MutableList<NBTBase<*>> = ArrayList()) : super(name, value) {
         for (el in value)
             check(el)
     }
 
-    constructor(value: MutableList<NBTBase<*>> = LinkedList()) : super("", value) {
+    constructor(value: MutableList<NBTBase<*>> = ArrayList()) : super("", value) {
         for (el in value)
             check(el)
     }
@@ -63,15 +62,14 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
             throw IllegalArgumentException("The type of list element value that does not match, should be: $elementType.")
     }
 
-    override val type: NBTType
-        get() = NBTType.TAG_LIST
+    override val type = NBTType.TAG_LIST
 
     override fun read(input: DataInput) {
         val elementType = NBTType.fromId(input.readUnsignedByte()) ?: NBTType.TAG_END
         val length = input.readInt()
         this.elementType = elementType
         super.value0 = ArrayList()
-        (0 until length).forEach {
+        (0 until length).forEach { _ ->
             val tag = NBTType.createTag(elementType)
             tag.read(input)
             add(tag)
@@ -86,7 +84,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
     }
 
     override fun clone(): NBTTagList {
-        val value = value0.map { it.clone() }.toMutableList()   // clone
+        val value = value0.map(NBTBase<*>::clone).toMutableList()   // clone
         return NBTTagList(name, value)
     }
 
@@ -144,7 +142,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
     //
 
     @Throws(ClassCastException::class)
-    fun <T> asElements() : List<T> {
+    fun <T> asElements(): List<T> {
         @Suppress("UNCHECKED_CAST")
         return if (elementType.isWrapper())
             value0.map { it as T }
@@ -160,7 +158,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addByte(vararg value: Byte): Boolean {
-        return addAll(value.map { NBTTagByte(it) })
+        return addAll(value.map(::NBTTagByte))
     }
 
     /**
@@ -182,7 +180,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addShort(vararg value: Short): Boolean {
-        return addAll(value.map { NBTTagShort(it) })
+        return addAll(value.map(::NBTTagShort))
     }
 
     /**
@@ -204,7 +202,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addInt(vararg value: Int): Boolean {
-        return addAll(value.map { NBTTagInt(it) })
+        return addAll(value.map(::NBTTagInt))
     }
 
     /**
@@ -215,7 +213,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addLong(vararg value: Long): Boolean {
-        return addAll(value.map { NBTTagLong(it) })
+        return addAll(value.map(::NBTTagLong))
     }
 
     /**
@@ -226,7 +224,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addFloat(vararg value: Float): Boolean {
-        return addAll(value.map { NBTTagFloat(it) })
+        return addAll(value.map(::NBTTagFloat))
     }
 
     /**
@@ -237,7 +235,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addDouble(vararg value: Double): Boolean {
-        return addAll(value.map { NBTTagDouble(it) })
+        return addAll(value.map(::NBTTagDouble))
     }
 
     /**
@@ -248,7 +246,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addByteArray(vararg value: ByteArray): Boolean {
-        return addAll(value.map { NBTTagByteArray(it) })
+        return addAll(value.map(::NBTTagByteArray))
     }
 
     /**
@@ -259,7 +257,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addString(vararg value: String): Boolean {
-        return addAll(value.map { NBTTagString(it) })
+        return addAll(value.map(::NBTTagString))
     }
 
     /**
@@ -292,7 +290,7 @@ class NBTTagList : NBTBase<MutableList<NBTBase<*>>>, MutableList<NBTBase<*>> {
      * @throws IllegalArgumentException 如果集合元素类型和参数类型不匹配.
      */
     fun addIntArray(vararg value: IntArray): Boolean {
-        return addAll(value.map { NBTTagIntArray(it) })
+        return addAll(value.map(::NBTTagIntArray))
     }
 
     /**

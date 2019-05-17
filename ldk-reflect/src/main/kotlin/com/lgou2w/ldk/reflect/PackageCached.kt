@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.reflect
 
-import java.util.*
+import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -26,9 +26,9 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class PackageCached {
 
-    private val cached: MutableMap<String, Optional<Class<*>>>
-    private val source: ClassSource
-    private val packageName: String
+    private val cached : MutableMap<String, Optional<Class<*>>>
+    private val source : ClassSource
+    private val packageName : String
 
     /**
      * ## CachedPackage
@@ -67,7 +67,7 @@ class PackageCached {
             return clazz
         } catch (e: ClassNotFoundException) {
             cached[className] = Optional.empty()
-            throw ClassNotFoundException("Unable to find class: $className", e.cause ?: e)
+            throw e
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,23 @@ import org.bukkit.Bukkit
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
+/**
+ * ## Transform (转变器)
+ *
+ * @see [Transforms]
+ * @author lgou2w
+ */
 @FunctionalInterface
 interface Transform<out T> {
 
-    fun transform(parameter: String) : T?
+    /**
+     * * Called when the parameter needs to be transformed.
+     * * 当参数需要进行转变时调用.
+     *
+     * @param parameter Parameter.
+     * @param parameter 参数.
+     */
+    fun transform(parameter: String): T?
 
     companion object Constants {
 
@@ -39,13 +52,8 @@ interface Transform<out T> {
         @JvmField val TRANSFORM_FLOAT : Function<String, Float?> = { it.toFloatOrNull() }
         @JvmField val TRANSFORM_DOUBLE : Function<String, Double?> = { it.toDoubleOrNull() }
         @JvmField val TRANSFORM_BOOLEAN : Function<String, Boolean?> = {
-            if (it.equals("null", true))
-                null    // Nullable
-            else try {
-                it.toBoolean()
-            } catch (e: Exception) {
-                null
-            }
+            if (it.equals("null", true)) null // Nullable
+            else it.toBoolean()
         }
 
         // Specially

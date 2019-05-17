@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,17 @@ import com.lgou2w.ldk.coroutines.DispatcherProvider
 import org.bukkit.plugin.Plugin
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ## BukkitDispatcherProvider (Bukkit 调度程序提供者)
+ *
+ * @see [DispatcherProvider]
+ * @author lgou2w
+ */
 class BukkitDispatcherProvider(
         plugin: Plugin,
         state: State
 ) : DispatcherProvider {
 
-    override val dispatcher: CoroutineContext
+    override val dispatcher : CoroutineContext
             = BukkitDispatcher(plugin, state)
 }

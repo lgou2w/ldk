@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,15 @@
 
 package com.lgou2w.ldk.i18n
 
+/**
+ * ## SimpleLanguageManager (简单语言管理器)
+ *
+ * @see [LanguageManager]
+ * @see [LanguageManagerBase]
+ * @author lgou2w
+ */
 open class SimpleLanguageManager(
         baseName: String,
         adapter: LanguageAdapter,
         provider: LanguageProvider
-) : LanguageManagerBase(baseName, adapter, provider) {
-}
+) : LanguageManagerBase(baseName, adapter, provider)

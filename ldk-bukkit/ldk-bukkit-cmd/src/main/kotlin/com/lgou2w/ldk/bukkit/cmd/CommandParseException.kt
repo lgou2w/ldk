@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,12 @@
 
 package com.lgou2w.ldk.bukkit.cmd
 
+/**
+ * ## CommandParseException (命令解析异常)
+ *
+ * @see [CommandParser]
+ * @author lgou2w
+ */
 class CommandParseException : RuntimeException {
 
     constructor() : super()

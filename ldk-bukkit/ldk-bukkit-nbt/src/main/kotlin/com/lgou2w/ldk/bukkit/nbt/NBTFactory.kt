@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,33 @@ package com.lgou2w.ldk.bukkit.nbt
 import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
-import com.lgou2w.ldk.nbt.*
+import com.lgou2w.ldk.nbt.NBTBase
+import com.lgou2w.ldk.nbt.NBTTagByte
+import com.lgou2w.ldk.nbt.NBTTagByteArray
+import com.lgou2w.ldk.nbt.NBTTagCompound
+import com.lgou2w.ldk.nbt.NBTTagDouble
+import com.lgou2w.ldk.nbt.NBTTagEnd
+import com.lgou2w.ldk.nbt.NBTTagFloat
+import com.lgou2w.ldk.nbt.NBTTagInt
+import com.lgou2w.ldk.nbt.NBTTagIntArray
+import com.lgou2w.ldk.nbt.NBTTagList
+import com.lgou2w.ldk.nbt.NBTTagLong
+import com.lgou2w.ldk.nbt.NBTTagLongArray
+import com.lgou2w.ldk.nbt.NBTTagShort
+import com.lgou2w.ldk.nbt.NBTTagString
+import com.lgou2w.ldk.nbt.NBTType
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.Visibility
 import java.io.DataInput
 import java.io.DataOutput
-import java.util.*
 
+/**
+ * ## NBTFactory (NBT 工厂)
+ *
+ * @author lgou2w
+ */
 object NBTFactory {
 
     @JvmStatic val CLASS_NBT_BASE by lazyMinecraftClass("NBTBase")
@@ -36,6 +54,7 @@ object NBTFactory {
     @JvmStatic val CLASS_NBT_STREAM by lazyMinecraftClass("NBTCompressedStreamTools")
     @JvmStatic val CLASS_NBT_READ_LIMITER by lazyMinecraftClass("NBTReadLimiter")
     @JvmStatic val CLASS_NBT_LONG_ARRAY by lazyMinecraftClassOrNull("NBTTagLongArray") // since Minecraft 1.12
+    @JvmStatic val CLASS_MOJANGSON_PARSER by lazyMinecraftClass("MojangsonParser")
 
     // NMS.NBTList -> private byte type
     @JvmStatic val NBT_LIST_TYPE_FIELD: AccessorField<Any, Byte> by lazy {
@@ -76,7 +95,6 @@ object NBTFactory {
                 .resultAccessor()
     }
 
-
     // NMS.NBTCompressedStreamTools -> public static void write(NMS.NBTBase, DataOutput)
     @JvmStatic val METHOD_NBT_WRITE: AccessorMethod<Any, Any> by lazy {
         FuzzyReflect.of(CLASS_NBT_STREAM, true)
@@ -87,6 +105,23 @@ object NBTFactory {
                 .resultAccessor()
     }
 
+    // NMS.MojangsonParser -> public static NMS.NBTTagCompound parse(String)
+    @JvmStatic val METHOD_MOJANGSON_PARSER : AccessorMethod<Any, Any> by lazy {
+        FuzzyReflect.of(CLASS_MOJANGSON_PARSER, true)
+            .useMethodMatcher()
+            .withVisibilities(Visibility.PUBLIC, Visibility.STATIC)
+            .withParams(String::class.java)
+            .withType(CLASS_NBT_TAG_COMPOUND)
+            .resultAccessor()
+    }
+
+    /**
+     * * Converts the given `NMS` NBT object [nms] to an implementation of the [NBTBase] wrapper.
+     * * 将给定的 `NMS` NBT 对象 [nms] 转换为 [NBTBase] 包装的实现.
+     *
+     * @throws [IllegalArgumentException] If the NBT object [nms] is not the expected `NMS` instance.
+     * @throws [IllegalArgumentException] 如果 NBT 对象 [nms] 不是预期的 `NMS` 实例.
+     */
     @JvmStatic
     fun fromNMS(nms: Any?): NBTBase<*>? {
         if (nms == null)
@@ -123,6 +158,10 @@ object NBTFactory {
         }
     }
 
+    /**
+     * * Converts the given [NBTBase] object [nbt] to an implementation of `NMS`.
+     * * 将给定的 [NBTBase] 对象 [nbt] 转换为 `NMS` 的实现.
+     */
     @JvmStatic
     fun toNMS(nbt: NBTBase<*>?): Any? {
         if (nbt == null)
@@ -151,8 +190,12 @@ object NBTFactory {
         }
     }
 
+    /**
+     * * Create an implementation instance object of `NMS` from the given NBT [type] and [value].
+     * * 从给定的 NBT 类型 [type] 和值 [value] 创建一个 `NMS` 的实现实例对象.
+     */
     @JvmStatic
-    fun createInternal(type: NBTType, value: Any? = null) : Any {
+    fun createInternal(type: NBTType, value: Any? = null): Any {
         val instance = METHOD_NBT_CREATE.invoke(null, type.id.toByte())
         val valueAccessor = NBT_TYPE_FIELD(type)
         if (value != null)
@@ -160,15 +203,36 @@ object NBTFactory {
         return instance as Any
     }
 
-    private val NBT_END_INSTANCE: Any by lazy {
+    // TODO: Implement the MojangsonParser class
+
+    /**
+     * * Parse the given NBT string in the `Mojang` Gson format to the [NBTTagCompound] object.
+     * * 将给定的 `Mojang` Gson 格式的 NBT 字符串解析为 [NBTTagCompound] 对象.
+     *
+     * @see [NBTTagCompound]
+     * @see [NBTTagCompound.toMojangson]
+     * @since LDK 0.1.8-rc
+     */
+    @JvmStatic
+    fun fromMojangson(mojangson: String?): NBTTagCompound? {
+        if (mojangson == null || mojangson.isBlank()) return null
+        return try {
+            val handle = METHOD_MOJANGSON_PARSER.invoke(null, mojangson)
+            fromNMS(handle) as? NBTTagCompound
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private val NBT_END_INSTANCE : Any by lazy {
         FuzzyReflect.of(MinecraftReflection.getMinecraftClass("NBTTagEnd"), true)
                 .useConstructorMatcher()
                 .resultAccessor()
                 .newInstance()
     }
 
-    private val NBT_TYPE_FIELD_ACCESSORS: MutableMap<NBTType, AccessorField<Any, Any>> = HashMap()
-    private val NBT_TYPE_FIELD: (NBTType) -> AccessorField<Any, Any> = { type ->
+    private val NBT_TYPE_FIELD_ACCESSORS : MutableMap<NBTType, AccessorField<Any, Any>> = HashMap()
+    private val NBT_TYPE_FIELD : (NBTType) -> AccessorField<Any, Any> = { type ->
         var accessor = NBT_TYPE_FIELD_ACCESSORS[type]
         if (accessor == null) {
             if (type == NBTType.TAG_END)

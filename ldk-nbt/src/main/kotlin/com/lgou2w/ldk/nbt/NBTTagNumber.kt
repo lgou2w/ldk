@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ package com.lgou2w.ldk.nbt
  * @see [NBTTagDouble]
  * @author lgou2w
  */
-abstract class NBTTagNumber<T: Number>(
+abstract class NBTTagNumber<T : Number>(
         name: String,
         value: T
 ) : NBTBase<T>(name, value) {
@@ -35,44 +35,37 @@ abstract class NBTTagNumber<T: Number>(
     /**
      * @see [Number.toDouble]
      */
-    fun toDouble(): Double
-            = value.toDouble()
+    fun toDouble(): Double = value.toDouble()
 
     /**
      * @see [Number.toFloat]
      */
-    fun toFloat(): Float
-            = value.toFloat()
+    fun toFloat(): Float = value.toFloat()
 
     /**
      * @see [Number.toLong]
      */
-    fun toLong(): Long
-            = value.toLong()
+    fun toLong(): Long = value.toLong()
 
     /**
      * @see [Number.toInt]
      */
-    fun toInt(): Int
-            = value.toInt()
+    fun toInt(): Int = value.toInt()
 
     /**
      * @see [Number.toChar]
      */
-    fun toChar(): Char
-            = value.toChar()
+    fun toChar(): Char = value.toChar()
 
     /**
      * @see [Number.toShort]
      */
-    fun toShort(): Short
-            = value.toShort()
+    fun toShort(): Short = value.toShort()
 
     /**
      * @see [Number.toByte]
      */
-    fun toByte(): Byte
-            = value.toByte()
+    fun toByte(): Byte = value.toByte()
 
     override fun toMojangsonWithColor(): String {
         val suffix = type.mojangsonSuffix

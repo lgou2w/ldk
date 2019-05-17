@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import com.google.gson.JsonObject
 import com.lgou2w.ldk.chat.ChatColor
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Callable
+import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.isTrue
 import org.bukkit.Bukkit
@@ -91,13 +92,13 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         plugin.runTaskAsync {
             if (receiver is Player && !(receiver as Player).isOnline)
                 receiver = Bukkit.getConsoleSender()
-            receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GRAY + "The LDK plugin version: ${ChatColor.GREEN}$currentVersion")
+            receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GRAY + "The plugin version: ${ChatColor.GREEN}$currentVersion")
             val release = block()
             if (release == null) {
                 receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.RED + "Internal error, check is not available.")
             } else {
-                if (currentVersion >= release.tag)
-                    receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GREEN + "You are using the latest version of the LDK plugin.")
+                if (!needUpdate(release.tag))
+                    receiver.sendMessage(LDKPlugin.PREFIX + ChatColor.GREEN + "You are using the latest version.")
                 else
                     pushed(release)
             }
@@ -113,6 +114,83 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
             val fileName: String?,
             val fileDownloadUrl: String?
     )
+
+    private fun needUpdate(tag: String): Boolean {
+        val currentVersion = parseVersion(currentVersion)
+        val tagVersion = parseVersion(tag)
+        return currentVersion < tagVersion
+    }
+
+    private fun parseVersion(versionOnly: String): Version {
+        return if (versionOnly < "1.0") {
+            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1, 0.3.0-rc-SNAPSHOT
+            val versions = versionOnly.split('-')
+            val ver = versions[0]
+            val (type, value) = parseZeroVersionValue(versions.getOrNull(1))
+            val hotfix = parseZeroVersionHotfix(versions.getOrNull(2))
+            val isSnapshot = versionOnly.endsWith("-SNAPSHOT")
+            Version.ZeroVersion(ver, type, value, hotfix, isSnapshot)
+        } else {
+            // e.g.: 1.0, 1.0.1-SNAPSHOT
+            val versions = versionOnly.split('-')
+            val ver = versions[0]
+            val type = versions.getOrNull(1)
+            val isSnapshot = versionOnly.endsWith("-SNAPSHOT")
+            Version.ReleaseVersion(ver, type, isSnapshot)
+        }
+    }
+
+    private fun parseZeroVersionValue(zeroVersionTypeOnly: String?): Pair<String, Int> {
+        if (zeroVersionTypeOnly == null) return "rc" to 0
+        val idx = zeroVersionTypeOnly.indexOfFirst { it in '0'..'9' }
+        if (idx == -1)
+            return zeroVersionTypeOnly to 0
+        val type = zeroVersionTypeOnly.substring(0, idx)
+        val typeVer = zeroVersionTypeOnly.substring(idx)
+        return type to (typeVer.toIntOrNull() ?: 0)
+    }
+
+    private fun parseZeroVersionHotfix(zeroVersionHotfixOnly: String?): Int? {
+        if (zeroVersionHotfixOnly == null) return null
+        val idx = zeroVersionHotfixOnly.indexOfFirst { it in '0'..'9' }
+        if (idx == -1)
+            return 0
+        return zeroVersionHotfixOnly.substring(idx).toIntOrNull() ?: 0
+    }
+
+    private sealed class Version(val ver: String, val isSnapshot: Boolean) : Comparable<Version> {
+        class ZeroVersion(ver: String, val type: String, val value: Int, val hotfix: Int?, isSnapshot: Boolean) : Version(ver, isSnapshot)
+        class ReleaseVersion(ver: String, val type: String?, isSnapshot: Boolean) : Version(ver, isSnapshot)
+        override fun compareTo(other: Version): Int = compareVersion(this, other)
+        companion object {
+            private fun compareVersion(left: Version, right: Version): Int {
+                return when (left) {
+                    is ZeroVersion -> when (right) {
+                        is ReleaseVersion -> -1
+                        is ZeroVersion -> {
+                            ComparisonChain.start()
+                                .compare(left.ver, right.ver)
+                                .compare(left.type, right.type)
+                                .compare(left.value, right.value)
+                                .compare(left.hotfix ?: 0, right.hotfix ?: 0)
+                                .compareTrueFirst(left.isSnapshot, right.isSnapshot)
+                                .result
+                        }
+                    }
+                    is ReleaseVersion -> when (right) {
+                        is ZeroVersion -> 1
+                        is ReleaseVersion -> {
+                            ComparisonChain.start()
+                                .compare(left.ver, right.ver)
+                                .compare(left.type ?: "", right.type ?: "")
+                                .compareTrueFirst(left.isSnapshot, right.isSnapshot)
+                                .result
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     companion object Constants {
 
@@ -133,7 +211,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         private const val RELEASE_ARTIFACT_ID = "ldk" // JsonObject
 
         @Throws(Exception::class)
-        private fun parseLatestRelease() : Release? {
+        private fun parseLatestRelease(): Release? {
             val content : String
             try {
                 content = URL(API_GITHUB).readText(Charsets.UTF_8)
@@ -155,14 +233,14 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         }
 
         @Throws(Exception::class)
-        private fun parseLatestReleaseFromJitpack() : Release? {
+        private fun parseLatestReleaseFromJitpack(): Release? {
             val content = URL(API_JITPACK).readText(Charsets.UTF_8)
             val releases = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
             val release = releases[RELEASE_GROUP_ID]?.asJsonObject ?: return null
             val tags = release[RELEASE_ARTIFACT_ID]?.asJsonObject ?: return null
             val tag = tags.entrySet().lastOrNull()?.key ?: return null
             val releasedAt = "Unknown, Non github.com source. See download url."
-            val isPreRelease = if (tag < "1.0") !tag.contains("rc") else tag.contains("-")
+            val isPreRelease = if (tag < "1.0") !tag.contains("rc", true) || tag.endsWith("-SNAPSHOT") else tag.contains("-")
             val fileDownloadUrl = URL_RELEASE + tag
             return Release(tag, releasedAt, isPreRelease, "lgou2w", "https://github.com/lgou2w", null, fileDownloadUrl)
         }

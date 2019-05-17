@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ class ChatComponentTranslation(
          * * 获取或设置此聊天组件翻译的参数列表对象.
          */
         var withs: MutableList<Any> = ArrayList()
-
 ) : ChatComponentAbstract() {
 
     /**

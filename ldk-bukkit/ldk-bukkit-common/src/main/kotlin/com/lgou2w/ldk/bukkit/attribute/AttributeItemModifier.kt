@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@ import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import java.util.*
+import org.bukkit.configuration.serialization.ConfigurationSerialization
+import java.util.LinkedHashMap
+import java.util.UUID
 
 /**
  * ## AttributeItemModifier (属性物品修改器)
@@ -77,12 +79,11 @@ data class AttributeItemModifier(
          * * 此修改器的唯一 Id.
          */
         val uuid: UUID
-
 ) : ConfigurationSerializable,
         NBTSavable,
         Comparable<AttributeItemModifier> {
 
-    override fun save(root: NBTTagCompound) : NBTTagCompound {
+    override fun save(root: NBTTagCompound): NBTTagCompound {
         root.putString(NBT.TAG_ATTRIBUTE_TYPE, type.value)
         root.putString(NBT.TAG_ATTRIBUTE_NAME, type.value)
         root.putInt(NBT.TAG_ATTRIBUTE_OPERATION, operation.value)
@@ -116,6 +117,10 @@ data class AttributeItemModifier(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(AttributeItemModifier::class.java)
+        }
 
         /**
          * @see [ConfigurationSerializable]

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.lgou2w.ldk.nbt
 
 import java.io.DataInput
 import java.io.DataOutput
+import java.util.regex.Pattern
 
 /**
  * ## NBTTagCompound (复合 NBT 标签)
@@ -31,25 +32,22 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     constructor(name: String, value: MutableMap<String, NBTBase<*>> = LinkedHashMap()) : super(name, value)
     constructor(value: MutableMap<String, NBTBase<*>> = LinkedHashMap()) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_COMPOUND
+    override val type = NBTType.TAG_COMPOUND
 
-    override var value: MutableMap<String, NBTBase<*>>
-        get() = HashMap(super.value0)
-        set(value) { super.value0 = HashMap(value) }
+    override var value : MutableMap<String, NBTBase<*>>
+        get() = super.value0
+        set(value) { super.value0 = LinkedHashMap(value) }
 
     override fun read(input: DataInput) {
-        var tag: NBTBase<*>? = null
-        while (NBTStreams.read(input).apply { tag = this } != NBTTagEnd.INSTANCE) {
-            val value = tag!!
-            put(value.name, value)
-        }
+        var tag : NBTBase<*>
+        while (NBTStreams.read(input).apply { tag = this } != NBTTagEnd.INSTANCE)
+            put(tag.name, tag)
     }
 
     override fun write(output: DataOutput) {
-        for (value in values)
-            NBTStreams.write(output, value)
-        output.writeByte(0)
+        for ((key, value) in entries)
+            NBTStreams.write(output, value, key)
+        output.writeByte(0) // NBTTagEnd
     }
 
     override fun clone(): NBTTagCompound {
@@ -127,7 +125,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] byte value to [key] in this compound tag.
+     * * Add the given byte [value] to [key] in this compound tag.
      * * 将给定的 [value] 字节值以 [key] 添加到此复合标签内.
      */
     fun putByte(key: String, value: Byte): NBTBase<*>? {
@@ -135,7 +133,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] byte value to [key] in this compound tag.
+     * * Add the given byte [value] to [key] in this compound tag.
      * * 将给定的 [value] 字节值以 [key] 添加到此复合标签内.
      */
     fun putByte(key: String, value: Int): NBTBase<*>? {
@@ -143,7 +141,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] short value to [key] in this compound tag.
+     * * Add the given short [value] to [key] in this compound tag.
      * * 将给定的 [value] 短整数值以 [key] 添加到此复合标签内.
      */
     fun putShort(key: String, value: Short): NBTBase<*>? {
@@ -151,7 +149,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] short value to [key] in this compound tag.
+     * * Add the given short [value] to [key] in this compound tag.
      * * 将给定的 [value] 短整数值以 [key] 添加到此复合标签内.
      */
     fun putShort(key: String, value: Int): NBTBase<*>? {
@@ -159,7 +157,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] int value to [key] in this compound tag.
+     * * Add the given int [value] to [key] in this compound tag.
      * * 将给定的 [value] 整数值以 [key] 添加到此复合标签内.
      */
     fun putInt(key: String, value: Int): NBTBase<*>? {
@@ -167,7 +165,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] long value to [key] in this compound tag.
+     * * Add the given long [value] to [key] in this compound tag.
      * * 将给定的 [value] 长整数值以 [key] 添加到此复合标签内.
      */
     fun putLong(key: String, value: Long): NBTBase<*>? {
@@ -175,7 +173,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] float value to [key] in this compound tag.
+     * * Add the given float [value] to [key] in this compound tag.
      * * 将给定的 [value] 单精度浮点值以 [key] 添加到此复合标签内.
      */
     fun putFloat(key: String, value: Float): NBTBase<*>? {
@@ -183,7 +181,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] double value to [key] in this compound tag.
+     * * Add the given double [value] to [key] in this compound tag.
      * * 将给定的 [value] 双精度浮点值以 [key] 添加到此复合标签内.
      */
     fun putDouble(key: String, value: Double): NBTBase<*>? {
@@ -191,7 +189,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] byte array value to [key] in this compound tag.
+     * * Add the given byte array [value] to [key] in this compound tag.
      * * 将给定的 [value] 字节数组值以 [key] 添加到此复合标签内.
      */
     fun putByteArray(key: String, value: ByteArray): NBTBase<*>? {
@@ -199,7 +197,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] string value to [key] in this compound tag.
+     * * Add the given string [value] to [key] in this compound tag.
      * * 将给定的 [value] 字符串值以 [key] 添加到此复合标签内.
      */
     fun putString(key: String, value: String): NBTBase<*>? {
@@ -207,7 +205,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] int array value to [key] in this compound tag.
+     * * Add the given int array [value] to [key] in this compound tag.
      * * 将给定的 [value] 整数数组值以 [key] 添加到此复合标签内.
      */
     fun putIntArray(key: String, value: IntArray): NBTBase<*>? {
@@ -215,7 +213,17 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Add the given [value] boolean value to [key] in this compound tag.
+     * * Add the given long array [value] to [key] in this compound tag.
+     * * 将给定的 [value] 长整数数组值以 [key] 添加到此复合标签内.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun putLongArray(key: String, value: LongArray): NBTBase<*>? {
+        return put(NBTTagLongArray(key, value))
+    }
+
+    /**
+     * * Add the given boolean [value] to [key] in this compound tag.
      * * 将给定的 [value] 布尔值以 [key] 添加到此复合标签内.
      */
     fun putBoolean(key: String, value: Boolean): NBTBase<*>? {
@@ -226,7 +234,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
      * @throws NoSuchElementException
      * @throws ClassCastException
      */
-    private fun getAndCheck(key: String, expected: Class<out NBTBase<*>>, nullable: Boolean) : NBTBase<*>? {
+    private fun getAndCheck(key: String, expected: Class<out NBTBase<*>>, nullable: Boolean): NBTBase<*>? {
         val tag = get(key)
         if (nullable && tag == null)
             return null
@@ -258,7 +266,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
                 NBTType.TAG_LONG -> NBTTagLong(key)
                 NBTType.TAG_FLOAT -> NBTTagFloat(key)
                 NBTType.TAG_DOUBLE -> NBTTagDouble(key)
-                NBTType.TAG_STRING -> NBTTagString(key)
+                NBTType.TAG_STRING -> NBTTagString(name = key)
                 NBTType.TAG_LIST -> NBTTagList(key)
                 NBTType.TAG_COMPOUND -> NBTTagCompound(key)
                 NBTType.TAG_INT_ARRAY -> NBTTagIntArray(key)
@@ -273,12 +281,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the byte value from the given [key] key.
+     * * Get the byte value from the given [key].
      * * 从给定的 [key] 键中获取字节值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getByte(key: String): Byte {
@@ -286,10 +294,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the byte value from the given [key] key.
+     * * Get the byte value from the given [key].
      * * 从给定的 [key] 键中获取字节值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getByteOrNull(key: String): Byte? {
@@ -297,10 +305,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the byte value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the byte value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取字节值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getByteOrDefault(key: String): Byte {
@@ -308,12 +316,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the short value from the given [key] key.
+     * * Get the short value from the given [key].
      * * 从给定的 [key] 键中获取短整数值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getShort(key: String): Short {
@@ -321,10 +329,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the short value from the given [key] key.
+     * * Get the short value from the given [key].
      * * 从给定的 [key] 键中获取短整数值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getShortOrNull(key: String): Short? {
@@ -332,10 +340,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the short value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the short value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取短整数值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getShortOrDefault(key: String): Short {
@@ -343,12 +351,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the int value from the given [key] key.
+     * * Get the int value from the given [key].
      * * 从给定的 [key] 键中获取整数值.
      *
      * @throws NoSuchElementException If the [key] key does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getInt(key: String): Int {
@@ -356,10 +364,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the int value from the given [key] key.
+     * * Get the int value from the given [key].
      * * 从给定的 [key] 键中获取整数值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getIntOrNull(key: String): Int? {
@@ -367,10 +375,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the int value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the int value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取整数值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getIntOrDefault(key: String): Int {
@@ -378,12 +386,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the long value from the given [key] key.
+     * * Get the long value from the given [key].
      * * 从给定的 [key] 键中获取长整数值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getLong(key: String): Long {
@@ -391,10 +399,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the long value from the given [key] key.
+     * * Get the long value from the given [key].
      * * 从给定的 [key] 键中获取长整数值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getLongOrNull(key: String): Long? {
@@ -402,10 +410,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the long value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the long value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取长整数值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getLongOrDefault(key: String): Long {
@@ -413,12 +421,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the float value from the given [key] key.
+     * * Get the float value from the given [key].
      * * 从给定的 [key] 键中获取单精度浮点值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getFloat(key: String): Float {
@@ -426,10 +434,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the float value from the given [key] key.
+     * * Get the float value from the given [key].
      * * 从给定的 [key] 键中获取单精度浮点值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getFloatOrNull(key: String): Float? {
@@ -437,10 +445,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the float value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the float value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取单精度浮点值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getFloatOrDefault(key: String): Float {
@@ -448,12 +456,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the double value from the given [key] key.
+     * * Get the double value from the given [key].
      * * 从给定的 [key] 键中获取双精度浮点值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getDouble(key: String): Double {
@@ -462,10 +470,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
 
 
     /**
-     * * Get the double value from the given [key] key.
+     * * Get the double value from the given [key].
      * * 从给定的 [key] 键中获取双精度浮点值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getDoubleOrNull(key: String): Double? {
@@ -473,10 +481,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the double value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the double value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取双精度浮点值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getDoubleOrDefault(key: String): Double {
@@ -484,12 +492,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the byte array value from the given [key] key.
+     * * Get the byte array value from the given [key].
      * * 从给定的 [key] 键中获取字节数组值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getByteArray(key: String): ByteArray {
@@ -497,10 +505,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the byte array value from the given [key] key.
+     * * Get the byte array value from the given [key].
      * * 从给定的 [key] 键中获取字节数组值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getByteArrayOrNull(key: String): ByteArray? {
@@ -508,10 +516,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the byte array value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the byte array value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取字节数组值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getByteArrayOrDefault(key: String): ByteArray {
@@ -519,12 +527,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the string value from the given [key] key.
+     * * Get the string value from the given [key].
      * * 从给定的 [key] 键中获取字符串值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getString(key: String): String {
@@ -532,10 +540,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the string value from the given [key] key.
+     * * Get the string value from the given [key].
      * * 从给定的 [key] 键中获取字符串值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getStringOrNull(key: String): String? {
@@ -543,10 +551,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the string value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the string value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取字符串值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getStringOrDefault(key: String): String {
@@ -554,12 +562,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the list tag value from the given [key] key.
+     * * Get the list tag value from the given [key].
      * * 从给定的 [key] 键中获取集合标签值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getList(key: String): NBTTagList {
@@ -567,10 +575,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the list tag value from the given [key] key.
+     * * Get the list tag value from the given [key].
      * * 从给定的 [key] 键中获取集合标签值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getListOrNull(key: String): NBTTagList? {
@@ -578,10 +586,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the list tag value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the list tag value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取集合标签值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getListOrDefault(key: String): NBTTagList {
@@ -589,12 +597,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the compound tag value from the given [key] key.
+     * * Get the compound tag value from the given [key].
      * * 从给定的 [key] 键中获取复合标签值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getCompound(key: String): NBTTagCompound {
@@ -602,10 +610,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the compound tag value from the given [key] key.
+     * * Get the compound tag value from the given [key].
      * * 从给定的 [key] 键中获取复合标签值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getCompoundOrNull(key: String): NBTTagCompound? {
@@ -613,10 +621,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the compound tag value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the compound tag value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取复合标签值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getCompoundOrDefault(key: String): NBTTagCompound {
@@ -624,12 +632,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the int array value from the given [key] key.
+     * * Get the int array value from the given [key].
      * * 从给定的 [key] 键中获取整数数组值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getIntArray(key: String): IntArray {
@@ -637,10 +645,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the int array value from the given [key] key.
+     * * Get the int array value from the given [key].
      * * 从给定的 [key] 键中获取整数数组值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getIntArrayOrNull(key: String): IntArray? {
@@ -648,10 +656,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the int array value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the int array value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取整数数组值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getIntArrayOrDefault(key: String): IntArray {
@@ -659,12 +667,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the boolean value from the given [key] key.
+     * * Get the boolean value from the given [key].
      * * 从给定的 [key] 键中获取布尔值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getBoolean(key: String): Boolean {
@@ -672,10 +680,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the boolean value from the given [key] key.
+     * * Get the boolean value from the given [key].
      * * 从给定的 [key] 键中获取布尔值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getBooleanOrNull(key: String): Boolean? {
@@ -683,10 +691,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the boolean value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the boolean value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取布尔值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getBooleanOrDefault(key: String): Boolean {
@@ -694,12 +702,12 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the long array value from the given [key] key.
+     * * Get the long array value from the given [key].
      * * 从给定的 [key] 键中获取长整数数组值.
      *
-     * @throws NoSuchElementException If the [key] key does not exist.
+     * @throws NoSuchElementException If the [key] does not exist.
      * @throws NoSuchElementException 如果 [key] 键不存在.
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getLongArray(key: String): LongArray {
@@ -707,10 +715,10 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the long array value from the given [key] key.
+     * * Get the long array value from the given [key].
      * * 从给定的 [key] 键中获取长整数数组值.
      *
-     * @throws ClassCastException If the value of the [key] key does not match the expected.
+     * @throws ClassCastException If the value of the [key] does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值和预期不符合.
      */
     fun getLongArrayOrNull(key: String): LongArray? {
@@ -718,14 +726,51 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
     }
 
     /**
-     * * Get the long array value from the given [key] key. if it doesn't exist, add the default and get it.
+     * * Get the long array value from the given [key]. if it doesn't exist, add the default and get it.
      * * 从给定的 [key] 键中获取长整数数组值, 如果不存在则添加默认并获取.
      *
-     * @throws ClassCastException If the value of the [key] key exists and does not match the expected.
+     * @throws ClassCastException If the value of the [key] exists and does not match the expected.
      * @throws ClassCastException 如果 [key] 键的值存在并且和预期不符合.
      */
     fun getLongArrayOrDefault(key: String): LongArray {
         return getOrDefault(NBTType.TAG_LONG_ARRAY, key)
+    }
+
+    /**
+     * * Lookup for the tag from the given [path], if not found return `null`.
+     * * 从给定的 [path] 中查找标签, 如果未找到则返回 `null`.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun lookup(path: String?): NBTBase<*>? {
+        if (path.isNullOrBlank()) return null
+        val (child, next) = path.split('.', limit = 2).let { it[0] to it.getOrNull(1) }
+        val childList = LIST_PATH.matcher(child)
+        val tag = if (childList.matches()) {
+            val key = childList.group("key")
+            val idx = childList.group("idx").toInt()
+            (get(key) as? NBTTagList)?.getOrNull(idx)
+        } else get(child)
+        return if (next != null && tag is NBTTagCompound) tag.lookup(next)
+        else if (next == null) tag
+        else null
+    }
+
+    /**
+     * * Lookup for the tag value from the given [path], if not found return `null`.
+     * * 从给定的 [path] 中查找标签值, 如果未找到则返回 `null`.
+     *
+     * @since LDK 0.1.8-rc
+     */
+    fun <T> lookupValue(path: String?): T? {
+        val tag = lookup(path) ?: return null
+        @Suppress("UNCHECKED_CAST")
+        return if (tag.type.isWrapper()) tag as T
+        else tag.value as? T
+    }
+
+    companion object {
+        private val LIST_PATH = Pattern.compile("^(?<key>.*)\\[(?<idx>\\w+)]$") // e.g.: Enchantments[0]
     }
 
     //

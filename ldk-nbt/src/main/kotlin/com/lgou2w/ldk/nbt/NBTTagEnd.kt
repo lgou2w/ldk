@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,7 @@ class NBTTagEnd private constructor() : NBTBase<Any>("", Any()) {
         get() = super.value
         set(value) { }
 
-    override val type: NBTType
-        get() = NBTType.TAG_END
+    override val type = NBTType.TAG_END
 
     override fun read(input: DataInput) {
     }

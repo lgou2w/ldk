@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,10 @@ package com.lgou2w.ldk.bukkit.item
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
-import com.lgou2w.ldk.common.isOrLater
-import java.util.*
+import com.lgou2w.ldk.common.notNull
+import java.util.Collections
+import java.util.HashMap
+import java.util.Locale
 
 /**
  * ## Enchantment (附魔)
@@ -236,33 +238,64 @@ enum class Enchantment(
      * * 附魔类型: 消失诅咒
      */
     VANISHING_CURSE(71, 1, "vanishing_curse", "vanishing_curse", MinecraftVersion.V1_11),
+
+    ///
+    /// WARNING: From here on, these enchantment IDs are all maintained by LDK, since Minecraft 1.13 has completely removed the ID.
+    /// 警告: 从这里开始, 这些附魔的 ID 都由 LDK 自行维护, 因为自从 Minecraft 1.13 已经完全移除 ID 了.
+    ///
+
+    /**
+     * * Enchantment: Multishot
+     * * 附魔类型: 多重射击
+     */
+    MULTISHOT(200, 1, "multishot", "multishot", MinecraftVersion.V1_14),
+    /**
+     * * Enchantment: Quick Charge
+     * * 附魔类型: 快速装填
+     */
+    QUICK_CHARGE(201, 3, "quick_charge", "quick_charge", MinecraftVersion.V1_14),
+    /**
+     * * Enchantment: Piercing
+     * * 附魔类型: 穿透
+     */
+    PIERCING(202, 4, "piercing", "piercing", MinecraftVersion.V1_14),
     ;
 
-    override val value: String
+    override val value : String
         get() = type
 
+    /**
+     * * Convert this enchant to the enchant of Bukkit.
+     * * 将此附魔转换为 Bukkit 的附魔.
+     *
+     * @see [org.bukkit.enchantments.Enchantment]
+     */
     fun toBukkit(): org.bukkit.enchantments.Enchantment {
-        return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
-            org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type))
+        return if (MinecraftBukkitVersion.isV113OrLater) {
+            org.bukkit.enchantments.Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type)).notNull()
         } else {
             @Suppress("DEPRECATION")
-            org.bukkit.enchantments.Enchantment.getByName(legacy)
+            org.bukkit.enchantments.Enchantment.getByName(legacy).notNull()
         }
     }
 
     companion object {
 
-        @JvmStatic private val ID_MAP: MutableMap<Int, Enchantment> = HashMap()
-        @JvmStatic private val NAME_MAP: MutableMap<String, Enchantment> = HashMap()
+        @JvmStatic private val ID_MAP : Map<Int, Enchantment>
+        @JvmStatic private val NAME_MAP : Map<String, Enchantment>
 
         init {
+            val idMap = HashMap<Int, Enchantment>()
+            val nameMap = HashMap<String, Enchantment>()
             values().forEach {
-                ID_MAP[it.id] = it
+                idMap[it.id] = it
                 // Maximize compatibility with old and new version type names
                 // 最大化兼容旧版本和新版本的类型名称
-                NAME_MAP[it.legacy] = it
-                NAME_MAP[it.type] = it
+                nameMap[it.legacy] = it
+                nameMap[it.type] = it
             }
+            ID_MAP = Collections.unmodifiableMap(idMap)
+            NAME_MAP = Collections.unmodifiableMap(nameMap)
         }
 
         /**
@@ -273,8 +306,8 @@ enum class Enchantment(
          * @throws IllegalArgumentException 如果名称不存在.
          */
         @JvmStatic
-        fun fromBukkit(enchant: org.bukkit.enchantments.Enchantment) : Enchantment {
-            return fromName(if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        fun fromBukkit(enchant: org.bukkit.enchantments.Enchantment): Enchantment {
+            return fromName(if (MinecraftBukkitVersion.isV113OrLater)
                 enchant.key.key
             else
                 @Suppress("DEPRECATION")

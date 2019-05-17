@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,11 @@
 
 package com.lgou2w.ldk.common
 
+/**
+ * ## Constants (常量)
+ *
+ * @author lgou2w
+ */
 object Constants {
 
     /**
@@ -27,4 +32,16 @@ object Constants {
      * * Github open source link for ldk project.
      */
     const val LDK_GITHUB = "https://github.com/lgou2w/ldk"
+
+    /**
+     * * Maven central repository link for ldk project.
+     * @since LDK 0.1.8-rc
+     */
+    const val LDK_MAVEN_REPOSITORY = "https://mvnrepository.com/artifact/com.lgou2w/ldk/latest"
+
+    /**
+     * * Maven sonatype repository link for ldk project.
+     * @since LDK 0.1.8-rc
+     */
+    const val LDK_MAVEN_SONATYPE = "https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"
 }

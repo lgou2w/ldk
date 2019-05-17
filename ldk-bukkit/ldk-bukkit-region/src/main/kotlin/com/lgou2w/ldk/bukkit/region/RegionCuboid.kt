@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,36 @@ import com.lgou2w.ldk.common.IteratorChain
 import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
+/**
+ * ## RegionCuboid (长方块区域)
+ *
+ * @see [Region]
+ * @see [RegionBase]
+ * @see [RegionFlat]
+ * @author lgou2w
+ */
 open class RegionCuboid(
         world: World,
+        /**
+         * * Indicates the vector 1 of this cuboid region.
+         * * 表示此长方块区域的向量 1.
+         */
         var pos1: RegionVector,
+        /**
+         * * Indicates the vector 2 of this cuboid region.
+         * * 表示此长方块区域的向量 2.
+         */
         var pos2: RegionVector
 ) : RegionBase(world),
         RegionFlat {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionCuboid::class.java)
+        }
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
@@ -41,10 +62,10 @@ open class RegionCuboid(
         }
     }
 
-    override val minimumPoint: RegionVector
+    override val minimumPoint : RegionVector
         get() = RegionVector(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z))
 
-    override val maximumPoint: RegionVector
+    override val maximumPoint : RegionVector
         get() = RegionVector(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z))
 
     override fun contains(x: Double, y: Double, z: Double): Boolean {
@@ -89,10 +110,10 @@ open class RegionCuboid(
         }
     }
 
-    override val minimumY: Int
+    override val minimumY : Int
         get() = Math.min(pos1.blockY, pos2.blockY)
 
-    override val maximumY: Int
+    override val maximumY : Int
         get() = Math.max(pos1.blockY, pos2.blockY)
 
     override fun asFlat(): Iterable<RegionVector2D> {
@@ -121,6 +142,10 @@ open class RegionCuboid(
         }
     }
 
+    /**
+     * * Get the block vector of all faces of this cuboid region.
+     * * 获取此长方体区域的所有面的方块向量.
+     */
     val faces : Iterable<RegionVectorBlock>
         get() {
             return object : Iterable<RegionVectorBlock> {

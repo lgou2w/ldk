@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,24 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
-class ResourceExternalizableProvider(
+/**
+ * ## ResourceExternalizableProvider (资源可外部语言提供者)
+ *
+ * @see [LanguageProvider]
+ * @see [ResourceProvider]
+ * @author lgou2w
+ */
+class ResourceExternalizableProvider @JvmOverloads constructor(
+        /**
+         * * A directory of resource externalizable language provider.
+         * * 此资源可外部语言提供者的目录.
+         */
         val directory : File,
         classLoader: ClassLoader = ResourceExternalizableProvider::class.java.classLoader
 ) : ResourceProvider(classLoader) {
@@ -31,7 +46,7 @@ class ResourceExternalizableProvider(
                 val input = super.load(name)!!
                 val output = FileOutputStream(external)
                 val buffer = ByteArray(1024)
-                var length = 0
+                var length : Int
                 while (input.read(buffer).apply { length = this } != -1)
                     output.write(buffer, 0, length)
                 output.flush()

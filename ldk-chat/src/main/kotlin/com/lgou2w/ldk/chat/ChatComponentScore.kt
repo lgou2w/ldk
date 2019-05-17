@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,6 @@ class ChatComponentScore(
          * * 获取或设置此聊天组件分数的分数值对象.
          */
         var value: String? = null
-
 ) : ChatComponentAbstract() {
 
     /**

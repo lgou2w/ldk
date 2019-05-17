@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,23 @@
 
 package com.lgou2w.ldk.i18n
 
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
+/**
+ * ## ExternalProvider (外部语言提供者)
+ *
+ * @see [LanguageProvider]
+ * @author lgou2w
+ */
 class ExternalProvider(
+        /**
+         * * A directory of external language provider.
+         * * 此外部语言提供者的目录.
+         */
         val directory : File
 ) : LanguageProvider {
 

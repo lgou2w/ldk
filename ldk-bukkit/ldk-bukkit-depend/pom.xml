@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <project
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,74 +22,19 @@
     <parent>
         <artifactId>ldk-bukkit</artifactId>
         <groupId>com.lgou2w</groupId>
-        <version>0.1.7-rc6-hotfix1</version>
+        <version>0.1.8-rc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ldk-bukkit-depend</artifactId>
-
-    <repositories>
-        <repository>
-            <id>sk98q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
-        </repository>
-        <repository>
-            <id>placeholderapi-repo</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <!-- LuckPerms mirror -->
-        <repository>
-            <id>lucko-repo</id>
-            <url>https://repo.lucko.me</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- ldk-bukkit-common -->
         <dependency>
             <groupId>com.lgou2w</groupId>
             <artifactId>ldk-bukkit-common</artifactId>
-            <version>0.1.7-rc6-hotfix1</version>
+            <version>0.1.8-rc</version>
             <scope>compile</scope>
-        </dependency>
-        <!-- ldk-bukkit-region -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-bukkit-region</artifactId>
-            <version>0.1.7-rc6-hotfix1</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- VaultAPI --> <!-- LuckPerms Mirror -->
-        <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Vault --> <!-- Get Vault Plugin Class -->
-        <!-- Only 1.2.27 in -> https://repo.md-5.net/content/groups/public/net/milkbowl/vault/Vault -->
-        <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
-            <version>1.2.27</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- WordEdit -->
-        <dependency>
-            <groupId>com.sk89q.worldedit</groupId>
-            <artifactId>worldedit-bukkit</artifactId>
-            <version>6.1.4-SNAPSHOT </version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- PlaceholderAPI -->
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.8.2</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

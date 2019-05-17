@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,31 +18,64 @@ package com.lgou2w.ldk.bukkit.potion
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.ComparisonChain
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.LivingEntity
 import org.bukkit.potion.PotionEffect
 
+/**
+ * ## PotionEffectCustom (自定义药水效果)
+ *
+ * @see [PotionEffectType]
+ * @author lgou2w
+ */
 data class PotionEffectCustom @JvmOverloads constructor(
+        /**
+         * * The type of potion effect of this custom potion.
+         * * 此自定义药水的药水效果类型.
+         */
         val type: PotionEffectType,
+        /**
+         * * The potion amplifier of this custom potion.
+         * * 此自定义药水的药水强度.
+         */
         val amplifier: Int,
+        /**
+         * * The potion duration of this custom potion.
+         * * 此自定义药水的药水时间.
+         */
         val duration: Int,
+        /**
+         * * Makes potion effect produce more, translucent, particles.
+         * * 此自定义药水是否产生更多的半透明粒子.
+         */
         val ambient: Boolean = true,
+        /**
+         * * Whether this custom potion have a particle.
+         * * 此自定义药水是否有粒子效果.
+         */
         val particle: Boolean = true,
+        /**
+         * * Whether this custom potion have a icon.
+         * * 此自定义药水是否有图标.
+         */
         val icon: Boolean = true
 ) : ConfigurationSerializable,
         NBTSavable,
         Comparable<PotionEffectCustom> {
 
     /**
+     * * Apply this custom potion effect to the given [entity].
+     * * 将此自定义药水效果应用到给定的实体 [entity] 中.
+     *
      * @since LDK 0.1.7-rc3
      */
     @JvmOverloads
     fun applyToEntity(entity: LivingEntity, force: Boolean = false): Boolean {
-        val effect = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+        val effect = if (MinecraftBukkitVersion.isV113OrLater)
             PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle, icon)
         else
             PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle)
@@ -82,6 +115,10 @@ data class PotionEffectCustom @JvmOverloads constructor(
     }
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(PotionEffectCustom::class.java)
+        }
 
         /**
          * @see [ConfigurationSerializable]

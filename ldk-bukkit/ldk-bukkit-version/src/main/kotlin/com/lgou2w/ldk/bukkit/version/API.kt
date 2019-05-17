@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,23 @@
 
 package com.lgou2w.ldk.bukkit.version
 
+/**
+ * * The minimum required Bukkit API version to indicate a feature.
+ * * 用于指示一个功能的最低需求 Bukkit API 版本.
+ *
+ * @see [Level]
+ * @author lgou2w
+ */
 @Retention(AnnotationRetention.RUNTIME)
 annotation class API(val level: Level)
 
+/**
+ * * Level enumeration for the Bukkit API.
+ * * 用于 Bukkit API 的等级枚举.
+ *
+ * @see [API]
+ * @author lgou2w
+ */
 @Suppress("EnumEntryName")
 enum class Level {
 
@@ -29,8 +43,26 @@ enum class Level {
     Minecraft_V1_12,
     Minecraft_V1_13,
     Minecraft_V1_14,
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @Draft
+    @Deprecated("Minecraft 1.15 Draft")
+    Minecraft_V1_15,
     ;
 
+    /**
+     * * Get the version of Minecraft for this Bukkit API level.
+     * * 获取此 Bukkit API 等级的 Minecraft 版本.
+     *
+     * @see [MinecraftVersion]
+     */
     val version : MinecraftVersion
         get() = MinecraftVersion.fromLevel(this)
 }
+
+/**
+ * @since LDK 0.1.8-rc
+ */
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Draft

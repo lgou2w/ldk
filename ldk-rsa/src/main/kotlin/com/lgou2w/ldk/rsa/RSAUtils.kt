@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.security.SecureRandom
 import java.security.Signature
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
-import java.util.*
+import java.util.Base64
 import javax.crypto.Cipher
 
 /**
@@ -40,7 +40,9 @@ import javax.crypto.Cipher
  * * 2048 位 `RSA` 和 `SHA512` 的加解密校验工具类.
  *
  * @author lgou2w
+ * @see [RSASecurity]
  */
+@Deprecated("Deprecated", ReplaceWith("RSASecurity"))
 object RSAUtils {
 
     private const val BIT = 2048
@@ -84,7 +86,7 @@ object RSAUtils {
             .replace(PUBLIC_KEY_ENDER, EMPTY)
         decodePublicKey(Base64.getDecoder().decode(value))
     } catch (e: Exception) {
-        throw IOException("Unable to decrypt the public key.", e.cause ?: e)
+        throw IOException("Unable to decrypt the public key.", e)
     }
 
     @JvmStatic
@@ -105,7 +107,7 @@ object RSAUtils {
             .replace(PRIVATE_KEY_ENDER, EMPTY)
         decodePrivateKey(Base64.getDecoder().decode(value))
     } catch (e: Exception) {
-        throw IOException("Unable to decrypt the private key.", e.cause ?: e)
+        throw IOException("Unable to decrypt the private key.", e)
     }
 
     @JvmStatic
@@ -124,7 +126,7 @@ object RSAUtils {
     fun signature(privateKey: PrivateKey, file: File): ByteArray = try {
         signature(privateKey, file.readBytes())
     } catch (e: Exception) {
-        throw IOException("Unable to signature the data.", e.cause ?: e)
+        throw IOException("Unable to signature the data.", e)
     }
 
     @JvmStatic

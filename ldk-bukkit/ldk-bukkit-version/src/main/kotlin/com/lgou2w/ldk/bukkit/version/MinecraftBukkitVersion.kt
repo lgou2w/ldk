@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,19 @@
 package com.lgou2w.ldk.bukkit.version
 
 import com.lgou2w.ldk.common.Version
+import com.lgou2w.ldk.common.isOrLater
 import org.bukkit.Bukkit
-import java.util.*
+import java.util.NavigableMap
+import java.util.TreeMap
 import java.util.regex.Pattern
 
+/**
+ * ## MinecraftBukkitVersion (Minecraft Bukkit 版本)
+ *
+ * @see [Version]
+ * @see [Comparable]
+ * @author lgou2w
+ */
 class MinecraftBukkitVersion(
         major: Int,
         minor: Int,
@@ -42,12 +51,22 @@ class MinecraftBukkitVersion(
         @JvmField val V1_13_R1 = MinecraftBukkitVersion(1, 13, 1)
         @JvmField val V1_13_R2 = MinecraftBukkitVersion(1, 13, 2)
         @JvmField val V1_14_R1 = MinecraftBukkitVersion(1, 14, 1)
+        /**
+         * @since LDK 0.1.8-rc
+         */
+        @Draft
+        @Deprecated("Minecraft 1.15 Draft")
+        @JvmField val V1_15_R1 = MinecraftBukkitVersion(1, 15, 1)
 
         @JvmStatic
         private val VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$")
 
+        /**
+         * * Get the current version of the Minecraft Bukkit implementation of the Bukkit server.
+         * * 获取当前 Bukkit 服务器的 Minecraft Bukkit 实现版本.
+         */
         @JvmStatic
-        var CURRENT: MinecraftBukkitVersion = UNKNOWN
+        var CURRENT : MinecraftBukkitVersion = UNKNOWN
             private set
             get() {
                 if (field == UNKNOWN) {
@@ -63,7 +82,67 @@ class MinecraftBukkitVersion(
                 return field
             }
 
-        private val LOOKUP: NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
+        // lazy
+
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.9` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.9` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV19OrLater by lazy { CURRENT.isOrLater(V1_9_R1) }
+
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.10` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.10` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV110OrLater by lazy { CURRENT.isOrLater(V1_10_R1) }
+
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.11` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.11` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV111OrLater by lazy { CURRENT.isOrLater(V1_11_R1) }
+
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.12` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.12` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV112OrLater by lazy { CURRENT.isOrLater(V1_12_R1) }
+
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.13` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.13` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV113OrLater by lazy { CURRENT.isOrLater(V1_13_R1) }
+
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.14` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.14` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @JvmStatic val isV114OrLater by lazy { CURRENT.isOrLater(V1_14_R1) }
+
+        /**
+         * * Gets whether the current Bukkit server is an implementation version of `1.15` or later.
+         * * 获取当前 Bukkit 服务器是否是 `1.15` 或之后的实现版本.
+         *
+         * @since LDK 0.1.8-rc
+         */
+        @Draft
+        @Deprecated("Minecraft 1.15 Draft")
+        @JvmStatic val isV115OrLater by lazy { CURRENT.isOrLater(V1_15_R1) }
+
+        private val LOOKUP : NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
         private fun createLookup(): NavigableMap<MinecraftVersion, MinecraftBukkitVersion> {
             val map = object: TreeMap<MinecraftVersion, MinecraftBukkitVersion>() {
                 operator fun set(keys: Array<out MinecraftVersion>, value: MinecraftBukkitVersion)
@@ -127,12 +206,21 @@ class MinecraftBukkitVersion(
                     // ---> net.minecraft.server.v1_13_R2
             )] = V1_13_R2
             map[arrayOf(
-                    MinecraftVersion(1, 14, 0)
+                    MinecraftVersion(1, 14, 0),
+                    MinecraftVersion(1, 14, 1)
                     // ---> net.minecraft.server.v1_14_R1
             )] = V1_14_R1
+            map[arrayOf(
+                    MinecraftVersion(1, 15, 0)
+                    // ---> net.minecraft.server.v1_15_R1
+            )] = V1_15_R1
             return map
         }
 
+        /**
+         * * Get the Bukkit implementation version from the given Minecraft version [mcVer].
+         * * 从给定的 Minecraft 版本 [mcVer] 获取 Bukkit 实现版本.
+         */
         @JvmStatic
         fun lookup(mcVer: MinecraftVersion): MinecraftBukkitVersion {
             val compilerVer = if (mcVer.isPre) MinecraftVersion(mcVer.major, mcVer.minor, mcVer.build) else mcVer

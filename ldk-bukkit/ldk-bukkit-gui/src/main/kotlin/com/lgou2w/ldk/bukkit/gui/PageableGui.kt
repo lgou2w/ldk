@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,25 +20,57 @@ import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.Predicate
 
+/**
+ * ## PageableGui (可翻页界面)
+ *
+ * @see [Gui]
+ * @see [GuiBase]
+ * @author lgou2w
+ */
 open class PageableGui(
         type: GuiType,
         title: String = type.title
 ) : GuiBase(type, title) {
 
+    /**
+     * * Indicates the next pageable Gui object for this pageable gui.
+     * * 表示此可翻页 Gui 的下一个可翻页 Gui 对象.
+     */
     var next : PageableGui? = null
 
+    /**
+     * * Set the next page of the Gui object to this page to pageable Gui object.
+     * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
+     */
     @JvmOverloads
-    fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}) : PageableGui {
+    @Deprecated("RENAMED", replaceWith = ReplaceWith("setPage"))
+    fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui
+            = setPage(type, title, initializer)
+
+    /**
+     * * Set the next page of the Gui object to this page to pageable Gui object.
+     * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
+     */
+    @JvmOverloads
+    fun setPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui {
         val next = PageableGui(type, title)
         next.parent = this
         this.next = next
         return next.also(initializer)
     }
 
+    /**
+     * * Remove the current pageable Gui next page Gui object.
+     * * 移除当前可翻页 Gui 的下一页 Gui 对象.
+     */
     @JvmOverloads
     fun removePage(completed: Applicator<PageableGui>? = null)
             = removePageIf({ true }, completed)
 
+    /**
+     * * Remove the current pageable Gui next page Gui object.
+     * * 移除当前可翻页 Gui 的下一页 Gui 对象.
+     */
     @JvmOverloads
     fun removePageIf(predicate: Predicate<PageableGui>? = null, completed: Applicator<PageableGui>? = null) {
         val next = this.next
@@ -52,16 +84,24 @@ open class PageableGui(
 
     companion object {
 
+        /**
+         * * Create a button click event that returns to the previous page Gui.
+         * * 创建一个返回到上一页 Gui 的按钮点击事件.
+         */
         @JvmStatic
-        fun previousPage() : Consumer<ButtonEvent> {
+        fun previousPage(): Consumer<ButtonEvent> {
             return ButtonEvent.cancelThen { event ->
                 val parent = event.button.parent
                 parent.parent?.open(event.clicker)
             }
         }
 
+        /**
+         * * Create a button click event that goes to the next page of Gui.
+         * * 创建一个进入到下一页 Gui 的按钮点击事件.
+         */
         @JvmStatic
-        fun nextPage() : Consumer<ButtonEvent> {
+        fun nextPage(): Consumer<ButtonEvent> {
             return ButtonEvent.cancelThen { event ->
                 val parent = event.button.parent as? PageableGui
                 parent?.next?.open(event.clicker)

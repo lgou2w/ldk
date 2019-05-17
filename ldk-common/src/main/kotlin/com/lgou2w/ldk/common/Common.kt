@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+@file:Suppress("UNUSED")
 
 package com.lgou2w.ldk.common
 
@@ -145,14 +147,14 @@ typealias SuspendRunnable = suspend () -> Unit
 /**
  * @see [java.util.function.Predicate.and]
  */
-inline infix fun <T> Predicate<T>.and(crossinline other: Predicate<T>) : Predicate<T>
+inline infix fun <T> Predicate<T>.and(crossinline other: Predicate<T>): Predicate<T>
         = { t : T -> invoke(t) && other.invoke(t) }
 
 /**
  * @see [java.util.function.Predicate.and]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T> Predicate<T>.and(crossinline other: SuspendPredicate<T>) : SuspendPredicate<T>
+inline infix fun <T> Predicate<T>.and(crossinline other: SuspendPredicate<T>): SuspendPredicate<T>
         = { t : T -> invoke(t) && other.invoke(t) }
 
 /**
@@ -172,14 +174,14 @@ inline infix fun <T> SuspendPredicate<T>.and(crossinline other: SuspendPredicate
 /**
  * @see [java.util.function.Predicate.or]
  */
-inline infix fun <T> Predicate<T>.or(crossinline other: Predicate<T>) : Predicate<T>
+inline infix fun <T> Predicate<T>.or(crossinline other: Predicate<T>): Predicate<T>
         = { t : T -> invoke(t) || other.invoke(t) }
 
 /**
  * @see [java.util.function.Predicate.or]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T> Predicate<T>.or(crossinline other: SuspendPredicate<T>) : SuspendPredicate<T>
+inline infix fun <T> Predicate<T>.or(crossinline other: SuspendPredicate<T>): SuspendPredicate<T>
         = { t : T -> invoke(t) || other.invoke(t) }
 
 /**
@@ -199,7 +201,7 @@ inline infix fun <T> SuspendPredicate<T>.or(crossinline other: SuspendPredicate<
 /**
  * @see [java.util.function.Predicate.negate]
  */
-fun <T> Predicate<T>.negate() : Predicate<T>
+fun <T> Predicate<T>.negate(): Predicate<T>
         = { t : T -> !invoke(t) }
 
 /**
@@ -228,75 +230,75 @@ fun <T> SuspendPredicate<T>.negate(): SuspendPredicate<T>
 /**
  * @see [java.util.function.Function.compose]
  */
-inline infix fun <T, R, V> Function<T, R>.compose(crossinline before: Function<V, T>) : Function<V, R>
+inline infix fun <T, R, V> Function<T, R>.compose(crossinline before: Function<V, T>): Function<V, R>
         = { v : V -> invoke(before.invoke(v)) }
 
 /**
  * @see [java.util.function.Function.compose]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, R, V> Function<T, R>.compose(crossinline before: SuspendFunction<V, T>) : SuspendFunction<V, R>
+inline infix fun <T, R, V> Function<T, R>.compose(crossinline before: SuspendFunction<V, T>): SuspendFunction<V, R>
         = { v : V -> invoke(before.invoke(v)) }
 
 /**
  * @see [java.util.function.Function.compose]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, R, V> SuspendFunction<T, R>.compose(crossinline before: Function<V, T>) : SuspendFunction<V, R>
+inline infix fun <T, R, V> SuspendFunction<T, R>.compose(crossinline before: Function<V, T>): SuspendFunction<V, R>
         = { v : V -> invoke(before.invoke(v)) }
 
 /**
  * @see [java.util.function.Function.compose]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, R, V> SuspendFunction<T, R>.compose(crossinline before: SuspendFunction<V, T>) : SuspendFunction<V, R>
+inline infix fun <T, R, V> SuspendFunction<T, R>.compose(crossinline before: SuspendFunction<V, T>): SuspendFunction<V, R>
         = { v : V -> invoke(before.invoke(v)) }
 
 /**
  * @see [java.util.function.Function.andThen]
  */
-inline infix fun <T, R, V> Function<T, R>.andThen(crossinline after: Function<R, V>) : Function<T, V>
+inline infix fun <T, R, V> Function<T, R>.andThen(crossinline after: Function<R, V>): Function<T, V>
         = { t : T -> after.invoke(invoke(t)) }
 
 /**
  * @see [java.util.function.Function.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, R, V> Function<T, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendFunction<T, V>
+inline infix fun <T, R, V> Function<T, R>.andThen(crossinline after: SuspendFunction<R, V>): SuspendFunction<T, V>
         = { t : T -> after.invoke(invoke(t)) }
 
 /**
  * @see [java.util.function.Function.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, R, V> SuspendFunction<T, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendFunction<T, V>
+inline infix fun <T, R, V> SuspendFunction<T, R>.andThen(crossinline after: SuspendFunction<R, V>): SuspendFunction<T, V>
         = { t : T -> after.invoke(invoke(t)) }
 
 /**
  * @see [java.util.function.BiFunction.andThen]
  */
-inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: Function<R, V>) : BiFunction<T, U, V>
+inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: Function<R, V>): BiFunction<T, U, V>
         = { t : T, u : U -> after.invoke(invoke(t, u)) }
 
 /**
  * @see [java.util.function.BiFunction.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendBiFunction<T, U, V>
+inline infix fun <T, U, R, V> BiFunction<T, U, R>.andThen(crossinline after: SuspendFunction<R, V>): SuspendBiFunction<T, U, V>
         = { t : T, u : U -> after.invoke(invoke(t, u)) }
 
 /**
  * @see [java.util.function.BiFunction.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, U, R, V> SuspendBiFunction<T, U, R>.andThen(crossinline after: Function<R, V>) : SuspendBiFunction<T, U, V>
+inline infix fun <T, U, R, V> SuspendBiFunction<T, U, R>.andThen(crossinline after: Function<R, V>): SuspendBiFunction<T, U, V>
         = { t : T, u : U -> after.invoke(invoke(t, u)) }
 
 /**
  * @see [java.util.function.BiFunction.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T, U, R, V> SuspendBiFunction<T, U, R>.andThen(crossinline after: SuspendFunction<R, V>) : SuspendBiFunction<T, U, V>
+inline infix fun <T, U, R, V> SuspendBiFunction<T, U, R>.andThen(crossinline after: SuspendFunction<R, V>): SuspendBiFunction<T, U, V>
         = { t : T, u : U -> after.invoke(invoke(t, u)) }
 
 /**************************************************************************
@@ -310,28 +312,28 @@ inline infix fun <T, U, R, V> SuspendBiFunction<T, U, R>.andThen(crossinline aft
 /**
  * @see [java.util.function.Consumer.andThen]
  */
-inline infix fun <T> Consumer<T>.andThenConsume(crossinline after: Consumer<T>) : Consumer<T>
+inline infix fun <T> Consumer<T>.andThenConsume(crossinline after: Consumer<T>): Consumer<T>
         = { t : T -> invoke(t); after.invoke(t) }
 
 /**
  * @see [java.util.function.Consumer.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T> Consumer<T>.andThenConsume(crossinline after: SuspendConsumer<T>) : SuspendConsumer<T>
+inline infix fun <T> Consumer<T>.andThenConsume(crossinline after: SuspendConsumer<T>): SuspendConsumer<T>
         = { t : T -> invoke(t); after.invoke(t) }
 
 /**
  * @see [java.util.function.Consumer.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T> SuspendConsumer<T>.andThenConsume(crossinline after: Consumer<T>) : SuspendConsumer<T>
+inline infix fun <T> SuspendConsumer<T>.andThenConsume(crossinline after: Consumer<T>): SuspendConsumer<T>
         = { t : T -> invoke(t); after.invoke(t) }
 
 /**
  * @see [java.util.function.Consumer.andThen]
  * @since LDK 0.1.7-rc4
  */
-inline infix fun <T> SuspendConsumer<T>.andThenConsume(crossinline after: SuspendConsumer<T>) : SuspendConsumer<T>
+inline infix fun <T> SuspendConsumer<T>.andThenConsume(crossinline after: SuspendConsumer<T>): SuspendConsumer<T>
         = { t : T -> invoke(t); after.invoke(t) }
 
 /**************************************************************************
@@ -346,7 +348,7 @@ inline infix fun <T> SuspendConsumer<T>.andThenConsume(crossinline after: Suspen
  *
  * @since LDK 0.1.7-rc4
  */
-fun <T> T?.nullable(): T? = this
+fun <T> T?.nullable(): T? = this // used in invoke java
 
 /**
  * * Throws a [NullPointerException] if the receiver is `null`.
@@ -383,7 +385,7 @@ fun String?.notNullAndBlank(cause: String = "String cannot be null or blank"): S
  * * If the receiver is not `null`, then use `this` value as the receiver to call the specified [block] function.
  * * 如果接收器不为 `null`, 那么使用 `this` 值作为接收器调用指定的 [block] 函数.
  */
-inline fun <T> T?.applyIfNotNull(block: Applicator<T>) : T? {
+inline fun <T> T?.applyIfNotNull(block: Applicator<T>): T? {
     if (this != null)
         block(this)
     return this
@@ -393,7 +395,7 @@ inline fun <T> T?.applyIfNotNull(block: Applicator<T>) : T? {
  * * If the receiver is not `null`, then the specified [block] function is called with the `this` value as the argument and the result is returned.
  * * 如果接收器不为 `null`, 那么使用 `this` 值作为参数调用指定的 [block] 函数并返回其结果.
  */
-inline fun <T, R> T?.letIfNotNull(block: ApplicatorFunction<T, R>) : R? {
+inline fun <T, R> T?.letIfNotNull(block: ApplicatorFunction<T, R>): R? {
     if (this != null)
         return block(this)
     return null
@@ -403,28 +405,28 @@ inline fun <T, R> T?.letIfNotNull(block: ApplicatorFunction<T, R>) : R? {
  * * Returns `true` if the receiver is `true`.
  * * 如果接收器是 `true`, 那么返回 `true`.
  */
-fun Boolean?.isTrue() : Boolean
+fun Boolean?.isTrue(): Boolean
         = this != null && this
 
 /**
  * * Returns `true` if the receiver is `null` or `false`.
  * * 如果接收器是 `null` 或 `false`, 那么返回 `true`.
  */
-fun Boolean?.isFalse() : Boolean
+fun Boolean?.isFalse(): Boolean
         = this == null || !this
 
 /**
  * * Returns `true` if the receiver is `null` or `true`.
  * * 如果接收器是 `null` 或 `true`, 那么返回 `true`.
  */
-fun Boolean?.orTrue() : Boolean
+fun Boolean?.orTrue(): Boolean
         = this == null || this == true
 
 /**
  * * Returns `false` if the receiver is `null` or `false`.
  * * 如果接收器是 `null` 或 `false`, 那么返回 `false`.
  */
-fun Boolean?.orFalse() : Boolean
+fun Boolean?.orFalse(): Boolean
         = !(this == null || this == false)
 
 /**
@@ -436,7 +438,7 @@ fun Boolean?.orFalse() : Boolean
  * @see [Comparable]
  * @see [Comparable.compareTo]
  */
-fun <T, C: Comparable<T>> C.isLater(other: T) : Boolean
+fun <T, C: Comparable<T>> C.isLater(other: T): Boolean
         = compareTo(other) > 0
 
 /**
@@ -448,7 +450,7 @@ fun <T, C: Comparable<T>> C.isLater(other: T) : Boolean
  * @see [Comparable]
  * @see [Comparable.compareTo]
  */
-fun <T, C: Comparable<T>> C.isOrLater(other: T) : Boolean
+fun <T, C: Comparable<T>> C.isOrLater(other: T): Boolean
         = compareTo(other) >= 0
 
 /**
@@ -460,7 +462,7 @@ fun <T, C: Comparable<T>> C.isOrLater(other: T) : Boolean
  * @see [Comparable]
  * @see [Comparable.compareTo]
  */
-fun <T, C: Comparable<T>> C.isRange(min: T, max: T) : Boolean
+fun <T, C: Comparable<T>> C.isRange(min: T, max: T): Boolean
         = compareTo(min) > 0 && compareTo(max) < 0
 
 /**
@@ -472,7 +474,7 @@ fun <T, C: Comparable<T>> C.isRange(min: T, max: T) : Boolean
  * @see [Comparable]
  * @see [Comparable.compareTo]
  */
-fun <T, C: Comparable<T>> C.isOrRange(min: T, max: T) : Boolean
+fun <T, C: Comparable<T>> C.isOrRange(min: T, max: T): Boolean
         = compareTo(min) >= 0 && compareTo(max) <= 0
 
 /**************************************************************************

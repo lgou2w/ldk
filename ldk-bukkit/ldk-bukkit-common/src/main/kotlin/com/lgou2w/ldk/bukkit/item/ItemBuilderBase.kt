@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import com.lgou2w.ldk.common.ApplicatorFunction
 import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.Predicate
-import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.common.isTrue
 import com.lgou2w.ldk.common.letIfNotNull
 import com.lgou2w.ldk.nbt.NBT
@@ -44,15 +43,25 @@ import com.lgou2w.ldk.nbt.ofCompound
 import com.lgou2w.ldk.nbt.removeIf
 import com.lgou2w.ldk.nbt.removeIfIndexed
 import org.bukkit.Color
+import org.bukkit.DyeColor
 import org.bukkit.Material
+import org.bukkit.block.banner.Pattern
+import org.bukkit.block.banner.PatternType
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import java.util.*
+import java.util.UUID
 
+/**
+ * ## ItemBuilderBase (物品构建者基础)
+ *
+ * @see [ItemBuilder]
+ * @see [SimpleItemBuilder]
+ * @author lgou2w
+ */
 abstract class ItemBuilderBase : ItemBuilder {
 
-    private val itemStack: ItemStack
+    private val itemStack : ItemStack
 
     constructor(itemStack: ItemStack) {
         this.itemStack = itemStack.clone()
@@ -64,7 +73,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         this.itemStack = try {
             @Suppress("DEPRECATION")
             ItemStack(material, count, durability.toShort())
-        } catch (e: NoSuchMethodException) {
+        } catch (e: NoSuchMethodError) {
             try {
                 ItemStack(material, count).apply { (itemMeta as Damageable).damage = durability }
             } catch (e1: ClassNotFoundException) {
@@ -82,15 +91,15 @@ abstract class ItemBuilderBase : ItemBuilder {
         return ItemFactory.writeTag(itemStack, tag)
     }
 
-    final override val tag: NBTTagCompound
+    final override val tag : NBTTagCompound
 
-    final override val material: Material
+    final override val material : Material
         get() = itemStack.type
 
-    final override val maxDurability: Int
+    final override val maxDurability : Int
         get() = itemStack.type.maxDurability.toInt()
 
-    final override val maxStackSize: Int
+    final override val maxStackSize : Int
         get() = itemStack.type.maxStackSize
 
     final override fun reBuilder(material: Material, count: Int, durability: Int): ItemBuilder
@@ -102,15 +111,15 @@ abstract class ItemBuilderBase : ItemBuilder {
     final override fun reBuilder(material: Material): ItemBuilder
             = ItemBuilder.of(material, this.count, this.durability)
 
-    override fun reBuilder(count: Int): ItemBuilder
+    final override fun reBuilder(count: Int): ItemBuilder
             = ItemBuilder.of(this.material, count, this.durability)
 
-    override fun reBuilder(count: Int, durability: Int): ItemBuilder
+    final override fun reBuilder(count: Int, durability: Int): ItemBuilder
             = ItemBuilder.of(this.material, count, durability)
 
     //<editor-fold desc="ItemBuilder - Generic" defaultstate="collapsed">
 
-    final override var count: Int
+    final override var count : Int
         get() = itemStack.amount
         set(value) { itemStack.amount = value }
 
@@ -156,18 +165,21 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Durability" defaultstate="collapsed">
 
-    override var durability: Int
+    override var durability : Int
         get() {
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            return if (MinecraftBukkitVersion.isV113OrLater)
                 tag.getShortOrNull(NBT.TAG_DAMAGE)?.toInt() ?: 0
             else
                 @Suppress("DEPRECATION")
                 itemStack.durability.toInt()
         }
         set(value) {
-            if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
-                tag.putShort(NBT.TAG_DAMAGE, value)
-            else
+            if (MinecraftBukkitVersion.isV113OrLater) {
+                val before = tag.getShortOrNull(NBT.TAG_DAMAGE) ?: 0
+                if (before <= 0 && value <= 0) // SEE -> https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/c3749a
+                    tag.remove(NBT.TAG_DAMAGE)
+                else tag.putShort(NBT.TAG_DAMAGE, value)
+            } else
                 @Suppress("DEPRECATION")
                 itemStack.durability = value.toShort()
         }
@@ -214,11 +226,11 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - DisplayName" defaultstate="collapsed">
 
-    override var displayName: ChatComponent?
+    override var displayName : ChatComponent?
         get() {
             val displayName = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getStringOrNull(NBT.TAG_DISPLAY_NAME)
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+            return if (MinecraftBukkitVersion.isV113OrLater)
                 ChatSerializer.fromJsonOrNull(displayName)
             else
                 ChatSerializer.fromRawOrNull(displayName)
@@ -227,7 +239,7 @@ abstract class ItemBuilderBase : ItemBuilder {
             if (value == null)
                 removeDisplayName()
             else {
-                val displayName = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                val displayName = if (MinecraftBukkitVersion.isV113OrLater)
                     value.toJson()
                 else
                     ChatSerializer.toRaw(value)
@@ -271,7 +283,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeDisplayName(predicate: Predicate<ChatComponent>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
             ?.removeIf<String, ChatComponent>(NBT.TAG_DISPLAY_NAME, {
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                if (MinecraftBukkitVersion.isV113OrLater)
                     ChatSerializer.fromJson(it)
                 else
                     ChatSerializer.fromRaw(it)
@@ -283,9 +295,9 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - LocalizedName" defaultstate="collapsed">
 
-    override var localizedName: ChatComponent?
+    override var localizedName : ChatComponent?
         get() {
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 displayName
             } else {
                 val value = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
@@ -297,7 +309,7 @@ abstract class ItemBuilderBase : ItemBuilder {
             if (value == null)
                 removeLocalizedName()
             else {
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+                if (MinecraftBukkitVersion.isV113OrLater) {
                     setDisplayName(value)
                 } else {
                     tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
@@ -328,7 +340,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun removeLocalizedName(predicate: Predicate<ChatComponent>?): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             removeDisplayName(predicate)
         } else {
             tag.getCompoundOrNull(NBT.TAG_DISPLAY)
@@ -343,7 +355,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Lore" defaultstate="collapsed">
 
-    override var lore: List<String>?
+    override var lore : List<String>?
         get() {
             return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
@@ -404,16 +416,57 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //</editor-fold>
 
+    //<editor-fold desc="ItemBuilder - CustomModelData" defaultstate="collapsed">
+
+    override var customModelData : Int?
+        get() = tag.getIntOrNull(NBT.TAG_CUSTOM_MODEL_DATA)
+        set(value) {
+            if (value == null)
+                removeCustomModelData()
+            else
+                tag.putInt(NBT.TAG_CUSTOM_MODEL_DATA, value)
+        }
+
+    override fun getCustomModelData(block: (ItemBuilder, Int?) -> Unit): ItemBuilder {
+        block(this, this.customModelData)
+        return this
+    }
+
+    override fun setCustomModelData(customModelData: Int?): ItemBuilder {
+        this.customModelData = customModelData
+        return this
+    }
+
+    override fun setCustomModelDataIf(customModelData: Int?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            this.customModelData = customModelData
+        return this
+    }
+
+    override fun removeCustomModelData(): ItemBuilder {
+        removeCustomModelData(null)
+        return this
+    }
+
+    override fun removeCustomModelData(predicate: Predicate<Int>?): ItemBuilder {
+        tag.removeIf(NBT.TAG_CUSTOM_MODEL_DATA, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="ItemBuilder - Enchantment" defaultstate="collapsed">
 
-    override var enchantments: Map<Enchantment, Int>?
+    override var enchantments : Map<Enchantment, Int>?
         get() {
-            return if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+            return if (MinecraftBukkitVersion.isV113OrLater) {
                 tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
                     ?.asElements<NBTTagCompound>()
                     ?.associate {
                         val id = it.getString(NBT.TAG_ENCH_ID)
-                        Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                        val lvl = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                            it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                        Enchantment.fromName(id) to lvl
                     }
             } else {
                 tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
@@ -446,7 +499,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun clearEnchantment(): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             tag.remove(NBT.TAG_ENCH_FRESHLY)
         } else {
             tag.remove(NBT.TAG_ENCH_LEGACY)
@@ -466,11 +519,13 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun addEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             tag.getListOrDefault(NBT.TAG_ENCH_FRESHLY)
                 .addCompound(ofCompound {
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
-                    putShort(NBT.TAG_ENCH_LVL, level)
+                    if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        putInt(NBT.TAG_ENCH_LVL, level)
+                    else putShort(NBT.TAG_ENCH_LVL, level)
                 })
         } else {
             tag.getListOrDefault(NBT.TAG_ENCH_LEGACY)
@@ -499,11 +554,13 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun removeEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
-        if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1)) {
+        if (MinecraftBukkitVersion.isV113OrLater) {
             tag.getListOrNull(NBT.TAG_ENCH_FRESHLY)
                 ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
                     val id = it.getString(NBT.TAG_ENCH_ID)
-                    Enchantment.fromName(id) to it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    val lvl = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    Enchantment.fromName(id) to lvl
                 }, block)
         } else {
             tag.getListOrNull(NBT.TAG_ENCH_LEGACY)
@@ -541,7 +598,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
-    override var flags: Array<out ItemFlag>?
+    override var flags : Array<out ItemFlag>?
         get() {
             val modifier = tag.getIntOrNull(NBT.TAG_HIDE_FLAGS)
             return getFlags(modifier)
@@ -595,7 +652,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Unbreakable" defaultstate="collapsed">
 
-    override var isUnbreakable: Boolean
+    override var isUnbreakable : Boolean
         get() = tag.getBooleanOrNull(NBT.TAG_UNBREAKABLE) ?: false
         set(value) { tag.putBoolean(NBT.TAG_UNBREAKABLE, value) }
 
@@ -619,7 +676,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - Attribute" defaultstate="collapsed">
 
-    override var attributes: List<AttributeItemModifier>?
+    override var attributes : List<AttributeItemModifier>?
         get() {
             return tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
                 ?.asElements<NBTTagCompound>()
@@ -738,7 +795,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         }
     }
 
-    override var canDestroy: List<Material>?
+    override var canDestroy : List<Material>?
         get() {
             return tag.getListOrNull(NBT.TAG_CAN_DESTROY)
                 ?.asElements<String>()
@@ -805,7 +862,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - CanPlaceOn" defaultstate="collapsed">
 
-    override var canPlaceOn: List<Material>?
+    override var canPlaceOn : List<Material>?
         get() {
             return tag.getListOrNull(NBT.TAG_CAN_PLACE_ON)
                 ?.asElements<String>()
@@ -872,11 +929,11 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - RepairCost" defaultstate="collapsed">
 
-    override var repairCost: Int?
+    override var repairCost : Int?
         get() = tag.getIntOrNull(NBT.TAG_REPAIR_COST)
         set(value) {
             removeRepairCost()
-            if (value != null)
+            if (value != null && value != 0) // SEE -> https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/c3749a
                 tag.putInt(NBT.TAG_REPAIR_COST, value)
         }
 
@@ -910,7 +967,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - LeatherColor" defaultstate="collapsed">
 
-    override var leatherColor: Color?
+    override var leatherColor : Color?
         get() {
             return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getIntOrNull(NBT.TAG_LEATHER_ARMOR_COLOR)
@@ -956,7 +1013,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookTitle" defaultstate="collapsed">
 
-    override var bookTitle: String?
+    override var bookTitle : String?
         get() = tag.getStringOrNull(NBT.TAG_BOOK_TITLE)
         set(value) {
             removeBookTitle()
@@ -994,7 +1051,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookAuthor" defaultstate="collapsed">
 
-    override var bookAuthor: String?
+    override var bookAuthor : String?
         get() = tag.getStringOrNull(NBT.TAG_BOOK_AUTHOR)
         set(value) {
             removeBookAuthor()
@@ -1032,7 +1089,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookGeneration" defaultstate="collapsed">
 
-    override var bookGeneration: Generation?
+    override var bookGeneration : Generation?
         get() {
             return tag.getIntOrNull(NBT.TAG_BOOK_GENERATION)
                 ?.letIfNotNull { Enums.ofValuable(Generation::class.java, this) }
@@ -1075,7 +1132,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - BookPages" defaultstate="collapsed">
 
-    override var bookPages: List<ChatComponent>?
+    override var bookPages : List<ChatComponent>?
         get() {
             return tag.getListOrNull(NBT.TAG_BOOK_PAGES)
                 ?.asElements<String>()
@@ -1158,13 +1215,14 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - StoredEnchantment" defaultstate="collapsed">
 
-    override var storedEnchantments: Map<Enchantment, Int>?
+    override var storedEnchantments : Map<Enchantment, Int>?
         get() {
             return tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
                 ?.asElements<NBTTagCompound>()
                 ?.associate {
-                    val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                    val enchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                    val level = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                        it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                    val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                         Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                     else
                         Enchantment.fromId(it.getShort(NBT.TAG_ENCH_ID).toInt())
@@ -1211,8 +1269,11 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun addStoredEnchantment(enchantment: Enchantment, level: Int): ItemBuilder {
         tag.getListOrDefault(NBT.TAG_STORED_ENCHANTMENTS)
             .addCompound(ofCompound {
-                putShort(NBT.TAG_ENCH_LVL, level)
-                if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                    putInt(NBT.TAG_ENCH_LVL, level)
+                else
+                    putShort(NBT.TAG_ENCH_LVL, level)
+                if (MinecraftBukkitVersion.isV113OrLater)
                     putString(NBT.TAG_ENCH_ID, enchantment.type)
                 else
                     putShort(NBT.TAG_ENCH_ID, enchantment.id)
@@ -1239,8 +1300,9 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeStoredEnchantmentIndexed(block: BiFunction<Int, Pair<Enchantment, Int>, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_STORED_ENCHANTMENTS)
             ?.removeIfIndexed<NBTTagCompound, Pair<Enchantment, Int>>({
-                val level = it.getShort(NBT.TAG_ENCH_LVL).toInt()
-                val enchantment = if (MinecraftBukkitVersion.CURRENT.isOrLater(MinecraftBukkitVersion.V1_13_R1))
+                val level = if (MinecraftBukkitVersion.isV114OrLater) // Minecraft 1.14 Level update to Integer
+                    it.getInt(NBT.TAG_ENCH_LVL) else it.getShort(NBT.TAG_ENCH_LVL).toInt()
+                val enchantment = if (MinecraftBukkitVersion.isV113OrLater)
                     Enchantment.fromName(it.getString(NBT.TAG_ENCH_ID))
                 else
                     Enchantment.fromId(it.getShort(NBT.TAG_ENCH_ID).toInt())
@@ -1253,7 +1315,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - SkullOwner" defaultstate="collapsed">
 
-    override var skullOwner: String?
+    override var skullOwner : String?
         get() {
             val skullOwner = tag[NBT.TAG_SKULL_OWNER] ?: return null
             return if (skullOwner.type == NBTType.TAG_COMPOUND)
@@ -1302,7 +1364,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - SkullOwner Value" defaultstate="collapsed">
 
-    override var skullOwnerValue: String?
+    override var skullOwnerValue : String?
         get() {
             if (tag[NBT.TAG_SKULL_OWNER]?.type == NBTType.TAG_STRING)
                 tag.remove(NBT.TAG_SKULL_OWNER)
@@ -1380,7 +1442,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - PotionColor" defaultstate="collapsed">
 
-    override var potionColor: Color?
+    override var potionColor : Color?
         get() = tag.getIntOrNull(NBT.TAG_CUSTOM_POTION_COLOR).letIfNotNull { Color.fromRGB(this) }
         set(value) {
             removePotionColor()
@@ -1420,7 +1482,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - PotionBase" defaultstate="collapsed">
 
-    override var potionBase: PotionBase?
+    override var potionBase : PotionBase?
         get() = tag.getStringOrNull(NBT.TAG_POTION).letIfNotNull { PotionBase.valueOf(this) }
         set(value) {
             removePotionBase()
@@ -1460,7 +1522,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - PotionCustom" defaultstate="collapsed">
 
-    override var potionCustoms: List<PotionEffectCustom>?
+    override var potionCustoms : List<PotionEffectCustom>?
         get() {
             return tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
                 ?.asElements<NBTTagCompound>()
@@ -1570,7 +1632,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - FireworkStar" defaultstate="collapsed">
 
-    override var fireworkStar: FireworkEffect?
+    override var fireworkStar : FireworkEffect?
         get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS_EXPLOSION).letIfNotNull { FireworkEffect.deserialize(this) }
         set(value) {
             removeFireworkStar()
@@ -1610,7 +1672,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - FireworkRocket Effect" defaultstate="collapsed">
 
-    override var fireworkRocketEffects: List<FireworkEffect>?
+    override var fireworkRocketEffects : List<FireworkEffect>?
         get() {
             return tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
                 ?.getListOrNull(NBT.TAG_FIREWORKS_EXPLOSIONS)
@@ -1689,7 +1751,7 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     //<editor-fold desc="ItemBuilder - FireworkRocket Flight" defaultstate="collapsed">
 
-    override var fireworkRocketFlight: Int?
+    override var fireworkRocketFlight : Int?
         get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS)?.getIntOrNull(NBT.TAG_FIREWORKS_FLIGHT)
         set(value) {
             removeFireworkRocketFlight()
@@ -1721,6 +1783,186 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeFireworkRocketFlight(predicate: Predicate<Int>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_FIREWORKS)
             ?.removeIf(NBT.TAG_FIREWORKS_FLIGHT, predicate)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Banner Pattern" defaultstate="collapsed">
+
+    override var bannerPatterns : List<Pattern>?
+        get() {
+            @Suppress("DEPRECATION")
+            return tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+                ?.getListOrNull(NBT.TAG_BANNER_PATTERNS)
+                ?.asElements<NBTTagCompound>()
+                ?.map { it.toBannerPattern() }
+        }
+        set(value) {
+            clearBannerPatten()
+            if (value != null)
+                addBannerPattern(*value.toTypedArray())
+        }
+
+    override fun getBannerPattern(block: (ItemBuilder, List<Pattern>?) -> Unit): ItemBuilder {
+        block(this, bannerPatterns)
+        return this
+    }
+
+    override fun setBannerPattern(patterns: List<Pattern>?): ItemBuilder {
+        this.bannerPatterns = patterns
+        return this
+    }
+
+    override fun setBannerPatternIf(patterns: List<Pattern>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            this.bannerPatterns = patterns
+        return this
+    }
+
+    override fun clearBannerPatten(): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+            ?.remove(NBT.TAG_BANNER_PATTERNS)
+        return this
+    }
+
+    override fun addBannerPattern(vararg patterns: Pattern): ItemBuilder {
+        tag.getCompoundOrDefault(NBT.TAG_BLOCK_ENTITY_TAG)
+            .getListOrDefault(NBT.TAG_BANNER_PATTERNS)
+            .addCompound(*patterns.map { it.toCompound() }.toTypedArray())
+        return this
+    }
+
+    override fun addBannerPattern(color: DyeColor, type: PatternType): ItemBuilder {
+        addBannerPattern(Pattern(color, type))
+        return this
+    }
+
+    override fun addBannerPattern(pattern: Pair<DyeColor, PatternType>): ItemBuilder {
+        addBannerPattern(Pattern(pattern.first, pattern.second))
+        return this
+    }
+
+    override fun addBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder {
+        addBannerPattern(*patterns.map { Pattern(it.first, it.second) }.toTypedArray())
+        return this
+    }
+
+    override fun addBannerPatternIf(pattern: Pattern, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(pattern)
+        return this
+    }
+
+    override fun addBannerPatternIf(color: DyeColor, type: PatternType, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(Pattern(color, type))
+        return this
+    }
+
+    override fun addBannerPatternIf(pattern: Pair<DyeColor, PatternType>, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addBannerPattern(Pattern(pattern.first, pattern.second))
+        return this
+    }
+
+    override fun removeBannerPattern(vararg patterns: Pattern): ItemBuilder {
+        removeBannerPattern { value -> value in patterns }
+        return this
+    }
+
+    override fun removeBannerPattern(vararg patterns: Pair<DyeColor, PatternType>): ItemBuilder {
+        removeBannerPattern(*patterns.map { Pattern(it.first, it.second) }.toTypedArray())
+        return this
+    }
+
+    override fun removeBannerPattern(predicate: Predicate<Pattern>?): ItemBuilder {
+        removeBannerPatternIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeBannerPatternIndexed(block: BiFunction<Int, Pattern, Boolean>?): ItemBuilder {
+        tag.getCompoundOrNull(NBT.TAG_BLOCK_ENTITY_TAG)
+            ?.getListOrNull(NBT.TAG_BANNER_PATTERNS)
+            ?.removeIfIndexed<NBTTagCompound, Pattern>({ it.toBannerPattern() }, block)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Crossbow Charged" defaultstate="collapsed">
+
+    override var isCrossbowCharged : Boolean
+        get() = tag.getBooleanOrNull(NBT.TAG_CROSSBOW_CHARGED) ?: false
+        set(value) { tag.putBoolean(NBT.TAG_CROSSBOW_CHARGED, value) }
+
+    override fun isCrossbowCharged(block: (ItemBuilder, Boolean) -> Unit): ItemBuilder {
+        block(this, this.isCrossbowCharged)
+        return this
+    }
+
+    override fun setCrossbowCharged(crossbowCharged: Boolean): ItemBuilder {
+        this.isCrossbowCharged = crossbowCharged
+        return this
+    }
+
+    override fun setCrossbowChargedIf(crossbowCharged: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.isCrossbowCharged = crossbowCharged
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Crossbow Charged Projectiles" defaultstate="collapsed">
+
+    override var crossbowChargedProjectiles : List<ItemStack>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+                ?.asElements<NBTTagCompound>()
+                ?.map(ItemFactory::createItem)
+        }
+        set(value) {
+            clearCrossbowChargedProjectiles()
+            if (value != null)
+                addCrossbowChargedProjectiles(*value.toTypedArray())
+        }
+
+    override fun getCrossbowChargedProjectiles(block: (ItemBuilder, List<ItemStack>?) -> Unit): ItemBuilder {
+        block(this, this.crossbowChargedProjectiles)
+        return this
+    }
+
+    override fun setCrossbowChargedProjectiles(chargedProjectiles: List<ItemStack>?): ItemBuilder {
+        this.crossbowChargedProjectiles = chargedProjectiles
+        return this
+    }
+
+    override fun setCrossbowChargedProjectilesIf(chargedProjectiles: List<ItemStack>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            this.crossbowChargedProjectiles = chargedProjectiles
+        return this
+    }
+
+    override fun clearCrossbowChargedProjectiles(): ItemBuilder {
+        tag.remove(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+        return this
+    }
+
+    override fun addCrossbowChargedProjectiles(vararg chargedProjectiles: ItemStack): ItemBuilder {
+        tag.getListOrDefault(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+            .addCompound(*chargedProjectiles.map { ItemFactory.readItem(it) }.toTypedArray())
+        return this
+    }
+
+    override fun removeCrossbowChargedProjectiles(predicate: Predicate<ItemStack>?): ItemBuilder {
+        removeCrossbowChargedProjectilesIndexed { _, stack -> predicate?.invoke(stack).isTrue() }
+        return this
+    }
+
+    override fun removeCrossbowChargedProjectilesIndexed(block: BiFunction<Int, ItemStack, Boolean>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
+            ?.removeIfIndexed<NBTTagCompound, ItemStack>({ ItemFactory.createItem(it) }, block)
         return this
     }
 

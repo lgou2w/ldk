@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.lgou2w.ldk.nbt
 
 import java.io.DataInput
 import java.io.DataOutput
-import java.util.*
+import java.util.Arrays
 
 /**
  * ## NBTTagLongArray (长整数数组 NBT 标签)
@@ -32,10 +32,9 @@ class NBTTagLongArray : NBTBase<LongArray> {
     constructor(name: String = "", value: LongArray = LongArray(0)) : super(name, value)
     constructor(value: LongArray = LongArray(0)) : super("", value)
 
-    override val type: NBTType
-        get() = NBTType.TAG_LONG_ARRAY
+    override val type = NBTType.TAG_LONG_ARRAY
 
-    override var value: LongArray
+    override var value : LongArray
         get() {
             val value = LongArray(value0.size)
             for ((i, el) in value0.withIndex())

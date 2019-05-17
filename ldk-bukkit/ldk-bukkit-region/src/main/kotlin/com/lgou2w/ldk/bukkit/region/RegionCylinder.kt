@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,23 @@ package com.lgou2w.ldk.bukkit.region
 import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 
+/**
+ * ## RegionCylinder (圆柱区域)
+ *
+ * @see [Region]
+ * @see [RegionBase]
+ * @see [RegionFlat]
+ * @author lgou2w
+ */
 open class RegionCylinder : RegionBase, RegionFlat {
 
     companion object {
+
+        init {
+            ConfigurationSerialization.registerClass(RegionCylinder::class.java)
+        }
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
@@ -37,10 +50,24 @@ open class RegionCylinder : RegionBase, RegionFlat {
         }
     }
 
-    var center2D: RegionVector2D
-    var radius: RegionVector2D
-    var minY: Int = 0
-    var maxY: Int = 0
+    /**
+     * * The center point vector of this cylinder region.
+     * * 此圆柱区域的中心点向量.
+     */
+    var center2D : RegionVector2D
+    /**
+     * * The radius vector of this cylinder region.
+     * * 此圆柱区域的半径向量.
+     */
+    var radius : RegionVector2D
+    /**
+     * @see [minimumY]
+     */
+    var minY : Int = 0
+    /**
+     * @see [maximumY]
+     */
+    var maxY : Int = 0
 
     private var hasY : Boolean
 
@@ -66,25 +93,25 @@ open class RegionCylinder : RegionBase, RegionFlat {
         this.hasY = true
     }
 
-    override val minimumPoint: RegionVector
+    override val minimumPoint : RegionVector
         get() = (center2D - radius).toRegionVector(minY)
 
-    override val maximumPoint: RegionVector
+    override val maximumPoint : RegionVector
         get() = (center2D + radius).toRegionVector(maxY)
 
-    override val center: RegionVector
+    override val center : RegionVector
         get() = center2D.toRegionVector((maxY + minY) / 2.0)
 
-    override val area: Int
+    override val area : Int
         get() = Math.floor(radius.x * radius.z * Math.PI * height).toInt()
 
-    override val width: Int
+    override val width : Int
         get() = (radius.x * 2.0).toInt()
 
-    override val height: Int
+    override val height : Int
         get() = maxY - minY + 1
 
-    override val length: Int
+    override val length : Int
         get() = (radius.z * 2.0).toInt()
 
     override fun contains(x: Double, y: Double, z: Double): Boolean
@@ -97,14 +124,14 @@ open class RegionCylinder : RegionBase, RegionFlat {
         return ((vector.toRegionVector2D() - center2D) / radius).lengthSq() <= 1.0
     }
 
-    override var minimumY: Int
+    override var minimumY : Int
         get() = minY
         set(value) {
             minY = value
             hasY = true
         }
 
-    override var maximumY: Int
+    override var maximumY : Int
         get() = maxY
         set(value) {
             maxY = value

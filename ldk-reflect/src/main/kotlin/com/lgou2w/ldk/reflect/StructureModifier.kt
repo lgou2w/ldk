@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.lgou2w.ldk.reflect
 
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
-import java.util.*
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -34,7 +34,7 @@ open class StructureModifier<T : Any> {
 
     lateinit var targetType : Class<out Any>
         private set
-    lateinit var fieldType: Class<out Any>
+    lateinit var fieldType : Class<out Any>
         private set
     lateinit var target : Any
         private set

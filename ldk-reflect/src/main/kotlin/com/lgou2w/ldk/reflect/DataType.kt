@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package com.lgou2w.ldk.reflect
+
+import java.util.Collections
 
 /**
  * ## DataType (数据类型)
@@ -98,13 +100,15 @@ enum class DataType(
 
     companion object {
 
-        private val CLASS_MAP: MutableMap<Class<*>, DataType> = HashMap()
+        private val CLASS_MAP : Map<Class<*>, DataType>
 
         init {
+            val classMap = HashMap<Class<*>, DataType>()
             values().forEach {
-                CLASS_MAP[it.primitive] = it
-                CLASS_MAP[it.reference] = it
+                classMap[it.primitive] = it
+                classMap[it.reference] = it
             }
+            CLASS_MAP = Collections.unmodifiableMap(classMap)
         }
 
         /**
@@ -150,7 +154,7 @@ enum class DataType(
          */
         @JvmStatic
         fun ofPrimitive(clazz: Array<out Class<*>>): Array<Class<*>>
-                = clazz.map { ofPrimitive(it) }.toTypedArray()
+                = clazz.map(::ofPrimitive).toTypedArray()
 
         /**
          * * Converts the given array class element to a wrapped data class. If the element is not a wrapped data type, then it is an element class.
@@ -161,7 +165,7 @@ enum class DataType(
          */
         @JvmStatic
         fun ofReference(clazz: Array<out Class<*>>): Array<Class<*>>
-                = clazz.map { ofReference(it) }.toTypedArray()
+                = clazz.map(::ofReference).toTypedArray()
 
         /**
          * * Compares the contents of the given [left] and [right] array classes.

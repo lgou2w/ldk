@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,17 @@ import com.lgou2w.ldk.reflect.FuzzyReflect
 import org.bukkit.Bukkit
 import org.bukkit.block.Block
 
+/**
+ * ## BlockFactory (方块工厂)
+ *
+ * @author lgou2w
+ */
 object BlockFactory {
 
     @JvmStatic val CLASS_WORLD by lazyMinecraftClass("World")
     @JvmStatic val CLASS_TILE_ENTITY by lazyMinecraftClass("TileEntity")
     @JvmStatic val CLASS_BLOCK_POSITION by lazyMinecraftClass("BlockPosition")
+    @JvmStatic val CLASS_IBLOCK_ACCESS by lazyMinecraftClass("IBlockAccess")
 
     @JvmStatic val CLASS_CRAFT_WORLD by lazyCraftBukkitClass("CraftWorld")
 
@@ -53,9 +59,10 @@ object BlockFactory {
             .resultAccessor()
     }
 
-    // NMS.World -> public NMS.TileEntity getTileEntity(NMS.BlockPosition)
-    @JvmStatic val METHOD_WORLD_GET_TILE_ENTITY : AccessorMethod<Any, Any?> by lazy {
-        FuzzyReflect.of(CLASS_WORLD)
+    // Since Minecraft 1.14 Pre-Release 5
+    // NMS.IBlockAccess -> public NMS.TileEntity getTileEntity(NMS.BlockPosition)
+    @JvmStatic val METHOD_IBLOCK_ACCESS_GET_TILE_ENTITY : AccessorMethod<Any, Any?> by lazy {
+        FuzzyReflect.of(CLASS_IBLOCK_ACCESS)
             .useMethodMatcher()
             .withName("getTileEntity")
             .withType(CLASS_TILE_ENTITY)
@@ -91,6 +98,10 @@ object BlockFactory {
             .resultAccessor()
     }
 
+    /**
+     * * Get the `TileEntity` object for the given [block]. If the block is not `TileEntity` then return `null`.
+     * * 获取给定方块 [block] 的 `TileEntity` 对象. 如果方块不是 `TileEntity` 则返回 `null`.
+     */
     @JvmStatic
     fun getTileEntity(block: Block): Any? {
         val x = block.x
@@ -98,9 +109,16 @@ object BlockFactory {
         val z = block.z
         val world = METHOD_CRAFT_WORLD_HANDLE.invoke(block.world)
         val position = CONSTRUCTOR_BLOCK_POSITION.newInstance(x, y, z)
-        return METHOD_WORLD_GET_TILE_ENTITY.invoke(world, position)
+        return METHOD_IBLOCK_ACCESS_GET_TILE_ENTITY.invoke(world, position)
     }
 
+    /**
+     * * Read NBT tag data from a given block entity [block].
+     * * 从给定的方块实体 [block] 读取 NBT 标签数据.
+     *
+     * @throws [IllegalArgumentException] If the block is not of type `TileEntity`.
+     * @throws [IllegalArgumentException] 如果方块不是 `TileEntity` 类型.
+     */
     @JvmStatic
     @Throws(IllegalArgumentException::class)
     fun readTag(block: Block): NBTTagCompound {
@@ -110,6 +128,13 @@ object BlockFactory {
         return NBTFactory.fromNMS(tag) as NBTTagCompound
     }
 
+    /**
+     * * Write the given NBT tag data [tag] to the given block entity [block].
+     * * 将给定的 NBT 标签数据 [tag] 写入到给定的方块实体 [block] 中.
+     *
+     * @throws [IllegalArgumentException] If the block is not of type `TileEntity`.
+     * @throws [IllegalArgumentException] 如果方块不是 `TileEntity` 类型.
+     */
     @JvmStatic
     @Throws(IllegalArgumentException::class)
     fun writeTag(block: Block, tag: NBTTagCompound) {
@@ -124,6 +149,11 @@ object BlockFactory {
     }
 
     /**
+     * * Modify the NBT tag data for the given block entity [block].
+     * * 将给定的方块实体 [block] 进行 NBT 标签数据的修改.
+     *
+     * @throws [IllegalArgumentException] If the block is not of type `TileEntity`.
+     * @throws [IllegalArgumentException] 如果方块不是 `TileEntity` 类型.
      * @since LDK 0.1.7-rc3
      */
     @JvmStatic

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,17 @@
 
 package com.lgou2w.ldk.asm
 
+/**
+ * ## ASMClassGenerator (字节码类生成器)
+ *
+ * @author lgou2w
+ * @since LDK 0.1.7-rc2
+ */
 interface ASMClassGenerator {
 
+    /**
+     * * Generate key-value pair mappings for class name and bytecode.
+     * * 生成类名和字节码的键值对映射.
+     */
     fun generate(): Map<String, ByteArray>
 }

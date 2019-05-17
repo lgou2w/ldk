@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,12 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 import java.util.concurrent.TimeUnit
 
+/**
+ * ## BukkitRxScheduler (Bukkit Reactivex 调度器)
+ *
+ * @see [Scheduler]
+ * @author lgou2w
+ */
 class BukkitRxScheduler private constructor(
         private val plugin: Plugin,
         private val isAsync: Boolean
@@ -31,16 +37,30 @@ class BukkitRxScheduler private constructor(
 
     companion object {
 
+        /**
+         * * Create an synchronous executed `Reactivex` scheduler from the given [plugin].
+         * * 从给定的插件 [plugin] 创建一个同步执行的 `Reactivex` 调度器.
+         */
         @JvmStatic
         fun of(plugin: Plugin)
                 = BukkitRxScheduler(plugin, false)
 
+        /**
+         * * Create an asynchronously executed `Reactivex` scheduler from the given [plugin].
+         * * 从给定的插件 [plugin] 创建一个异步执行的 `Reactivex` 调度器.
+         */
         @JvmStatic
         fun ofAsync(plugin: Plugin): BukkitRxScheduler
                 = BukkitRxScheduler(plugin, true)
 
         @JvmStatic
-        private fun scheduleOnBukkit(plugin: Plugin, command: Runnable, isAsync: Boolean, delay: Long = 0L, period: Long = -1): BukkitTask {
+        private fun scheduleOnBukkit(
+                plugin: Plugin,
+                command: Runnable,
+                isAsync: Boolean,
+                delay: Long = 0L,
+                period: Long = -1
+        ): BukkitTask {
             val scheduler = Bukkit.getScheduler()
             return when (isAsync) {
                 true-> {
@@ -103,7 +123,7 @@ class BukkitRxScheduler private constructor(
 
         private inner class BukkitDisposableTask(
                 private val task: BukkitTask
-        ) : Disposable {
+        ): Disposable {
 
             private var isDisposed = false
 

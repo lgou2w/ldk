@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,5 +16,15 @@
 
 package com.lgou2w.ldk.bukkit.event
 
+/**
+ * ## Cancellable (事件可阻止)
+ *
+ * @see [org.bukkit.event.Cancellable]
+ * @author lgou2w
+ */
 interface Cancellable : org.bukkit.event.Cancellable {
+
+    override fun isCancelled(): Boolean
+
+    override fun setCancelled(cancel: Boolean)
 }

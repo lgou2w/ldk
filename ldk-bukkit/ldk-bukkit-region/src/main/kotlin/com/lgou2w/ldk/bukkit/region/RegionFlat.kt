@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,25 @@
 
 package com.lgou2w.ldk.bukkit.region
 
+/**
+ * ## RegionFlat (平面区域)
+ *
+ * @see [Region]
+ * @author lgou2w
+ */
 interface RegionFlat : Region {
 
+    /**
+     * * The minimum Y coordinate of this flat region.
+     * * 此平面区域的最小 Y 坐标.
+     */
     val minimumY : Int
 
+    /**
+     * * The maximum Y coordinate of this flat region.
+     * * 此平面区域的最大 Y 坐标.
+     */
     val maximumY : Int
 
-    fun asFlat() : Iterable<RegionVector2D>
+    fun asFlat(): Iterable<RegionVector2D>
 }

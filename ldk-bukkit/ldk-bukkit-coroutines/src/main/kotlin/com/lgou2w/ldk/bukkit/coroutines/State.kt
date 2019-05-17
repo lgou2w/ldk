@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,12 @@ package com.lgou2w.ldk.bukkit.coroutines
 
 import org.bukkit.Bukkit
 
+/**
+ * ## State (Bukkit 线程状态)
+ *
+ * @see [currentState]
+ * @author lgou2w
+ */
 enum class State {
 
     SYNC,
@@ -25,8 +31,14 @@ enum class State {
     ;
 
     companion object {
+        /**
+         * * Gets whether the current thread is the Bukkit main thread state.
+         * * 获取当前线程是否为 Bukkit 主线程状态.
+         *
+         * @see [Bukkit.isPrimaryThread]
+         */
         @JvmStatic
-        fun currentState() : State
+        fun currentState(): State
                 = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
     }
 }

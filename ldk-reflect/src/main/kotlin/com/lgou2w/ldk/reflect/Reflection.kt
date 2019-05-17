@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 
 package com.lgou2w.ldk.reflect
-
-import java.util.*
 
 /**
  * ## Reflection
@@ -47,19 +45,19 @@ import java.util.*
 abstract class Reflection private constructor() {
 
     /**
-     * * Get the caller class for the given depth [depth].
+     * * Get the caller class for the given [depth].
      * * 获取给定深度 [depth] 的调用者类.
      *
      * @param depth Depth
      * @param depth 深度
      */
     @JvmOverloads
-    open fun getCallerClass(depth: Int? = null) : Class<*>? {
+    open fun getCallerClass(depth: Int? = null): Class<*>? {
         return null
     }
 
     /**
-     * * Get the expected class from `0` to the given depth [depth].
+     * * Get the expected class from `0` to the given [depth].
      * * 获取从 `0` 到给定深度 [depth] 的预期类.
      *
      * @param depth Depth
@@ -68,7 +66,7 @@ abstract class Reflection private constructor() {
      * @param expected 预期类型
      */
     @JvmOverloads
-    open fun getCallerClasses(depth: Int? = null, expected: Class<*>? = null) : List<Class<*>> {
+    open fun getCallerClasses(depth: Int? = null, expected: Class<*>? = null): List<Class<*>> {
         return emptyList()
     }
 
@@ -84,7 +82,7 @@ abstract class Reflection private constructor() {
          */
         @JvmStatic
         @Deprecated("sun.reflect.Reflection", ReplaceWith("safe"))
-        fun sun() : Reflection
+        fun sun(): Reflection
                 = SunReflection()
 
         /**
@@ -95,7 +93,7 @@ abstract class Reflection private constructor() {
          */
         @JvmStatic
         @Deprecated("It is recommended to use safe to get.", ReplaceWith("safe"))
-        fun thread() : Reflection
+        fun thread(): Reflection
                 = ThreadReflection()
 
         @JvmStatic
@@ -106,7 +104,7 @@ abstract class Reflection private constructor() {
          * * 优先使用 `Sun` 的底层实现, 如果不可用那么使用 `Thread` 的堆栈信息实现的包装反射.
          */
         @JvmStatic
-        fun safe() : Reflection {
+        fun safe(): Reflection {
             if (SAFE == null) {
                 var thread = true
                 try {
@@ -115,7 +113,7 @@ abstract class Reflection private constructor() {
                     SAFE?.getCallerClasses(depth = 1)  // test method
                     thread = false
                 } catch (e: ClassNotFoundException) {
-                } catch (e: NoSuchMethodException) {
+                } catch (e: NoSuchMethodError) {
                 } catch (e: Exception) {
                 } finally {
                     if (thread)
@@ -126,7 +124,7 @@ abstract class Reflection private constructor() {
         }
 
         @JvmStatic
-        private fun safeDepth(depth: Int?) : Int {
+        private fun safeDepth(depth: Int?): Int {
             return if (depth == 0x7FFFFFFF)
                 depth
             else
@@ -139,10 +137,10 @@ abstract class Reflection private constructor() {
             return try {
                 @Suppress("DEPRECATION")
                 sun.reflect.Reflection.getCallerClass(depth ?: 0)
-            } catch (e: NoSuchMethodException) {
+            } catch (e: NoSuchMethodError) {
                 try {
                     sun.reflect.Reflection.getCallerClass()
-                } catch (e1: NoSuchMethodException) {
+                } catch (e1: NoSuchMethodError) {
                     null
                 }
             }
@@ -157,10 +155,10 @@ abstract class Reflection private constructor() {
                     else if (expected == null) callerClasses.add(clazz)
                 } catch (e: Exception) {
                 }
-            } catch (e: NoSuchMethodException) {
+            } catch (e: NoSuchMethodError) {
                 try {
                     callerClasses.add(sun.reflect.Reflection.getCallerClass())
-                } catch (e1: NoSuchMethodException) {
+                } catch (e1: NoSuchMethodError) {
                 }
             }
             return if (callerClasses.isEmpty()) emptyList() else callerClasses

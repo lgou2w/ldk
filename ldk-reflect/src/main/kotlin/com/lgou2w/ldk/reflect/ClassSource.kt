@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,14 +48,14 @@ abstract class ClassSource {
                 = fromClassLoader(ClassSource::class.java.classLoader)
 
         /**
-         * * Create a class source loaded from the given class loader [classLoader].
+         * * Create a class source loaded from the given [classLoader].
          * * 创建一个从给定类加载器 [classLoader] 中加载的类源.
          *
          * @param classLoader Class loader
          * @param classLoader 类加载器
          */
         @JvmStatic
-        fun fromClassLoader(classLoader: ClassLoader): ClassSource = object: ClassSource() {
+        fun fromClassLoader(classLoader: ClassLoader): ClassSource = object : ClassSource() {
             override fun loadClass(name: String): Class<*>
                     = classLoader.loadClass(name)
         }
@@ -68,7 +68,7 @@ abstract class ClassSource {
          * @param map 键值对 Map
          */
         @JvmStatic
-        fun fromMap(map: Map<String, Class<*>>): ClassSource = object: ClassSource() {
+        fun fromMap(map: Map<String, Class<*>>): ClassSource = object : ClassSource() {
             override fun loadClass(name: String): Class<*>
                     = map[name] ?: throw ClassNotFoundException("The specified class does not exist in this Map.")
         }

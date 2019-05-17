@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The lgou2w (lgou2w@hotmail.com)
+ * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class LazyFuzzyReflect<T> @JvmOverloads constructor(
         return lazyObj.getValue(thisRef, property)
     }
 
-    override val value: T
+    override val value : T
         get() = lazyObj.value
 
     override fun isInitialized(): Boolean {
@@ -53,13 +53,19 @@ class LazyFuzzyReflect<T> @JvmOverloads constructor(
  * * 延迟模糊反射委托.
  */
 @JvmOverloads
-fun <T> lazyFuzzyReflect(source: Class<*>, isForceAccess: Boolean = false, initializer: ApplicatorFunction<FuzzyReflect, T>)
-        = LazyFuzzyReflect(source, isForceAccess, initializer)
+fun <T> lazyFuzzyReflect(
+        source: Class<*>,
+        isForceAccess: Boolean = false,
+        initializer: ApplicatorFunction<FuzzyReflect, T>
+) = LazyFuzzyReflect(source, isForceAccess, initializer)
 
 /**
  * * Lazy fuzzy reflect delegate.
  * * 延迟模糊反射委托.
  */
 @JvmOverloads
-fun <T> lazyFuzzyReflect(source: Any, isForceAccess: Boolean = false, initializer: ApplicatorFunction<FuzzyReflect, T>)
-        = LazyFuzzyReflect(source.javaClass, isForceAccess, initializer)
+fun <T> lazyFuzzyReflect(
+        source: Any,
+        isForceAccess: Boolean = false,
+        initializer: ApplicatorFunction<FuzzyReflect, T>
+) = LazyFuzzyReflect(source.javaClass, isForceAccess, initializer)
