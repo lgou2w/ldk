@@ -82,6 +82,7 @@
 
     <properties>
         <kotlin.version>1.3.31</kotlin.version>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -104,6 +105,14 @@
         <module>ldk-bukkit</module>
     </modules>
 
+    <repositories>
+        <!-- jcenter -->
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Kotlin -->
         <dependency>
@@ -122,14 +131,28 @@
         <!-- PowerMockito -->
         <dependency>
             <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
-            <version>1.7.4</version>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>2.0.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
-            <version>1.7.4</version>
+            <version>2.0.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito-Kotlin -->
+        <dependency>
+            <groupId>com.nhaarman.mockitokotlin2</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>2.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Kluent -->
+        <dependency>
+            <groupId>org.amshove.kluent</groupId>
+            <artifactId>kluent</artifactId>
+            <version>1.49</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -155,6 +178,59 @@
                             <sourceDirs>
                                 <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
                             </sourceDirs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                        <configuration>
+                            <jvmTarget>${maven.compiler.target}</jvmTarget>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Jacoco Plugin -->
+            <!-- FIXME: Currently Jacoco can't hit the kotlin top-level inline function -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
+                            <excludes>
+                                <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
+                                <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/fx/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
+                            <excludes>
+                                <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
+                                <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/fx/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/bukkit/**</exclude>
+                                <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
