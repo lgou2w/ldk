@@ -67,7 +67,7 @@ annotation class Description(
         val usage: String = "",
         /**
          * * The command fallback prefix for this command root.
-         * * 此命令根的命令回退前缀.
+         * * 此命令根的命令后备前缀.
          */
         val fallbackPrefix: String = ""
 )
