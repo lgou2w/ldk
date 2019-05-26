@@ -90,13 +90,6 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
         
 # 构建
 
-## 持续集成
-
-非常感谢 [@25](https://github.com/25) 提供的 `Jenkins CI` 生命周期.
-
-* [稳定版](http://www.soulbound.me/job/ldk/) (master)
-* [开发版](http://www.soulbound.me/job/ldk_Dev/) (develop)
-
 ## 依赖
 
 可以在 [https://search.maven.org](https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*) 找到版本标记的 `Maven` 或 `Gradle` 依赖项.
