@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.item
 
+import com.google.gson.JsonParseException
 import com.lgou2w.ldk.bukkit.attribute.AttributeItemModifier
 import com.lgou2w.ldk.bukkit.attribute.AttributeType
 import com.lgou2w.ldk.bukkit.attribute.Operation
@@ -357,9 +358,23 @@ abstract class ItemBuilderBase : ItemBuilder {
 
     override var lore : List<String>?
         get() {
-            return tag.getCompoundOrNull(NBT.TAG_DISPLAY)
-                ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
-                ?.asElements()
+            return if (MinecraftBukkitVersion.isV114OrLater) {
+                // SEE -> https://github.com/lgou2w/ldk/issues/86
+                tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+                    ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
+                    ?.asElements<String>()
+                    ?.map {
+                        try {
+                            ChatSerializer.fromJson(it)
+                        } catch (e: JsonParseException) {
+                            ChatSerializer.fromRaw(it)
+                        }.toRaw()
+                    }
+            } else {
+                tag.getCompoundOrNull(NBT.TAG_DISPLAY)
+                    ?.getListOrNull(NBT.TAG_DISPLAY_LORE)
+                    ?.asElements()
+            }
         }
         set(value) {
             clearLore()
@@ -390,9 +405,15 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun addLore(vararg lore: String): ItemBuilder {
-        tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
-            .getListOrDefault(NBT.TAG_DISPLAY_LORE)
-            .addString(*lore)
+        if (MinecraftBukkitVersion.isV114OrLater) {
+            tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+                .getListOrDefault(NBT.TAG_DISPLAY_LORE)
+                .addString(*lore.map { ChatSerializer.fromRaw(it).toJson() }.toTypedArray())
+        } else {
+            tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+                .getListOrDefault(NBT.TAG_DISPLAY_LORE)
+                .addString(*lore)
+        }
         return this
     }
 
