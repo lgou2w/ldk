@@ -28,7 +28,9 @@ import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
 import com.lgou2w.ldk.bukkit.potion.PotionEffectType
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.chat.ChatComponent
+import com.lgou2w.ldk.chat.ChatComponentText
 import com.lgou2w.ldk.chat.ChatSerializer
+import com.lgou2w.ldk.chat.toColor
 import com.lgou2w.ldk.common.ApplicatorFunction
 import com.lgou2w.ldk.common.BiFunction
 import com.lgou2w.ldk.common.Enums
@@ -231,9 +233,12 @@ abstract class ItemBuilderBase : ItemBuilder {
         get() {
             val displayName = tag.getCompoundOrNull(NBT.TAG_DISPLAY)
                 ?.getStringOrNull(NBT.TAG_DISPLAY_NAME)
-            return if (MinecraftBukkitVersion.isV113OrLater)
+            return if (MinecraftBukkitVersion.isV113OrLater) try {
                 ChatSerializer.fromJsonOrNull(displayName)
-            else
+            } catch (e: JsonParseException) {
+                if (displayName == null) null
+                else ChatComponentText(displayName)
+            } else
                 ChatSerializer.fromRawOrNull(displayName)
         }
         set(value) {
@@ -255,13 +260,13 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun setDisplayName(displayName: String?): ItemBuilder {
-        this.displayName = ChatSerializer.fromRawOrNull(displayName)
+        this.displayName = displayName.letIfNotNull { ChatComponentText(toColor()) }
         return this
     }
 
     override fun setDisplayNameIf(displayName: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
         if (block().isTrue())
-            this.displayName = ChatSerializer.fromRawOrNull(displayName)
+            this.displayName = displayName.letIfNotNull { ChatComponentText(toColor()) }
         return this
     }
 
@@ -284,9 +289,11 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeDisplayName(predicate: Predicate<ChatComponent>?): ItemBuilder {
         tag.getCompoundOrNull(NBT.TAG_DISPLAY)
             ?.removeIf<String, ChatComponent>(NBT.TAG_DISPLAY_NAME, {
-                if (MinecraftBukkitVersion.isV113OrLater)
+                if (MinecraftBukkitVersion.isV113OrLater) try {
                     ChatSerializer.fromJson(it)
-                else
+                } catch (e: JsonParseException) {
+                    ChatComponentText(it)
+                } else
                     ChatSerializer.fromRaw(it)
             }, predicate)
         return this
@@ -367,7 +374,7 @@ abstract class ItemBuilderBase : ItemBuilder {
                         try {
                             ChatSerializer.fromJson(it)
                         } catch (e: JsonParseException) {
-                            ChatSerializer.fromRaw(it)
+                            ChatComponentText(it)
                         }.toRaw()
                     }
             } else {
@@ -408,11 +415,11 @@ abstract class ItemBuilderBase : ItemBuilder {
         if (MinecraftBukkitVersion.isV114OrLater) {
             tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
                 .getListOrDefault(NBT.TAG_DISPLAY_LORE)
-                .addString(*lore.map { ChatSerializer.fromRaw(it).toJson() }.toTypedArray())
+                .addString(*lore.map { ChatComponentText(it.toColor()).toJson() }.toTypedArray())
         } else {
             tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
                 .getListOrDefault(NBT.TAG_DISPLAY_LORE)
-                .addString(*lore)
+                .addString(*lore.toColor())
         }
         return this
     }
