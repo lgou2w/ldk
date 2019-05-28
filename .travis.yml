@@ -3,6 +3,7 @@ jdk:
   - oraclejdk8
 branches:
   only:
+    - master
     - develop
 script:
   - mvn install -Dmaven.javadoc.skip=true -Dkotlin.compile.incremental=true
