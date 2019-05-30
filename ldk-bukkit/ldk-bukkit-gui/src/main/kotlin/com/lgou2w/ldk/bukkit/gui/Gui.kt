@@ -23,6 +23,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
+import org.bukkit.plugin.Plugin
 
 /**
  * ## Gui (界面)
@@ -33,6 +34,12 @@ import org.bukkit.inventory.ItemStack
  * @author lgou2w
  */
 interface Gui : InventoryHolder, Iterable<ItemStack> {
+
+    /**
+     * * This plugin object of this Gui.
+     * * 此 Gui 的插件对象.
+     */
+    val plugin : Plugin
 
     /**
      * * The parent Gui object of this Gui.

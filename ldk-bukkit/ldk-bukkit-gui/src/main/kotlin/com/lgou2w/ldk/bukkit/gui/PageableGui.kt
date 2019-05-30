@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.gui
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.Predicate
+import org.bukkit.plugin.Plugin
 
 /**
  * ## PageableGui (可翻页界面)
@@ -27,10 +28,22 @@ import com.lgou2w.ldk.common.Predicate
  * @see [GuiBase]
  * @author lgou2w
  */
-open class PageableGui(
-        type: GuiType,
-        title: String = type.title
-) : GuiBase(type, title) {
+open class PageableGui : GuiBase {
+
+    /**
+     * * Since LDK 0.1.8-rc2, Gui added the plugin field, this constructor is deprecated and throw an exception.
+     *      * This constructor will be completely removed in LDK 0.1.9 version.
+     * * 自从 LDK 0.1.8-rc2, Gui 增加了 `plugin` 字段, 此构造弃用且抛出异常.
+     *      * 此构造将在 LDK 0.1.9 版本完全移除.
+     */
+    @Deprecated("Unsupported")
+    @Throws(UnsupportedOperationException::class)
+    constructor(type: GuiType, title: String = type.title) : super(type, title)
+
+    /**
+     * @since LDK 0.1.8-rc2
+     */
+    constructor(plugin: Plugin, type: GuiType, title: String = type.title) : super(plugin, type, title)
 
     /**
      * * Indicates the next pageable Gui object for this pageable gui.
@@ -53,7 +66,7 @@ open class PageableGui(
      */
     @JvmOverloads
     fun setPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui {
-        val next = PageableGui(type, title)
+        val next = PageableGui(plugin, type, title)
         next.parent = this
         this.next = next
         return next.also(initializer)

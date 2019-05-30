@@ -45,6 +45,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 abstract class GuiBase : Gui {
 
+    final override val plugin : Plugin
     final override var parent : Gui? = null
     final override val type : GuiType
     final override val title : String
@@ -53,9 +54,33 @@ abstract class GuiBase : Gui {
         return parent != null
     }
 
+    /**
+     * * Since LDK 0.1.8-rc2, Gui added the plugin field, this constructor is deprecated and throw an exception.
+     *      * This constructor will be completely removed in LDK 0.1.9 version.
+     * * 自从 LDK 0.1.8-rc2, Gui 增加了 `plugin` 字段, 此构造弃用且抛出异常.
+     *      * 此构造将在 LDK 0.1.9 版本完全移除.
+     */
+    @JvmOverloads
+    @Deprecated("Unsupported", replaceWith = ReplaceWith("(Plugin, GuiType, String)"))
+    @Throws(UnsupportedOperationException::class)
+    constructor(type: GuiType, title: String = type.title) {
+        this.plugin = Bukkit.getPluginManager().getPlugin(Constants.LDK)
+                      ?: throw UnsupportedOperationException(
+                              "Since LDK 0.1.8-rc2, Gui added the plugin field, this constructor is deprecated and throw an exception.")
+        this.type = type
+        this.title = title
+        this.inventory = type.createInventory(this, title)
+        this.size = inventory.size
+        safeRegisterHandlerListener()
+    }
+
+    /**
+     * @since LDK 0.1.8-rc2
+     */
     @JvmOverloads
     @Suppress("ConvertSecondaryConstructorToPrimary", "LeakingThis")
-    constructor(type: GuiType, title: String = type.title) {
+    constructor(plugin: Plugin, type: GuiType, title: String = type.title) {
+        this.plugin = plugin
         this.type = type
         this.title = title
         this.inventory = type.createInventory(this, title)
@@ -414,10 +439,11 @@ abstract class GuiBase : Gui {
                         }
                     }
                     is PluginDisableEvent -> {
-                        if (event.plugin.name == FAKE_PLUGIN_NAME || event.plugin.name == Constants.LDK)
-                            for (player in Bukkit.getOnlinePlayers())
-                                if (player.openInventory.topInventory.holder is Gui)
-                                    player.closeInventory()
+                        for (player in Bukkit.getOnlinePlayers()) {
+                            val gui = player.openInventory.topInventory.holder as? Gui
+                            if (gui != null && (event.plugin.name == Constants.LDK || event.plugin == gui.plugin))
+                                player.closeInventory()
+                        }
                     }
                 }
             }, EventPriority.MONITOR, ldk ?: FakePlugin(FAKE_PLUGIN_NAME), false)
