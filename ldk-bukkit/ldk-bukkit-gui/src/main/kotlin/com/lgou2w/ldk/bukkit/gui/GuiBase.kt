@@ -183,7 +183,7 @@ abstract class GuiBase : Gui {
      *
      **************************************************************************/
 
-    private val buttonList : MutableList<Button> = ArrayList()
+    protected val buttonList : MutableList<Button> = ArrayList()
     final override val buttons : List<Button>
         get() = synchronized (buttonList) {
             Collections.unmodifiableList(buttonList)
@@ -194,7 +194,7 @@ abstract class GuiBase : Gui {
             buttonList.size
         }
 
-    private fun <T : Button> addButton0(button: T): T {
+    protected open fun <T : Button> addButton0(button: T): T {
         canAdd(this, button)
         synchronized (buttonList) {
             buttonList.add(button)
