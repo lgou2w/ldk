@@ -45,6 +45,9 @@ class FxDispatcherProvider private constructor() : DispatcherProvider {
     override val dispatcher : CoroutineContext
         get() = Dispatchers.JavaFx
 
+    override fun close() {
+    }
+
     companion object {
         /**
          * * A singleton object for this JavaFx dispatcher provider.

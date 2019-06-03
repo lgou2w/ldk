@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.coroutines
 
+import java.io.Closeable
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -25,9 +26,11 @@ import kotlin.coroutines.CoroutineContext
  * @see [SingleThreadDispatcherProvider]
  * @see [FixedThreadPoolDispatcherProvider]
  * @see [ScheduledThreadPoolDispatcherProvider]
+ * @see [CachedThreadPoolDispatcherProvider]
+ * @see [Closeable]
  * @author lgou2w
  */
-interface DispatcherProvider {
+interface DispatcherProvider : Closeable {
 
     /**
      * * The coroutine context object for this dispatcher provider.

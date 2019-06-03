@@ -18,20 +18,18 @@ package com.lgou2w.ldk.coroutines
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
-import java.io.Closeable
 import java.util.concurrent.Executors
 
 /**
  * ## SingleThreadDispatcherProvider (单线程调度程序提供者)
  *
  * @see [DispatcherProvider]
- * @see [Closeable]
  * @see [Executors.newSingleThreadExecutor]
  * @author lgou2w
  */
 class SingleThreadDispatcherProvider(
         private val threadName: String
-) : DispatcherProvider, Closeable {
+) : DispatcherProvider {
 
     private val createPoolThread : (Runnable) -> Thread = { r ->
         Thread(r, threadName)

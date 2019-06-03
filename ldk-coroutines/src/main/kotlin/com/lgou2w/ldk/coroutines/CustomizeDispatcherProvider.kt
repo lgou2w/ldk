@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.coroutines
 
+import java.io.Closeable
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -26,4 +27,8 @@ import kotlin.coroutines.CoroutineContext
  */
 open class CustomizeDispatcherProvider(
         override val dispatcher: CoroutineContext
-) : DispatcherProvider
+) : DispatcherProvider {
+    override fun close() {
+        (dispatcher as? Closeable)?.close()
+    }
+}
