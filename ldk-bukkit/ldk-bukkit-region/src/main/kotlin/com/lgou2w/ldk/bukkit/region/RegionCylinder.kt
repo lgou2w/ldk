@@ -40,7 +40,7 @@ open class RegionCylinder : RegionBase, RegionFlat {
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun deserialize(args: Map<String, Any>): RegionCylinder {
-            val world = args["world"]?.toString().letIfNotNull { Bukkit.getWorld(this) }
+            val world = args["world"]?.toString().letIfNotNull(Bukkit::getWorld)
                         ?: throw IllegalArgumentException("Unknown world: ${args["world"]}")
             val center = RegionVector2D.deserialize(args["center2D"] as Map<String, Any>)
             val radius = RegionVector2D.deserialize(args["radius"] as Map<String, Any>)

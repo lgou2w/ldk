@@ -260,13 +260,13 @@ abstract class ItemBuilderBase : ItemBuilder {
     }
 
     override fun setDisplayName(displayName: String?): ItemBuilder {
-        this.displayName = displayName.letIfNotNull { ChatComponentText(toColor()) }
+        this.displayName = displayName.letIfNotNull { ChatComponentText(it.toColor()) }
         return this
     }
 
     override fun setDisplayNameIf(displayName: String?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
         if (block().isTrue())
-            this.displayName = displayName.letIfNotNull { ChatComponentText(toColor()) }
+            this.displayName = displayName.letIfNotNull { ChatComponentText(it.toColor()) }
         return this
     }
 
@@ -1120,7 +1120,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     override var bookGeneration : Generation?
         get() {
             return tag.getIntOrNull(NBT.TAG_BOOK_GENERATION)
-                ?.letIfNotNull { Enums.ofValuable(Generation::class.java, this) }
+                ?.letIfNotNull { Enums.ofValuable(Generation::class.java, it) }
         }
         set(value) {
             removeBookGeneration()
@@ -1471,7 +1471,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     //<editor-fold desc="ItemBuilder - PotionColor" defaultstate="collapsed">
 
     override var potionColor : Color?
-        get() = tag.getIntOrNull(NBT.TAG_CUSTOM_POTION_COLOR).letIfNotNull { Color.fromRGB(this) }
+        get() = tag.getIntOrNull(NBT.TAG_CUSTOM_POTION_COLOR).letIfNotNull(Color::fromRGB)
         set(value) {
             removePotionColor()
             if (value != null)
@@ -1511,7 +1511,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     //<editor-fold desc="ItemBuilder - PotionBase" defaultstate="collapsed">
 
     override var potionBase : PotionBase?
-        get() = tag.getStringOrNull(NBT.TAG_POTION).letIfNotNull { PotionBase.valueOf(this) }
+        get() = tag.getStringOrNull(NBT.TAG_POTION).letIfNotNull { PotionBase.valueOf(it) }
         set(value) {
             removePotionBase()
             if (value != null)
@@ -1661,7 +1661,7 @@ abstract class ItemBuilderBase : ItemBuilder {
     //<editor-fold desc="ItemBuilder - FireworkStar" defaultstate="collapsed">
 
     override var fireworkStar : FireworkEffect?
-        get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS_EXPLOSION).letIfNotNull { FireworkEffect.deserialize(this) }
+        get() = tag.getCompoundOrNull(NBT.TAG_FIREWORKS_EXPLOSION).letIfNotNull { FireworkEffect.deserialize(it) }
         set(value) {
             removeFireworkStar()
             if (value != null)

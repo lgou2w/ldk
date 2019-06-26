@@ -188,7 +188,7 @@ open class SimpleButtonBuilder(
     }
 
     override fun stack(stack: ItemStack?, builder: Applicator<ItemBuilder>): ButtonBuilder {
-        button.stack = stack.letIfNotNull { ItemBuilder.of(this).also(builder).build() }
+        button.stack = stack.letIfNotNull { ItemBuilder.of(it).also(builder).build() }
         return this
     }
 
