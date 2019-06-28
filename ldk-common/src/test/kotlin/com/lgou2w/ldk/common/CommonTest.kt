@@ -65,7 +65,7 @@ class CommonTest {
     }
 
     @Test fun `letIfNotNull - string to int should be int type`() {
-        val obj = "1".letIfNotNull { toInt() }
+        val obj = "1".letIfNotNull { it.toInt() }
         obj shouldNotEqual null
         obj shouldEqual 1
     }

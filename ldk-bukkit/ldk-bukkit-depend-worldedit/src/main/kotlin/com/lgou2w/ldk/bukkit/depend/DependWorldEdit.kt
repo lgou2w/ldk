@@ -110,10 +110,10 @@ class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
             }
         }
         @JvmStatic private val STRUCTURE_LEGACY_VECTOR by lazy {
-            CLASS_LEGACY_VECTOR.letIfNotNull { StructureModifier.of<Any>(this) }
+            CLASS_LEGACY_VECTOR.letIfNotNull { StructureModifier.of<Any>(it) }
         }
         @JvmStatic private val STRUCTURE_LEGACY_VECTOR_2D by lazy {
-            CLASS_LEGACY_VECTOR_2D.letIfNotNull { StructureModifier.of<Any>(this) }
+            CLASS_LEGACY_VECTOR_2D.letIfNotNull { StructureModifier.of<Any>(it) }
         }
 
         @JvmStatic private val REGION_METHOD_ACCESSORS : MutableMap<String, AccessorMethod<Any, Any>> = HashMap()

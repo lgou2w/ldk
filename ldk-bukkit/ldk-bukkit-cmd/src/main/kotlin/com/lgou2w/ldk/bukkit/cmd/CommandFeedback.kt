@@ -21,7 +21,12 @@ import org.bukkit.command.CommandSender
 /**
  * ## CommandFeedback (命令反馈)
  *
+ * * If you need to implement it yourself,
+ *      then you should extends [SimpleCommandFeedback] instead of implementing this interface.
+ * * 如果需要自己实现, 那么你应该继承 [SimpleCommandFeedback] 而不是实现此接口.
+ *
  * @see [SimpleCommandFeedback]
+ * @see [SimpleChineseCommandFeedback]
  * @author lgou2w
  */
 interface CommandFeedback {

@@ -33,4 +33,7 @@ class BukkitDispatcherProvider(
 
     override val dispatcher : CoroutineContext
             = BukkitDispatcher(plugin, state)
+
+    override fun close() {
+    }
 }

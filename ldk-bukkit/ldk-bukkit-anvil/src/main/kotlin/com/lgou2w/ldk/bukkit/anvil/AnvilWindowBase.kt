@@ -170,10 +170,11 @@ abstract class AnvilWindowBase(
                         }
                     }
                 } else if (event is PluginDisableEvent) {
-                    if (event.plugin.name == FAKE_PLUGIN_NAME || event.plugin.name == Constants.LDK)
-                        for (player in Bukkit.getOnlinePlayers())
-                            if (getInventoryAnvilWindow(player.openInventory) != null)
-                                player.closeInventory()
+                    for (player in Bukkit.getOnlinePlayers()) {
+                        val anvilWindow = getInventoryAnvilWindow(player.openInventory)
+                        if (anvilWindow != null && (event.plugin.name == Constants.LDK || event.plugin == anvilWindow.plugin))
+                            player.closeInventory()
+                    }
                 }
             }, EventPriority.MONITOR, ldk ?: FakePlugin(FAKE_PLUGIN_NAME), false)
             InventoryClickEvent.getHandlerList().register(listener)

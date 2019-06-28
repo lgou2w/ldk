@@ -182,8 +182,8 @@ fun Plugin.registerListener(listener: Listener)
         = Bukkit.getPluginManager().registerEvents(listener, this)
 
 /**
- * * Unregister the given event [listener] from the given plugin.
- * * 将给定的事件监听器 [listener] 从给定的插件中注销.
+ * * Unregister the given event [listener].
+ * * 将给定的事件监听器 [listener] 注销.
  *
  * @since LDK 0.1.7-rc5
  */

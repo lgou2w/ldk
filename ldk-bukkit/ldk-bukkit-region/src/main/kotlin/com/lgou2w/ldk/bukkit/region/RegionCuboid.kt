@@ -54,7 +54,7 @@ open class RegionCuboid(
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun deserialize(args: Map<String, Any>): RegionCuboid {
-            val world = args["world"]?.toString().letIfNotNull { Bukkit.getWorld(this) }
+            val world = args["world"]?.toString().letIfNotNull(Bukkit::getWorld)
                         ?: throw IllegalArgumentException("Unknown world: ${args["world"]}")
             val pos1 = RegionVector.deserialize(args["pos1"] as Map<String, Any>)
             val pos2 = RegionVector.deserialize(args["pos2"] as Map<String, Any>)

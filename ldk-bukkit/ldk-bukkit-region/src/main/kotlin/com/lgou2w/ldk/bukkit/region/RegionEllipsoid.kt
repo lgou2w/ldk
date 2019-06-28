@@ -47,7 +47,7 @@ open class RegionEllipsoid(
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun deserialize(args: Map<String, Any>): RegionEllipsoid {
-            val world = args["world"]?.toString().letIfNotNull { Bukkit.getWorld(this) }
+            val world = args["world"]?.toString().letIfNotNull(Bukkit::getWorld)
                         ?: throw IllegalArgumentException("Unknown world: ${args["world"]}")
             val center = RegionVector.deserialize(args["center"] as Map<String, Any>)
             val radius = RegionVector.deserialize(args["radius"] as Map<String, Any>)

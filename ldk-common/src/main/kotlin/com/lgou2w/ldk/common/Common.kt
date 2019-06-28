@@ -395,7 +395,7 @@ inline fun <T> T?.applyIfNotNull(block: Applicator<T>): T? {
  * * If the receiver is not `null`, then the specified [block] function is called with the `this` value as the argument and the result is returned.
  * * 如果接收器不为 `null`, 那么使用 `this` 值作为参数调用指定的 [block] 函数并返回其结果.
  */
-inline fun <T, R> T?.letIfNotNull(block: ApplicatorFunction<T, R>): R? {
+inline fun <T, R> T?.letIfNotNull(block: Function<T, R>): R? {
     if (this != null)
         return block(this)
     return null

@@ -18,7 +18,6 @@ package com.lgou2w.ldk.coroutines
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
-import java.io.Closeable
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -26,14 +25,13 @@ import java.util.concurrent.atomic.AtomicInteger
  * ## FixedThreadPoolDispatcherProvider (固定长度线程池调度程序提供者)
  *
  * @see [DispatcherProvider]
- * @see [Closeable]
  * @see [Executors.newFixedThreadPool]
  * @author lgou2w
  */
 class FixedThreadPoolDispatcherProvider(
         private val threads: Int,
         private val threadName: String
-) : DispatcherProvider, Closeable {
+) : DispatcherProvider {
 
     init {
         if (threads < 1)

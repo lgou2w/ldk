@@ -288,7 +288,7 @@ object ItemFactory {
                  ?: throw UnsupportedOperationException("Illegal item nbt.")
         val count = root.getByteOrNull(NBT.TAG_COUNT) ?: 1
         val tag = root.getCompoundOrNull(NBT.TAG)
-        val type = if (MinecraftBukkitVersion.isV113OrLater) {
+        return if (MinecraftBukkitVersion.isV113OrLater) {
             // After version 1.13
             // 1.13 版本之后
             XMaterial.searchByType(id) ?: throw UnsupportedOperationException("Invalid item id: $id")
@@ -297,8 +297,7 @@ object ItemFactory {
             // 1.13 版本之前
             val damage = root.getShortOrNull(NBT.TAG_DAMAGE) ?: 0 // if not existed
             XMaterial.searchByType("$id:$damage") ?: throw UnsupportedOperationException("Invalid item: $id:$damage")
-        }.toBukkit()
-        return ItemStack(type, count.toInt()).apply {
+        }.createStack(count.toInt()).apply {
             if (tag != null)
                 writeTag(this, tag)
         }

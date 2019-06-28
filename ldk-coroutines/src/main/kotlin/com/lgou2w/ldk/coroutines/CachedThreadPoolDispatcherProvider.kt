@@ -18,7 +18,6 @@ package com.lgou2w.ldk.coroutines
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
-import java.io.Closeable
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -26,13 +25,12 @@ import java.util.concurrent.atomic.AtomicInteger
  * ## CachedThreadPoolDispatcherProvider (可缓存线程池调度程序提供者)
  *
  * @see [DispatcherProvider]
- * @see [Closeable]
  * @see [Executors.newCachedThreadPool]
  * @since LDK 0.1.8-rc
  */
 class CachedThreadPoolDispatcherProvider(
         private val threadName: String
-) : DispatcherProvider, Closeable {
+) : DispatcherProvider {
 
     private val threadNo = AtomicInteger()
     private val createPoolThread : (Runnable) -> Thread = { r ->
