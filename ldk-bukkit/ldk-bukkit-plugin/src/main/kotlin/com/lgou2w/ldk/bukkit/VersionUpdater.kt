@@ -123,7 +123,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
 
     private fun parseVersion(versionOnly: String): Version {
         return if (versionOnly < "1.0") {
-            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1, 0.3.0-rc-SNAPSHOT
+            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1, 0.3.0-rc-SNAPSHOT, 0.1.8-SNAPSHOT
             val versions = versionOnly.split('-')
             val ver = versions[0]
             val (type, value) = parseZeroVersionValue(versions.getOrNull(1))
@@ -141,7 +141,8 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
     }
 
     private fun parseZeroVersionValue(zeroVersionTypeOnly: String?): Pair<String, Int> {
-        if (zeroVersionTypeOnly == null) return "rc" to 0
+        if (zeroVersionTypeOnly == null || zeroVersionTypeOnly == "SNAPSHOT")
+            return "release" to 0
         val idx = zeroVersionTypeOnly.indexOfFirst { it in '0'..'9' }
         if (idx == -1)
             return zeroVersionTypeOnly to 0
