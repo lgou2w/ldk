@@ -20,6 +20,7 @@ import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import kotlin.math.floor
 
 /**
  * ## RegionEllipsoid (椭圆区域)
@@ -62,7 +63,7 @@ open class RegionEllipsoid(
         get() = center + radius
 
     override val area : Int
-        get() = Math.floor((4 / 3 * Math.PI) * radius.x * radius.y * radius.z).toInt()
+        get() = floor((4 / 3 * Math.PI) * radius.x * radius.y * radius.z).toInt()
 
     override val width : Int
         get() = (radius.x * 2.0).toInt()

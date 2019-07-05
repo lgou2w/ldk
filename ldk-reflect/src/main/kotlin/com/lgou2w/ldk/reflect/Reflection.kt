@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.reflect
 
+import kotlin.math.min
+
 /**
  * ## Reflection
  *
@@ -178,7 +180,7 @@ abstract class Reflection private constructor() {
         override fun getCallerClasses(depth: Int?, expected: Class<*>?): List<Class<*>> {
             val elements = Thread.currentThread().stackTrace
             val callerClasses = ArrayList<Class<*>>()
-            for (index in 0 until Math.min(elements.size, safeDepth(depth))) try {
+            for (index in 0 until min(elements.size, safeDepth(depth))) try {
                 val clazz = Class.forName(elements[index].className) ?: break
                 if (expected != null && expected.isAssignableFrom(clazz)) callerClasses.add(clazz)
                 else if (expected == null) callerClasses.add(clazz)

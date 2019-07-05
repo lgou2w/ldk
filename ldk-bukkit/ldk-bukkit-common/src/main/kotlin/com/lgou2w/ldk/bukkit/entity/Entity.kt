@@ -22,6 +22,7 @@ import com.lgou2w.ldk.nbt.NBTTagCompound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
+import kotlin.math.cos
 
 /**************************************************************************
  *
@@ -101,7 +102,7 @@ fun Entity.isInFront(target: Entity): Boolean {
 fun Entity.isInFront(target: Entity, angle: Double): Boolean {
     if (angle <= .0) return false
     if (angle >= 360.0) return true
-    val dotTarget = Math.cos(angle)
+    val dotTarget = cos(angle)
     val facing = location.direction
     val relative = target.location.subtract(location).toVector().normalize()
     return facing.dot(relative) >= dotTarget
@@ -121,7 +122,7 @@ fun Entity.isBehind(target: Entity): Boolean
 fun Entity.isBehind(target: Entity, angle: Double): Boolean {
     if (angle <= .0) return false
     if (angle >= 360.0) return true
-    val dotTarget = Math.cos(angle)
+    val dotTarget = cos(angle)
     val facing = location.direction
     val relative = location.subtract(target.location).toVector().normalize()
     return facing.dot(relative) >= dotTarget

@@ -23,6 +23,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToLong
 
 /**
  * ## BukkitRxScheduler (Bukkit Reactivex 调度器)
@@ -80,7 +81,7 @@ class BukkitRxScheduler private constructor(
 
         private fun unitToTick(delay: Long, unit: TimeUnit): Long {
             val millis = unit.toMillis(delay)
-            return Math.round(millis * 0.02)
+            return (millis * 0.02).roundToLong()
         }
     }
 

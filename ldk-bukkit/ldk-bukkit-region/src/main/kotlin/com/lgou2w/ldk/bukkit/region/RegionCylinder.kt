@@ -20,6 +20,7 @@ import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import kotlin.math.floor
 
 /**
  * ## RegionCylinder (圆柱区域)
@@ -103,7 +104,7 @@ open class RegionCylinder : RegionBase, RegionFlat {
         get() = center2D.toRegionVector((maxY + minY) / 2.0)
 
     override val area : Int
-        get() = Math.floor(radius.x * radius.z * Math.PI * height).toInt()
+        get() = floor(radius.x * radius.z * Math.PI * height).toInt()
 
     override val width : Int
         get() = (radius.x * 2.0).toInt()

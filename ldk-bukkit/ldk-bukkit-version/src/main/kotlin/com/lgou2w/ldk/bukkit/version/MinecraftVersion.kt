@@ -21,6 +21,7 @@ import com.lgou2w.ldk.common.Version
 import org.bukkit.Bukkit
 import java.util.Collections
 import java.util.regex.Pattern
+import kotlin.math.min
 
 /**
  * ## MinecraftVersion (Minecraft 版本)
@@ -89,7 +90,7 @@ class MinecraftVersion(
                             pre = versionOnly.substring(index + 4).toIntOrNull()
                             versionOnly.substring(0, index).split('.')
                         }
-                        for (i in 0 until Math.min(numbers.size, elements.size))
+                        for (i in 0 until min(numbers.size, elements.size))
                             numbers[i] = elements[i].trim().toInt()
                     } catch (e: Exception) {
                         if (e is NumberFormatException)

@@ -21,6 +21,8 @@ import com.lgou2w.ldk.common.letIfNotNull
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * ## RegionCuboid (长方块区域)
@@ -63,10 +65,10 @@ open class RegionCuboid(
     }
 
     override val minimumPoint : RegionVector
-        get() = RegionVector(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z))
+        get() = RegionVector(min(pos1.x, pos2.x), min(pos1.y, pos2.y), min(pos1.z, pos2.z))
 
     override val maximumPoint : RegionVector
-        get() = RegionVector(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z))
+        get() = RegionVector(max(pos1.x, pos2.x), max(pos1.y, pos2.y), max(pos1.z, pos2.z))
 
     override fun contains(x: Double, y: Double, z: Double): Boolean {
         val min = minimumPoint
@@ -111,10 +113,10 @@ open class RegionCuboid(
     }
 
     override val minimumY : Int
-        get() = Math.min(pos1.blockY, pos2.blockY)
+        get() = min(pos1.blockY, pos2.blockY)
 
     override val maximumY : Int
-        get() = Math.max(pos1.blockY, pos2.blockY)
+        get() = max(pos1.blockY, pos2.blockY)
 
     override fun asFlat(): Iterable<RegionVector2D> {
         return object : Iterable<RegionVector2D> {

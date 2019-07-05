@@ -51,8 +51,8 @@ class DefaultRegisteredCommand(
         executors: Map<String, DefaultCommandExecutor>
 ) : RegisteredCommand {
 
-    private val mChildren = ConcurrentHashMap<String, DefaultRegisteredCommand>(children)
-    private val mExecutors = ConcurrentHashMap<String, DefaultCommandExecutor>(executors)
+    private val mChildren = ConcurrentHashMap(children)
+    private val mExecutors = ConcurrentHashMap(executors)
 
     override val children : Map<String, RegisteredCommand> get() = Collections.unmodifiableMap(mChildren)
     override val executors : Map<String, CommandExecutor> get() = Collections.unmodifiableMap(mExecutors)

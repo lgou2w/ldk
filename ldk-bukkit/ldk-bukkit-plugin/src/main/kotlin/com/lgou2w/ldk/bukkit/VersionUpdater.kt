@@ -219,7 +219,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
             } catch (e: Exception) {
                 return parseLatestReleaseFromJitpack()
             }
-            val releases = Gson().fromJson<JsonArray>(content, JsonArray::class.java)
+            val releases = Gson().fromJson(content, JsonArray::class.java)
             val release = releases.firstOrNull()?.asJsonObject ?: return null
             val tag = release.get(RELEASE_TAG).asString
             val releasedAt = release.get(RELEASE_AT).asString
@@ -236,7 +236,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         @Throws(Exception::class)
         private fun parseLatestReleaseFromJitpack(): Release? {
             val content = URL(API_JITPACK).readText(Charsets.UTF_8)
-            val releases = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
+            val releases = Gson().fromJson(content, JsonObject::class.java)
             val release = releases[RELEASE_GROUP_ID]?.asJsonObject ?: return null
             val tags = release[RELEASE_ARTIFACT_ID]?.asJsonObject ?: return null
             val tag = tags.entrySet().lastOrNull()?.key ?: return null
