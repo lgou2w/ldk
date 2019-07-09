@@ -19,12 +19,14 @@ package com.lgou2w.ldk.bukkit
 import com.lgou2w.ldk.common.Callable
 import com.lgou2w.ldk.common.Runnable
 import org.bukkit.Bukkit
+import org.bukkit.Color
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.FutureTask
+import kotlin.random.Random
 
 /**************************************************************************
  *
@@ -198,3 +200,21 @@ fun Plugin.unregisterListener(listener: Listener)
  */
 fun Plugin.unregisterListeners()
         = HandlerList.unregisterAll(this)
+
+/**************************************************************************
+ *
+ * org.bukkit Global extended
+ *
+ **************************************************************************/
+
+/**
+ * * Create a color object with a random `RGB` value.
+ * * 创建一个具有随机 `RGB` 值的颜色对象.
+ *
+ * @since LDK 0.1.8
+ */
+fun randomColor() = Color.fromRGB(
+        Random.nextInt(256),
+        Random.nextInt(256),
+        Random.nextInt(256)
+)
