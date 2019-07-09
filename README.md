@@ -87,7 +87,23 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
         
 </details>
-        
+
+# Version
+
+## 0.x
+
+- `0.1.8-beta1` - The first beta of 0.1.8 version.
+- `0.1.8-rc2` - The 2nd pre-release of 0.1.8 version.
+- `0.1.8-rc2-hotfix1` - The 2nd pre-released hot fix 1 of the 0.1.8 version.
+- `0.1.8-rc2-SNAPSHOT` - The the 2nd pre-release of the 0.1.8 snapshot version.
+- `0.1.8-SNAPSHOT` - Snapshot of the 0.1.8 release version.
+- `0.1.8` - 0.1.8 release version.
+
+## 1.x Or higher
+
+- `1.0` - 1.0 release version.
+- `1.1-SNAPSHOT` - Snapshot of the 1.1 release version.
+
 # Binaries
 
 ## Dependencies

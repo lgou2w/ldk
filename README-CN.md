@@ -87,7 +87,23 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
         
 </details>
-        
+
+# 版本
+
+## 0.x
+
+- `0.1.8-beta1` - 0.1.8 版本的第一个测试版.
+- `0.1.8-rc2` - 0.1.8 版本的第二个预发布版.
+- `0.1.8-rc2-hotfix1` - 0.1.8 版本的第二个预发布版热修1.
+- `0.1.8-rc2-SNAPSHOT` - 0.1.8 快照版本的第二个预发布版本.
+- `0.1.8-SNAPSHOT` - 0.1.8 快照版本.
+- `0.1.8` - 0.1.8 正式版.
+
+## 1.x Or higher
+
+- `1.0` - 1.0 正式版.
+- `1.1-SNAPSHOT` - 1.1 快照版本.
+
 # 构建
 
 ## 依赖
