@@ -58,7 +58,7 @@ class EnumsTest {
         Enums.fromName(MyEnum::class.java, "404 Not Found") shouldEqual null
     }
 
-    @Suppress("DEPRECATION") // FIXME : ofOrigin rename to ofOrdinal
+    @Suppress("DEPRECATION")
     @Test fun `Enums - ofOrdinal - fromOrdinal`() {
         Enums.ofOrigin(MyEnum::class.java, 0) shouldEqual MyEnum.ENTRY_A // ordinal = 0
         Enums.ofOriginNotNull(MyEnum::class.java, 1) shouldEqual MyEnum.ENTRY_B // .. = 1
