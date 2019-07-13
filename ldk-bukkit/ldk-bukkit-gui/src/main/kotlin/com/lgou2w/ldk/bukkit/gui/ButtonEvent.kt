@@ -65,8 +65,20 @@ data class ButtonEvent(
         get() = button.parent
 
     /**
+     * * The clicker player object for this event.
+     * * 此事件的点击者玩家对象.
+     *
+     * @throws [ClassCastException] If the clicker is not a player.
+     * @throws [ClassCastException] 如果点击者不是玩家.
+     * @since LDK 0.1.8
+     */
+    val player : Player
+        get() = clicker as Player
+
+    /**
      * * Get this event whether the clicker is a player.
      * * 获取此事件点击者是否为玩家.
+     *
      */
     fun isPlayer() : Boolean
             = clicker is Player
