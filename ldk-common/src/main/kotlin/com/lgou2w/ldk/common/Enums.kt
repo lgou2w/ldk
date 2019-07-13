@@ -109,6 +109,10 @@ object Enums {
             = ofName(clazz, name, def)
               ?: throw NoSuchElementException("Cannot find type $clazz enumeration name: $name")
 
+    /**
+     * * Will be completely removed at LDK 0.1.9 version.
+     * * 将在 LDK 0.1.9 版本完全移除.
+     */
     @JvmStatic
     @JvmOverloads
     @Deprecated("RENAME", replaceWith = ReplaceWith("ofOrdinal"))
@@ -133,6 +137,10 @@ object Enums {
     fun <T : Enum<T>> ofOrdinal(clazz: Class<T>, ordinal: Int, def: T? = null): T?
             = of(clazz, { it.ordinal == ordinal }, def)
 
+    /**
+     * * Will be completely removed at LDK 0.1.9 version.
+     * * 将在 LDK 0.1.9 版本完全移除.
+     */
     @JvmStatic
     @JvmOverloads
     @Throws(NoSuchElementException::class)
@@ -272,6 +280,10 @@ object Enums {
     fun <T> fromName(clazz: Class<T>, name: String, def: Enum<*>? = null): Enum<*>?
             = from(clazz, { it.name == name }, def)
 
+    /**
+     * * Will be completely removed at LDK 0.1.9 version.
+     * * 将在 LDK 0.1.9 版本完全移除.
+     */
     @JvmStatic
     @JvmOverloads
     @Deprecated("RENAME", replaceWith = ReplaceWith("fromOrdinal"))

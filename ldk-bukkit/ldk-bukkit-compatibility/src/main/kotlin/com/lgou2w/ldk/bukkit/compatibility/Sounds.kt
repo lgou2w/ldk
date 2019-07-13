@@ -75,6 +75,10 @@ enum class Sounds(private vararg val versionDependentNames: String) {
     AMBIENCE_CAVE("AMBIENCE_CAVE", "AMBIENT_CAVE"),
     AMBIENCE_RAIN("AMBIENCE_RAIN", "WEATHER_RAIN"),
     AMBIENCE_THUNDER("AMBIENCE_THUNDER", "ENTITY_LIGHTNING_THUNDER", "ENTITY_LIGHTNING_BOLT_THUNDER"),
+    /**
+     * * Will be completely removed at LDK 0.1.9 version.
+     * * 将在 LDK 0.1.9 版本完全移除.
+     */
     @Deprecated("RENAMED", replaceWith = ReplaceWith("ANVIL_DESTROY"))
     ANVIL_BREAK("ANVIL_BREAK", "BLOCK_ANVIL_DESTROY"),
     /**
