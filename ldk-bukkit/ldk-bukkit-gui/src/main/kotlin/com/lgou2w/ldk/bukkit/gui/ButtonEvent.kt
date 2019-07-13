@@ -34,7 +34,7 @@ import org.bukkit.inventory.ItemStack
  * @see [InventoryClickEvent]
  * @author lgou2w
  */
-data class ButtonEvent(
+class ButtonEvent(
         /**
          * * The button object for this event.
          * * 此事件的按钮对象.
