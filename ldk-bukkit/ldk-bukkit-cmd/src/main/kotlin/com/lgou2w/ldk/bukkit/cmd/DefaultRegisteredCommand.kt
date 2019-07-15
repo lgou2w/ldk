@@ -51,11 +51,13 @@ class DefaultRegisteredCommand(
         executors: Map<String, DefaultCommandExecutor>
 ) : RegisteredCommand {
 
-    private val mChildren = ConcurrentHashMap(children)
-    private val mExecutors = ConcurrentHashMap(executors)
+    private val _children = ConcurrentHashMap(children)
+    private val _executors = ConcurrentHashMap(executors)
 
-    override val children : Map<String, RegisteredCommand> get() = Collections.unmodifiableMap(mChildren)
-    override val executors : Map<String, CommandExecutor> get() = Collections.unmodifiableMap(mExecutors)
+    override val children : Map<String, RegisteredCommand>
+        get() = Collections.unmodifiableMap(_children)
+    override val executors : Map<String, CommandExecutor>
+        get() = Collections.unmodifiableMap(_executors)
 
     override var prefix : String = prefix?.replace(COMMAND_PLACEHOLDER, name) ?: ""
         set(value) { field = value.replace(COMMAND_PLACEHOLDER, name) }
@@ -89,7 +91,7 @@ class DefaultRegisteredCommand(
         val existed = findChild(child.name, false)
         if (existed != null && !forcibly)
             return false
-        mChildren[child.name] = child
+        _children[child.name] = child
         child.isRegistered = true
         CommandManagerBase
             .initialize(child, child.manager)
@@ -97,16 +99,16 @@ class DefaultRegisteredCommand(
     }
 
     override fun findChild(name: String, allowAlias: Boolean): DefaultRegisteredCommand? {
-        var child = mChildren[name]
+        var child = _children[name]
         if (child == null && allowAlias)
-            child = mChildren.values.find { c -> c.aliases.any { alias -> alias == name } }
+            child = _children.values.find { name in it.aliases }
         return child
     }
 
     override fun findExecutor(name: String, allowAlias: Boolean): DefaultCommandExecutor? {
-        var executor = mExecutors[name]
+        var executor = _executors[name]
         if (executor == null && allowAlias)
-            executor = mExecutors.values.find { e -> e.aliases.any { alias -> alias == name } }
+            executor = _executors.values.find { name in it.aliases }
         return executor
     }
 
@@ -117,7 +119,7 @@ class DefaultRegisteredCommand(
 
     override fun mappingExecutorDescriptions(mapping: Map<String, String?>) {
         mapping.forEach { (name, description) ->
-            val executor = mExecutors[name]
+            val executor = _executors[name]
             if (executor != null)
                 executor.description = description
         }
@@ -239,12 +241,12 @@ class DefaultRegisteredCommand(
         if (!isAllowCompletion || !testPermissionIfFailed(sender, permission))
             return null
         return if (args.size <= 1) {
-            (mChildren
+            (_children
                  .asSequence()
                  .filter { testPermissionIfFailed(sender, it.value.permission) }
                  .map { it.key to it.value.sorted }
              +
-            mExecutors
+            _executors
                 .asSequence()
                 .filter { testPermissionIfFailed(sender, it.value.permission) && it.key != name }
                 .map { it.key to it.value.sorted }
@@ -288,8 +290,8 @@ class DefaultRegisteredCommand(
         var result = source.hashCode()
         result = result * 31 + name.hashCode()
         result = result * 31 + Arrays.hashCode(aliases)
-        result = result * 31 + mChildren.hashCode()
-        result = result * 31 + mExecutors.hashCode()
+        result = result * 31 + _children.hashCode()
+        result = result * 31 + _executors.hashCode()
         return result
     }
 
@@ -300,8 +302,8 @@ class DefaultRegisteredCommand(
             return source == other.source &&
                    name == other.name &&
                    Arrays.equals(aliases, other.aliases) &&
-                   mChildren == other.mChildren &&
-                   mExecutors == other.mExecutors
+                   _children == other._children &&
+                   _executors == other._executors
         return false
     }
 

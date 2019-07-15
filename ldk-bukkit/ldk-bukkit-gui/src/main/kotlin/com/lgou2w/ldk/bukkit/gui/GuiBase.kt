@@ -119,21 +119,21 @@ abstract class GuiBase : Gui {
      *
      **************************************************************************/
 
-    private val propertyTable = Hashtable<String, Any>()
+    private val _properties = Hashtable<String, Any>()
     final override val properties : Map<String, Any>
-        get() = synchronized (propertyTable) {
-            Hashtable(propertyTable)
+        get() = synchronized (_properties) {
+            Hashtable(_properties)
         }
 
     override fun setProperty(key: String, value: Any): Any? {
-        synchronized (propertyTable) {
-            return propertyTable.put(key, value)
+        synchronized (_properties) {
+            return _properties.put(key, value)
         }
     }
 
     override fun getProperty(key: String, def: Any?): Any? {
-        synchronized (propertyTable) {
-            return propertyTable[key] ?: def
+        synchronized (_properties) {
+            return _properties[key] ?: def
         }
     }
 
@@ -160,20 +160,20 @@ abstract class GuiBase : Gui {
             = getPropertyAs<T>(key, null).notNull("The property $key does not have a valid value.")
 
     override fun containsProperty(key: String): Boolean {
-        synchronized (propertyTable) {
-            return propertyTable.containsKey(key)
+        synchronized (_properties) {
+            return _properties.containsKey(key)
         }
     }
 
     override fun removeProperty(key: String): Any? {
-        synchronized (propertyTable) {
-            return propertyTable.remove(key)
+        synchronized (_properties) {
+            return _properties.remove(key)
         }
     }
 
     override fun clearProperties() {
-        synchronized (propertyTable) {
-            propertyTable.clear()
+        synchronized (_properties) {
+            _properties.clear()
         }
     }
 
@@ -183,15 +183,15 @@ abstract class GuiBase : Gui {
      *
      **************************************************************************/
 
-    private val buttonList : MutableList<Button> = ArrayList()
+    private val _buttons : MutableList<Button> = ArrayList()
     final override val buttons : List<Button>
-        get() = synchronized (buttonList) {
-            Collections.unmodifiableList(buttonList)
+        get() = synchronized (_buttons) {
+            Collections.unmodifiableList(_buttons)
         }
 
     override val buttonSize : Int
-        get() = synchronized (buttonList) {
-            buttonList.size
+        get() = synchronized (_buttons) {
+            _buttons.size
         }
 
     /**
@@ -204,8 +204,8 @@ abstract class GuiBase : Gui {
     protected fun <T : Button> addButton0(button: T): T {
         canAddBasic(this, button)
         canAdd0(button)
-        synchronized (buttonList) {
-            buttonList.add(button)
+        synchronized (_buttons) {
+            _buttons.add(button)
             return button
         }
     }
@@ -224,9 +224,9 @@ abstract class GuiBase : Gui {
      * * 从给定的索引 [index] 获取按钮对象. 注意列表同步问题.
      */
     protected open fun getButton0(index: Int): Button? {
-        var button = buttonList.find { it.index == index }
+        var button = _buttons.find { it.index == index }
         if (button == null)
-            button = buttonList.asSequence().filterIsInstance(ButtonSame::class.java).find { it.isSame(index) }
+            button = _buttons.asSequence().filterIsInstance(ButtonSame::class.java).find { it.isSame(index) }
         return button
     }
 
@@ -236,7 +236,7 @@ abstract class GuiBase : Gui {
      */
     @Throws(IllegalStateException::class)
     protected open fun nextAvailableIndex(): Int {
-        synchronized (buttonList) {
+        synchronized (_buttons) {
             for (index in 0 until size)
                 if (getButton0(index) == null)
                     return index
@@ -245,13 +245,13 @@ abstract class GuiBase : Gui {
     }
 
     override fun hasButton(): Boolean {
-        synchronized (buttonList) {
-            return buttonList.isNotEmpty()
+        synchronized (_buttons) {
+            return _buttons.isNotEmpty()
         }
     }
 
     override fun getButton(index: Int): Button? {
-        synchronized (buttonList) {
+        synchronized (_buttons) {
             return getButton0(index)
         }
     }
@@ -280,8 +280,8 @@ abstract class GuiBase : Gui {
     }
 
     override fun removeButton(button: Button): Boolean {
-        synchronized (buttonList) {
-            return buttonList.remove(button).apply {
+        synchronized (_buttons) {
+            return _buttons.remove(button).apply {
                 if (this)
                     removeButton0(button)
             }
@@ -298,8 +298,8 @@ abstract class GuiBase : Gui {
     }
 
     override fun removeButtons() {
-        synchronized (buttonList) {
-            val iterator = buttonList.iterator()
+        synchronized (_buttons) {
+            val iterator = _buttons.iterator()
             while (iterator.hasNext()) {
                 val next = iterator.next()
                 iterator.remove()
