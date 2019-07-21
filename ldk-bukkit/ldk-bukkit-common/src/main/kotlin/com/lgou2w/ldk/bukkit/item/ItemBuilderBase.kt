@@ -430,6 +430,47 @@ abstract class ItemBuilderBase : ItemBuilder {
         return this
     }
 
+    override fun addLore(index: Int, vararg lore: String): ItemBuilder {
+        if (MinecraftBukkitVersion.isV114OrLater) {
+            tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+                .getListOrDefault(NBT.TAG_DISPLAY_LORE)
+                .addAll(index, lore.map { NBTTagString(ChatComponentText(it.toColor()).toJson()) })
+        } else {
+            tag.getCompoundOrDefault(NBT.TAG_DISPLAY)
+                .getListOrDefault(NBT.TAG_DISPLAY_LORE)
+                .addAll(index, lore.map { NBTTagString(it.toColor()) })
+        }
+        return this
+    }
+
+    override fun addLoreIf(index: Int, vararg lore: String, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block().isTrue())
+            addLore(index, *lore)
+        return this
+    }
+
+    override fun insertLore(vararg lore: String, predicate: Predicate<String>?): ItemBuilder {
+        if (predicate == null)
+            addLore(*lore)
+        else {
+            val index = this.lore?.indexOfFirst(predicate)
+            if (index != null && index != -1)
+                addLore(index, *lore)
+        }
+        return this
+    }
+
+    override fun insertLoreAfter(vararg lore: String, predicate: Predicate<String>?): ItemBuilder {
+        if (predicate == null)
+            addLore(*lore)
+        else {
+            val index = this.lore?.indexOfFirst(predicate)
+            if (index != null && index != -1)
+                addLore(index + 1, *lore)
+        }
+        return this
+    }
+
     override fun removeLore(predicate: Predicate<String>?): ItemBuilder {
         removeLoreIndexed { _, value -> predicate?.invoke(value).isTrue() }
         return this
