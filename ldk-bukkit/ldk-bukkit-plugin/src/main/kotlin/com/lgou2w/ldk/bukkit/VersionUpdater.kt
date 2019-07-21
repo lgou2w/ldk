@@ -54,6 +54,10 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
     }
 
     fun firstCheck() {
+        // cli : -Dldk.bukkit.autoUpdater=true
+        val enable = System.getProperty("ldk.bukkit.autoUpdater")?.toBoolean() ?: true
+        if (!enable)
+            return
         plugin.runTaskAsyncLater({
             if (Bukkit.getPluginManager().getPlugin(LDKPlugin.NAME)?.isEnabled.isTrue())
                 pushRelease(Bukkit.getConsoleSender())
