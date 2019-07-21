@@ -122,7 +122,7 @@ abstract class GuiBase : Gui {
     private val _properties = Hashtable<String, Any>()
     final override val properties : Map<String, Any>
         get() = synchronized (_properties) {
-            Hashtable(_properties)
+            Collections.unmodifiableMap(_properties)
         }
 
     override fun setProperty(key: String, value: Any): Any? {
