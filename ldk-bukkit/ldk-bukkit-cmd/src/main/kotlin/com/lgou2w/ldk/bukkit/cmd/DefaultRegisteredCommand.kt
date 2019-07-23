@@ -198,7 +198,7 @@ class DefaultRegisteredCommand(
         if ((executor.isPlayable && sender !is Player) ||
             (Player::class.java.isAssignableFrom(executor.senderType) && sender !is Player)
         ) {
-            feedback.onPlayable(sender, name, this, executor, args)
+            feedback.onPlayerOnly(sender, name, this, executor, args)
             return false
         }
         if (args.size < executor.min) {
