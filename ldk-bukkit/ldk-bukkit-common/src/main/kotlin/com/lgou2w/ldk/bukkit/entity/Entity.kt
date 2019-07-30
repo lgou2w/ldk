@@ -18,7 +18,9 @@ package com.lgou2w.ldk.bukkit.entity
 
 import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
 import com.lgou2w.ldk.common.Applicator
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBTTagCompound
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
@@ -59,11 +61,35 @@ fun Entity.getNearbyEntities(x: Double, y: Double, z: Double): List<Entity>
         = world.getNearbyEntities(location, x, y, z).toList()
 
 /**
+ * * Get a list of entities within the [x], [y], [z] radius near a given location.
+ * * 获取给定位置附近 [x], [y], [z] 半径内的实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@Throws(NullPointerException::class)
+fun Location.getNearbyEntities(x: Double, y: Double, z: Double): List<Entity>
+        = world.notNull("The world of location cannot be null.").getNearbyEntities(this, x, y, z).toList()
+
+/**
  * * Get a list of entities within the [range] radius near a given entity.
  * * 获取给定实体附近 [range] 半径内的实体列表.
  */
 fun Entity.getNearbyEntities(range: Double): List<Entity>
         = world.getNearbyEntities(location, range, range, range).toList()
+
+/**
+ * * Get a list of entities within the [range] radius near a given location.
+ * * 获取给定位置附近 [range] 半径内的实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@Throws(NullPointerException::class)
+fun Location.getNearbyEntities(range: Double): List<Entity>
+        = world.notNull("The world of location cannot be null.").getNearbyEntities(this, range, range, range).toList()
 
 /**
  * * Get a list of entities of the specified type [type] within the [x], [y], [z] radius near the given entity.
@@ -73,10 +99,34 @@ fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, x: Double, y: Double, 
         = getNearbyEntities(x, y, z).filterIsInstance(type)
 
 /**
+ * * Get a list of entities of the specified type [type] within the [x], [y], [z] radius near the given location.
+ * * 获取给定位置附近 [x], [y], [z] 半径内指定类型 [type] 的实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@Throws(NullPointerException::class)
+fun <T : Entity> Location.getNearbyEntities(type: Class<T>, x: Double, y: Double, z: Double): List<T>
+        = getNearbyEntities(x, y, z).filterIsInstance(type)
+
+/**
  * * Get a list of entities of the specified type [type] within the [range] radius near the given entity.
  * * 获取给定实体附近 [range] 半径内指定类型 [type] 的实体列表.
  */
 fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, range: Double): List<T>
+        = getNearbyEntities(range).filterIsInstance(type)
+
+/**
+ * * Get a list of entities of the specified type [type] within the [range] radius near the given location.
+ * * 获取给定位置附近 [range] 半径内指定类型 [type] 的实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@Throws(NullPointerException::class)
+fun <T : Entity> Location.getNearbyEntities(type: Class<T>, range: Double): List<T>
         = getNearbyEntities(range).filterIsInstance(type)
 
 /**************************************************************************
@@ -86,12 +136,14 @@ fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, range: Double): List<T
  **************************************************************************/
 
 /**
- * * Determine if the given [target] entity is in front of the given entity.
- * * 判断给定的目标实体 [target] 是否在给定实体前面.
+ * * Determine if the given [target] location is in front of the given location.
+ * * 判断给定的目标位置 [target] 是否在给定位置前面.
+ *
+ * @since LDK 0.1.8
  */
-fun Entity.isInFront(target: Entity): Boolean {
-    val facing = location.direction
-    val relative = target.location.subtract(location).toVector().normalize()
+fun Location.isInFront(target: Location): Boolean {
+    val facing = direction
+    val relative = target.subtract(this).toVector().normalize()
     return facing.dot(relative) >= .0
 }
 
@@ -99,34 +151,81 @@ fun Entity.isInFront(target: Entity): Boolean {
  * * Determine if the given [target] entity is in front of the given entity.
  * * 判断给定的目标实体 [target] 是否在给定实体前面.
  */
-fun Entity.isInFront(target: Entity, angle: Double): Boolean {
+fun Entity.isInFront(target: Entity): Boolean
+        = location.isInFront(target.location)
+
+/**
+ * * Determine if the given [target] location is in front of the given location.
+ * * 判断给定的目标位置 [target] 是否在给定位置前面.
+ *
+ * @since LDK 0.1.8
+ */
+fun Location.isInFront(target: Location, angle: Double): Boolean {
     if (angle <= .0) return false
     if (angle >= 360.0) return true
     val dotTarget = cos(angle)
-    val facing = location.direction
-    val relative = target.location.subtract(location).toVector().normalize()
+    val facing = direction
+    val relative = target.subtract(this).toVector().normalize()
     return facing.dot(relative) >= dotTarget
 }
 
 /**
- * * Determine if the given [target] entity is in behind of the given entity.
- * * 判断给定的目标实体 [target] 是否在给定实体后面.
+ * * Determine if the given [target] entity is in front of the given entity.
+ * * 判断给定的目标实体 [target] 是否在给定实体前面.
  */
-fun Entity.isBehind(target: Entity): Boolean
+fun Entity.isInFront(target: Entity, angle: Double): Boolean
+        = location.isInFront(target.location, angle)
+
+/**
+ * * Determine if the given [target] location is in behind of the given location.
+ * * 判断给定的目标位置 [target] 是否在给定位置后面.
+ *
+ * @since LDK 0.1.8
+ */
+fun Location.isBehind(target: Location): Boolean
         = !isInFront(target)
 
 /**
  * * Determine if the given [target] entity is in behind of the given entity.
  * * 判断给定的目标实体 [target] 是否在给定实体后面.
  */
-fun Entity.isBehind(target: Entity, angle: Double): Boolean {
+fun Entity.isBehind(target: Entity): Boolean
+        = !location.isInFront(target.location)
+
+/**
+ * * Determine if the given [target] location is in behind of the given location.
+ * * 判断给定的目标位置 [target] 是否在给定位置后面.
+ *
+ * @since LDK 0.1.8
+ */
+fun Location.isBehind(target: Location, angle: Double): Boolean {
     if (angle <= .0) return false
     if (angle >= 360.0) return true
     val dotTarget = cos(angle)
-    val facing = location.direction
-    val relative = location.subtract(target.location).toVector().normalize()
+    val facing = direction
+    val relative = subtract(target).toVector().normalize()
     return facing.dot(relative) >= dotTarget
 }
+
+/**
+ * * Determine if the given [target] entity is in behind of the given entity.
+ * * 判断给定的目标实体 [target] 是否在给定实体后面.
+ */
+fun Entity.isBehind(target: Entity, angle: Double): Boolean
+        = location.isBehind(target.location, angle)
+
+/**
+ * * Get the list of entities in front of the [x], [y], [z] radius near the given location.
+ * * 获取给定位置附近 [x], [y], [z] 半径内面前的实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@JvmOverloads
+@Throws(NullPointerException::class)
+fun Location.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<Entity>
+        = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
 
 /**
  * * Get the list of entities in front of the [x], [y], [z] radius near the given entity.
@@ -137,6 +236,19 @@ fun Entity.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double =
         = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
 
 /**
+ * * Get the list of entities in front of the [range] radius near the given location.
+ * * 获取给定位置附近 [range] 半径内面前的实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@JvmOverloads
+@Throws(NullPointerException::class)
+fun Location.getNearbyTargets(range: Double, tolerance: Double = 4.0): List<Entity>
+        = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
+
+/**
  * * Get the list of entities in front of the [range] radius near the given entity.
  * * 获取给定实体附近 [range] 半径内面前的实体列表.
  */
@@ -145,18 +257,23 @@ fun Entity.getNearbyTargets(range: Double, tolerance: Double = 4.0): List<Entity
         = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
 
 /**
- * * Get the list of specified [type] entities in front of the [x], [y], [z] radius near the given entity.
- * * 获取给定实体附近 [x], [y], [z] 半径内面前的指定类型 [type] 实体列表.
+ * * Get the list of specified [type] entities in front of the [x], [y], [z] radius near the given location.
+ * * 获取给定位置附近 [x], [y], [z] 半径内面前的指定类型 [type] 实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
  */
 @JvmOverloads
-fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<T> {
-    val facing = location.direction
+@Throws(NullPointerException::class)
+fun <T : Entity> Location.getNearbyTargets(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<T> {
+    val facing = direction
     val fLengthSq = facing.lengthSquared()
     return getNearbyEntities(x, y, z)
         .asSequence()
-        .filter { type.isInstance(it) && isInFront(it) }
+        .filter { type.isInstance(it) && isInFront(it.location) }
         .filter {
-            val relative = it.location.subtract(location).toVector()
+            val relative = it.location.subtract(this).toVector()
             val dot = relative.dot(facing)
             val rLengthSq = relative.lengthSquared()
             val cosSquared = dot * dot / (rLengthSq * fLengthSq)
@@ -169,12 +286,46 @@ fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z
 }
 
 /**
+ * * Get the list of specified [type] entities in front of the [x], [y], [z] radius near the given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内面前的指定类型 [type] 实体列表.
+ */
+@JvmOverloads
+fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<T>
+        = location.getNearbyTargets(type, x, y, z, tolerance)
+
+/**
+ * * Get the list of specified [type] entities in front of the [range] radius near the given location.
+ * * 获取给定位置附近 [range] 半径内面前的指定类型 [type] 实体列表.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@JvmOverloads
+@Throws(NullPointerException::class)
+fun <T : Entity> Location.getNearbyTargets(type: Class<T>, range: Double, tolerance: Double = 4.0): List<T>
+        = getNearbyTargets(type, range, range, range, tolerance)
+
+/**
  * * Get the list of specified [type] entities in front of the [range] radius near the given entity.
  * * 获取给定实体附近 [range] 半径内面前的指定类型 [type] 实体列表.
  */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, range: Double, tolerance: Double = 4.0): List<T>
         = getNearbyTargets(type, range, range, range, tolerance)
+
+/**
+ * * Get the nearest entity in front of the [x], [y], [z] radius near the given location.
+ * * 获取给定位置附近 [x], [y], [z] 半径内最近的实体.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@JvmOverloads
+@Throws(NullPointerException::class)
+fun Location.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double = 4.0): Entity?
+        = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
 
 /**
  * * Get the nearest entity in front of the [x], [y], [z] radius near the given entity.
@@ -185,6 +336,19 @@ fun Entity.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double = 
         = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
 
 /**
+ * * Get the nearest entity in front of the [range] radius near the given location.
+ * * 获取给定位置附近 [range] 半径内最近的实体.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@JvmOverloads
+@Throws(NullPointerException::class)
+fun Location.getNearbyTarget(range: Double, tolerance: Double = 4.0): Entity?
+        = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
+
+/**
  * * Get the nearest entity in front of the [range] radius near the given entity.
  * * 获取给定实体附近 [range] 半径内最近的实体.
  */
@@ -193,20 +357,25 @@ fun Entity.getNearbyTarget(range: Double, tolerance: Double = 4.0): Entity?
         = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
 
 /**
- * * Get the nearest of specified [type] entity in front of the [x], [y], [z] radius near the given entity.
- * * 获取给定实体附近 [x], [y], [z] 半径内最近的指定类型 [type] 实体.
+ * * Get the nearest of specified [type] entity in front of the [x], [y], [z] radius near the given location.
+ * * 获取给定位置附近 [x], [y], [z] 半径内最近的指定类型 [type] 实体.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
  */
 @JvmOverloads
-fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): T? {
+@Throws(NullPointerException::class)
+fun <T : Entity> Location.getNearbyTarget(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): T? {
     val targets = getNearbyTargets(type, x, y, z, tolerance)
     return when {
         targets.isEmpty() -> null
         targets.size == 1 -> targets.first()
         else -> {
             var target = targets.first()
-            var minDistance = target.location.distanceSquared(location)
+            var minDistance = target.location.distanceSquared(this)
             for (alternate in targets) {
-                val distance = alternate.location.distanceSquared(location)
+                val distance = alternate.location.distanceSquared(this)
                 if (distance < minDistance) {
                     minDistance = distance
                     target = alternate
@@ -216,6 +385,27 @@ fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z:
         }
     }
 }
+
+/**
+ * * Get the nearest of specified [type] entity in front of the [x], [y], [z] radius near the given entity.
+ * * 获取给定实体附近 [x], [y], [z] 半径内最近的指定类型 [type] 实体.
+ */
+@JvmOverloads
+fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): T?
+        = location.getNearbyTarget(type, x, y, z, tolerance)
+
+/**
+ * * Get the nearest of specified [type] entity in front of the [range] radius near the given location.
+ * * 获取给定位置附近 [range] 半径内最近的指定类型 [type] 实体.
+ *
+ * @throws [NullPointerException] If the world of the location is `null`.
+ * @throws [NullPointerException] 如果位置的世界是 `null` 的.
+ * @since LDK 0.1.8
+ */
+@JvmOverloads
+@Throws(NullPointerException::class)
+fun <T : Entity> Location.getNearbyTarget(type: Class<T>, range: Double, tolerance: Double = 4.0): T?
+        = getNearbyTarget(type, range, range, range, tolerance)
 
 /**
  * * Get the nearest of specified [type] entity in front of the [range] radius near the given entity.
