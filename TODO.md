@@ -5,6 +5,6 @@
 - Wiki
 - Version 0.1.9
 
-## Normal priority
+# Normal priority
 
 - Bukkit unit test.
