@@ -1,10 +1,8 @@
-# TODO
-
 # High priority
 
-- Wiki
-- Version 0.1.9
+- Work 0.0.9
 
 # Normal priority
 
+- Wiki
 - Bukkit unit test.
