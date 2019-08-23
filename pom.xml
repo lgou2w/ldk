@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgou2w</groupId>
     <artifactId>ldk</artifactId>
-    <version>0.1.8-SNAPSHOT</version>
+    <version>0.1.8</version>
     <packaging>pom</packaging>
     <name>ldk</name>
     <description>A multi-platform lgou2w development kit</description>
