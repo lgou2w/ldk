@@ -53,7 +53,9 @@ open class PageableGui : GuiBase {
 
     /**
      * * Set the next page of the Gui object to this page to pageable Gui object.
+     *      * Will be completely removed in LDK 0.1.9 version.
      * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
+     *      * 将在 LDK 0.1.9 版本完全移除.
      */
     @JvmOverloads
     @Deprecated("RENAMED", replaceWith = ReplaceWith("setPage"))

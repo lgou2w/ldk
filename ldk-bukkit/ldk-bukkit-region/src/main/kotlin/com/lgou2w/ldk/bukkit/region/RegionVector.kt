@@ -21,6 +21,9 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import kotlin.math.pow
+import kotlin.math.roundToLong
+import kotlin.math.sqrt
 
 /**
  * ## RegionVector (区域向量)
@@ -78,13 +81,13 @@ open class RegionVector(
     }
 
     val blockX : Int
-        get() = Math.round(x).toInt()
+        get() = x.roundToLong().toInt()
 
     val blockY : Int
-        get() = Math.round(y).toInt()
+        get() = y.roundToLong().toInt()
 
     val blockZ : Int
-        get() = Math.round(z).toInt()
+        get() = z.roundToLong().toInt()
 
     fun setX(x: Double): RegionVector
             = RegionVector(x, y, z)
@@ -105,16 +108,16 @@ open class RegionVector(
             = RegionVector(x, y, z.toDouble())
 
     fun length(): Double
-            = Math.sqrt(lengthSq())
+            = sqrt(lengthSq())
 
     fun lengthSq(): Double
             = x * x + y * y + z * z
 
     fun distance(vector: RegionVector): Double
-            = Math.sqrt(distanceSq(vector))
+            = sqrt(distanceSq(vector))
 
     fun distanceSq(vector: RegionVector): Double
-            = Math.pow(x - vector.x, 2.0) + Math.pow(y - vector.y, 2.0) + Math.pow(z - vector.z, 2.0)
+            = (x - vector.x).pow(2.0) + (y - vector.y).pow(2.0) + (z - vector.z).pow(2.0)
 
     fun normalize(): RegionVector
             = div(length())

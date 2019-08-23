@@ -200,6 +200,26 @@ interface ItemBuilder : Builder<ItemStack> {
 
     fun addLoreIf(vararg lore: String, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
 
+    /**
+     * @since LDK 0.1.8
+     */
+    fun addLore(index: Int, vararg lore: String): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8
+     */
+    fun addLoreIf(index: Int, vararg lore: String, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8
+     */
+    fun insertLore(vararg lore: String, predicate: Predicate<String>? = null): ItemBuilder
+
+    /**
+     * @since LDK 0.1.8
+     */
+    fun insertLoreAfter(vararg lore: String, predicate: Predicate<String>? = null): ItemBuilder
+
     fun removeLore(predicate: Predicate<String>? = null): ItemBuilder
 
     fun removeLoreIndexed(block: BiFunction<Int, String, Boolean>? = null): ItemBuilder

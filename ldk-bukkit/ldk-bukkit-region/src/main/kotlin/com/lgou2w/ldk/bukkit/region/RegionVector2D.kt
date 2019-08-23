@@ -21,6 +21,9 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import kotlin.math.pow
+import kotlin.math.roundToLong
+import kotlin.math.sqrt
 
 /**
  * ## RegionVector2D (区域向量 2D)
@@ -74,10 +77,10 @@ open class RegionVector2D(
     }
 
     val blockX : Int
-        get() = Math.round(x).toInt()
+        get() = x.roundToLong().toInt()
 
     val blockZ : Int
-        get() = Math.round(z).toInt()
+        get() = z.roundToLong().toInt()
 
     fun setX(x: Double): RegionVector2D
             = RegionVector2D(x, z)
@@ -92,16 +95,16 @@ open class RegionVector2D(
             = RegionVector2D(x, z.toDouble())
 
     fun length(): Double
-            = Math.sqrt(lengthSq())
+            = sqrt(lengthSq())
 
     fun lengthSq(): Double
             = x * x + z * z
 
     fun distance(vector: RegionVector2D): Double
-            = Math.sqrt(distanceSq(vector))
+            = sqrt(distanceSq(vector))
 
     fun distanceSq(vector: RegionVector2D): Double
-            = Math.pow(x - vector.x, 2.0) + Math.pow(z - vector.z, 2.0)
+            = (x - vector.x).pow(2.0) + (z - vector.z).pow(2.0)
 
     fun normalize(): RegionVector2D
             = div(length())

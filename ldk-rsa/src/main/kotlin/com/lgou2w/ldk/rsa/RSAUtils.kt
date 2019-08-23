@@ -37,8 +37,9 @@ import javax.crypto.Cipher
  * ## RSAUtils
  *
  * * 2048-bit `RSA` and `SHA512` encryption, decryption and verify tool class.
+ *      * Will be completely removed in LDK 0.1.9 version.
  * * 2048 位 `RSA` 和 `SHA512` 的加解密校验工具类.
- *
+ *      * 将在 LDK 0.1.9 版本完全移除.
  * @author lgou2w
  * @see [RSASecurity]
  */

@@ -209,7 +209,8 @@ class MinecraftBukkitVersion(
                     MinecraftVersion(1, 14, 0),
                     MinecraftVersion(1, 14, 1),
                     MinecraftVersion(1, 14, 2),
-                    MinecraftVersion(1, 14, 3)
+                    MinecraftVersion(1, 14, 3),
+                    MinecraftVersion(1, 14, 4)
                     // ---> net.minecraft.server.v1_14_R1
             )] = V1_14_R1
             map[arrayOf(

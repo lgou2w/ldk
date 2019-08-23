@@ -16,10 +16,8 @@
 
 package com.lgou2w.ldk.bukkit.potion
 
-import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
-import com.lgou2w.ldk.common.notNull
 import java.util.Collections
 import java.util.HashMap
 import java.util.Locale
@@ -248,12 +246,10 @@ enum class PotionEffectType(
      * @see [org.bukkit.potion.PotionEffectType]
      */
     fun toBukkit() : org.bukkit.potion.PotionEffectType {
-        return org.bukkit.potion.PotionEffectType.getByName(
-                if (MinecraftBukkitVersion.isV113OrLater)
-                    type
-                else
-                    legacy
-        ).notNull()
+        // SEE -> https://github.com/lgou2w/ldk/issues/90
+        return org.bukkit.potion.PotionEffectType.getByName(type) // Give priority to flat name
+               ?: org.bukkit.potion.PotionEffectType.getByName(legacy)
+               ?: throw UnsupportedOperationException("Unsupported potion effect type: $type")
     }
 
     companion object {

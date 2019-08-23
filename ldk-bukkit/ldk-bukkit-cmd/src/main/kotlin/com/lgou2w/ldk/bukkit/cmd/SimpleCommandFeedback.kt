@@ -55,6 +55,16 @@ open class SimpleCommandFeedback : CommandFeedback {
             executor: CommandExecutor,
             args: Array<out String>
     ) {
+        onPlayerOnly(sender, name, command, executor, args)
+    }
+
+    override fun onPlayerOnly(
+            sender: CommandSender,
+            name: String,
+            command: RegisteredCommand,
+            executor: CommandExecutor,
+            args: Array<out String>
+    ) {
         sendMessage(command, sender, ChatColor.RED + "The console cannot execute this command.")
     }
 

@@ -16,10 +16,12 @@
 
 package com.lgou2w.ldk.bukkit.firework
 
+import com.lgou2w.ldk.bukkit.randomColor
 import com.lgou2w.ldk.common.Builder
 import org.bukkit.Color
 import java.util.ArrayList
 import java.util.Collections
+import kotlin.random.Random
 
 /**
  * ## FireworkEffectBuilder (烟花效果构建者)
@@ -56,11 +58,33 @@ class FireworkEffectBuilder(
     }
 
     /**
+     * * With a random flicker effect.
+     * * 具有随机闪烁效果.
+     *
+     * @since LDK 0.1.8
+     */
+    fun withFlickerRandom(): FireworkEffectBuilder {
+        this.canFlicker = Random.nextBoolean()
+        return this
+    }
+
+    /**
      * * With a trail effect.
      * * 具有尾迹效果.
      */
     fun withTrail(): FireworkEffectBuilder {
         this.hasTrail = true
+        return this
+    }
+
+    /**
+     * * With a random trail effect.
+     * * 具有随机尾迹效果.
+     *
+     * @since LDK 0.1.8
+     */
+    fun withTrailRandom(): FireworkEffectBuilder {
+        this.hasTrail = Random.nextBoolean()
         return this
     }
 
@@ -74,11 +98,33 @@ class FireworkEffectBuilder(
     }
 
     /**
+     * * With a random color.
+     * * 具有随机的颜色.
+     *
+     * @since LDK 0.1.8
+     */
+    fun withColorRandom(): FireworkEffectBuilder {
+        this.colors.add(randomColor())
+        return this
+    }
+
+    /**
      * * With the given fade [colors].
      * * 具有给定的淡化颜色 [colors].
      */
     fun withFades(vararg colors: Color): FireworkEffectBuilder {
         this.fades.addAll(colors)
+        return this
+    }
+
+    /**
+     * * With a random fade color.
+     * * 具有随机的淡化颜色.
+     *
+     * @since LDK 0.1.8
+     */
+    fun withFadeRandom(): FireworkEffectBuilder {
+        this.fades.add(randomColor())
         return this
     }
 

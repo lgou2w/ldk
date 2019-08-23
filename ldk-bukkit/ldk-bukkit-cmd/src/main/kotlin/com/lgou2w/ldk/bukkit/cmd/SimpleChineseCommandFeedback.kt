@@ -38,7 +38,7 @@ class SimpleChineseCommandFeedback : SimpleCommandFeedback() {
         sendMessage(command, sender, ChatColor.RED + "你没有权限使用此命令.")
     }
 
-    override fun onPlayable(
+    override fun onPlayerOnly(
             sender: CommandSender,
             name: String,
             command: RegisteredCommand,

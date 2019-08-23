@@ -41,7 +41,7 @@ class DependEconomy : DependBase<Vault>(getPlugin(NAME)) {
         val registrations = Bukkit.getServicesManager().getRegistrations(Economy::class.java)
         if (registrations.size > 1)
             plugin.logger.info("[LDK] There are multiple economic services, using maximum priority.")
-        val registered = registrations.sortedBy { it.priority }.lastOrNull() // Maximum priority
+        val registered = registrations.maxBy { it.priority } // Maximum priority
                          ?: throw DependCannotException("The Vault does not have a registered Economy service.")
         economy = registered.provider
         plugin.logger.info("[LDK] Uses ${economy.name} as an economy dependency.")

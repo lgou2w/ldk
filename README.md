@@ -7,7 +7,7 @@
 
 <p align="center">
 <a href="https://java.com"><img src="https://img.shields.io/badge/Java-8-blue.svg?style=flat-square&logo=java"></a>
-<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3.40-blue.svg?style=flat-square&logo=kotlin"></a>
+<a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-1.3.50-blue.svg?style=flat-square&logo=kotlin"></a>
 <a href="https://travis-ci.org/lgou2w/ldk"><img src="https://img.shields.io/travis/lgou2w/ldk/develop.svg?style=flat-square&logo=travis" /></a>
 <a href="https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"><img src="https://img.shields.io/maven-central/v/com.lgou2w/ldk.svg?style=flat-square&color=%231081c2&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS41ZEdYUgAAAgNJREFUOE9jQAf29vtZMp0/mGa5vd2d6ftmW3LEO736+v9MUGnsIMvynXy23ds52S5vv2Z4v/2ZFvTmZ0rUm08JSW+mpOS+kYEqQ4AsrZc8BWZvS3Kt377Odn7zL9Pr7el0//cOSeEv3RITXl+OT3/9Lzbv9cuY8tfZ8fX/OcCask2fCOcbvz2XZ/XmX47j22eZbm9ycz3+sYMlgSAm5jl3TM7rsuiSNy8jq1//DW96dSR+PlBznvE7uTyLt59y7d+ezHZ5LQVVjwFiy9/JhTe+vhDa+fpdaMddfoY863dyOXZvPwH9tRqqBisIXfWfObTj9dbgPphGl3dy2c5vP2V6EtYI1LQ1cPLrdy4gjWlAjUBNn9L8CWsEatoaMPPVO5eZII0+7+Qy/N9+Sg15TVBjwMyXW/3mwzSGvpNLC337KTn6zbmkpGfyUHUYIGDGS2W/ea+u+CyBakwO+SCUHPXmaFLi6z8JGa/fxxS8Lomuf8MHVc8Q0vtByH/aq1r/Oa8++ix6+dtr5avd9vuhcZmW9pQrLvVVSmzemzvRpa//Rta+vhza+iospO9FNNBft/xnvvznu+DlTa9lr2M8tt2CxzEcxFZ8FI6qetka1vTqY0jnqz+BE1798Z/x6g3QiTXeSx8KQpXhAv8ZQzpfqwODfkfg1Neb/ee/VwCJQSWhgIEBAOwJCv4iGYRqAAAAAElFTkSuQmCC" /></a>
 <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat-square&logo=apache" /></a>
@@ -87,7 +87,23 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
         
 </details>
-        
+
+# Version
+
+## 0.x
+
+- `0.1.8-beta1` - The first beta of 0.1.8 version.
+- `0.1.8-rc2` - The 2nd release-candidate of 0.1.8 version.
+- `0.1.8-rc2-hotfix1` - The 2nd release-candidate hot fix 1 of the 0.1.8 version.
+- `0.1.8-rc2-SNAPSHOT` - The 2nd release-candidate of the 0.1.8 snapshot version.
+- `0.1.8-SNAPSHOT` - Snapshot of the 0.1.8 release version.
+- `0.1.8` - 0.1.8 release version.
+
+## 1.x Or higher
+
+- `1.0` - 1.0 release version.
+- `1.1-SNAPSHOT` - Snapshot of the 1.1 release version.
+
 # Binaries
 
 ## Dependencies
@@ -133,6 +149,7 @@ Thank you very much for your donate.
 
 * [LywLover](https://github.com/LywLover)
 * [EnTIv](https://github.com/EnTIv)
+* [nihuge](https://github.com/nihuge)
 
 # License
 

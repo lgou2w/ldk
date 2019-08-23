@@ -62,6 +62,12 @@ enum class Level {
 }
 
 /**
+ * ## Draft (草案)
+ *
+ * * 表明这个功能是未来版本的草案, 随时进行改动, 不建议使用.
+ * * Indicates that this feature is a draft of a future version,
+ *      which is subject to change at any time and is not recommended.
+ *
  * @since LDK 0.1.8-rc
  */
 @Retention(AnnotationRetention.RUNTIME)

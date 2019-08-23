@@ -54,6 +54,10 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
     }
 
     fun firstCheck() {
+        // cli : -Dldk.bukkit.autoUpdater=true
+        val enable = System.getProperty("ldk.bukkit.autoUpdater")?.toBoolean() ?: true
+        if (!enable)
+            return
         plugin.runTaskAsyncLater({
             if (Bukkit.getPluginManager().getPlugin(LDKPlugin.NAME)?.isEnabled.isTrue())
                 pushRelease(Bukkit.getConsoleSender())
@@ -123,7 +127,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
 
     private fun parseVersion(versionOnly: String): Version {
         return if (versionOnly < "1.0") {
-            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1, 0.3.0-rc-SNAPSHOT
+            // e.g.: 0.1.8-beta10, 0.2.0-alpha2, 0.2.1-beta2-hotfix1, 0.3.0-rc-SNAPSHOT, 0.1.8-SNAPSHOT
             val versions = versionOnly.split('-')
             val ver = versions[0]
             val (type, value) = parseZeroVersionValue(versions.getOrNull(1))
@@ -141,7 +145,8 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
     }
 
     private fun parseZeroVersionValue(zeroVersionTypeOnly: String?): Pair<String, Int> {
-        if (zeroVersionTypeOnly == null) return "rc" to 0
+        if (zeroVersionTypeOnly == null || zeroVersionTypeOnly == "SNAPSHOT")
+            return "release" to 0
         val idx = zeroVersionTypeOnly.indexOfFirst { it in '0'..'9' }
         if (idx == -1)
             return zeroVersionTypeOnly to 0
@@ -218,7 +223,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
             } catch (e: Exception) {
                 return parseLatestReleaseFromJitpack()
             }
-            val releases = Gson().fromJson<JsonArray>(content, JsonArray::class.java)
+            val releases = Gson().fromJson(content, JsonArray::class.java)
             val release = releases.firstOrNull()?.asJsonObject ?: return null
             val tag = release.get(RELEASE_TAG).asString
             val releasedAt = release.get(RELEASE_AT).asString
@@ -235,7 +240,7 @@ internal class VersionUpdater(private val plugin: LDKPlugin) {
         @Throws(Exception::class)
         private fun parseLatestReleaseFromJitpack(): Release? {
             val content = URL(API_JITPACK).readText(Charsets.UTF_8)
-            val releases = Gson().fromJson<JsonObject>(content, JsonObject::class.java)
+            val releases = Gson().fromJson(content, JsonObject::class.java)
             val release = releases[RELEASE_GROUP_ID]?.asJsonObject ?: return null
             val tags = release[RELEASE_ARTIFACT_ID]?.asJsonObject ?: return null
             val tag = tags.entrySet().lastOrNull()?.key ?: return null

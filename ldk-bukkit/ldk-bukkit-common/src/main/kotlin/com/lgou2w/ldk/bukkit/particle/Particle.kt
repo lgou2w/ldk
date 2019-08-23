@@ -24,6 +24,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.Collections
 import java.util.HashMap
+import kotlin.math.abs
 
 /**
  * ## Particle (粒子效果)
@@ -138,7 +139,7 @@ enum class Particle(
     override val value : Int
         get() = if (MinecraftBukkitVersion.isV113OrLater)
             @Suppress("DEPRECATION")
-            Math.abs(internal)
+            (abs(internal))
         else
             ordinal
 
