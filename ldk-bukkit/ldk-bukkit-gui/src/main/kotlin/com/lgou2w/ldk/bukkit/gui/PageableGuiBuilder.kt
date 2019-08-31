@@ -63,18 +63,6 @@ interface PageableGuiBuilder : GuiBuilder {
 
     companion object {
 
-        /**
-         * * Since LDK 0.1.8-rc2, Gui added the plugin field, this method is deprecated and throw an exception.
-         *      * This method will be completely removed in LDK 0.1.9 version.
-         * * 自从 LDK 0.1.8-rc2, Gui 增加了 `plugin` 字段, 此构造弃用且抛出异常.
-         *      * 此方法将在 LDK 0.1.9 版本完全移除.
-         */
-        @JvmStatic
-        @Deprecated("Unsupported", replaceWith = ReplaceWith("of(Plugin, GuiType, String)"))
-        @Throws(UnsupportedOperationException::class)
-        fun of(type: GuiType, title: String = type.title): PageableGuiBuilder
-                = SimplePageableGuiBuilder(null, PageableGui(type, title))
-
         @JvmStatic
         fun of(plugin: Plugin, type: GuiType, title: String = type.title): PageableGuiBuilder
                 = SimplePageableGuiBuilder(null, PageableGui(plugin, type, title))

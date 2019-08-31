@@ -60,14 +60,10 @@ class EnumsTest {
 
     @Suppress("DEPRECATION")
     @Test fun `Enums - ofOrdinal - fromOrdinal`() {
-        Enums.ofOrigin(MyEnum::class.java, 0) shouldEqual MyEnum.ENTRY_A // ordinal = 0
-        Enums.ofOriginNotNull(MyEnum::class.java, 1) shouldEqual MyEnum.ENTRY_B // .. = 1
         Enums.ofOrdinal(MyEnum::class.java, 1) shouldEqual MyEnum.ENTRY_B // .. = 1
         Enums.ofOrdinal(MyEnum::class.java, 404) shouldEqual null
         Enums.ofOrdinalNotNull(MyEnum::class.java, 0) shouldEqual MyEnum.ENTRY_A
-        invoking { Enums.ofOriginNotNull(MyEnum::class.java, 404) } shouldThrow NoSuchElementException::class
         invoking { Enums.ofOrdinalNotNull(MyEnum::class.java, 233) } shouldThrow NoSuchElementException::class
-        Enums.fromOrigin(MyEnum::class.java, 0) shouldEqual MyEnum.ENTRY_A // ordinal = 0
         Enums.fromOrdinal(MyEnum::class.java, 1) shouldEqual MyEnum.ENTRY_B // .. = 1
         Enums.fromOrdinal(MyEnum::class.java, 404) shouldEqual null
     }

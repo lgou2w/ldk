@@ -31,16 +31,6 @@ import org.bukkit.plugin.Plugin
 open class PageableGui : GuiBase {
 
     /**
-     * * Since LDK 0.1.8-rc2, Gui added the plugin field, this constructor is deprecated and throw an exception.
-     *      * This constructor will be completely removed in LDK 0.1.9 version.
-     * * 自从 LDK 0.1.8-rc2, Gui 增加了 `plugin` 字段, 此构造弃用且抛出异常.
-     *      * 此构造将在 LDK 0.1.9 版本完全移除.
-     */
-    @Deprecated("Unsupported")
-    @Throws(UnsupportedOperationException::class)
-    constructor(type: GuiType, title: String = type.title) : super(type, title)
-
-    /**
      * @since LDK 0.1.8-rc2
      */
     constructor(plugin: Plugin, type: GuiType, title: String = type.title) : super(plugin, type, title)
@@ -50,17 +40,6 @@ open class PageableGui : GuiBase {
      * * 表示此可翻页 Gui 的下一个可翻页 Gui 对象.
      */
     var next : PageableGui? = null
-
-    /**
-     * * Set the next page of the Gui object to this page to pageable Gui object.
-     *      * Will be completely removed in LDK 0.1.9 version.
-     * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
-     *      * 将在 LDK 0.1.9 版本完全移除.
-     */
-    @JvmOverloads
-    @Deprecated("RENAMED", replaceWith = ReplaceWith("setPage"))
-    fun addPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui
-            = setPage(type, title, initializer)
 
     /**
      * * Set the next page of the Gui object to this page to pageable Gui object.

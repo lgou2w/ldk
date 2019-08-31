@@ -55,26 +55,6 @@ abstract class GuiBase : Gui {
     }
 
     /**
-     * * Since LDK 0.1.8-rc2, Gui added the plugin field, this constructor is deprecated and throw an exception.
-     *      * This constructor will be completely removed in LDK 0.1.9 version.
-     * * 自从 LDK 0.1.8-rc2, Gui 增加了 `plugin` 字段, 此构造弃用且抛出异常.
-     *      * 此构造将在 LDK 0.1.9 版本完全移除.
-     */
-    @JvmOverloads
-    @Deprecated("Unsupported", replaceWith = ReplaceWith("(Plugin, GuiType, String)"))
-    @Throws(UnsupportedOperationException::class)
-    constructor(type: GuiType, title: String = type.title) {
-        this.plugin = Bukkit.getPluginManager().getPlugin(Constants.LDK)
-                      ?: throw UnsupportedOperationException(
-                              "Since LDK 0.1.8-rc2, Gui added the plugin field, this constructor is deprecated and throw an exception.")
-        this.type = type
-        this.title = title
-        this.inventory = type.createInventory(this, title)
-        this.size = inventory.size
-        safeRegisterHandlerListener()
-    }
-
-    /**
      * @since LDK 0.1.8-rc2
      */
     @JvmOverloads

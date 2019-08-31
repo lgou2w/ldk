@@ -46,23 +46,6 @@ interface CommandFeedback {
 
     /**
      * * Called when the console execute only the player executable command.
-     *      * Will be completely removed at LDK 0.1.9 version.
-     * * 当控制台执行仅玩家可执行命令时被调用.
-     *      * 将在 LDK 0.1.9 版本完全移除.
-     *
-     * @see [onPlayerOnly]
-     */
-    @Deprecated("RENAMED", replaceWith = ReplaceWith("onPlayerOnly"))
-    fun onPlayable(
-            sender: CommandSender,
-            name: String,
-            command: RegisteredCommand,
-            executor: CommandExecutor,
-            args: Array<out String>
-    )
-
-    /**
-     * * Called when the console execute only the player executable command.
      * * 当控制台执行仅玩家可执行命令时被调用.
      */
     fun onPlayerOnly(

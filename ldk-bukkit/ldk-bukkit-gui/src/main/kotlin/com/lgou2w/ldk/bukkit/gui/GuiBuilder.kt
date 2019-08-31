@@ -55,18 +55,6 @@ interface GuiBuilder : Builder<Gui> {
 
     companion object {
 
-        /**
-         * * Since LDK 0.1.8-rc2, Gui added the plugin field, this method is deprecated and throw an exception.
-         *      * This method will be completely removed in LDK 0.1.9 version.
-         * * 自从 LDK 0.1.8-rc2, Gui 增加了 `plugin` 字段, 此构造弃用且抛出异常.
-         *      * 此方法将在 LDK 0.1.9 版本完全移除.
-         */
-        @JvmStatic
-        @Deprecated("Unsupported", replaceWith = ReplaceWith("of(Plugin, GuiType, String)"))
-        @Throws(UnsupportedOperationException::class)
-        fun of(type: GuiType, title: String = type.title): GuiBuilder
-                = SimpleGuiBuilder(type, title)
-
         @JvmStatic
         fun of(plugin: Plugin, type: GuiType, title: String = type.title): GuiBuilder
                 = SimpleGuiBuilder(plugin, type, title)
@@ -84,16 +72,6 @@ interface GuiBuilder : Builder<Gui> {
  * @since LDK 0.1.7-rc5
  */
 open class SimpleGuiBuilder(protected open val gui: Gui) : GuiBuilder {
-
-    /**
-     * * Since LDK 0.1.8-rc2, Gui added the plugin field, this constructor is deprecated and throw an exception.
-     *      * This constructor will be completely removed in LDK 0.1.9 version.
-     * * 自从 LDK 0.1.8-rc2, Gui 增加了 `plugin` 字段, 此构造弃用且抛出异常.
-     *      * 此构造将在 LDK 0.1.9 版本完全移除.
-     */
-    @Deprecated("Unsupported")
-    @Throws(UnsupportedOperationException::class)
-    constructor(type: GuiType, title: String = type.title) : this(SimpleGui(type, title))
 
     constructor(plugin: Plugin, type: GuiType, title: String = type.title) : this(SimpleGui(plugin, type, title))
 

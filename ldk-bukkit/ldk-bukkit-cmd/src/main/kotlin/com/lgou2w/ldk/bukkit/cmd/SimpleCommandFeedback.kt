@@ -48,16 +48,6 @@ open class SimpleCommandFeedback : CommandFeedback {
         sendMessage(command, sender, ChatColor.RED + "You do not have permission to use this command.")
     }
 
-    override fun onPlayable(
-            sender: CommandSender,
-            name: String,
-            command: RegisteredCommand,
-            executor: CommandExecutor,
-            args: Array<out String>
-    ) {
-        onPlayerOnly(sender, name, command, executor, args)
-    }
-
     override fun onPlayerOnly(
             sender: CommandSender,
             name: String,
