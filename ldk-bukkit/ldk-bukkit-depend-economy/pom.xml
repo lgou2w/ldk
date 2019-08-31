@@ -29,10 +29,10 @@
     <artifactId>ldk-bukkit-depend-economy</artifactId>
 
     <repositories>
-        <!-- PlaceholderAPI-public-repo -->
+        <!-- sk89q-repo -->
         <repository>
-            <id>placeholderapi-public-repo</id>
-            <url>http://repo.extendedclip.com/content/repositories/public/</url>
+            <id>sk89q-repo</id>
+            <url>https://maven.sk89q.com/repo/</url>
         </repository>
     </repositories>
 
@@ -44,11 +44,11 @@
             <version>0.1.9-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Vault --> <!-- PlaceHolderAPI-public-repo -->
+        <!-- Vault --> <!-- sk89q-repo -->
         <dependency>
-            <groupId>net.milkbowl</groupId>
-            <artifactId>vault</artifactId>
-            <version>1.5.6</version>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.7.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

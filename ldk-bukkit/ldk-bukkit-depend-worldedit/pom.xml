@@ -29,9 +29,9 @@
     <artifactId>ldk-bukkit-depend-worldedit</artifactId>
 
     <repositories>
-        <!-- sk98q-repo -->
+        <!-- sk89q-repo -->
         <repository>
-            <id>sk98q-repo</id>
+            <id>sk89q-repo</id>
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
     </repositories>
