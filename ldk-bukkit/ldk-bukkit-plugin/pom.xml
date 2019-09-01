@@ -48,10 +48,10 @@
             <version>0.1.9-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!-- ldk-rsa -->
+        <!-- ldk-security -->
         <dependency>
             <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-rsa</artifactId>
+            <artifactId>ldk-security</artifactId>
             <version>0.1.9-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

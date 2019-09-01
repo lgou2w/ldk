@@ -44,7 +44,6 @@
         <module>ldk-bukkit-depend-economy</module>
         <module>ldk-bukkit-depend-placeholderapi</module>
         <module>ldk-bukkit-depend-worldedit</module>
-        <module>ldk-bukkit-rx</module>
         <module>ldk-bukkit-coroutines</module> <!-- coroutines -->
         <module>ldk-bukkit-plugin</module> <!-- runtime -->
     </modules>

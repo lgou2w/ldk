@@ -97,11 +97,9 @@
         <module>ldk-i18n</module>
         <module>ldk-chat</module>
         <module>ldk-nbt</module>
-        <module>ldk-rx</module>
-        <module>ldk-rsa</module>
+        <module>ldk-security</module>
         <module>ldk-sql</module>
         <module>ldk-exposed</module>
-        <module>ldk-fx</module>
         <module>ldk-bukkit</module>
     </modules>
 
@@ -210,9 +208,7 @@
                             <excludes>
                                 <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
                                 <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/fx/**</exclude>
                                 <exclude>**/com/lgou2w/ldk/bukkit/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
@@ -227,9 +223,7 @@
                             <excludes>
                                 <exclude>**/com/lgou2w/ldk/asm/ASMClass*</exclude>
                                 <exclude>**/com/lgou2w/ldk/exposed/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/fx/**</exclude>
                                 <exclude>**/com/lgou2w/ldk/bukkit/**</exclude>
-                                <exclude>**/com/lgou2w/ldk/rsa/RSAUtils*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
