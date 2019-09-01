@@ -24,7 +24,7 @@
 * 一个多平台的 lgou2w 开发套件.
 
 多模块，多平台，低耦合，依赖库，Minecraft 的聊天和 NBT 库，协程，工具，实用程序，包装，
-JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
+Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
 集成的多模块多平台 lgou2w 开发套件。`LDK`
 
 * 对于 Minecraft 服务器的兼容性.
@@ -50,15 +50,7 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
     * [`ldk-i18n`](/ldk-i18n)
     * [`ldk-reflect`](/ldk-reflect)
     * [`ldk-retrofit`](/ldk-retrofit)
-    * [`ldk-rx`](/ldk-rx)
-    * [`ldk-fx`](/ldk-fx)
-        * [`ldk-fx-common`](/ldk-fx/ldk-fx-common)
-        * [`ldk-fx-coroutines`](/ldk-fx/ldk-fx-coroutines)
-        * [`ldk-fx-fontawesomefx`](/ldk-fx/ldk-fx-fontawesomefx)
-        * [`ldk-fx-jfoenix`](/ldk-fx/ldk-fx-jfoenix)
-        * [`ldk-fx-tornadofx`](/ldk-fx/ldk-fx-tornadofx)
-        * [`ldk-fx-rx`](/ldk-fx/ldk-fx-rx)
-    * [`ldk-rsa`](/ldk-rsa)
+    * [`ldk-security`](/ldk-security)
     * [`ldk-chat`](/ldk-chat)
     * [`ldk-nbt`](/ldk-nbt)
     * [`ldk-sql`](/ldk-sql)
@@ -82,7 +74,6 @@ JavaFx，Rxjava，Retrofit，ASM，Bukkit 的协程、扩展和运行时等。�
         * [`ldk-bukkit-depend-economy`](/ldk-bukkit/ldk-bukkit-depend-economy)
         * [`ldk-bukkit-depend-placeholderapi`](/ldk-bukkit/ldk-bukkit-depend-placeholderapi)
         * [`ldk-bukkit-depend-worldedit`](/ldk-bukkit/ldk-bukkit-depend-worldedit)
-        * [`ldk-bukkit-rx`](/ldk-bukkit/ldk-bukkit-rx)
         * [`ldk-bukkit-coroutines`](/ldk-bukkit/ldk-bukkit-coroutines)
         * [`ldk-bukkit-plugin`](/ldk-bukkit/ldk-bukkit-plugin)
         
