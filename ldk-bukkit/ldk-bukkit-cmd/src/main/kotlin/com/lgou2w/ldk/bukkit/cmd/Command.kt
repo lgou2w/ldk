@@ -155,13 +155,14 @@ annotation class Sorted(
         val value: Int
 )
 
-/**
- * @see [PlayerOnly]
- */
-@Target(AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.RUNTIME)
-@Deprecated("RENAME", replaceWith = ReplaceWith("PlayerOnly"))
-annotation class Playable
+// Removed since LDK 0.1.9
+///**
+// * @see [PlayerOnly]
+// */
+//@Target(AnnotationTarget.FUNCTION)
+//@Retention(AnnotationRetention.RUNTIME)
+//@Deprecated("RENAME", replaceWith = ReplaceWith("PlayerOnly"))
+//annotation class Playable
 
 /**
  * ## PlayerOnly (仅限玩家)
