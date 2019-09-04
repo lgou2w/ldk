@@ -24,7 +24,7 @@
 * 一个多平台的 lgou2w 开发套件.
 
 多模块，多平台，低耦合，依赖库，Minecraft 的聊天和 NBT 库，协程，工具，实用程序，包装，
-Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
+Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
 集成的多模块多平台 lgou2w 开发套件。`LDK`
 
 * 对于 Minecraft 服务器的兼容性.
@@ -49,6 +49,9 @@ Retrofit，ASM，Bukkit 的协程、扩展和运行时等。快速开发，Lambd
     * [`ldk-coroutines`](/ldk-coroutines)
     * [`ldk-i18n`](/ldk-i18n)
     * [`ldk-reflect`](/ldk-reflect)
+    * [`ldk-eventbus`](/ldk-eventbus)
+        * [`ldk-eventbus-common`](/ldk-eventbus/ldk-eventbus-common)
+        * [`ldk-eventbus-asm`](/ldk-eventbus/ldk-eventbus-asm)
     * [`ldk-retrofit`](/ldk-retrofit)
     * [`ldk-security`](/ldk-security)
     * [`ldk-chat`](/ldk-chat)
