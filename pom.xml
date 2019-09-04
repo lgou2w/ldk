@@ -93,6 +93,7 @@
         <module>ldk-coroutines</module>
         <module>ldk-asm</module>
         <module>ldk-reflect</module>
+        <module>ldk-eventbus</module>
         <module>ldk-retrofit</module>
         <module>ldk-i18n</module>
         <module>ldk-chat</module>
