@@ -42,6 +42,8 @@
 
 package com.lgou2w.ldk.eventbus
 
+import java.util.function.Supplier
+
 /*
  *  Modify: Mouse EventBus Java -> Kotlin
  *  by lgou2w on 04/09/2019
@@ -55,7 +57,8 @@ class ListenerList(val eventType: Class<*>) {
     private val children : MutableList<ListenerList> = ArrayList()
 
     val listeners : MutableCollection<RegisteredListener>
-            = SortedList.copyOf(ArrayList(), Comparator.comparingInt { it.order.ordinal })
+            = SortedList.create(Comparator.comparingInt { it.order.ordinal },
+            Supplier<MutableList<RegisteredListener>> { ArrayList() })
 
     fun register(listener: RegisteredListener) {
         listeners.add(listener)
