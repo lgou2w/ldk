@@ -1653,7 +1653,7 @@ abstract class ItemBuilderBase : ItemBuilder {
         } else {
             val list = tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
             if (list == null || list.isEmpty()) {
-                tag.getListOrDefault(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+                tag.getListOrDefault(NBT.TAG_CUSTOM_POTION_EFFECTS)
                     .addCompound(effect.save(ofCompound()))
                 this
             } else {
