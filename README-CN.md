@@ -23,9 +23,13 @@
 
 * 一个多平台的 lgou2w 开发套件.
 
-多模块，多平台，低耦合，依赖库，Minecraft 的聊天和 NBT 库，协程，工具，实用程序，包装，
+多模块，多平台，低耦合，依赖库，Minecraft 的聊天组件和 NBT 库，协程，工具，实用程序，包装，
 Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
 集成的多模块多平台 lgou2w 开发套件。`LDK`
+
+* Wiki
+
+    有关各种模块使用和问题请查看 [维基](https://github.com/lgou2w/ldk/wiki) 内容.
 
 * 对于 Minecraft 服务器的兼容性.
 
@@ -33,10 +37,6 @@ Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开
     <a href="https://minecraft.net"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20Paper%20%3E%3D%201.8-brightgreen.svg?style=flat-square&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABJ0AAASdAHeZh94AAAAGHRFWHRTb2Z0d2FyZQBwYWludC5uZXQgNC4xLjVkR1hSAAAChklEQVQ4T22RXUxSYRzGT5ldedGdrss2CwUUAUFQz0G+FMya5gmWHwdQkADZ2qym0Y66/E6pZSRqH2o4s1rlXV7VauuDD5W66MKt1bpta+siurCnc4At13y2d++79//+9nu2l/g/4Zgrd2mjS/Pog/9tJOl9OL/lPsay7P7seO9Ekj5BKMqszMTsv+bjDixvebCS7P6+vOkffZbszc8++5cnn9lDs3Hn4Fy848e9DSd4aGnThduJToTe28Dd/1lNdn+9k3Ay7Ef6YBoaW7cennpz5tP1dy0Ix22YjrYhHLNjcdONuwln+nwzymA2bsdComtn8LFljV6lc4jeSJPgwlJ9auB5MxbibszEeIMjbeMqI7J1Fve5NbHeCmu/FuVNxdsymSyXYBmj4HynIeUd1cA3Z8DwSwtCURtXtwNcNYRe29E6roXeVwW1UQylpDADhn3HBVfaa1IBOwl3mwKBp43oWWtA8FU7Ag9oUA4pynSFkJJHoZIKYagQb7t4cIihBGMOXSrob0bPqQoOVsLbTcEeJKE6LYG6TgSF8AgoaREP8XvGeNVlFAy0UKkRmxaXLFUYtevBttbAc7IcpEIMvVoKjbwIOoUQRlUJdCppBuSN/RwY8pkx3qHHEFODwTYNRhx6ziBCrVqCytKjqKuUgCwT4AQlz1Sd9pgLhhldfITR7kx1mTDprkfQZUSflYRGVgQTB/AQJRfx5t8auXCZpomc9F+usp68CafRd9lm+jLu0KGPqxxg6qAtL4ZeKYJOKd6pr5YmDJUlDRRFHUhDu3PNb82fdNVODdu0P294zWmjQSn+piOrPDRF5WWf7R0QxL5b5xpLL1rIF6ZqySJtpgqyo10hiL83Y0UXYFGT7wAAAABJRU5ErkJggg=="></a>
     <a href="https://bstats.org/plugin/bukkit/LDK"><img src="https://img.shields.io/badge/bStats-deployed-3366FF.svg?style=flat-square&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJLSURBVDhPLVI7bxNBEP52z/eIz28c23GCCRBwJASIBiHRkgoKJAoaCoSgh4qaCgkhOqhoEA0/gw6EoEBCckFA4ARkbPls353vfbfMnrPSaGdnZ+abmW/Yxe2yEADSDOBg4IwhylJkZE2TlH4AxjkKnP7ozp3pcHnnQpaMFBnA5Qcl0Ap8JQrP39LnKA7sXI8QyZBIyKOjqiuEiiZTMGSUahkm8KKUUFc+rN8timatgqsXdqHkVg5d03Odp5GMg2AcnufD9zx8/jGE5bpgZ7trot/bwsPbN6AqKvkxGIYJxhT4S5uCKJYCA9J9x8ab9x/xczQBe/bgpjANHb32MVnAqkdFz4dgOwvqUUGrXoc1HWNmTTB1PQQ0NL6zuYGtVgt6sQI/FpjMHCorQBRFiJIEfhhjarsICVozS2g3aug165SccFonTmPv0VN88Uu4/+ItDg5HqNEkT220YTk+bj15hWG1jzvP3+H4+SvQSw3wJCRol+ofH6JM5Gw3a8RpggUNYOG4ub7TqcPIfCxHv7C05/B9D+z1vT2h6ToajXWoWhlcNfB1f4A5JZOkNaolXN49A8uSPY7xd+4iiBOwl3eviYKioEQDmgUCi0igXSsSJbIJICQni3rUWAydxHJDxAkxG9G6BHEMh8a9/+cAnwYDmEUdJzc7uZhrBj58+47f/yzEGXEDJaeKPb5+Kd8iJjJYfoJ5kGC9WoauFqQ5R5wsHHRrJjpUiRdGSGnLuBy3R+KSxJIf2snJ3MZwbOUyJl3iyOwp7XxGFQoh8B/lvSHNL742VAAAAABJRU5ErkJggg=="></a>
     </p>
-
-* Wiki
-
-    有关各种模块使用和问题请查看 [维基](https://github.com/lgou2w/ldk/wiki) 内容.
 
 # 模块
 
@@ -87,9 +87,9 @@ Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开
 ## 0.x
 
 - `0.1.8-beta1` - 0.1.8 版本的第一个测试版.
+- `0.1.8-rc2-SNAPSHOT` - 0.1.8 快照版本的第二个发布候选版本.
 - `0.1.8-rc2` - 0.1.8 版本的第二个发布候选版.
 - `0.1.8-rc2-hotfix1` - 0.1.8 版本的第二个发布候选版热修1.
-- `0.1.8-rc2-SNAPSHOT` - 0.1.8 快照版本的第二个发布候选版本.
 - `0.1.8-SNAPSHOT` - 0.1.8 快照版本.
 - `0.1.8` - 0.1.8 正式版.
 
@@ -141,9 +141,9 @@ mvn clean package
 
 非常感谢你们的捐赠
 
-* [LywLover](https://github.com/LywLover)
-* [EnTIv](https://github.com/EnTIv)
-* [nihuge](https://github.com/nihuge)
+* [@LywLover](https://github.com/LywLover)
+* [@EnTIv](https://github.com/EnTIv)
+* [@nihuge](https://github.com/nihuge)
 
 # 协议
 
