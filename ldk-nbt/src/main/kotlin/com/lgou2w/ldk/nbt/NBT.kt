@@ -131,7 +131,6 @@ interface NBT<T> : Cloneable {
         const val TAG_DISPLAY_LORE = "Lore"
         const val TAG_DISPLAY_NAME = "Name"
         const val TAG_DISPLAY_LOC_NAME = "LocName"  // since 18w01a remove and change to -> Name
-        const val TAG_CUSTOM_MODEL_DATA = "CustomModelData" // since Minecraft 1.14
         const val TAG_ENTITY_TAG = "EntityTag"
         const val TAG_ENTITY_TAG_ID = "id"
         const val TAG_HIDE_FLAGS = "HideFlags"
@@ -185,8 +184,18 @@ interface NBT<T> : Cloneable {
         const val TAG_FIREWORKS_COLORS = "Colors"
         const val TAG_FIREWORKS_FADE_COLORS = "FadeColors"
         const val TAG_KNOWLEDGE_BOOK_RECIPES = "Recipes"
+
+        /// Since LDK 0.1.8-rc
+        const val TAG_CUSTOM_MODEL_DATA = "CustomModelData" // since Minecraft 1.14
         const val TAG_CROSSBOW_CHARGED = "Charged" // since Minecraft 1.14
         const val TAG_CROSSBOW_CHARGED_PROJECTILES = "ChargedProjectiles" // since Minecraft 1.14
+        ///
+
+        /// Since LDK 0.1.9
+        const val TAG_SUSPICIOUS_STEW_EFFECTS = "Effects" // since Minecraft 1.14
+        const val TAG_SUSPICIOUS_STEW_EFFECT_ID = "EffectId" // since Minecraft 1.14
+        const val TAG_SUSPICIOUS_STEW_EFFECT_DURATION = "EffectDuration" // since Minecraft 1.14
+        ///
 
         //</editor-fold>
     }

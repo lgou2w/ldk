@@ -848,6 +848,75 @@ interface ItemBuilder : Builder<ItemStack> {
 
     //</editor-fold>
 
+    //<editor-fold desc="ItemBuilder - Suspicious Stew Effects" defaultstate="collapsed">
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    var suspiciousStewEffects : List<PotionEffectCustom>?
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun getSuspiciousStewEffects(block: (ItemBuilder, List<PotionEffectCustom>?) -> Unit): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun getSuspiciousStewEffect(type: PotionEffectType) : PotionEffectCustom?
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun getSuspiciousStewEffect(type: PotionEffectType, block: (ItemBuilder, PotionEffectCustom?) -> Unit): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun setSuspiciousStewEffects(effects: List<PotionEffectCustom>?): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun setSuspiciousStewEffectsIf(effect: List<PotionEffectCustom>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun clearSuspiciousStewEffects(): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun addSuspiciousStewEffect(effect: PotionEffectCustom): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun addSuspiciousStewEffect(effect: PotionEffectCustom, override: Boolean): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun addSuspiciousStewEffectIf(effect: PotionEffectCustom, override: Boolean = false, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun removeSuspiciousStewEffect(type: PotionEffectType): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun removeSuspiciousStewEffect(predicate: Predicate<PotionEffectCustom>? = null): ItemBuilder
+
+    /**
+     * @since Minecraft 1.14 & LDK 0.1.9
+     */
+    fun removeSuspiciousStewEffectIndexed(block: BiFunction<Int, PotionEffectCustom, Boolean>? = null): ItemBuilder
+
+    //</editor-fold>
+
     companion object {
 
         /**

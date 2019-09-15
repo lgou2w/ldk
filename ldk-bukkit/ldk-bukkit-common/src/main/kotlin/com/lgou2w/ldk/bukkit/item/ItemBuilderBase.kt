@@ -1652,8 +1652,9 @@ abstract class ItemBuilderBase : ItemBuilder {
             this
         } else {
             val list = tag.getListOrNull(NBT.TAG_CUSTOM_POTION_EFFECTS)
-            if (list == null) {
-                addPotionCustom(effect, false)
+            if (list == null || list.isEmpty()) {
+                tag.getListOrDefault(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+                    .addCompound(effect.save(ofCompound()))
                 this
             } else {
                 val index = list.indexOfFirst {
@@ -1662,6 +1663,8 @@ abstract class ItemBuilderBase : ItemBuilder {
                 }
                 if (index != -1)
                     list[index] = effect.save(ofCompound())
+                else
+                    list.addCompound(effect.save(ofCompound()))
                 this
             }
         }
@@ -2032,6 +2035,121 @@ abstract class ItemBuilderBase : ItemBuilder {
     override fun removeCrossbowChargedProjectilesIndexed(block: BiFunction<Int, ItemStack, Boolean>?): ItemBuilder {
         tag.getListOrNull(NBT.TAG_CROSSBOW_CHARGED_PROJECTILES)
             ?.removeIfIndexed<NBTTagCompound, ItemStack>({ ItemFactory.createItem(it) }, block)
+        return this
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ItemBuilder - Suspicious Stew Effects" defaultstate="collapsed">
+
+    override var suspiciousStewEffects: List<PotionEffectCustom>?
+        get() {
+            return tag.getListOrNull(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+                ?.asElements<NBTTagCompound>()
+                ?.map { effect ->
+                    val type = PotionEffectType.fromId(effect.getByte(NBT.TAG_SUSPICIOUS_STEW_EFFECT_ID).toInt())
+                    val duration = effect.getInt(NBT.TAG_SUSPICIOUS_STEW_EFFECT_DURATION)
+                    PotionEffectCustom(type, 0, duration)
+                }
+        }
+        set(value) {
+            clearSuspiciousStewEffects()
+            value?.forEach { addSuspiciousStewEffect(it) }
+        }
+
+    override fun getSuspiciousStewEffects(block: (ItemBuilder, List<PotionEffectCustom>?) -> Unit): ItemBuilder {
+        block(this, suspiciousStewEffects)
+        return this
+    }
+
+    override fun getSuspiciousStewEffect(type: PotionEffectType): PotionEffectCustom? {
+        return suspiciousStewEffects?.firstOrNull { it.type == type }
+    }
+
+    override fun getSuspiciousStewEffect(type: PotionEffectType, block: (ItemBuilder, PotionEffectCustom?) -> Unit): ItemBuilder {
+        block(this, getSuspiciousStewEffect(type))
+        return this
+    }
+
+    override fun setSuspiciousStewEffects(effects: List<PotionEffectCustom>?): ItemBuilder {
+        this.suspiciousStewEffects = effects
+        return this
+    }
+
+    override fun setSuspiciousStewEffectsIf(effect: List<PotionEffectCustom>?, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            this.suspiciousStewEffects = effect
+        return this
+    }
+
+    override fun clearSuspiciousStewEffects(): ItemBuilder {
+        tag.remove(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+        return this
+    }
+
+    override fun addSuspiciousStewEffect(effect: PotionEffectCustom): ItemBuilder {
+        addSuspiciousStewEffect(effect, false)
+        return this
+    }
+
+    override fun addSuspiciousStewEffect(effect: PotionEffectCustom, override: Boolean): ItemBuilder {
+        return if (!override) {
+            tag.getListOrDefault(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+                .addCompound(ofCompound {
+                    putByte(NBT.TAG_SUSPICIOUS_STEW_EFFECT_ID, effect.type.id)
+                    putInt(NBT.TAG_SUSPICIOUS_STEW_EFFECT_DURATION, effect.duration)
+                })
+            this
+        } else {
+            val list = tag.getListOrNull(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+            if (list == null || list.isEmpty()) {
+                tag.getListOrDefault(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+                    .addCompound(ofCompound {
+                        putByte(NBT.TAG_SUSPICIOUS_STEW_EFFECT_ID, effect.type.id)
+                        putInt(NBT.TAG_SUSPICIOUS_STEW_EFFECT_DURATION, effect.duration)
+                    })
+                this
+            } else {
+                val compound = ofCompound {
+                    putByte(NBT.TAG_SUSPICIOUS_STEW_EFFECT_ID, effect.type.id)
+                    putInt(NBT.TAG_SUSPICIOUS_STEW_EFFECT_DURATION, effect.duration)
+                }
+                val index = list.indexOfFirst {
+                    val type = PotionEffectType.fromId(it.asCompound().getByte(NBT.TAG_SUSPICIOUS_STEW_EFFECT_ID).toInt())
+                    effect.type == type
+                }
+                if (index != -1)
+                    list[index] = compound
+                else
+                    list.addCompound(compound)
+                this
+            }
+        }
+    }
+
+    override fun addSuspiciousStewEffectIf(effect: PotionEffectCustom, override: Boolean, block: ApplicatorFunction<ItemBuilder, Boolean?>): ItemBuilder {
+        if (block(this).isTrue())
+            addSuspiciousStewEffect(effect, override)
+        return this
+    }
+
+    override fun removeSuspiciousStewEffect(type: PotionEffectType): ItemBuilder {
+        removeSuspiciousStewEffect { it.type == type }
+        return this
+    }
+
+    override fun removeSuspiciousStewEffect(predicate: Predicate<PotionEffectCustom>?): ItemBuilder {
+        removeSuspiciousStewEffectIndexed { _, value -> predicate?.invoke(value).isTrue() }
+        return this
+    }
+
+    override fun removeSuspiciousStewEffectIndexed(block: BiFunction<Int, PotionEffectCustom, Boolean>?): ItemBuilder {
+        tag.getListOrNull(NBT.TAG_SUSPICIOUS_STEW_EFFECTS)
+            ?.removeIfIndexed<NBTTagCompound, PotionEffectCustom>({
+                val type = PotionEffectType.fromId(it.getByte(NBT.TAG_SUSPICIOUS_STEW_EFFECT_ID).toInt())
+                val duration = it.getInt(NBT.TAG_SUSPICIOUS_STEW_EFFECT_DURATION)
+                PotionEffectCustom(type, 0, duration)
+            }, block)
         return this
     }
 
