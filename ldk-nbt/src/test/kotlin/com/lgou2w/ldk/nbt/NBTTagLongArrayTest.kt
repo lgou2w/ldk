@@ -25,8 +25,8 @@ class NBTTagLongArrayTest {
     @Test fun `NBTTagLongArray - toJson`() {
         val nbt = NBTTagLongArray(value = longArrayOf(0L, 1L, 1L))
         nbt.toJson() shouldEqual "[0,1,1]"
-        nbt.toMojangson() shouldEqual "[0L,1L,1L]"
-        nbt.toMojangsonWithColor() shouldEqual "[§60§cL§r, §61§cL§r, §61§cL§r]"
+        nbt.toMojangson() shouldEqual "[L; 0L,1L,1L]"
+        nbt.toMojangsonWithColor() shouldEqual "[§cL§r; §60§cL§r, §61§cL§r, §61§cL§r]"
     }
 
     @Test fun `NBTTagLongArray - toJson - Empty values should only be parentheses`() {

@@ -76,12 +76,10 @@ class NBTTagLongArray : NBTBase<LongArray> {
     }
 
     override fun toMojangson(): String {
-        val suffix = NBTType.TAG_LONG.mojangsonSuffix
-        return value0.joinToString("$suffix,", "[", "$suffix]")
+        return value0.joinToString("L,", "[L; ", "L]")
     }
 
     override fun toMojangsonWithColor(): String {
-        val suffix = "§c${NBTType.TAG_LONG.mojangsonSuffix}§r"
-        return value0.joinToString("$suffix, §6", "[§6", "$suffix]")
+        return value0.joinToString("§cL§r, §6", "[§cL§r; §6", "§cL§r]")
     }
 }

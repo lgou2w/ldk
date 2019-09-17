@@ -25,8 +25,8 @@ class NBTTagByteArrayTest {
     @Test fun `NBTTagByteArray - toJson`() {
         val nbt = NBTTagByteArray(value = byteArrayOf(0, 1, 1))
         nbt.toJson() shouldEqual "[0,1,1]"
-        nbt.toMojangson() shouldEqual "[0b,1b,1b]"
-        nbt.toMojangsonWithColor() shouldEqual "[§60§cb§r, §61§cb§r, §61§cb§r]"
+        nbt.toMojangson() shouldEqual "[B; 0B,1B,1B]"
+        nbt.toMojangsonWithColor() shouldEqual "[§cB§r; §60§cB§r, §61§cB§r, §61§cB§r]"
     }
 
     @Test fun `NBTTagByteArray - toJson - Empty values should only be parentheses`() {
