@@ -993,9 +993,9 @@ enum class XMaterial {
     SPRUCE_SIGN("SIGN", 0),
     SPRUCE_WALL_SIGN("WALL_SIGN", 0),
 
-    BLUE_DYE("STONE", 0),
-    BROWN_DYE("STONE", 0),
-    BLACK_DYE("STONE", 0),
+    BLUE_DYE(4, "INK_SACK", "LAPIS_LAZULI"), // Original lapis lazuli
+    BROWN_DYE(3, "INK_SACK", "COCOA_BEANS"), // Original cocoa beans
+    BLACK_DYE(0, "INK_SACK", "INK_SAC"), // Original ink sac
     WHITE_DYE(15, "INK_SACK", "BONE_MEAL"), // Original bone meal
     GREEN_DYE(2, "INK_SACK", "CACTUS_GREEN"), // Original cactus green
     YELLOW_DYE(11, "INK_SACK", "DANDELION_YELLOW"), // Original dandelion yellow
