@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.nbt
 import com.lgou2w.ldk.bukkit.reflect.MinecraftReflection
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
+import com.lgou2w.ldk.nbt.MojangsonParser
 import com.lgou2w.ldk.nbt.NBTBase
 import com.lgou2w.ldk.nbt.NBTTagByte
 import com.lgou2w.ldk.nbt.NBTTagByteArray
@@ -54,6 +55,8 @@ object NBTFactory {
     @JvmStatic val CLASS_NBT_STREAM by lazyMinecraftClass("NBTCompressedStreamTools")
     @JvmStatic val CLASS_NBT_READ_LIMITER by lazyMinecraftClass("NBTReadLimiter")
     @JvmStatic val CLASS_NBT_LONG_ARRAY by lazyMinecraftClassOrNull("NBTTagLongArray") // since Minecraft 1.12
+
+    @Deprecated("IMPLEMENTED", replaceWith = ReplaceWith("MojangsonParser"))
     @JvmStatic val CLASS_MOJANGSON_PARSER by lazyMinecraftClass("MojangsonParser")
 
     // NMS.NBTList -> private byte type
@@ -106,6 +109,7 @@ object NBTFactory {
     }
 
     // NMS.MojangsonParser -> public static NMS.NBTTagCompound parse(String)
+    @Deprecated("IMPLEMENTED", replaceWith = ReplaceWith("MojangsonParser.parse"))
     @JvmStatic val METHOD_MOJANGSON_PARSER : AccessorMethod<Any, Any> by lazy {
         FuzzyReflect.of(CLASS_MOJANGSON_PARSER, true)
             .useMethodMatcher()
@@ -151,7 +155,7 @@ object NBTFactory {
             NBTType.TAG_FLOAT -> NBTTagFloat(fieldValue as Float)
             NBTType.TAG_DOUBLE -> NBTTagDouble(fieldValue as Double)
             NBTType.TAG_BYTE_ARRAY -> NBTTagByteArray(fieldValue as ByteArray)
-            NBTType.TAG_STRING -> NBTTagString(fieldValue as String)
+            NBTType.TAG_STRING -> NBTTagString(value = fieldValue as String)
             NBTType.TAG_INT_ARRAY -> NBTTagIntArray(fieldValue as IntArray)
             NBTType.TAG_LONG_ARRAY -> NBTTagLongArray(fieldValue as LongArray)
             else -> throw UnsupportedOperationException()
@@ -203,22 +207,21 @@ object NBTFactory {
         return instance as Any
     }
 
-    // TODO: Implement the MojangsonParser class
-
     /**
      * * Parse the given NBT string in the `Mojang` Gson format to the [NBTTagCompound] object.
      * * 将给定的 `Mojang` Gson 格式的 NBT 字符串解析为 [NBTTagCompound] 对象.
      *
      * @see [NBTTagCompound]
      * @see [NBTTagCompound.toMojangson]
+     * @see [MojangsonParser.parse]
      * @since LDK 0.1.8-rc
      */
     @JvmStatic
+    @Deprecated("IMPLEMENTED", replaceWith = ReplaceWith("MojangsonParser.parse"))
     fun fromMojangson(mojangson: String?): NBTTagCompound? {
         if (mojangson == null || mojangson.isBlank()) return null
         return try {
-            val handle = METHOD_MOJANGSON_PARSER.invoke(null, mojangson)
-            fromNMS(handle) as? NBTTagCompound
+            MojangsonParser.parse(mojangson)
         } catch (e: Exception) {
             null
         }
