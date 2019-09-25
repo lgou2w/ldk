@@ -24,9 +24,9 @@ package com.lgou2w.ldk.asm
  */
 interface ASMClassGenerator {
 
-    /**
-     * * Generate key-value pair mappings for class name and bytecode.
-     * * 生成类名和字节码的键值对映射.
-     */
-    fun generate(): Map<String, ByteArray>
+  /**
+   * * Generate key-value pair mappings for class name and bytecode.
+   * * 生成类名和字节码的键值对映射.
+   */
+  fun generate(): Map<String, ByteArray>
 }

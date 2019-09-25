@@ -28,106 +28,106 @@ import org.bukkit.permissions.PermissionDefault
 @Deprecated("USELESS")
 class Sample : StandardCommand() {
 
-    override fun initialize() {
-        command.prefix = "[${command.name.capitalize()}] "
-        command.isAllowCompletion = true
-        command.manager.transforms
-            .addTransform(NBTType::class.java) {
-                Enums.ofName(NBTType::class.java, it)
-            }
-        command.manager.completes
-            .addCompleter(NBTType::class.java) { _, _, value ->
-                NBTType.values().filter { it.name.startsWith(value) }
-                    .map { it.name }
-            }
+  override fun initialize() {
+    command.prefix = "[${command.name.capitalize()}] "
+    command.isAllowCompletion = true
+    command.manager.transforms
+      .addTransform(NBTType::class.java) {
+        Enums.ofName(NBTType::class.java, it)
+      }
+    command.manager.completes
+      .addCompleter(NBTType::class.java) { _, _, value ->
+        NBTType.values().filter { it.name.startsWith(value) }
+          .map { it.name }
+      }
+  }
+
+  @Command("help")
+  @CommandDescription("View sample command help.")
+  @Sorted(1)
+  fun help(sender: CommandSender) {
+    CommandHelper.sendSimpleCommandTooltips(sender, command,
+      newLineDesc = true, named = true, permission = true,
+      sorted = CommandHelper.Sorted.ANNOTATION
+    )
+  }
+
+  @Command("sample")
+  @CommandDescription("Sample command.")
+  @Sorted(0)
+  fun sample(sender: CommandSender) {
+    // => /sample
+    sender.send("invoke sample")
+  }
+
+  @Command("hello", aliases = ["hi", "nh"])
+  @CommandDescription("Test and say Hello world.")
+  @Permission("sample.hello")
+  @PermissionDefaultValue(PermissionDefault.TRUE)
+  @Sorted(2)
+  fun hello(sender: CommandSender) {
+    // => /sample hello
+    sender.send("hello world ~")
+  }
+
+  @Command("tell")
+  @CommandDescription("Send a private chat message to the specified target player.")
+  @Sorted(3)
+  fun tell(sender: CommandSender, target: Player, @Optional("hi~") @Vararg(String::class) msgs: List<String>) {
+    // => /sample tell <target> [msgs...]
+    val msg = msgs.joinToString(" ")
+    sender.sendMessage("You said to ${target.name} : $msg")
+    target.sendMessage("${sender.name} tell you : $msg")
+  }
+
+  @CommandRoot("user", aliases = ["u"])
+  @Permission("sample.user")
+  @Description(description = "View sample user command.")
+  @Sorted(4)
+  class User : StandardCommand() {
+
+    @Command("user")
+    fun user(sender: CommandSender) {
+      // => /sample user
+      sender.send("invoke user")
     }
 
-    @Command("help")
-    @CommandDescription("View sample command help.")
-    @Sorted(1)
-    fun help(sender: CommandSender) {
-        CommandHelper.sendSimpleCommandTooltips(sender, command,
-                newLineDesc = true, named = true, permission = true,
-                sorted = CommandHelper.Sorted.ANNOTATION
-        )
+    @Command("add", aliases = ["a", "tj"])
+    @Permission("sample.user.add")
+    fun add(sender: CommandSender,
+            @Parameter("username")
+            @Playername
+            username: String,
+            @Parameter("password")
+            @Optional("123456")
+            password: String
+    ) {
+      // => /sample user add <username> [password]
+      sender.send("add user => ($username:$password)")
     }
 
-    @Command("sample")
-    @CommandDescription("Sample command.")
-    @Sorted(0)
-    fun sample(sender: CommandSender) {
-        // => /sample
-        sender.send("invoke sample")
+    @Command("remove", aliases = ["r", "yc"])
+    @Permission("sample.user.remove")
+    fun remove(sender: CommandSender,
+               @Parameter("username")
+               username: String
+    ) {
+      // => /sample user remove <username>
+      sender.send("remove user => ($username)")
     }
+  }
 
-    @Command("hello", aliases = ["hi", "nh"])
-    @CommandDescription("Test and say Hello world.")
-    @Permission("sample.hello")
-    @PermissionDefaultValue(PermissionDefault.TRUE)
-    @Sorted(2)
-    fun hello(sender: CommandSender) {
-        // => /sample hello
-        sender.send("hello world ~")
+  @CommandRoot("nbt")
+  @Permission("sample.nbt")
+  @Description(description = "View sample nbt command.")
+  @Sorted(5)
+  class NBT : StandardCommand() {
+
+    @Command("type")
+    @Permission("sample.nbt.type")
+    fun type(sender: CommandSender, type: NBTType) {
+      // => /sample nbt type <type>
+      sender.send("nbt type wrapped => ${type.wrapped.canonicalName}")
     }
-
-    @Command("tell")
-    @CommandDescription("Send a private chat message to the specified target player.")
-    @Sorted(3)
-    fun tell(sender: CommandSender, target: Player, @Optional("hi~") @Vararg(String::class) msgs: List<String>) {
-        // => /sample tell <target> [msgs...]
-        val msg = msgs.joinToString(" ")
-        sender.sendMessage("You said to ${target.name} : $msg")
-        target.sendMessage("${sender.name} tell you : $msg")
-    }
-
-    @CommandRoot("user", aliases = ["u"])
-    @Permission("sample.user")
-    @Description(description = "View sample user command.")
-    @Sorted(4)
-    class User : StandardCommand() {
-
-        @Command("user")
-        fun user(sender: CommandSender) {
-            // => /sample user
-            sender.send("invoke user")
-        }
-
-        @Command("add", aliases = ["a", "tj"])
-        @Permission("sample.user.add")
-        fun add(sender: CommandSender,
-                @Parameter("username")
-                @Playername
-                username: String,
-                @Parameter("password")
-                @Optional("123456")
-                password: String
-        ) {
-            // => /sample user add <username> [password]
-            sender.send("add user => ($username:$password)")
-        }
-
-        @Command("remove", aliases = ["r", "yc"])
-        @Permission("sample.user.remove")
-        fun remove(sender: CommandSender,
-                   @Parameter("username")
-                   username: String
-        ) {
-            // => /sample user remove <username>
-            sender.send("remove user => ($username)")
-        }
-    }
-
-    @CommandRoot("nbt")
-    @Permission("sample.nbt")
-    @Description(description = "View sample nbt command.")
-    @Sorted(5)
-    class NBT : StandardCommand() {
-
-        @Command("type")
-        @Permission("sample.nbt.type")
-        fun type(sender: CommandSender, type: NBTType) {
-            // => /sample nbt type <type>
-            sender.send("nbt type wrapped => ${type.wrapped.canonicalName}")
-        }
-    }
+  }
 }

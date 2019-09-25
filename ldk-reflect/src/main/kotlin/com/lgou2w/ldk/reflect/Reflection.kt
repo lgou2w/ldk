@@ -46,147 +46,147 @@ import kotlin.math.min
  */
 abstract class Reflection private constructor() {
 
-    /**
-     * * Get the caller class for the given [depth].
-     * * 获取给定深度 [depth] 的调用者类.
-     *
-     * @param depth Depth
-     * @param depth 深度
-     */
-    @JvmOverloads
-    open fun getCallerClass(depth: Int? = null): Class<*>? {
-        return null
-    }
+  /**
+   * * Get the caller class for the given [depth].
+   * * 获取给定深度 [depth] 的调用者类.
+   *
+   * @param depth Depth
+   * @param depth 深度
+   */
+  @JvmOverloads
+  open fun getCallerClass(depth: Int? = null): Class<*>? {
+    return null
+  }
+
+  /**
+   * * Get the expected class from `0` to the given [depth].
+   * * 获取从 `0` 到给定深度 [depth] 的预期类.
+   *
+   * @param depth Depth
+   * @param depth 深度
+   * @param expected Expected type
+   * @param expected 预期类型
+   */
+  @JvmOverloads
+  open fun getCallerClasses(depth: Int? = null, expected: Class<*>? = null): List<Class<*>> {
+    return emptyList()
+  }
+
+  companion object {
 
     /**
-     * * Get the expected class from `0` to the given [depth].
-     * * 获取从 `0` 到给定深度 [depth] 的预期类.
+     * * Get the wrapped reflection implemented by the underlying `sun.reflect.Reflection` of `Sun`.
+     * * 获取由 `Sun` 的底层 `sun.reflect.Reflection` 实现的包装反射.
      *
-     * @param depth Depth
-     * @param depth 深度
-     * @param expected Expected type
-     * @param expected 预期类型
+     * > `WARNING` : This depends on whether the `JDK` is reserved, please use [safe] method.
+     *
+     * @see [safe]
      */
-    @JvmOverloads
-    open fun getCallerClasses(depth: Int? = null, expected: Class<*>? = null): List<Class<*>> {
-        return emptyList()
+    @JvmStatic
+    @Deprecated("sun.reflect.Reflection", ReplaceWith("safe"))
+    fun sun(): Reflection
+      = SunReflection()
+
+    /**
+     * * Get the wrapped reflection implemented by the stack information of `Thread`.
+     * * 获取由 `Thread` 的堆栈信息实现的包装反射.
+     *
+     * @see [safe]
+     */
+    @JvmStatic
+    @Deprecated("It is recommended to use safe to get.", ReplaceWith("safe"))
+    fun thread(): Reflection
+      = ThreadReflection()
+
+    @JvmStatic
+    private var SAFE : Reflection? = null
+
+    /**
+     * * Give preference to the underlying implementation of `Sun`, if not available then use the wrapped reflection of the `Thread` stack information.
+     * * 优先使用 `Sun` 的底层实现, 如果不可用那么使用 `Thread` 的堆栈信息实现的包装反射.
+     */
+    @JvmStatic
+    fun safe(): Reflection {
+      if (SAFE == null) {
+        var thread = true
+        try {
+          Class.forName("sun.reflect.Reflection")
+          SAFE = SunReflection()
+          SAFE?.getCallerClasses(depth = 1)  // test method
+          thread = false
+        } catch (e: ClassNotFoundException) {
+        } catch (e: NoSuchMethodError) {
+        } catch (e: Exception) {
+        } finally {
+          if (thread)
+            SAFE = ThreadReflection()
+        }
+      }
+      return SAFE!!
     }
 
-    companion object {
-
-        /**
-         * * Get the wrapped reflection implemented by the underlying `sun.reflect.Reflection` of `Sun`.
-         * * 获取由 `Sun` 的底层 `sun.reflect.Reflection` 实现的包装反射.
-         *
-         * > `WARNING` : This depends on whether the `JDK` is reserved, please use [safe] method.
-         *
-         * @see [safe]
-         */
-        @JvmStatic
-        @Deprecated("sun.reflect.Reflection", ReplaceWith("safe"))
-        fun sun(): Reflection
-                = SunReflection()
-
-        /**
-         * * Get the wrapped reflection implemented by the stack information of `Thread`.
-         * * 获取由 `Thread` 的堆栈信息实现的包装反射.
-         *
-         * @see [safe]
-         */
-        @JvmStatic
-        @Deprecated("It is recommended to use safe to get.", ReplaceWith("safe"))
-        fun thread(): Reflection
-                = ThreadReflection()
-
-        @JvmStatic
-        private var SAFE : Reflection? = null
-
-        /**
-         * * Give preference to the underlying implementation of `Sun`, if not available then use the wrapped reflection of the `Thread` stack information.
-         * * 优先使用 `Sun` 的底层实现, 如果不可用那么使用 `Thread` 的堆栈信息实现的包装反射.
-         */
-        @JvmStatic
-        fun safe(): Reflection {
-            if (SAFE == null) {
-                var thread = true
-                try {
-                    Class.forName("sun.reflect.Reflection")
-                    SAFE = SunReflection()
-                    SAFE?.getCallerClasses(depth = 1)  // test method
-                    thread = false
-                } catch (e: ClassNotFoundException) {
-                } catch (e: NoSuchMethodError) {
-                } catch (e: Exception) {
-                } finally {
-                    if (thread)
-                        SAFE = ThreadReflection()
-                }
-            }
-            return SAFE!!
-        }
-
-        @JvmStatic
-        private fun safeDepth(depth: Int?): Int {
-            return if (depth == 0x7FFFFFFF)
-                depth
-            else
-                depth?.plus(1) ?: 0x7FFFFFFF
-        }
+    @JvmStatic
+    private fun safeDepth(depth: Int?): Int {
+      return if (depth == 0x7FFFFFFF)
+        depth
+      else
+        depth?.plus(1) ?: 0x7FFFFFFF
     }
+  }
 
-    private class SunReflection : Reflection() {
-        override fun getCallerClass(depth: Int?): Class<*>? {
-            return try {
-                @Suppress("DEPRECATION")
-                sun.reflect.Reflection.getCallerClass(depth ?: 0)
-            } catch (e: NoSuchMethodError) {
-                try {
-                    sun.reflect.Reflection.getCallerClass()
-                } catch (e1: NoSuchMethodError) {
-                    null
-                }
-            }
+  private class SunReflection : Reflection() {
+    override fun getCallerClass(depth: Int?): Class<*>? {
+      return try {
+        @Suppress("DEPRECATION")
+        sun.reflect.Reflection.getCallerClass(depth ?: 0)
+      } catch (e: NoSuchMethodError) {
+        try {
+          sun.reflect.Reflection.getCallerClass()
+        } catch (e1: NoSuchMethodError) {
+          null
         }
-        override fun getCallerClasses(depth: Int?, expected: Class<*>?): List<Class<*>> {
-            val callerClasses = ArrayList<Class<*>>()
-            try {
-                @Suppress("DEPRECATION")
-                for (index in 0 until safeDepth(depth)) try {
-                    val clazz = sun.reflect.Reflection.getCallerClass(index) ?: break
-                    if (expected != null && expected.isAssignableFrom(clazz)) callerClasses.add(clazz)
-                    else if (expected == null) callerClasses.add(clazz)
-                } catch (e: Exception) {
-                }
-            } catch (e: NoSuchMethodError) {
-                try {
-                    callerClasses.add(sun.reflect.Reflection.getCallerClass())
-                } catch (e1: NoSuchMethodError) {
-                }
-            }
-            return if (callerClasses.isEmpty()) emptyList() else callerClasses
-        }
+      }
     }
+    override fun getCallerClasses(depth: Int?, expected: Class<*>?): List<Class<*>> {
+      val callerClasses = ArrayList<Class<*>>()
+      try {
+        @Suppress("DEPRECATION")
+        for (index in 0 until safeDepth(depth)) try {
+          val clazz = sun.reflect.Reflection.getCallerClass(index) ?: break
+          if (expected != null && expected.isAssignableFrom(clazz)) callerClasses.add(clazz)
+          else if (expected == null) callerClasses.add(clazz)
+        } catch (e: Exception) {
+        }
+      } catch (e: NoSuchMethodError) {
+        try {
+          callerClasses.add(sun.reflect.Reflection.getCallerClass())
+        } catch (e1: NoSuchMethodError) {
+        }
+      }
+      return if (callerClasses.isEmpty()) emptyList() else callerClasses
+    }
+  }
 
-    private class ThreadReflection : Reflection() {
-        override fun getCallerClass(depth: Int?): Class<*>? {
-            val elements = Thread.currentThread().stackTrace
-            val className = elements.getOrNull(depth ?: 0)?.className
-            return try {
-                Class.forName(className)
-            } catch (e: ClassNotFoundException) {
-                null
-            }
-        }
-        override fun getCallerClasses(depth: Int?, expected: Class<*>?): List<Class<*>> {
-            val elements = Thread.currentThread().stackTrace
-            val callerClasses = ArrayList<Class<*>>()
-            for (index in 0 until min(elements.size, safeDepth(depth))) try {
-                val clazz = Class.forName(elements[index].className) ?: break
-                if (expected != null && expected.isAssignableFrom(clazz)) callerClasses.add(clazz)
-                else if (expected == null) callerClasses.add(clazz)
-            } catch (e: Exception) {
-            }
-            return if (callerClasses.isEmpty()) emptyList() else callerClasses
-        }
+  private class ThreadReflection : Reflection() {
+    override fun getCallerClass(depth: Int?): Class<*>? {
+      val elements = Thread.currentThread().stackTrace
+      val className = elements.getOrNull(depth ?: 0)?.className
+      return try {
+        Class.forName(className)
+      } catch (e: ClassNotFoundException) {
+        null
+      }
     }
+    override fun getCallerClasses(depth: Int?, expected: Class<*>?): List<Class<*>> {
+      val elements = Thread.currentThread().stackTrace
+      val callerClasses = ArrayList<Class<*>>()
+      for (index in 0 until min(elements.size, safeDepth(depth))) try {
+        val clazz = Class.forName(elements[index].className) ?: break
+        if (expected != null && expected.isAssignableFrom(clazz)) callerClasses.add(clazz)
+        else if (expected == null) callerClasses.add(clazz)
+      } catch (e: Exception) {
+      }
+      return if (callerClasses.isEmpty()) emptyList() else callerClasses
+    }
+  }
 }

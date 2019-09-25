@@ -30,43 +30,43 @@ import java.io.OutputStream
  * @author lgou2w
  */
 class ResourceExternalizableProvider @JvmOverloads constructor(
-        /**
-         * * A directory of resource externalizable language provider.
-         * * 此资源可外部语言提供者的目录.
-         */
-        val directory : File,
-        classLoader: ClassLoader = ResourceExternalizableProvider::class.java.classLoader
+  /**
+   * * A directory of resource externalizable language provider.
+   * * 此资源可外部语言提供者的目录.
+   */
+  val directory : File,
+  classLoader: ClassLoader = ResourceExternalizableProvider::class.java.classLoader
 ) : ResourceProvider(classLoader) {
 
-    override fun load(name: String): InputStream? {
-        val external = File(directory, name)
-        if (!external.exists()) {
-            val internal = super.isValid(name)
-            if (internal) {
-                val input = super.load(name)!!
-                val output = FileOutputStream(external)
-                val buffer = ByteArray(1024)
-                var length : Int
-                while (input.read(buffer).apply { length = this } != -1)
-                    output.write(buffer, 0, length)
-                output.flush()
-                output.close()
-                input.close()
-            } else {
-                if (external.parentFile?.exists() != true)
-                    external.parentFile?.mkdirs()
-                return null
-            }
-        }
-        return FileInputStream(external)
+  override fun load(name: String): InputStream? {
+    val external = File(directory, name)
+    if (!external.exists()) {
+      val internal = super.isValid(name)
+      if (internal) {
+        val input = super.load(name)!!
+        val output = FileOutputStream(external)
+        val buffer = ByteArray(1024)
+        var length : Int
+        while (input.read(buffer).apply { length = this } != -1)
+          output.write(buffer, 0, length)
+        output.flush()
+        output.close()
+        input.close()
+      } else {
+        if (external.parentFile?.exists() != true)
+          external.parentFile?.mkdirs()
+        return null
+      }
     }
+    return FileInputStream(external)
+  }
 
-    override fun isValid(name: String): Boolean {
-        return File(directory, name).exists()
-    }
+  override fun isValid(name: String): Boolean {
+    return File(directory, name).exists()
+  }
 
-    override fun write(name: String): OutputStream {
-        val file = File(directory, name)
-        return FileOutputStream(file)
-    }
+  override fun write(name: String): OutputStream {
+    val file = File(directory, name)
+    return FileOutputStream(file)
+  }
 }

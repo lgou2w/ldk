@@ -20,11 +20,11 @@ import org.junit.Test
 
 class DyeColorsTest {
 
-    @Test
-    fun test() {
-        DyeColors.values()
-            .map(DyeColors::toBukkit)
-            .joinToString()
-            .also(::println)
-    }
+  @Test
+  fun test() {
+    DyeColors.values()
+      .map(DyeColors::toBukkit)
+      .joinToString()
+      .also(::println)
+  }
 }

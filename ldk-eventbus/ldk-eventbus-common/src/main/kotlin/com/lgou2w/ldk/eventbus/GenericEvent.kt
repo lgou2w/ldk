@@ -54,9 +54,9 @@ import java.lang.reflect.Type
  */
 interface GenericEvent<T> : Event {
 
-    val genericType : Type
+  val genericType : Type
 
-    abstract class Impl<T>(
-            override val genericType: Type
-    ) : GenericEvent<T>
+  abstract class Impl<T>(
+    override val genericType: Type
+  ) : GenericEvent<T>
 }

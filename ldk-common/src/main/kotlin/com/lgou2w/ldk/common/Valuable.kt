@@ -30,8 +30,8 @@ package com.lgou2w.ldk.common
  */
 interface Valuable<T> {
 
-    /**
-     * @see [Valuable]
-     */
-    val value: T
+  /**
+   * @see [Valuable]
+   */
+  val value: T
 }

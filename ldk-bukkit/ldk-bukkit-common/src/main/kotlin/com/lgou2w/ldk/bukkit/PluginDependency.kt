@@ -27,49 +27,49 @@ import org.bukkit.Bukkit
  * @author lgou2w
  */
 data class PluginDependency(
-        /**
-         * * The name of the plugin dependency.
-         * * 所依赖的插件名称.
-         */
-        val name: String,
-        /**
-         * * Whether it is a soft dependency method.
-         * * 是否为软依赖方式.
-         */
-        val softDepend: Boolean,
-        /**
-         * * The minimum version of the plugin dependency.
-         * * 所依赖的插件最低版本.
-         */
-        val version: String? = null,
-        /**
-         * * The entry point full class name of the plugin dependency.
-         * * 所依赖的插件入口点全类名.
-         */
-        val className: String? = null
+  /**
+   * * The name of the plugin dependency.
+   * * 所依赖的插件名称.
+   */
+  val name: String,
+  /**
+   * * Whether it is a soft dependency method.
+   * * 是否为软依赖方式.
+   */
+  val softDepend: Boolean,
+  /**
+   * * The minimum version of the plugin dependency.
+   * * 所依赖的插件最低版本.
+   */
+  val version: String? = null,
+  /**
+   * * The entry point full class name of the plugin dependency.
+   * * 所依赖的插件入口点全类名.
+   */
+  val className: String? = null
 ) : Comparable<PluginDependency> {
 
-    /**
-     * * Get whether can depended.
-     * * 获取是否可以依赖.
-     */
-    fun canDepended(): Boolean {
-        val plugin = Bukkit.getPluginManager().getPlugin(name)
-        if (plugin == null || !plugin.isEnabled)
-            return softDepend
-        if (className != null && plugin.javaClass.canonicalName != className)
-            return false
-        if (version != null && plugin.description.version < version)
-            return false
-        return true
-    }
+  /**
+   * * Get whether can depended.
+   * * 获取是否可以依赖.
+   */
+  fun canDepended(): Boolean {
+    val plugin = Bukkit.getPluginManager().getPlugin(name)
+    if (plugin == null || !plugin.isEnabled)
+      return softDepend
+    if (className != null && plugin.javaClass.canonicalName != className)
+      return false
+    if (version != null && plugin.description.version < version)
+      return false
+    return true
+  }
 
-    override fun compareTo(other: PluginDependency): Int {
-        return ComparisonChain.start()
-                .compare(name, other.name)
-                .compare(softDepend, other.softDepend)
-                .compare(version ?: "", other.version ?: "")
-                .compare(className ?: "", other.className ?: "")
-                .result
-    }
+  override fun compareTo(other: PluginDependency): Int {
+    return ComparisonChain.start()
+      .compare(name, other.name)
+      .compare(softDepend, other.softDepend)
+      .compare(version ?: "", other.version ?: "")
+      .compare(className ?: "", other.className ?: "")
+      .result
+  }
 }

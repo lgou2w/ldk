@@ -28,39 +28,39 @@ import java.lang.reflect.Method
  */
 interface Reflect {
 
-    /**
-     * * Get the reference class for this reflect.
-     * * 获取此反射器的引用类.
-     */
-    val reference : Class<*>
+  /**
+   * * Get the reference class for this reflect.
+   * * 获取此反射器的引用类.
+   */
+  val reference : Class<*>
 
-    /**
-     * * Gets whether this reflect is in forced access mode.
-     * * 获取此反射器是否为强制访问模式.
-     */
-    val isForceAccess : Boolean
+  /**
+   * * Gets whether this reflect is in forced access mode.
+   * * 获取此反射器是否为强制访问模式.
+   */
+  val isForceAccess : Boolean
 
-    /**
-     * * Set this reflect to force access mode.
-     * * 将此反射器设置为强制访问模式.
-     */
-    fun useForceAccess(): Reflect
+  /**
+   * * Set this reflect to force access mode.
+   * * 将此反射器设置为强制访问模式.
+   */
+  fun useForceAccess(): Reflect
 
-    /**
-     * * Gets all constructor collections for this reflect reference class.
-     * * 获取此反射器引用类的所有构造函数集合.
-     */
-    val constructors : Set<Constructor<*>>
+  /**
+   * * Gets all constructor collections for this reflect reference class.
+   * * 获取此反射器引用类的所有构造函数集合.
+   */
+  val constructors : Set<Constructor<*>>
 
-    /**
-     * * Gets all method collections for this reflect reference class.
-     * * 获取此反射器引用类的所有构造函数集合.
-     */
-    val methods : Set<Method>
+  /**
+   * * Gets all method collections for this reflect reference class.
+   * * 获取此反射器引用类的所有构造函数集合.
+   */
+  val methods : Set<Method>
 
-    /**
-     * * Gets all field collections for this reflect reference class.
-     * * 获取此反射器引用类的所有构造函数集合.
-     */
-    val fields : Set<Field>
+  /**
+   * * Gets all field collections for this reflect reference class.
+   * * 获取此反射器引用类的所有构造函数集合.
+   */
+  val fields : Set<Field>
 }

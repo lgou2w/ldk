@@ -27,36 +27,36 @@ package com.lgou2w.ldk.chat
  * @param keybind 按键
  */
 class ChatComponentKeybind(
-        /**
-         * * Gets or sets the keybind object for this chat component keybind.
-         * * 获取或设置此聊天组件按键的按键对象.
-         */
-        var keybind: String
+  /**
+   * * Gets or sets the keybind object for this chat component keybind.
+   * * 获取或设置此聊天组件按键的按键对象.
+   */
+  var keybind: String
 ) : ChatComponentAbstract() {
 
-    /**
-     * @see [ChatComponentKeybind.keybind]
-     */
-    fun setKeybind(keybind: String): ChatComponentKeybind {
-        this.keybind = keybind
-        return this
-    }
+  /**
+   * @see [ChatComponentKeybind.keybind]
+   */
+  fun setKeybind(keybind: String): ChatComponentKeybind {
+    this.keybind = keybind
+    return this
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ChatComponentKeybind)
-            return super.equals(other) && keybind == other.keybind
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ChatComponentKeybind)
+      return super.equals(other) && keybind == other.keybind
+    return false
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + keybind.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + keybind.hashCode()
+    return result
+  }
 
-    override fun toString(): String {
-        return "ChatComponentKeybind(keybind='$keybind', style=$style, extras=$extras)"
-    }
+  override fun toString(): String {
+    return "ChatComponentKeybind(keybind='$keybind', style=$style, extras=$extras)"
+  }
 }

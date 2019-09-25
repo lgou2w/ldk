@@ -27,38 +27,38 @@ import javax.sql.DataSource
  */
 interface ConnectionFactory {
 
-    /**
-     * * The data source object for this connection factory.
-     * * 此连接工厂的数据源对象.
-     *
-     * @see [DataSource]
-     */
-    val dataSource : DataSource
+  /**
+   * * The data source object for this connection factory.
+   * * 此连接工厂的数据源对象.
+   *
+   * @see [DataSource]
+   */
+  val dataSource : DataSource
 
-    /**
-     * * The implementation name of this connection factory.
-     * * 此连接工厂的实现名称.
-     */
-    val implementationName : String
+  /**
+   * * The implementation name of this connection factory.
+   * * 此连接工厂的实现名称.
+   */
+  val implementationName : String
 
-    /**
-     * * Initialize this connection factory.
-     * * 初始化此连接工厂.
-     */
-    fun initialize()
+  /**
+   * * Initialize this connection factory.
+   * * 初始化此连接工厂.
+   */
+  fun initialize()
 
-    /**
-     * * Shutdown this connection factory.
-     * * 关闭此连接工厂.
-     */
-    fun shutdown()
+  /**
+   * * Shutdown this connection factory.
+   * * 关闭此连接工厂.
+   */
+  fun shutdown()
 
-    /**
-     * * From this connection factory opens a new connection session.
-     * * 从此连接工厂开启一个新的连接会话.
-     *
-     * @throws [SQLException] SQL
-     */
-    @Throws(SQLException::class)
-    fun openSession(): Connection
+  /**
+   * * From this connection factory opens a new connection session.
+   * * 从此连接工厂开启一个新的连接会话.
+   *
+   * @throws [SQLException] SQL
+   */
+  @Throws(SQLException::class)
+  fun openSession(): Connection
 }

@@ -41,7 +41,7 @@ import kotlin.random.Random
  * @see [org.bukkit.scheduler.BukkitScheduler.runTask]
  */
 fun Plugin.runTask(task: Runnable): BukkitTask
-        = Bukkit.getScheduler().runTask(this, task)
+  = Bukkit.getScheduler().runTask(this, task)
 
 /**
  * * Schedule a task that will run after the [delay] specified in the server `Tick`.
@@ -50,7 +50,7 @@ fun Plugin.runTask(task: Runnable): BukkitTask
  * @see [org.bukkit.scheduler.BukkitScheduler.runTaskLater]
  */
 fun Plugin.runTaskLater(task: Runnable, delay: Long): BukkitTask
-        = Bukkit.getScheduler().runTaskLater(this, task, delay)
+  = Bukkit.getScheduler().runTaskLater(this, task, delay)
 
 /**
  * * Schedule a task that will run repeatedly with the specified [period] after the [delay] is specified in the server `Tick`.
@@ -59,7 +59,7 @@ fun Plugin.runTaskLater(task: Runnable, delay: Long): BukkitTask
  * @see [org.bukkit.scheduler.BukkitScheduler.runTaskTimer]
  */
 fun Plugin.runTaskTimer(task: Runnable, delay: Long, period: Long): BukkitTask
-        = Bukkit.getScheduler().runTaskTimer(this, task, delay, period)
+  = Bukkit.getScheduler().runTaskTimer(this, task, delay, period)
 
 /**
  * * Schedule a task that will run in an asynchronous thread.
@@ -68,7 +68,7 @@ fun Plugin.runTaskTimer(task: Runnable, delay: Long, period: Long): BukkitTask
  * @see [org.bukkit.scheduler.BukkitScheduler.runTaskAsynchronously]
  */
 fun Plugin.runTaskAsync(task: Runnable): BukkitTask
-        = Bukkit.getScheduler().runTaskAsynchronously(this, task)
+  = Bukkit.getScheduler().runTaskAsynchronously(this, task)
 
 /**
  * * Schedule a task that will run after the [delay] is specified in the asynchronous thread.
@@ -77,7 +77,7 @@ fun Plugin.runTaskAsync(task: Runnable): BukkitTask
  * @see [org.bukkit.scheduler.BukkitScheduler.runTaskLaterAsynchronously]
  */
 fun Plugin.runTaskAsyncLater(task: Runnable, delay: Long): BukkitTask
-        = Bukkit.getScheduler().runTaskLaterAsynchronously(this, task, delay)
+  = Bukkit.getScheduler().runTaskLaterAsynchronously(this, task, delay)
 
 /**
  * * Schedule a task that will run repeatedly in the specified [period] after specifying the [delay] in the asynchronous thread.
@@ -86,7 +86,7 @@ fun Plugin.runTaskAsyncLater(task: Runnable, delay: Long): BukkitTask
  * @see [org.bukkit.scheduler.BukkitScheduler.runTaskTimerAsynchronously]
  */
 fun Plugin.runTaskAsyncTimer(task: Runnable, delay: Long, period: Long): BukkitTask
-        = Bukkit.getScheduler().runTaskTimerAsynchronously(this, task, delay, period)
+  = Bukkit.getScheduler().runTaskTimerAsynchronously(this, task, delay, period)
 
 /**
  * * Cancel the given task.
@@ -95,7 +95,7 @@ fun Plugin.runTaskAsyncTimer(task: Runnable, delay: Long, period: Long): BukkitT
  * @see [BukkitTask.cancel]
  */
 fun BukkitTask?.cancelTask()
-        = this?.cancel()
+  = this?.cancel()
 
 /**************************************************************************
  *
@@ -104,36 +104,36 @@ fun BukkitTask?.cancelTask()
  **************************************************************************/
 
 private fun <T> Plugin.callTaskFuture(
-        callback: Callable<T>,
-        delay: Long = 0L,
-        async: Boolean = false
+  callback: Callable<T>,
+  delay: Long = 0L,
+  async: Boolean = false
 ): CompletableFuture<T> {
-    val future = CompletableFuture<T>()
-    val futureTask = FutureTask(callback)
-    val task : Runnable = {
-        try {
-            futureTask.run()
-            future.complete(futureTask.get())
-        } catch (e: Exception) {
-            future.completeExceptionally(e)
-        }
+  val future = CompletableFuture<T>()
+  val futureTask = FutureTask(callback)
+  val task : Runnable = {
+    try {
+      futureTask.run()
+      future.complete(futureTask.get())
+    } catch (e: Exception) {
+      future.completeExceptionally(e)
     }
-    if (delay <= 0) {
-        if (async) runTaskAsync(task)
-        else {
-            // SEE -> https://github.com/lgou2w/ldk/issues/32
-            // blocking server threads, Until the task is completed
-            if (Bukkit.isPrimaryThread())
-                task.invoke()
-            else
-                runTask(task)
-        }
-    } else {
-        // blocking server threads after waiting for a delay, Until the task is completed
-        if (async) runTaskAsyncLater(task, delay)
-        else runTaskLater(task, delay)
+  }
+  if (delay <= 0) {
+    if (async) runTaskAsync(task)
+    else {
+      // SEE -> https://github.com/lgou2w/ldk/issues/32
+      // blocking server threads, Until the task is completed
+      if (Bukkit.isPrimaryThread())
+        task.invoke()
+      else
+        runTask(task)
     }
-    return future
+  } else {
+    // blocking server threads after waiting for a delay, Until the task is completed
+    if (async) runTaskAsyncLater(task, delay)
+    else runTaskLater(task, delay)
+  }
+  return future
 }
 
 /**
@@ -143,7 +143,7 @@ private fun <T> Plugin.callTaskFuture(
  *      注意: 这将会阻塞服务器线程, 直到任务完成.
  */
 fun <T> Plugin.callTaskFuture(callback: Callable<T>): CompletableFuture<T>
-        = callTaskFuture(callback, 0L)
+  = callTaskFuture(callback, 0L)
 
 /**
  * * Call the method and return a [CompletableFuture] object after the server thread has given the [delay].
@@ -152,21 +152,21 @@ fun <T> Plugin.callTaskFuture(callback: Callable<T>): CompletableFuture<T>
  *      注意: 这将会阻塞服务器线程, 直到任务完成.
  */
 fun <T> Plugin.callTaskFutureLater(callback: Callable<T>, delay: Long): CompletableFuture<T>
-        = callTaskFuture(callback, delay)
+  = callTaskFuture(callback, delay)
 
 /**
  * * Call the method on an asynchronous thread and return a [CompletableFuture] object.
  * * 在异步线程调用方法并返回 [CompletableFuture] 对象.
  */
 fun <T> Plugin.callTaskFutureAsync(callback: Callable<T>): CompletableFuture<T>
-        = callTaskFuture(callback, 0L, true)
+  = callTaskFuture(callback, 0L, true)
 
 /**
  * * Call the method and return a [CompletableFuture] object after the asynchronous thread has given the [delay].
  * * 在异步线程以给定的延迟 [delay] 后调用方法并返回 [CompletableFuture] 对象.
  */
 fun <T> Plugin.callTaskFutureAsyncLater(callback: Callable<T>, delay: Long): CompletableFuture<T>
-        = callTaskFuture(callback, delay, true)
+  = callTaskFuture(callback, delay, true)
 
 /**************************************************************************
  *
@@ -181,7 +181,7 @@ fun <T> Plugin.callTaskFutureAsyncLater(callback: Callable<T>, delay: Long): Com
  * @see [org.bukkit.plugin.PluginManager.registerEvents]
  */
 fun Plugin.registerListener(listener: Listener)
-        = Bukkit.getPluginManager().registerEvents(listener, this)
+  = Bukkit.getPluginManager().registerEvents(listener, this)
 
 /**
  * * Unregister the given event [listener].
@@ -190,7 +190,7 @@ fun Plugin.registerListener(listener: Listener)
  * @since LDK 0.1.7-rc5
  */
 fun Plugin.unregisterListener(listener: Listener)
-        = HandlerList.unregisterAll(listener)
+  = HandlerList.unregisterAll(listener)
 
 /**
  * * Unregister all event listeners from the given plugin.
@@ -199,7 +199,7 @@ fun Plugin.unregisterListener(listener: Listener)
  * @since LDK 0.1.7-rc5
  */
 fun Plugin.unregisterListeners()
-        = HandlerList.unregisterAll(this)
+  = HandlerList.unregisterAll(this)
 
 /**************************************************************************
  *
@@ -214,7 +214,7 @@ fun Plugin.unregisterListeners()
  * @since LDK 0.1.8
  */
 fun randomColor() = Color.fromRGB(
-        Random.nextInt(256),
-        Random.nextInt(256),
-        Random.nextInt(256)
+  Random.nextInt(256),
+  Random.nextInt(256),
+  Random.nextInt(256)
 )

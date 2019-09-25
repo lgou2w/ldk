@@ -27,25 +27,25 @@ import java.io.DataOutput
  */
 class NBTTagInt : NBTTagNumber<Int> {
 
-    @JvmOverloads
-    constructor(name: String = "", value: Int = 0) : super(name, value)
-    constructor(value: Int = 0) : super("", value)
+  @JvmOverloads
+  constructor(name: String = "", value: Int = 0) : super(name, value)
+  constructor(value: Int = 0) : super("", value)
 
-    override val type = NBTType.TAG_INT
+  override val type = NBTType.TAG_INT
 
-    override fun read(input: DataInput) {
-        value = input.readInt()
-    }
+  override fun read(input: DataInput) {
+    value = input.readInt()
+  }
 
-    override fun write(output: DataOutput) {
-        output.writeInt(value)
-    }
+  override fun write(output: DataOutput) {
+    output.writeInt(value)
+  }
 
-    override fun clone(): NBTTagInt {
-        return NBTTagInt(name, value)
-    }
+  override fun clone(): NBTTagInt {
+    return NBTTagInt(name, value)
+  }
 
-    override fun toString(): String {
-        return "NBTTagInt(value=$value)"
-    }
+  override fun toString(): String {
+    return "NBTTagInt(value=$value)"
+  }
 }

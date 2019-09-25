@@ -37,103 +37,103 @@ import kotlin.properties.Delegates
  * @author lgou2w
  */
 class H2ConnectionFactory(
-        /**
-         * * The connection path of this connection factory.
-         * * 此连接工厂的连接路径.
-         */
-        val path: Path,
-        /**
-         * * The properties of this connection factory.
-         * * 此连接工厂的属性.
-         */
-        val properties: Properties = Properties()
+  /**
+   * * The connection path of this connection factory.
+   * * 此连接工厂的连接路径.
+   */
+  val path: Path,
+  /**
+   * * The properties of this connection factory.
+   * * 此连接工厂的属性.
+   */
+  val properties: Properties = Properties()
 ) : ConnectionFactory {
 
-    private var driver : Driver by Delegates.notNull()
-    private var connectionWrap : WrappedConnection? = null
-    private val initialized = AtomicBoolean(false)
+  private var driver : Driver by Delegates.notNull()
+  private var connectionWrap : WrappedConnection? = null
+  private val initialized = AtomicBoolean(false)
 
-    override val dataSource : DataSource
-        get() = throw UnsupportedOperationException("The H2 connection factory does not support data sources.")
+  override val dataSource : DataSource
+    get() = throw UnsupportedOperationException("The H2 connection factory does not support data sources.")
 
-    override val implementationName : String = "H2"
+  override val implementationName : String = "H2"
 
-    override fun initialize() {
-        initializeDriver()
+  override fun initialize() {
+    initializeDriver()
+  }
+
+  override fun shutdown() {
+    if (connectionWrap != null) {
+      connectionWrap?.shutdown()
+      connectionWrap = null
     }
+  }
 
-    override fun shutdown() {
-        if (connectionWrap != null) {
-            connectionWrap?.shutdown()
-            connectionWrap = null
-        }
+  @Synchronized
+  override fun openSession(): Connection {
+    if (connectionWrap == null || connectionWrap?.isClosed.isTrue()) {
+      val connection = createConnection("jdbc:h2:$path", properties)
+      if (connection != null)
+        connectionWrap = WrappedConnection.wrap(connection)
     }
+    return connectionWrap
+      ?: throw SQLException("Unable to get a connection.")
+  }
 
-    @Synchronized
-    override fun openSession(): Connection {
-        if (connectionWrap == null || connectionWrap?.isClosed.isTrue()) {
-            val connection = createConnection("jdbc:h2:$path", properties)
-            if (connection != null)
-                connectionWrap = WrappedConnection.wrap(connection)
-        }
-        return connectionWrap
-               ?: throw SQLException("Unable to get a connection.")
+  private fun initializeDriver() {
+    if (!initialized.compareAndSet(false, true))
+      return
+    try {
+      Class.forName("org.h2.Driver")
+      driver = org.h2.Driver.load()
+    } catch (e: Exception) {
+      initialized.set(false)
+      if (e is ClassNotFoundException)
+        throw RuntimeException(e)
+      throw e
     }
+  }
 
-    private fun initializeDriver() {
-        if (!initialized.compareAndSet(false, true))
-            return
-        try {
-            Class.forName("org.h2.Driver")
-            driver = org.h2.Driver.load()
-        } catch (e: Exception) {
-            initialized.set(false)
-            if (e is ClassNotFoundException)
-                throw RuntimeException(e)
-            throw e
-        }
+  @Throws(SQLException::class)
+  private fun createConnection(url: String, properties: Properties): Connection? {
+    initializeDriver()
+    return try {
+      driver.connect(url, properties)
+    } catch (e: NoSuchMethodError) {
+      throw RuntimeException(e)
+    } catch (e: IllegalAccessException) {
+      throw RuntimeException(e)
+    } catch (e: InvocationTargetException) {
+      if (e.cause is SQLException)
+        throw e.cause as SQLException
+      throw RuntimeException(e)
     }
+  }
 
-    @Throws(SQLException::class)
-    private fun createConnection(url: String, properties: Properties): Connection? {
-        initializeDriver()
-        return try {
-            driver.connect(url, properties)
-        } catch (e: NoSuchMethodError) {
-            throw RuntimeException(e)
-        } catch (e: IllegalAccessException) {
-            throw RuntimeException(e)
-        } catch (e: InvocationTargetException) {
-            if (e.cause is SQLException)
-                throw e.cause as SQLException
-            throw RuntimeException(e)
-        }
+  private interface WrappedConnection : Connection {
+    fun shutdown()
+    companion object {
+      @JvmStatic
+      fun wrap(connection: Connection): WrappedConnection {
+        return Proxy.newProxyInstance(
+          WrappedConnection::class.java.classLoader,
+          arrayOf(WrappedConnection::class.java),
+          Handler(connection)
+        ) as WrappedConnection
+      }
     }
+  }
 
-    private interface WrappedConnection : Connection {
-        fun shutdown()
-        companion object {
-            @JvmStatic
-            fun wrap(connection: Connection): WrappedConnection {
-                return Proxy.newProxyInstance(
-                        WrappedConnection::class.java.classLoader,
-                        arrayOf(WrappedConnection::class.java),
-                        Handler(connection)
-                ) as WrappedConnection
-            }
-        }
+  private class Handler(val connection: Connection) : InvocationHandler {
+    override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any? {
+      if (method.name == "close")
+        return null
+      if (method.name == "shutdown") {
+        connection.close()
+        return null
+      }
+      return if (args == null) method.invoke(connection)
+      else method.invoke(connection, *args)
     }
-
-    private class Handler(val connection: Connection) : InvocationHandler {
-        override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any? {
-            if (method.name == "close")
-                return null
-            if (method.name == "shutdown") {
-                connection.close()
-                return null
-            }
-            return if (args == null) method.invoke(connection)
-            else method.invoke(connection, *args)
-        }
-    }
+  }
 }

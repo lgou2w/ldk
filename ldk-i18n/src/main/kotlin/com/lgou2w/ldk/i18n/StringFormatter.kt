@@ -27,7 +27,7 @@ import java.util.Locale
  */
 class StringFormatter : Formatter {
 
-    override fun format(locale: Locale, value: String, vararg args: Any?): String {
-        return String.format(locale, value, *args)
-    }
+  override fun format(locale: Locale, value: String, vararg args: Any?): String {
+    return String.format(locale, value, *args)
+  }
 }

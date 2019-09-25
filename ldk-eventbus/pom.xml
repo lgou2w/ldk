@@ -15,23 +15,23 @@
   ~ limitations under the License.
   -->
 <project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <artifactId>ldk</artifactId>
-        <groupId>com.lgou2w</groupId>
-        <version>0.1.9-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <artifactId>ldk</artifactId>
+    <groupId>com.lgou2w</groupId>
+    <version>0.1.9-SNAPSHOT</version>
+  </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-eventbus</artifactId>
-    <packaging>pom</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ldk-eventbus</artifactId>
+  <packaging>pom</packaging>
 
-    <modules>
-        <module>ldk-eventbus-common</module>
-        <module>ldk-eventbus-asm</module>
-    </modules>
+  <modules>
+    <module>ldk-eventbus-common</module>
+    <module>ldk-eventbus-asm</module>
+  </modules>
 
 </project>

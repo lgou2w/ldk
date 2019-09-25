@@ -27,31 +27,31 @@ import org.bukkit.plugin.Plugin
  * @author lgou2w
  */
 class EventScope(
-        /**
-         * * The plugin object for this event scope.
-         * * 此事件范围的插件对象.
-         */
-        val plugin: Plugin
+  /**
+   * * The plugin object for this event scope.
+   * * 此事件范围的插件对象.
+   */
+  val plugin: Plugin
 ) {
-    /**
-     * * Register the given event type listener.
-     * * 注册给定的事件类型监听器.
-     */
-    @JvmOverloads
-    inline fun <reified T : Event> event(
-            priority: EventPriority = EventPriority.NORMAL,
-            ignoreCancelled: Boolean = false,
-            noinline executor: Applicator<T>
-    ) {
-        plugin.server.pluginManager.registerEvent(
-                T::class.java,
-                object : EventListener {},
-                priority,
-                { _, event -> executor(event as T) },
-                plugin,
-                ignoreCancelled
-        )
-    }
+  /**
+   * * Register the given event type listener.
+   * * 注册给定的事件类型监听器.
+   */
+  @JvmOverloads
+  inline fun <reified T : Event> event(
+    priority: EventPriority = EventPriority.NORMAL,
+    ignoreCancelled: Boolean = false,
+    noinline executor: Applicator<T>
+  ) {
+    plugin.server.pluginManager.registerEvent(
+      T::class.java,
+      object : EventListener {},
+      priority,
+      { _, event -> executor(event as T) },
+      plugin,
+      ignoreCancelled
+    )
+  }
 }
 
 /**
@@ -61,6 +61,6 @@ class EventScope(
  * @see [EventScope]
  */
 inline fun Plugin.registerListeners(scope: Applicator<EventScope>) {
-    val eventScope = EventScope(this)
-    eventScope.scope()
+  val eventScope = EventScope(this)
+  eventScope.scope()
 }

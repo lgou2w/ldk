@@ -36,7 +36,7 @@ import kotlin.coroutines.CoroutineContext
  */
 @JvmOverloads
 fun Dispatchers.bukkit(plugin: Plugin, state: State = State.SYNC)
-        = BukkitDispatcher(plugin, state)
+  = BukkitDispatcher(plugin, state)
 
 /**
  * * Launches new coroutine with the plugin in the given [initializeState], and return the reference to the coroutine as [Job].
@@ -44,8 +44,8 @@ fun Dispatchers.bukkit(plugin: Plugin, state: State = State.SYNC)
  */
 @JvmOverloads
 fun Plugin.launcher(
-        initializeState: State = State.SYNC,
-        block: SuspendApplicator<BukkitCoroutineFactory>
+  initializeState: State = State.SYNC,
+  block: SuspendApplicator<BukkitCoroutineFactory>
 ): Job = BukkitCoroutineFactory(this).launcher(initializeState, block)
 
 /**
@@ -53,7 +53,7 @@ fun Plugin.launcher(
  * * 以插件用异步状态启动新的协同程序, 并将协程的引用作为 [Job] 返回.
  */
 fun Plugin.launcherAsync(block: SuspendApplicator<BukkitCoroutineFactory>): Job
-        = BukkitCoroutineFactory(this).launcher(State.ASYNC, block)
+  = BukkitCoroutineFactory(this).launcher(State.ASYNC, block)
 
 /**
  * * Use the Bukkit synchronization dispatcher context [Dispatchers.bukkit] to call the specified suspending block,
@@ -61,9 +61,9 @@ fun Plugin.launcherAsync(block: SuspendApplicator<BukkitCoroutineFactory>): Job
  * * 使用 Bukkit 同步调度程序上下文 [Dispatchers.bukkit] 调用指定的挂起块, 挂起直到完成然后返回结果.
  */
 suspend inline fun <T> Plugin.withBukkit(
-        crossinline block: SuspendApplicatorFunction<CoroutineScope, T>
+  crossinline block: SuspendApplicatorFunction<CoroutineScope, T>
 ): T = withContext(Dispatchers.bukkit(this)) {
-    block()
+  block()
 }
 
 /**
@@ -71,9 +71,9 @@ suspend inline fun <T> Plugin.withBukkit(
  * * 使用 Bukkit 异步调度上下文来创建新的协同程序并将其未来结果作为 [Deferred] 的实现返回.
  */
 suspend inline fun <T> Plugin.withBukkitAsync(
-        crossinline block: SuspendApplicatorFunction<CoroutineScope, T>
+  crossinline block: SuspendApplicatorFunction<CoroutineScope, T>
 ): Deferred<T> = GlobalScope.async(Dispatchers.bukkit(this, State.ASYNC)) {
-    block()
+  block()
 }
 
 /**
@@ -83,29 +83,29 @@ suspend inline fun <T> Plugin.withBukkitAsync(
  * @author lgou2w
  */
 class BukkitDispatcher(
-        /**
-         * * The plugin object of this coroutine dispatcher.
-         * * 此协程调度程序的插件对象.
-         */
-        val plugin: Plugin,
-        /**
-         * * The state object of this coroutine dispatcher.
-         * * 此协程调度程序的状态对象.
-         */
-        val state: State
+  /**
+   * * The plugin object of this coroutine dispatcher.
+   * * 此协程调度程序的插件对象.
+   */
+  val plugin: Plugin,
+  /**
+   * * The state object of this coroutine dispatcher.
+   * * 此协程调度程序的状态对象.
+   */
+  val state: State
 ) : CoroutineDispatcher() {
 
-    override fun dispatch(
-            context: CoroutineContext,
-            block: Runnable
-    ) {
-        if (state != State.ASYNC && Bukkit.isPrimaryThread())
-            block.run()
-        else {
-            when (state) {
-                State.SYNC -> Bukkit.getScheduler().runTask(plugin, block)
-                State.ASYNC -> Bukkit.getScheduler().runTaskAsynchronously(plugin, block)
-            }
-        }
+  override fun dispatch(
+    context: CoroutineContext,
+    block: Runnable
+  ) {
+    if (state != State.ASYNC && Bukkit.isPrimaryThread())
+      block.run()
+    else {
+      when (state) {
+        State.SYNC -> Bukkit.getScheduler().runTask(plugin, block)
+        State.ASYNC -> Bukkit.getScheduler().runTaskAsynchronously(plugin, block)
+      }
     }
+  }
 }

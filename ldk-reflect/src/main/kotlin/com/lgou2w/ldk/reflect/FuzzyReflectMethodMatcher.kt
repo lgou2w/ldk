@@ -31,65 +31,65 @@ import java.lang.reflect.Method
  * @author lgou2w
  */
 class FuzzyReflectMethodMatcher(
-        reflect: FuzzyReflect,
-        initialize: Collection<Method>? = null
+  reflect: FuzzyReflect,
+  initialize: Collection<Method>? = null
 ) : FuzzyReflectMatcher<Method>(reflect, initialize) {
 
-    override fun with(predicate: Predicate<Method>): FuzzyReflectMethodMatcher {
-        return super.with(predicate) as FuzzyReflectMethodMatcher
-    }
+  override fun with(predicate: Predicate<Method>): FuzzyReflectMethodMatcher {
+    return super.with(predicate) as FuzzyReflectMethodMatcher
+  }
 
-    override fun <U> with(initialize: Callable<U>, predicate: BiFunction<Method, U, Boolean>): FuzzyReflectMethodMatcher {
-        return super.with(initialize, predicate) as FuzzyReflectMethodMatcher
-    }
+  override fun <U> with(initialize: Callable<U>, predicate: BiFunction<Method, U, Boolean>): FuzzyReflectMethodMatcher {
+    return super.with(initialize, predicate) as FuzzyReflectMethodMatcher
+  }
 
-    override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectMethodMatcher {
-        return super.withVisibilities(*visibilities) as FuzzyReflectMethodMatcher
-    }
+  override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectMethodMatcher {
+    return super.withVisibilities(*visibilities) as FuzzyReflectMethodMatcher
+  }
 
-    override fun withName(regex: String): FuzzyReflectMethodMatcher {
-        return super.withName(regex) as FuzzyReflectMethodMatcher
-    }
+  override fun withName(regex: String): FuzzyReflectMethodMatcher {
+    return super.withName(regex) as FuzzyReflectMethodMatcher
+  }
 
-    override fun <A : Annotation> withAnnotation(annotation: Class<A>): FuzzyReflectMethodMatcher {
-        return super.withAnnotation(annotation) as FuzzyReflectMethodMatcher
-    }
+  override fun <A : Annotation> withAnnotation(annotation: Class<A>): FuzzyReflectMethodMatcher {
+    return super.withAnnotation(annotation) as FuzzyReflectMethodMatcher
+  }
 
-    override fun <A : Annotation> withAnnotationIf(annotation: Class<A>, block: Predicate<A>): FuzzyReflectMethodMatcher {
-        return super.withAnnotationIf(annotation, block) as FuzzyReflectMethodMatcher
-    }
+  override fun <A : Annotation> withAnnotationIf(annotation: Class<A>, block: Predicate<A>): FuzzyReflectMethodMatcher {
+    return super.withAnnotationIf(annotation, block) as FuzzyReflectMethodMatcher
+  }
 
-    override fun withType(clazz: Class<*>): FuzzyReflectMethodMatcher {
-        val primitiveType = DataType.ofPrimitive(clazz)
-        values = values.asSequence().filter { primitiveType.isAssignableFrom(it.returnType) }.toMutableList()
-        return this
-    }
+  override fun withType(clazz: Class<*>): FuzzyReflectMethodMatcher {
+    val primitiveType = DataType.ofPrimitive(clazz)
+    values = values.asSequence().filter { primitiveType.isAssignableFrom(it.returnType) }.toMutableList()
+    return this
+  }
 
-    override fun withParams(vararg parameters: Class<*>): FuzzyReflectMethodMatcher {
-        val primitiveTypes = DataType.ofPrimitive(parameters)
-        return with { DataType.compare(it.parameterTypes, primitiveTypes) }
-    }
+  override fun withParams(vararg parameters: Class<*>): FuzzyReflectMethodMatcher {
+    val primitiveTypes = DataType.ofPrimitive(parameters)
+    return with { DataType.compare(it.parameterTypes, primitiveTypes) }
+  }
 
-    override fun withParamsCount(count: Int): FuzzyReflectMethodMatcher {
-        return with { it.parameterTypes.size == count }
-    }
+  override fun withParamsCount(count: Int): FuzzyReflectMethodMatcher {
+    return with { it.parameterTypes.size == count }
+  }
 
-    override fun resultAccessors(): List<AccessorMethod<Any, Any>>
-            = results().map(Accessors::ofMethod)
+  override fun resultAccessors(): List<AccessorMethod<Any, Any>>
+    = results().map(Accessors::ofMethod)
 
-    override fun resultAccessor(): AccessorMethod<Any, Any>
-            = resultAccessorAs()
+  override fun resultAccessor(): AccessorMethod<Any, Any>
+    = resultAccessorAs()
 
-    override fun resultAccessorOrNull(): AccessorMethod<Any, Any>?
-            = resultOrNull()?.letIfNotNull(Accessors::ofMethod)
+  override fun resultAccessorOrNull(): AccessorMethod<Any, Any>?
+    = resultOrNull()?.letIfNotNull(Accessors::ofMethod)
 
-    /**
-     * * Get the first valid result accessor for this fuzzy reflection matcher.
-     * * 获取此模糊反射匹配器的第一个有效结果访问器.
-     *
-     * @throws NoSuchElementException If the match result is empty.
-     * @throws NoSuchElementException 如果匹配结果为空.
-     */
-    fun <T, R> resultAccessorAs(): AccessorMethod<T, R>
-            = Accessors.ofMethod(result())
+  /**
+   * * Get the first valid result accessor for this fuzzy reflection matcher.
+   * * 获取此模糊反射匹配器的第一个有效结果访问器.
+   *
+   * @throws NoSuchElementException If the match result is empty.
+   * @throws NoSuchElementException 如果匹配结果为空.
+   */
+  fun <T, R> resultAccessorAs(): AccessorMethod<T, R>
+    = Accessors.ofMethod(result())
 }

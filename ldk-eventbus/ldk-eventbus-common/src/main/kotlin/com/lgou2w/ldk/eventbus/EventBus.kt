@@ -54,25 +54,25 @@ import java.util.function.Consumer
  */
 interface EventBus {
 
-    fun post(event: Event): Boolean
+  fun post(event: Event): Boolean
 
-    fun register(target: Any)
+  fun register(target: Any)
 
-    fun unregister(target: Any)
+  fun unregister(target: Any)
 
-    fun <T : Event> addListener(consumer: Consumer<T>)
+  fun <T : Event> addListener(consumer: Consumer<T>)
 
-    fun <T : Event> addListener(order: Order, consumer: Consumer<T>)
+  fun <T : Event> addListener(order: Order, consumer: Consumer<T>)
 
-    fun <T : Event> addListener(order: Order, receiveCancelled: Boolean, consumer: Consumer<T>)
+  fun <T : Event> addListener(order: Order, receiveCancelled: Boolean, consumer: Consumer<T>)
 
-    fun <T : Event> addListener(order: Order, receiveCancelled: Boolean, eventType: Class<T>, consumer: Consumer<T>)
+  fun <T : Event> addListener(order: Order, receiveCancelled: Boolean, eventType: Class<T>, consumer: Consumer<T>)
 
-    fun <T, G> addGenericListener(genericType: Class<G>, consumer: Consumer<T>) where T : GenericEvent<G>
+  fun <T, G> addGenericListener(genericType: Class<G>, consumer: Consumer<T>) where T : GenericEvent<G>
 
-    fun <T, G> addGenericListener(genericType: Class<G>, order: Order, consumer: Consumer<T>) where T : GenericEvent<G>
+  fun <T, G> addGenericListener(genericType: Class<G>, order: Order, consumer: Consumer<T>) where T : GenericEvent<G>
 
-    fun <T, G> addGenericListener(genericType: Class<G>, order: Order, receiveCancelled: Boolean, consumer: Consumer<T>) where T : GenericEvent<G>
+  fun <T, G> addGenericListener(genericType: Class<G>, order: Order, receiveCancelled: Boolean, consumer: Consumer<T>) where T : GenericEvent<G>
 
-    fun <T, G> addGenericListener(genericType: Class<G>, order: Order, receiveCancelled: Boolean, eventType: Class<T>, consumer: Consumer<T>) where T : GenericEvent<G>
+  fun <T, G> addGenericListener(genericType: Class<G>, order: Order, receiveCancelled: Boolean, eventType: Class<T>, consumer: Consumer<T>) where T : GenericEvent<G>
 }

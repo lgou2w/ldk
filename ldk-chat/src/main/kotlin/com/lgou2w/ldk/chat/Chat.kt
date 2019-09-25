@@ -25,7 +25,7 @@ package com.lgou2w.ldk.chat
  */
 @JvmOverloads
 fun String.toColor(altColorChar: Char = '&'): String
-        = ChatColor.translateAlternateColorCodes(altColorChar, this)
+  = ChatColor.translateAlternateColorCodes(altColorChar, this)
 
 /**
  * * Converts the given string array to an array of color strings with the [altColorChar] character.
@@ -36,7 +36,7 @@ fun String.toColor(altColorChar: Char = '&'): String
  */
 @JvmOverloads
 fun Array<out String>.toColor(altColorChar: Char = '&'): Array<out String>
-        = toList().map { it.toColor(altColorChar) }.toTypedArray()
+  = toList().map { it.toColor(altColorChar) }.toTypedArray()
 
 /**
  * * Converts a given list of strings to a list of color strings with the [altColorChar] character.
@@ -47,39 +47,39 @@ fun Array<out String>.toColor(altColorChar: Char = '&'): Array<out String>
  */
 @JvmOverloads
 fun Iterable<String>.toColor(altColorChar: Char = '&'): List<String>
-        = map { it.toColor(altColorChar) }
+  = map { it.toColor(altColorChar) }
 
 /**
  * * Remove color characters from the given string.
  * * 从给定的字符串剔除颜色字符.
  */
 fun String.stripColor(): String
-        = ChatColor.stripColor(this)
+  = ChatColor.stripColor(this)
 
 /**
  * * Remove color characters from a given array of strings.
  * * 从给定的字符串数组剔除颜色字符.
  */
 fun Array<out String>.stripColor(): Array<out String>
-        = toList().map { it.stripColor() }.toTypedArray()
+  = toList().map { it.stripColor() }.toTypedArray()
 
 /**
  * * Remove color characters from a given list of strings.
  * * 从给定的字符串集合剔除颜色字符.
  */
 fun Iterable<String>.stripColor(): List<String>
-        = map { it.stripColor() }
+  = map { it.stripColor() }
 
 /**
  * * Converts the given string source to a chat component.
  * * 将给定的字符串源转换为聊天组件.
  */
 fun String.toComponent(): ChatComponent
-        = ChatSerializer.fromRaw(this)
+  = ChatSerializer.fromRaw(this)
 
 /**
  * * Converts the given string source to a chat component.
  * * 将给定的字符串源转换为聊天组件.
  */
 fun String?.toComponentOrNull(): ChatComponent?
-        = ChatSerializer.fromRawOrNull(this)
+  = ChatSerializer.fromRawOrNull(this)

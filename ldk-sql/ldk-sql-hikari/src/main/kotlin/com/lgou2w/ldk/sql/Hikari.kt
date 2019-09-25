@@ -26,17 +26,17 @@ import java.util.Collections
  * @see [HikariConfigurationBuilder]
  */
 fun buildConfiguration(block: HikariConfigurationBuilder.() -> Unit) : HikariConfiguration {
-    val builder = HikariConfigurationBuilder().also(block)
-    return HikariConfiguration(
-            builder.poolName,
-            builder.address!!,
-            builder.database!!,
-            builder.username!!,
-            builder.password!!,
-            builder.maxPoolSize,
-            builder.minIdleConnections,
-            builder.maxLifetime,
-            builder.connectionTimeout,
-            Collections.unmodifiableMap(builder.properties)
-    )
+  val builder = HikariConfigurationBuilder().also(block)
+  return HikariConfiguration(
+    builder.poolName,
+    builder.address!!,
+    builder.database!!,
+    builder.username!!,
+    builder.password!!,
+    builder.maxPoolSize,
+    builder.minIdleConnections,
+    builder.maxLifetime,
+    builder.connectionTimeout,
+    Collections.unmodifiableMap(builder.properties)
+  )
 }

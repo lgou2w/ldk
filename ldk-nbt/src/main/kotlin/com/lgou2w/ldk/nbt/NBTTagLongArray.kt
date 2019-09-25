@@ -28,58 +28,58 @@ import java.util.Arrays
  */
 class NBTTagLongArray : NBTBase<LongArray> {
 
-    @JvmOverloads
-    constructor(name: String = "", value: LongArray = LongArray(0)) : super(name, value)
-    constructor(value: LongArray = LongArray(0)) : super("", value)
+  @JvmOverloads
+  constructor(name: String = "", value: LongArray = LongArray(0)) : super(name, value)
+  constructor(value: LongArray = LongArray(0)) : super("", value)
 
-    override val type = NBTType.TAG_LONG_ARRAY
+  override val type = NBTType.TAG_LONG_ARRAY
 
-    override var value : LongArray
-        get() {
-            val value = LongArray(value0.size)
-            for ((i, el) in value0.withIndex())
-                value[i] = el
-            return value
-        }
-        set(value) {
-            val value0 = LongArray(value.size)
-            for ((i, el) in value.withIndex())
-                value0[i] = el
-            super.value0 = value0
-        }
-
-    override fun read(input: DataInput) {
-        val value = LongArray(input.readInt())
-        (0 until value.size).forEach { value[it] = input.readLong() }
-        super.value0 = value
+  override var value : LongArray
+    get() {
+      val value = LongArray(value0.size)
+      for ((i, el) in value0.withIndex())
+        value[i] = el
+      return value
+    }
+    set(value) {
+      val value0 = LongArray(value.size)
+      for ((i, el) in value.withIndex())
+        value0[i] = el
+      super.value0 = value0
     }
 
-    override fun write(output: DataOutput) {
-        output.writeInt(value0.size)
-        (0 until value0.size).forEach { output.writeLong(value0[it]) }
-    }
+  override fun read(input: DataInput) {
+    val value = LongArray(input.readInt())
+    (0 until value.size).forEach { value[it] = input.readLong() }
+    super.value0 = value
+  }
 
-    override fun equals(other: Any?): Boolean {
-        return super.equals(other) && Arrays.equals((other as NBTTagLongArray).value0, value0)
-    }
+  override fun write(output: DataOutput) {
+    output.writeInt(value0.size)
+    (0 until value0.size).forEach { output.writeLong(value0[it]) }
+  }
 
-    override fun toString(): String {
-        return "NBTTagLongArray(value=${value0.joinToString(",", "[", "]")})"
-    }
+  override fun equals(other: Any?): Boolean {
+    return super.equals(other) && Arrays.equals((other as NBTTagLongArray).value0, value0)
+  }
 
-    override fun clone(): NBTTagLongArray {
-        return NBTTagLongArray(name, value)
-    }
+  override fun toString(): String {
+    return "NBTTagLongArray(value=${value0.joinToString(",", "[", "]")})"
+  }
 
-    override fun toJson(): String {
-        return value0.joinToString(",", "[", "]")
-    }
+  override fun clone(): NBTTagLongArray {
+    return NBTTagLongArray(name, value)
+  }
 
-    override fun toMojangson(): String {
-        return value0.joinToString("L,", "[L; ", "L]")
-    }
+  override fun toJson(): String {
+    return value0.joinToString(",", "[", "]")
+  }
 
-    override fun toMojangsonWithColor(): String {
-        return value0.joinToString("§cL§r, §6", "[§cL§r; §6", "§cL§r]")
-    }
+  override fun toMojangson(): String {
+    return value0.joinToString("L,", "[L; ", "L]")
+  }
+
+  override fun toMojangsonWithColor(): String {
+    return value0.joinToString("§cL§r, §6", "[§cL§r; §6", "§cL§r]")
+  }
 }

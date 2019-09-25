@@ -28,9 +28,9 @@ package com.lgou2w.ldk.bukkit.particle
  * @author lgou2w
  */
 data class ParticleNote(
-        /**
-         * * The value of this particle note.
-         * * 此粒子音符的值.
-         */
-        val value: Int
+  /**
+   * * The value of this particle note.
+   * * 此粒子音符的值.
+   */
+  val value: Int
 )

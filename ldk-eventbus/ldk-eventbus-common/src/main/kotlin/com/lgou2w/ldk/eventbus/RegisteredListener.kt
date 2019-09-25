@@ -55,47 +55,47 @@ import java.lang.reflect.Type
  */
 class RegisteredListener {
 
-    val eventType : Class<*>
-    val owner : Any?
-    val order : Order
-    val genericType : Type?
-    val eventListener : EventListener
+  val eventType : Class<*>
+  val owner : Any?
+  val order : Order
+  val genericType : Type?
+  val eventListener : EventListener
 
-    private val filter : Predicate<Event>
+  private val filter : Predicate<Event>
 
-    constructor(eventType: Class<*>, owner: Any?, order: Order, receiveCancelled: Boolean, genericType: Type?, eventListener: EventListener) {
-        this.eventType = eventType
-        this.owner = owner
-        this.order = order
-        this.genericType = genericType
-        this.eventListener = eventListener
-        this.filter = createFilter(receiveCancelled, genericType != null)
+  constructor(eventType: Class<*>, owner: Any?, order: Order, receiveCancelled: Boolean, genericType: Type?, eventListener: EventListener) {
+    this.eventType = eventType
+    this.owner = owner
+    this.order = order
+    this.genericType = genericType
+    this.eventListener = eventListener
+    this.filter = createFilter(receiveCancelled, genericType != null)
+  }
+
+  private fun createFilter(receiveCancelled: Boolean, isGeneric: Boolean): Predicate<Event> {
+    if (receiveCancelled) {
+      if (isGeneric)
+        return this::checkGeneric
+      else
+        return { true }
+    } else {
+      if (isGeneric)
+        return { event -> checkCancel(event) && checkGeneric(event) }
+      else
+        return this::checkCancel
     }
+  }
 
-    private fun createFilter(receiveCancelled: Boolean, isGeneric: Boolean): Predicate<Event> {
-        if (receiveCancelled) {
-            if (isGeneric)
-                return this::checkGeneric
-            else
-                return { true }
-        } else {
-            if (isGeneric)
-                return { event -> checkCancel(event) && checkGeneric(event) }
-            else
-                return this::checkCancel
-        }
-    }
+  private fun checkCancel(event: Event): Boolean
+    = event !is Cancellable || !event.isCancelled
 
-    private fun checkCancel(event: Event): Boolean
-            = event !is Cancellable || !event.isCancelled
+  private fun checkGeneric(event: Event): Boolean
+    = (event as GenericEvent<*>).genericType == genericType
 
-    private fun checkGeneric(event: Event): Boolean
-            = (event as GenericEvent<*>).genericType == genericType
-
-    @Throws(Exception::class)
-    fun post(event: Event) {
-        if (filter(event))
-            eventListener.post(event)
-    }
+  @Throws(Exception::class)
+  fun post(event: Event) {
+    if (filter(event))
+      eventListener.post(event)
+  }
 
 }

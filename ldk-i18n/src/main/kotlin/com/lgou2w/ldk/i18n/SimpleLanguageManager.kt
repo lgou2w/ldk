@@ -24,7 +24,7 @@ package com.lgou2w.ldk.i18n
  * @author lgou2w
  */
 open class SimpleLanguageManager(
-        baseName: String,
-        adapter: LanguageAdapter,
-        provider: LanguageProvider
+  baseName: String,
+  adapter: LanguageAdapter,
+  provider: LanguageProvider
 ) : LanguageManagerBase(baseName, adapter, provider)

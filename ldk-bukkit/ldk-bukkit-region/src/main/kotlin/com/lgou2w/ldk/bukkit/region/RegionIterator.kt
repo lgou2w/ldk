@@ -24,55 +24,55 @@ package com.lgou2w.ldk.bukkit.region
  * @author lgou2w
  */
 class RegionIterator(
-        private val region: Region
+  private val region: Region
 ) : Iterator<RegionVectorBlock> {
 
-    private val maxX : Int
-    private val maxY : Int
-    private val maxZ : Int
-    private val min : RegionVector
-    private var nextX : Int
-    private var nextY : Int
-    private var nextZ : Int
+  private val maxX : Int
+  private val maxY : Int
+  private val maxZ : Int
+  private val min : RegionVector
+  private var nextX : Int
+  private var nextY : Int
+  private var nextZ : Int
 
-    init {
-        val max = region.maximumPoint
-        this.maxX = max.blockX
-        this.maxY = max.blockY
-        this.maxZ = max.blockZ
-        this.min = region.minimumPoint
-        this.nextX = min.blockX
-        this.nextY = min.blockY
-        this.nextZ = min.blockZ
-        this.forward()
-    }
+  init {
+    val max = region.maximumPoint
+    this.maxX = max.blockX
+    this.maxY = max.blockY
+    this.maxZ = max.blockZ
+    this.min = region.minimumPoint
+    this.nextX = min.blockX
+    this.nextY = min.blockY
+    this.nextZ = min.blockZ
+    this.forward()
+  }
 
-    private fun forward() {
-        while (hasNext() && !region.contains(RegionVector(nextX, nextY, nextZ)))
-            forwardOne()
-    }
+  private fun forward() {
+    while (hasNext() && !region.contains(RegionVector(nextX, nextY, nextZ)))
+      forwardOne()
+  }
 
-    private fun forwardOne() {
-        if (++nextX <= maxX)
-            return
-        nextX = min.blockX
-        if (++nextY <= maxY)
-            return
-        nextY = min.blockY
-        if (++nextZ <= maxZ)
-            return
-        nextX = 0x7FFFFFFF
-    }
+  private fun forwardOne() {
+    if (++nextX <= maxX)
+      return
+    nextX = min.blockX
+    if (++nextY <= maxY)
+      return
+    nextY = min.blockY
+    if (++nextZ <= maxZ)
+      return
+    nextX = 0x7FFFFFFF
+  }
 
-    override fun hasNext(): Boolean
-            = nextX != 0x7FFFFFFF
+  override fun hasNext(): Boolean
+    = nextX != 0x7FFFFFFF
 
-    override fun next(): RegionVectorBlock {
-        if (!hasNext())
-            throw NoSuchElementException()
-        val answer = RegionVectorBlock(nextX, nextY, nextZ)
-        forwardOne()
-        forward()
-        return answer
-    }
+  override fun next(): RegionVectorBlock {
+    if (!hasNext())
+      throw NoSuchElementException()
+    val answer = RegionVectorBlock(nextX, nextY, nextZ)
+    forwardOne()
+    forward()
+    return answer
+  }
 }

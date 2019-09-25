@@ -52,10 +52,10 @@ package com.lgou2w.ldk.eventbus
  */
 class EventException : RuntimeException {
 
-    constructor(message: String?) : super(message)
-    constructor(message: String?, cause: Throwable?) : super(message, cause)
+  constructor(message: String?) : super(message)
+  constructor(message: String?, cause: Throwable?) : super(message, cause)
 
-    companion object {
-        private const val serialVersionUID = -2163983784947467122L
-    }
+  companion object {
+    private const val serialVersionUID = -2163983784947467122L
+  }
 }

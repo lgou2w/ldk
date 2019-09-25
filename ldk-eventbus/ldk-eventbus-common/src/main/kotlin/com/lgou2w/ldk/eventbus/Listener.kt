@@ -53,6 +53,6 @@ package com.lgou2w.ldk.eventbus
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
 annotation class Listener(
-        val order: Order = Order.DEFAULT,
-        val receiveCancelled: Boolean = false
+  val order: Order = Order.DEFAULT,
+  val receiveCancelled: Boolean = false
 )

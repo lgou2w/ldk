@@ -30,74 +30,74 @@ import java.util.Locale
  * @author lgou2w
  */
 abstract class LanguageManagerBase(
-        override val baseName: String,
-        override val adapter: LanguageAdapter,
-        override val provider: LanguageProvider
+  override val baseName: String,
+  override val adapter: LanguageAdapter,
+  override val provider: LanguageProvider
 ) : LanguageManager {
 
-    override var globalFormatter : Formatter? = null
+  override var globalFormatter : Formatter? = null
 
-    /**
-     * * Check the given [locale] and get the name.
-     * * 检查给定的本地 [locale] 并获取名称.
-     */
-    protected open fun checkName(locale: Locale): String {
-        val fileExtension = adapter.fileExtension.toLowerCase(Locale.US)
-        val name = if (locale != Locale.ROOT) "_$locale" else ""
-        return "$baseName$name.$fileExtension"
-    }
+  /**
+   * * Check the given [locale] and get the name.
+   * * 检查给定的本地 [locale] 并获取名称.
+   */
+  protected open fun checkName(locale: Locale): String {
+    val fileExtension = adapter.fileExtension.toLowerCase(Locale.US)
+    val name = if (locale != Locale.ROOT) "_$locale" else ""
+    return "$baseName$name.$fileExtension"
+  }
 
-    /**
-     * * Loads a language key-value pair map from the given [locale].
-     * * 从给定的本地 [locale] 加载语言键值对映射.
-     *
-     * @throws [IOException] I/O
-     */
-    @Throws(IOException::class)
-    protected fun loadEntries(locale: Locale): Map<String, String> {
-        val name = checkName(locale)
-        var input : InputStream? = null
-        try {
-            input = provider.load(name)
-            return if (input != null) adapter.adapt(input) else LinkedHashMap()
-        } catch (e: Exception) {
-            throw IOException("Exception when loading a language file from a provider:", e)
-        } finally {
-            if (input != null) try {
-                input.close()
-            } catch (e: Exception) {
-            }
-        }
+  /**
+   * * Loads a language key-value pair map from the given [locale].
+   * * 从给定的本地 [locale] 加载语言键值对映射.
+   *
+   * @throws [IOException] I/O
+   */
+  @Throws(IOException::class)
+  protected fun loadEntries(locale: Locale): Map<String, String> {
+    val name = checkName(locale)
+    var input : InputStream? = null
+    try {
+      input = provider.load(name)
+      return if (input != null) adapter.adapt(input) else LinkedHashMap()
+    } catch (e: Exception) {
+      throw IOException("Exception when loading a language file from a provider:", e)
+    } finally {
+      if (input != null) try {
+        input.close()
+      } catch (e: Exception) {
+      }
     }
+  }
 
-    override fun load(locale: Locale): Language {
-        val entries = loadEntries(locale)
-        return SimpleLanguage(this, locale, entries)
-    }
+  override fun load(locale: Locale): Language {
+    val entries = loadEntries(locale)
+    return SimpleLanguage(this, locale, entries)
+  }
 
-    final override fun save(language: Language) {
-        val name = checkName(language.locale)
-        var output : OutputStream? = null
-        try {
-            output = provider.write(name)
-            val values = language.entries.associate { it.key to it.value }.toMutableMap()
-            adapter.readapt(output, values)
-        } catch (e: Exception) {
-            throw IOException("Exception when saving a language file from the supplied adapter:", e)
-        } finally {
-            if (output != null) try {
-                output.close()
-            } catch (e: Exception) {
-            }
-        }
+  final override fun save(language: Language) {
+    val name = checkName(language.locale)
+    var output : OutputStream? = null
+    try {
+      output = provider.write(name)
+      val values = language.entries.associate { it.key to it.value }.toMutableMap()
+      adapter.readapt(output, values)
+    } catch (e: Exception) {
+      throw IOException("Exception when saving a language file from the supplied adapter:", e)
+    } finally {
+      if (output != null) try {
+        output.close()
+      } catch (e: Exception) {
+      }
     }
+  }
 
-    override fun isValid(locale: Locale): Boolean {
-        val name = checkName(locale)
-        return provider.isValid(name)
-    }
+  override fun isValid(locale: Locale): Boolean {
+    val name = checkName(locale)
+    return provider.isValid(name)
+  }
 
-    override fun isValid(language: Language): Boolean {
-        return isValid(language.locale)
-    }
+  override fun isValid(language: Language): Boolean {
+    return isValid(language.locale)
+  }
 }

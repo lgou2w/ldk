@@ -27,57 +27,57 @@ import org.bukkit.command.CommandSender
  */
 class SimpleChineseCommandFeedback : SimpleCommandFeedback() {
 
-    override fun onPermission(
-            sender: CommandSender,
-            name: String,
-            command: RegisteredCommand,
-            executor: CommandExecutor?,
-            args: Array<out String>,
-            permission: String
-    ) {
-        sendMessage(command, sender, ChatColor.RED + "你没有权限使用此命令.")
-    }
+  override fun onPermission(
+    sender: CommandSender,
+    name: String,
+    command: RegisteredCommand,
+    executor: CommandExecutor?,
+    args: Array<out String>,
+    permission: String
+  ) {
+    sendMessage(command, sender, ChatColor.RED + "你没有权限使用此命令.")
+  }
 
-    override fun onPlayerOnly(
-            sender: CommandSender,
-            name: String,
-            command: RegisteredCommand,
-            executor: CommandExecutor,
-            args: Array<out String>
-    ) {
-        sendMessage(command, sender, ChatColor.RED + "控制台无法执行此命令.")
-    }
+  override fun onPlayerOnly(
+    sender: CommandSender,
+    name: String,
+    command: RegisteredCommand,
+    executor: CommandExecutor,
+    args: Array<out String>
+  ) {
+    sendMessage(command, sender, ChatColor.RED + "控制台无法执行此命令.")
+  }
 
-    override fun onMinimum(
-            sender: CommandSender,
-            name: String,
-            command: RegisteredCommand,
-            executor: CommandExecutor,
-            args: Array<out String>,
-            current: Int,
-            min: Int
-    ) {
-        sendMessage(
-                command,
-                sender,
-                ChatColor.RED + "参数长度小于命令最小长度. (当前: $current, 最小: $min)"
-        )
-    }
+  override fun onMinimum(
+    sender: CommandSender,
+    name: String,
+    command: RegisteredCommand,
+    executor: CommandExecutor,
+    args: Array<out String>,
+    current: Int,
+    min: Int
+  ) {
+    sendMessage(
+      command,
+      sender,
+      ChatColor.RED + "参数长度小于命令最小长度. (当前: $current, 最小: $min)"
+    )
+  }
 
-    override fun onTransform(
-            sender: CommandSender,
-            name: String,
-            command: RegisteredCommand,
-            executor: CommandExecutor,
-            args: Array<out String>,
-            expected: Class<*>,
-            value: String?,
-            transformed: Any?
-    ) {
-        sendMessage(
-                command,
-                sender,
-                ChatColor.RED + "转变 '$value' 到 '$transformed' 类型不匹配. (预期: ${expected.simpleName})"
-        )
-    }
+  override fun onTransform(
+    sender: CommandSender,
+    name: String,
+    command: RegisteredCommand,
+    executor: CommandExecutor,
+    args: Array<out String>,
+    expected: Class<*>,
+    value: String?,
+    transformed: Any?
+  ) {
+    sendMessage(
+      command,
+      sender,
+      ChatColor.RED + "转变 '$value' 到 '$transformed' 类型不匹配. (预期: ${expected.simpleName})"
+    )
+  }
 }

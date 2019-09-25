@@ -24,9 +24,9 @@ package com.lgou2w.ldk.bukkit.cmd
  */
 interface Initializable {
 
-    /**
-     * * Initialize the command.
-     * * 进行命令的初始化.
-     */
-    fun initialize(command: RegisteredCommand)
+  /**
+   * * Initialize the command.
+   * * 进行命令的初始化.
+   */
+  fun initialize(command: RegisteredCommand)
 }

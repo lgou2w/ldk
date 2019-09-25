@@ -52,6 +52,6 @@ package com.lgou2w.ldk.eventbus
  */
 interface EventListener {
 
-    @Throws(Exception::class)
-    fun post(event: Event)
+  @Throws(Exception::class)
+  fun post(event: Event)
 }

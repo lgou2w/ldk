@@ -54,18 +54,18 @@ import java.lang.reflect.Method
  */
 object ReflectEventListenerFactory : EventListenerFactory {
 
-    override fun create(eventType: Class<*>, owner: Any, method: Method, isStatic: Boolean): EventListener {
-        if (!method.isAccessible)
-            method.isAccessible = true
-        return if (isStatic) object : EventListener {
-            override fun post(event: Event) {
-                method.invoke(null, event)
-            }
-        }
-        else object : EventListener {
-            override fun post(event: Event) {
-                method.invoke(owner, event)
-            }
-        }
+  override fun create(eventType: Class<*>, owner: Any, method: Method, isStatic: Boolean): EventListener {
+    if (!method.isAccessible)
+      method.isAccessible = true
+    return if (isStatic) object : EventListener {
+      override fun post(event: Event) {
+        method.invoke(null, event)
+      }
     }
+    else object : EventListener {
+      override fun post(event: Event) {
+        method.invoke(owner, event)
+      }
+    }
+  }
 }

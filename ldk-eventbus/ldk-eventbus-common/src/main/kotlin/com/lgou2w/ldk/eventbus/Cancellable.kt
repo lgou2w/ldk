@@ -52,5 +52,5 @@ package com.lgou2w.ldk.eventbus
  */
 interface Cancellable {
 
-    var isCancelled : Boolean
+  var isCancelled : Boolean
 }

@@ -54,67 +54,67 @@ import java.util.function.Supplier
  * @author Mouse
  */
 class SortedList<E> private constructor(
-        private val list: MutableList<E>,
-        private val comparator: Comparator<E>
+  private val list: MutableList<E>,
+  private val comparator: Comparator<E>
 ) : AbstractMutableList<E>() {
 
-    companion object {
+  companion object {
 
-        @JvmStatic fun <E> create(comparator: Comparator<E>): SortedList<E>
-                = create(comparator, Supplier<MutableList<E>> { LinkedList() })
+    @JvmStatic fun <E> create(comparator: Comparator<E>): SortedList<E>
+      = create(comparator, Supplier<MutableList<E>> { LinkedList() })
 
-        @JvmStatic fun <E> create(comparator: Comparator<E>, constructor: Supplier<MutableList<E>>)
-                = SortedList(constructor.get(), comparator)
+    @JvmStatic fun <E> create(comparator: Comparator<E>, constructor: Supplier<MutableList<E>>)
+      = SortedList(constructor.get(), comparator)
 
-        @JvmStatic fun <E : Comparable<E>> create(): SortedList<E>
-                = create(Comparator { o1, o2 -> o1.compareTo(o2) })
+    @JvmStatic fun <E : Comparable<E>> create(): SortedList<E>
+      = create(Comparator { o1, o2 -> o1.compareTo(o2) })
 
-        @JvmStatic fun <E> copyOf(list: MutableList<E>, comparator: Comparator<E>): SortedList<E> {
-            for (i in 0 until list.size) {
-                val el = list[i]
-                if (el == null)
-                    list.remove(el)
-            }
-            return SortedList(list, comparator)
-        }
-
-        @JvmStatic fun <E : Comparable<E>> copyOf(list: MutableList<E>): SortedList<E>
-                = copyOf(list, Comparator { o1, o2 -> o1.compareTo(o2) })
-
-        @JvmStatic fun <E> of(comparator: Comparator<E>, vararg elements: E): SortedList<E>
-                = SortedList(arrayListOf(*elements), comparator)
-
-        @JvmStatic fun <E : Comparable<E>> of(vararg elements: E): SortedList<E>
-                = of(Comparator { o1, o2 -> o1.compareTo(o2) }, *elements)
+    @JvmStatic fun <E> copyOf(list: MutableList<E>, comparator: Comparator<E>): SortedList<E> {
+      for (i in 0 until list.size) {
+        val el = list[i]
+        if (el == null)
+          list.remove(el)
+      }
+      return SortedList(list, comparator)
     }
 
-    override fun add(element: E): Boolean {
-        var index = 0
-        while (index < size) {
-            if (comparator.compare(element, get(index)) < 0) {
-                list.add(index, element)
-                return true
-            }
-            index++
-        }
-        return list.add(element)
+    @JvmStatic fun <E : Comparable<E>> copyOf(list: MutableList<E>): SortedList<E>
+      = copyOf(list, Comparator { o1, o2 -> o1.compareTo(o2) })
+
+    @JvmStatic fun <E> of(comparator: Comparator<E>, vararg elements: E): SortedList<E>
+      = SortedList(arrayListOf(*elements), comparator)
+
+    @JvmStatic fun <E : Comparable<E>> of(vararg elements: E): SortedList<E>
+      = of(Comparator { o1, o2 -> o1.compareTo(o2) }, *elements)
+  }
+
+  override fun add(element: E): Boolean {
+    var index = 0
+    while (index < size) {
+      if (comparator.compare(element, get(index)) < 0) {
+        list.add(index, element)
+        return true
+      }
+      index++
     }
+    return list.add(element)
+  }
 
-    override fun add(index: Int, element: E)
-            = throw UnsupportedOperationException()
+  override fun add(index: Int, element: E)
+    = throw UnsupportedOperationException()
 
-    override fun addAll(index: Int, elements: Collection<E>): Boolean
-            = throw UnsupportedOperationException()
+  override fun addAll(index: Int, elements: Collection<E>): Boolean
+    = throw UnsupportedOperationException()
 
-    override fun set(index: Int, element: E): E
-            = throw UnsupportedOperationException()
+  override fun set(index: Int, element: E): E
+    = throw UnsupportedOperationException()
 
-    override fun get(index: Int): E
-            = list[index]
+  override fun get(index: Int): E
+    = list[index]
 
-    override fun removeAt(index: Int): E
-            = list.removeAt(index)
+  override fun removeAt(index: Int): E
+    = list.removeAt(index)
 
-    override val size: Int
-        get() = list.size
+  override val size: Int
+    get() = list.size
 }

@@ -24,7 +24,7 @@ package com.lgou2w.ldk.bukkit.event
  */
 interface Cancellable : org.bukkit.event.Cancellable {
 
-    override fun isCancelled(): Boolean
+  override fun isCancelled(): Boolean
 
-    override fun setCancelled(cancel: Boolean)
+  override fun setCancelled(cancel: Boolean)
 }

@@ -26,22 +26,22 @@ import com.zaxxer.hikari.HikariConfig
  * @author lgou2w
  */
 class MySQLConnectionFactory(
-        configuration: HikariConfiguration
+  configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
-    override val implementationName : String = "MySQL"
-    override val driverClass : String = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+  override val implementationName : String = "MySQL"
+  override val driverClass : String = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
 
-    override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
-        config.addDataSourceProperty("cachePrepStmts", "true")
-        config.addDataSourceProperty("alwaysSendSetIsolation", "false")
-        config.addDataSourceProperty("cacheServerConfiguration", "true")
-        config.addDataSourceProperty("elideSetAutoCommits", "true")
-        config.addDataSourceProperty("useLocalSessionState", "true")
-        config.addDataSourceProperty("useServerPrepStmts", "true")
-        config.addDataSourceProperty("prepStmtCacheSize", "250")
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
-        config.addDataSourceProperty("cacheCallableStmts", "true")
-        super.appendProperties(config, configuration)
-    }
+  override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
+    config.addDataSourceProperty("cachePrepStmts", "true")
+    config.addDataSourceProperty("alwaysSendSetIsolation", "false")
+    config.addDataSourceProperty("cacheServerConfiguration", "true")
+    config.addDataSourceProperty("elideSetAutoCommits", "true")
+    config.addDataSourceProperty("useLocalSessionState", "true")
+    config.addDataSourceProperty("useServerPrepStmts", "true")
+    config.addDataSourceProperty("prepStmtCacheSize", "250")
+    config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
+    config.addDataSourceProperty("cacheCallableStmts", "true")
+    super.appendProperties(config, configuration)
+  }
 }

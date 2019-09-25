@@ -54,29 +54,29 @@ import java.util.function.Supplier
  */
 class ListenerList(val eventType: Class<*>) {
 
-    private val children : MutableList<ListenerList> = ArrayList()
+  private val children : MutableList<ListenerList> = ArrayList()
 
-    val listeners : MutableCollection<RegisteredListener>
-            = SortedList.create(Comparator.comparingInt { it.order.ordinal },
-            Supplier<MutableList<RegisteredListener>> { ArrayList() })
+  val listeners : MutableCollection<RegisteredListener>
+    = SortedList.create(Comparator.comparingInt { it.order.ordinal },
+    Supplier<MutableList<RegisteredListener>> { ArrayList() })
 
-    fun register(listener: RegisteredListener) {
-        listeners.add(listener)
-        children.forEach { it.listeners.add(listener) }
-    }
+  fun register(listener: RegisteredListener) {
+    listeners.add(listener)
+    children.forEach { it.listeners.add(listener) }
+  }
 
-    fun unregister(listener: RegisteredListener) {
-        listeners.remove(listener)
-        children.forEach { it.listeners.remove(listener) }
-    }
+  fun unregister(listener: RegisteredListener) {
+    listeners.remove(listener)
+    children.forEach { it.listeners.remove(listener) }
+  }
 
-    fun addParent(parent: ListenerList) {
-        parent.children.add(this)
-        listeners.addAll(parent.listeners)
-    }
+  fun addParent(parent: ListenerList) {
+    parent.children.add(this)
+    listeners.addAll(parent.listeners)
+  }
 
-    fun addChild(child: ListenerList) {
-        children.add(child)
-        child.listeners.addAll(listeners)
-    }
+  fun addChild(child: ListenerList) {
+    children.add(child)
+    child.listeners.addAll(listeners)
+  }
 }

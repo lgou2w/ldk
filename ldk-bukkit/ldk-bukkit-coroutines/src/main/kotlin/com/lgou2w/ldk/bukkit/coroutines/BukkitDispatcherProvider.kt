@@ -27,13 +27,13 @@ import kotlin.coroutines.CoroutineContext
  * @author lgou2w
  */
 class BukkitDispatcherProvider(
-        plugin: Plugin,
-        state: State
+  plugin: Plugin,
+  state: State
 ) : DispatcherProvider {
 
-    override val dispatcher : CoroutineContext
-            = BukkitDispatcher(plugin, state)
+  override val dispatcher : CoroutineContext
+    = BukkitDispatcher(plugin, state)
 
-    override fun close() {
-    }
+  override fun close() {
+  }
 }

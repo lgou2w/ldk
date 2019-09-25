@@ -29,9 +29,9 @@ package com.lgou2w.ldk.nbt
  */
 interface NBTReadable {
 
-    /**
-     * * Read the required data from the given [root] tag.
-     * * 从给定的 [root] 标签中读取需要的数据.
-     */
-    fun load(root: NBTTagCompound): NBTTagCompound
+  /**
+   * * Read the required data from the given [root] tag.
+   * * 从给定的 [root] 标签中读取需要的数据.
+   */
+  fun load(root: NBTTagCompound): NBTTagCompound
 }

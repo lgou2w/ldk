@@ -32,48 +32,48 @@ import java.util.Properties
  * @author lgou2w
  */
 class PropertiesAdapter @JvmOverloads constructor(
-        /**
-         * * The encoding of this property file.
-         * * 此属性文件的编码.
-         */
-        val charset: Charset = Charsets.UTF_8
+  /**
+   * * The encoding of this property file.
+   * * 此属性文件的编码.
+   */
+  val charset: Charset = Charsets.UTF_8
 ) : LanguageAdapter {
 
-    override val fileExtension : String = "properties"
+  override val fileExtension : String = "properties"
 
-    override fun adapt(input: InputStream): Map<String, String> {
-        val properties = LinkedProperties()
-        val entries = LinkedHashMap<String, String>()
-        properties.load(InputStreamReader(input, charset))
-        properties.keys.forEach { entries[it.toString()] = properties.getProperty(it.toString()) }
-        properties.clear()
-        return entries
-    }
+  override fun adapt(input: InputStream): Map<String, String> {
+    val properties = LinkedProperties()
+    val entries = LinkedHashMap<String, String>()
+    properties.load(InputStreamReader(input, charset))
+    properties.keys.forEach { entries[it.toString()] = properties.getProperty(it.toString()) }
+    properties.clear()
+    return entries
+  }
 
-    override fun readapt(output: OutputStream, entries: MutableMap<String, String>) {
-        val properties = LinkedProperties()
-        entries.forEach { properties.setProperty(it.key, it.value) }
-        properties.store(OutputStreamWriter(output, charset), null)
-        properties.clear()
-    }
+  override fun readapt(output: OutputStream, entries: MutableMap<String, String>) {
+    val properties = LinkedProperties()
+    entries.forEach { properties.setProperty(it.key, it.value) }
+    properties.store(OutputStreamWriter(output, charset), null)
+    properties.clear()
+  }
 
-    private class LinkedProperties : Properties() {
-        companion object {
-            private const val serialVersionUID = -4334218671926846212L
-        }
-        override val keys : MutableSet<Any>
-                = Collections.synchronizedSet(LinkedHashSet<Any>())
-        override fun keys(): Enumeration<Any> {
-            return Collections.enumeration(keys)
-        }
-        override fun put(key: Any, value: Any?): Any? {
-            keys.add(key)
-            return super.put(key, value)
-        }
-        override fun stringPropertyNames(): MutableSet<String> {
-            val set = LinkedHashSet<String>()
-            keys.forEach { set.add(it.toString()) }
-            return set
-        }
+  private class LinkedProperties : Properties() {
+    companion object {
+      private const val serialVersionUID = -4334218671926846212L
     }
+    override val keys : MutableSet<Any>
+      = Collections.synchronizedSet(LinkedHashSet<Any>())
+    override fun keys(): Enumeration<Any> {
+      return Collections.enumeration(keys)
+    }
+    override fun put(key: Any, value: Any?): Any? {
+      keys.add(key)
+      return super.put(key, value)
+    }
+    override fun stringPropertyNames(): MutableSet<String> {
+      val set = LinkedHashSet<String>()
+      keys.forEach { set.add(it.toString()) }
+      return set
+    }
+  }
 }

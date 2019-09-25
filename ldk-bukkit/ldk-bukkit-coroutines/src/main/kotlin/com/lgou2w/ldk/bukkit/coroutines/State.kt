@@ -26,19 +26,19 @@ import org.bukkit.Bukkit
  */
 enum class State {
 
-    SYNC,
-    ASYNC,
-    ;
+  SYNC,
+  ASYNC,
+  ;
 
-    companion object {
-        /**
-         * * Gets whether the current thread is the Bukkit main thread state.
-         * * 获取当前线程是否为 Bukkit 主线程状态.
-         *
-         * @see [Bukkit.isPrimaryThread]
-         */
-        @JvmStatic
-        fun currentState(): State
-                = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
-    }
+  companion object {
+    /**
+     * * Gets whether the current thread is the Bukkit main thread state.
+     * * 获取当前线程是否为 Bukkit 主线程状态.
+     *
+     * @see [Bukkit.isPrimaryThread]
+     */
+    @JvmStatic
+    fun currentState(): State
+      = if (Bukkit.isPrimaryThread()) SYNC else ASYNC
+  }
 }

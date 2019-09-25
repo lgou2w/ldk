@@ -28,58 +28,58 @@ import java.util.Arrays
  */
 class NBTTagIntArray : NBTBase<IntArray> {
 
-    @JvmOverloads
-    constructor(name: String = "", value: IntArray = IntArray(0)) : super(name, value)
-    constructor(value: IntArray = IntArray(0)) : super("", value)
+  @JvmOverloads
+  constructor(name: String = "", value: IntArray = IntArray(0)) : super(name, value)
+  constructor(value: IntArray = IntArray(0)) : super("", value)
 
-    override val type = NBTType.TAG_INT_ARRAY
+  override val type = NBTType.TAG_INT_ARRAY
 
-    override var value : IntArray
-        get() {
-            val value = IntArray(value0.size)
-            for ((i, el) in value0.withIndex())
-                value[i] = el
-            return value
-        }
-        set(value) {
-            val value0 = IntArray(value.size)
-            for ((i, el) in value.withIndex())
-                value0[i] = el
-            super.value0 = value0
-        }
-
-    override fun read(input: DataInput) {
-        val value = IntArray(input.readInt())
-        (0 until value.size).forEach { value[it] = input.readInt() }
-        super.value0 = value
+  override var value : IntArray
+    get() {
+      val value = IntArray(value0.size)
+      for ((i, el) in value0.withIndex())
+        value[i] = el
+      return value
+    }
+    set(value) {
+      val value0 = IntArray(value.size)
+      for ((i, el) in value.withIndex())
+        value0[i] = el
+      super.value0 = value0
     }
 
-    override fun write(output: DataOutput) {
-        output.writeInt(value0.size)
-        (0 until value0.size).forEach { output.writeInt(value0[it]) }
-    }
+  override fun read(input: DataInput) {
+    val value = IntArray(input.readInt())
+    (0 until value.size).forEach { value[it] = input.readInt() }
+    super.value0 = value
+  }
 
-    override fun equals(other: Any?): Boolean {
-        return super.equals(other) && Arrays.equals((other as NBTTagIntArray).value0, value0)
-    }
+  override fun write(output: DataOutput) {
+    output.writeInt(value0.size)
+    (0 until value0.size).forEach { output.writeInt(value0[it]) }
+  }
 
-    override fun toString(): String {
-        return "NBTTagIntArray(value=${value0.joinToString(",", "[", "]")})"
-    }
+  override fun equals(other: Any?): Boolean {
+    return super.equals(other) && Arrays.equals((other as NBTTagIntArray).value0, value0)
+  }
 
-    override fun clone(): NBTTagIntArray {
-        return NBTTagIntArray(name, value)
-    }
+  override fun toString(): String {
+    return "NBTTagIntArray(value=${value0.joinToString(",", "[", "]")})"
+  }
 
-    override fun toJson(): String {
-        return value0.joinToString(",", "[", "]")
-    }
+  override fun clone(): NBTTagIntArray {
+    return NBTTagIntArray(name, value)
+  }
 
-    override fun toMojangson(): String {
-        return value0.joinToString(",", "[I; ", "]")
-    }
+  override fun toJson(): String {
+    return value0.joinToString(",", "[", "]")
+  }
 
-    override fun toMojangsonWithColor(): String {
-        return value0.joinToString("§r, §6", "[§cI§r; §6", "§r]")
-    }
+  override fun toMojangson(): String {
+    return value0.joinToString(",", "[I; ", "]")
+  }
+
+  override fun toMojangsonWithColor(): String {
+    return value0.joinToString("§r, §6", "[§cI§r; §6", "§r]")
+  }
 }

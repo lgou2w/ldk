@@ -32,11 +32,11 @@ import java.util.UUID
  * @since LDK 0.1.8-rc
  */
 open class UnsignedUUIDTable @JvmOverloads constructor(
-        name: String = "",
-        columnName: String = ""
+  name: String = "",
+  columnName: String = ""
 ) : IdTable<UUID>(name) {
-    override val id: Column<EntityID<UUID>> = unsignedUUID(columnName)
-        .primaryKey()
-        .clientDefault { UUID.randomUUID() }
-        .entityId()
+  override val id: Column<EntityID<UUID>> = unsignedUUID(columnName)
+    .primaryKey()
+    .clientDefault { UUID.randomUUID() }
+    .entityId()
 }

@@ -25,15 +25,15 @@ import org.bukkit.plugin.Plugin
  * @author lgou2w
  */
 class DefaultCommandManager(
-        plugin: Plugin
+  plugin: Plugin
 ) : SimpleCommandManager(plugin, DefaultCommandParser()) {
 
-    override val parser : DefaultCommandParser
-        get() = super.parser as DefaultCommandParser
+  override val parser : DefaultCommandParser
+    get() = super.parser as DefaultCommandParser
 
-    override fun registerCommand(source: Any): DefaultRegisteredCommand {
-        val command = super.registerCommand(source) as DefaultRegisteredCommand
-        command.isRegistered = true
-        return command
-    }
+  override fun registerCommand(source: Any): DefaultRegisteredCommand {
+    val command = super.registerCommand(source) as DefaultRegisteredCommand
+    command.isRegistered = true
+    return command
+  }
 }

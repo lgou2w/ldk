@@ -29,58 +29,58 @@ package com.lgou2w.ldk.chat
  * @param value 交互值.
  */
 data class ChatHoverEvent(
-        /**
-         * * The action type of this chat hover event.
-         * * 此聊天移动事件的交互类型.
-         *
-         * @see [Action]
-         */
-        val action: Action,
-        /**
-         * * The action value of this chat hover event.
-         * * 此聊天移动事件的交互值.
-         */
-        val value: ChatComponent
+  /**
+   * * The action type of this chat hover event.
+   * * 此聊天移动事件的交互类型.
+   *
+   * @see [Action]
+   */
+  val action: Action,
+  /**
+   * * The action value of this chat hover event.
+   * * 此聊天移动事件的交互值.
+   */
+  val value: ChatComponent
 ) {
 
-    /**
-     * ## Action (交互类型)
-     *
-     * @see [ChatHoverEvent]
-     * @author lgou2w
-     */
-    enum class Action {
+  /**
+   * ## Action (交互类型)
+   *
+   * @see [ChatHoverEvent]
+   * @author lgou2w
+   */
+  enum class Action {
 
-        /**
-         * * Chat Hover Event: Show Text
-         * * 聊天移动事件: 显示文本
-         */
-        SHOW_TEXT,
-        /**
-         * * Chat Hover Event: Show Achievement
-         * * 聊天移动事件: 显示成就
-         *
-         * > * Since Minecraft 1.12, this no longer exists. advancements instead simply use [SHOW_TEXT].
-         *      The ID of an achievement or statistic to display.
-         *
-         * > * 自从 Minecraft 1.12, 这个不再存在了. 进度只需使用 [SHOW_TEXT]. 要显示的进度 ID 或统计信息.
-         *
-         * ### Sample:
-         * ```json
-         * {"action":"show_text","value":"achievement.openInventory"}
-         * ```
-         */
-        SHOW_ACHIEVEMENT,
-        /**
-         * * Chat Hover Event: Show Item
-         * * 聊天移动事件: 显示物品栈
-         */
-        SHOW_ITEM,
-        /**
-         * * Chat Hover Event: Show Entity
-         * * 聊天移动事件: 显示实体
-         */
-        SHOW_ENTITY,
-        ;
-    }
+    /**
+     * * Chat Hover Event: Show Text
+     * * 聊天移动事件: 显示文本
+     */
+    SHOW_TEXT,
+    /**
+     * * Chat Hover Event: Show Achievement
+     * * 聊天移动事件: 显示成就
+     *
+     * > * Since Minecraft 1.12, this no longer exists. advancements instead simply use [SHOW_TEXT].
+     *      The ID of an achievement or statistic to display.
+     *
+     * > * 自从 Minecraft 1.12, 这个不再存在了. 进度只需使用 [SHOW_TEXT]. 要显示的进度 ID 或统计信息.
+     *
+     * ### Sample:
+     * ```json
+     * {"action":"show_text","value":"achievement.openInventory"}
+     * ```
+     */
+    SHOW_ACHIEVEMENT,
+    /**
+     * * Chat Hover Event: Show Item
+     * * 聊天移动事件: 显示物品栈
+     */
+    SHOW_ITEM,
+    /**
+     * * Chat Hover Event: Show Entity
+     * * 聊天移动事件: 显示实体
+     */
+    SHOW_ENTITY,
+    ;
+  }
 }

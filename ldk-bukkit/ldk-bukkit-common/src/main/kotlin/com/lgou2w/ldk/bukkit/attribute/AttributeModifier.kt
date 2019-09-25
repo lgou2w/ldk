@@ -37,65 +37,65 @@ import java.util.UUID
  * @author lgou2w
  */
 data class AttributeModifier(
-        /**
-         * * The name of this modifier.
-         * * 此修改器的名字.
-         */
-        val name: String,
-        /**
-         * * The operation mode of this modifier.
-         * * 此修改器的运算模式.
-         *
-         * @see [Operation]
-         */
-        val operation: Operation,
-        /**
-         * * The operation amount of this modifier.
-         * * 此修改器的运算数量.
-         */
-        val amount: Double,
-        /**
-         * * The unique id of this modifier.
-         * * 此修改器的唯一 Id.
-         */
-        val uuid: UUID = UUID.randomUUID()
+  /**
+   * * The name of this modifier.
+   * * 此修改器的名字.
+   */
+  val name: String,
+  /**
+   * * The operation mode of this modifier.
+   * * 此修改器的运算模式.
+   *
+   * @see [Operation]
+   */
+  val operation: Operation,
+  /**
+   * * The operation amount of this modifier.
+   * * 此修改器的运算数量.
+   */
+  val amount: Double,
+  /**
+   * * The unique id of this modifier.
+   * * 此修改器的唯一 Id.
+   */
+  val uuid: UUID = UUID.randomUUID()
 ) : ConfigurationSerializable,
-        Comparable<AttributeModifier> {
+  Comparable<AttributeModifier> {
 
-    override fun compareTo(other: AttributeModifier): Int {
-        return ComparisonChain.start()
-            .compare(name, other.name)
-            .compare(operation, other.operation)
-            .compare(amount, other.amount)
-            .compare(uuid, other.uuid)
-            .result
+  override fun compareTo(other: AttributeModifier): Int {
+    return ComparisonChain.start()
+      .compare(name, other.name)
+      .compare(operation, other.operation)
+      .compare(amount, other.amount)
+      .compare(uuid, other.uuid)
+      .result
+  }
+
+  override fun serialize(): MutableMap<String, Any> {
+    val result = LinkedHashMap<String, Any>()
+    result["name"] = name
+    result["operation"] = operation.value
+    result["amount"] = amount
+    result["uuid"] = uuid.toString()
+    return result
+  }
+
+  companion object {
+
+    init {
+      ConfigurationSerialization.registerClass(AttributeModifier::class.java)
     }
 
-    override fun serialize(): MutableMap<String, Any> {
-        val result = LinkedHashMap<String, Any>()
-        result["name"] = name
-        result["operation"] = operation.value
-        result["amount"] = amount
-        result["uuid"] = uuid.toString()
-        return result
+    /**
+     * @see [ConfigurationSerializable]
+     */
+    @JvmStatic
+    fun deserialize(args: Map<String, Any>): AttributeModifier {
+      val name: String = args["name"]?.toString().notNull()
+      val operation: Operation = Enums.ofValuableNotNull(Operation::class.java, args["operation"].toString().toIntOrNull() ?: 0)
+      val amount = args["amount"].toString().toDoubleOrNull() ?: 0.0
+      val uuid = UUID.fromString(args["uuid"]?.toString())
+      return AttributeModifier(name, operation, amount, uuid)
     }
-
-    companion object {
-
-        init {
-            ConfigurationSerialization.registerClass(AttributeModifier::class.java)
-        }
-
-        /**
-         * @see [ConfigurationSerializable]
-         */
-        @JvmStatic
-        fun deserialize(args: Map<String, Any>): AttributeModifier {
-            val name: String = args["name"]?.toString().notNull()
-            val operation: Operation = Enums.ofValuableNotNull(Operation::class.java, args["operation"].toString().toIntOrNull() ?: 0)
-            val amount = args["amount"].toString().toDoubleOrNull() ?: 0.0
-            val uuid = UUID.fromString(args["uuid"]?.toString())
-            return AttributeModifier(name, operation, amount, uuid)
-        }
-    }
+  }
 }

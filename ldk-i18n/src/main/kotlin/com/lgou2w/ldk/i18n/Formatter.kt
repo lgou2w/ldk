@@ -27,9 +27,9 @@ import java.util.Locale
  */
 interface Formatter {
 
-    /**
-     * * Format the given [value] with [locale] and [args].
-     * * 将给定的值 [value] 用本地化 [locale] 和参数 [args] 进行格式化处理.
-     */
-    fun format(locale: Locale, value: String, vararg args: Any?) : String
+  /**
+   * * Format the given [value] with [locale] and [args].
+   * * 将给定的值 [value] 用本地化 [locale] 和参数 [args] 进行格式化处理.
+   */
+  fun format(locale: Locale, value: String, vararg args: Any?) : String
 }

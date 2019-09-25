@@ -31,41 +31,41 @@ import java.io.DataOutput
  */
 class NBTTagEnd private constructor() : NBTBase<Any>("", Any()) {
 
-    companion object {
-        /**
-         * * An empty `END` instance object.
-         * * 空的 `END` 实例对象.
-         */
-        @JvmField
-        val INSTANCE = NBTTagEnd()
-    }
+  companion object {
+    /**
+     * * An empty `END` instance object.
+     * * 空的 `END` 实例对象.
+     */
+    @JvmField
+    val INSTANCE = NBTTagEnd()
+  }
 
-    @Suppress("UNUSED_PARAMETER")
-    override var value: Any
-        get() = super.value
-        set(value) { }
+  @Suppress("UNUSED_PARAMETER")
+  override var value: Any
+    get() = super.value
+    set(value) { }
 
-    override val type = NBTType.TAG_END
+  override val type = NBTType.TAG_END
 
-    override fun read(input: DataInput) {
-    }
+  override fun read(input: DataInput) {
+  }
 
-    override fun write(output: DataOutput) {
-    }
+  override fun write(output: DataOutput) {
+  }
 
-    override fun clone(): NBTBase<*> {
-        return INSTANCE
-    }
+  override fun clone(): NBTBase<*> {
+    return INSTANCE
+  }
 
-    override fun toString(): String {
-        return "NBTTagEnd()"
-    }
+  override fun toString(): String {
+    return "NBTTagEnd()"
+  }
 
-    override fun toJson(): String {
-        return ""
-    }
+  override fun toJson(): String {
+    return ""
+  }
 
-    override fun toMojangson(): String {
-        return ""
-    }
+  override fun toMojangson(): String {
+    return ""
+  }
 }

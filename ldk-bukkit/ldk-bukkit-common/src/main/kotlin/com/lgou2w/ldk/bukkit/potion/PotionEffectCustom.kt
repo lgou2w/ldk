@@ -33,105 +33,105 @@ import org.bukkit.potion.PotionEffect
  * @author lgou2w
  */
 data class PotionEffectCustom @JvmOverloads constructor(
-        /**
-         * * The type of potion effect of this custom potion.
-         * * 此自定义药水的药水效果类型.
-         */
-        val type: PotionEffectType,
-        /**
-         * * The potion amplifier of this custom potion.
-         * * 此自定义药水的药水强度.
-         */
-        val amplifier: Int,
-        /**
-         * * The potion duration of this custom potion.
-         * * 此自定义药水的药水时间.
-         */
-        val duration: Int,
-        /**
-         * * Makes potion effect produce more, translucent, particles.
-         * * 此自定义药水是否产生更多的半透明粒子.
-         */
-        val ambient: Boolean = true,
-        /**
-         * * Whether this custom potion have a particle.
-         * * 此自定义药水是否有粒子效果.
-         */
-        val particle: Boolean = true,
-        /**
-         * * Whether this custom potion have a icon.
-         * * 此自定义药水是否有图标.
-         */
-        val icon: Boolean = true
+  /**
+   * * The type of potion effect of this custom potion.
+   * * 此自定义药水的药水效果类型.
+   */
+  val type: PotionEffectType,
+  /**
+   * * The potion amplifier of this custom potion.
+   * * 此自定义药水的药水强度.
+   */
+  val amplifier: Int,
+  /**
+   * * The potion duration of this custom potion.
+   * * 此自定义药水的药水时间.
+   */
+  val duration: Int,
+  /**
+   * * Makes potion effect produce more, translucent, particles.
+   * * 此自定义药水是否产生更多的半透明粒子.
+   */
+  val ambient: Boolean = true,
+  /**
+   * * Whether this custom potion have a particle.
+   * * 此自定义药水是否有粒子效果.
+   */
+  val particle: Boolean = true,
+  /**
+   * * Whether this custom potion have a icon.
+   * * 此自定义药水是否有图标.
+   */
+  val icon: Boolean = true
 ) : ConfigurationSerializable,
-        NBTSavable,
-        Comparable<PotionEffectCustom> {
+  NBTSavable,
+  Comparable<PotionEffectCustom> {
+
+  /**
+   * * Apply this custom potion effect to the given [entity].
+   * * 将此自定义药水效果应用到给定的实体 [entity] 中.
+   *
+   * @since LDK 0.1.7-rc3
+   */
+  @JvmOverloads
+  fun applyToEntity(entity: LivingEntity, force: Boolean = false): Boolean {
+    val effect = if (MinecraftBukkitVersion.isV113OrLater)
+      PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle, icon)
+    else
+      PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle)
+    return entity.addPotionEffect(effect, force)
+  }
+
+  override fun save(root: NBTTagCompound): NBTTagCompound {
+    root.putByte(NBT.TAG_POTION_ID, type.id)
+    root.putByte(NBT.TAG_POTION_AMPLIFIER, amplifier)
+    root.putInt(NBT.TAG_POTION_DURATION, duration)
+    root.putBoolean(NBT.TAG_POTION_AMBIENT, ambient)
+    root.putBoolean(NBT.TAG_POTION_SHOW_PARTICLES, particle)
+    root.putBoolean(NBT.TAG_POTION_SHOW_ICON, icon)
+    return root
+  }
+
+  override fun compareTo(other: PotionEffectCustom): Int {
+    return ComparisonChain.start()
+      .compare(type, other.type)
+      .compare(amplifier, other.amplifier)
+      .compare(duration, other.duration)
+      .compare(ambient, other.ambient)
+      .compare(particle, other.particle)
+      .compare(icon, other.icon)
+      .result
+  }
+
+  override fun serialize(): MutableMap<String, Any> {
+    val result = LinkedHashMap<String, Any>()
+    result["type"] = type.type
+    result["amplifier"] = amplifier
+    result["duration"] = duration
+    result["ambient"] = ambient
+    result["particle"] = particle
+    result["icon"] = icon
+    return result
+  }
+
+  companion object {
+
+    init {
+      ConfigurationSerialization.registerClass(PotionEffectCustom::class.java)
+    }
 
     /**
-     * * Apply this custom potion effect to the given [entity].
-     * * 将此自定义药水效果应用到给定的实体 [entity] 中.
-     *
-     * @since LDK 0.1.7-rc3
+     * @see [ConfigurationSerializable]
      */
-    @JvmOverloads
-    fun applyToEntity(entity: LivingEntity, force: Boolean = false): Boolean {
-        val effect = if (MinecraftBukkitVersion.isV113OrLater)
-            PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle, icon)
-        else
-            PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle)
-        return entity.addPotionEffect(effect, force)
+    @JvmStatic
+    fun deserialize(args: Map<String, Any>): PotionEffectCustom {
+      val type = PotionEffectType.fromName(args["type"].toString())
+      val amplifier = args["amplifier"]?.toString()?.toInt() ?: 0
+      val duration = args["duration"]?.toString()?.toInt() ?: 0
+      val ambient = args["ambient"]?.toString()?.toBoolean() ?: false
+      val particle = args["particle"]?.toString()?.toBoolean() ?: false
+      val icon = args["icon"]?.toString()?.toBoolean() ?: false
+      return PotionEffectCustom(type, amplifier, duration, ambient, particle, icon)
     }
-
-    override fun save(root: NBTTagCompound): NBTTagCompound {
-        root.putByte(NBT.TAG_POTION_ID, type.id)
-        root.putByte(NBT.TAG_POTION_AMPLIFIER, amplifier)
-        root.putInt(NBT.TAG_POTION_DURATION, duration)
-        root.putBoolean(NBT.TAG_POTION_AMBIENT, ambient)
-        root.putBoolean(NBT.TAG_POTION_SHOW_PARTICLES, particle)
-        root.putBoolean(NBT.TAG_POTION_SHOW_ICON, icon)
-        return root
-    }
-
-    override fun compareTo(other: PotionEffectCustom): Int {
-        return ComparisonChain.start()
-            .compare(type, other.type)
-            .compare(amplifier, other.amplifier)
-            .compare(duration, other.duration)
-            .compare(ambient, other.ambient)
-            .compare(particle, other.particle)
-            .compare(icon, other.icon)
-            .result
-    }
-
-    override fun serialize(): MutableMap<String, Any> {
-        val result = LinkedHashMap<String, Any>()
-        result["type"] = type.type
-        result["amplifier"] = amplifier
-        result["duration"] = duration
-        result["ambient"] = ambient
-        result["particle"] = particle
-        result["icon"] = icon
-        return result
-    }
-
-    companion object {
-
-        init {
-            ConfigurationSerialization.registerClass(PotionEffectCustom::class.java)
-        }
-
-        /**
-         * @see [ConfigurationSerializable]
-         */
-        @JvmStatic
-        fun deserialize(args: Map<String, Any>): PotionEffectCustom {
-            val type = PotionEffectType.fromName(args["type"].toString())
-            val amplifier = args["amplifier"]?.toString()?.toInt() ?: 0
-            val duration = args["duration"]?.toString()?.toInt() ?: 0
-            val ambient = args["ambient"]?.toString()?.toBoolean() ?: false
-            val particle = args["particle"]?.toString()?.toBoolean() ?: false
-            val icon = args["icon"]?.toString()?.toBoolean() ?: false
-            return PotionEffectCustom(type, amplifier, duration, ambient, particle, icon)
-        }
-    }
+  }
 }

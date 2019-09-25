@@ -51,10 +51,10 @@ package com.lgou2w.ldk.eventbus
  * @author Mouse
  */
 enum class Order {
-    FIRST,
-    EARLY,
-    DEFAULT,
-    LATE,
-    LAST,
-    ;
+  FIRST,
+  EARLY,
+  DEFAULT,
+  LATE,
+  LAST,
+  ;
 }

@@ -30,76 +30,76 @@ import org.bukkit.plugin.Plugin
  */
 open class PageableGui : GuiBase {
 
-    /**
-     * @since LDK 0.1.8-rc2
-     */
-    constructor(plugin: Plugin, type: GuiType, title: String = type.title) : super(plugin, type, title)
+  /**
+   * @since LDK 0.1.8-rc2
+   */
+  constructor(plugin: Plugin, type: GuiType, title: String = type.title) : super(plugin, type, title)
+
+  /**
+   * * Indicates the next pageable Gui object for this pageable gui.
+   * * 表示此可翻页 Gui 的下一个可翻页 Gui 对象.
+   */
+  var next : PageableGui? = null
+
+  /**
+   * * Set the next page of the Gui object to this page to pageable Gui object.
+   * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
+   */
+  @JvmOverloads
+  fun setPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui {
+    val next = PageableGui(plugin, type, title)
+    next.parent = this
+    this.next = next
+    return next.also(initializer)
+  }
+
+  /**
+   * * Remove the current pageable Gui next page Gui object.
+   * * 移除当前可翻页 Gui 的下一页 Gui 对象.
+   */
+  @JvmOverloads
+  fun removePage(completed: Applicator<PageableGui>? = null)
+    = removePageIf({ true }, completed)
+
+  /**
+   * * Remove the current pageable Gui next page Gui object.
+   * * 移除当前可翻页 Gui 的下一页 Gui 对象.
+   */
+  @JvmOverloads
+  fun removePageIf(predicate: Predicate<PageableGui>? = null, completed: Applicator<PageableGui>? = null) {
+    val next = this.next
+    if (next != null && predicate != null && !predicate(next))
+      return
+    if (next != null && completed != null)
+      completed(next)
+    next?.parent = null
+    this.next = null
+  }
+
+  companion object {
 
     /**
-     * * Indicates the next pageable Gui object for this pageable gui.
-     * * 表示此可翻页 Gui 的下一个可翻页 Gui 对象.
+     * * Create a button click event that returns to the previous page Gui.
+     * * 创建一个返回到上一页 Gui 的按钮点击事件.
      */
-    var next : PageableGui? = null
-
-    /**
-     * * Set the next page of the Gui object to this page to pageable Gui object.
-     * * 设置下一页 Gui 对象到此可翻页 Gui 对象.
-     */
-    @JvmOverloads
-    fun setPage(type: GuiType, title: String = type.title, initializer: Applicator<PageableGui> = {}): PageableGui {
-        val next = PageableGui(plugin, type, title)
-        next.parent = this
-        this.next = next
-        return next.also(initializer)
+    @JvmStatic
+    fun previousPage(): Consumer<ButtonEvent> {
+      return ButtonEvent.cancelThen { event ->
+        val parent = event.button.parent
+        parent.parent?.open(event.clicker)
+      }
     }
 
     /**
-     * * Remove the current pageable Gui next page Gui object.
-     * * 移除当前可翻页 Gui 的下一页 Gui 对象.
+     * * Create a button click event that goes to the next page of Gui.
+     * * 创建一个进入到下一页 Gui 的按钮点击事件.
      */
-    @JvmOverloads
-    fun removePage(completed: Applicator<PageableGui>? = null)
-            = removePageIf({ true }, completed)
-
-    /**
-     * * Remove the current pageable Gui next page Gui object.
-     * * 移除当前可翻页 Gui 的下一页 Gui 对象.
-     */
-    @JvmOverloads
-    fun removePageIf(predicate: Predicate<PageableGui>? = null, completed: Applicator<PageableGui>? = null) {
-        val next = this.next
-        if (next != null && predicate != null && !predicate(next))
-            return
-        if (next != null && completed != null)
-            completed(next)
-        next?.parent = null
-        this.next = null
+    @JvmStatic
+    fun nextPage(): Consumer<ButtonEvent> {
+      return ButtonEvent.cancelThen { event ->
+        val parent = event.button.parent as? PageableGui
+        parent?.next?.open(event.clicker)
+      }
     }
-
-    companion object {
-
-        /**
-         * * Create a button click event that returns to the previous page Gui.
-         * * 创建一个返回到上一页 Gui 的按钮点击事件.
-         */
-        @JvmStatic
-        fun previousPage(): Consumer<ButtonEvent> {
-            return ButtonEvent.cancelThen { event ->
-                val parent = event.button.parent
-                parent.parent?.open(event.clicker)
-            }
-        }
-
-        /**
-         * * Create a button click event that goes to the next page of Gui.
-         * * 创建一个进入到下一页 Gui 的按钮点击事件.
-         */
-        @JvmStatic
-        fun nextPage(): Consumer<ButtonEvent> {
-            return ButtonEvent.cancelThen { event ->
-                val parent = event.button.parent as? PageableGui
-                parent?.next?.open(event.clicker)
-            }
-        }
-    }
+  }
 }

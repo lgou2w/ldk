@@ -53,5 +53,5 @@ package com.lgou2w.ldk.eventbus
 @FunctionalInterface
 interface EventExceptionHandler {
 
-    fun handle(list: ListenerList, listener: RegisteredListener, event: Event, e: Exception)
+  fun handle(list: ListenerList, listener: RegisteredListener, event: Event, e: Exception)
 }

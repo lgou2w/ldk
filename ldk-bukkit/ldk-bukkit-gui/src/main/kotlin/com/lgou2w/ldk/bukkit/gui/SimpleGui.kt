@@ -27,8 +27,8 @@ import org.bukkit.plugin.Plugin
  */
 class SimpleGui : GuiBase {
 
-    /**
-     * @since LDK 0.1.8-rc2
-     */
-    constructor(plugin: Plugin, type: GuiType, title: String = type.title) : super(plugin, type, title)
+  /**
+   * @since LDK 0.1.8-rc2
+   */
+  constructor(plugin: Plugin, type: GuiType, title: String = type.title) : super(plugin, type, title)
 }

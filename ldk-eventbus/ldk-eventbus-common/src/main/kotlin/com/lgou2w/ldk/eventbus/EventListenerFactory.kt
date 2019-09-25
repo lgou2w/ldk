@@ -55,6 +55,6 @@ import java.lang.reflect.Method
 @FunctionalInterface
 interface EventListenerFactory {
 
-    @Throws(Exception::class)
-    fun create(eventType: Class<*>, owner: Any, method: Method, isStatic: Boolean): EventListener
+  @Throws(Exception::class)
+  fun create(eventType: Class<*>, owner: Any, method: Method, isStatic: Boolean): EventListener
 }

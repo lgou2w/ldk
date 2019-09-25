@@ -21,14 +21,14 @@ import org.junit.Test
 
 class NBTTagNumberTest {
 
-    @Test fun `NBTTagNumber - number type conversion`() {
-        val nbt = NBTTagByte(value = 49.toByte())
-        nbt.toByte() shouldEqual 49
-        nbt.toChar() shouldEqual '1'
-        nbt.toShort() shouldEqual 49
-        nbt.toInt() shouldEqual 49
-        nbt.toLong() shouldEqual 49L
-        nbt.toFloat() shouldEqual 49f
-        nbt.toDouble() shouldEqual 49.0
-    }
+  @Test fun `NBTTagNumber - number type conversion`() {
+    val nbt = NBTTagByte(value = 49.toByte())
+    nbt.toByte() shouldEqual 49
+    nbt.toChar() shouldEqual '1'
+    nbt.toShort() shouldEqual 49
+    nbt.toInt() shouldEqual 49
+    nbt.toLong() shouldEqual 49L
+    nbt.toFloat() shouldEqual 49f
+    nbt.toDouble() shouldEqual 49.0
+  }
 }

@@ -26,39 +26,39 @@ import java.util.Arrays
  * @author lgou2w
  */
 open class ButtonSameBase(
-        parent: Gui,
-        protected val values: IntArray
+  parent: Gui,
+  protected val values: IntArray
 ) : ButtonBase(parent, values.first()),
-        ButtonSame {
+  ButtonSame {
 
-    override var stack : ItemStack?
-        get() = super.stack
-        set(value) { values.forEach { parent.inventory.setItem(it, value) } }
+  override var stack : ItemStack?
+    get() = super.stack
+    set(value) { values.forEach { parent.inventory.setItem(it, value) } }
 
-    final override val indexes : IntArray = values.clone()
+  final override val indexes : IntArray = values.clone()
 
-    final override val stacks : List<ItemStack?>
-        get() = values.map { parent.inventory.getItem(it) }
+  final override val stacks : List<ItemStack?>
+    get() = values.map { parent.inventory.getItem(it) }
 
-    final override fun isSame(index: Int): Boolean {
-        return values.contains(index)
-    }
+  final override fun isSame(index: Int): Boolean {
+    return values.contains(index)
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ButtonSameBase)
-            return super.equals(other) && Arrays.equals(values, other.values)
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ButtonSameBase)
+      return super.equals(other) && Arrays.equals(values, other.values)
+    return false
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + Arrays.hashCode(values)
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + Arrays.hashCode(values)
+    return result
+  }
 
-    override fun toString(): String {
-        return "ButtonSame(indexes=${Arrays.toString(values)})"
-    }
+  override fun toString(): String {
+    return "ButtonSame(indexes=${Arrays.toString(values)})"
+  }
 }

@@ -28,55 +28,55 @@ import com.lgou2w.ldk.common.Valuable
  * @author lgou2w
  */
 enum class ChatAction(
-        /**
-         * * Enum value.
-         * * 枚举值.
-         */
-        val id: Int
+  /**
+   * * Enum value.
+   * * 枚举值.
+   */
+  val id: Int
 
 ) : Valuable<Int> {
 
+  /**
+   * * Chat Action: Chat
+   * * 聊天交互: 聊天栏
+   */
+  CHAT(0),
+  /**
+   * * Chat Action: System
+   * * 聊天交互: 系统栏
+   */
+  SYSTEM(1),
+  /**
+   * * Chat Action: Action Bar
+   * * 聊天交互: 交互栏
+   */
+  ACTIONBAR(2),
+  ;
+
+  override val value: Int
+    get() = id
+
+  /** static */
+
+  companion object {
+
     /**
-     * * Chat Action: Chat
-     * * 聊天交互: 聊天栏
+     * * Gets the chat action object from the given enumeration value. If unknown, the result is [CHAT].
+     * * 从给定的枚举值获取聊天交互对象. 如果未知则结果为 [CHAT].
+     *
+     * @see [ChatAction]
+     * @see [ChatAction.CHAT]
+     * @see [ChatAction.SYSTEM]
+     * @see [ChatAction.ACTIONBAR]
+     * @param value Enum value.
+     * @param value 枚举值.
      */
-    CHAT(0),
-    /**
-     * * Chat Action: System
-     * * 聊天交互: 系统栏
-     */
-    SYSTEM(1),
-    /**
-     * * Chat Action: Action Bar
-     * * 聊天交互: 交互栏
-     */
-    ACTIONBAR(2),
-    ;
-
-    override val value: Int
-        get() = id
-
-    /** static */
-
-    companion object {
-
-        /**
-         * * Gets the chat action object from the given enumeration value. If unknown, the result is [CHAT].
-         * * 从给定的枚举值获取聊天交互对象. 如果未知则结果为 [CHAT].
-         *
-         * @see [ChatAction]
-         * @see [ChatAction.CHAT]
-         * @see [ChatAction.SYSTEM]
-         * @see [ChatAction.ACTIONBAR]
-         * @param value Enum value.
-         * @param value 枚举值.
-         */
-        @JvmStatic
-        fun fromValue(value: Int): ChatAction = when (value) {
-            0 -> CHAT
-            1 -> SYSTEM
-            2 -> ACTIONBAR
-            else -> CHAT // else default chat
-        }
+    @JvmStatic
+    fun fromValue(value: Int): ChatAction = when (value) {
+      0 -> CHAT
+      1 -> SYSTEM
+      2 -> ACTIONBAR
+      else -> CHAT // else default chat
     }
+  }
 }

@@ -23,43 +23,43 @@ import org.junit.Test
 
 class NBTTypeTest {
 
-    @Test fun `NBTType - isNumber - byte, short, int, long, float, double should be number type`() {
-        NBTType.TAG_BYTE.isNumber() &&
-        NBTType.TAG_SHORT.isNumber() &&
-        NBTType.TAG_INT.isNumber() &&
-        NBTType.TAG_FLOAT.isNumber() &&
-        NBTType.TAG_DOUBLE.isNumber() shouldEqual true
-        NBTType.TAG_LIST.isNumber() &&
-        NBTType.TAG_COMPOUND.isNumber() shouldEqual false
-    }
+  @Test fun `NBTType - isNumber - byte, short, int, long, float, double should be number type`() {
+    NBTType.TAG_BYTE.isNumber() &&
+      NBTType.TAG_SHORT.isNumber() &&
+      NBTType.TAG_INT.isNumber() &&
+      NBTType.TAG_FLOAT.isNumber() &&
+      NBTType.TAG_DOUBLE.isNumber() shouldEqual true
+    NBTType.TAG_LIST.isNumber() &&
+      NBTType.TAG_COMPOUND.isNumber() shouldEqual false
+  }
 
-    @Test fun `NBTType - fromId - zero id should be TAG_END type`() {
-        val type = NBTType.fromId(0)
-        type shouldEqual NBTType.TAG_END
-        type?.id shouldEqual 0
-        type?.primitive shouldEqual java.lang.Void.TYPE
-        type?.reference shouldEqual java.lang.Void::class.java
-        type?.wrapped shouldEqual NBTTagEnd::class.java
-        type?.mojangsonSuffix shouldBe null
-    }
+  @Test fun `NBTType - fromId - zero id should be TAG_END type`() {
+    val type = NBTType.fromId(0)
+    type shouldEqual NBTType.TAG_END
+    type?.id shouldEqual 0
+    type?.primitive shouldEqual java.lang.Void.TYPE
+    type?.reference shouldEqual java.lang.Void::class.java
+    type?.wrapped shouldEqual NBTTagEnd::class.java
+    type?.mojangsonSuffix shouldBe null
+  }
 
-    @Test fun `NBTType - createTag - TAG_END should be a singleton instance`() {
-        val inst = NBTType.createTag(NBTType.TAG_END)
-        inst shouldBe NBTTagEnd.INSTANCE
-    }
+  @Test fun `NBTType - createTag - TAG_END should be a singleton instance`() {
+    val inst = NBTType.createTag(NBTType.TAG_END)
+    inst shouldBe NBTTagEnd.INSTANCE
+  }
 
-    @Test fun `NBTType - createTag - other types should be normal instances`() {
-        NBTType.createTag(NBTType.TAG_BYTE) shouldBeInstanceOf NBTTagByte::class
-        NBTType.createTag(NBTType.TAG_SHORT) shouldBeInstanceOf NBTTagShort::class
-        NBTType.createTag(NBTType.TAG_INT) shouldBeInstanceOf NBTTagInt::class
-        NBTType.createTag(NBTType.TAG_LONG) shouldBeInstanceOf NBTTagLong::class
-        NBTType.createTag(NBTType.TAG_FLOAT) shouldBeInstanceOf NBTTagFloat::class
-        NBTType.createTag(NBTType.TAG_DOUBLE) shouldBeInstanceOf NBTTagDouble::class
-        NBTType.createTag(NBTType.TAG_BYTE_ARRAY) shouldBeInstanceOf NBTTagByteArray::class
-        NBTType.createTag(NBTType.TAG_STRING) shouldBeInstanceOf NBTTagString::class
-        NBTType.createTag(NBTType.TAG_LIST) shouldBeInstanceOf NBTTagList::class
-        NBTType.createTag(NBTType.TAG_COMPOUND) shouldBeInstanceOf NBTTagCompound::class
-        NBTType.createTag(NBTType.TAG_INT_ARRAY) shouldBeInstanceOf NBTTagIntArray::class
-        NBTType.createTag(NBTType.TAG_LONG_ARRAY) shouldBeInstanceOf NBTTagLongArray::class
-    }
+  @Test fun `NBTType - createTag - other types should be normal instances`() {
+    NBTType.createTag(NBTType.TAG_BYTE) shouldBeInstanceOf NBTTagByte::class
+    NBTType.createTag(NBTType.TAG_SHORT) shouldBeInstanceOf NBTTagShort::class
+    NBTType.createTag(NBTType.TAG_INT) shouldBeInstanceOf NBTTagInt::class
+    NBTType.createTag(NBTType.TAG_LONG) shouldBeInstanceOf NBTTagLong::class
+    NBTType.createTag(NBTType.TAG_FLOAT) shouldBeInstanceOf NBTTagFloat::class
+    NBTType.createTag(NBTType.TAG_DOUBLE) shouldBeInstanceOf NBTTagDouble::class
+    NBTType.createTag(NBTType.TAG_BYTE_ARRAY) shouldBeInstanceOf NBTTagByteArray::class
+    NBTType.createTag(NBTType.TAG_STRING) shouldBeInstanceOf NBTTagString::class
+    NBTType.createTag(NBTType.TAG_LIST) shouldBeInstanceOf NBTTagList::class
+    NBTType.createTag(NBTType.TAG_COMPOUND) shouldBeInstanceOf NBTTagCompound::class
+    NBTType.createTag(NBTType.TAG_INT_ARRAY) shouldBeInstanceOf NBTTagIntArray::class
+    NBTType.createTag(NBTType.TAG_LONG_ARRAY) shouldBeInstanceOf NBTTagLongArray::class
+  }
 }
