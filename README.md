@@ -84,7 +84,10 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
 # Version
 
-## 0.x
+<p>
+<a href="https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"><img src="https://img.shields.io/maven-central/v/com.lgou2w/ldk.svg?style=flat-square&color=%231081c2&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS41ZEdYUgAAAgNJREFUOE9jQAf29vtZMp0/mGa5vd2d6ftmW3LEO736+v9MUGnsIMvynXy23ds52S5vv2Z4v/2ZFvTmZ0rUm08JSW+mpOS+kYEqQ4AsrZc8BWZvS3Kt377Odn7zL9Pr7el0//cOSeEv3RITXl+OT3/9Lzbv9cuY8tfZ8fX/OcCask2fCOcbvz2XZ/XmX47j22eZbm9ycz3+sYMlgSAm5jl3TM7rsuiSNy8jq1//DW96dSR+PlBznvE7uTyLt59y7d+ezHZ5LQVVjwFiy9/JhTe+vhDa+fpdaMddfoY863dyOXZvPwH9tRqqBisIXfWfObTj9dbgPphGl3dy2c5vP2V6EtYI1LQ1cPLrdy4gjWlAjUBNn9L8CWsEatoaMPPVO5eZII0+7+Qy/N9+Sg15TVBjwMyXW/3mwzSGvpNLC337KTn6zbmkpGfyUHUYIGDGS2W/ea+u+CyBakwO+SCUHPXmaFLi6z8JGa/fxxS8Lomuf8MHVc8Q0vtByH/aq1r/Oa8++ix6+dtr5avd9vuhcZmW9pQrLvVVSmzemzvRpa//Rta+vhza+iospO9FNNBft/xnvvznu+DlTa9lr2M8tt2CxzEcxFZ8FI6qetka1vTqY0jnqz+BE1798Z/x6g3QiTXeSx8KQpXhAv8ZQzpfqwODfkfg1Neb/ee/VwCJQSWhgIEBAOwJCv4iGYRqAAAAAElFTkSuQmCC" /></a>
+<a href="https://oss.sonatype.org/content/repositories/snapshots/com/lgou2w/ldk/"><img src="https://img.shields.io/nexus/s/com.lgou2w/ldk?server=https%3A%2F%2Foss.sonatype.org&style=flat-square&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABWCAYAAACHBmuvAAAACXBIWXMAABYlAAAWJQFJUiTwAAAE9ElEQVR4nO2dv1LbQBDGlwx96KMZVEtFeIM4tYuQJ4jfABfqUXrPxDwB5gkSCtfYT4BT2C1ixg8AT0BmnTURnCRrT3t/TO43wwzjE9b50+nT3nG7Pnh6egJfiOL0BAAe1sWywC4l0ywGgHjVH8186OI75RUHRHF6FMXpBABuUZxSD/D3m2SaTUg4pzgXK4rTHABwJH1TGv+BbYtkmuVKi0WciRXFaS+KUxTpHADeKweo4DHnyTQrkml2qrRawLpYUZzGUZyiB90AwLFywG7wb34m02yWTLMTm323Jhb50hgA7gDgk3IAH3yPW/KzIxufwYpYUZwOyJfOlMbuoJ/hrTk0/TmMikW+tACAy5a+pAu+9w/ys56pkxwqrwiAvgQAeMt9MdXxGo4p1JgDwGDVHxXVh+khOrLIl3LyJdtClUE/u8NQQ9LPxMQiX1pQKOAL5+RnA4n+dBaLfGlGvqQTCpSZk+Bb8Pdr5Sge6GeXyTRbdPUz7bkh3nLkS02Rd1vu0WPWxbJyDkgfEs/1UWnkcwUAuY6faYlFvjQUeMI9YsfXxXKstFRAt9NY6Lz4PuNVf/SgtNbAEiuK01M6SdfbDegKD9fFsnVn4a9gOKJzoZjtnkbZRGmpoJVYtHQyFoq85yTSQmlhQKsQE8k+rfqjxj41ikW+JHkVUaRfSksHyM8mkqO97tasFSuK0yEJJeIP62JpdHmFlm+kfBS9TOmvIhaGAsJXKt+ufJqG/Ez0CV1epX0WS3iKMieRKkMB09DSjaTHbqZOh+RLQ6HI+5F8qdXTxRRk1D0KNfKOd8kR/cDBh+OkRwtxXflO3lRpjq6gW3Oo4WePZPbPF15CrGsaTVZ8SRcKNfKWfnZB8deLC99FrN8kkhf/pmrLjqlT5dIO+flERyzWFMVXXk2dlCcfVMSZXLEuSCivfEkX8rPTqulOVZzJEeurdPTtI01xJmdZ+U2MpjraxJlG1uD3DVoouN3VbS/2OnhAq3X6IBaDvboNKbDs0e6ame2tSF6IhfsWaia9n1GQhuj7/xOrCcF19874LtagYjQ5w3eD90YoCE9DHvv0NLwmQ19QXGR9RrEPYlUum7jAd7GuVv2RyKYOCXz3LGXpxCXB4BkEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRj4skRTt6Xaqy0DXoi16o+MJ1ZKEG5DBkEsBhyxnJQHMA3t7mv12ThinWEdBkp2ehOUEkpbpdtwDX5TUyGK0znlB3q9Q7kO3cQtXc/a5CBjnQYaxnvBq5o37OyLrgaPw7egzape07LmTSO4AbfVFsEWeLkvXjKhdJPoRDt06zbSc/Ei42K70V8yefNFCh09HaT2QjnJ5TGZUFqVb7i3WWJVG/01eU44L19sRazSiaWHsbH8Q2EbqU0orRXrVUe8zGwVTijd+YBqXarAp5xpV1bBrevgPBvf5UNIt2KI9ToPZAe50Dm1wptOdUptVBAhX6raA69DY82bXYgUdTVVm8ZVzZs6xCrgGhgBIDRixRJKxcsFC3tLF0Rq3pQxVluZnlpdayroYKTmDZgUC+TjoV0Yr3ljpWq3heqSVmreWC1xLjyHA9s1b5zUgxeYOt2TSFb3yTsrnt9h6uSs5o3zbxpgLAU5X4H15msZGpaCvFnb9+o7LODlFAd8q3njnVjI9n+RXtW8AYA/tGVcUIkiHQ0AAAAASUVORK5CYII=" /></a>
+</p>
 
 - `0.1.8-beta1` - The first beta of 0.1.8 version.
 - `0.1.8-rc2-SNAPSHOT` - The 2nd release-candidate of the 0.1.8 snapshot version.
@@ -92,9 +95,6 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
 - `0.1.8-rc2-hotfix1` - The 2nd release-candidate hot fix 1 of the 0.1.8 version.
 - `0.1.8-SNAPSHOT` - Snapshot of the 0.1.8 release version.
 - `0.1.8` - 0.1.8 release version.
-
-## 1.x Or higher
-
 - `1.0` - 1.0 release version.
 - `1.1-SNAPSHOT` - Snapshot of the 1.1 release version.
 
