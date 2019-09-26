@@ -69,11 +69,12 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
       }
 
       @Override
-      public void open(Player player) {
+      public AnvilWindow open(Player player) {
           super.open(player);
           EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
           TileEntityImpl tileEntity = new TileEntityImpl(this, playerHandle.world);
           playerHandle.openTileEntity(tileEntity);
+          return this;
       }
 
       @Override
@@ -175,11 +176,12 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
       }
 
       @Override
-      public void open(Player player) {
+      public AnvilWindow open(Player player) {
           super.open(player);
           EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
           TileInventory inventory = new TileInventory(new TileEntityImpl(this), new ChatMessage("container.repair"));
           playerHandle.openContainer(inventory);
+          return this;
       }
 
       @Override
@@ -288,14 +290,14 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
         visitMaxs(2, 2)
         visitEnd()
       }
-      visitMethod(Opcodes.ACC_PUBLIC, "open", "(Lorg/bukkit/entity/Player;)V", null, null).apply {
+      visitMethod(Opcodes.ACC_PUBLIC, "open", "(Lorg/bukkit/entity/Player;)${anvilDescriptor("AnvilWindow")}", null, null).apply {
         visitCode()
         val l0 = Label()
         visitLabel(l0)
         visitLineNumber(26, l0)
         visitVarInsn(Opcodes.ALOAD, 0)
         visitVarInsn(Opcodes.ALOAD, 1)
-        visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowBase"), "open", "(Lorg/bukkit/entity/Player;)V", false)
+        visitMethodInsn(Opcodes.INVOKESPECIAL, anvilName("AnvilWindowBase"), "open", "(Lorg/bukkit/entity/Player;)${anvilDescriptor("AnvilWindow")}", false)
         val l1 = Label()
         visitLabel(l1)
         visitLineNumber(27, l1)
@@ -332,14 +334,15 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
           val l4 = Label()
           visitLabel(l4)
           visitLineNumber(30, l4)
-          visitInsn(Opcodes.RETURN)
+          visitVarInsn(Opcodes.ALOAD, 0)
+          visitInsn(Opcodes.ARETURN)
           val l5 = Label()
           visitLabel(l5)
           visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl"), null, l0, l5, 0)
           visitLocalVariable("player", "Lorg/bukkit/entity/Player;", null, l0, l5, 1)
           visitLocalVariable("playerHandle", nmsDescriptor("EntityPlayer"), null, l2, l5, 2)
           visitLocalVariable("inventory", nmsDescriptor("TileInventory"), null, l3, l5, 3)
-          visitMaxs(7, 4)
+          visitMaxs(8, 4)
         } else {
           visitTypeInsn(Opcodes.NEW, anvilName("AnvilWindowImpl\$TileEntityImpl"))
           visitInsn(Opcodes.DUP)
@@ -357,14 +360,15 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
           val l4 = Label()
           visitLabel(l4)
           visitLineNumber(30, l4)
-          visitInsn(Opcodes.RETURN)
+          visitVarInsn(Opcodes.ALOAD, 0)
+          visitInsn(Opcodes.ARETURN)
           val l5 = Label()
           visitLabel(l5)
           visitLocalVariable("this", anvilDescriptor("AnvilWindowImpl"), null, l0, l5, 0)
           visitLocalVariable("player", "Lorg/bukkit/entity/Player;", null, l0, l5, 1)
           visitLocalVariable("playerHandle", nmsDescriptor("EntityPlayer"), null, l2, l5, 2)
           visitLocalVariable("tileEntity", anvilDescriptor("AnvilWindowImpl\$TileEntityImpl"), null, l3, l5, 3)
-          visitMaxs(4, 4)
+          visitMaxs(5, 4)
         }
         visitEnd()
       }

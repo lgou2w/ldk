@@ -64,16 +64,29 @@ abstract class AnvilWindowBase(
   override var isAllowMove : Boolean = true
   override val isOpened : Boolean get() = handle != null
 
-  override fun open(player: Player) {
+  override fun open(player: Player): AnvilWindow {
     if (isOpened)
       throw IllegalStateException("Anvil window is already opened.")
     safeRegisterListenerHandler()
+    return this
   }
 
-  override fun onOpened(block: Consumer<AnvilWindowOpenEvent>?) { this.onOpened = block }
-  override fun onClosed(block: Consumer<AnvilWindowCloseEvent>?) { this.onClosed = block }
-  override fun onClicked(block: Consumer<AnvilWindowClickEvent>?) { this.onClicked = block }
-  override fun onInputted(block: Consumer<AnvilWindowInputEvent>?) { this.onInputted = block }
+  override fun onOpened(block: Consumer<AnvilWindowOpenEvent>?): AnvilWindow {
+    this.onOpened = block
+    return this
+  }
+  override fun onClosed(block: Consumer<AnvilWindowCloseEvent>?): AnvilWindow {
+    this.onClosed = block
+    return this
+  }
+  override fun onClicked(block: Consumer<AnvilWindowClickEvent>?): AnvilWindow {
+    this.onClicked = block
+    return this
+  }
+  override fun onInputted(block: Consumer<AnvilWindowInputEvent>?): AnvilWindow {
+    this.onInputted = block
+    return this
+  }
 
   override fun getItem(slot: AnvilWindowSlot): ItemStack? {
     if (!isOpened)
@@ -81,15 +94,17 @@ abstract class AnvilWindowBase(
     return inventory.getItem(slot.value)
   }
 
-  override fun setItem(slot: AnvilWindowSlot, stack: ItemStack?) {
+  override fun setItem(slot: AnvilWindowSlot, stack: ItemStack?): AnvilWindow {
     if (!isOpened)
       throw IllegalStateException("Anvil window is not opened yet.")
     inventory.setItem(slot.value, stack)
+    return this
   }
 
-  override fun clearItems() {
+  override fun clearItems(): AnvilWindow {
     if (isOpened)
       inventory.clear() // Only clear when opened
+    return this
   }
 
   /**************************************************************************

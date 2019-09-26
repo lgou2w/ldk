@@ -57,7 +57,7 @@ interface AnvilWindow {
    * @see [isOpened]
    */
   @Throws(IllegalStateException::class)
-  fun open(player: Player)
+  fun open(player: Player): AnvilWindow
 
   /**
    * * Called when this anvil window is opened. Set to `null` to remove the listener.
@@ -65,7 +65,7 @@ interface AnvilWindow {
    *
    * @see [AnvilWindowOpenEvent]
    */
-  fun onOpened(block: Consumer<AnvilWindowOpenEvent>?)
+  fun onOpened(block: Consumer<AnvilWindowOpenEvent>?): AnvilWindow
 
   /**
    * * Called when this anvil window is closed. Set to `null` to remove the listener.
@@ -73,7 +73,7 @@ interface AnvilWindow {
    *
    * @see [AnvilWindowCloseEvent]
    */
-  fun onClosed(block: Consumer<AnvilWindowCloseEvent>?)
+  fun onClosed(block: Consumer<AnvilWindowCloseEvent>?): AnvilWindow
 
   /**
    * * Called when this anvil window is clicked. Set to `null` to remove the listener.
@@ -81,7 +81,7 @@ interface AnvilWindow {
    *
    * @see [AnvilWindowClickEvent]
    */
-  fun onClicked(block: Consumer<AnvilWindowClickEvent>?)
+  fun onClicked(block: Consumer<AnvilWindowClickEvent>?): AnvilWindow
 
   /**
    * * Called when this anvil window is inputted text. Set to `null` to remove the listener.
@@ -89,7 +89,7 @@ interface AnvilWindow {
    *
    * @see [AnvilWindowInputEvent]
    */
-  fun onInputted(block: Consumer<AnvilWindowInputEvent>?)
+  fun onInputted(block: Consumer<AnvilWindowInputEvent>?): AnvilWindow
 
   /**
    * * Get the item stack for this anvil window given [slot].
@@ -113,13 +113,13 @@ interface AnvilWindow {
    * @see [AnvilWindowSlot]
    */
   @Throws(IllegalStateException::class)
-  fun setItem(slot: AnvilWindowSlot, stack: ItemStack?)
+  fun setItem(slot: AnvilWindowSlot, stack: ItemStack?): AnvilWindow
 
   /**
    * * Clear the items in this anvil window.
    * * 清除此铁砧窗口的物品.
    */
-  fun clearItems()
+  fun clearItems(): AnvilWindow
 
   companion object Factory {
 
