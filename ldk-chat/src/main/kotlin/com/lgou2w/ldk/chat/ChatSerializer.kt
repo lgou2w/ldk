@@ -175,7 +175,7 @@ object ChatSerializer {
     }
 
     private var currentComponent : ChatComponent? = null
-    private var style : ChatStyle? = null
+    private var style : ChatStyle = ChatStyle()
     private var currentIndex : Int = 0
 
     init {
@@ -186,11 +186,11 @@ object ChatSerializer {
         val code = match.notNull().toLowerCase()[1]
         when (val color = Enums.ofValuable(ChatColor::class.java, code)) {
           ChatColor.RESET -> style = ChatStyle()
-          ChatColor.OBFUSCATED -> style.notNull().setObfuscated(true)
-          ChatColor.BOLD -> style.notNull().setBold(true)
-          ChatColor.STRIKETHROUGH -> style.notNull().setStrikethrough(true)
-          ChatColor.UNDERLINE -> style.notNull().setUnderlined(true)
-          ChatColor.ITALIC -> style.notNull().setItalic(true)
+          ChatColor.OBFUSCATED -> style.setObfuscated(true)
+          ChatColor.BOLD -> style.setBold(true)
+          ChatColor.STRIKETHROUGH -> style.setStrikethrough(true)
+          ChatColor.UNDERLINE -> style.setUnderlined(true)
+          ChatColor.ITALIC -> style.setItalic(true)
           else -> style = ChatStyle().setColor(color)
         }
         currentIndex = matcher.end(1)
@@ -203,7 +203,7 @@ object ChatSerializer {
       if (index > currentIndex) {
         val extra = ChatComponentText(raw.substring(currentIndex, index)).setStyle(style)
         currentIndex = index
-        style = style?.clone()
+        style = style.clone()
         if (currentComponent == null)
           currentComponent = ChatComponentText("")
         currentComponent.notNull().append(extra)

@@ -63,6 +63,13 @@ class ChatSerializerTest {
     component.toRaw() shouldEqual raw
   }
 
+  @Test fun `ChatSerializer - fromRaw - Only formatter`() {
+    val raw = "§lHello"
+    val component = ChatSerializer.fromRaw(raw)
+    component.toRaw(false) shouldEqual "Hello"
+    component.toRaw() shouldEqual raw
+  }
+
   @Test fun `ChatSerializer - fromRaw` () {
     val raw = "&a&l&n&o&m&kHello&r&gWorld!"
     val component = ChatSerializer.fromRaw(raw)
