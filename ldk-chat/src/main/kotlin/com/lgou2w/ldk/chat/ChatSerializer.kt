@@ -266,7 +266,7 @@ object ChatSerializer {
         val jsonObject : JsonObject = json.asJsonObject
         val chatStyle = ChatStyle()
         if (jsonObject.has("color"))
-          chatStyle.color = Enums.ofName(ChatColor::class.java, jsonObject.get("color").asString.toUpperCase(), ChatColor.WHITE)
+          chatStyle.color = Enums.ofName(ChatColor::class.java, jsonObject.get("color").asString.toUpperCase())
         if (jsonObject.has("bold"))
           chatStyle.bold = jsonObject.get("bold").asBoolean
         if (jsonObject.has("italic"))
