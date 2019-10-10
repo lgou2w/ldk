@@ -74,6 +74,7 @@ class ChatComponentFancyTest {
       .suggest("/say hi")
       .command("/say hi")
       .changePage(2)
+      .copyToClipboard("clipboard")
       .tooltipTexts(listOf("a", "b", "c"))
       .thenNewLine()
     val fancy2 = ChatComponentFancy("n3")
@@ -82,5 +83,16 @@ class ChatComponentFancyTest {
       .join(fancy)
     fancy2.clear()
     fancy.clear()
+  }
+
+  class Child : ChatComponentFancy("foo") {
+    init {
+      extras += ChatComponentText("bar")
+    }
+  }
+
+  @Test fun `ChatComponentFancy - test extends`() {
+    val child = Child()
+    child.size shouldEqual 2
   }
 }

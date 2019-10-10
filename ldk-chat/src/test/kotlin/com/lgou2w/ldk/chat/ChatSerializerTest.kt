@@ -22,6 +22,7 @@ import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldBeInstanceOf
 import org.amshove.kluent.shouldContain
 import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldNotBe
 import org.amshove.kluent.shouldNotContain
 import org.amshove.kluent.shouldNotEqual
 import org.amshove.kluent.shouldThrow
@@ -168,5 +169,15 @@ class ChatSerializerTest {
       .style.hoverEvent shouldEqual null
     ChatSerializer.fromJson("{\"text\":\"\",\"hoverEvent\":{\"action\":\"invalid\"},\"clickEvent\":{\"action\":\"invalid\"}}")
       .style.hoverEvent shouldEqual null
+  }
+
+  @Test fun `ChatSerializer - deserialize - style - copy to clipboard`() {
+    val json = "{\"text\":\"click me\",\"clickEvent\":{\"action\":\"copy_to_clipboard\",\"value\":\"hello\"}}"
+    val component = ChatSerializer.fromJson(json)
+    (component) shouldBeInstanceOf ChatComponentText::class
+    (component as ChatComponentText).text shouldEqual "click me"
+    component.style.clickEvent shouldNotBe null
+    component.style.clickEvent?.action shouldEqual ChatClickEvent.Action.COPY_TO_CLIPBOARD
+    component.style.clickEvent?.value shouldEqual "hello"
   }
 }

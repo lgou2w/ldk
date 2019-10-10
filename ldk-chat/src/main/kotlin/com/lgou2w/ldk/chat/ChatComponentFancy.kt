@@ -278,6 +278,22 @@ open class ChatComponentFancy(
   }
 
   /**
+   * * The last component that sets this fancy component has a click copy to clipboard.
+   *    * Note: This feature is only available in Minecraft 19w41a and later.
+   * * 设置此花式组件最后一个组件具有点击复制到剪贴板.
+   *    * 注意: 此功能仅在 Minecraft 19w41a 及更高版本中可用.
+   *
+   * @see [ChatClickEvent.Action.COPY_TO_CLIPBOARD]
+   * @param value Clipboard content.
+   * @param value 剪贴板内容.
+   * @since LDK 0.1.9
+   */
+  fun copyToClipboard(value: String): ChatComponentFancy {
+    last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.COPY_TO_CLIPBOARD, value))
+    return this
+  }
+
+  /**
    * * The last component that sets this fancy component has a hover tooltip text event.
    * * 设置此花式组件最后一个组件具有移动显示文本事件.
    *

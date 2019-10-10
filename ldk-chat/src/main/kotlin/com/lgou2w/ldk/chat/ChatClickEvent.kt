@@ -81,6 +81,15 @@ data class ChatClickEvent(
      * * 聊天点击类型: 改变页面
      */
     CHANGE_PAGE,
+    /**
+     * * Chat Click Type: Copy to clipboard
+     *    * Note: This feature is only available in Minecraft 19w41a and later.
+     * * 聊天点击类型: 复制到剪贴板
+     *    * 注意: 此功能仅在 Minecraft 19w41a 及更高版本中可用.
+     *
+     * @since LDK 0.1.9
+     */
+    COPY_TO_CLIPBOARD,
     ;
   }
 }
