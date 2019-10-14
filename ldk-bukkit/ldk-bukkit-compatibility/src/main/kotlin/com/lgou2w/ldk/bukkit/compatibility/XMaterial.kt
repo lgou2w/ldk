@@ -1070,7 +1070,7 @@ enum class XMaterial {
   //<editor-fold desc="XMaterials - Minecraft 1.15" defaultstate="collapsed">
   // Minecraft 1.15 Start
 
-  @Draft @Deprecated("Minecraft 1.15 Draft") BEE_HIVE("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") BEEHIVE("STONE", 0),
   @Draft @Deprecated("Minecraft 1.15 Draft") BEE_NEST("STONE", 0),
   @Draft @Deprecated("Minecraft 1.15 Draft") WAX_BLOCK("STONE", 0),
 
@@ -1078,6 +1078,9 @@ enum class XMaterial {
   @Draft @Deprecated("Minecraft 1.15 Draft") HONEYCOMB("STONE", 0),
   @Draft @Deprecated("Minecraft 1.15 Draft") CRYSTALLIZED_HONEY("STONE", 0),
   @Draft @Deprecated("Minecraft 1.15 Draft") BEE_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+
+  @Draft @Deprecated("Minecraft 1.15 Draft") HONEY_BLOCK("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") HONEYCOMB_BLOCK("STONE", 0),
 
   //</editor-fold>
   ;
