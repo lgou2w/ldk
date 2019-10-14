@@ -29,37 +29,37 @@ import org.bukkit.inventory.ItemStack
  * @author lgou2w
  */
 open class ButtonBase(
-        override val parent: Gui,
-        override val index: Int
+  override val parent: Gui,
+  override val index: Int
 ) : Button {
 
-    override var stack : ItemStack?
-        get() = parent.inventory.getItem(index)
-        set(value) { parent.inventory.setItem(index, value) }
+  override var stack : ItemStack?
+    get() = parent.inventory.getItem(index)
+    set(value) { parent.inventory.setItem(index, value) }
 
-    final override var onClicked : Consumer<ButtonEvent>? = null
+  final override var onClicked : Consumer<ButtonEvent>? = null
 
-    final override fun stackModify(modifier: Applicator<ItemBuilder>) {
-        val stackClone = stack?.clone()
-        if (stackClone != null && stackClone.type != Material.AIR)
-            stack = ItemBuilder.of(stackClone).apply(modifier).build()
-    }
+  final override fun stackModify(modifier: Applicator<ItemBuilder>) {
+    val stackClone = stack?.clone()
+    if (stackClone != null && stackClone.type != Material.AIR)
+      stack = ItemBuilder.of(stackClone).apply(modifier).build()
+  }
 
-    override fun hashCode(): Int {
-        var result = parent.hashCode()
-        result = 31 * result + index.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = parent.hashCode()
+    result = 31 * result + index.hashCode()
+    return result
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ButtonBase)
-            return parent == other.parent && index == other.index
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ButtonBase)
+      return parent == other.parent && index == other.index
+    return false
+  }
 
-    override fun toString(): String {
-        return "Button(index=$index)"
-    }
+  override fun toString(): String {
+    return "Button(index=$index)"
+  }
 }

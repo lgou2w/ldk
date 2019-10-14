@@ -26,19 +26,19 @@ import java.io.InputStream
  * @author lgou2w
  */
 open class ResourceProvider @JvmOverloads constructor(
-        /**
-         * * The class loader for this resource language provider.
-         * * 此资源语言提供者的类加载器.
-         */
-        val classLoader: ClassLoader = ResourceProvider::class.java.classLoader
+  /**
+   * * The class loader for this resource language provider.
+   * * 此资源语言提供者的类加载器.
+   */
+  val classLoader: ClassLoader = ResourceProvider::class.java.classLoader
 ) : LanguageProvider {
 
-    override fun isValid(name: String): Boolean {
-        return classLoader.getResource(name) != null
-    }
+  override fun isValid(name: String): Boolean {
+    return classLoader.getResource(name) != null
+  }
 
-    override fun load(name: String): InputStream? {
-        return classLoader.getResourceAsStream(name)
-               ?: throw FileNotFoundException("The resource file $name in the class loader was not found.")
-    }
+  override fun load(name: String): InputStream? {
+    return classLoader.getResourceAsStream(name)
+      ?: throw FileNotFoundException("The resource file $name in the class loader was not found.")
+  }
 }

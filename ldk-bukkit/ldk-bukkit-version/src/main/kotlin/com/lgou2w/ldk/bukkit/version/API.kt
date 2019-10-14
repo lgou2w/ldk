@@ -36,29 +36,29 @@ annotation class API(val level: Level)
 @Suppress("EnumEntryName")
 enum class Level {
 
-    Minecraft_V1_8,
-    Minecraft_V1_9,
-    Minecraft_V1_10,
-    Minecraft_V1_11,
-    Minecraft_V1_12,
-    Minecraft_V1_13,
-    Minecraft_V1_14,
-    /**
-     * @since LDK 0.1.8-rc
-     */
-    @Draft
-    @Deprecated("Minecraft 1.15 Draft")
-    Minecraft_V1_15,
-    ;
+  Minecraft_V1_8,
+  Minecraft_V1_9,
+  Minecraft_V1_10,
+  Minecraft_V1_11,
+  Minecraft_V1_12,
+  Minecraft_V1_13,
+  Minecraft_V1_14,
+  /**
+   * @since LDK 0.1.8-rc
+   */
+  @Draft
+  @Deprecated("Minecraft 1.15 Draft")
+  Minecraft_V1_15,
+  ;
 
-    /**
-     * * Get the version of Minecraft for this Bukkit API level.
-     * * 获取此 Bukkit API 等级的 Minecraft 版本.
-     *
-     * @see [MinecraftVersion]
-     */
-    val version : MinecraftVersion
-        get() = MinecraftVersion.fromLevel(this)
+  /**
+   * * Get the version of Minecraft for this Bukkit API level.
+   * * 获取此 Bukkit API 等级的 Minecraft 版本.
+   *
+   * @see [MinecraftVersion]
+   */
+  val version : MinecraftVersion
+    get() = MinecraftVersion.fromLevel(this)
 }
 
 /**

@@ -28,53 +28,53 @@ package com.lgou2w.ldk.nbt
  * @author lgou2w
  */
 abstract class NBTTagNumber<T : Number>(
-        name: String,
-        value: T
+  name: String,
+  value: T
 ) : NBTBase<T>(name, value) {
 
-    /**
-     * @see [Number.toDouble]
-     */
-    fun toDouble(): Double = value.toDouble()
+  /**
+   * @see [Number.toDouble]
+   */
+  fun toDouble(): Double = value.toDouble()
 
-    /**
-     * @see [Number.toFloat]
-     */
-    fun toFloat(): Float = value.toFloat()
+  /**
+   * @see [Number.toFloat]
+   */
+  fun toFloat(): Float = value.toFloat()
 
-    /**
-     * @see [Number.toLong]
-     */
-    fun toLong(): Long = value.toLong()
+  /**
+   * @see [Number.toLong]
+   */
+  fun toLong(): Long = value.toLong()
 
-    /**
-     * @see [Number.toInt]
-     */
-    fun toInt(): Int = value.toInt()
+  /**
+   * @see [Number.toInt]
+   */
+  fun toInt(): Int = value.toInt()
 
-    /**
-     * @see [Number.toChar]
-     */
-    fun toChar(): Char = value.toChar()
+  /**
+   * @see [Number.toChar]
+   */
+  fun toChar(): Char = value.toChar()
 
-    /**
-     * @see [Number.toShort]
-     */
-    fun toShort(): Short = value.toShort()
+  /**
+   * @see [Number.toShort]
+   */
+  fun toShort(): Short = value.toShort()
 
-    /**
-     * @see [Number.toByte]
-     */
-    fun toByte(): Byte = value.toByte()
+  /**
+   * @see [Number.toByte]
+   */
+  fun toByte(): Byte = value.toByte()
 
-    override fun toMojangsonWithColor(): String {
-        val suffix = type.mojangsonSuffix
-        return "§6${value}§c${suffix}§r"
-    }
+  override fun toMojangsonWithColor(): String {
+    val suffix = type.mojangsonSuffix
+    return "§6${value}§c${suffix}§r"
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (super.equals(other))
-            return value == (other as NBTBase<*>).value
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (super.equals(other))
+      return value == (other as NBTBase<*>).value
+    return false
+  }
 }

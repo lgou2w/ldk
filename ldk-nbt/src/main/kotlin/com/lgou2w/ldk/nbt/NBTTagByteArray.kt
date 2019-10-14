@@ -28,60 +28,58 @@ import java.util.Arrays
  */
 class NBTTagByteArray : NBTBase<ByteArray> {
 
-    @JvmOverloads
-    constructor(name: String = "", value: ByteArray = ByteArray(0)) : super(name, value)
-    constructor(value: ByteArray = ByteArray(0)) : super("", value)
+  @JvmOverloads
+  constructor(name: String = "", value: ByteArray = ByteArray(0)) : super(name, value)
+  constructor(value: ByteArray = ByteArray(0)) : super("", value)
 
-    override val type = NBTType.TAG_BYTE_ARRAY
+  override val type = NBTType.TAG_BYTE_ARRAY
 
-    override var value : ByteArray
-        get() {
-            val value = ByteArray(value0.size)
-            for ((i, el) in value0.withIndex())
-                value[i] = el
-            return value
-        }
-        set(value) {
-            val value0 = ByteArray(value.size)
-            for ((i, el) in value.withIndex())
-                value0[i] = el
-            super.value0 = value0
-        }
-
-    override fun read(input: DataInput) {
-        val value = ByteArray(input.readInt())
-        input.readFully(value)
-        super.value0 = value
+  override var value : ByteArray
+    get() {
+      val value = ByteArray(value0.size)
+      for ((i, el) in value0.withIndex())
+        value[i] = el
+      return value
+    }
+    set(value) {
+      val value0 = ByteArray(value.size)
+      for ((i, el) in value.withIndex())
+        value0[i] = el
+      super.value0 = value0
     }
 
-    override fun write(output: DataOutput) {
-        output.writeInt(value0.size)
-        output.write(value)
-    }
+  override fun read(input: DataInput) {
+    val value = ByteArray(input.readInt())
+    input.readFully(value)
+    super.value0 = value
+  }
 
-    override fun equals(other: Any?): Boolean {
-        return super.equals(other) && Arrays.equals((other as NBTTagByteArray).value0, value0)
-    }
+  override fun write(output: DataOutput) {
+    output.writeInt(value0.size)
+    output.write(value)
+  }
 
-    override fun toString(): String {
-        return "NBTTagByteArray(value=${value0.joinToString(",", "[", "]")})"
-    }
+  override fun equals(other: Any?): Boolean {
+    return super.equals(other) && Arrays.equals((other as NBTTagByteArray).value0, value0)
+  }
 
-    override fun clone(): NBTTagByteArray {
-        return NBTTagByteArray(name, value) // clone
-    }
+  override fun toString(): String {
+    return "NBTTagByteArray(value=${value0.joinToString(",", "[", "]")})"
+  }
 
-    override fun toJson(): String {
-        return value0.joinToString(",", "[", "]")
-    }
+  override fun clone(): NBTTagByteArray {
+    return NBTTagByteArray(name, value) // clone
+  }
 
-    override fun toMojangson(): String {
-        val suffix = NBTType.TAG_BYTE.mojangsonSuffix
-        return value0.joinToString("$suffix,", "[", "$suffix]")
-    }
+  override fun toJson(): String {
+    return value0.joinToString(",", "[", "]")
+  }
 
-    override fun toMojangsonWithColor(): String {
-        val suffix = "§c${NBTType.TAG_BYTE.mojangsonSuffix}§r"
-        return value0.joinToString("$suffix, §6", "[§6", "$suffix]")
-    }
+  override fun toMojangson(): String {
+    return value0.joinToString("B,", "[B; ", "B]")
+  }
+
+  override fun toMojangsonWithColor(): String {
+    return value0.joinToString("§cB§r, §6", "[§cB§r; §6", "§cB§r]")
+  }
 }

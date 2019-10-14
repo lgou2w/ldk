@@ -38,7 +38,7 @@ import org.bukkit.block.Block
 @JvmOverloads
 @Throws(IllegalArgumentException::class)
 fun Block.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
-        = BlockFactory.readTag(this).also(block)
+  = BlockFactory.readTag(this).also(block)
 
 /**
  * * Modify the NBT tag data for a given block entity.
@@ -51,4 +51,4 @@ fun Block.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
  */
 @Throws(IllegalArgumentException::class)
 fun Block.modifyTag(block: Applicator<NBTTagCompound>): Block
-        = BlockFactory.modifyTag(this, block)
+  = BlockFactory.modifyTag(this, block)

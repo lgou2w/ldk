@@ -28,37 +28,37 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization
  */
 open class RegionVectorBlock : RegionVector {
 
-    companion object {
+  companion object {
 
-        init {
-            ConfigurationSerialization.registerClass(RegionVectorBlock::class.java)
-        }
-
-        @JvmField val ZERO = RegionVectorBlock(.0, .0, .0)
-
-        @JvmStatic
-        fun deserialize(args: Map<String, Any>): RegionVectorBlock {
-            val x = args["x"]?.toString()?.toDouble() ?: .0
-            val y = args["y"]?.toString()?.toDouble() ?: .0
-            val z = args["z"]?.toString()?.toDouble() ?: .0
-            return RegionVectorBlock(x, y, z)
-        }
+    init {
+      ConfigurationSerialization.registerClass(RegionVectorBlock::class.java)
     }
 
-    constructor(x: Double, y: Double, z: Double) : super(x, y, z)
-    constructor(x: Float, y: Float, z: Float) : super(x, y, z)
-    constructor(x: Int, y: Int, z: Int) : super(x, y, z)
-    constructor(other: RegionVector) : super(other)
-    constructor() : super()
+    @JvmField val ZERO = RegionVectorBlock(.0, .0, .0)
 
-    override fun clone(): RegionVectorBlock {
-        return RegionVectorBlock(x, y, z)
+    @JvmStatic
+    fun deserialize(args: Map<String, Any>): RegionVectorBlock {
+      val x = args["x"]?.toString()?.toDouble() ?: .0
+      val y = args["y"]?.toString()?.toDouble() ?: .0
+      val z = args["z"]?.toString()?.toDouble() ?: .0
+      return RegionVectorBlock(x, y, z)
     }
+  }
 
-    fun getBlock(world: World): Block
-            = world.getBlockAt(blockX, blockX, blockZ)
+  constructor(x: Double, y: Double, z: Double) : super(x, y, z)
+  constructor(x: Float, y: Float, z: Float) : super(x, y, z)
+  constructor(x: Int, y: Int, z: Int) : super(x, y, z)
+  constructor(other: RegionVector) : super(other)
+  constructor() : super()
 
-    override fun toString(): String {
-        return "RegionVectorBlock(x=$blockX, y=$blockY, z=$blockZ)"
-    }
+  override fun clone(): RegionVectorBlock {
+    return RegionVectorBlock(x, y, z)
+  }
+
+  fun getBlock(world: World): Block
+    = world.getBlockAt(blockX, blockX, blockZ)
+
+  override fun toString(): String {
+    return "RegionVectorBlock(x=$blockX, y=$blockY, z=$blockZ)"
+  }
 }

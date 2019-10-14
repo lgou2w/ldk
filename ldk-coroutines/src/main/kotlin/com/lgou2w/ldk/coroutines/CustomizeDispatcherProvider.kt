@@ -26,9 +26,9 @@ import kotlin.coroutines.CoroutineContext
  * @author lgou2w
  */
 open class CustomizeDispatcherProvider(
-        override val dispatcher: CoroutineContext
+  override val dispatcher: CoroutineContext
 ) : DispatcherProvider {
-    override fun close() {
-        (dispatcher as? Closeable)?.close()
-    }
+  override fun close() {
+    (dispatcher as? Closeable)?.close()
+  }
 }

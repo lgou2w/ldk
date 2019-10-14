@@ -25,14 +25,14 @@ package com.lgou2w.ldk.sql
  * @author lgou2w
  */
 data class HikariConfiguration(
-        val poolName: String?,
-        val address: String,
-        val database: String,
-        val username: String,
-        val password: String,
-        val maxPoolSize: Int,
-        val minIdleConnections: Int,
-        val maxLifetime: Long,
-        val connectionTimeout: Long,
-        val properties: Map<String, String>
+  val poolName: String?,
+  val address: String,
+  val database: String,
+  val username: String,
+  val password: String,
+  val maxPoolSize: Int,
+  val minIdleConnections: Int,
+  val maxLifetime: Long,
+  val connectionTimeout: Long,
+  val properties: Map<String, String>
 )

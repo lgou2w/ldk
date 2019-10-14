@@ -28,19 +28,19 @@ import java.io.InputStream
  * @author lgou2w
  */
 class PluginResourceProvider(
-        /**
-         * * Plugin object for this plugin resource language provider.
-         * * 此插件资源语言提供者的插件对象.
-         */
-        val plugin: Plugin
+  /**
+   * * Plugin object for this plugin resource language provider.
+   * * 此插件资源语言提供者的插件对象.
+   */
+  val plugin: Plugin
 ) : ResourceProvider(PluginResourceProvider::class.java.classLoader) {
 
-    override fun isValid(name: String): Boolean {
-        return plugin.getResource(name) != null
-    }
+  override fun isValid(name: String): Boolean {
+    return plugin.getResource(name) != null
+  }
 
-    override fun load(name: String): InputStream? {
-        return plugin.getResource(name)
-               ?: throw FileNotFoundException("The resource file $name in the plugin was not found.")
-    }
+  override fun load(name: String): InputStream? {
+    return plugin.getResource(name)
+      ?: throw FileNotFoundException("The resource file $name in the plugin was not found.")
+  }
 }

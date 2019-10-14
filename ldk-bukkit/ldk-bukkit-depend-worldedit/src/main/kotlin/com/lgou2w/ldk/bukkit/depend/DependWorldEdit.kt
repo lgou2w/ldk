@@ -47,123 +47,123 @@ import org.bukkit.entity.Player
  */
 class DependWorldEdit : DependBase<WorldEditPlugin>(getPlugin(NAME)) {
 
-    /**
-     * * Get the WorldEdit selected region of ​​the given [player]. If not, return `null`.
-     * * 获取给定玩家 [player] 的 WorldEdit 选中区域. 如果没有则返回 `null`.
-     */
-    fun getSelectRegion(player: Player): Region? {
-        checkReference()
-        val worldWrapped = player.world.toAdapter() as com.sk89q.worldedit.world.World
-        val session = plugin.getSession(player)
-        val selector = session.getRegionSelector(worldWrapped)
-        return try {
-            val region = selector.region
-            val world = player.world
-            when (region) {
-                is CuboidRegion -> {
-                    val pos1 = REGION_METHOD_ACCESSOR(region, "getPos1").invoke(region).notNull()
-                    val pos2 = REGION_METHOD_ACCESSOR(region, "getPos2").invoke(region).notNull()
-                    RegionCuboid(world, toRegionVectorBlock(pos1), toRegionVectorBlock(pos2))
-                }
-                is CylinderRegion -> {
-                    val center = REGION_METHOD_ACCESSOR(region, "getCenter").invoke(region).notNull()
-                    val radius = REGION_METHOD_ACCESSOR(region, "getRadius").invoke(region).notNull()
-                    RegionCylinder(world, toRegionVector2D(center), toRegionVector2D(radius), region.minimumY, region.maximumY)
-                }
-                is EllipsoidRegion -> {
-                    val center = REGION_METHOD_ACCESSOR(region, "getCenter").invoke(region).notNull()
-                    val radius = REGION_METHOD_ACCESSOR(region, "getRadius").invoke(region).notNull()
-                    RegionEllipsoid(world, toRegionVectorBlock(center), toRegionVectorBlock(radius))
-                }
-                else -> null
-            }
-        } catch (e: IncompleteRegionException) {
-            null
+  /**
+   * * Get the WorldEdit selected region of ​​the given [player]. If not, return `null`.
+   * * 获取给定玩家 [player] 的 WorldEdit 选中区域. 如果没有则返回 `null`.
+   */
+  fun getSelectRegion(player: Player): Region? {
+    checkReference()
+    val worldWrapped = player.world.toAdapter() as com.sk89q.worldedit.world.World
+    val session = plugin.getSession(player)
+    val selector = session.getRegionSelector(worldWrapped)
+    return try {
+      val region = selector.region
+      val world = player.world
+      when (region) {
+        is CuboidRegion -> {
+          val pos1 = REGION_METHOD_ACCESSOR(region, "getPos1").invoke(region).notNull()
+          val pos2 = REGION_METHOD_ACCESSOR(region, "getPos2").invoke(region).notNull()
+          RegionCuboid(world, toRegionVectorBlock(pos1), toRegionVectorBlock(pos2))
         }
+        is CylinderRegion -> {
+          val center = REGION_METHOD_ACCESSOR(region, "getCenter").invoke(region).notNull()
+          val radius = REGION_METHOD_ACCESSOR(region, "getRadius").invoke(region).notNull()
+          RegionCylinder(world, toRegionVector2D(center), toRegionVector2D(radius), region.minimumY, region.maximumY)
+        }
+        is EllipsoidRegion -> {
+          val center = REGION_METHOD_ACCESSOR(region, "getCenter").invoke(region).notNull()
+          val radius = REGION_METHOD_ACCESSOR(region, "getRadius").invoke(region).notNull()
+          RegionEllipsoid(world, toRegionVectorBlock(center), toRegionVectorBlock(radius))
+        }
+        else -> null
+      }
+    } catch (e: IncompleteRegionException) {
+      null
     }
+  }
 
 // No longer supported
 //    fun setSelectRegion(player: Player, region: Region) {
 //        checkReference()
 //    }
 
-    companion object {
+  companion object {
 
-        const val NAME = "WorldEdit"
+    const val NAME = "WorldEdit"
 
-        ///
-        /// Compatibility layer
-        ///
+    ///
+    /// Compatibility layer
+    ///
 
-        @JvmStatic private val CLASS_LEGACY_VECTOR by lazyAnyOrNullClass {
-            try {
-                DependWorldEdit::class.java.classLoader.loadClass("com.sk89q.worldedit.Vector") // Before in 7.0.0
-            } catch (e: ClassNotFoundException) {
-                null
-            }
-        }
-        @JvmStatic private val CLASS_LEGACY_VECTOR_2D by lazyAnyOrNullClass {
-            try {
-                DependWorldEdit::class.java.classLoader.loadClass("com.sk89q.worldedit.Vector2D") // Before in 7.0.0
-            } catch (e: ClassNotFoundException) {
-                null
-            }
-        }
-        @JvmStatic private val STRUCTURE_LEGACY_VECTOR by lazy {
-            CLASS_LEGACY_VECTOR.letIfNotNull { StructureModifier.of<Any>(it) }
-        }
-        @JvmStatic private val STRUCTURE_LEGACY_VECTOR_2D by lazy {
-            CLASS_LEGACY_VECTOR_2D.letIfNotNull { StructureModifier.of<Any>(it) }
-        }
-
-        @JvmStatic private val REGION_METHOD_ACCESSORS : MutableMap<String, AccessorMethod<Any, Any>> = HashMap()
-        @JvmStatic private val REGION_METHOD_ACCESSOR : (Any, String) -> AccessorMethod<Any, Any> = { obj, name ->
-            val wrapName = "${obj::class.java.simpleName}#$name"
-            var accessor = REGION_METHOD_ACCESSORS[wrapName]
-            if (accessor == null) {
-                accessor = FuzzyReflect.of(obj, false)
-                    .useMethodMatcher()
-                    .withName(name)
-                    .resultAccessor()
-                REGION_METHOD_ACCESSORS[wrapName] = accessor
-            }
-            accessor
-        }
-
-        @JvmStatic private fun World.toAdapter() = BukkitWorld(this)
-
-        @JvmStatic private fun toRegionVectorBlock(obj: Any): RegionVectorBlock {
-            return if (CLASS_LEGACY_VECTOR?.isInstance(obj).isTrue()) {
-                val structure = STRUCTURE_LEGACY_VECTOR.notNull().withTarget(obj).withType(Double::class.java)
-                val x = structure.read(0) ?: .0
-                val y = structure.read(1) ?: .0
-                val z = structure.read(2) ?: .0
-                RegionVectorBlock(x, y, z)
-            } else {
-                return if (obj is com.sk89q.worldedit.math.BlockVector3)
-                    RegionVectorBlock(obj.blockX, obj.blockY, obj.blockZ)
-                else if (obj is com.sk89q.worldedit.math.Vector3)
-                    RegionVectorBlock(obj.x, obj.y, obj.z)
-                else
-                    throw UnsupportedOperationException("Incompatible vector type: ${obj::class.java.canonicalName}")
-            }
-        }
-        @JvmStatic private fun toRegionVector2D(obj: Any): RegionVector2D {
-            return if (CLASS_LEGACY_VECTOR?.isInstance(obj).isTrue()) {
-                toRegionVectorBlock(obj).toRegionVector2D()
-            } else if (CLASS_LEGACY_VECTOR_2D?.isInstance(obj).isTrue()) {
-                val structure = STRUCTURE_LEGACY_VECTOR_2D.notNull().withTarget(obj).withType(Double::class.java)
-                val x = structure.read(0) ?: .0
-                val z = structure.read(1) ?: .0
-                RegionVector2D(x, z)
-            } else {
-                return if (obj is com.sk89q.worldedit.math.Vector3)
-                    RegionVector2D(obj.x, obj.z)
-                else if (obj is com.sk89q.worldedit.math.Vector2)
-                    RegionVector2D(obj.x, obj.z)
-                else
-                    throw UnsupportedOperationException("Incompatible vector type: ${obj::class.java.canonicalName}")
-            }
-        }
+    @JvmStatic private val CLASS_LEGACY_VECTOR by lazyAnyOrNullClass {
+      try {
+        DependWorldEdit::class.java.classLoader.loadClass("com.sk89q.worldedit.Vector") // Before in 7.0.0
+      } catch (e: ClassNotFoundException) {
+        null
+      }
     }
+    @JvmStatic private val CLASS_LEGACY_VECTOR_2D by lazyAnyOrNullClass {
+      try {
+        DependWorldEdit::class.java.classLoader.loadClass("com.sk89q.worldedit.Vector2D") // Before in 7.0.0
+      } catch (e: ClassNotFoundException) {
+        null
+      }
+    }
+    @JvmStatic private val STRUCTURE_LEGACY_VECTOR by lazy {
+      CLASS_LEGACY_VECTOR.letIfNotNull { StructureModifier.of<Any>(it) }
+    }
+    @JvmStatic private val STRUCTURE_LEGACY_VECTOR_2D by lazy {
+      CLASS_LEGACY_VECTOR_2D.letIfNotNull { StructureModifier.of<Any>(it) }
+    }
+
+    @JvmStatic private val REGION_METHOD_ACCESSORS : MutableMap<String, AccessorMethod<Any, Any>> = HashMap()
+    @JvmStatic private val REGION_METHOD_ACCESSOR : (Any, String) -> AccessorMethod<Any, Any> = { obj, name ->
+      val wrapName = "${obj::class.java.simpleName}#$name"
+      var accessor = REGION_METHOD_ACCESSORS[wrapName]
+      if (accessor == null) {
+        accessor = FuzzyReflect.of(obj, false)
+          .useMethodMatcher()
+          .withName(name)
+          .resultAccessor()
+        REGION_METHOD_ACCESSORS[wrapName] = accessor
+      }
+      accessor
+    }
+
+    @JvmStatic private fun World.toAdapter() = BukkitWorld(this)
+
+    @JvmStatic private fun toRegionVectorBlock(obj: Any): RegionVectorBlock {
+      return if (CLASS_LEGACY_VECTOR?.isInstance(obj).isTrue()) {
+        val structure = STRUCTURE_LEGACY_VECTOR.notNull().withTarget(obj).withType(Double::class.java)
+        val x = structure.read(0) ?: .0
+        val y = structure.read(1) ?: .0
+        val z = structure.read(2) ?: .0
+        RegionVectorBlock(x, y, z)
+      } else {
+        return if (obj is com.sk89q.worldedit.math.BlockVector3)
+          RegionVectorBlock(obj.blockX, obj.blockY, obj.blockZ)
+        else if (obj is com.sk89q.worldedit.math.Vector3)
+          RegionVectorBlock(obj.x, obj.y, obj.z)
+        else
+          throw UnsupportedOperationException("Incompatible vector type: ${obj::class.java.canonicalName}")
+      }
+    }
+    @JvmStatic private fun toRegionVector2D(obj: Any): RegionVector2D {
+      return if (CLASS_LEGACY_VECTOR?.isInstance(obj).isTrue()) {
+        toRegionVectorBlock(obj).toRegionVector2D()
+      } else if (CLASS_LEGACY_VECTOR_2D?.isInstance(obj).isTrue()) {
+        val structure = STRUCTURE_LEGACY_VECTOR_2D.notNull().withTarget(obj).withType(Double::class.java)
+        val x = structure.read(0) ?: .0
+        val z = structure.read(1) ?: .0
+        RegionVector2D(x, z)
+      } else {
+        return if (obj is com.sk89q.worldedit.math.Vector3)
+          RegionVector2D(obj.x, obj.z)
+        else if (obj is com.sk89q.worldedit.math.Vector2)
+          RegionVector2D(obj.x, obj.z)
+        else
+          throw UnsupportedOperationException("Incompatible vector type: ${obj::class.java.canonicalName}")
+      }
+    }
+  }
 }

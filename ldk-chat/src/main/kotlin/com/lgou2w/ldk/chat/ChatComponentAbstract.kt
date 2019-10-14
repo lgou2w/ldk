@@ -31,75 +31,75 @@ import com.lgou2w.ldk.common.notNull
  */
 abstract class ChatComponentAbstract : ChatComponent {
 
-    private var _style : ChatStyle? = null
-    private var _extras : MutableList<ChatComponent> = ArrayList()
+  private var _style : ChatStyle? = null
+  private var _extras : MutableList<ChatComponent> = ArrayList()
 
-    override var style : ChatStyle
-        get() {
-            if (_style == null) {
-                _style = ChatStyle()
-                extras.forEach { it.style.setParent(style) }
-            }
-            return _style.notNull()
-        }
-        set(value) {
-            _style = value
-            extras.forEach { it.style.setParent(style) }
-        }
-
-    override fun setStyle(style: ChatStyle?): ChatComponent {
-        _style = style
+  override var style : ChatStyle
+    get() {
+      if (_style == null) {
+        _style = ChatStyle()
         extras.forEach { it.style.setParent(style) }
-        return this
+      }
+      return _style.notNull()
+    }
+    set(value) {
+      _style = value
+      extras.forEach { it.style.setParent(style) }
     }
 
-    override val extras : MutableList<ChatComponent>
-        get() = _extras
+  override fun setStyle(style: ChatStyle?): ChatComponent {
+    _style = style
+    extras.forEach { it.style.setParent(style) }
+    return this
+  }
 
-    override val extraSize : Int
-        get() = extras.size
+  override val extras : MutableList<ChatComponent>
+    get() = _extras
 
-    override fun append(text: String): ChatComponent
-            = append(ChatComponentText(text))
+  override val extraSize : Int
+    get() = extras.size
 
-    override fun append(extra: ChatComponent): ChatComponent {
-        extra.style.setParent(style)
-        extras.add(extra)
-        return this
-    }
+  override fun append(text: String): ChatComponent
+    = append(ChatComponentText(text))
 
-    override fun toJson(): String
-            = ChatSerializer.toJson(this)
+  override fun append(extra: ChatComponent): ChatComponent {
+    extra.style.setParent(style)
+    extras.add(extra)
+    return this
+  }
 
-    override fun toRaw(color: Boolean): String
-            = ChatSerializer.toRaw(this, color)
+  override fun toJson(): String
+    = ChatSerializer.toJson(this)
 
-    // SEE: ldk-bukkit-common / com.lgou2w.ldk.bukkit.chat.ChatFactory
+  override fun toRaw(color: Boolean): String
+    = ChatSerializer.toRaw(this, color)
 
+// SEE: ldk-bukkit-common / com.lgou2w.ldk.bukkit.chat.ChatFactory
+//
 //    override fun send(player: Player, action: ChatAction)
 //            = PacketOutChat(this, action).send(player)
 
-    override fun plus(text: String): ChatComponent
-            = plus(ChatSerializer.fromRaw(text))
+  override fun plus(text: String): ChatComponent
+    = plus(ChatSerializer.fromRaw(text))
 
-    override fun plus(extra: ChatComponent): ChatComponent
-            = append(extra)
+  override fun plus(extra: ChatComponent): ChatComponent
+    = append(extra)
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ChatComponentAbstract)
-            return style == other.style && extras == other.extras
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ChatComponentAbstract)
+      return style == other.style && extras == other.extras
+    return false
+  }
 
-    override fun hashCode(): Int {
-        var result = _style?.hashCode() ?: 0
-        result = 31 * result + extras.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = _style?.hashCode() ?: 0
+    result = 31 * result + extras.hashCode()
+    return result
+  }
 
-    override fun toString(): String {
-        return "ChatComponentAbstract(style=$style, extras=$extras)"
-    }
+  override fun toString(): String {
+    return "ChatComponentAbstract(style=$style, extras=$extras)"
+  }
 }

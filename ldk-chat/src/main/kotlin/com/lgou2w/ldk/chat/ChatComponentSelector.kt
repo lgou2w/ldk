@@ -27,36 +27,36 @@ package com.lgou2w.ldk.chat
  * @param selector 选择器.
  */
 class ChatComponentSelector(
-        /**
-         * * Gets or sets the selector object for this chat component selector.
-         * * 获取或设置此聊天组件选择器的选择器对象.
-         */
-        var selector: String
+  /**
+   * * Gets or sets the selector object for this chat component selector.
+   * * 获取或设置此聊天组件选择器的选择器对象.
+   */
+  var selector: String
 ) : ChatComponentAbstract() {
 
-    /**
-     * @see [ChatComponentSelector.selector]
-     */
-    fun setSelector(selector: String): ChatComponentSelector {
-        this.selector = selector
-        return this
-    }
+  /**
+   * @see [ChatComponentSelector.selector]
+   */
+  fun setSelector(selector: String): ChatComponentSelector {
+    this.selector = selector
+    return this
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ChatComponentSelector)
-            return super.equals(other) && selector == other.selector
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ChatComponentSelector)
+      return super.equals(other) && selector == other.selector
+    return false
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + selector.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + selector.hashCode()
+    return result
+  }
 
-    override fun toString(): String {
-        return "ChatComponentSelector(selector='$selector', style=$style, extras=$extras)"
-    }
+  override fun toString(): String {
+    return "ChatComponentSelector(selector='$selector', style=$style, extras=$extras)"
+  }
 }

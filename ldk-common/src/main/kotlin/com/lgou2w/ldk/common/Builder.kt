@@ -26,9 +26,9 @@ package com.lgou2w.ldk.common
 @FunctionalInterface
 interface Builder<out R> {
 
-    /**
-     * * Build a result type object.
-     * * 构建一个结果类型对象.
-     */
-    fun build(): R
+  /**
+   * * Build a result type object.
+   * * 构建一个结果类型对象.
+   */
+  fun build(): R
 }

@@ -23,16 +23,16 @@ import org.junit.Test
 
 class NBTTagStringTest {
 
-    @Test fun `NBTTagString - toJson - Strings always start and end with " `() {
-        val nbt = NBTTagString(value = "string")
-        nbt.toJson() shouldStartWith "\""
-        nbt.toMojangson() shouldEndWith "\""
-        nbt.toMojangsonWithColor() shouldStartWith "\""
-        nbt.toJson() shouldEqual "\"string\""
-    }
+  @Test fun `NBTTagString - toJson - Strings always start and end with " `() {
+    val nbt = NBTTagString(value = "string")
+    nbt.toJson() shouldStartWith "\""
+    nbt.toMojangson() shouldEndWith "\""
+    nbt.toMojangsonWithColor() shouldStartWith "\""
+    nbt.toJson() shouldEqual "\"string\""
+  }
 
-    @Test fun `NBTTagString - toJson - When value contains " should always be escaped`() {
-        val nbt = NBTTagString(value = "\"Hi, I'm fine\"")
-        nbt.toJson() shouldEqual "\"\\\"Hi, I'm fine\\\"\""
-    }
+  @Test fun `NBTTagString - toJson - When value contains " should always be escaped`() {
+    val nbt = NBTTagString(value = "\"Hi, I'm fine\"")
+    nbt.toJson() shouldEqual "\"\\\"Hi, I'm fine\\\"\""
+  }
 }

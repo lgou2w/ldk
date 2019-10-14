@@ -27,60 +27,60 @@ import java.io.DataOutput
 
 class NBTBaseTest {
 
-    @Test fun `NBTBase - equals`() {
-        val n1 = NBTTagString()
-        val n2 = NBTTagInt()
-        n1.equals(n2) shouldEqual false
-        n1.name shouldEqual n2.name
-        n1.value shouldNotEqual n2.value
-    }
+  @Test fun `NBTBase - equals`() {
+    val n1 = NBTTagString()
+    val n2 = NBTTagInt()
+    n1.equals(n2) shouldEqual false
+    n1.name shouldEqual n2.name
+    n1.value shouldNotEqual n2.value
+  }
 
-    class MyNbt : NBTBase<Any?>("mynbt", null) {
-        override fun clone(): NBTBase<*> = throw UnsupportedOperationException()
-        override val type: NBTType get() = throw UnsupportedOperationException()
-        override val typeId: Int = 233
-        override fun read(input: DataInput) { }
-        override fun write(output: DataOutput) { }
-        override fun toString(): String = ""
-    }
+  class MyNbt : NBTBase<Any?>("mynbt", null) {
+    override fun clone(): NBTBase<*> = throw UnsupportedOperationException()
+    override val type: NBTType get() = throw UnsupportedOperationException()
+    override val typeId: Int = 233
+    override fun read(input: DataInput) { }
+    override fun write(output: DataOutput) { }
+    override fun toString(): String = ""
+  }
 
-    @Test fun `NBTBase - hashCode - The hash value should not be zero`() {
-        NBTTagString().hashCode() shouldNotEqual 0
-        NBTTagInt().hashCode() shouldNotEqual 0
-        MyNbt().hashCode() shouldNotEqual 0
-    }
+  @Test fun `NBTBase - hashCode - The hash value should not be zero`() {
+    NBTTagString().hashCode() shouldNotEqual 0
+    NBTTagInt().hashCode() shouldNotEqual 0
+    MyNbt().hashCode() shouldNotEqual 0
+  }
 
-    @Test fun `NBTBase - as - Non-wrapper class should throw exception`() {
-        invoking { NBTTagString().asCompound() } shouldThrow ClassCastException::class
-        invoking { NBTTagInt().asList() } shouldThrow ClassCastException::class
-        ofList {  }.asList().isEmpty() shouldEqual true
-        ofCompound {  }.asCompound().isEmpty() shouldEqual true
-    }
+  @Test fun `NBTBase - as - Non-wrapper class should throw exception`() {
+    invoking { NBTTagString().asCompound() } shouldThrow ClassCastException::class
+    invoking { NBTTagInt().asList() } shouldThrow ClassCastException::class
+    ofList {  }.asList().isEmpty() shouldEqual true
+    ofCompound {  }.asCompound().isEmpty() shouldEqual true
+  }
 
-    @Test fun `NBTBase - clone - The cloned object address should be different`() {
-        val n1 = NBTTagByte()
-        val n2 = NBTTagShort()
-        val n3 = NBTTagInt()
-        val n4 = NBTTagLong()
-        val n5 = NBTTagFloat()
-        val n6 = NBTTagDouble()
-        val n7 = NBTTagByteArray()
-        val n8 = NBTTagString()
-        val n9 = NBTTagList()
-        val n10 = NBTTagCompound()
-        val n11 = NBTTagIntArray()
-        val n12 = NBTTagLongArray()
-        n1 shouldNotBe n1.clone()
-        n2 shouldNotBe n2.clone()
-        n3 shouldNotBe n3.clone()
-        n4 shouldNotBe n4.clone()
-        n5 shouldNotBe n5.clone()
-        n6 shouldNotBe n6.clone()
-        n7 shouldNotBe n7.clone()
-        n8 shouldNotBe n8.clone()
-        n9 shouldNotBe n9.clone()
-        n10 shouldNotBe n10.clone()
-        n11 shouldNotBe n11.clone()
-        n12 shouldNotBe n12.clone()
-    }
+  @Test fun `NBTBase - clone - The cloned object address should be different`() {
+    val n1 = NBTTagByte()
+    val n2 = NBTTagShort()
+    val n3 = NBTTagInt()
+    val n4 = NBTTagLong()
+    val n5 = NBTTagFloat()
+    val n6 = NBTTagDouble()
+    val n7 = NBTTagByteArray()
+    val n8 = NBTTagString()
+    val n9 = NBTTagList()
+    val n10 = NBTTagCompound()
+    val n11 = NBTTagIntArray()
+    val n12 = NBTTagLongArray()
+    n1 shouldNotBe n1.clone()
+    n2 shouldNotBe n2.clone()
+    n3 shouldNotBe n3.clone()
+    n4 shouldNotBe n4.clone()
+    n5 shouldNotBe n5.clone()
+    n6 shouldNotBe n6.clone()
+    n7 shouldNotBe n7.clone()
+    n8 shouldNotBe n8.clone()
+    n9 shouldNotBe n9.clone()
+    n10 shouldNotBe n10.clone()
+    n11 shouldNotBe n11.clone()
+    n12 shouldNotBe n12.clone()
+  }
 }

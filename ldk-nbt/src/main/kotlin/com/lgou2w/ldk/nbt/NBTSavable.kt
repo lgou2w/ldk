@@ -29,9 +29,9 @@ package com.lgou2w.ldk.nbt
  */
 interface NBTSavable {
 
-    /**
-     * * Store the data in the given `root` tag.
-     * * 将数据存储到给定的 `root` 标签中.
-     */
-    fun save(root: NBTTagCompound): NBTTagCompound
+  /**
+   * * Store the data in the given `root` tag.
+   * * 将数据存储到给定的 `root` 标签中.
+   */
+  fun save(root: NBTTagCompound): NBTTagCompound
 }

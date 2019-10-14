@@ -32,98 +32,98 @@ import java.lang.reflect.ParameterizedType
  * @author lgou2w
  */
 class FuzzyReflectFieldMatcher(
-        reflect: FuzzyReflect,
-        initialize: Collection<Field>? = null
+  reflect: FuzzyReflect,
+  initialize: Collection<Field>? = null
 ) : FuzzyReflectMatcher<Field>(reflect, initialize) {
 
-    override fun with(predicate: Predicate<Field>): FuzzyReflectFieldMatcher {
-        return super.with(predicate) as FuzzyReflectFieldMatcher
-    }
+  override fun with(predicate: Predicate<Field>): FuzzyReflectFieldMatcher {
+    return super.with(predicate) as FuzzyReflectFieldMatcher
+  }
 
-    override fun <U> with(initialize: Callable<U>, predicate: BiFunction<Field, U, Boolean>): FuzzyReflectFieldMatcher {
-        return super.with(initialize, predicate) as FuzzyReflectFieldMatcher
-    }
+  override fun <U> with(initialize: Callable<U>, predicate: BiFunction<Field, U, Boolean>): FuzzyReflectFieldMatcher {
+    return super.with(initialize, predicate) as FuzzyReflectFieldMatcher
+  }
 
-    override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectFieldMatcher {
-        return super.withVisibilities(*visibilities) as FuzzyReflectFieldMatcher
-    }
+  override fun withVisibilities(vararg visibilities: Visibility): FuzzyReflectFieldMatcher {
+    return super.withVisibilities(*visibilities) as FuzzyReflectFieldMatcher
+  }
 
-    override fun withName(regex: String): FuzzyReflectFieldMatcher {
-        return super.withName(regex) as FuzzyReflectFieldMatcher
-    }
+  override fun withName(regex: String): FuzzyReflectFieldMatcher {
+    return super.withName(regex) as FuzzyReflectFieldMatcher
+  }
 
-    override fun <A : Annotation> withAnnotation(annotation: Class<A>): FuzzyReflectFieldMatcher {
-        return super.withAnnotation(annotation) as FuzzyReflectFieldMatcher
-    }
+  override fun <A : Annotation> withAnnotation(annotation: Class<A>): FuzzyReflectFieldMatcher {
+    return super.withAnnotation(annotation) as FuzzyReflectFieldMatcher
+  }
 
-    override fun <A : Annotation> withAnnotationIf(annotation: Class<A>, block: Predicate<A>): FuzzyReflectFieldMatcher {
-        return super.withAnnotationIf(annotation, block) as FuzzyReflectFieldMatcher
-    }
+  override fun <A : Annotation> withAnnotationIf(annotation: Class<A>, block: Predicate<A>): FuzzyReflectFieldMatcher {
+    return super.withAnnotationIf(annotation, block) as FuzzyReflectFieldMatcher
+  }
 
-    override fun withType(clazz: Class<*>): FuzzyReflectFieldMatcher {
-        val primitiveType = DataType.ofPrimitive(clazz)
-        values = values.asSequence().filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
-        return this
-    }
+  override fun withType(clazz: Class<*>): FuzzyReflectFieldMatcher {
+    val primitiveType = DataType.ofPrimitive(clazz)
+    values = values.asSequence().filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
+    return this
+  }
 
-    /**
-     * * Matches the reflection value from the given [rawType] and the [actualTypeArguments].
-     * * 从给定的原始类型 [rawType] 和实际类型参数 [actualTypeArguments] 匹配反射值.
-     *
-     * @param rawType Raw type.
-     * @param rawType 原始类型.
-     * @param actualTypeArguments Actual type arguments.
-     * @param actualTypeArguments 实际类型参数.
-     * @since LDK 0.1.8-rc
-     */
-    fun withParameterizedType(rawType: Class<*>?, vararg actualTypeArguments: Class<*>): FuzzyReflectFieldMatcher {
-        val primitiveRawType = if (rawType != null) DataType.ofPrimitive(rawType) else null
-        val primitiveActualTypeArguments = DataType.ofPrimitive(actualTypeArguments)
-        val subActualTypeArgumentSize= primitiveActualTypeArguments.size
-        values = values.asSequence().filter { field ->
-            val parameterizedType = field.genericType as? ParameterizedType
-            val parameterizedRawType = parameterizedType?.rawType
-            if (parameterizedRawType != null && parameterizedRawType is Class<*>) {
-                val parameterizedActualTypeArguments = parameterizedType.actualTypeArguments
-                    .asSequence()
-                    .filterIsInstance(Class::class.java)
-                    .toList()
-                    .let {
-                        if (it.size > subActualTypeArgumentSize)
-                            it.subList(0, subActualTypeArgumentSize).toTypedArray()
-                        else it.toTypedArray()
-                    }
-                (primitiveRawType == null || primitiveRawType.isAssignableFrom(parameterizedRawType)) &&
-                DataType.compare(primitiveActualTypeArguments, parameterizedActualTypeArguments)
-            } else false
-        }.toMutableList()
-        return this
-    }
+  /**
+   * * Matches the reflection value from the given [rawType] and the [actualTypeArguments].
+   * * 从给定的原始类型 [rawType] 和实际类型参数 [actualTypeArguments] 匹配反射值.
+   *
+   * @param rawType Raw type.
+   * @param rawType 原始类型.
+   * @param actualTypeArguments Actual type arguments.
+   * @param actualTypeArguments 实际类型参数.
+   * @since LDK 0.1.8-rc
+   */
+  fun withParameterizedType(rawType: Class<*>?, vararg actualTypeArguments: Class<*>): FuzzyReflectFieldMatcher {
+    val primitiveRawType = if (rawType != null) DataType.ofPrimitive(rawType) else null
+    val primitiveActualTypeArguments = DataType.ofPrimitive(actualTypeArguments)
+    val subActualTypeArgumentSize= primitiveActualTypeArguments.size
+    values = values.asSequence().filter { field ->
+      val parameterizedType = field.genericType as? ParameterizedType
+      val parameterizedRawType = parameterizedType?.rawType
+      if (parameterizedRawType != null && parameterizedRawType is Class<*>) {
+        val parameterizedActualTypeArguments = parameterizedType.actualTypeArguments
+          .asSequence()
+          .filterIsInstance(Class::class.java)
+          .toList()
+          .let {
+            if (it.size > subActualTypeArgumentSize)
+              it.subList(0, subActualTypeArgumentSize).toTypedArray()
+            else it.toTypedArray()
+          }
+        (primitiveRawType == null || primitiveRawType.isAssignableFrom(parameterizedRawType)) &&
+          DataType.compare(primitiveActualTypeArguments, parameterizedActualTypeArguments)
+      } else false
+    }.toMutableList()
+    return this
+  }
 
-    override fun withParams(vararg parameters: Class<*>): FuzzyReflectFieldMatcher {
-        return this // Field does not support parameters
-    }
+  override fun withParams(vararg parameters: Class<*>): FuzzyReflectFieldMatcher {
+    return this // Field does not support parameters
+  }
 
-    override fun withParamsCount(count: Int): FuzzyReflectFieldMatcher {
-        return this // Field does not support parameters
-    }
+  override fun withParamsCount(count: Int): FuzzyReflectFieldMatcher {
+    return this // Field does not support parameters
+  }
 
-    override fun resultAccessors(): List<AccessorField<Any, Any>>
-            = results().map(Accessors::ofField)
+  override fun resultAccessors(): List<AccessorField<Any, Any>>
+    = results().map(Accessors::ofField)
 
-    override fun resultAccessor(): AccessorField<Any, Any>
-            = resultAccessorAs()
+  override fun resultAccessor(): AccessorField<Any, Any>
+    = resultAccessorAs()
 
-    override fun resultAccessorOrNull(): AccessorField<Any, Any>?
-            = resultOrNull()?.letIfNotNull(Accessors::ofField)
+  override fun resultAccessorOrNull(): AccessorField<Any, Any>?
+    = resultOrNull()?.letIfNotNull(Accessors::ofField)
 
-    /**
-     * * Get the first valid result accessor for this fuzzy reflection matcher.
-     * * 获取此模糊反射匹配器的第一个有效结果访问器.
-     *
-     * @throws NoSuchElementException If the match result is empty.
-     * @throws NoSuchElementException 如果匹配结果为空.
-     */
-    fun <T, R> resultAccessorAs(): AccessorField<T, R>
-            = Accessors.ofField(result())
+  /**
+   * * Get the first valid result accessor for this fuzzy reflection matcher.
+   * * 获取此模糊反射匹配器的第一个有效结果访问器.
+   *
+   * @throws NoSuchElementException If the match result is empty.
+   * @throws NoSuchElementException 如果匹配结果为空.
+   */
+  fun <T, R> resultAccessorAs(): AccessorField<T, R>
+    = Accessors.ofField(result())
 }

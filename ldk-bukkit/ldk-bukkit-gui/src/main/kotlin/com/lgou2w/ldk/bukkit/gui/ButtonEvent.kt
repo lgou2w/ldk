@@ -35,82 +35,82 @@ import org.bukkit.inventory.ItemStack
  * @author lgou2w
  */
 class ButtonEvent(
-        /**
-         * * The button object for this event.
-         * * 此事件的按钮对象.
-         */
-        val button: Button,
-        /**
-         * * The clicker object for this event.
-         * * 此事件的点击者对象.
-         */
-        val clicker: HumanEntity,
-        /**
-         * * The clicked item stack object for this event.
-         * * 此事件的点击物品栈对象.
-         */
-        val clicked: ItemStack?,
-        /**
-         * * The source Bukkit event object for this event.
-         * * 此事件的源 Bukkit 事件对象.
-         */
-        val source: InventoryClickEvent
+  /**
+   * * The button object for this event.
+   * * 此事件的按钮对象.
+   */
+  val button: Button,
+  /**
+   * * The clicker object for this event.
+   * * 此事件的点击者对象.
+   */
+  val clicker: HumanEntity,
+  /**
+   * * The clicked item stack object for this event.
+   * * 此事件的点击物品栈对象.
+   */
+  val clicked: ItemStack?,
+  /**
+   * * The source Bukkit event object for this event.
+   * * 此事件的源 Bukkit 事件对象.
+   */
+  val source: InventoryClickEvent
 ) {
 
-    /**
-     * * Get the Gui object that interacts with the current event.
-     * * 获取当前事件交互的 Gui 对象.
-     */
-    val view : Gui
-        get() = button.parent
+  /**
+   * * Get the Gui object that interacts with the current event.
+   * * 获取当前事件交互的 Gui 对象.
+   */
+  val view : Gui
+    get() = button.parent
 
-    /**
-     * * The clicker player object for this event.
-     * * 此事件的点击者玩家对象.
-     *
-     * @throws [ClassCastException] If the clicker is not a player.
-     * @throws [ClassCastException] 如果点击者不是玩家.
-     * @since LDK 0.1.8
-     */
-    val player : Player
-        get() = clicker as Player
+  /**
+   * * The clicker player object for this event.
+   * * 此事件的点击者玩家对象.
+   *
+   * @throws [ClassCastException] If the clicker is not a player.
+   * @throws [ClassCastException] 如果点击者不是玩家.
+   * @since LDK 0.1.8
+   */
+  val player : Player
+    get() = clicker as Player
 
-    /**
-     * * Get this event whether the clicker is a player.
-     * * 获取此事件点击者是否为玩家.
-     *
-     */
-    fun isPlayer() : Boolean
-            = clicker is Player
+  /**
+   * * Get this event whether the clicker is a player.
+   * * 获取此事件点击者是否为玩家.
+   *
+   */
+  fun isPlayer() : Boolean
+    = clicker is Player
 
-    /**
-     * * Get this event and click on the item stack is not empty.
-     * * 获取此事件点击物品栈不为空的.
-     */
-    fun hasItem() : Boolean
-            = clicked != null && clicked.type != Material.AIR
+  /**
+   * * Get this event and click on the item stack is not empty.
+   * * 获取此事件点击物品栈不为空的.
+   */
+  fun hasItem() : Boolean
+    = clicked != null && clicked.type != Material.AIR
 
-    companion object Constants {
+  companion object Constants {
 
-        @JvmField
-        val CANCEL : Consumer<ButtonEvent> = { event ->
-            event.source.isCancelled = true
-            event.source.result = Event.Result.DENY
-        }
-
-        @JvmField
-        val CLOSE : Consumer<ButtonEvent> = { event ->
-            event.clicker.closeInventory()
-        }
-
-        @JvmStatic
-        fun cancelThen(after : Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
-            return CANCEL andThenConsume after
-        }
-
-        @JvmStatic
-        fun cancelThenConsumeAndClose(after: Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
-            return CANCEL andThenConsume after andThenConsume CLOSE
-        }
+    @JvmField
+    val CANCEL : Consumer<ButtonEvent> = { event ->
+      event.source.isCancelled = true
+      event.source.result = Event.Result.DENY
     }
+
+    @JvmField
+    val CLOSE : Consumer<ButtonEvent> = { event ->
+      event.clicker.closeInventory()
+    }
+
+    @JvmStatic
+    fun cancelThen(after : Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
+      return CANCEL andThenConsume after
+    }
+
+    @JvmStatic
+    fun cancelThenConsumeAndClose(after: Consumer<ButtonEvent>) : Consumer<ButtonEvent> {
+      return CANCEL andThenConsume after andThenConsume CLOSE
+    }
+  }
 }

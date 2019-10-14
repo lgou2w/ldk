@@ -27,25 +27,25 @@ import java.io.DataOutput
  */
 class NBTTagShort : NBTTagNumber<Short> {
 
-    @JvmOverloads
-    constructor(name: String = "", value: Short = 0) : super(name, value)
-    constructor(value: Short = 0) : super("", value)
+  @JvmOverloads
+  constructor(name: String = "", value: Short = 0) : super(name, value)
+  constructor(value: Short = 0) : super("", value)
 
-    override val type = NBTType.TAG_SHORT
+  override val type = NBTType.TAG_SHORT
 
-    override fun read(input: DataInput) {
-        value = input.readShort()
-    }
+  override fun read(input: DataInput) {
+    value = input.readShort()
+  }
 
-    override fun write(output: DataOutput) {
-        output.writeShort(value.toInt())
-    }
+  override fun write(output: DataOutput) {
+    output.writeShort(value.toInt())
+  }
 
-    override fun clone(): NBTTagShort {
-        return NBTTagShort(name, value)
-    }
+  override fun clone(): NBTTagShort {
+    return NBTTagShort(name, value)
+  }
 
-    override fun toString(): String {
-        return "NBTTagShort(value=$value)"
-    }
+  override fun toString(): String {
+    return "NBTTagShort(value=$value)"
+  }
 }

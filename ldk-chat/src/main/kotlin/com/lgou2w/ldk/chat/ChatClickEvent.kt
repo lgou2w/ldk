@@ -29,58 +29,67 @@ package com.lgou2w.ldk.chat
  * @param value 交互值.
  */
 data class ChatClickEvent(
-        /**
-         * * The action type of this chat click event.
-         * * 此聊天点击事件的交互类型.
-         *
-         * @see [Action]
-         */
-        val action: Action,
-        /**
-         * * The action value of this chat click event.
-         * * 此聊天点击事件的交互值.
-         */
-        val value: String
+  /**
+   * * The action type of this chat click event.
+   * * 此聊天点击事件的交互类型.
+   *
+   * @see [Action]
+   */
+  val action: Action,
+  /**
+   * * The action value of this chat click event.
+   * * 此聊天点击事件的交互值.
+   */
+  val value: String
 ) {
 
-    /**
-     * ## Action (交互类型)
-     *
-     * @see [ChatClickEvent]
-     * @author lgou2w
-     */
-    enum class Action {
+  /**
+   * ## Action (交互类型)
+   *
+   * @see [ChatClickEvent]
+   * @author lgou2w
+   */
+  enum class Action {
 
-        /**
-         * * Chat Click Type: Open URL
-         * * 聊天点击类型: 打开链接
-         */
-        OPEN_URL,
-        /**
-         * * Chat Click Type: Open File
-         * * 聊天点击类型: 打开文件
-         *
-         * > *  Opens a link to any protocol, but cannot be used in `JSON` chat for security reasons.
-         *      Only exists to internally implement links for screenshots.
-         *
-         * > * 打开指向任何协议的链接, 但出于安全原因, 不能在 `JSON` 聊天中使用. 仅存在内部实现屏幕截图的链接.
-         */
-        OPEN_FILE,
-        /**
-         * * Chat Click Type: Suggest Command
-         * * 聊天点击类型: 提示命令
-         */
-        SUGGEST_COMMAND,
-        /**
-         * * Chat Click Type: Run Command
-         * * 聊天点击类型: 执行命令
-         */
-        RUN_COMMAND,
-        /**
-         * * Chat Click Type: Change Page
-         * * 聊天点击类型: 改变页面
-         */
-        CHANGE_PAGE,
-        ;
-    }
+    /**
+     * * Chat Click Type: Open URL
+     * * 聊天点击类型: 打开链接
+     */
+    OPEN_URL,
+    /**
+     * * Chat Click Type: Open File
+     * * 聊天点击类型: 打开文件
+     *
+     * > * Opens a link to any protocol, but cannot be used in `JSON` chat for security reasons.
+     *      Only exists to internally implement links for screenshots.
+     *
+     * > * 打开指向任何协议的链接, 但出于安全原因, 不能在 `JSON` 聊天中使用. 仅存在内部实现屏幕截图的链接.
+     */
+    OPEN_FILE,
+    /**
+     * * Chat Click Type: Suggest Command
+     * * 聊天点击类型: 提示命令
+     */
+    SUGGEST_COMMAND,
+    /**
+     * * Chat Click Type: Run Command
+     * * 聊天点击类型: 执行命令
+     */
+    RUN_COMMAND,
+    /**
+     * * Chat Click Type: Change Page
+     * * 聊天点击类型: 改变页面
+     */
+    CHANGE_PAGE,
+    /**
+     * * Chat Click Type: Copy to clipboard
+     *    * Note: This feature is only available in Minecraft 19w41a and later.
+     * * 聊天点击类型: 复制到剪贴板
+     *    * 注意: 此功能仅在 Minecraft 19w41a 及更高版本中可用.
+     *
+     * @since LDK 0.1.9
+     */
+    COPY_TO_CLIPBOARD,
+    ;
+  }
 }

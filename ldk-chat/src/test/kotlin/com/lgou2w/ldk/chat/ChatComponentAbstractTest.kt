@@ -22,17 +22,17 @@ import org.junit.Test
 
 class ChatComponentAbstractTest {
 
-    @Test fun `ChatComponentAbstract - test`() {
-        val cca = object : ChatComponentAbstract() {}
-        val cca2 = object : ChatComponentAbstract() {}
-        cca.equals(cca) shouldEqual true
-        cca.equals(null) shouldEqual false
-        cca2.equals(cca2) shouldEqual true
-        cca.style = ChatStyle().setColor(ChatColor.RED)
-        cca.equals(cca2) shouldEqual false
-        cca2.style = cca.style.clone()
-        cca.plus("extra1")
-        cca.equals(cca2) shouldEqual false
-        cca.toString() shouldNotEqual cca2.toString()
-    }
+  @Test fun `ChatComponentAbstract - test`() {
+    val cca = object : ChatComponentAbstract() {}
+    val cca2 = object : ChatComponentAbstract() {}
+    cca.equals(cca) shouldEqual true
+    cca.equals(null) shouldEqual false
+    cca2.equals(cca2) shouldEqual true
+    cca.style = ChatStyle().setColor(ChatColor.RED)
+    cca.equals(cca2) shouldEqual false
+    cca2.style = cca.style.clone()
+    cca.plus("extra1")
+    cca.equals(cca2) shouldEqual false
+    cca.toString() shouldNotEqual cca2.toString()
+  }
 }

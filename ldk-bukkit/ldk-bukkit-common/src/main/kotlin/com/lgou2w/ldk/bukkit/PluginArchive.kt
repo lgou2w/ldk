@@ -24,57 +24,57 @@ package com.lgou2w.ldk.bukkit
  */
 interface PluginArchive {
 
-    /**
-     * * The prefix of this plugin.
-     * * 此插件的前缀.
-     */
-    val pluginPrefix : String?
+  /**
+   * * The prefix of this plugin.
+   * * 此插件的前缀.
+   */
+  val pluginPrefix : String?
 
-    /**
-     * * The name of this plugin.
-     * * 此插件的名称.
-     */
-    val pluginName : String
+  /**
+   * * The name of this plugin.
+   * * 此插件的名称.
+   */
+  val pluginName : String
 
-    /**
-     * * The entry point of this plugin.
-     * * 此插件的入口点.
-     */
-    val pluginMain : String
+  /**
+   * * The entry point of this plugin.
+   * * 此插件的入口点.
+   */
+  val pluginMain : String
 
-    /**
-     * * The version of this plugin.
-     * * 此插件的版本.
-     */
-    val pluginVersion : String
+  /**
+   * * The version of this plugin.
+   * * 此插件的版本.
+   */
+  val pluginVersion : String
 
-    /**
-     * * The website of this plugin.
-     * * 此插件的网站.
-     */
-    val pluginWebsite : String?
+  /**
+   * * The website of this plugin.
+   * * 此插件的网站.
+   */
+  val pluginWebsite : String?
 
-    /**
-     * * The description of this plugin.
-     * * 此插件的说明.
-     */
-    val pluginDescription : String?
+  /**
+   * * The description of this plugin.
+   * * 此插件的说明.
+   */
+  val pluginDescription : String?
 
-    /**
-     * * The author set of this plugin.
-     * * 此插件的作者集合.
-     */
-    val pluginAuthors : Set<String>
+  /**
+   * * The author set of this plugin.
+   * * 此插件的作者集合.
+   */
+  val pluginAuthors : Set<String>
 
-    /**
-     * * The dependency set of this plugin.
-     * * 此插件的依赖集合.
-     */
-    val pluginDepends : Set<String>
+  /**
+   * * The dependency set of this plugin.
+   * * 此插件的依赖集合.
+   */
+  val pluginDepends : Set<String>
 
-    /**
-     * * The soft dependency set of this plugin.
-     * * 此插件的软依赖集合.
-     */
-    val pluginSoftDepends : Set<String>
+  /**
+   * * The soft dependency set of this plugin.
+   * * 此插件的软依赖集合.
+   */
+  val pluginSoftDepends : Set<String>
 }

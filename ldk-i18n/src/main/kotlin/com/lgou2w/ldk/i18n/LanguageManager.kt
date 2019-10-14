@@ -29,66 +29,66 @@ import java.util.Locale
  */
 interface LanguageManager {
 
-    /**
-     * * The base name of this language manager.
-     * * 此语言管理器的基础名称.
-     */
-    val baseName : String
+  /**
+   * * The base name of this language manager.
+   * * 此语言管理器的基础名称.
+   */
+  val baseName : String
 
-    /**
-     * * The adapter for this language manager.
-     * * 此语言管理器的适配器.
-     *
-     * @see [LanguageAdapter]
-     */
-    val adapter : LanguageAdapter
+  /**
+   * * The adapter for this language manager.
+   * * 此语言管理器的适配器.
+   *
+   * @see [LanguageAdapter]
+   */
+  val adapter : LanguageAdapter
 
-    /**
-     * * The provider of this language manager.
-     * * 此语言管理器的提供者.
-     *
-     * @see [LanguageProvider]
-     */
-    val provider : LanguageProvider
+  /**
+   * * The provider of this language manager.
+   * * 此语言管理器的提供者.
+   *
+   * @see [LanguageProvider]
+   */
+  val provider : LanguageProvider
 
-    /**
-     * * Global formatter of this language manager.
-     * * 此语言管理器的全局格式化.
-     *
-     * @see [Formatter]
-     * @since LDK 0.1.7-rc2
-     */
-    var globalFormatter : Formatter?
+  /**
+   * * Global formatter of this language manager.
+   * * 此语言管理器的全局格式化.
+   *
+   * @see [Formatter]
+   * @since LDK 0.1.7-rc2
+   */
+  var globalFormatter : Formatter?
 
-    /**
-     * * Load a language object from the given locale [locale].
-     * * 从给定的本地化 [locale] 加载语言对象.
-     *
-     * @throws [IOException] I/O
-     */
-    @Throws(IOException::class)
-    fun load(locale: Locale): Language
+  /**
+   * * Load a language object from the given locale [locale].
+   * * 从给定的本地化 [locale] 加载语言对象.
+   *
+   * @throws [IOException] I/O
+   */
+  @Throws(IOException::class)
+  fun load(locale: Locale): Language
 
-    /**
-     * * Save the given language object [language].
-     * * 将给定的语言对象 [language] 进行保存.
-     *
-     * @throws [UnsupportedOperationException] This operation is not supported by the language [provider].
-     * @throws [UnsupportedOperationException] 如果语言提供者 [provider] 不支持此操作.
-     * @throws [IOException] I/O
-     */
-    @Throws(IOException::class, UnsupportedOperationException::class)
-    fun save(language: Language)
+  /**
+   * * Save the given language object [language].
+   * * 将给定的语言对象 [language] 进行保存.
+   *
+   * @throws [UnsupportedOperationException] This operation is not supported by the language [provider].
+   * @throws [UnsupportedOperationException] 如果语言提供者 [provider] 不支持此操作.
+   * @throws [IOException] I/O
+   */
+  @Throws(IOException::class, UnsupportedOperationException::class)
+  fun save(language: Language)
 
-    /**
-     * * Gets valid from the given locale [locale].
-     * * 从给定的本地化 [locale] 获取是否有效.
-     */
-    fun isValid(locale: Locale): Boolean
+  /**
+   * * Gets valid from the given locale [locale].
+   * * 从给定的本地化 [locale] 获取是否有效.
+   */
+  fun isValid(locale: Locale): Boolean
 
-    /**
-     * * Gets valid from the given language object [language].
-     * * 从给定的语言对象 [language] 获取是否有效.
-     */
-    fun isValid(language: Language): Boolean
+  /**
+   * * Gets valid from the given language object [language].
+   * * 从给定的语言对象 [language] 获取是否有效.
+   */
+  fun isValid(language: Language): Boolean
 }

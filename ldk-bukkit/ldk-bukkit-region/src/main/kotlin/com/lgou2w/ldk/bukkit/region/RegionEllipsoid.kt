@@ -30,80 +30,80 @@ import kotlin.math.floor
  * @author lgou2w
  */
 open class RegionEllipsoid(
-        world: World,
-        override var center: RegionVector,
-        /**
-         * * The radius vector of this ellipsoid region.
-         * * 此椭圆区域的半径向量.
-         */
-        var radius: RegionVector
+  world: World,
+  override var center: RegionVector,
+  /**
+   * * The radius vector of this ellipsoid region.
+   * * 此椭圆区域的半径向量.
+   */
+  var radius: RegionVector
 ) : RegionBase(world) {
 
-    companion object {
+  companion object {
 
-        init {
-            ConfigurationSerialization.registerClass(RegionEllipsoid::class.java)
-        }
-
-        @JvmStatic
-        @Suppress("UNCHECKED_CAST")
-        fun deserialize(args: Map<String, Any>): RegionEllipsoid {
-            val world = args["world"]?.toString().letIfNotNull(Bukkit::getWorld)
-                        ?: throw IllegalArgumentException("Unknown world: ${args["world"]}")
-            val center = RegionVector.deserialize(args["center"] as Map<String, Any>)
-            val radius = RegionVector.deserialize(args["radius"] as Map<String, Any>)
-            return RegionEllipsoid(world, center, radius)
-        }
+    init {
+      ConfigurationSerialization.registerClass(RegionEllipsoid::class.java)
     }
 
-    override val minimumPoint : RegionVector
-        get() = center - radius
-
-    override val maximumPoint : RegionVector
-        get() = center + radius
-
-    override val area : Int
-        get() = floor((4 / 3 * Math.PI) * radius.x * radius.y * radius.z).toInt()
-
-    override val width : Int
-        get() = (radius.x * 2.0).toInt()
-
-    override val height : Int
-        get() = (radius.y * 2.0).toInt()
-
-    override val length : Int
-        get() = (radius.z * 2.0).toInt()
-
-    override fun contains(x: Double, y: Double, z: Double): Boolean
-            = contains(RegionVector(x, y, z))
-
-    override fun contains(vector: RegionVector): Boolean
-            = ((vector - center) / radius).lengthSq() <= 1.0
-
-    override fun serialize(): MutableMap<String, Any> {
-        val result = LinkedHashMap<String, Any>()
-        result["world"] = world.name
-        result["center"] = center.serialize()
-        result["radius"] = center.serialize()
-        return result
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun deserialize(args: Map<String, Any>): RegionEllipsoid {
+      val world = args["world"]?.toString().letIfNotNull(Bukkit::getWorld)
+        ?: throw IllegalArgumentException("Unknown world: ${args["world"]}")
+      val center = RegionVector.deserialize(args["center"] as Map<String, Any>)
+      val radius = RegionVector.deserialize(args["radius"] as Map<String, Any>)
+      return RegionEllipsoid(world, center, radius)
     }
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + center.hashCode()
-        result = 31 * result + radius.hashCode()
-        return result
-    }
+  override val minimumPoint : RegionVector
+    get() = center - radius
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is RegionEllipsoid)
-            return super.equals(other) && center == other.center && radius == other.radius
-        return false
-    }
+  override val maximumPoint : RegionVector
+    get() = center + radius
 
-    override fun toString(): String {
-        return "RegionEllipsoid(world=${world.name}, center=$center, radius=$radius)"
-    }
+  override val area : Int
+    get() = floor((4 / 3 * Math.PI) * radius.x * radius.y * radius.z).toInt()
+
+  override val width : Int
+    get() = (radius.x * 2.0).toInt()
+
+  override val height : Int
+    get() = (radius.y * 2.0).toInt()
+
+  override val length : Int
+    get() = (radius.z * 2.0).toInt()
+
+  override fun contains(x: Double, y: Double, z: Double): Boolean
+    = contains(RegionVector(x, y, z))
+
+  override fun contains(vector: RegionVector): Boolean
+    = ((vector - center) / radius).lengthSq() <= 1.0
+
+  override fun serialize(): MutableMap<String, Any> {
+    val result = LinkedHashMap<String, Any>()
+    result["world"] = world.name
+    result["center"] = center.serialize()
+    result["radius"] = center.serialize()
+    return result
+  }
+
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + center.hashCode()
+    result = 31 * result + radius.hashCode()
+    return result
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is RegionEllipsoid)
+      return super.equals(other) && center == other.center && radius == other.radius
+    return false
+  }
+
+  override fun toString(): String {
+    return "RegionEllipsoid(world=${world.name}, center=$center, radius=$radius)"
+  }
 }

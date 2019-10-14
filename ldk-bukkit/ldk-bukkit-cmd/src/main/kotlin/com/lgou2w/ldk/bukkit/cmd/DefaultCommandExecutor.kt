@@ -29,70 +29,70 @@ import java.util.Arrays
  * @author lgou2w
  */
 class DefaultCommandExecutor(
-        reference: Any,
-        name: String,
-        aliases: Array<out String>,
-        permission: Array<out String>?,
-        permissionDefault: PermissionDefault?,
-        sorted: Int?,
-        isPlayable: Boolean,
-        parameters: Array<out CommandExecutor.Parameter>,
-        /**
-         * * The method accessor object for this executor.
-         * * 此执行器的方法访问器对象.
-         *
-         * @see [AccessorMethod]
-         */
-        val executor: AccessorMethod<Any, Any>,
-        override var description: String?
+  reference: Any,
+  name: String,
+  aliases: Array<out String>,
+  permission: Array<out String>?,
+  permissionDefault: PermissionDefault?,
+  sorted: Int?,
+  isPlayable: Boolean,
+  parameters: Array<out CommandExecutor.Parameter>,
+  /**
+   * * The method accessor object for this executor.
+   * * 此执行器的方法访问器对象.
+   *
+   * @see [AccessorMethod]
+   */
+  val executor: AccessorMethod<Any, Any>,
+  override var description: String?
 ) : CommandExecutorBase(
-        reference,
-        name,
-        aliases,
-        permission,
-        permissionDefault,
-        sorted,
-        isPlayable,
-        parameters
+  reference,
+  name,
+  aliases,
+  permission,
+  permissionDefault,
+  sorted,
+  isPlayable,
+  parameters
 ) {
 
-    /**
-     * * Indicate whether this executor method is static.
-     * * 表示此执行器的方法是否为静态的.
-     */
-    val isStatic = Modifier.isStatic(executor.source.modifiers)
+  /**
+   * * Indicate whether this executor method is static.
+   * * 表示此执行器的方法是否为静态的.
+   */
+  val isStatic = Modifier.isStatic(executor.source.modifiers)
 
-    /**
-     * * Indicate the method sender parameter type for this executor.
-     * * 表示此执行器的方法执行者参数类型.
-     *
-     * @see [org.bukkit.command.CommandSender]
-     * @since LDK 0.1.8-rc
-     */
-    val senderType = executor.source.parameters.first().type.notNull()
+  /**
+   * * Indicate the method sender parameter type for this executor.
+   * * 表示此执行器的方法执行者参数类型.
+   *
+   * @see [org.bukkit.command.CommandSender]
+   * @since LDK 0.1.8-rc
+   */
+  val senderType = executor.source.parameters.first().type.notNull()
 
-    override fun execute(vararg args: Any?): Any? {
-        return if (isStatic)
-            executor.invoke(null, *args)
-        else
-            executor.invoke(reference, *args)
-    }
+  override fun execute(vararg args: Any?): Any? {
+    return if (isStatic)
+      executor.invoke(null, *args)
+    else
+      executor.invoke(reference, *args)
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + executor.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + executor.hashCode()
+    return result
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is DefaultCommandExecutor)
-            return super.equals(other) && executor == other.executor
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is DefaultCommandExecutor)
+      return super.equals(other) && executor == other.executor
+    return false
+  }
 
-    override fun toString(): String {
-        return "DefaultCommandExecutor(name=$name, aliases=${Arrays.toString(aliases)}, isPlayable=$isPlayable)"
-    }
+  override fun toString(): String {
+    return "DefaultCommandExecutor(name=$name, aliases=${Arrays.toString(aliases)}, isPlayable=$isPlayable)"
+  }
 }

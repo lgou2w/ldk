@@ -53,214 +53,229 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 @Suppress("UNUSED") // ASM ONLY
 abstract class AnvilWindowBase(
-        final override val plugin: Plugin
+  final override val plugin: Plugin
 ) : AnvilWindow {
 
-    private var onOpened : Consumer<AnvilWindowOpenEvent>? = null
-    private var onClosed : Consumer<AnvilWindowCloseEvent>? = null
-    private var onClicked : Consumer<AnvilWindowClickEvent>? = null
-    private var onInputted : Consumer<AnvilWindowInputEvent>? = null
+  private var onOpened : Consumer<AnvilWindowOpenEvent>? = null
+  private var onClosed : Consumer<AnvilWindowCloseEvent>? = null
+  private var onClicked : Consumer<AnvilWindowClickEvent>? = null
+  private var onInputted : Consumer<AnvilWindowInputEvent>? = null
 
-    override var isAllowMove : Boolean = true
-    override val isOpened : Boolean get() = handle != null
+  override var isAllowMove : Boolean = true
+  override val isOpened : Boolean get() = handle != null
 
-    override fun open(player: Player) {
-        if (isOpened)
-            throw IllegalStateException("Anvil window is already opened.")
-        safeRegisterListenerHandler()
+  override fun open(player: Player): AnvilWindow {
+    if (isOpened)
+      throw IllegalStateException("Anvil window is already opened.")
+    safeRegisterListenerHandler()
+    return this
+  }
+
+  override fun onOpened(block: Consumer<AnvilWindowOpenEvent>?): AnvilWindow {
+    this.onOpened = block
+    return this
+  }
+  override fun onClosed(block: Consumer<AnvilWindowCloseEvent>?): AnvilWindow {
+    this.onClosed = block
+    return this
+  }
+  override fun onClicked(block: Consumer<AnvilWindowClickEvent>?): AnvilWindow {
+    this.onClicked = block
+    return this
+  }
+  override fun onInputted(block: Consumer<AnvilWindowInputEvent>?): AnvilWindow {
+    this.onInputted = block
+    return this
+  }
+
+  override fun getItem(slot: AnvilWindowSlot): ItemStack? {
+    if (!isOpened)
+      throw IllegalStateException("Anvil window is not opened yet.")
+    return inventory.getItem(slot.value)
+  }
+
+  override fun setItem(slot: AnvilWindowSlot, stack: ItemStack?): AnvilWindow {
+    if (!isOpened)
+      throw IllegalStateException("Anvil window is not opened yet.")
+    inventory.setItem(slot.value, stack)
+    return this
+  }
+
+  override fun clearItems(): AnvilWindow {
+    if (isOpened)
+      inventory.clear() // Only clear when opened
+    return this
+  }
+
+  /**************************************************************************
+   *
+   * Implements
+   *
+   **************************************************************************/
+
+  @Suppress("DEPRECATION")
+  companion object {
+
+    private const val FAKE_PLUGIN_NAME = "LDKAnvilInternalFakePlugin"
+
+    @JvmStatic private val CLASS_CONTAINER by lazyMinecraftClass("Container")
+    @JvmStatic private val CLASS_CONTAINER_ANVIL by lazyMinecraftClass("ContainerAnvil")
+    @JvmStatic private val CLASS_CRAFT_INVENTORY_VIEW by lazyCraftBukkitClass("inventory.CraftInventoryView")
+
+    @JvmStatic private val CLASSES by lazy { ASMClassLoader.ofInstance().defineClasses(AnvilWindowImplGenerator.generate()) }
+    @JvmStatic private val CLASS_ANVIL_WINDOW_CONTAINER_IMPL by lazy { CLASSES.first() }
+    @JvmStatic private val CONSTRUCTOR_ANVIL_WINDOW_IMPL by lazy { CLASSES.last().getConstructor(Plugin::class.java) }
+
+    // LDK.bukkit.anvil.AnvilWindowImpl$ContainerImpl -> public LDK.bukkit.anvil.AnvilWindowBase getAnvilWindow()
+    @JvmStatic private val METHOD_ANVIL_WINDOW_CONTAINER_IMPL_GET_ANVIL_WINDOW : AccessorMethod<Any, AnvilWindowBase> by lazy {
+      FuzzyReflect.of(CLASS_ANVIL_WINDOW_CONTAINER_IMPL, true)
+        .useMethodMatcher()
+        .withType(AnvilWindowBase::class.java)
+        .withName("getAnvilWindow")
+        .resultAccessorAs<Any, AnvilWindowBase>()
     }
 
-    override fun onOpened(block: Consumer<AnvilWindowOpenEvent>?) { this.onOpened = block }
-    override fun onClosed(block: Consumer<AnvilWindowCloseEvent>?) { this.onClosed = block }
-    override fun onClicked(block: Consumer<AnvilWindowClickEvent>?) { this.onClicked = block }
-    override fun onInputted(block: Consumer<AnvilWindowInputEvent>?) { this.onInputted = block }
-
-    override fun getItem(slot: AnvilWindowSlot): ItemStack? {
-        if (!isOpened)
-            throw IllegalStateException("Anvil window is not opened yet.")
-        return inventory.getItem(slot.value)
+    // OBC.inventory.CraftInventoryView -> public NMS.Container getHandle()
+    @JvmStatic private val METHOD_INVENTORY_VIEW_GET_HANDLE : AccessorMethod<Any, Any> by lazy {
+      FuzzyReflect.of(CLASS_CRAFT_INVENTORY_VIEW, true)
+        .useMethodMatcher()
+        .withType(CLASS_CONTAINER)
+        .withName("getHandle")
+        .resultAccessor()
     }
 
-    override fun setItem(slot: AnvilWindowSlot, stack: ItemStack?) {
-        if (!isOpened)
-            throw IllegalStateException("Anvil window is not opened yet.")
-        inventory.setItem(slot.value, stack)
+    // NMS.ContainerAnvil -> private final NMS.EntityHuman player
+    @JvmStatic private val FIELD_CONTAINER_ANVIL_PLAYER : AccessorField<Any, Any> by lazy {
+      FuzzyReflect.of(CLASS_CONTAINER_ANVIL, true)
+        .useFieldMatcher()
+        .withType(EntityFactory.CLASS_ENTITY_HUMAN)
+        .resultAccessor()
     }
 
-    override fun clearItems() {
-        if (isOpened)
-            inventory.clear() // Only clear when opened
+    @JvmStatic private fun getContainerAnvilPlayer(handle: Any?): Player {
+      val entityHuman = FIELD_CONTAINER_ANVIL_PLAYER[handle]
+      return EntityFactory.asBukkitEntity<Player>(entityHuman).notNull()
     }
 
-    /**************************************************************************
-     *
-     * Implements
-     *
-     **************************************************************************/
-
-    @Suppress("DEPRECATION")
-    companion object {
-
-        private const val FAKE_PLUGIN_NAME = "LDKAnvilInternalFakePlugin"
-
-        @JvmStatic private val CLASS_CONTAINER by lazyMinecraftClass("Container")
-        @JvmStatic private val CLASS_CONTAINER_ANVIL by lazyMinecraftClass("ContainerAnvil")
-        @JvmStatic private val CLASS_CRAFT_INVENTORY_VIEW by lazyCraftBukkitClass("inventory.CraftInventoryView")
-
-        @JvmStatic private val CLASSES by lazy { ASMClassLoader.ofInstance().defineClasses(AnvilWindowImplGenerator.generate()) }
-        @JvmStatic private val CLASS_ANVIL_WINDOW_CONTAINER_IMPL by lazy { CLASSES.first() }
-        @JvmStatic private val CONSTRUCTOR_ANVIL_WINDOW_IMPL by lazy { CLASSES.last().getConstructor(Plugin::class.java) }
-
-        // LDK.bukkit.anvil.AnvilWindowImpl$ContainerImpl -> public LDK.bukkit.anvil.AnvilWindowBase getAnvilWindow()
-        @JvmStatic private val METHOD_ANVIL_WINDOW_CONTAINER_IMPL_GET_ANVIL_WINDOW : AccessorMethod<Any, AnvilWindowBase> by lazy {
-            FuzzyReflect.of(CLASS_ANVIL_WINDOW_CONTAINER_IMPL, true)
-                .useMethodMatcher()
-                .withType(AnvilWindowBase::class.java)
-                .withName("getAnvilWindow")
-                .resultAccessorAs<Any, AnvilWindowBase>()
-        }
-
-        // OBC.inventory.CraftInventoryView -> public NMS.Container getHandle()
-        @JvmStatic private val METHOD_INVENTORY_VIEW_GET_HANDLE : AccessorMethod<Any, Any> by lazy {
-            FuzzyReflect.of(CLASS_CRAFT_INVENTORY_VIEW, true)
-                .useMethodMatcher()
-                .withType(CLASS_CONTAINER)
-                .withName("getHandle")
-                .resultAccessor()
-        }
-
-        // NMS.ContainerAnvil -> private final NMS.EntityHuman player
-        @JvmStatic private val FIELD_CONTAINER_ANVIL_PLAYER : AccessorField<Any, Any> by lazy {
-            FuzzyReflect.of(CLASS_CONTAINER_ANVIL, true)
-                .useFieldMatcher()
-                .withType(EntityFactory.CLASS_ENTITY_HUMAN)
-                .resultAccessor()
-        }
-
-        @JvmStatic private fun getContainerAnvilPlayer(handle: Any?): Player {
-            val entityHuman = FIELD_CONTAINER_ANVIL_PLAYER[handle]
-            return EntityFactory.asBukkitEntity<Player>(entityHuman).notNull()
-        }
-
-        @JvmStatic private fun getInventoryAnvilWindow(view: InventoryView): AnvilWindowBase? {
-            if (view.topInventory.type != InventoryType.ANVIL) return null // Only as anvil inventory
-            val container = METHOD_INVENTORY_VIEW_GET_HANDLE.invoke(view)
-            return if (CLASS_ANVIL_WINDOW_CONTAINER_IMPL.isInstance(container)) {
-                METHOD_ANVIL_WINDOW_CONTAINER_IMPL_GET_ANVIL_WINDOW.invoke(container)
-            } else null
-        }
-
-        @JvmStatic private val registered = AtomicBoolean(false)
-        @JvmStatic private fun safeRegisterListenerHandler() {
-            if (!registered.compareAndSet(false, true))
-                return
-            val ldk : Plugin? = Bukkit.getPluginManager().getPlugin(Constants.LDK)
-            val listener = RegisteredListener(object : Listener {}, EventExecutor { _, event ->
-                if (event is InventoryClickEvent) {
-                    val anvilWindow = getInventoryAnvilWindow(event.view) ?: return@EventExecutor
-                    if ((event.inventory.type != InventoryType.ANVIL || event.inventory != anvilWindow.inventory) && !anvilWindow.isAllowMove) {
-                        event.isCancelled = true
-                        event.result = Event.Result.DENY
-                    } else {
-                        val slot = Enums.ofValuable(AnvilWindowSlot::class.java, event.rawSlot)
-                        val anvilEvent = anvilWindow.callClickedEvent(slot, event.currentItem)
-                        if ((anvilEvent != null && anvilEvent.isCancelled) || !anvilWindow.isAllowMove) {
-                            event.isCancelled = true
-                            event.result = Event.Result.DENY
-                        }
-                    }
-                } else if (event is PluginDisableEvent) {
-                    for (player in Bukkit.getOnlinePlayers()) {
-                        val anvilWindow = getInventoryAnvilWindow(player.openInventory)
-                        if (anvilWindow != null && (event.plugin.name == Constants.LDK || event.plugin == anvilWindow.plugin))
-                            player.closeInventory()
-                    }
-                }
-            }, EventPriority.MONITOR, ldk ?: FakePlugin(FAKE_PLUGIN_NAME), false)
-            InventoryClickEvent.getHandlerList().register(listener)
-            PluginDisableEvent.getHandlerList().register(listener)
-        }
-
-        /**
-         * @see [AnvilWindow.of]
-         */
-        @JvmStatic
-        @Deprecated("INTERNAL ONLY")
-        fun of(plugin: Plugin): AnvilWindow {
-            val inst = CONSTRUCTOR_ANVIL_WINDOW_IMPL.newInstance(plugin)
-            return AnvilWindowBase::class.java.cast(inst)
-        }
+    @JvmStatic private fun getInventoryAnvilWindow(view: InventoryView): AnvilWindowBase? {
+      if (view.topInventory.type != InventoryType.ANVIL) return null // Only as anvil inventory
+      val container = METHOD_INVENTORY_VIEW_GET_HANDLE.invoke(view)
+      return if (CLASS_ANVIL_WINDOW_CONTAINER_IMPL.isInstance(container)) {
+        METHOD_ANVIL_WINDOW_CONTAINER_IMPL_GET_ANVIL_WINDOW.invoke(container)
+      } else null
     }
 
-    protected abstract var handle : Any?
-    protected abstract val inventory : Inventory
-
-    ///
-    // WARNING: These public methods are only called in ASM, do not use !!!
-    ///
-
-    @Deprecated("ASM ONLY")
-    fun release() {
-        this.onOpened = null
-        this.onClosed = null
-        this.onClicked = null
-        this.onInputted = null
-        this.handle = null
-    }
-    @Deprecated("ASM ONLY")
-    fun callOpenedEvent(): AnvilWindowOpenEvent? {
-        return if (onOpened == null) null else {
-            val player = getContainerAnvilPlayer(handle)
-            var event : AnvilWindowOpenEvent? = AnvilWindowOpenEvent(this, player)
-            if (event != null) try {
-                onOpened?.invoke(event)
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                event = null
+    @JvmStatic private val registered = AtomicBoolean(false)
+    @JvmStatic private fun safeRegisterListenerHandler() {
+      if (!registered.compareAndSet(false, true))
+        return
+      val ldk : Plugin? = Bukkit.getPluginManager().getPlugin(Constants.LDK)
+      val listener = RegisteredListener(object : Listener {}, EventExecutor { _, event ->
+        if (event is InventoryClickEvent) {
+          val anvilWindow = getInventoryAnvilWindow(event.view) ?: return@EventExecutor
+          if ((event.inventory.type != InventoryType.ANVIL || event.inventory != anvilWindow.inventory) && !anvilWindow.isAllowMove) {
+            event.isCancelled = true
+            event.result = Event.Result.DENY
+          } else {
+            val slot = Enums.ofValuable(AnvilWindowSlot::class.java, event.rawSlot)
+            val anvilEvent = anvilWindow.callClickedEvent(slot, event.currentItem)
+            if ((anvilEvent != null && anvilEvent.isCancelled) || !anvilWindow.isAllowMove) {
+              event.isCancelled = true
+              event.result = Event.Result.DENY
             }
-            event
+          }
+        } else if (event is PluginDisableEvent) {
+          for (player in Bukkit.getOnlinePlayers()) {
+            val anvilWindow = getInventoryAnvilWindow(player.openInventory)
+            if (anvilWindow != null && (event.plugin.name == Constants.LDK || event.plugin == anvilWindow.plugin))
+              player.closeInventory()
+          }
         }
+      }, EventPriority.MONITOR, ldk ?: FakePlugin(FAKE_PLUGIN_NAME), false)
+      InventoryClickEvent.getHandlerList().register(listener)
+      PluginDisableEvent.getHandlerList().register(listener)
     }
-    @Deprecated("ASM ONLY")
-    fun callClosedEvent(): AnvilWindowCloseEvent? {
-        return if (onClosed == null) null else {
-            val player = getContainerAnvilPlayer(handle)
-            var event : AnvilWindowCloseEvent? = AnvilWindowCloseEvent(this, player)
-            if (event != null) try {
-                onClosed?.invoke(event)
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                event = null
-            }
-            event
-        }
+
+    /**
+     * @see [AnvilWindow.of]
+     */
+    @JvmStatic
+    @Deprecated("INTERNAL ONLY")
+    fun of(plugin: Plugin): AnvilWindow {
+      val inst = CONSTRUCTOR_ANVIL_WINDOW_IMPL.newInstance(plugin)
+      return AnvilWindowBase::class.java.cast(inst)
     }
-    @Deprecated("ASM ONLY")
-    fun callClickedEvent(slot: AnvilWindowSlot?, clicked: ItemStack?): AnvilWindowClickEvent? {
-        return if (slot == null || onClicked == null) null else {
-            val player = getContainerAnvilPlayer(handle)
-            var event : AnvilWindowClickEvent? = AnvilWindowClickEvent(this, player, slot, clicked)
-            if (event != null) try {
-                onClicked?.invoke(event)
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                event = null
-            }
-            event
-        }
+  }
+
+  protected abstract var handle : Any?
+  protected abstract val inventory : Inventory
+
+  ///
+  // WARNING: These public methods are only called in ASM, do not use !!!
+  ///
+
+  @Deprecated("ASM ONLY")
+  fun release() {
+    this.onOpened = null
+    this.onClosed = null
+    this.onClicked = null
+    this.onInputted = null
+    this.handle = null
+  }
+  @Deprecated("ASM ONLY")
+  fun callOpenedEvent(): AnvilWindowOpenEvent? {
+    return if (onOpened == null) null else {
+      val player = getContainerAnvilPlayer(handle)
+      var event : AnvilWindowOpenEvent? = AnvilWindowOpenEvent(this, player)
+      if (event != null) try {
+        onOpened?.invoke(event)
+      } catch (e: Throwable) {
+        e.printStackTrace()
+        event = null
+      }
+      event
     }
-    @Deprecated("ASM ONLY")
-    fun callInputtedEvent(value: String): AnvilWindowInputEvent? {
-        return if (onInputted == null) null else {
-            val player = getContainerAnvilPlayer(handle)
-            var event : AnvilWindowInputEvent? = AnvilWindowInputEvent(this, player, value)
-            if (event != null) try {
-                onInputted?.invoke(event)
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                event = null
-            }
-            event
-        }
+  }
+  @Deprecated("ASM ONLY")
+  fun callClosedEvent(): AnvilWindowCloseEvent? {
+    return if (onClosed == null) null else {
+      val player = getContainerAnvilPlayer(handle)
+      var event : AnvilWindowCloseEvent? = AnvilWindowCloseEvent(this, player)
+      if (event != null) try {
+        onClosed?.invoke(event)
+      } catch (e: Throwable) {
+        e.printStackTrace()
+        event = null
+      }
+      event
     }
+  }
+  @Deprecated("ASM ONLY")
+  fun callClickedEvent(slot: AnvilWindowSlot?, clicked: ItemStack?): AnvilWindowClickEvent? {
+    return if (slot == null || onClicked == null) null else {
+      val player = getContainerAnvilPlayer(handle)
+      var event : AnvilWindowClickEvent? = AnvilWindowClickEvent(this, player, slot, clicked)
+      if (event != null) try {
+        onClicked?.invoke(event)
+      } catch (e: Throwable) {
+        e.printStackTrace()
+        event = null
+      }
+      event
+    }
+  }
+  @Deprecated("ASM ONLY")
+  fun callInputtedEvent(value: String): AnvilWindowInputEvent? {
+    return if (onInputted == null) null else {
+      val player = getContainerAnvilPlayer(handle)
+      var event : AnvilWindowInputEvent? = AnvilWindowInputEvent(this, player, value)
+      if (event != null) try {
+        onInputted?.invoke(event)
+      } catch (e: Throwable) {
+        e.printStackTrace()
+        event = null
+      }
+      event
+    }
+  }
 }

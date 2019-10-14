@@ -30,35 +30,35 @@ import org.bukkit.entity.Player
 @FunctionalInterface
 interface Transform<out T> {
 
-    /**
-     * * Called when the parameter needs to be transformed.
-     * * 当参数需要进行转变时调用.
-     *
-     * @param parameter Parameter.
-     * @param parameter 参数.
-     */
-    fun transform(parameter: String): T?
+  /**
+   * * Called when the parameter needs to be transformed.
+   * * 当参数需要进行转变时调用.
+   *
+   * @param parameter Parameter.
+   * @param parameter 参数.
+   */
+  fun transform(parameter: String): T?
 
-    companion object Constants {
+  companion object Constants {
 
-        // Uncertain, so should force retention accuracy
-        @JvmField val TRANSFORM_NUMBER : Function<String, Number?> = { it.toDoubleOrNull() }
+    // Uncertain, so should force retention accuracy
+    @JvmField val TRANSFORM_NUMBER : Function<String, Number?> = { it.toDoubleOrNull() }
 
-        // Primitive
-        @JvmField val TRANSFORM_BYTE : Function<String, Byte?> = { it.toByteOrNull() }
-        @JvmField val TRANSFORM_SHORT : Function<String, Short?> = { it.toShortOrNull() }
-        @JvmField val TRANSFORM_INT : Function<String, Int?> = { it.toIntOrNull() }
-        @JvmField val TRANSFORM_LONG : Function<String, Long?> = { it.toLongOrNull() }
-        @JvmField val TRANSFORM_FLOAT : Function<String, Float?> = { it.toFloatOrNull() }
-        @JvmField val TRANSFORM_DOUBLE : Function<String, Double?> = { it.toDoubleOrNull() }
-        @JvmField val TRANSFORM_BOOLEAN : Function<String, Boolean?> = {
-            if (it.equals("null", true)) null // Nullable
-            else it.toBoolean()
-        }
-
-        // Specially
-        @JvmField val TRANSFORM_STRING : Function<String, String?> = { it }
-        @JvmField val TRANSFORM_PLAYER : Function<String, Player?> = { Bukkit.getPlayer(it) }
-        @JvmField val TRANSFORM_CONSOLE : Function<String, ConsoleCommandSender?> = { Bukkit.getConsoleSender() }
+    // Primitive
+    @JvmField val TRANSFORM_BYTE : Function<String, Byte?> = { it.toByteOrNull() }
+    @JvmField val TRANSFORM_SHORT : Function<String, Short?> = { it.toShortOrNull() }
+    @JvmField val TRANSFORM_INT : Function<String, Int?> = { it.toIntOrNull() }
+    @JvmField val TRANSFORM_LONG : Function<String, Long?> = { it.toLongOrNull() }
+    @JvmField val TRANSFORM_FLOAT : Function<String, Float?> = { it.toFloatOrNull() }
+    @JvmField val TRANSFORM_DOUBLE : Function<String, Double?> = { it.toDoubleOrNull() }
+    @JvmField val TRANSFORM_BOOLEAN : Function<String, Boolean?> = {
+      if (it.equals("null", true)) null // Nullable
+      else it.toBoolean()
     }
+
+    // Specially
+    @JvmField val TRANSFORM_STRING : Function<String, String?> = { it }
+    @JvmField val TRANSFORM_PLAYER : Function<String, Player?> = { Bukkit.getPlayer(it) }
+    @JvmField val TRANSFORM_CONSOLE : Function<String, ConsoleCommandSender?> = { Bukkit.getConsoleSender() }
+  }
 }

@@ -27,14 +27,14 @@ import org.bukkit.inventory.ItemStack
  * * 获取此物品栈是否为 `null` 或空气.
  */
 fun ItemStack?.isAir(): Boolean
-        = this == null || type == Material.AIR
+  = this == null || type == Material.AIR
 
 /**
  * * Get this item stack is not `null` and air.
  * * 获取此物品栈是否不是 `null` 和空气.
  */
 fun ItemStack?.isNotAir(): Boolean
-        = this != null && type != Material.AIR
+  = this != null && type != Material.AIR
 
 /**
  * * Create an Item Builder [ItemBuilder] object from the given item material.
@@ -47,7 +47,7 @@ fun ItemStack?.isNotAir(): Boolean
 @JvmOverloads
 @Throws(UnsupportedOperationException::class)
 inline fun Material.builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}): ItemBuilder
-        = ItemBuilder.of(this, count, durability).also(block)
+  = ItemBuilder.of(this, count, durability).also(block)
 
 /**
  * * Create an Item Builder [ItemBuilder] object from the given item stack.
@@ -60,7 +60,7 @@ inline fun Material.builder(count: Int = 1, durability: Int = 0, block: Applicat
 @JvmOverloads
 @Throws(UnsupportedOperationException::class)
 inline fun ItemStack.builder(block: Applicator<ItemBuilder> = {}): ItemBuilder
-        = ItemBuilder.of(this).also(block)
+  = ItemBuilder.of(this).also(block)
 
 /**
  * * Read NBT tag data from a given item stack.
@@ -73,7 +73,7 @@ inline fun ItemStack.builder(block: Applicator<ItemBuilder> = {}): ItemBuilder
 @JvmOverloads
 @Throws(UnsupportedOperationException::class)
 inline fun ItemStack.readTag(block: Applicator<NBTTagCompound?> = {}): NBTTagCompound?
-        = ItemFactory.readTag(this).also(block)
+  = ItemFactory.readTag(this).also(block)
 
 /**
  * * Safely read NBT tag data from a given item stack.
@@ -86,7 +86,7 @@ inline fun ItemStack.readTag(block: Applicator<NBTTagCompound?> = {}): NBTTagCom
 @JvmOverloads
 @Throws(UnsupportedOperationException::class)
 inline fun ItemStack.readTagSafe(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
-        = ItemFactory.readTagSafe(this).also(block)
+  = ItemFactory.readTagSafe(this).also(block)
 
 /**
  * * Write the given NBT tag data to the given item stack [itemStack].
@@ -98,7 +98,7 @@ inline fun ItemStack.readTagSafe(block: Applicator<NBTTagCompound> = {}): NBTTag
  */
 @Throws(UnsupportedOperationException::class)
 fun NBTTagCompound?.writeTag(itemStack: ItemStack): ItemStack
-        = ItemFactory.writeTag(itemStack, this)
+  = ItemFactory.writeTag(itemStack, this)
 
 /**
  * * Modify the NBT tag data for the given item stack.
@@ -111,7 +111,7 @@ fun NBTTagCompound?.writeTag(itemStack: ItemStack): ItemStack
  */
 @Throws(UnsupportedOperationException::class)
 fun ItemStack.modifyTag(block: Applicator<NBTTagCompound>): ItemStack
-        = ItemFactory.modifyTag(this, block)
+  = ItemFactory.modifyTag(this, block)
 
 /**
  * * Create an Item Builder [ItemBuilder] object from the given item material.
@@ -126,7 +126,7 @@ fun ItemStack.modifyTag(block: Applicator<NBTTagCompound>): ItemStack
 @JvmOverloads
 @Throws(UnsupportedOperationException::class)
 fun XMaterial.builder(count: Int = 1, durability: Int = 0, block: Applicator<ItemBuilder> = {}): ItemBuilder
-        = ItemBuilder.of(toBukkit(), count, durability).also(block)
+  = ItemBuilder.of(toBukkit(), count, durability).also(block)
 
 /**
  * * Determine if the given item material matche [xMaterial].
@@ -135,7 +135,7 @@ fun XMaterial.builder(count: Int = 1, durability: Int = 0, block: Applicator<Ite
  * @since LDK 0.1.8-rc
  */
 infix fun Material.eq(xMaterial: XMaterial): Boolean
-        = this == xMaterial.toBukkit()
+  = this == xMaterial.toBukkit()
 
 /**
  * * Determine if the given item material does not match [xMaterial].
@@ -144,4 +144,4 @@ infix fun Material.eq(xMaterial: XMaterial): Boolean
  * @since LDK 0.1.8-rc
  */
 infix fun Material.notEq(xMaterial: XMaterial): Boolean
-        = this != xMaterial.toBukkit()
+  = this != xMaterial.toBukkit()

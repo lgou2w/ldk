@@ -23,19 +23,19 @@ import org.bukkit.entity.Player
  */
 @Suppress("OverridingDeprecatedMember")
 internal class PlaceholderExpansionProxy(
-        private val proxy : PlaceholderExpansion
+  private val proxy : PlaceholderExpansion
 ) : me.clip.placeholderapi.expansion.PlaceholderExpansion() {
 
-    override fun getIdentifier(): String? = proxy.identifier
-    override fun getPlugin(): String? = proxy.requiredPlugin
-    override fun getRequiredPlugin(): String? = proxy.requiredPlugin
-    override fun getAuthor(): String? = proxy.author
-    override fun getVersion(): String? = proxy.version
-    override fun getPlaceholders(): MutableList<String>? = proxy.placeholders
-    override fun persist(): Boolean = proxy.isPersist
-    override fun isRegistered(): Boolean = proxy.isRegistered()
-    override fun register(): Boolean = proxy.register()
-    override fun canRegister(): Boolean = proxy.canRegister()
-    override fun onPlaceholderRequest(player: Player?, params: String): String?
-            = proxy.onPlaceholderRequest(player, params)
+  override fun getIdentifier(): String? = proxy.identifier
+  override fun getPlugin(): String? = proxy.requiredPlugin
+  override fun getRequiredPlugin(): String? = proxy.requiredPlugin
+  override fun getAuthor(): String? = proxy.author
+  override fun getVersion(): String? = proxy.version
+  override fun getPlaceholders(): MutableList<String>? = proxy.placeholders
+  override fun persist(): Boolean = proxy.isPersist
+  override fun isRegistered(): Boolean = proxy.isRegistered()
+  override fun register(): Boolean = proxy.register()
+  override fun canRegister(): Boolean = proxy.canRegister()
+  override fun onPlaceholderRequest(player: Player?, params: String): String?
+    = proxy.onPlaceholderRequest(player, params)
 }

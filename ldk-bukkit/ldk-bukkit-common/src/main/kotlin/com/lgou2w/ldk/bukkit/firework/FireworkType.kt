@@ -27,33 +27,33 @@ import com.lgou2w.ldk.common.Valuable
  */
 enum class FireworkType : Valuable<Int> {
 
-    /**
-     * * A small ball effect.
-     * * 小球型效果.
-     */
-    BALL,
-    /**
-     * * A large ball effect.
-     * * 大球型效果.
-     */
-    BALL_LARGE,
-    /**
-     * * A star-shaped effect.
-     * * 星形效果.
-     */
-    STAR,
-    /**
-     * * A creeper-face effect.
-     * * 苦力怕脸型效果.
-     */
-    CREEPER,
-    /**
-     * * A burst effect.
-     * * 爆裂型效果.
-     */
-    BURST,
-    ;
+  /**
+   * * A small ball effect.
+   * * 小球型效果.
+   */
+  BALL,
+  /**
+   * * A large ball effect.
+   * * 大球型效果.
+   */
+  BALL_LARGE,
+  /**
+   * * A star-shaped effect.
+   * * 星形效果.
+   */
+  STAR,
+  /**
+   * * A creeper-face effect.
+   * * 苦力怕脸型效果.
+   */
+  CREEPER,
+  /**
+   * * A burst effect.
+   * * 爆裂型效果.
+   */
+  BURST,
+  ;
 
-    override val value : Int
-        get() = ordinal
+  override val value : Int
+    get() = ordinal
 }

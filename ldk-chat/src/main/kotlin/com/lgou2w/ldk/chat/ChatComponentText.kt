@@ -27,49 +27,49 @@ package com.lgou2w.ldk.chat
  * @param text 文本.
  */
 class ChatComponentText(
-        /**
-         * * Gets or sets the text object for this chat component text.
-         * * 获取或设置此聊天组件文本的文本对象.
-         */
-        var text: String
+  /**
+   * * Gets or sets the text object for this chat component text.
+   * * 获取或设置此聊天组件文本的文本对象.
+   */
+  var text: String
 ) : ChatComponentAbstract() {
 
-    /**
-     * @constructor ChatComponentText
-     *
-     * * Using `empty` string.
-     * * 使用 `空` 字符串.
-     */
-    constructor() : this("")
+  /**
+   * @constructor ChatComponentText
+   *
+   * * Using `empty` string.
+   * * 使用 `空` 字符串.
+   */
+  constructor() : this("")
 
-    /**
-     * @constructor ChatComponentText
-     *
-     * @param text Chat component text.
-     * @param text 聊天组件文本.
-     */
-    constructor(text: ChatComponentText) : this(text.text)
+  /**
+   * @constructor ChatComponentText
+   *
+   * @param text Chat component text.
+   * @param text 聊天组件文本.
+   */
+  constructor(text: ChatComponentText) : this(text.text)
 
-    fun setText(text: String): ChatComponentText {
-        this.text = text
-        return this
-    }
+  fun setText(text: String): ChatComponentText {
+    this.text = text
+    return this
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ChatComponentText)
-            return super.equals(other) && text == other.text
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ChatComponentText)
+      return super.equals(other) && text == other.text
+    return false
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + text.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + text.hashCode()
+    return result
+  }
 
-    override fun toString(): String {
-        return "ChatComponentText(text='$text', style=$style, extras=$extras)"
-    }
+  override fun toString(): String {
+    return "ChatComponentText(text='$text', style=$style, extras=$extras)"
+  }
 }

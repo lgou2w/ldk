@@ -15,59 +15,59 @@
   ~ limitations under the License.
   -->
 <project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <artifactId>ldk-bukkit</artifactId>
-        <groupId>com.lgou2w</groupId>
-        <version>0.1.9-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <artifactId>ldk-bukkit</artifactId>
+    <groupId>com.lgou2w</groupId>
+    <version>0.1.9-SNAPSHOT</version>
+  </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-bukkit-depend-worldedit</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ldk-bukkit-depend-worldedit</artifactId>
 
-    <repositories>
-        <!-- sk98q-repo -->
-        <repository>
-            <id>sk98q-repo</id>
-            <url>https://maven.sk89q.com/repo/</url>
-        </repository>
-    </repositories>
+  <repositories>
+    <!-- sk89q-repo -->
+    <repository>
+      <id>sk89q-repo</id>
+      <url>https://maven.sk89q.com/repo/</url>
+    </repository>
+  </repositories>
 
-    <dependencies>
-        <!-- ldk-bukkit-depend -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-bukkit-depend</artifactId>
-            <version>0.1.9-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- ldk-bukkit-region -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-bukkit-region</artifactId>
-            <version>0.1.9-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- WordEdit -->
-        <dependency>
-            <groupId>com.sk89q.worldedit</groupId>
-            <artifactId>worldedit-bukkit</artifactId>
-            <version>7.0.1</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.destroystokyo.paper</groupId>
-                    <artifactId>paper-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.papermc</groupId>
-                    <artifactId>paperlib</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <!-- ldk-bukkit-depend -->
+    <dependency>
+      <groupId>com.lgou2w</groupId>
+      <artifactId>ldk-bukkit-depend</artifactId>
+      <version>0.1.9-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- ldk-bukkit-region -->
+    <dependency>
+      <groupId>com.lgou2w</groupId>
+      <artifactId>ldk-bukkit-region</artifactId>
+      <version>0.1.9-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- WordEdit -->
+    <dependency>
+      <groupId>com.sk89q.worldedit</groupId>
+      <artifactId>worldedit-bukkit</artifactId>
+      <version>7.0.1</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.destroystokyo.paper</groupId>
+          <artifactId>paper-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.papermc</groupId>
+          <artifactId>paperlib</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
 
 </project>

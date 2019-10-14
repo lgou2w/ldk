@@ -29,28 +29,28 @@ import java.io.OutputStream
  * @author lgou2w
  */
 class ExternalProvider(
-        /**
-         * * A directory of external language provider.
-         * * 此外部语言提供者的目录.
-         */
-        val directory : File
+  /**
+   * * A directory of external language provider.
+   * * 此外部语言提供者的目录.
+   */
+  val directory : File
 ) : LanguageProvider {
 
-    override fun load(name: String): InputStream? {
-        val file = File(directory, name)
-        if (file.parentFile?.exists() != true)
-            file.parentFile?.mkdirs()
-        if (!file.exists())
-            return null
-        return FileInputStream(file)
-    }
+  override fun load(name: String): InputStream? {
+    val file = File(directory, name)
+    if (file.parentFile?.exists() != true)
+      file.parentFile?.mkdirs()
+    if (!file.exists())
+      return null
+    return FileInputStream(file)
+  }
 
-    override fun isValid(name: String): Boolean {
-        return File(directory, name).exists()
-    }
+  override fun isValid(name: String): Boolean {
+    return File(directory, name).exists()
+  }
 
-    override fun write(name: String): OutputStream {
-        val file = File(directory, name)
-        return FileOutputStream(file)
-    }
+  override fun write(name: String): OutputStream {
+    val file = File(directory, name)
+    return FileOutputStream(file)
+  }
 }

@@ -30,48 +30,48 @@ import org.bukkit.inventory.InventoryHolder
  * @author lgou2w
  */
 enum class GuiType(
-        /**
-         * * The size of this Gui type.
-         * * 此界面类型的大小.
-         */
-        val size: Int,
-        /**
-         * * The title of this Gui type.
-         * * 此界面类型的标题.
-         */
-        val title: String
+  /**
+   * * The size of this Gui type.
+   * * 此界面类型的大小.
+   */
+  val size: Int,
+  /**
+   * * The title of this Gui type.
+   * * 此界面类型的标题.
+   */
+  val title: String
 ) : Valuable<String> {
 
-    /**
-     * A chest inventory, with 54 slots of type CONTAINER.
-     */
-    CHEST_6(54, "Chest"),
-    /**
-     * A chest inventory, with 45 slots of type CONTAINER.
-     */
-    CHEST_5(45, "Chest"),
-    /**
-     * A chest inventory, with 36 slots of type CONTAINER.
-     */
-    CHEST_4(36, "Chest"),
-    /**
-     * A chest inventory, with 27 slots of type CONTAINER.
-     */
-    CHEST_3(27, "Chest"),
-    /**
-     * A chest inventory, with 18 slots of type CONTAINER.
-     */
-    CHEST_2(18, "Chest"),
-    /**
-     * A chest inventory, with 9 slots of type CONTAINER.
-     */
-    CHEST_1(9, "Chest"),
-    ;
+  /**
+   * A chest inventory, with 54 slots of type CONTAINER.
+   */
+  CHEST_6(54, "Chest"),
+  /**
+   * A chest inventory, with 45 slots of type CONTAINER.
+   */
+  CHEST_5(45, "Chest"),
+  /**
+   * A chest inventory, with 36 slots of type CONTAINER.
+   */
+  CHEST_4(36, "Chest"),
+  /**
+   * A chest inventory, with 27 slots of type CONTAINER.
+   */
+  CHEST_3(27, "Chest"),
+  /**
+   * A chest inventory, with 18 slots of type CONTAINER.
+   */
+  CHEST_2(18, "Chest"),
+  /**
+   * A chest inventory, with 9 slots of type CONTAINER.
+   */
+  CHEST_1(9, "Chest"),
+  ;
 
-    fun createInventory(owner: InventoryHolder?, title: String): Inventory {
-        return Bukkit.createInventory(owner, size, title)
-    }
+  fun createInventory(owner: InventoryHolder?, title: String): Inventory {
+    return Bukkit.createInventory(owner, size, title)
+  }
 
-    override val value: String
-        get() = name
+  override val value: String
+    get() = name
 }

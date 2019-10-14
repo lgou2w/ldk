@@ -28,12 +28,12 @@ package com.lgou2w.ldk.bukkit.attribute
  */
 interface Attributable {
 
-    /**
-     * * Get the attribute object from the given attribute type.
-     * * 从给定的属性类型获取属性对象.
-     *
-     * @param type Attribute type.
-     * @param type 属性类型.
-     */
-    fun getAttribute(type: AttributeType): Attribute
+  /**
+   * * Get the attribute object from the given attribute type.
+   * * 从给定的属性类型获取属性对象.
+   *
+   * @param type Attribute type.
+   * @param type 属性类型.
+   */
+  fun getAttribute(type: AttributeType): Attribute
 }

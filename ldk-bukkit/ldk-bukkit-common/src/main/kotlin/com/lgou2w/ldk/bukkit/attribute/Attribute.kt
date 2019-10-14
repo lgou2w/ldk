@@ -24,57 +24,57 @@ package com.lgou2w.ldk.bukkit.attribute
  */
 interface Attribute {
 
-    /**
-     * * Get the type of this attribute.
-     * * 获取此属性的类型.
-     *
-     * @see [AttributeType]
-     */
-    val type : AttributeType
+  /**
+   * * Get the type of this attribute.
+   * * 获取此属性的类型.
+   *
+   * @see [AttributeType]
+   */
+  val type : AttributeType
 
-    /**
-     * * Get the default value of this attribute.
-     * * 获取此属性的默认值
-     *
-     * @see [AttributeType.defValue]
-     */
-    val defValue : Double
+  /**
+   * * Get the default value of this attribute.
+   * * 获取此属性的默认值
+   *
+   * @see [AttributeType.defValue]
+   */
+  val defValue : Double
 
-    /**
-     * * Gets or sets the base value of this attribute.
-     * * 获取或设置此属性的基础值.
-     */
-    var baseValue : Double
+  /**
+   * * Gets or sets the base value of this attribute.
+   * * 获取或设置此属性的基础值.
+   */
+  var baseValue : Double
 
-    /**
-     * * Get the value of this attribute after all associated modifiers have been applied.
-     * * 在应用了所有关联的修改器后, 获取此属性的最终值.
-     */
-    val value : Double
+  /**
+   * * Get the value of this attribute after all associated modifiers have been applied.
+   * * 在应用了所有关联的修改器后, 获取此属性的最终值.
+   */
+  val value : Double
 
-    /**
-     * * Get all modifiers present on this attribute.
-     * * 获取此属性的所有修改器.
-     */
-    val modifiers : Collection<AttributeModifier>
+  /**
+   * * Get all modifiers present on this attribute.
+   * * 获取此属性的所有修改器.
+   */
+  val modifiers : Collection<AttributeModifier>
 
-    /**
-     * * Add a modifier to this attribute.
-     * * 添加一个修改器到此属性.
-     *
-     * @param modifier Modifier.
-     * @param modifier 修改器.
-     * @see [AttributeModifier]
-     */
-    fun addModifier(modifier: AttributeModifier)
+  /**
+   * * Add a modifier to this attribute.
+   * * 添加一个修改器到此属性.
+   *
+   * @param modifier Modifier.
+   * @param modifier 修改器.
+   * @see [AttributeModifier]
+   */
+  fun addModifier(modifier: AttributeModifier)
 
-    /**
-     * * Remove a modifier from this attribute.
-     * * 从此属性删除一个修改器.
-     *
-     * @param modifier Modifier.
-     * @param modifier 修改器.
-     * @see [AttributeModifier]
-     */
-    fun removeModifier(modifier: AttributeModifier)
+  /**
+   * * Remove a modifier from this attribute.
+   * * 从此属性删除一个修改器.
+   *
+   * @param modifier Modifier.
+   * @param modifier 修改器.
+   * @see [AttributeModifier]
+   */
+  fun removeModifier(modifier: AttributeModifier)
 }

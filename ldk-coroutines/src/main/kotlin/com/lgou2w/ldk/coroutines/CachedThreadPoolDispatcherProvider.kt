@@ -29,18 +29,18 @@ import java.util.concurrent.atomic.AtomicInteger
  * @since LDK 0.1.8-rc
  */
 class CachedThreadPoolDispatcherProvider(
-        private val threadName: String
+  private val threadName: String
 ) : DispatcherProvider {
 
-    private val threadNo = AtomicInteger()
-    private val createPoolThread : (Runnable) -> Thread = { r ->
-        Thread(r, threadName + "-" + threadNo.incrementAndGet())
-    }
+  private val threadNo = AtomicInteger()
+  private val createPoolThread : (Runnable) -> Thread = { r ->
+    Thread(r, threadName + "-" + threadNo.incrementAndGet())
+  }
 
-    override val dispatcher : ExecutorCoroutineDispatcher
-            = Executors.newCachedThreadPool(createPoolThread).asCoroutineDispatcher()
+  override val dispatcher : ExecutorCoroutineDispatcher
+    = Executors.newCachedThreadPool(createPoolThread).asCoroutineDispatcher()
 
-    override fun close() {
-        dispatcher.close()
-    }
+  override fun close() {
+    dispatcher.close()
+  }
 }

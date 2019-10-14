@@ -27,54 +27,54 @@ import java.util.Arrays
  * @author lgou2w
  */
 abstract class CommandExecutorBase(
-        final override val reference: Any,
-        final override val name: String,
-        final override val aliases: Array<out String>,
-        final override val permission: Array<out String>?,
-        final override val permissionDefault: PermissionDefault?,
-        final override val sorted: Int?,
-        final override val isPlayable: Boolean,
-        final override val parameters: Array<out CommandExecutor.Parameter>
+  final override val reference: Any,
+  final override val name: String,
+  final override val aliases: Array<out String>,
+  final override val permission: Array<out String>?,
+  final override val permissionDefault: PermissionDefault?,
+  final override val sorted: Int?,
+  final override val isPlayable: Boolean,
+  final override val parameters: Array<out CommandExecutor.Parameter>
 ) : CommandExecutor {
 
-    /**
-     * * The length of the parameter of this executor.
-     * * 此执行器的参数长度.
-     */
-    val length = parameters.size
-    /**
-     * * The maximum parameter length of this executor.
-     * * 此执行器的最大参数长度.
-     */
-    val max = length
-    /**
-     * * The minimum parameter length of this executor.
-     * * 此执行器的最小参数长度.
-     */
-    val min = max - parameters.count(CommandExecutor.Parameter::canNullable)
+  /**
+   * * The length of the parameter of this executor.
+   * * 此执行器的参数长度.
+   */
+  val length = parameters.size
+  /**
+   * * The maximum parameter length of this executor.
+   * * 此执行器的最大参数长度.
+   */
+  val max = length
+  /**
+   * * The minimum parameter length of this executor.
+   * * 此执行器的最小参数长度.
+   */
+  val min = max - parameters.count(CommandExecutor.Parameter::canNullable)
 
-    override var description: String? = null
+  override var description: String? = null
 
-    override fun hashCode(): Int {
-        var result = reference.hashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + Arrays.hashCode(aliases)
-        result = 31 * result + Arrays.hashCode(permission)
-        result = 31 * result + isPlayable.hashCode()
-        result = 31 * result + Arrays.hashCode(parameters)
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = reference.hashCode()
+    result = 31 * result + name.hashCode()
+    result = 31 * result + Arrays.hashCode(aliases)
+    result = 31 * result + Arrays.hashCode(permission)
+    result = 31 * result + isPlayable.hashCode()
+    result = 31 * result + Arrays.hashCode(parameters)
+    return result
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is CommandExecutorBase)
-            return reference == other.reference &&
-                   name == other.name &&
-                   Arrays.equals(aliases, other.aliases) &&
-                   Arrays.equals(permission, other.permission) &&
-                   isPlayable == other.isPlayable &&
-                   Arrays.equals(parameters, other.parameters)
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is CommandExecutorBase)
+      return reference == other.reference &&
+        name == other.name &&
+        Arrays.equals(aliases, other.aliases) &&
+        Arrays.equals(permission, other.permission) &&
+        isPlayable == other.isPlayable &&
+        Arrays.equals(parameters, other.parameters)
+    return false
+  }
 }

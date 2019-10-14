@@ -29,16 +29,16 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CommandRoot(
-        /**
-         * * The command name of this command root.
-         * * 此命令根的命令名称.
-         */
-        val value: String,
-        /**
-         * * The command alias for this command root.
-         * * 此命令根的命令别名.
-         */
-        val aliases: Array<String> = []
+  /**
+   * * The command name of this command root.
+   * * 此命令根的命令名称.
+   */
+  val value: String,
+  /**
+   * * The command alias for this command root.
+   * * 此命令根的命令别名.
+   */
+  val aliases: Array<String> = []
 )
 
 /**
@@ -50,26 +50,26 @@ annotation class CommandRoot(
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Description(
-        /**
-         * * This command root command prefix message.
-         * * 此命令根的命令前缀消息.
-         */
-        val prefix: String = "",
-        /**
-         * * The command description information of this command root.
-         * * 此命令根的命令描述信息.
-         */
-        val description: String = "",
-        /**
-         * * The command usage of this command root.
-         * * 此命令根的命令用法.
-         */
-        val usage: String = "",
-        /**
-         * * The command fallback prefix for this command root.
-         * * 此命令根的命令后备前缀.
-         */
-        val fallbackPrefix: String = ""
+  /**
+   * * This command root command prefix message.
+   * * 此命令根的命令前缀消息.
+   */
+  val prefix: String = "",
+  /**
+   * * The command description information of this command root.
+   * * 此命令根的命令描述信息.
+   */
+  val description: String = "",
+  /**
+   * * The command usage of this command root.
+   * * 此命令根的命令用法.
+   */
+  val usage: String = "",
+  /**
+   * * The command fallback prefix for this command root.
+   * * 此命令根的命令后备前缀.
+   */
+  val fallbackPrefix: String = ""
 )
 
 /**
@@ -80,16 +80,16 @@ annotation class Description(
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Command(
-        /**
-         * * The command name of this command executor.
-         * * 此命令执行器的命令名称.
-         */
-        val value: String,
-        /**
-         * * The command alias for this command executor.
-         * * 此命令执行器的命令别名.
-         */
-        val aliases: Array<String> = []
+  /**
+   * * The command name of this command executor.
+   * * 此命令执行器的命令名称.
+   */
+  val value: String,
+  /**
+   * * The command alias for this command executor.
+   * * 此命令执行器的命令别名.
+   */
+  val aliases: Array<String> = []
 )
 
 /**
@@ -100,11 +100,11 @@ annotation class Command(
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CommandDescription(
-        /**
-         * * The command description of this command executor.
-         * * 此命令执行器的命令描述.
-         */
-        val value: String
+  /**
+   * * The command description of this command executor.
+   * * 此命令执行器的命令描述.
+   */
+  val value: String
 )
 
 /**
@@ -115,11 +115,11 @@ annotation class CommandDescription(
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Permission(
-        /**
-         * * The permissions of this command root or command executor.
-         * * 此命令根或命令执行器的权限.
-         */
-        vararg val values: String
+  /**
+   * * The permissions of this command root or command executor.
+   * * 此命令根或命令执行器的权限.
+   */
+  vararg val values: String
 )
 
 /**
@@ -131,11 +131,11 @@ annotation class Permission(
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class PermissionDefaultValue(
-        /**
-         * * The permission default value of this command root or command executor.
-         * * 此命令根或命令执行器的权限默认值.
-         */
-        val value: PermissionDefault
+  /**
+   * * The permission default value of this command root or command executor.
+   * * 此命令根或命令执行器的权限默认值.
+   */
+  val value: PermissionDefault
 )
 
 /**
@@ -148,20 +148,21 @@ annotation class PermissionDefaultValue(
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Sorted(
-        /**
-         * * The sort index of this command root or command executor.
-         * * 此命令根或命令执行器的排序索引.
-         */
-        val value: Int
+  /**
+   * * The sort index of this command root or command executor.
+   * * 此命令根或命令执行器的排序索引.
+   */
+  val value: Int
 )
 
-/**
- * @see [PlayerOnly]
- */
-@Target(AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.RUNTIME)
-@Deprecated("RENAME", replaceWith = ReplaceWith("PlayerOnly"))
-annotation class Playable
+// Removed since LDK 0.1.9
+///**
+// * @see [PlayerOnly]
+// */
+//@Target(AnnotationTarget.FUNCTION)
+//@Retention(AnnotationRetention.RUNTIME)
+//@Deprecated("RENAME", replaceWith = ReplaceWith("PlayerOnly"))
+//annotation class Playable
 
 /**
  * ## PlayerOnly (仅限玩家)
@@ -184,11 +185,11 @@ annotation class PlayerOnly
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Parameter(
-        /**
-         * * The custom name value for this command executor parameter.
-         * * 此命令执行器参数的自定义名称值.
-         */
-        val value: String
+  /**
+   * * The custom name value for this command executor parameter.
+   * * 此命令执行器参数的自定义名称值.
+   */
+  val value: String
 )
 
 /**
@@ -202,11 +203,11 @@ annotation class Parameter(
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Optional(
-        /**
-         * * Indicates the default value of this command executor parameter.
-         * * 表示此命令执行器参数的默认值.
-         */
-        val def: String = ""
+  /**
+   * * Indicates the default value of this command executor parameter.
+   * * 表示此命令执行器参数的默认值.
+   */
+  val def: String = ""
 )
 
 /**
@@ -238,9 +239,9 @@ annotation class Playername
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Vararg(
-        /**
-         * * Indicates the final expected type of this command executor variable length parameter.
-         * * 表示此命令执行器可变长度参数的最终预期类型.
-         */
-        val value: KClass<*>
+  /**
+   * * Indicates the final expected type of this command executor variable length parameter.
+   * * 表示此命令执行器可变长度参数的最终预期类型.
+   */
+  val value: KClass<*>
 )

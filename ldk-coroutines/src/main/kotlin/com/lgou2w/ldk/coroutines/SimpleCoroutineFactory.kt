@@ -24,5 +24,5 @@ package com.lgou2w.ldk.coroutines
  * @author lgou2w
  */
 class SimpleCoroutineFactory(
-        provider: DispatcherProvider
+  provider: DispatcherProvider
 ) : CoroutineFactoryBase(provider)

@@ -29,24 +29,24 @@ import java.util.concurrent.atomic.AtomicInteger
  * @since LDK 0.1.8-rc
  */
 class ScheduledThreadPoolDispatcherProvider(
-        private val threads: Int,
-        private val threadName: String
+  private val threads: Int,
+  private val threadName: String
 ) : DispatcherProvider {
 
-    init {
-        if (threads < 1)
-            throw IllegalArgumentException("The thread pool size must be greater than or equal to 1.")
-    }
+  init {
+    if (threads < 1)
+      throw IllegalArgumentException("The thread pool size must be greater than or equal to 1.")
+  }
 
-    private val threadNo = AtomicInteger()
-    private val createPoolThread : (Runnable) -> Thread = { r ->
-        Thread(r, if (threads == 1) threadName else threadName + "-" + threadNo.incrementAndGet())
-    }
+  private val threadNo = AtomicInteger()
+  private val createPoolThread : (Runnable) -> Thread = { r ->
+    Thread(r, if (threads == 1) threadName else threadName + "-" + threadNo.incrementAndGet())
+  }
 
-    override val dispatcher : ExecutorCoroutineDispatcher
-            = Executors.newScheduledThreadPool(threads, createPoolThread).asCoroutineDispatcher()
+  override val dispatcher : ExecutorCoroutineDispatcher
+    = Executors.newScheduledThreadPool(threads, createPoolThread).asCoroutineDispatcher()
 
-    override fun close() {
-        dispatcher.close()
-    }
+  override fun close() {
+    dispatcher.close()
+  }
 }

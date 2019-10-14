@@ -28,17 +28,17 @@ import java.util.concurrent.Executors
  * @author lgou2w
  */
 class SingleThreadDispatcherProvider(
-        private val threadName: String
+  private val threadName: String
 ) : DispatcherProvider {
 
-    private val createPoolThread : (Runnable) -> Thread = { r ->
-        Thread(r, threadName)
-    }
+  private val createPoolThread : (Runnable) -> Thread = { r ->
+    Thread(r, threadName)
+  }
 
-    override val dispatcher : ExecutorCoroutineDispatcher
-            = Executors.newSingleThreadExecutor(createPoolThread).asCoroutineDispatcher()
+  override val dispatcher : ExecutorCoroutineDispatcher
+    = Executors.newSingleThreadExecutor(createPoolThread).asCoroutineDispatcher()
 
-    override fun close() {
-        dispatcher.close()
-    }
+  override fun close() {
+    dispatcher.close()
+  }
 }

@@ -28,28 +28,28 @@ import com.lgou2w.ldk.common.Valuable
  */
 enum class Generation : Valuable<Int> {
 
-    /**
-     * * Book written into a book-and-quill. Can be copied. (Default value)
-     * * 书与笔写成的成书. 可以复制. (默认值)
-     */
-    ORIGINAL,
-    /**
-     * * Book that was copied from an original. Can be copied.
-     * * 从原件复制的书. 可以复制.
-     */
-    COPY_OF_ORIGINAL,
-    /**
-     * * Book that was copied from a copy of an original. Can't be copied.
-     * * 从原件副本复制的书. 无法复制.
-     */
-    COPY_OF_COPY,
-    /**
-     * * Unused; unobtainable by players. Can't be copied.
-     * * 没用过; 玩家无法获得. 无法复制.
-     */
-    TATTERED,
-    ;
+  /**
+   * * Book written into a book-and-quill. Can be copied. (Default value)
+   * * 书与笔写成的成书. 可以复制. (默认值)
+   */
+  ORIGINAL,
+  /**
+   * * Book that was copied from an original. Can be copied.
+   * * 从原件复制的书. 可以复制.
+   */
+  COPY_OF_ORIGINAL,
+  /**
+   * * Book that was copied from a copy of an original. Can't be copied.
+   * * 从原件副本复制的书. 无法复制.
+   */
+  COPY_OF_COPY,
+  /**
+   * * Unused; unobtainable by players. Can't be copied.
+   * * 没用过; 玩家无法获得. 无法复制.
+   */
+  TATTERED,
+  ;
 
-    override val value : Int
-        get() = ordinal
+  override val value : Int
+    get() = ordinal
 }

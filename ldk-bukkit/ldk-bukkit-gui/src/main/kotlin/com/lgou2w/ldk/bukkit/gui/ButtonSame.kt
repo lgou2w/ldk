@@ -27,21 +27,21 @@ import org.bukkit.inventory.ItemStack
  */
 interface ButtonSame : Button {
 
-    /**
-     * * The indexed array value of this button.
-     * * 此按钮的索引数组值.
-     */
-    val indexes : IntArray
+  /**
+   * * The indexed array value of this button.
+   * * 此按钮的索引数组值.
+   */
+  val indexes : IntArray
 
-    /**
-     * * A list of indexed item stacks for this button.
-     * * 此按钮的索引物品栈列表.
-     */
-    val stacks : List<ItemStack?>
+  /**
+   * * A list of indexed item stacks for this button.
+   * * 此按钮的索引物品栈列表.
+   */
+  val stacks : List<ItemStack?>
 
-    /**
-     * * Get the same type from the given [index].
-     * * 从给定的索引 [index] 获取是否为相同类型.
-     */
-    fun isSame(index: Int): Boolean
+  /**
+   * * Get the same type from the given [index].
+   * * 从给定的索引 [index] 获取是否为相同类型.
+   */
+  fun isSame(index: Int): Boolean
 }
