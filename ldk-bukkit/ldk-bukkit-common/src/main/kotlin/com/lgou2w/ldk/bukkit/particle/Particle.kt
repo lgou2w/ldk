@@ -130,21 +130,12 @@ enum class Particle(
   @API(Level.Minecraft_V1_14) FALLING_LAVA(55, "falling_lava", "falling_lava"),
   @API(Level.Minecraft_V1_14) LANDING_LAVA(56, "landing_lava", "landing_lava"),
   @API(Level.Minecraft_V1_14) FALLING_WATER(57, "falling_water", "falling_water"),
-  ;
-    @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
-    @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
-    @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
-    @API(Level.Minecraft_V1_14) COMPOSTER(53, "composter", "composter"),
-    @API(Level.Minecraft_V1_14) FLASH(54, "flash", "flash"),
-    @API(Level.Minecraft_V1_14) FALLING_LAVA(55, "falling_lava", "falling_lava"),
-    @API(Level.Minecraft_V1_14) LANDING_LAVA(56, "landing_lava", "landing_lava"),
-    @API(Level.Minecraft_V1_14) FALLING_WATER(57, "falling_water", "falling_water"),
 
-    @Draft @Deprecated("Minecraft 1.15 Draft") DRIPPING_HONEY(58, "dripping_honey", "dripping_honey"),
-    @Draft @Deprecated("Minecraft 1.15 Draft") FALLING_HONEY(59, "falling_honey", "falling_honey"),
-    @Draft @Deprecated("Minecraft 1.15 Draft") LANDING_HONEY(60, "landing_honey", "landing_honey"),
-    @Draft @Deprecated("Minecraft 1.15 Draft") FALLING_NECTAR(61, "falling_nectar", "falling_nectar"),
-    ;
+  @Draft @Deprecated("Minecraft 1.15 Draft") DRIPPING_HONEY(58, "dripping_honey", "dripping_honey"),
+  @Draft @Deprecated("Minecraft 1.15 Draft") FALLING_HONEY(59, "falling_honey", "falling_honey"),
+  @Draft @Deprecated("Minecraft 1.15 Draft") LANDING_HONEY(60, "landing_honey", "landing_honey"),
+  @Draft @Deprecated("Minecraft 1.15 Draft") FALLING_NECTAR(61, "falling_nectar", "falling_nectar"),
+  ;
 
   constructor(
     legacy: String,
