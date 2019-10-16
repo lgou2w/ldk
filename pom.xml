@@ -101,6 +101,7 @@
     <module>ldk-security</module>
     <module>ldk-sql</module>
     <module>ldk-exposed</module>
+    <module>ldk-plugin</module>
     <module>ldk-bukkit</module>
   </modules>
 
