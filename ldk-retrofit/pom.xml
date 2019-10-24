@@ -29,6 +29,13 @@
   <artifactId>ldk-retrofit</artifactId>
 
   <dependencies>
+    <!-- ldk-common -->
+    <dependency>
+      <groupId>com.lgou2w</groupId>
+      <artifactId>ldk-common</artifactId>
+      <version>0.1.9-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
     <!-- Retrofit -->
     <dependency>
       <groupId>com.squareup.retrofit2</groupId>

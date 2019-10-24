@@ -28,4 +28,14 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ldk-i18n</artifactId>
 
+  <dependencies>
+    <!-- ldk-common -->
+    <dependency>
+      <groupId>com.lgou2w</groupId>
+      <artifactId>ldk-common</artifactId>
+      <version>0.1.9-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
 </project>
