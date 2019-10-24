@@ -111,10 +111,10 @@ The `Maven` or `Gradle` dependency for the version tag can be found at [https://
 ```xml
 <!-- if you need use snapshot version, add sonatype repo -->
 <repositories>
-  <repostory>
+  <repository>
     <id>sonatype-repo</id>
     <url>https://oss.sonatype.org/content/groups/public/</url>
-  </repostory>
+  </repository>
 </repositories>
 
 <!-- Add your dependencies, and more -->

@@ -111,10 +111,10 @@ Retrofit，ASM，Eventbus，插件 API，Bukkit 的协程、扩展和运行时�
 ```xml
 <!-- 如果你需要使用快照版本，请添加 sonatype repo 仓库 -->
 <repositories>
-  <repostory>
+  <repository>
     <id>sonatype-repo</id>
     <url>https://oss.sonatype.org/content/groups/public/</url>
-  </repostory>
+  </repository>
 </repositories>
 
 <!-- 添加你的依赖项，以及更多 -->
