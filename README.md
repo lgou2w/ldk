@@ -24,7 +24,7 @@
 * A multi-platform lgou2w development kit.
     
 Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's chat component and nbt library、Coroutines、Tools、Utility、Package、
-Retrofit、ASM、Eventbus、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
+Retrofit、ASM、Eventbus、Plugin API、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
 Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
 * Wiki
@@ -62,6 +62,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
         * [`ldk-sql-sqlite`](/ldk-sql/ldk-sql-sqlite)
         * [`ldk-sql-h2`](/ldk-sql/ldk-sql-h2)
     * [`ldk-exposed`](/ldk-exposed)
+    * [`ldk-plugin`](/ldk-plugin)
     * [`ldk-bukkit`](/ldk-bukkit)
         * [`ldk-bukkit-version`](/ldk-bukkit/ldk-bukkit-version)
         * [`ldk-bukkit-reflect`](/ldk-bukkit/ldk-bukkit-reflect)
@@ -108,6 +109,15 @@ The `Maven` or `Gradle` dependency for the version tag can be found at [https://
 
 * Maven
 ```xml
+<!-- if you need use snapshot version, add sonatype repo -->
+<repositories>
+  <repostory>
+    <id>sonatype-repo</id>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+  </repostory>
+</repositories>
+
+<!-- Add your dependencies, and more -->
 <dependency>
     <groupId>com.lgou2w</groupId>
     <artifactId>${module}</artifactId>
@@ -118,6 +128,12 @@ The `Maven` or `Gradle` dependency for the version tag can be found at [https://
 
 * Gradle
 ```groovy
+// if you need use snapshot version, add sonatype repo
+repositories {
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+} 
+
+// Add your dependencies, and more
 dependencies {
     compile 'com.lgou2w:${module}:${version}'
 }

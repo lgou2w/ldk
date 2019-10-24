@@ -24,7 +24,7 @@
 * 一个多平台的 lgou2w 开发套件.
 
 多模块，多平台，低耦合，依赖库，Minecraft 的聊天组件和 NBT 库，协程，工具，实用程序，包装，
-Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
+Retrofit，ASM，Eventbus，插件 API，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
 集成的多模块多平台 lgou2w 开发套件。`LDK`
 
 * Wiki
@@ -62,6 +62,7 @@ Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开
         * [`ldk-sql-sqlite`](/ldk-sql/ldk-sql-sqlite)
         * [`ldk-sql-h2`](/ldk-sql/ldk-sql-h2)
     * [`ldk-exposed`](/ldk-exposed)
+    * [`ldk-plugin`](/ldk-plugin)
     * [`ldk-bukkit`](/ldk-bukkit)
         * [`ldk-bukkit-version`](/ldk-bukkit/ldk-bukkit-version)
         * [`ldk-bukkit-reflect`](/ldk-bukkit/ldk-bukkit-reflect)
@@ -104,10 +105,19 @@ Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开
 
 可以在 [https://search.maven.org](https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*) 找到版本标记的 `Maven` 或 `Gradle` 依赖项.
 
-> 模块 ldk-bukkit-plugin 的 Bukkit 运行时分发在 [releases](https://github.com/lgou2w/ldk/releases) 中.
+> 模块 ldk-bukkit-plugin 的 Bukkit 插件运行时分发在 [releases](https://github.com/lgou2w/ldk/releases) 中.
 
 * Maven
 ```xml
+<!-- 如果你需要使用快照版本，请添加 sonatype repo 仓库 -->
+<repositories>
+  <repostory>
+    <id>sonatype-repo</id>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+  </repostory>
+</repositories>
+
+<!-- 添加你的依赖项，以及更多 -->
 <dependency>
     <groupId>com.lgou2w</groupId>
     <artifactId>${module}</artifactId>
@@ -118,6 +128,12 @@ Retrofit，ASM，Eventbus，Bukkit 的协程、扩展和运行时等。快速开
 
 * Gradle
 ```groovy
+// 如果你需要使用快照版本，请添加 sonatype repo 仓库
+repositories {
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+} 
+
+// 添加你的依赖项，以及更多
 dependencies {
     compile 'com.lgou2w:${module}:${version}'
 }
