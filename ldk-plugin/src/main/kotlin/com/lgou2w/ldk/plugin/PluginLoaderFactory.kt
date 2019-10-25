@@ -22,7 +22,5 @@ interface PluginLoaderFactory {
 
   val loader : PluginLoader
 
-  val metadataReader : PluginMetadataReader
-
   fun isValidPlugin(file: File): Boolean
 }

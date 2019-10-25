@@ -16,8 +16,8 @@
 
 package com.lgou2w.ldk.plugin
 
+import org.slf4j.Logger
 import java.io.File
-import java.util.logging.Logger
 
 interface Plugin {
 

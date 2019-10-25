@@ -16,8 +16,9 @@
 
 package com.lgou2w.ldk.plugin
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.logging.Logger
 
 abstract class JavaPlugin : PluginBase {
 
@@ -61,7 +62,7 @@ abstract class JavaPlugin : PluginBase {
     this.mDataFolder = dataFolder
     this.mMetadata = metadata
     this.mClassLoader = classLoader
-    this.mLogger = Logger.getLogger(metadata.name)
+    this.mLogger = LoggerFactory.getLogger(metadata.name)
   }
 
   override val dataFolder: File

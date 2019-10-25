@@ -19,9 +19,7 @@ package com.lgou2w.ldk.plugin
 import java.io.File
 import java.util.regex.Pattern
 
-class JavaPluginLoaderFactory(
-  override val metadataReader: PluginMetadataReader
-) : PluginLoaderFactory {
+class JavaPluginLoaderFactory : PluginLoaderFactory {
 
   private val pattern = Pattern.compile("\\.jar$")
 

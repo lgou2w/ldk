@@ -16,17 +16,46 @@
 
 package com.lgou2w.ldk.plugin
 
+import com.lgou2w.ldk.common.notNull
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.logging.Level
-import java.util.logging.Logger
 
 class SimplePluginManager(
-  private val factory: PluginLoaderFactory
+  private val factory: PluginLoaderFactory,
+  private val metadataReader: PluginMetadataReader
 ): PluginManager {
+
+  companion object {
+
+    @JvmStatic fun builder() = Builder()
+
+    class Builder internal constructor() {
+
+      private var factory : PluginLoaderFactory? = null
+      private var metadataReader : PluginMetadataReader? = null
+
+      fun loaderFactory(factory: PluginLoaderFactory): Builder {
+        this.factory = factory
+        return this
+      }
+
+      fun metadataReader(metadataReader: PluginMetadataReader): Builder {
+        this.metadataReader = metadataReader
+        return this
+      }
+
+      fun build(): SimplePluginManager {
+        val factory = this.factory.notNull("Plugin loader factory has not been initialized")
+        val metadataReader = this.metadataReader.notNull("Plugin metadata reader has not been initialized")
+        return SimplePluginManager(factory, metadataReader)
+      }
+    }
+  }
 
   private val mPlugins : MutableList<Plugin> = ArrayList()
   private val mLookupNames : MutableMap<String, Plugin> = HashMap()
-  private val logger = Logger.getLogger(SimplePluginManager::class.java.simpleName)
+  private val logger : Logger = LoggerFactory.getLogger(SimplePluginManager::class.java)
 
   override val loader : PluginLoader
     get() = factory.loader
@@ -43,7 +72,7 @@ class SimplePluginManager(
   override fun loadPlugin(file: File): Plugin? {
     if (!factory.isValidPlugin(file))
       return null
-    val plugin = factory.loader.loadPlugin(file, factory.metadataReader)
+    val plugin = factory.loader.loadPlugin(file, metadataReader)
     mPlugins.add(plugin)
     mLookupNames[plugin.name] = plugin
     return plugin
@@ -57,7 +86,7 @@ class SimplePluginManager(
       val plugin = try {
         loadPlugin(file)
       } catch (e: Exception) {
-        logger.log(Level.SEVERE, "Could not load plugin '${file.path}' in folder '${dir.path}'", e)
+        logger.error("Could not load plugin '${file.path}' in folder '${dir.path}'", e)
         null
       } ?: continue
       plugins.add(plugin)
@@ -91,7 +120,7 @@ class SimplePluginManager(
     if (!plugin.isEnabled) try {
       plugin.loader.enablePlugin(plugin)
     } catch (e: Exception) {
-      logger.log(Level.SEVERE,
+      logger.error(
         "Error occurred (in the plugin loader) while enabling ${plugin.metadata.fullName} (Is it up to date?)", e)
     }
   }
@@ -100,7 +129,7 @@ class SimplePluginManager(
     if (plugin.isEnabled) try {
       plugin.loader.disablePlugin(plugin)
     } catch (e: Exception) {
-      logger.log(Level.SEVERE,
+      logger.error(
         "Error occurred (in the plugin loader) while disabling ${plugin.metadata.fullName} (Is it up to date?)", e)
     }
   }
