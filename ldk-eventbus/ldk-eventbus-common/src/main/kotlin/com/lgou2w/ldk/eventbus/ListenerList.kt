@@ -51,6 +51,7 @@ import java.util.function.Supplier
 
 /**
  * @author Mouse
+ * @since LDK 0.1.9
  */
 class ListenerList(val eventType: Class<*>) {
 

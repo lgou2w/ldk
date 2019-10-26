@@ -49,6 +49,7 @@ package com.lgou2w.ldk.eventbus
 
 /**
  * @author Mouse
+ * @since LDK 0.1.9
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)

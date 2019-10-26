@@ -19,6 +19,10 @@ package com.lgou2w.ldk.plugin
 import java.io.IOException
 import java.util.jar.JarFile
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 interface PluginMetadataReader {
 
   val metadataName : String

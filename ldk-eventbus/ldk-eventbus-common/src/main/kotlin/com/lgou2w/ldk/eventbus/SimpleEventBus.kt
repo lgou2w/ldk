@@ -56,6 +56,7 @@ import java.util.function.Consumer
 
 /**
  * @author Mouse
+ * @since LDK 0.1.9
  */
 class SimpleEventBus(
   private val eventExceptionHandler: EventExceptionHandler,

@@ -19,6 +19,10 @@ package com.lgou2w.ldk.plugin
 import org.slf4j.Logger
 import java.io.File
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 interface Plugin {
 
   val dataFolder : File

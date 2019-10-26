@@ -19,6 +19,10 @@ package com.lgou2w.ldk.plugin
 import java.io.File
 import java.util.regex.Pattern
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 class JavaPluginLoaderFactory : PluginLoaderFactory {
 
   private val pattern = Pattern.compile("\\.jar$")

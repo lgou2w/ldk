@@ -16,6 +16,10 @@
 
 package com.lgou2w.ldk.plugin
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 abstract class PluginBase : Plugin {
 
   final override val name : String

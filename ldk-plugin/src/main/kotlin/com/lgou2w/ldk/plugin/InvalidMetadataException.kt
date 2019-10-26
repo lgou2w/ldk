@@ -16,6 +16,10 @@
 
 package com.lgou2w.ldk.plugin
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 class InvalidMetadataException : Exception {
 
   constructor() : super()

@@ -22,6 +22,10 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.jar.JarFile
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 class JavaPluginLoader : PluginLoader {
 
   private val classes : MutableMap<String, Class<*>> = ConcurrentHashMap()

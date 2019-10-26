@@ -22,6 +22,10 @@ import java.net.MalformedURLException
 import java.net.URLClassLoader
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 class JavaPluginClassLoader
 @Throws(InvalidPluginException::class, MalformedURLException::class)
 constructor(

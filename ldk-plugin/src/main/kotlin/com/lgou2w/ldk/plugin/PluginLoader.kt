@@ -18,6 +18,10 @@ package com.lgou2w.ldk.plugin
 
 import java.io.File
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 interface PluginLoader {
 
   @Throws(InvalidPluginException::class)

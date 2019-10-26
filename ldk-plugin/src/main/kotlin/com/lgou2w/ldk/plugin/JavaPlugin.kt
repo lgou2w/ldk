@@ -20,6 +20,10 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 abstract class JavaPlugin : PluginBase {
 
   private lateinit var mFile : File

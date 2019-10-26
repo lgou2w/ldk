@@ -52,6 +52,7 @@ import java.lang.reflect.Type
 
 /**
  * @author Mouse
+ * @since LDK 0.1.9
  */
 class RegisteredListener {
 

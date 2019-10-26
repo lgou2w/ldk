@@ -19,6 +19,10 @@ package com.lgou2w.ldk.plugin
 import java.util.Properties
 import java.util.jar.JarFile
 
+/**
+ * @author lgou2w
+ * @since LDK 0.1.9
+ */
 class PropertiesMetadataReader : PluginMetadataReader {
 
   override val metadataName = "plugin.properties"

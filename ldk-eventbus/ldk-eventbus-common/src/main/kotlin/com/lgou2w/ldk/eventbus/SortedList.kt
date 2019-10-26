@@ -52,6 +52,7 @@ import java.util.function.Supplier
 
 /**
  * @author Mouse
+ * @since LDK 0.1.9
  */
 class SortedList<E> private constructor(
   private val list: MutableList<E>,
