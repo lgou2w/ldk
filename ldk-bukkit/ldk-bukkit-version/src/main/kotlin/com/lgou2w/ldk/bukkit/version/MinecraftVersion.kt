@@ -62,7 +62,7 @@ class MinecraftVersion(
     @JvmField val V1_15 = MinecraftVersion(1, 15, 0)
 
     @JvmStatic
-    private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC:?\\s([a-zA-Z0-9\\-.\\\\\\s]+).*\\)")
+    private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC:?\\s([a-zA-Z0-9\\-.\\s]+).*\\)")
 
     /**
      * * Get the current version of the Minecraft for the Bukkit server.

@@ -770,7 +770,7 @@ class NBTTagCompound : NBTBase<MutableMap<String, NBTBase<*>>>, MutableMap<Strin
   }
 
   companion object {
-    private val LIST_PATH = Pattern.compile("^(?<key>.*)\\[(?<idx>\\w+)]$") // e.g.: Enchantments[0]
+    private val LIST_PATH = Pattern.compile("^(?<key>.*)\\[(?<idx>\\d+)]$") // e.g.: Enchantments[0]
   }
 
   //
