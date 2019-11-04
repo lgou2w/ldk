@@ -22,21 +22,21 @@ import org.junit.Test
 
 class ChatComponentTextTest {
 
-    @Test fun `ChatComponentText - test`() {
-        val component = ChatComponentText()
-        component.text shouldEqual ""
-        component.text = "abc"
-        component.text shouldEqual "abc"
-        val component2 = ChatComponentText(component)
-        component2.text shouldEqual component.text
-        component2.equals(component) shouldEqual true
-        component2.equals(null) shouldEqual false
-        component2.setText("cba")
-        component2.equals(component) shouldEqual false
-        component2.equals(component2) shouldEqual true
-        component2.equals(ChatComponentText("cba")) shouldEqual true
-        component2.hashCode() shouldNotEqual component.hashCode()
-        component2.style.setBold(true)
-        component2.equals(ChatComponentText("cba")) shouldEqual false
-    }
+  @Test fun `ChatComponentText - test`() {
+    val component = ChatComponentText()
+    component.text shouldEqual ""
+    component.text = "abc"
+    component.text shouldEqual "abc"
+    val component2 = ChatComponentText(component)
+    component2.text shouldEqual component.text
+    component2.equals(component) shouldEqual true
+    component2.equals(null) shouldEqual false
+    component2.setText("cba")
+    component2.equals(component) shouldEqual false
+    component2.equals(component2) shouldEqual true
+    component2.equals(ChatComponentText("cba")) shouldEqual true
+    component2.hashCode() shouldNotEqual component.hashCode()
+    component2.style.setBold(true)
+    component2.equals(ChatComponentText("cba")) shouldEqual false
+  }
 }

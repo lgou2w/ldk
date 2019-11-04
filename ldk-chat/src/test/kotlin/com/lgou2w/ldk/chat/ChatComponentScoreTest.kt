@@ -24,31 +24,31 @@ import org.junit.Test
 
 class ChatComponentScoreTest {
 
-    @Test fun `ChatComponentScore - test`() {
-        val ccs = ChatComponentScore("key", "obj")
-        ccs.name shouldEqual "key"
-        ccs.name = "key2"
-        ccs.name shouldEqual "key2"
-        ccs.setName("key2").name shouldEqual "key2"
-        ccs.hashCode() shouldBeGreaterThan 1
-        ccs.equals(ccs) shouldEqual true
-        ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual true
-        ccs.equals(ChatComponentScore("key", "obj")) shouldEqual false
-        ccs.equals(null) shouldEqual false
-        ccs.objective shouldEqual "obj"
-        ccs.objective = "object"
-        ccs.setObjective("object").objective shouldEqual "object"
-        ccs.value shouldEqual null
-        ccs.value = "value"
-        ccs.setValue("value").value shouldEqual "value"
-        ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual false
-        ccs.equals(ChatComponentScore("key2", "object", "v")) shouldEqual false
-        ccs.equals(ChatComponentScore("key2", "object", "value")) shouldEqual true
-        ccs.style.color = ChatColor.RED
-        ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual false
-        ccs.toJson() shouldContain "key2"
-        ccs.toString() shouldNotEqual null
-        ccs.value = null
-        (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentScore).name shouldEqual "key2"
-    }
+  @Test fun `ChatComponentScore - test`() {
+    val ccs = ChatComponentScore("key", "obj")
+    ccs.name shouldEqual "key"
+    ccs.name = "key2"
+    ccs.name shouldEqual "key2"
+    ccs.setName("key2").name shouldEqual "key2"
+    ccs.hashCode() shouldBeGreaterThan 1
+    ccs.equals(ccs) shouldEqual true
+    ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual true
+    ccs.equals(ChatComponentScore("key", "obj")) shouldEqual false
+    ccs.equals(null) shouldEqual false
+    ccs.objective shouldEqual "obj"
+    ccs.objective = "object"
+    ccs.setObjective("object").objective shouldEqual "object"
+    ccs.value shouldEqual null
+    ccs.value = "value"
+    ccs.setValue("value").value shouldEqual "value"
+    ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual false
+    ccs.equals(ChatComponentScore("key2", "object", "v")) shouldEqual false
+    ccs.equals(ChatComponentScore("key2", "object", "value")) shouldEqual true
+    ccs.style.color = ChatColor.RED
+    ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual false
+    ccs.toJson() shouldContain "key2"
+    ccs.toString() shouldNotEqual null
+    ccs.value = null
+    (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentScore).name shouldEqual "key2"
+  }
 }

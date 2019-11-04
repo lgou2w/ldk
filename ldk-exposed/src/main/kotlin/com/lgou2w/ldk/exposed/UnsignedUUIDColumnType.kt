@@ -28,25 +28,25 @@ import java.util.UUID
  * @since LDK 0.1.8-rc
  */
 class UnsignedUUIDColumnType @JvmOverloads constructor(
-        nullable: Boolean = false
+  nullable: Boolean = false
 ) : ColumnType(nullable) {
 
-    override fun sqlType(): String = "VARCHAR(32)" // unsigned uuid length is 32
-    override fun notNullValueToDB(value: Any): Any = uuidToString(valueToUUID(value))
-    override fun valueFromDB(value: Any): Any = valueToUUID(value)
+  override fun sqlType(): String = "VARCHAR(32)" // unsigned uuid length is 32
+  override fun notNullValueToDB(value: Any): Any = uuidToString(valueToUUID(value))
+  override fun valueFromDB(value: Any): Any = valueToUUID(value)
 
-    companion object {
-        private fun valueToUUID(value: Any): UUID {
-            return when (value) {
-                is UUID -> value
-                is String -> stringToUUID(value)
-                else -> error("Unexpected value of type UUID: ${value.javaClass.canonicalName}")
-            }
-        }
-        private fun uuidToString(value: UUID): String
-                = value.toString().replace("-", "")
-        private fun stringToUUID(value: String): UUID
-                = UUID.fromString(
-                value.replace(Regex("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})"), "\$1-\$2-\$3-\$4-\$5"))
+  companion object {
+    private fun valueToUUID(value: Any): UUID {
+      return when (value) {
+        is UUID -> value
+        is String -> stringToUUID(value)
+        else -> error("Unexpected value of type UUID: ${value.javaClass.canonicalName}")
+      }
     }
+    private fun uuidToString(value: UUID): String
+      = value.toString().replace("-", "")
+    private fun stringToUUID(value: String): UUID
+      = UUID.fromString(
+      value.replace(Regex("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})"), "\$1-\$2-\$3-\$4-\$5"))
+  }
 }

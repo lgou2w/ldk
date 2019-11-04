@@ -32,33 +32,33 @@ import org.bukkit.inventory.ItemStack
  */
 interface Button {
 
-    /**
-     * * The Gui object for this button.
-     * * 此按钮的 Gui 对象.
-     */
-    val parent : Gui
+  /**
+   * * The Gui object for this button.
+   * * 此按钮的 Gui 对象.
+   */
+  val parent : Gui
 
-    /**
-     * * The index value of this button.
-     * * 此按钮的索引值.
-     */
-    val index : Int
+  /**
+   * * The index value of this button.
+   * * 此按钮的索引值.
+   */
+  val index : Int
 
-    /**
-     * * An item stack object representing this button.
-     * * 表示此按钮的物品栈对象.
-     */
-    var stack : ItemStack?
+  /**
+   * * An item stack object representing this button.
+   * * 表示此按钮的物品栈对象.
+   */
+  var stack : ItemStack?
 
-    /**
-     * * Indicates the callback after this button is clicked.
-     * * 表示此按钮被点击后的回调.
-     */
-    var onClicked : Consumer<ButtonEvent>?
+  /**
+   * * Indicates the callback after this button is clicked.
+   * * 表示此按钮被点击后的回调.
+   */
+  var onClicked : Consumer<ButtonEvent>?
 
-    /**
-     * * If the [stack] is not `null`, modify the [stack] with the given item builder [modifier].
-     * * 如果此物品栈 [stack] 不为 `null`. 则用给定的物品构建者修改器 [modifier] 修改此物品栈.
-     */
-    fun stackModify(modifier: Applicator<ItemBuilder>)
+  /**
+   * * If the [stack] is not `null`, modify the [stack] with the given item builder [modifier].
+   * * 如果此物品栈 [stack] 不为 `null`. 则用给定的物品构建者修改器 [modifier] 修改此物品栈.
+   */
+  fun stackModify(modifier: Applicator<ItemBuilder>)
 }

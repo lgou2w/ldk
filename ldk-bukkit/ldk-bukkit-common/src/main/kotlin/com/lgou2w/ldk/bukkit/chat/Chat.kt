@@ -31,7 +31,7 @@ import org.bukkit.inventory.ItemStack
  * @see [ChatFactory.toNMS]
  */
 fun ChatSerializer.toNMS(component: ChatComponent): Any
-        = ChatFactory.toNMS(component)
+  = ChatFactory.toNMS(component)
 
 /**
  * * Convert the given `NMS` chat object to an implementation of the [ChatComponent] wrapper.
@@ -43,7 +43,7 @@ fun ChatSerializer.toNMS(component: ChatComponent): Any
  */
 @Throws(IllegalArgumentException::class)
 fun ChatSerializer.fromNMS(icbc: Any): ChatComponent
-        = ChatFactory.fromNMS(icbc)
+  = ChatFactory.fromNMS(icbc)
 
 /**
  * * Sends the given chat component to the player with the given [action].
@@ -53,7 +53,7 @@ fun ChatSerializer.fromNMS(icbc: Any): ChatComponent
  */
 @JvmOverloads
 fun ChatComponent.send(player: Player, action: ChatAction = ChatAction.CHAT)
-        = ChatFactory.sendChat(player, this, action)
+  = ChatFactory.sendChat(player, this, action)
 
 /**
  * * Sends the given chat component to the player with the given [action].
@@ -64,7 +64,7 @@ fun ChatComponent.send(player: Player, action: ChatAction = ChatAction.CHAT)
  */
 @JvmOverloads
 fun ChatComponent.sendTo(players: Array<Player>, action: ChatAction = ChatAction.CHAT)
-        = ChatFactory.sendChatTo(players, this, action)
+  = ChatFactory.sendChatTo(players, this, action)
 
 /**
  * * Send the given chat component to all online players with the given [action].
@@ -75,7 +75,7 @@ fun ChatComponent.sendTo(players: Array<Player>, action: ChatAction = ChatAction
  */
 @JvmOverloads
 fun ChatComponent.sendToAll(action: ChatAction = ChatAction.CHAT)
-        = ChatFactory.sendChatToAll(this, action)
+  = ChatFactory.sendChatToAll(this, action)
 
 /**
  * * Display the given item stack [itemStack] to the fancy chat component.
@@ -86,7 +86,7 @@ fun ChatComponent.sendToAll(action: ChatAction = ChatAction.CHAT)
  * @see [ChatFactory.tooltipItem]
  */
 fun ChatComponentFancy.tooltipItem(itemStack: ItemStack): ChatComponentFancy
-        = ChatFactory.tooltipItem(this, itemStack)
+  = ChatFactory.tooltipItem(this, itemStack)
 
 /**
  * * Send a title chat message to the given player [player].
@@ -101,7 +101,7 @@ fun ChatComponentFancy.tooltipItem(itemStack: ItemStack): ChatComponentFancy
  */
 @JvmOverloads
 fun ChatComponent.sendTitle(player: Player, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitle(player, this, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitle(player, this, fadeIn, stay, fadeOut)
 
 /**
  * * Send a title chat message to the given player [players].
@@ -117,7 +117,7 @@ fun ChatComponent.sendTitle(player: Player, fadeIn: Int = 10, stay: Int = 70, fa
  */
 @JvmOverloads
 fun ChatComponent.sendTitleTo(players: Array<Player>, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitleTo(players, this, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitleTo(players, this, fadeIn, stay, fadeOut)
 
 /**
  * * Send a title chat message to all online players.
@@ -133,7 +133,7 @@ fun ChatComponent.sendTitleTo(players: Array<Player>, fadeIn: Int = 10, stay: In
  */
 @JvmOverloads
 fun ChatComponent.sendTitleToAll(fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitleToAll(this, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitleToAll(this, fadeIn, stay, fadeOut)
 
 /**
  * * Send a title chat message to the given player [player].
@@ -150,7 +150,7 @@ fun ChatComponent.sendTitleToAll(fadeIn: Int = 10, stay: Int = 70, fadeOut: Int 
  */
 @JvmOverloads
 fun ChatComponent.sendTitle(player: Player, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitle(player, this, subTitle, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitle(player, this, subTitle, fadeIn, stay, fadeOut)
 
 /**
  * * Send a title chat message to the given player [players].
@@ -168,7 +168,7 @@ fun ChatComponent.sendTitle(player: Player, subTitle: ChatComponent?, fadeIn: In
  */
 @JvmOverloads
 fun ChatComponent.sendTitleTo(players: Array<Player>, subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitleTo(players, this, subTitle, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitleTo(players, this, subTitle, fadeIn, stay, fadeOut)
 
 /**
  * * Send a title chat message to all online players.
@@ -186,7 +186,7 @@ fun ChatComponent.sendTitleTo(players: Array<Player>, subTitle: ChatComponent?, 
  */
 @JvmOverloads
 fun ChatComponent.sendTitleToAll(subTitle: ChatComponent?, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitleToAll(this, subTitle, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitleToAll(this, subTitle, fadeIn, stay, fadeOut)
 
 /**
  * * Send a sub title chat message to the given player [player].
@@ -201,7 +201,7 @@ fun ChatComponent.sendTitleToAll(subTitle: ChatComponent?, fadeIn: Int = 10, sta
  */
 @JvmOverloads
 fun ChatComponent.sendTitleSub(player: Player, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitle(player, ChatComponentText(""), this, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitle(player, ChatComponentText(""), this, fadeIn, stay, fadeOut)
 
 /**
  * * Send a sub title chat message to the given player [players].
@@ -217,7 +217,7 @@ fun ChatComponent.sendTitleSub(player: Player, fadeIn: Int = 10, stay: Int = 70,
  */
 @JvmOverloads
 fun ChatComponent.sendTitleSubTo(players: Array<Player>, fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitleTo(players, ChatComponentText(""), this, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitleTo(players, ChatComponentText(""), this, fadeIn, stay, fadeOut)
 
 /**
  * * Send a sub title chat message to all online players.
@@ -233,4 +233,4 @@ fun ChatComponent.sendTitleSubTo(players: Array<Player>, fadeIn: Int = 10, stay:
  */
 @JvmOverloads
 fun ChatComponent.sendTitleSubToAll(fadeIn: Int = 10, stay: Int = 70, fadeOut: Int = 20)
-        = ChatFactory.sendTitleToAll(ChatComponentText(""), this, fadeIn, stay, fadeOut)
+  = ChatFactory.sendTitleToAll(ChatComponentText(""), this, fadeIn, stay, fadeOut)

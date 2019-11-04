@@ -31,16 +31,16 @@ import org.bukkit.inventory.ItemStack
  * @since LDK 0.1.8-rc
  */
 abstract class AnvilWindowEvent(
-        /**
-         * * Anvil window object for this event.
-         * * 此事件的铁砧窗口对象.
-         */
-        val anvilWindow: AnvilWindow,
-        /**
-         * * Player object for this event.
-         * * 此事件的玩家对象.
-         */
-        val player: Player
+  /**
+   * * Anvil window object for this event.
+   * * 此事件的铁砧窗口对象.
+   */
+  val anvilWindow: AnvilWindow,
+  /**
+   * * Player object for this event.
+   * * 此事件的玩家对象.
+   */
+  val player: Player
 )
 
 /**
@@ -52,8 +52,8 @@ abstract class AnvilWindowEvent(
  * @since LDK 0.1.8-rc
  */
 class AnvilWindowOpenEvent(
-        anvilWindow: AnvilWindow,
-        player: Player
+  anvilWindow: AnvilWindow,
+  player: Player
 ) : AnvilWindowEvent(anvilWindow, player)
 
 /**
@@ -65,8 +65,8 @@ class AnvilWindowOpenEvent(
  * @since LDK 0.1.8-rc
  */
 class AnvilWindowCloseEvent(
-        anvilWindow: AnvilWindow,
-        player: Player
+  anvilWindow: AnvilWindow,
+  player: Player
 ) : AnvilWindowEvent(anvilWindow, player)
 
 /**
@@ -79,24 +79,24 @@ class AnvilWindowCloseEvent(
  * @since LDK 0.1.8-rc
  */
 class AnvilWindowClickEvent(
-        anvilWindow: AnvilWindow,
-        player: Player,
-        /**
-         * * The anvil window of this event click on the slot.
-         * * 此事件的铁砧窗口点击槽位.
-         *
-         * @see [AnvilWindowSlot]
-         */
-        val slot: AnvilWindowSlot,
-        /**
-         * * The anvil window of this event click on the slot item stack.
-         * * 此事件的铁砧窗口点击槽位物品栈.
-         */
-        val clicked: ItemStack?
+  anvilWindow: AnvilWindow,
+  player: Player,
+  /**
+   * * The anvil window of this event click on the slot.
+   * * 此事件的铁砧窗口点击槽位.
+   *
+   * @see [AnvilWindowSlot]
+   */
+  val slot: AnvilWindowSlot,
+  /**
+   * * The anvil window of this event click on the slot item stack.
+   * * 此事件的铁砧窗口点击槽位物品栈.
+   */
+  val clicked: ItemStack?
 ) : AnvilWindowEvent(anvilWindow, player), Cancellable {
-    private var cancel = false
-    override fun isCancelled(): Boolean = cancel
-    override fun setCancelled(cancel: Boolean) { this.cancel = cancel }
+  private var cancel = false
+  override fun isCancelled(): Boolean = cancel
+  override fun setCancelled(cancel: Boolean) { this.cancel = cancel }
 }
 
 /**
@@ -109,15 +109,15 @@ class AnvilWindowClickEvent(
  * @since LDK 0.1.8-rc
  */
 class AnvilWindowInputEvent(
-        anvilWindow: AnvilWindow,
-        player: Player,
-        /**
-         * * Indicates the text value inputted by this event anvil window.
-         * * 表示事件的铁砧窗口输入文本.
-         */
-        var value: String
+  anvilWindow: AnvilWindow,
+  player: Player,
+  /**
+   * * Indicates the text value inputted by this event anvil window.
+   * * 表示事件的铁砧窗口输入文本.
+   */
+  var value: String
 ) : AnvilWindowEvent(anvilWindow, player), Cancellable {
-    private var cancel = false
-    override fun isCancelled(): Boolean = cancel
-    override fun setCancelled(cancel: Boolean) { this.cancel = cancel }
+  private var cancel = false
+  override fun isCancelled(): Boolean = cancel
+  override fun setCancelled(cancel: Boolean) { this.cancel = cancel }
 }

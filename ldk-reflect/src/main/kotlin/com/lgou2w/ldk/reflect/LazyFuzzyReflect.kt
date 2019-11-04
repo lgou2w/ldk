@@ -28,24 +28,24 @@ import kotlin.reflect.KProperty
  * @author lgou2w
  */
 class LazyFuzzyReflect<T> @JvmOverloads constructor(
-        source: Class<*>,
-        isForceAccess: Boolean = false,
-        initializer: ApplicatorFunction<FuzzyReflect, T>
+  source: Class<*>,
+  isForceAccess: Boolean = false,
+  initializer: ApplicatorFunction<FuzzyReflect, T>
 ) : ReadOnlyProperty<Any, T>,
-        Lazy<T> {
+  Lazy<T> {
 
-    private val lazyObj = lazy { initializer(FuzzyReflect.of(source, isForceAccess)) }
+  private val lazyObj = lazy { initializer(FuzzyReflect.of(source, isForceAccess)) }
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T {
-        return lazyObj.getValue(thisRef, property)
-    }
+  override fun getValue(thisRef: Any, property: KProperty<*>): T {
+    return lazyObj.getValue(thisRef, property)
+  }
 
-    override val value : T
-        get() = lazyObj.value
+  override val value : T
+    get() = lazyObj.value
 
-    override fun isInitialized(): Boolean {
-        return lazyObj.isInitialized()
-    }
+  override fun isInitialized(): Boolean {
+    return lazyObj.isInitialized()
+  }
 }
 
 /**
@@ -54,9 +54,9 @@ class LazyFuzzyReflect<T> @JvmOverloads constructor(
  */
 @JvmOverloads
 fun <T> lazyFuzzyReflect(
-        source: Class<*>,
-        isForceAccess: Boolean = false,
-        initializer: ApplicatorFunction<FuzzyReflect, T>
+  source: Class<*>,
+  isForceAccess: Boolean = false,
+  initializer: ApplicatorFunction<FuzzyReflect, T>
 ) = LazyFuzzyReflect(source, isForceAccess, initializer)
 
 /**
@@ -65,7 +65,7 @@ fun <T> lazyFuzzyReflect(
  */
 @JvmOverloads
 fun <T> lazyFuzzyReflect(
-        source: Any,
-        isForceAccess: Boolean = false,
-        initializer: ApplicatorFunction<FuzzyReflect, T>
+  source: Any,
+  isForceAccess: Boolean = false,
+  initializer: ApplicatorFunction<FuzzyReflect, T>
 ) = LazyFuzzyReflect(source.javaClass, isForceAccess, initializer)

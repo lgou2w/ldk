@@ -28,45 +28,45 @@ import com.lgou2w.ldk.common.Valuable
  * @author lgou2w
  */
 enum class Slot(
-        /**
-         * * Enum type name.
-         * * 枚举类型名称.
-         */
-        val type: String
+  /**
+   * * Enum type name.
+   * * 枚举类型名称.
+   */
+  val type: String
 ) : Valuable<String> {
 
-    /**
-     * * Attribute Slot: Main hand
-     * * 属性部位: 主手
-     */
-    MAIN_HAND("mainhand"),
-    /**
-     * * Attribute Slot: Off hand
-     * * 属性部位: 副手
-     */
-    OFF_HAND("offhand"),
-    /**
-     * * Attribute Slot: Head
-     * * 属性部位: 头
-     */
-    HEAD("head"),
-    /**
-     * * Attribute Slot: Legs
-     * * 属性部位: 腿
-     */
-    LEGS("legs"),
-    /**
-     * * Attribute Slot: Chest
-     * * 属性部位: 胸
-     */
-    CHEST("chest"),
-    /**
-     * * Attribute Slot: Feet
-     * * 属性部位: 脚
-     */
-    FEET("feet"),
-    ;
+  /**
+   * * Attribute Slot: Main hand
+   * * 属性部位: 主手
+   */
+  MAIN_HAND("mainhand"),
+  /**
+   * * Attribute Slot: Off hand
+   * * 属性部位: 副手
+   */
+  OFF_HAND("offhand"),
+  /**
+   * * Attribute Slot: Head
+   * * 属性部位: 头
+   */
+  HEAD("head"),
+  /**
+   * * Attribute Slot: Legs
+   * * 属性部位: 腿
+   */
+  LEGS("legs"),
+  /**
+   * * Attribute Slot: Chest
+   * * 属性部位: 胸
+   */
+  CHEST("chest"),
+  /**
+   * * Attribute Slot: Feet
+   * * 属性部位: 脚
+   */
+  FEET("feet"),
+  ;
 
-    override val value : String
-        get() = type
+  override val value : String
+    get() = type
 }

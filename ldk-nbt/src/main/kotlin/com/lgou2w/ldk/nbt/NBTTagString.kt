@@ -27,43 +27,43 @@ import java.io.DataOutput
  */
 class NBTTagString : NBTBase<String> {
 
-    constructor(name: String = "", value: String = "") : super(name, value)
-    constructor(value: String = "") : super("", value)
-    constructor() : super("", "")
+  constructor(name: String = "", value: String = "") : super(name, value)
+  constructor(value: String = "") : super("", value)
+  constructor() : super("", "")
 
-    override val type = NBTType.TAG_STRING
+  override val type = NBTType.TAG_STRING
 
-    override fun read(input: DataInput) {
-        value = input.readUTF()
-    }
+  override fun read(input: DataInput) {
+    value = input.readUTF()
+  }
 
-    override fun write(output: DataOutput) {
-        output.writeUTF(value)
-    }
+  override fun write(output: DataOutput) {
+    output.writeUTF(value)
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (super.equals(other))
-            return value == (other as NBTBase<*>).value
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (super.equals(other))
+      return value == (other as NBTBase<*>).value
+    return false
+  }
 
-    override fun toString(): String {
-        return "NBTTagString(value=${value.replace("\"", "\\\"")})"
-    }
+  override fun toString(): String {
+    return "NBTTagString(value=${value.replace("\"", "\\\"")})"
+  }
 
-    override fun clone(): NBTTagString {
-        return NBTTagString(name, value)
-    }
+  override fun clone(): NBTTagString {
+    return NBTTagString(name, value)
+  }
 
-    override fun toJson(): String {
-        return "\"" + value.replace("\"", "\\\"") + "\""
-    }
+  override fun toJson(): String {
+    return "\"" + value.replace("\"", "\\\"") + "\""
+  }
 
-    override fun toMojangson(): String {
-        return "\"" + value.replace("\"", "\\\"") + "\""
-    }
+  override fun toMojangson(): String {
+    return "\"" + value.replace("\"", "\\\"") + "\""
+  }
 
-    override fun toMojangsonWithColor(): String {
-        return "\"§a" + value.replace("\"", "\\\"") + "§r\""
-    }
+  override fun toMojangsonWithColor(): String {
+    return "\"§a" + value.replace("\"", "\\\"") + "§r\""
+  }
 }

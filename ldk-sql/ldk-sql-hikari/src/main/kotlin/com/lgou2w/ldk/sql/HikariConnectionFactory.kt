@@ -32,84 +32,84 @@ import java.sql.SQLException
  * @author lgou2w
  */
 abstract class HikariConnectionFactory(
-        protected val configuration: HikariConfiguration
+  protected val configuration: HikariConfiguration
 ) : ConnectionFactory {
 
-    private var hikari : HikariDataSource? = null
+  private var hikari : HikariDataSource? = null
 
-    override val dataSource : HikariDataSource
-        get() = hikari.notNull("Connection factory has not been initialized.")
+  override val dataSource : HikariDataSource
+    get() = hikari.notNull("Connection factory has not been initialized.")
 
-    /**
-     * * implementation override
-     */
-    protected abstract val driverClass : String
+  /**
+   * * implementation override
+   */
+  protected abstract val driverClass : String
 
-    protected open fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
-        configuration.properties.forEach {
-            config.addDataSourceProperty(it.key, it.value)
-        }
+  protected open fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
+    configuration.properties.forEach {
+      config.addDataSourceProperty(it.key, it.value)
     }
+  }
 
-    protected open fun appendConfiguration(config: HikariConfig) {
-        val address = configuration.address.split(":")
-        val host = address[0]
-        val port = if (address.size > 1) address[1] else "3306"
-        config.dataSourceClassName = driverClass
-        config.addDataSourceProperty("serverName", host)
-        config.addDataSourceProperty("port", port)
-        config.addDataSourceProperty("databaseName", configuration.database)
-        config.username = configuration.username
-        config.password = configuration.password
-    }
+  protected open fun appendConfiguration(config: HikariConfig) {
+    val address = configuration.address.split(":")
+    val host = address[0]
+    val port = if (address.size > 1) address[1] else "3306"
+    config.dataSourceClassName = driverClass
+    config.addDataSourceProperty("serverName", host)
+    config.addDataSourceProperty("port", port)
+    config.addDataSourceProperty("databaseName", configuration.database)
+    config.username = configuration.username
+    config.password = configuration.password
+  }
 
-    override fun initialize() {
-        val config = HikariConfig()
-        config.poolName = configuration.poolName
-        appendConfiguration(config)
-        appendProperties(config, configuration)
-        config.maximumPoolSize = configuration.maxPoolSize
-        config.minimumIdle = configuration.minIdleConnections
-        config.maxLifetime = configuration.maxLifetime
-        config.connectionTimeout = configuration.connectionTimeout
-        config.initializationFailTimeout = -1L
-        hikari = HikariDataSource(config)
-    }
+  override fun initialize() {
+    val config = HikariConfig()
+    config.poolName = configuration.poolName
+    appendConfiguration(config)
+    appendProperties(config, configuration)
+    config.maximumPoolSize = configuration.maxPoolSize
+    config.minimumIdle = configuration.minIdleConnections
+    config.maxLifetime = configuration.maxLifetime
+    config.connectionTimeout = configuration.connectionTimeout
+    config.initializationFailTimeout = -1L
+    hikari = HikariDataSource(config)
+  }
 
-    override fun shutdown() {
-        if (hikari != null) {
-            hikari?.close()
-            hikari = null
-        }
+  override fun shutdown() {
+    if (hikari != null) {
+      hikari?.close()
+      hikari = null
     }
+  }
 
-    /**
-     * * Test if the connection factory session is available.
-     * * 测试连接工厂会话是否可用.
-     */
-    fun testSession(): HikariTestSession {
-        var success = true
-        val start = System.currentTimeMillis()
-        try {
-            val session = hikari!!.connection
-            try {
-                val statement = session.createStatement()
-                statement.execute("SELECT 1")
-            } finally {
-            }
-        } catch (e: SQLException) {
-            success = false
-        }
-        val end = System.currentTimeMillis() - start
-        return HikariTestSession(success, if (success) end else -1L)
+  /**
+   * * Test if the connection factory session is available.
+   * * 测试连接工厂会话是否可用.
+   */
+  fun testSession(): HikariTestSession {
+    var success = true
+    val start = System.currentTimeMillis()
+    try {
+      val session = hikari!!.connection
+      try {
+        val statement = session.createStatement()
+        statement.execute("SELECT 1")
+      } finally {
+      }
+    } catch (e: SQLException) {
+      success = false
     }
+    val end = System.currentTimeMillis() - start
+    return HikariTestSession(success, if (success) end else -1L)
+  }
 
-    override fun openSession(): Connection {
-        return hikari?.connection
-               ?: throw SQLException("Unable to get a connection from the pool.")
-    }
+  override fun openSession(): Connection {
+    return hikari?.connection
+      ?: throw SQLException("Unable to get a connection from the pool.")
+  }
 
-    override fun toString(): String {
-        return "ConnectionFactory(implementation=$implementationName, driver=$driverClass)"
-    }
+  override fun toString(): String {
+    return "ConnectionFactory(implementation=$implementationName, driver=$driverClass)"
+  }
 }

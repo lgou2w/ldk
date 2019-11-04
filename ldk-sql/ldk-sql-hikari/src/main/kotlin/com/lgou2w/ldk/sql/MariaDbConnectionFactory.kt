@@ -26,19 +26,19 @@ import com.zaxxer.hikari.HikariConfig
  * @author lgou2w
  */
 class MariaDbConnectionFactory(
-        configuration: HikariConfiguration
+  configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
-    override val implementationName : String = "MariaDB"
-    override val driverClass : String = "org.mariadb.jdbc.MariaDbDataSource"
+  override val implementationName : String = "MariaDB"
+  override val driverClass : String = "org.mariadb.jdbc.MariaDbDataSource"
 
-    override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
-        val entries = configuration.properties.entries
-        if (entries.isEmpty())
-            return
-        val properties = entries.asSequence()
-            .map { "${it.key}=${it.value}" }
-            .joinToString(separator = ";")
-        config.addDataSourceProperty("properties", properties)
-    }
+  override fun appendProperties(config: HikariConfig, configuration: HikariConfiguration) {
+    val entries = configuration.properties.entries
+    if (entries.isEmpty())
+      return
+    val properties = entries.asSequence()
+      .map { "${it.key}=${it.value}" }
+      .joinToString(separator = ";")
+    config.addDataSourceProperty("properties", properties)
+  }
 }

@@ -31,63 +31,63 @@ package com.lgou2w.ldk.chat
  * @param value 分数值.
  */
 class ChatComponentScore(
-        /**
-         * * Gets or sets the score name object for this chat component score.
-         * * 获取或设置此聊天组件分数的分数名对象.
-         */
-        var name: String,
-        /**
-         * * Gets or sets the score objective object for this chat component score.
-         * * 获取或设置此聊天组件分数的分数目标对象.
-         */
-        var objective: String,
-        /**
-         * * Gets or sets the score value object for this chat component score.
-         * * 获取或设置此聊天组件分数的分数值对象.
-         */
-        var value: String? = null
+  /**
+   * * Gets or sets the score name object for this chat component score.
+   * * 获取或设置此聊天组件分数的分数名对象.
+   */
+  var name: String,
+  /**
+   * * Gets or sets the score objective object for this chat component score.
+   * * 获取或设置此聊天组件分数的分数目标对象.
+   */
+  var objective: String,
+  /**
+   * * Gets or sets the score value object for this chat component score.
+   * * 获取或设置此聊天组件分数的分数值对象.
+   */
+  var value: String? = null
 ) : ChatComponentAbstract() {
 
-    /**
-     * @see [ChatComponentScore.name]
-     */
-    fun setName(name: String): ChatComponentScore {
-        this.name = name
-        return this
-    }
+  /**
+   * @see [ChatComponentScore.name]
+   */
+  fun setName(name: String): ChatComponentScore {
+    this.name = name
+    return this
+  }
 
-    /**
-     * @see [ChatComponentScore.objective]
-     */
-    fun setObjective(objective: String): ChatComponentScore {
-        this.objective = objective
-        return this
-    }
+  /**
+   * @see [ChatComponentScore.objective]
+   */
+  fun setObjective(objective: String): ChatComponentScore {
+    this.objective = objective
+    return this
+  }
 
-    /**
-     * @see [ChatComponentScore.value]
-     */
-    fun setValue(value: String?): ChatComponentScore {
-        this.value = value
-        return this
-    }
+  /**
+   * @see [ChatComponentScore.value]
+   */
+  fun setValue(value: String?): ChatComponentScore {
+    this.value = value
+    return this
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ChatComponentScore)
-            return super.equals(other) && name == other.name && objective == other.objective && value == other.value
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ChatComponentScore)
+      return super.equals(other) && name == other.name && objective == other.objective && value == other.value
+    return false
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + name.hashCode()
-        result = 31 * result + objective.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + name.hashCode()
+    result = 31 * result + objective.hashCode()
+    return result
+  }
 
-    override fun toString(): String {
-        return "ChatComponentScore(name='$name', objective='$objective', value=$value, style=$style, extras=$extras)"
-    }
+  override fun toString(): String {
+    return "ChatComponentScore(name='$name', objective='$objective', value=$value, style=$style, extras=$extras)"
+  }
 }

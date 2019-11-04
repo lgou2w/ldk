@@ -29,50 +29,50 @@ package com.lgou2w.ldk.chat
  * @param withs 参数.
  */
 class ChatComponentTranslation(
-        /**
-         * * Gets or sets the key object for this chat component translation.
-         * * 获取或设置此聊天组件翻译的键对象.
-         */
-        var key: String,
-        /**
-         * * Gets or sets the withs list object for this chat component translation.
-         * * 获取或设置此聊天组件翻译的参数列表对象.
-         */
-        var withs: MutableList<Any> = ArrayList()
+  /**
+   * * Gets or sets the key object for this chat component translation.
+   * * 获取或设置此聊天组件翻译的键对象.
+   */
+  var key: String,
+  /**
+   * * Gets or sets the withs list object for this chat component translation.
+   * * 获取或设置此聊天组件翻译的参数列表对象.
+   */
+  var withs: MutableList<Any> = ArrayList()
 ) : ChatComponentAbstract() {
 
-    /**
-     * @see [ChatComponentTranslation.key]
-     */
-    fun setKey(key: String): ChatComponentTranslation {
-        this.key = key
-        return this
-    }
+  /**
+   * @see [ChatComponentTranslation.key]
+   */
+  fun setKey(key: String): ChatComponentTranslation {
+    this.key = key
+    return this
+  }
 
-    /**
-     * @see [ChatComponentTranslation.withs]
-     */
-    fun addWiths(withs: Array<Any>): ChatComponentTranslation {
-        this.withs.addAll(withs)
-        return this
-    }
+  /**
+   * @see [ChatComponentTranslation.withs]
+   */
+  fun addWiths(withs: Array<Any>): ChatComponentTranslation {
+    this.withs.addAll(withs)
+    return this
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is ChatComponentTranslation)
-            return super.equals(other) && key == other.key && withs == other.withs
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ChatComponentTranslation)
+      return super.equals(other) && key == other.key && withs == other.withs
+    return false
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + key.hashCode()
-        result = 31 * result + withs.hashCode()
-        return result
-    }
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + key.hashCode()
+    result = 31 * result + withs.hashCode()
+    return result
+  }
 
-    override fun toString(): String {
-        return "ChatComponentTranslation(key='$key', withs=$withs, style=$style, extras=$extras)"
-    }
+  override fun toString(): String {
+    return "ChatComponentTranslation(key='$key', withs=$withs, style=$style, extras=$extras)"
+  }
 }

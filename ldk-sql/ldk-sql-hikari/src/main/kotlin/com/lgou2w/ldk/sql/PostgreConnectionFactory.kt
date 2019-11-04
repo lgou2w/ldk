@@ -26,21 +26,21 @@ import com.zaxxer.hikari.HikariConfig
  * @author lgou2w
  */
 class PostgreConnectionFactory(
-        configuration: HikariConfiguration
+  configuration: HikariConfiguration
 ) : HikariConnectionFactory(configuration) {
 
-    override val implementationName : String = "PostgreSQL"
-    override val driverClass : String = "org.postgresql.ds.PGSimpleDataSource"
+  override val implementationName : String = "PostgreSQL"
+  override val driverClass : String = "org.postgresql.ds.PGSimpleDataSource"
 
-    override fun appendConfiguration(config: HikariConfig) {
-        val address = configuration.address.split(":")
-        val host = address[0]
-        val port = if (address.size > 1) address[1] else "5432"
-        config.dataSourceClassName = driverClass
-        config.addDataSourceProperty("serverName", host)
-        config.addDataSourceProperty("portNumber", port)
-        config.addDataSourceProperty("databaseName", configuration.database)
-        config.addDataSourceProperty("username", configuration.username)
-        config.addDataSourceProperty("password", configuration.password)
-    }
+  override fun appendConfiguration(config: HikariConfig) {
+    val address = configuration.address.split(":")
+    val host = address[0]
+    val port = if (address.size > 1) address[1] else "5432"
+    config.dataSourceClassName = driverClass
+    config.addDataSourceProperty("serverName", host)
+    config.addDataSourceProperty("portNumber", port)
+    config.addDataSourceProperty("databaseName", configuration.database)
+    config.addDataSourceProperty("username", configuration.username)
+    config.addDataSourceProperty("password", configuration.password)
+  }
 }

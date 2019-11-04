@@ -23,20 +23,20 @@ import org.junit.Test
 
 class ChatComponentKeybindTest {
 
-    @Test fun `ChatComponentKeybind - test`() {
-        val cck = ChatComponentKeybind("ctrl")
-        cck.keybind shouldEqual "ctrl"
-        cck.keybind = "ctrl + shift"
-        cck.keybind shouldEqual "ctrl + shift"
-        cck.setKeybind("ctrl").keybind shouldEqual "ctrl"
-        cck.hashCode() shouldBeGreaterThan 1
-        cck.equals(cck) shouldEqual true
-        cck.equals(ChatComponentKeybind("ctrl")) shouldEqual true
-        cck.equals(ChatComponentKeybind("shift")) shouldEqual false
-        cck.equals(null) shouldEqual false
-        cck.style.color = ChatColor.RED
-        cck.equals(ChatComponentKeybind("ctrl")) shouldEqual false
-        cck.toJson() shouldContain "ctrl"
-        (ChatSerializer.fromJson(cck.toJson()) as ChatComponentKeybind).keybind shouldEqual "ctrl"
-    }
+  @Test fun `ChatComponentKeybind - test`() {
+    val cck = ChatComponentKeybind("ctrl")
+    cck.keybind shouldEqual "ctrl"
+    cck.keybind = "ctrl + shift"
+    cck.keybind shouldEqual "ctrl + shift"
+    cck.setKeybind("ctrl").keybind shouldEqual "ctrl"
+    cck.hashCode() shouldBeGreaterThan 1
+    cck.equals(cck) shouldEqual true
+    cck.equals(ChatComponentKeybind("ctrl")) shouldEqual true
+    cck.equals(ChatComponentKeybind("shift")) shouldEqual false
+    cck.equals(null) shouldEqual false
+    cck.style.color = ChatColor.RED
+    cck.equals(ChatComponentKeybind("ctrl")) shouldEqual false
+    cck.toJson() shouldContain "ctrl"
+    (ChatSerializer.fromJson(cck.toJson()) as ChatComponentKeybind).keybind shouldEqual "ctrl"
+  }
 }

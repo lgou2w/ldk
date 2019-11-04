@@ -31,42 +31,42 @@ import java.lang.reflect.Modifier
  */
 enum class Visibility {
 
-    PRIVATE,
-    PROTECTED,
-    PUBLIC,
-    STATIC,
-    FINAL,
-    SYNCHRONIZED,
-    VOLATILE,
-    TRANSIENT,
-    NATIVE,
-    INTERFACE,
-    ABSTRACT,
-    STRICT,
-    ;
+  PRIVATE,
+  PROTECTED,
+  PUBLIC,
+  STATIC,
+  FINAL,
+  SYNCHRONIZED,
+  VOLATILE,
+  TRANSIENT,
+  NATIVE,
+  INTERFACE,
+  ABSTRACT,
+  STRICT,
+  ;
 
-    /**
-     * * Gets whether this visibility is matched from the given accessible object.
-     * * 从给定的可访问对象获取是否匹配此可见性.
-     *
-     * @param accessible Accessible object
-     * @param accessible 可访问对象
-     */
-    fun <E> isMatches(accessible: E): Boolean where E : AccessibleObject, E : Member {
-        val modifiers = accessible.modifiers
-        return when (this) {
-            PRIVATE -> Modifier.isPrivate(modifiers)
-            PROTECTED -> Modifier.isProtected(modifiers)
-            PUBLIC -> Modifier.isPublic(modifiers)
-            STATIC -> Modifier.isStatic(modifiers)
-            FINAL -> Modifier.isFinal(modifiers)
-            SYNCHRONIZED -> Modifier.isSynchronized(modifiers)
-            VOLATILE -> Modifier.isVolatile(modifiers)
-            TRANSIENT -> Modifier.isTransient(modifiers)
-            NATIVE -> Modifier.isNative(modifiers)
-            INTERFACE -> Modifier.isInterface(modifiers)
-            ABSTRACT -> Modifier.isAbstract(modifiers)
-            STRICT -> Modifier.isStrict(modifiers)
-        }
+  /**
+   * * Gets whether this visibility is matched from the given accessible object.
+   * * 从给定的可访问对象获取是否匹配此可见性.
+   *
+   * @param accessible Accessible object
+   * @param accessible 可访问对象
+   */
+  fun <E> isMatches(accessible: E): Boolean where E : AccessibleObject, E : Member {
+    val modifiers = accessible.modifiers
+    return when (this) {
+      PRIVATE -> Modifier.isPrivate(modifiers)
+      PROTECTED -> Modifier.isProtected(modifiers)
+      PUBLIC -> Modifier.isPublic(modifiers)
+      STATIC -> Modifier.isStatic(modifiers)
+      FINAL -> Modifier.isFinal(modifiers)
+      SYNCHRONIZED -> Modifier.isSynchronized(modifiers)
+      VOLATILE -> Modifier.isVolatile(modifiers)
+      TRANSIENT -> Modifier.isTransient(modifiers)
+      NATIVE -> Modifier.isNative(modifiers)
+      INTERFACE -> Modifier.isInterface(modifiers)
+      ABSTRACT -> Modifier.isAbstract(modifiers)
+      STRICT -> Modifier.isStrict(modifiers)
     }
+  }
 }

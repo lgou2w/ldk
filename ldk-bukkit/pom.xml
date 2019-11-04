@@ -15,78 +15,77 @@
   ~ limitations under the License.
   -->
 <project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <artifactId>ldk</artifactId>
-        <groupId>com.lgou2w</groupId>
-        <version>0.1.8</version>
-    </parent>
+  <parent>
+    <artifactId>ldk</artifactId>
+    <groupId>com.lgou2w</groupId>
+    <version>0.1.9</version>
+  </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-bukkit</artifactId>
-    <packaging>pom</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ldk-bukkit</artifactId>
+  <packaging>pom</packaging>
 
-    <modules>
-        <module>ldk-bukkit-version</module> <!-- version -->
-        <module>ldk-bukkit-reflect</module> <!-- reflect -->
-        <module>ldk-bukkit-nbt</module> <!-- nbt -->
-        <module>ldk-bukkit-compatibility</module> <!-- compatibility -->
-        <module>ldk-bukkit-common</module> <!-- common -->
-        <module>ldk-bukkit-i18n</module> <!-- extended... -->
-        <module>ldk-bukkit-anvil</module>
-        <module>ldk-bukkit-cmd</module>
-        <module>ldk-bukkit-gui</module>
-        <module>ldk-bukkit-region</module>
-        <module>ldk-bukkit-depend</module>
-        <module>ldk-bukkit-depend-economy</module>
-        <module>ldk-bukkit-depend-placeholderapi</module>
-        <module>ldk-bukkit-depend-worldedit</module>
-        <module>ldk-bukkit-rx</module>
-        <module>ldk-bukkit-coroutines</module> <!-- coroutines -->
-        <module>ldk-bukkit-plugin</module> <!-- runtime -->
-    </modules>
+  <modules>
+    <module>ldk-bukkit-version</module> <!-- version -->
+    <module>ldk-bukkit-reflect</module> <!-- reflect -->
+    <module>ldk-bukkit-nbt</module> <!-- nbt -->
+    <module>ldk-bukkit-compatibility</module> <!-- compatibility -->
+    <module>ldk-bukkit-common</module> <!-- common -->
+    <module>ldk-bukkit-i18n</module> <!-- extended... -->
+    <module>ldk-bukkit-anvil</module>
+    <module>ldk-bukkit-cmd</module>
+    <module>ldk-bukkit-gui</module>
+    <module>ldk-bukkit-region</module>
+    <module>ldk-bukkit-depend</module>
+    <module>ldk-bukkit-depend-economy</module>
+    <module>ldk-bukkit-depend-placeholderapi</module>
+    <module>ldk-bukkit-depend-worldedit</module>
+    <module>ldk-bukkit-coroutines</module> <!-- coroutines -->
+    <module>ldk-bukkit-plugin</module> <!-- runtime -->
+  </modules>
 
-    <properties>
-        <bukkit.version>1.14.4-R0.1-SNAPSHOT</bukkit.version>
-    </properties>
+  <properties>
+    <bukkit.version>1.14.4-R0.1-SNAPSHOT</bukkit.version>
+  </properties>
 
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
-        </repository>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.md-5.net/content/groups/public/</url>
-        </repository>
-    </repositories>
+  <repositories>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
+    </repository>
+    <repository>
+      <id>bukkit-repo</id>
+      <url>http://repo.md-5.net/content/groups/public/</url>
+    </repository>
+  </repositories>
 
-    <dependencies>
-        <!-- Spigot -->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${bukkit.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Bukkit -->
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>${bukkit.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Maybe you need to build it yourself -->
-        <!-- CraftBukkit Dependency -->
-        <!--<dependency>-->
-        <!--<groupId>org.bukkit</groupId>-->
-        <!--<artifactId>craftbukkit</artifactId>-->
-        <!--<version>${bukkit.version}</version>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
-    </dependencies>
+  <dependencies>
+    <!-- Spigot -->
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>${bukkit.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Bukkit -->
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>${bukkit.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Maybe you need to build it yourself -->
+    <!-- CraftBukkit Dependency -->
+    <!--<dependency>-->
+    <!--<groupId>org.bukkit</groupId>-->
+    <!--<artifactId>craftbukkit</artifactId>-->
+    <!--<version>${bukkit.version}</version>-->
+    <!--<scope>provided</scope>-->
+    <!--</dependency>-->
+  </dependencies>
 
 </project>

@@ -25,52 +25,52 @@ package com.lgou2w.ldk.asm
  * @since LDK 0.1.7-rc2
  */
 abstract class ASMClassLoader private constructor(
-        parent: ClassLoader
+  parent: ClassLoader
 ) : ClassLoader(parent) {
 
-    /**
-     * * Define the given class [name] and bytecode [byteArray] as class.
-     * * 将给定的类名 [name] 和字节码 [byteArray] 定义为类.
-     */
-    abstract fun defineClass(name: String, byteArray: ByteArray): Class<*>
+  /**
+   * * Define the given class [name] and bytecode [byteArray] as class.
+   * * 将给定的类名 [name] 和字节码 [byteArray] 定义为类.
+   */
+  abstract fun defineClass(name: String, byteArray: ByteArray): Class<*>
 
-    /**
-     * * Defines the class name and bytecode key-value mapping [classes] as a class collection.
-     * * 将给定的类名和字节码的键值对映射 [classes] 定义为类集合.
-     *
-     * @see [ASMClassGenerator]
-     * @see [ASMClassGenerator.generate]
-     */
-    fun defineClasses(classes: Map<String, ByteArray>): List<Class<*>>
-            = classes.map { defineClass(it.key, it.value) }
+  /**
+   * * Defines the class name and bytecode key-value mapping [classes] as a class collection.
+   * * 将给定的类名和字节码的键值对映射 [classes] 定义为类集合.
+   *
+   * @see [ASMClassGenerator]
+   * @see [ASMClassGenerator.generate]
+   */
+  fun defineClasses(classes: Map<String, ByteArray>): List<Class<*>>
+    = classes.map { defineClass(it.key, it.value) }
 
-    companion object {
+  companion object {
 
-        @JvmStatic
-        private val instance by lazy {
-            object : ASMClassLoader(ASMClassLoader::class.java.classLoader) {
-                override fun defineClass(name: String, byteArray: ByteArray): Class<*>
-                        = defineClass(name, byteArray, 0, byteArray.size, ASMClassLoader::class.java.protectionDomain)
-            }
-        }
-
-        /**
-         * * Get the singleton object of the current bytecode class loader.
-         * * 获取当前字节码类加载器的单例对象.
-         */
-        @JvmStatic
-        fun ofInstance(): ASMClassLoader
-                = instance
-
-        /**
-         * * Create a bytecode class loader object from the given [classLoader].
-         * * 从给定的类加载器 [classLoader] 创建一个字节码类加载器对象.
-         */
-        @JvmStatic
-        fun ofClassLoader(classLoader: ClassLoader): ASMClassLoader
-                = object : ASMClassLoader(classLoader) {
-            override fun defineClass(name: String, byteArray: ByteArray): Class<*>
-                    = defineClass(name, byteArray, 0, byteArray.size, classLoader::class.java.protectionDomain)
-        }
+    @JvmStatic
+    private val instance by lazy {
+      object : ASMClassLoader(ASMClassLoader::class.java.classLoader) {
+        override fun defineClass(name: String, byteArray: ByteArray): Class<*>
+          = defineClass(name, byteArray, 0, byteArray.size, ASMClassLoader::class.java.protectionDomain)
+      }
     }
+
+    /**
+     * * Get the singleton object of the current bytecode class loader.
+     * * 获取当前字节码类加载器的单例对象.
+     */
+    @JvmStatic
+    fun ofInstance(): ASMClassLoader
+      = instance
+
+    /**
+     * * Create a bytecode class loader object from the given [classLoader].
+     * * 从给定的类加载器 [classLoader] 创建一个字节码类加载器对象.
+     */
+    @JvmStatic
+    fun ofClassLoader(classLoader: ClassLoader): ASMClassLoader
+      = object : ASMClassLoader(classLoader) {
+      override fun defineClass(name: String, byteArray: ByteArray): Class<*>
+        = defineClass(name, byteArray, 0, byteArray.size, classLoader::class.java.protectionDomain)
+    }
+  }
 }

@@ -15,34 +15,34 @@
   ~ limitations under the License.
   -->
 <project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <artifactId>ldk-bukkit</artifactId>
-        <groupId>com.lgou2w</groupId>
-        <version>0.1.8</version>
-    </parent>
+  <parent>
+    <artifactId>ldk-bukkit</artifactId>
+    <groupId>com.lgou2w</groupId>
+    <version>0.1.9</version>
+  </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>ldk-bukkit-anvil</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ldk-bukkit-anvil</artifactId>
 
-    <dependencies>
-        <!-- ldk-asm -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-asm</artifactId>
-            <version>0.1.8</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- ldk-bukkit-common -->
-        <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-bukkit-common</artifactId>
-            <version>0.1.8</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <!-- ldk-asm -->
+    <dependency>
+      <groupId>com.lgou2w</groupId>
+      <artifactId>ldk-asm</artifactId>
+      <version>0.1.9</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- ldk-bukkit-common -->
+    <dependency>
+      <groupId>com.lgou2w</groupId>
+      <artifactId>ldk-bukkit-common</artifactId>
+      <version>0.1.9</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 
 </project>

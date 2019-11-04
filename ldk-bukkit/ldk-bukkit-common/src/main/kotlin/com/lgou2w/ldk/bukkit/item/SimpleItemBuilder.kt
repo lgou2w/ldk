@@ -28,8 +28,8 @@ import org.bukkit.inventory.ItemStack
  */
 class SimpleItemBuilder : ItemBuilderBase {
 
-    constructor(itemStack: ItemStack) : super(itemStack)
+  constructor(itemStack: ItemStack) : super(itemStack)
 
-    @JvmOverloads
-    constructor(material: Material, count: Int = 1, durability: Int = 0) : super(material, count, durability)
+  @JvmOverloads
+  constructor(material: Material, count: Int = 1, durability: Int = 0) : super(material, count, durability)
 }

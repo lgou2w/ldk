@@ -34,92 +34,92 @@ import java.util.logging.Level
  */
 class LDKPlugin : PluginBase() {
 
-    companion object Constants {
-        const val NAME = com.lgou2w.ldk.common.Constants.LDK
-        const val PREFIX = "[$NAME] "
-        const val GITHUB = com.lgou2w.ldk.common.Constants.LDK_GITHUB
-    }
+  companion object Constants {
+    const val NAME = com.lgou2w.ldk.common.Constants.LDK
+    const val PREFIX = "[$NAME] "
+    const val GITHUB = com.lgou2w.ldk.common.Constants.LDK_GITHUB
+  }
 
-    private var updater : VersionUpdater? = null
+  private var updater : VersionUpdater? = null
 
-    override fun load() {
-    }
+  override fun load() {
+  }
 
-    override fun enable() {
-        val safeCurrent = try {
-            MinecraftBukkitVersion.CURRENT
-        } catch (e: Exception) {
-            null
-        }
-        if (safeCurrent == null || !safeCurrent.isOrLater(MinecraftBukkitVersion.V1_8_R1)) {
-            // Very sorry. Although can load LDK, it is not compatible with 1.7 and previous versions from the beginning of design.
-            logger.severe("-------- A lgou2w development kit of Bukkit -----")
-            logger.severe("  Very sorry. Although can load LDK, it is not compatible")
-            logger.severe("  with 1.7 and previous versions from the beginning of design.")
-            logger.severe("  Thank you for downloaded and trying this plugin.")
-            logger.severe("-------------")
-            server.pluginManager.disablePlugin(this)
-            return
-        }
-        logger.info("A lgou2w development kit of Bukkit.")
-        logger.info("Open source: $GITHUB")
-        logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${safeCurrent.version}")
-        updater = VersionUpdater(this)
-        updater?.firstCheck()
-        setupMetrics()
+  override fun enable() {
+    val safeCurrent = try {
+      MinecraftBukkitVersion.CURRENT
+    } catch (e: Exception) {
+      null
     }
+    if (safeCurrent == null || !safeCurrent.isOrLater(MinecraftBukkitVersion.V1_8_R1)) {
+      // Very sorry. Although can load LDK, it is not compatible with 1.7 and previous versions from the beginning of design.
+      logger.severe("-------- A lgou2w development kit of Bukkit -----")
+      logger.severe("  Very sorry. Although can load LDK, it is not compatible")
+      logger.severe("  with 1.7 and previous versions from the beginning of design.")
+      logger.severe("  Thank you for downloaded and trying this plugin.")
+      logger.severe("-------------")
+      server.pluginManager.disablePlugin(this)
+      return
+    }
+    logger.info("A lgou2w development kit of Bukkit.")
+    logger.info("Open source: $GITHUB")
+    logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${safeCurrent.version}")
+    updater = VersionUpdater(this)
+    updater?.firstCheck()
+    setupMetrics()
+  }
 
-    private fun setupMetrics() {
-        try {
-            Metrics(this).apply {
-                addCustomChart(Metrics.AdvancedPie("plugin_dependents") {
-                    val plugins = Bukkit.getPluginManager().plugins
-                    val hard = plugins.count { it.description.depend.contains(NAME) }
-                    val soft = plugins.count { it.description.softDepend.contains(NAME) }
-                    mapOf("Hard" to hard, "Soft" to soft)
-                })
-            }
-        } catch (e: Exception) {
-            logger.log(Level.WARNING, "Metrics stats service failed to load.", e)
-        }
+  private fun setupMetrics() {
+    try {
+      Metrics(this).apply {
+        addCustomChart(Metrics.AdvancedPie("plugin_dependents") {
+          val plugins = Bukkit.getPluginManager().plugins
+          val hard = plugins.count { it.description.depend.contains(NAME) }
+          val soft = plugins.count { it.description.softDepend.contains(NAME) }
+          mapOf("Hard" to hard, "Soft" to soft)
+        })
+      }
+    } catch (e: Exception) {
+      logger.log(Level.WARNING, "Metrics stats service failed to load.", e)
     }
+  }
 
-    override fun disable() {
-        updater = null
-    }
+  override fun disable() {
+    updater = null
+  }
 
-    override fun onCommand(
-            sender: CommandSender,
-            command: Command,
-            label: String,
-            args: Array<out String>
-    ): Boolean {
-        val first = args.firstOrNull()
-        return if (first == null || first.equals("help", true)) {
-            sender.sendMessage(arrayOf(
-                    "&7-------- &aA lgou2w development kit of Bukkit &7-----",
-                    "&6/ldk help &8- &7View command help.",
-                    "&6/ldk version &8- &7View current plugin version."
-            ).toColor())
-            true
-        } else if (first.equals("version", true)) {
-            updater?.pushRelease(sender)
-            true
-        } else {
-            false
-        }
+  override fun onCommand(
+    sender: CommandSender,
+    command: Command,
+    label: String,
+    args: Array<out String>
+  ): Boolean {
+    val first = args.firstOrNull()
+    return if (first == null || first.equals("help", true)) {
+      sender.sendMessage(arrayOf(
+        "&7-------- &aA lgou2w development kit of Bukkit &7-----",
+        "&6/ldk help &8- &7View command help.",
+        "&6/ldk version &8- &7View current plugin version."
+      ).toColor())
+      true
+    } else if (first.equals("version", true)) {
+      updater?.pushRelease(sender)
+      true
+    } else {
+      false
     }
+  }
 
-    override fun onTabComplete(
-            sender: CommandSender,
-            command: Command,
-            alias: String,
-            args: Array<out String>
-    ): List<String>? {
-        if (args.isEmpty())
-            return null
-        val lastWord = args.last()
-        val keyWords = arrayOf("help", "version").filter { it.startsWith(lastWord) }
-        return if (keyWords.isEmpty()) null else keyWords
-    }
+  override fun onTabComplete(
+    sender: CommandSender,
+    command: Command,
+    alias: String,
+    args: Array<out String>
+  ): List<String>? {
+    if (args.isEmpty())
+      return null
+    val lastWord = args.last()
+    val keyWords = arrayOf("help", "version").filter { it.startsWith(lastWord) }
+    return if (keyWords.isEmpty()) null else keyWords
+  }
 }

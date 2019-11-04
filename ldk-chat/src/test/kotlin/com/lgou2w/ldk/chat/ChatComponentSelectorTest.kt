@@ -24,21 +24,21 @@ import org.junit.Test
 
 class ChatComponentSelectorTest {
 
-    @Test fun `ChatComponentSelector - test`() {
-        val ccs = ChatComponentSelector("@p")
-        ccs.selector shouldEqual "@p"
-        ccs.selector = "@e"
-        ccs.selector shouldEqual "@e"
-        ccs.setSelector("@s").selector shouldEqual "@s"
-        ccs.hashCode() shouldBeGreaterThan 1
-        ccs.equals(ccs) shouldEqual true
-        ccs.equals(ChatComponentSelector("@s")) shouldEqual true
-        ccs.equals(ChatComponentSelector("@e")) shouldEqual false
-        ccs.equals(null) shouldEqual false
-        ccs.style.color = ChatColor.RED
-        ccs.equals(ChatComponentSelector("@s")) shouldEqual false
-        ccs.toJson() shouldContain "@s"
-        ccs.toString() shouldNotEqual null
-        (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentSelector).selector shouldEqual "@s"
-    }
+  @Test fun `ChatComponentSelector - test`() {
+    val ccs = ChatComponentSelector("@p")
+    ccs.selector shouldEqual "@p"
+    ccs.selector = "@e"
+    ccs.selector shouldEqual "@e"
+    ccs.setSelector("@s").selector shouldEqual "@s"
+    ccs.hashCode() shouldBeGreaterThan 1
+    ccs.equals(ccs) shouldEqual true
+    ccs.equals(ChatComponentSelector("@s")) shouldEqual true
+    ccs.equals(ChatComponentSelector("@e")) shouldEqual false
+    ccs.equals(null) shouldEqual false
+    ccs.style.color = ChatColor.RED
+    ccs.equals(ChatComponentSelector("@s")) shouldEqual false
+    ccs.toJson() shouldContain "@s"
+    ccs.toString() shouldNotEqual null
+    (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentSelector).selector shouldEqual "@s"
+  }
 }

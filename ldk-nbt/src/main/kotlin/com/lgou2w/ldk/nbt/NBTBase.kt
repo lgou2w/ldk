@@ -23,56 +23,56 @@ package com.lgou2w.ldk.nbt
  * @author lgou2w
  */
 abstract class NBTBase<T>(
-        override val name: String,
-        /**
-         * * The source object for this NBT tag value.
-         * * 此 NBT 标签值的源对象.
-         *
-         * @see [value]
-         */
-        protected var value0: T
+  override val name: String,
+  /**
+   * * The source object for this NBT tag value.
+   * * 此 NBT 标签值的源对象.
+   *
+   * @see [value]
+   */
+  protected var value0: T
 ) : NBT<T> {
 
-    override val typeId : Int
-        get() = type.id
+  override val typeId : Int
+    get() = type.id
 
-    override var value : T
-        get() = value0
-        set(value) { value0 = value }
+  override var value : T
+    get() = value0
+    set(value) { value0 = value }
 
-    override fun hashCode(): Int {
-        return typeId xor (value0?.hashCode() ?: 0)
-    }
+  override fun hashCode(): Int {
+    return typeId xor (value0?.hashCode() ?: 0)
+  }
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is NBTBase<*>)
-            return other.name == name && other.type == type
-        return false
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is NBTBase<*>)
+      return other.name == name && other.type == type
+    return false
+  }
 
-    override fun toJson(): String {
-        return value0.toString()
-    }
+  override fun toJson(): String {
+    return value0.toString()
+  }
 
-    override fun toMojangson(): String {
-        return value0.toString() + type.mojangsonSuffix
-    }
+  override fun toMojangson(): String {
+    return value0.toString() + type.mojangsonSuffix
+  }
 
-    override fun toMojangsonWithColor(): String {
-        return toMojangson()
-    }
+  override fun toMojangsonWithColor(): String {
+    return toMojangson()
+  }
 
-    abstract override fun toString(): String
+  abstract override fun toString(): String
 
-    public abstract override fun clone(): NBTBase<*>
+  public abstract override fun clone(): NBTBase<*>
 
-    @Throws(ClassCastException::class)
-    fun asCompound(): NBTTagCompound
-            = this as NBTTagCompound
+  @Throws(ClassCastException::class)
+  fun asCompound(): NBTTagCompound
+    = this as NBTTagCompound
 
-    @Throws(ClassCastException::class)
-    fun asList(): NBTTagList
-            = this as NBTTagList
+  @Throws(ClassCastException::class)
+  fun asList(): NBTTagList
+    = this as NBTTagList
 }

@@ -32,9 +32,9 @@ import kotlin.coroutines.CoroutineContext
  */
 interface DispatcherProvider : Closeable {
 
-    /**
-     * * The coroutine context object for this dispatcher provider.
-     * * 此调度程序提供者的协程上下文对象.
-     */
-    val dispatcher : CoroutineContext
+  /**
+   * * The coroutine context object for this dispatcher provider.
+   * * 此调度程序提供者的协程上下文对象.
+   */
+  val dispatcher : CoroutineContext
 }

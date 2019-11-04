@@ -28,67 +28,67 @@ import com.lgou2w.ldk.common.Valuable
  * @author lgou2w
  */
 data class PotionBase(
-        /**
-         * * The potion type of this potion.
-         * * 此药水的药水类型.
-         */
-        val type: PotionType,
-        /**
-         * * Indicate whether this potion is can upgraded.
-         * * 表示此药水是否可升级.
-         */
-        val isUpgraded: Boolean,
-        /**
-         * * Indicate whether this potion is can extended.
-         * * 表示此药水是否可延长.
-         */
-        val isExtended: Boolean
+  /**
+   * * The potion type of this potion.
+   * * 此药水的药水类型.
+   */
+  val type: PotionType,
+  /**
+   * * Indicate whether this potion is can upgraded.
+   * * 表示此药水是否可升级.
+   */
+  val isUpgraded: Boolean,
+  /**
+   * * Indicate whether this potion is can extended.
+   * * 表示此药水是否可延长.
+   */
+  val isExtended: Boolean
 ) : Valuable<String>,
-        Comparable<PotionBase> {
+  Comparable<PotionBase> {
 
-    init {
-        if (! (!isUpgraded || type.canUpgradable))
-            throw IllegalArgumentException("Potion Type $type is not upgradable.")
-        if (! (!isExtended || type.canExtendable))
-            throw IllegalArgumentException("Potion Type $type is not extendable.")
-        if (! (!isExtended || !isUpgraded))
-            throw IllegalArgumentException("Potion cannot be both extended and upgraded.")
+  init {
+    if (! (!isUpgraded || type.canUpgradable))
+      throw IllegalArgumentException("Potion Type $type is not upgradable.")
+    if (! (!isExtended || type.canExtendable))
+      throw IllegalArgumentException("Potion Type $type is not extendable.")
+    if (! (!isExtended || !isUpgraded))
+      throw IllegalArgumentException("Potion cannot be both extended and upgraded.")
+  }
+
+  override fun compareTo(other: PotionBase): Int {
+    return ComparisonChain.start()
+      .compare(type, other.type)
+      .compare(isUpgraded, other.isUpgraded)
+      .compare(isExtended, other.isExtended)
+      .result
+  }
+
+  override val value : String
+    get() = when {
+      isUpgraded -> PREFIX_UPGRADED + REPLACEMENT + type.value
+      isExtended -> PREFIX_EXTENDED + REPLACEMENT + type.value
+      else -> type.value
     }
 
-    override fun compareTo(other: PotionBase): Int {
-        return ComparisonChain.start()
-            .compare(type, other.type)
-            .compare(isUpgraded, other.isUpgraded)
-            .compare(isExtended, other.isExtended)
-            .result
+  companion object {
+
+    const val PREFIX_UPGRADED = "strong"
+    const val PREFIX_EXTENDED = "long"
+    const val REPLACEMENT = "_"
+
+    @JvmStatic
+    @Throws(IllegalArgumentException::class)
+    fun valueOf(value: String): PotionBase {
+      val isUpgraded = value.startsWith(PREFIX_UPGRADED)
+      val isExtended = value.startsWith(PREFIX_EXTENDED)
+      val replacement = REPLACEMENT.length
+      val type = when {
+        isUpgraded -> Enums.ofValuableNotNull(PotionType::class.java, value.substring(PREFIX_UPGRADED.length + replacement))
+        isExtended -> Enums.ofValuableNotNull(PotionType::class.java, value.substring(PREFIX_EXTENDED.length + replacement))
+        else -> PotionType.WATER
+      }
+      return if (type == PotionType.WATER) PotionBase(PotionType.WATER, isUpgraded = false, isExtended = false)
+      else PotionBase(type, isUpgraded, isExtended)
     }
-
-    override val value : String
-        get() = when {
-            isUpgraded -> PREFIX_UPGRADED + REPLACEMENT + type.value
-            isExtended -> PREFIX_EXTENDED + REPLACEMENT + type.value
-            else -> type.value
-        }
-
-    companion object {
-
-        const val PREFIX_UPGRADED = "strong"
-        const val PREFIX_EXTENDED = "long"
-        const val REPLACEMENT = "_"
-
-        @JvmStatic
-        @Throws(IllegalArgumentException::class)
-        fun valueOf(value: String): PotionBase {
-            val isUpgraded = value.startsWith(PREFIX_UPGRADED)
-            val isExtended = value.startsWith(PREFIX_EXTENDED)
-            val replacement = REPLACEMENT.length
-            val type = when {
-                isUpgraded -> Enums.ofValuableNotNull(PotionType::class.java, value.substring(PREFIX_UPGRADED.length + replacement))
-                isExtended -> Enums.ofValuableNotNull(PotionType::class.java, value.substring(PREFIX_EXTENDED.length + replacement))
-                else -> PotionType.WATER
-            }
-            return if (type == PotionType.WATER) PotionBase(PotionType.WATER, isUpgraded = false, isExtended = false)
-            else PotionBase(type, isUpgraded, isExtended)
-        }
-    }
+  }
 }

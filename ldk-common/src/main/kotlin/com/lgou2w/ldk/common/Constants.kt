@@ -23,25 +23,25 @@ package com.lgou2w.ldk.common
  */
 object Constants {
 
-    /**
-     * * The unique name of the ldk bukkit plugin.
-     */
-    const val LDK = "LDK"
+  /**
+   * * The unique name of the ldk bukkit plugin.
+   */
+  const val LDK = "LDK"
 
-    /**
-     * * Github open source link for ldk project.
-     */
-    const val LDK_GITHUB = "https://github.com/lgou2w/ldk"
+  /**
+   * * Github open source link for ldk project.
+   */
+  const val LDK_GITHUB = "https://github.com/lgou2w/ldk"
 
-    /**
-     * * Maven central repository link for ldk project.
-     * @since LDK 0.1.8-rc
-     */
-    const val LDK_MAVEN_REPOSITORY = "https://mvnrepository.com/artifact/com.lgou2w/ldk/latest"
+  /**
+   * * Maven central repository link for ldk project.
+   * @since LDK 0.1.8-rc
+   */
+  const val LDK_MAVEN_REPOSITORY = "https://mvnrepository.com/artifact/com.lgou2w/ldk/latest"
 
-    /**
-     * * Maven sonatype repository link for ldk project.
-     * @since LDK 0.1.8-rc
-     */
-    const val LDK_MAVEN_SONATYPE = "https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"
+  /**
+   * * Maven sonatype repository link for ldk project.
+   * @since LDK 0.1.8-rc
+   */
+  const val LDK_MAVEN_SONATYPE = "https://search.maven.org/search?q=g:com.lgou2w%20AND%20a:ldk*"
 }

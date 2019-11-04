@@ -33,18 +33,18 @@ import kotlin.reflect.KProperty
  * @author lgou2w
  */
 class LazyClass<T>(
-        initializer: Callable<Class<T>>
+  initializer: Callable<Class<T>>
 ) : ReadOnlyProperty<Any, Class<T>>,
-        Lazy<Class<T>> {
+  Lazy<Class<T>> {
 
-    private val lazyObj = lazy { initializer() }
+  private val lazyObj = lazy { initializer() }
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): Class<T>
-            = lazyObj.getValue(thisRef, property)
+  override fun getValue(thisRef: Any, property: KProperty<*>): Class<T>
+    = lazyObj.getValue(thisRef, property)
 
-    override val value: Class<T>
-        get() = lazyObj.value
+  override val value: Class<T>
+    get() = lazyObj.value
 
-    override fun isInitialized(): Boolean
-            = lazyObj.isInitialized()
+  override fun isInitialized(): Boolean
+    = lazyObj.isInitialized()
 }

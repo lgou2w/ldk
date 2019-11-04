@@ -28,25 +28,25 @@ import java.io.OutputStream
  */
 interface LanguageAdapter {
 
-    /**
-     * * The file extension of this language adapter.
-     * * 此语言适配器的文件扩展名.
-     */
-    val fileExtension : String
+  /**
+   * * The file extension of this language adapter.
+   * * 此语言适配器的文件扩展名.
+   */
+  val fileExtension : String
 
-    /**
-     * * Adapt the given [input] stream to a language key-value pair map.
-     * * 将给定的输入流 [input] 适配为语言键值对映射.
-     *
-     * **Note: The caller close the input stream.**
-     */
-    fun adapt(input: InputStream): Map<String, String>
+  /**
+   * * Adapt the given [input] stream to a language key-value pair map.
+   * * 将给定的输入流 [input] 适配为语言键值对映射.
+   *
+   * **Note: The caller close the input stream.**
+   */
+  fun adapt(input: InputStream): Map<String, String>
 
-    /**
-     * * Re-adapt the given language key-value mapping to the [output] stream.
-     * * 将给定的语言键值对映射重新适配到输出流 [output] 中.
-     *
-     * **Note: The caller close the output stream.**
-     */
-    fun readapt(output: OutputStream, entries: MutableMap<String, String>)
+  /**
+   * * Re-adapt the given language key-value mapping to the [output] stream.
+   * * 将给定的语言键值对映射重新适配到输出流 [output] 中.
+   *
+   * **Note: The caller close the output stream.**
+   */
+  fun readapt(output: OutputStream, entries: MutableMap<String, String>)
 }

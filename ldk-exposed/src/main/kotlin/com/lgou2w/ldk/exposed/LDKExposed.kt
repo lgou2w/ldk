@@ -29,4 +29,4 @@ import java.util.UUID
  */
 @JvmOverloads
 fun Table.unsignedUUID(name: String = "", nullable: Boolean = false)
-        = registerColumn<UUID>(name, UnsignedUUIDColumnType(nullable))
+  = registerColumn<UUID>(name, UnsignedUUIDColumnType(nullable))

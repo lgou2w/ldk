@@ -31,140 +31,140 @@ import kotlin.math.min
  * @author lgou2w
  */
 class MinecraftVersion(
-        major: Int,
-        minor: Int,
-        build: Int,
-        /**
-         * * Indicates the `Preview` version number of this Minecraft version.
-         * * 表示此 Minecraft 版本的 `Preview` 版本号.
-         *
-         * @since LDK 0.1.8-rc
-         */
-        val pre: Int? = null
+  major: Int,
+  minor: Int,
+  build: Int,
+  /**
+   * * Indicates the `Preview` version number of this Minecraft version.
+   * * 表示此 Minecraft 版本的 `Preview` 版本号.
+   *
+   * @since LDK 0.1.8-rc
+   */
+  val pre: Int? = null
 ) : Version(major, minor, build),
-        Comparable<Version> {
+  Comparable<Version> {
 
-    companion object {
+  companion object {
 
-        @JvmField val UNKNOWN = MinecraftVersion(-1, -1, -1, -1)
-        @JvmField val V1_8   = MinecraftVersion(1, 8, 0)
-        @JvmField val V1_9   = MinecraftVersion(1, 9, 0)
-        @JvmField val V1_10 = MinecraftVersion(1, 10, 0)
-        @JvmField val V1_11 = MinecraftVersion(1, 11, 0)
-        @JvmField val V1_12 = MinecraftVersion(1, 12, 0)
-        @JvmField val V1_13 = MinecraftVersion(1, 13, 0)
-        @JvmField val V1_14 = MinecraftVersion(1, 14, 0)
-        /**
-         * @since LDK 0.1.8-rc
-         */
-        @Draft
-        @Deprecated("Minecraft 1.15 Draft")
-        @JvmField val V1_15 = MinecraftVersion(1, 15, 0)
+    @JvmField val UNKNOWN = MinecraftVersion(-1, -1, -1, -1)
+    @JvmField val V1_8   = MinecraftVersion(1, 8, 0)
+    @JvmField val V1_9   = MinecraftVersion(1, 9, 0)
+    @JvmField val V1_10 = MinecraftVersion(1, 10, 0)
+    @JvmField val V1_11 = MinecraftVersion(1, 11, 0)
+    @JvmField val V1_12 = MinecraftVersion(1, 12, 0)
+    @JvmField val V1_13 = MinecraftVersion(1, 13, 0)
+    @JvmField val V1_14 = MinecraftVersion(1, 14, 0)
+    /**
+     * @since LDK 0.1.8-rc
+     */
+    @Draft
+    @Deprecated("Minecraft 1.15 Draft")
+    @JvmField val V1_15 = MinecraftVersion(1, 15, 0)
 
-        @JvmStatic
-        private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC:?\\s([a-zA-Z0-9\\-.\\\\\\s]+).*\\)")
-
-        /**
-         * * Get the current version of the Minecraft for the Bukkit server.
-         * * 获取当前 Bukkit 服务器的 Minecraft 版本.
-         */
-        @JvmStatic
-        var CURRENT : MinecraftVersion = UNKNOWN
-            private set
-            get() {
-                if (field == UNKNOWN) {
-                    val version = Bukkit.getServer().version.trim()
-                    val matcher = VERSION_PATTERN.matcher(version)
-                    if (!matcher.matches() || matcher.group(1) == null)
-                        throw IllegalStateException("Bukkit Minecraft version number not successfully matched: $version.")
-                    val versionOnly = matcher.group(1)
-                    val numbers = IntArray(3)
-                    val pre : Int?
-                    try {
-                        val index = versionOnly.lastIndexOf("-pre")
-                        val elements = if (index == -1) { // e.g.: 1.14 Pre-Release 5
-                            val splitVersions = versionOnly.split(' ')
-                            pre = splitVersions.getOrNull(2)?.toIntOrNull()
-                            splitVersions.first().split('.')
-                        } else {
-                            pre = versionOnly.substring(index + 4).toIntOrNull()
-                            versionOnly.substring(0, index).split('.')
-                        }
-                        for (i in 0 until min(numbers.size, elements.size))
-                            numbers[i] = elements[i].trim().toInt()
-                    } catch (e: Exception) {
-                        if (e is NumberFormatException)
-                            throw IllegalStateException("Unable to parse Bukkit Minecraft version number: $versionOnly")
-                        else
-                            throw e
-                    }
-                    field = MinecraftVersion(numbers[0], numbers[1], numbers[2], pre)
-                }
-                return field
-            }
-
-        @JvmStatic private val LOOKUP_LEVEL : Map<Level, MinecraftVersion> =
-                Collections.unmodifiableMap(mapOf(
-                        Level.Minecraft_V1_8 to V1_8,
-                        Level.Minecraft_V1_9 to V1_9,
-                        Level.Minecraft_V1_10 to V1_10,
-                        Level.Minecraft_V1_11 to V1_11,
-                        Level.Minecraft_V1_12 to V1_12,
-                        Level.Minecraft_V1_13 to V1_13,
-                        Level.Minecraft_V1_14 to V1_14,
-                        Level.Minecraft_V1_15 to V1_15
-                ))
-
-        /**
-         * * Get the Minecraft version object from the given Bukkit API [level].
-         * * 从给定的 Bukkit API 等级 [level] 获取 Minecraft 版本对象.
-         */
-        @JvmStatic
-        fun fromLevel(level: Level) : MinecraftVersion {
-            val value = LOOKUP_LEVEL[level]
-            return value ?: UNKNOWN
-        }
-    }
+    @JvmStatic
+    private val VERSION_PATTERN = Pattern.compile(".*\\(.*MC:?\\s([a-zA-Z0-9\\-.\\s]+).*\\)")
 
     /**
-     * * Get this version of Minecraft as a preview.
-     * * 获取此 Minecraft 版本是否为预览版.
-     *
-     * @see [pre]
+     * * Get the current version of the Minecraft for the Bukkit server.
+     * * 获取当前 Bukkit 服务器的 Minecraft 版本.
      */
-    val isPre : Boolean
-        get() = pre != null
+    @JvmStatic
+    var CURRENT : MinecraftVersion = UNKNOWN
+      private set
+      get() {
+        if (field == UNKNOWN) {
+          val version = Bukkit.getServer().version.trim()
+          val matcher = VERSION_PATTERN.matcher(version)
+          if (!matcher.matches() || matcher.group(1) == null)
+            throw IllegalStateException("Bukkit Minecraft version number not successfully matched: $version.")
+          val versionOnly = matcher.group(1)
+          val numbers = IntArray(3)
+          val pre : Int?
+          try {
+            val index = versionOnly.lastIndexOf("-pre")
+            val elements = if (index == -1) { // e.g.: 1.14 Pre-Release 5
+              val splitVersions = versionOnly.split(' ')
+              pre = splitVersions.getOrNull(2)?.toIntOrNull()
+              splitVersions.first().split('.')
+            } else {
+              pre = versionOnly.substring(index + 4).toIntOrNull()
+              versionOnly.substring(0, index).split('.')
+            }
+            for (i in 0 until min(numbers.size, elements.size))
+              numbers[i] = elements[i].trim().toInt()
+          } catch (e: Exception) {
+            if (e is NumberFormatException)
+              throw IllegalStateException("Unable to parse Bukkit Minecraft version number: $versionOnly")
+            else
+              throw e
+          }
+          field = MinecraftVersion(numbers[0], numbers[1], numbers[2], pre)
+        }
+        return field
+      }
 
-    override val version: String
-        get() = if (pre != null) "${super.version}-pre$pre" else super.version
+    @JvmStatic private val LOOKUP_LEVEL : Map<Level, MinecraftVersion> =
+      Collections.unmodifiableMap(mapOf(
+        Level.Minecraft_V1_8 to V1_8,
+        Level.Minecraft_V1_9 to V1_9,
+        Level.Minecraft_V1_10 to V1_10,
+        Level.Minecraft_V1_11 to V1_11,
+        Level.Minecraft_V1_12 to V1_12,
+        Level.Minecraft_V1_13 to V1_13,
+        Level.Minecraft_V1_14 to V1_14,
+        Level.Minecraft_V1_15 to V1_15
+      ))
 
-    override fun compareTo(other: Version): Int {
-        return if (other is MinecraftVersion)
-            ComparisonChain.start()
-                    .compare(major, other.major)
-                    .compare(minor, other.minor)
-                    .compare(build, other.build)
-                    .compare(pre ?: -1, other.pre ?: -1)
-                    .result
-        else
-            super.compareTo(other)
+    /**
+     * * Get the Minecraft version object from the given Bukkit API [level].
+     * * 从给定的 Bukkit API 等级 [level] 获取 Minecraft 版本对象.
+     */
+    @JvmStatic
+    fun fromLevel(level: Level) : MinecraftVersion {
+      val value = LOOKUP_LEVEL[level]
+      return value ?: UNKNOWN
     }
+  }
 
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + (pre?.hashCode() ?: 0)
-        return result
-    }
+  /**
+   * * Get this version of Minecraft as a preview.
+   * * 获取此 Minecraft 版本是否为预览版.
+   *
+   * @see [pre]
+   */
+  val isPre : Boolean
+    get() = pre != null
 
-    override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is MinecraftVersion)
-            return super.equals(other) && pre == other.pre
-        return false
-    }
+  override val version: String
+    get() = if (pre != null) "${super.version}-pre$pre" else super.version
 
-    override fun toString(): String {
-        return "MinecraftVersion(major=$major, minor=$minor, build=$build, pre=$pre)"
-    }
+  override fun compareTo(other: Version): Int {
+    return if (other is MinecraftVersion)
+      ComparisonChain.start()
+        .compare(major, other.major)
+        .compare(minor, other.minor)
+        .compare(build, other.build)
+        .compare(pre ?: -1, other.pre ?: -1)
+        .result
+    else
+      super.compareTo(other)
+  }
+
+  override fun hashCode(): Int {
+    var result = super.hashCode()
+    result = 31 * result + (pre?.hashCode() ?: 0)
+    return result
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is MinecraftVersion)
+      return super.equals(other) && pre == other.pre
+    return false
+  }
+
+  override fun toString(): String {
+    return "MinecraftVersion(major=$major, minor=$minor, build=$build, pre=$pre)"
+  }
 }

@@ -27,52 +27,52 @@ import org.junit.Test
 
 class VersionTest {
 
-    @Test fun `Version - 1 should be less than version 2`() {
-        val v1 = Version(1, 0, 0)
-        val v2 = Version(2, 0, 0)
-        v1.major shouldEqual 1
-        v2.major shouldEqual 2
-        v1 shouldNotEqual v2
-        (v1 < v2) shouldEqual true
-        (v1 > v2) shouldEqual false
-        v1.equals(v2) shouldEqual false
-        v2.equals(v1) shouldEqual false
-        v1 shouldEqual Version(1, 0, 0)
-        v2 shouldEqual Version(2, 0, 0)
-        Version(1, 0, 1).let { it > v1 && it < v2 } shouldEqual true
-    }
+  @Test fun `Version - 1 should be less than version 2`() {
+    val v1 = Version(1, 0, 0)
+    val v2 = Version(2, 0, 0)
+    v1.major shouldEqual 1
+    v2.major shouldEqual 2
+    v1 shouldNotEqual v2
+    (v1 < v2) shouldEqual true
+    (v1 > v2) shouldEqual false
+    v1.equals(v2) shouldEqual false
+    v2.equals(v1) shouldEqual false
+    v1 shouldEqual Version(1, 0, 0)
+    v2 shouldEqual Version(2, 0, 0)
+    Version(1, 0, 1).let { it > v1 && it < v2 } shouldEqual true
+  }
 
-    @Test fun `Version - version member comparison`() {
-        val ver = Version(1, 0, 1)
-        ver.major shouldEqual 1
-        ver.minor shouldEqual 0
-        ver.build shouldEqual 1
-        ver.version shouldEqual "1.0.1"
-        ver shouldBe ver
-        ver.equals(ver) shouldEqual true
-        ver.equals("ver") shouldEqual false
-        ver.toString() shouldStartWith "Version"
-        ver.equals(Version(1, 0, 1)) shouldEqual true
-    }
+  @Test fun `Version - version member comparison`() {
+    val ver = Version(1, 0, 1)
+    ver.major shouldEqual 1
+    ver.minor shouldEqual 0
+    ver.build shouldEqual 1
+    ver.version shouldEqual "1.0.1"
+    ver shouldBe ver
+    ver.equals(ver) shouldEqual true
+    ver.equals("ver") shouldEqual false
+    ver.toString() shouldStartWith "Version"
+    ver.equals(Version(1, 0, 1)) shouldEqual true
+  }
 
-    @Test fun `Version - version parsing`() {
-        Version.parse("1.0.1").version shouldEqual "1.0.1"
-        Version.parseSafely("1.0.1") shouldEqual Version.parse("1.0.1")
-        Version.parseSafely("error") shouldEqual null
-        Version.parseSafely(null) shouldEqual null
-        Version.parseSafely("") shouldEqual null
-        invoking { Version.parse("error") } shouldThrow IllegalArgumentException::class
-        invoking { Version.parseSafely("error") } shouldNotThrow IllegalArgumentException::class
-    }
+  @Test fun `Version - version parsing`() {
+    Version.parse("1.0.1").version shouldEqual "1.0.1"
+    Version.parseSafely("1.0.1") shouldEqual Version.parse("1.0.1")
+    Version.parseSafely("error") shouldEqual null
+    Version.parseSafely(null) shouldEqual null
+    Version.parseSafely("") shouldEqual null
+    invoking { Version.parse("error") } shouldThrow IllegalArgumentException::class
+    invoking { Version.parseSafely("error") } shouldNotThrow IllegalArgumentException::class
+  }
 
-    @Test fun `Version - zero version hashCode should be zero`() {
-        val zeroVer = Version(0, 0, 0)
-        zeroVer.version shouldEqual "0.0.0"
-        zeroVer.hashCode() shouldEqual 0
-    }
+  @Test fun `Version - zero version hashCode should be zero`() {
+    val zeroVer = Version(0, 0, 0)
+    zeroVer.version shouldEqual "0.0.0"
+    zeroVer.hashCode() shouldEqual 0
+  }
 
-    @Test fun `Version - equals`() {
-        Version(1, 0, 1).equals(Version(1, 1, 0)) shouldEqual false
-        Version(1, 0, 1).equals(Version(1, 0, 2)) shouldEqual false
-    }
+  @Test fun `Version - equals`() {
+    Version(1, 0, 1).equals(Version(1, 1, 0)) shouldEqual false
+    Version(1, 0, 1).equals(Version(1, 0, 2)) shouldEqual false
+  }
 }

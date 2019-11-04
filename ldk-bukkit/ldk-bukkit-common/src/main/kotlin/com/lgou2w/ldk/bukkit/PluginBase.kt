@@ -33,156 +33,156 @@ import java.util.logging.Level
  */
 abstract class PluginBase : JavaPlugin, Plugin {
 
-    constructor() : super()
-    constructor(
-            loader: JavaPluginLoader,
-            description: PluginDescriptionFile,
-            dataFolder: File,
-            file: File
-    ) : super(loader, description, dataFolder, file)
+  constructor() : super()
+  constructor(
+    loader: JavaPluginLoader,
+    description: PluginDescriptionFile,
+    dataFolder: File,
+    file: File
+  ) : super(loader, description, dataFolder, file)
 
-    final override fun onLoad() {
-        super.onLoad()
-        load()
-    }
+  final override fun onLoad() {
+    super.onLoad()
+    load()
+  }
 
-    final override fun onEnable() {
-        super.onEnable()
-        val startTime = System.currentTimeMillis()
-        var failedDependency: PluginDependency? = null
-        if (enableDependencies.isNotEmpty() && !enableDependencies.all { dependency ->
-                    dependency.canDepended().also {
-                        if (!it)
-                            failedDependency = dependency
-                    }
-                }
-        ) {
-            logger.log(Level.SEVERE, "Dependency failure when plugin enable, unload dependency: ${failedDependency?.name}.")
-            failedDependency(failedDependency.notNull())
-            server.pluginManager.disablePlugin(this)
-            return
+  final override fun onEnable() {
+    super.onEnable()
+    val startTime = System.currentTimeMillis()
+    var failedDependency: PluginDependency? = null
+    if (enableDependencies.isNotEmpty() && !enableDependencies.all { dependency ->
+        dependency.canDepended().also {
+          if (!it)
+            failedDependency = dependency
         }
-        try {
-            enable()
-        } catch (e: Exception) {
-            if (enableExceptionDisabled) {
-                logger.log(Level.SEVERE, "The plugin is disabled due to an exception at enable:", e)
-                server.pluginManager.disablePlugin(this)
-                return
-            } else
-                logger.log(Level.SEVERE, "Error enable, skip plugin disabled, exception:", e)
-        }
-        if (isEnabled) {
-            val endTime = System.currentTimeMillis()
-            logger.info("Plugin $pluginName v$pluginVersion successfully enabled, total time: ${endTime - startTime}ms.")
-        }
+      }
+    ) {
+      logger.log(Level.SEVERE, "Dependency failure when plugin enable, unload dependency: ${failedDependency?.name}.")
+      failedDependency(failedDependency.notNull())
+      server.pluginManager.disablePlugin(this)
+      return
     }
-
-    final override fun onDisable() {
-        super.onDisable()
-        disable()
+    try {
+      enable()
+    } catch (e: Exception) {
+      if (enableExceptionDisabled) {
+        logger.log(Level.SEVERE, "The plugin is disabled due to an exception at enable:", e)
+        server.pluginManager.disablePlugin(this)
+        return
+      } else
+        logger.log(Level.SEVERE, "Error enable, skip plugin disabled, exception:", e)
     }
-
-    /**
-     * * Called when the plugin is load.
-     * * 当插件加载时调用.
-     */
-    protected abstract fun load()
-
-    /**
-     * * Called when the plugin is enable.
-     * * 当插件启用时调用.
-     */
-    protected abstract fun enable()
-
-    /**
-     * * Called when the plugin is disable.
-     * * 当插件禁用时调用.
-     */
-    protected abstract fun disable()
-
-    /**************************************************************************
-     *
-     * Enable Optional
-     *
-     **************************************************************************/
-
-    /**
-     * * Indicates an exception when the plugin is enabled. Then whether to disable the plugin.
-     * * 表示当插件启用时异常. 那么是否禁用插件.
-     */
-    protected open val enableExceptionDisabled : Boolean = true
-
-    /**************************************************************************
-     *
-     * Plugin Dependency
-     *
-     **************************************************************************/
-
-    /**
-     * * Indicates that the plugin enables the required plugin dependency item.
-     * * 表示插件启用所需求的插件依赖项.
-     *
-     * @see [PluginDependency]
-     */
-    protected open val enableDependencies : Array<PluginDependency> = emptyArray()
-
-    /**
-     * * Called when a plugin dependency fails to load.
-     * * 当一个插件依赖项加载失败时被调用.
-     *
-     * @see [PluginDependency]
-     */
-    protected open fun failedDependency(dependency: PluginDependency) { }
-
-    protected class PluginDependencyScope {
-        var name: String = "UNKNOWN"
-        var softDepend: Boolean = false
-        var version: String? = null
-        var className: String? = null
+    if (isEnabled) {
+      val endTime = System.currentTimeMillis()
+      logger.info("Plugin $pluginName v$pluginVersion successfully enabled, total time: ${endTime - startTime}ms.")
     }
+  }
 
-    protected inline fun dependency(block: Applicator<PluginDependencyScope>): PluginDependency {
-        val scope = PluginDependencyScope().also(block)
-        return PluginDependency(scope.name, scope.softDepend, scope.version, scope.className)
-    }
+  final override fun onDisable() {
+    super.onDisable()
+    disable()
+  }
 
-    /**************************************************************************
-     *
-     * Plugin Public API
-     *
-     **************************************************************************/
+  /**
+   * * Called when the plugin is load.
+   * * 当插件加载时调用.
+   */
+  protected abstract fun load()
 
-    /**************************************************************************
-     *
-     * Plugin Archive
-     *
-     **************************************************************************/
+  /**
+   * * Called when the plugin is enable.
+   * * 当插件启用时调用.
+   */
+  protected abstract fun enable()
 
-    override val pluginPrefix : String?
-        get() = description.prefix
+  /**
+   * * Called when the plugin is disable.
+   * * 当插件禁用时调用.
+   */
+  protected abstract fun disable()
 
-    override val pluginName : String
-        get() = description.name
+  /**************************************************************************
+   *
+   * Enable Optional
+   *
+   **************************************************************************/
 
-    override val pluginMain : String
-        get() = description.main
+  /**
+   * * Indicates an exception when the plugin is enabled. Then whether to disable the plugin.
+   * * 表示当插件启用时异常. 那么是否禁用插件.
+   */
+  protected open val enableExceptionDisabled : Boolean = true
 
-    override val pluginVersion : String
-        get() = description.version
+  /**************************************************************************
+   *
+   * Plugin Dependency
+   *
+   **************************************************************************/
 
-    override val pluginWebsite : String?
-        get() = description.website
+  /**
+   * * Indicates that the plugin enables the required plugin dependency item.
+   * * 表示插件启用所需求的插件依赖项.
+   *
+   * @see [PluginDependency]
+   */
+  protected open val enableDependencies : Array<PluginDependency> = emptyArray()
 
-    override val pluginDescription : String?
-        get() = description.description
+  /**
+   * * Called when a plugin dependency fails to load.
+   * * 当一个插件依赖项加载失败时被调用.
+   *
+   * @see [PluginDependency]
+   */
+  protected open fun failedDependency(dependency: PluginDependency) { }
 
-    override val pluginAuthors : Set<String>
-        get() = description.authors.toSet()
+  protected class PluginDependencyScope {
+    var name: String = "UNKNOWN"
+    var softDepend: Boolean = false
+    var version: String? = null
+    var className: String? = null
+  }
 
-    override val pluginDepends : Set<String>
-        get() = description.depend.toSet()
+  protected inline fun dependency(block: Applicator<PluginDependencyScope>): PluginDependency {
+    val scope = PluginDependencyScope().also(block)
+    return PluginDependency(scope.name, scope.softDepend, scope.version, scope.className)
+  }
 
-    override val pluginSoftDepends : Set<String>
-        get() = description.softDepend.toSet()
+  /**************************************************************************
+   *
+   * Plugin Public API
+   *
+   **************************************************************************/
+
+  /**************************************************************************
+   *
+   * Plugin Archive
+   *
+   **************************************************************************/
+
+  override val pluginPrefix : String?
+    get() = description.prefix
+
+  override val pluginName : String
+    get() = description.name
+
+  override val pluginMain : String
+    get() = description.main
+
+  override val pluginVersion : String
+    get() = description.version
+
+  override val pluginWebsite : String?
+    get() = description.website
+
+  override val pluginDescription : String?
+    get() = description.description
+
+  override val pluginAuthors : Set<String>
+    get() = description.authors.toSet()
+
+  override val pluginDepends : Set<String>
+    get() = description.depend.toSet()
+
+  override val pluginSoftDepends : Set<String>
+    get() = description.softDepend.toSet()
 }

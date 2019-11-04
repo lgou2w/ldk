@@ -25,12 +25,12 @@ package com.lgou2w.ldk.bukkit.version
  */
 class IllegalBukkitVersionException : IllegalStateException {
 
-    constructor() : super()
-    constructor(s: String?) : super(s)
-    constructor(message: String?, cause: Throwable?) : super(message, cause)
-    constructor(cause: Throwable?) : super(cause)
+  constructor() : super()
+  constructor(s: String?) : super(s)
+  constructor(message: String?, cause: Throwable?) : super(message, cause)
+  constructor(cause: Throwable?) : super(cause)
 
-    companion object {
-        private const val serialVersionUID = -7514242178370905869L
-    }
+  companion object {
+    private const val serialVersionUID = -7514242178370905869L
+  }
 }

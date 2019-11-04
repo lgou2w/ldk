@@ -35,45 +35,45 @@ import kotlin.coroutines.CoroutineContext
  * @author lgou2w
  */
 abstract class CoroutineFactoryBase(
-        final override val provider: DispatcherProvider
+  final override val provider: DispatcherProvider
 ) : CoroutineFactory {
 
-    override val context : CoroutineContext
-        get() = provider.dispatcher
+  override val context : CoroutineContext
+    get() = provider.dispatcher
 
-    override fun launch(block: SuspendApplicator<CoroutineFactory>): Job {
-        return GlobalScope.launch(context) {
-            launching()
-            block()
-        }
+  override fun launch(block: SuspendApplicator<CoroutineFactory>): Job {
+    return GlobalScope.launch(context) {
+      launching()
+      block()
     }
+  }
 
-    /**
-     * * Called after the suspend block of the [launch] coroutine is executed after startup.
-     * * 在启动后 [launch] 协同程序的挂起块执行之前被调用.
-     */
-    protected open suspend fun launching() {
-    }
+  /**
+   * * Called after the suspend block of the [launch] coroutine is executed after startup.
+   * * 在启动后 [launch] 协同程序的挂起块执行之前被调用.
+   */
+  protected open suspend fun launching() {
+  }
 
-    override suspend fun <T> with(
-            block: SuspendApplicatorFunction<CoroutineScope, T>
-    ): T = with(context, block)
+  override suspend fun <T> with(
+    block: SuspendApplicatorFunction<CoroutineScope, T>
+  ): T = with(context, block)
 
-    override suspend fun <T> with(
-            ctx: CoroutineContext,
-            block: SuspendApplicatorFunction<CoroutineScope, T>
-    ): T = withContext(ctx) {
-        block()
-    }
+  override suspend fun <T> with(
+    ctx: CoroutineContext,
+    block: SuspendApplicatorFunction<CoroutineScope, T>
+  ): T = withContext(ctx) {
+    block()
+  }
 
-    override fun <T> async(
-            block: SuspendApplicatorFunction<CoroutineScope, T>
-    ): Deferred<T> = async(context, block)
+  override fun <T> async(
+    block: SuspendApplicatorFunction<CoroutineScope, T>
+  ): Deferred<T> = async(context, block)
 
-    override fun <T> async(
-            ctx: CoroutineContext,
-            block: SuspendApplicatorFunction<CoroutineScope, T>
-    ): Deferred<T> = GlobalScope.async(ctx) {
-        block()
-    }
+  override fun <T> async(
+    ctx: CoroutineContext,
+    block: SuspendApplicatorFunction<CoroutineScope, T>
+  ): Deferred<T> = GlobalScope.async(ctx) {
+    block()
+  }
 }

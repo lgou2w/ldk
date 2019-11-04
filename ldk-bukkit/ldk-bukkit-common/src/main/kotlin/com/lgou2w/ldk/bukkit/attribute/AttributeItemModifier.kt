@@ -49,91 +49,91 @@ import java.util.UUID
  * @param uuid 唯一 Id.
  */
 data class AttributeItemModifier(
-        /**
-         * * The type of this modifier.
-         * * 此修改器的类型.
-         */
-        val type: AttributeType,
-        /**
-         * * The name of this modifier.
-         * * 此修改器的名称.
-         */
-        val name: String = type.name,
-        /**
-         * * The operation mode of this modifier.
-         * * 此修改器的运算模式.
-         */
-        val operation: Operation,
-        /**
-         * * The modifier is takes effect in which slot.  If `null` then all slots.
-         * * 此修改器的生效槽位. 如果 `null` 则所有槽位.
-         */
-        val slot: Slot?,
-        /**
-         * * The operation amount of this modifier.
-         * * 此修改器的运算数量.
-         */
-        val amount: Double,
-        /**
-         * * The unique id of this modifier.
-         * * 此修改器的唯一 Id.
-         */
-        val uuid: UUID
+  /**
+   * * The type of this modifier.
+   * * 此修改器的类型.
+   */
+  val type: AttributeType,
+  /**
+   * * The name of this modifier.
+   * * 此修改器的名称.
+   */
+  val name: String = type.name,
+  /**
+   * * The operation mode of this modifier.
+   * * 此修改器的运算模式.
+   */
+  val operation: Operation,
+  /**
+   * * The modifier is takes effect in which slot.  If `null` then all slots.
+   * * 此修改器的生效槽位. 如果 `null` 则所有槽位.
+   */
+  val slot: Slot?,
+  /**
+   * * The operation amount of this modifier.
+   * * 此修改器的运算数量.
+   */
+  val amount: Double,
+  /**
+   * * The unique id of this modifier.
+   * * 此修改器的唯一 Id.
+   */
+  val uuid: UUID
 ) : ConfigurationSerializable,
-        NBTSavable,
-        Comparable<AttributeItemModifier> {
+  NBTSavable,
+  Comparable<AttributeItemModifier> {
 
-    override fun save(root: NBTTagCompound): NBTTagCompound {
-        root.putString(NBT.TAG_ATTRIBUTE_TYPE, type.value)
-        root.putString(NBT.TAG_ATTRIBUTE_NAME, type.value)
-        root.putInt(NBT.TAG_ATTRIBUTE_OPERATION, operation.value)
-        if (slot != null) root.putString(NBT.TAG_ATTRIBUTE_SLOT, slot.value)
-        root.putDouble(NBT.TAG_ATTRIBUTE_AMOUNT, amount)
-        root.putLong(NBT.TAG_ATTRIBUTE_UUID_LEAST, uuid.leastSignificantBits)
-        root.putLong(NBT.TAG_ATTRIBUTE_UUID_MOST, uuid.mostSignificantBits)
-        return root
+  override fun save(root: NBTTagCompound): NBTTagCompound {
+    root.putString(NBT.TAG_ATTRIBUTE_TYPE, type.value)
+    root.putString(NBT.TAG_ATTRIBUTE_NAME, type.value)
+    root.putInt(NBT.TAG_ATTRIBUTE_OPERATION, operation.value)
+    if (slot != null) root.putString(NBT.TAG_ATTRIBUTE_SLOT, slot.value)
+    root.putDouble(NBT.TAG_ATTRIBUTE_AMOUNT, amount)
+    root.putLong(NBT.TAG_ATTRIBUTE_UUID_LEAST, uuid.leastSignificantBits)
+    root.putLong(NBT.TAG_ATTRIBUTE_UUID_MOST, uuid.mostSignificantBits)
+    return root
+  }
+
+  override fun compareTo(other: AttributeItemModifier): Int {
+    return ComparisonChain.start()
+      .compare(type, other.type)
+      .compare(name, other.name)
+      .compare(operation, other.operation)
+      .compare(slot?.ordinal ?: -1, other.slot?.ordinal ?: -1)
+      .compare(amount, other.amount)
+      .compare(uuid, other.uuid)
+      .result
+  }
+
+  override fun serialize(): MutableMap<String, Any> {
+    val result = LinkedHashMap<String, Any>()
+    result["type"] = type.value
+    result["name"] = name
+    result["operation"] = operation.value
+    if(slot != null) result["slot"] = slot.value
+    result["amount"] = amount
+    result["uuid"] = uuid.toString()
+    return result
+  }
+
+  companion object {
+
+    init {
+      ConfigurationSerialization.registerClass(AttributeItemModifier::class.java)
     }
 
-    override fun compareTo(other: AttributeItemModifier): Int {
-        return ComparisonChain.start()
-            .compare(type, other.type)
-            .compare(name, other.name)
-            .compare(operation, other.operation)
-            .compare(slot?.ordinal ?: -1, other.slot?.ordinal ?: -1)
-            .compare(amount, other.amount)
-            .compare(uuid, other.uuid)
-            .result
+    /**
+     * @see [ConfigurationSerializable]
+     */
+    @JvmStatic
+    fun deserialize(args: Map<String, Any>): AttributeItemModifier {
+      val type: AttributeType = Enums.ofValuableNotNull(AttributeType::class.java, args["type"]?.toString())
+      val operation: Operation = Enums.ofValuableNotNull(Operation::class.java, args["operation"].toString().toIntOrNull() ?: 0)
+      val slot: Slot? = Enums.ofValuable(Slot::class.java, args["slot"]?.toString())
+      val amount = args["amount"].toString().toDoubleOrNull() ?: .0
+      val uuid = UUID.fromString(args["uuid"]?.toString())
+      val name = args["name"]?.toString() ?: type.name
+      return AttributeItemModifier(type, name, operation, slot, amount, uuid)
     }
-
-    override fun serialize(): MutableMap<String, Any> {
-        val result = LinkedHashMap<String, Any>()
-        result["type"] = type.value
-        result["name"] = name
-        result["operation"] = operation.value
-        if(slot != null) result["slot"] = slot.value
-        result["amount"] = amount
-        result["uuid"] = uuid.toString()
-        return result
-    }
-
-    companion object {
-
-        init {
-            ConfigurationSerialization.registerClass(AttributeItemModifier::class.java)
-        }
-
-        /**
-         * @see [ConfigurationSerializable]
-         */
-        @JvmStatic
-        fun deserialize(args: Map<String, Any>): AttributeItemModifier {
-            val type: AttributeType = Enums.ofValuableNotNull(AttributeType::class.java, args["type"]?.toString())
-            val operation: Operation = Enums.ofValuableNotNull(Operation::class.java, args["operation"].toString().toIntOrNull() ?: 0)
-            val slot: Slot? = Enums.ofValuable(Slot::class.java, args["slot"]?.toString())
-            val amount = args["amount"].toString().toDoubleOrNull() ?: .0
-            val uuid = UUID.fromString(args["uuid"]?.toString())
-            val name = args["name"]?.toString() ?: type.name
-            return AttributeItemModifier(type, name, operation, slot, amount, uuid)
-        }
-    }
+  }
 }

@@ -31,115 +31,115 @@ import java.util.logging.Logger
  * @author lgou2w
  */
 abstract class DependBase<T : Plugin>(
-        target: Plugin?
+  target: Plugin?
 ) : Depend {
 
-    private val targetName : String
-    private var reference : WeakReference<T> // auto gc and unregister
+  private val targetName : String
+  private var reference : WeakReference<T> // auto gc and unregister
 
-    init {
-        if (target == null || !target.isEnabled)
-            throw DependCannotException("The dependency plugin does not exist or is not loaded.")
-        @Suppress("UNCHECKED_CAST")
-        this.reference = WeakReference(target as T)
-        this.targetName = target.name
-        this.checkCanRegistered()
-    }
-
+  init {
+    if (target == null || !target.isEnabled)
+      throw DependCannotException("The dependency plugin does not exist or is not loaded.")
     @Suppress("UNCHECKED_CAST")
-    final override val plugin : T
-        get() {
-            val ref = reference.get()
-            return if (ref != null && ref.isEnabled) {
-                ref
-            } else {
-                val target = getPlugin(targetName)
-                if (target != null && target.isEnabled) {
-                    reference = WeakReference(target as T)
-                    target
-                } else {
-                    Depends.unregister(this::class.java)
-                    throw DependCannotException("The dependency plugin does not exist or is not loaded.")
-                }
-            }
+    this.reference = WeakReference(target as T)
+    this.targetName = target.name
+    this.checkCanRegistered()
+  }
+
+  @Suppress("UNCHECKED_CAST")
+  final override val plugin : T
+    get() {
+      val ref = reference.get()
+      return if (ref != null && ref.isEnabled) {
+        ref
+      } else {
+        val target = getPlugin(targetName)
+        if (target != null && target.isEnabled) {
+          reference = WeakReference(target as T)
+          target
+        } else {
+          Depends.unregister(this::class.java)
+          throw DependCannotException("The dependency plugin does not exist or is not loaded.")
         }
-
-    /**
-     * * Check plugin object reference.
-     * * 检查插件对象引用.
-     */
-    @Throws(DependCannotException::class)
-    protected fun checkReference() {
-        plugin.isEnabled
+      }
     }
 
-    private fun checkCanRegistered() {
-        if (!Depends.hasDepend(this::class.java))
-            Depends.register(this)
-    }
+  /**
+   * * Check plugin object reference.
+   * * 检查插件对象引用.
+   */
+  @Throws(DependCannotException::class)
+  protected fun checkReference() {
+    plugin.isEnabled
+  }
 
-    final override val name : String
-        get() = targetName
+  private fun checkCanRegistered() {
+    if (!Depends.hasDepend(this::class.java))
+      Depends.register(this)
+  }
 
-    final override val pluginPrefix : String?
-        get() = plugin.description.prefix
+  final override val name : String
+    get() = targetName
 
-    final override val pluginName : String
-        get() = plugin.description.name
+  final override val pluginPrefix : String?
+    get() = plugin.description.prefix
 
-    final override val pluginMain : String
-        get() = plugin.description.main
+  final override val pluginName : String
+    get() = plugin.description.name
 
-    final override val pluginVersion : String
-        get() = plugin.description.version
+  final override val pluginMain : String
+    get() = plugin.description.main
 
-    final override val pluginWebsite : String?
-        get() = plugin.description.website
+  final override val pluginVersion : String
+    get() = plugin.description.version
 
-    final override val pluginDescription : String?
-        get() = plugin.description.description
+  final override val pluginWebsite : String?
+    get() = plugin.description.website
 
-    final override val pluginAuthors : Set<String>
-        get() = plugin.description.authors.toSet()
+  final override val pluginDescription : String?
+    get() = plugin.description.description
 
-    final override val pluginDepends : Set<String>
-        get() = plugin.description.depend.toSet()
+  final override val pluginAuthors : Set<String>
+    get() = plugin.description.authors.toSet()
 
-    final override val pluginSoftDepends : Set<String>
-        get() = plugin.description.softDepend.toSet()
+  final override val pluginDepends : Set<String>
+    get() = plugin.description.depend.toSet()
 
-    final override val dataFolder : File
-        get() = plugin.dataFolder
+  final override val pluginSoftDepends : Set<String>
+    get() = plugin.description.softDepend.toSet()
 
-    final override val logger : Logger
-        get() = plugin.logger
+  final override val dataFolder : File
+    get() = plugin.dataFolder
 
-    final override val config : FileConfiguration?
-        get() = plugin.config
+  final override val logger : Logger
+    get() = plugin.logger
 
-    final override fun getResource(filename: String): InputStream?
-            = plugin.getResource(filename)
+  final override val config : FileConfiguration?
+    get() = plugin.config
 
-    final override fun hashCode(): Int {
-        return targetName.hashCode()
-    }
+  final override fun getResource(filename: String): InputStream?
+    = plugin.getResource(filename)
 
-    final override fun equals(other: Any?): Boolean {
-        if (other === this)
-            return true
-        if (other is DependBase<*>)
-            return targetName == other.targetName
-        return false
-    }
+  final override fun hashCode(): Int {
+    return targetName.hashCode()
+  }
 
-    final override fun toString(): String {
-        return "Depend(plugin=$targetName)"
-    }
+  final override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is DependBase<*>)
+      return targetName == other.targetName
+    return false
+  }
 
-    companion object {
+  final override fun toString(): String {
+    return "Depend(plugin=$targetName)"
+  }
 
-        @JvmStatic
-        fun getPlugin(name: String): Plugin?
-                = Bukkit.getPluginManager().getPlugin(name)
-    }
+  companion object {
+
+    @JvmStatic
+    fun getPlugin(name: String): Plugin?
+      = Bukkit.getPluginManager().getPlugin(name)
+  }
 }

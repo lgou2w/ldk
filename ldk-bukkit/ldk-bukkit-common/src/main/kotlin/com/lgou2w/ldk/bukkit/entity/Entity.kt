@@ -41,7 +41,7 @@ import kotlin.math.cos
  */
 @JvmOverloads
 fun Entity.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
-        = EntityFactory.readTag(this).also(block)
+  = EntityFactory.readTag(this).also(block)
 
 /**
  * * Modify the NBT tag data for the given entity.
@@ -51,14 +51,14 @@ fun Entity.readTag(block: Applicator<NBTTagCompound> = {}): NBTTagCompound
  * @since LDK 0.1.7-rc3
  */
 fun <T : Entity> T.modifyTag(block: Applicator<NBTTagCompound>): T
-        = EntityFactory.modifyTag(this, block)
+  = EntityFactory.modifyTag(this, block)
 
 /**
  * * Get a list of entities within the [x], [y], [z] radius near a given entity.
  * * 获取给定实体附近 [x], [y], [z] 半径内的实体列表.
  */
 fun Entity.getNearbyEntities(x: Double, y: Double, z: Double): List<Entity>
-        = world.getNearbyEntities(location, x, y, z).toList()
+  = world.getNearbyEntities(location, x, y, z).toList()
 
 /**
  * * Get a list of entities within the [x], [y], [z] radius near a given location.
@@ -70,14 +70,14 @@ fun Entity.getNearbyEntities(x: Double, y: Double, z: Double): List<Entity>
  */
 @Throws(NullPointerException::class)
 fun Location.getNearbyEntities(x: Double, y: Double, z: Double): List<Entity>
-        = world.notNull("The world of location cannot be null.").getNearbyEntities(this, x, y, z).toList()
+  = world.notNull("The world of location cannot be null.").getNearbyEntities(this, x, y, z).toList()
 
 /**
  * * Get a list of entities within the [range] radius near a given entity.
  * * 获取给定实体附近 [range] 半径内的实体列表.
  */
 fun Entity.getNearbyEntities(range: Double): List<Entity>
-        = world.getNearbyEntities(location, range, range, range).toList()
+  = world.getNearbyEntities(location, range, range, range).toList()
 
 /**
  * * Get a list of entities within the [range] radius near a given location.
@@ -89,14 +89,14 @@ fun Entity.getNearbyEntities(range: Double): List<Entity>
  */
 @Throws(NullPointerException::class)
 fun Location.getNearbyEntities(range: Double): List<Entity>
-        = world.notNull("The world of location cannot be null.").getNearbyEntities(this, range, range, range).toList()
+  = world.notNull("The world of location cannot be null.").getNearbyEntities(this, range, range, range).toList()
 
 /**
  * * Get a list of entities of the specified type [type] within the [x], [y], [z] radius near the given entity.
  * * 获取给定实体附近 [x], [y], [z] 半径内指定类型 [type] 的实体列表.
  */
 fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, x: Double, y: Double, z: Double): List<T>
-        = getNearbyEntities(x, y, z).filterIsInstance(type)
+  = getNearbyEntities(x, y, z).filterIsInstance(type)
 
 /**
  * * Get a list of entities of the specified type [type] within the [x], [y], [z] radius near the given location.
@@ -108,14 +108,14 @@ fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, x: Double, y: Double, 
  */
 @Throws(NullPointerException::class)
 fun <T : Entity> Location.getNearbyEntities(type: Class<T>, x: Double, y: Double, z: Double): List<T>
-        = getNearbyEntities(x, y, z).filterIsInstance(type)
+  = getNearbyEntities(x, y, z).filterIsInstance(type)
 
 /**
  * * Get a list of entities of the specified type [type] within the [range] radius near the given entity.
  * * 获取给定实体附近 [range] 半径内指定类型 [type] 的实体列表.
  */
 fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, range: Double): List<T>
-        = getNearbyEntities(range).filterIsInstance(type)
+  = getNearbyEntities(range).filterIsInstance(type)
 
 /**
  * * Get a list of entities of the specified type [type] within the [range] radius near the given location.
@@ -127,7 +127,7 @@ fun <T : Entity> Entity.getNearbyEntities(type: Class<T>, range: Double): List<T
  */
 @Throws(NullPointerException::class)
 fun <T : Entity> Location.getNearbyEntities(type: Class<T>, range: Double): List<T>
-        = getNearbyEntities(range).filterIsInstance(type)
+  = getNearbyEntities(range).filterIsInstance(type)
 
 /**************************************************************************
  *
@@ -142,9 +142,9 @@ fun <T : Entity> Location.getNearbyEntities(type: Class<T>, range: Double): List
  * @since LDK 0.1.8
  */
 fun Location.isInFront(target: Location): Boolean {
-    val facing = direction
-    val relative = target.subtract(this).toVector().normalize()
-    return facing.dot(relative) >= .0
+  val facing = direction
+  val relative = target.subtract(this).toVector().normalize()
+  return facing.dot(relative) >= .0
 }
 
 /**
@@ -152,7 +152,7 @@ fun Location.isInFront(target: Location): Boolean {
  * * 判断给定的目标实体 [target] 是否在给定实体前面.
  */
 fun Entity.isInFront(target: Entity): Boolean
-        = location.isInFront(target.location)
+  = location.isInFront(target.location)
 
 /**
  * * Determine if the given [target] location is in front of the given location.
@@ -161,12 +161,12 @@ fun Entity.isInFront(target: Entity): Boolean
  * @since LDK 0.1.8
  */
 fun Location.isInFront(target: Location, angle: Double): Boolean {
-    if (angle <= .0) return false
-    if (angle >= 360.0) return true
-    val dotTarget = cos(angle)
-    val facing = direction
-    val relative = target.subtract(this).toVector().normalize()
-    return facing.dot(relative) >= dotTarget
+  if (angle <= .0) return false
+  if (angle >= 360.0) return true
+  val dotTarget = cos(angle)
+  val facing = direction
+  val relative = target.subtract(this).toVector().normalize()
+  return facing.dot(relative) >= dotTarget
 }
 
 /**
@@ -174,7 +174,7 @@ fun Location.isInFront(target: Location, angle: Double): Boolean {
  * * 判断给定的目标实体 [target] 是否在给定实体前面.
  */
 fun Entity.isInFront(target: Entity, angle: Double): Boolean
-        = location.isInFront(target.location, angle)
+  = location.isInFront(target.location, angle)
 
 /**
  * * Determine if the given [target] location is in behind of the given location.
@@ -183,14 +183,14 @@ fun Entity.isInFront(target: Entity, angle: Double): Boolean
  * @since LDK 0.1.8
  */
 fun Location.isBehind(target: Location): Boolean
-        = !isInFront(target)
+  = !isInFront(target)
 
 /**
  * * Determine if the given [target] entity is in behind of the given entity.
  * * 判断给定的目标实体 [target] 是否在给定实体后面.
  */
 fun Entity.isBehind(target: Entity): Boolean
-        = !location.isInFront(target.location)
+  = !location.isInFront(target.location)
 
 /**
  * * Determine if the given [target] location is in behind of the given location.
@@ -199,12 +199,12 @@ fun Entity.isBehind(target: Entity): Boolean
  * @since LDK 0.1.8
  */
 fun Location.isBehind(target: Location, angle: Double): Boolean {
-    if (angle <= .0) return false
-    if (angle >= 360.0) return true
-    val dotTarget = cos(angle)
-    val facing = direction
-    val relative = subtract(target).toVector().normalize()
-    return facing.dot(relative) >= dotTarget
+  if (angle <= .0) return false
+  if (angle >= 360.0) return true
+  val dotTarget = cos(angle)
+  val facing = direction
+  val relative = subtract(target).toVector().normalize()
+  return facing.dot(relative) >= dotTarget
 }
 
 /**
@@ -212,7 +212,7 @@ fun Location.isBehind(target: Location, angle: Double): Boolean {
  * * 判断给定的目标实体 [target] 是否在给定实体后面.
  */
 fun Entity.isBehind(target: Entity, angle: Double): Boolean
-        = location.isBehind(target.location, angle)
+  = location.isBehind(target.location, angle)
 
 /**
  * * Get the list of entities in front of the [x], [y], [z] radius near the given location.
@@ -225,7 +225,7 @@ fun Entity.isBehind(target: Entity, angle: Double): Boolean
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun Location.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<Entity>
-        = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
+  = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
 
 /**
  * * Get the list of entities in front of the [x], [y], [z] radius near the given entity.
@@ -233,7 +233,7 @@ fun Location.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double
  */
 @JvmOverloads
 fun Entity.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<Entity>
-        = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
+  = getNearbyTargets(Entity::class.java, x, y, z, tolerance)
 
 /**
  * * Get the list of entities in front of the [range] radius near the given location.
@@ -246,7 +246,7 @@ fun Entity.getNearbyTargets(x: Double, y: Double, z: Double, tolerance: Double =
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun Location.getNearbyTargets(range: Double, tolerance: Double = 4.0): List<Entity>
-        = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
+  = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
 
 /**
  * * Get the list of entities in front of the [range] radius near the given entity.
@@ -254,7 +254,7 @@ fun Location.getNearbyTargets(range: Double, tolerance: Double = 4.0): List<Enti
  */
 @JvmOverloads
 fun Entity.getNearbyTargets(range: Double, tolerance: Double = 4.0): List<Entity>
-        = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
+  = getNearbyTargets(Entity::class.java, range, range, range, tolerance)
 
 /**
  * * Get the list of specified [type] entities in front of the [x], [y], [z] radius near the given location.
@@ -267,22 +267,22 @@ fun Entity.getNearbyTargets(range: Double, tolerance: Double = 4.0): List<Entity
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun <T : Entity> Location.getNearbyTargets(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<T> {
-    val facing = direction
-    val fLengthSq = facing.lengthSquared()
-    return getNearbyEntities(x, y, z)
-        .asSequence()
-        .filter { type.isInstance(it) && isInFront(it.location) }
-        .filter {
-            val relative = it.location.subtract(this).toVector()
-            val dot = relative.dot(facing)
-            val rLengthSq = relative.lengthSquared()
-            val cosSquared = dot * dot / (rLengthSq * fLengthSq)
-            val sinSquared = 1.0 - cosSquared
-            val dSquared = rLengthSq * sinSquared
-            dSquared < tolerance
-        }
-        .map(type::cast)
-        .toList()
+  val facing = direction
+  val fLengthSq = facing.lengthSquared()
+  return getNearbyEntities(x, y, z)
+    .asSequence()
+    .filter { type.isInstance(it) && isInFront(it.location) }
+    .filter {
+      val relative = it.location.subtract(this).toVector()
+      val dot = relative.dot(facing)
+      val rLengthSq = relative.lengthSquared()
+      val cosSquared = dot * dot / (rLengthSq * fLengthSq)
+      val sinSquared = 1.0 - cosSquared
+      val dSquared = rLengthSq * sinSquared
+      dSquared < tolerance
+    }
+    .map(type::cast)
+    .toList()
 }
 
 /**
@@ -291,7 +291,7 @@ fun <T : Entity> Location.getNearbyTargets(type: Class<T>, x: Double, y: Double,
  */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): List<T>
-        = location.getNearbyTargets(type, x, y, z, tolerance)
+  = location.getNearbyTargets(type, x, y, z, tolerance)
 
 /**
  * * Get the list of specified [type] entities in front of the [range] radius near the given location.
@@ -304,7 +304,7 @@ fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, x: Double, y: Double, z
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun <T : Entity> Location.getNearbyTargets(type: Class<T>, range: Double, tolerance: Double = 4.0): List<T>
-        = getNearbyTargets(type, range, range, range, tolerance)
+  = getNearbyTargets(type, range, range, range, tolerance)
 
 /**
  * * Get the list of specified [type] entities in front of the [range] radius near the given entity.
@@ -312,7 +312,7 @@ fun <T : Entity> Location.getNearbyTargets(type: Class<T>, range: Double, tolera
  */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, range: Double, tolerance: Double = 4.0): List<T>
-        = getNearbyTargets(type, range, range, range, tolerance)
+  = getNearbyTargets(type, range, range, range, tolerance)
 
 /**
  * * Get the nearest entity in front of the [x], [y], [z] radius near the given location.
@@ -325,7 +325,7 @@ fun <T : Entity> Entity.getNearbyTargets(type: Class<T>, range: Double, toleranc
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun Location.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double = 4.0): Entity?
-        = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
+  = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
 
 /**
  * * Get the nearest entity in front of the [x], [y], [z] radius near the given entity.
@@ -333,7 +333,7 @@ fun Location.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double 
  */
 @JvmOverloads
 fun Entity.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double = 4.0): Entity?
-        = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
+  = getNearbyTarget(Entity::class.java, x, y, z, tolerance)
 
 /**
  * * Get the nearest entity in front of the [range] radius near the given location.
@@ -346,7 +346,7 @@ fun Entity.getNearbyTarget(x: Double, y: Double, z: Double, tolerance: Double = 
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun Location.getNearbyTarget(range: Double, tolerance: Double = 4.0): Entity?
-        = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
+  = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
 
 /**
  * * Get the nearest entity in front of the [range] radius near the given entity.
@@ -354,7 +354,7 @@ fun Location.getNearbyTarget(range: Double, tolerance: Double = 4.0): Entity?
  */
 @JvmOverloads
 fun Entity.getNearbyTarget(range: Double, tolerance: Double = 4.0): Entity?
-        = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
+  = getNearbyTarget(Entity::class.java, range, range, range, tolerance)
 
 /**
  * * Get the nearest of specified [type] entity in front of the [x], [y], [z] radius near the given location.
@@ -367,23 +367,23 @@ fun Entity.getNearbyTarget(range: Double, tolerance: Double = 4.0): Entity?
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun <T : Entity> Location.getNearbyTarget(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): T? {
-    val targets = getNearbyTargets(type, x, y, z, tolerance)
-    return when {
-        targets.isEmpty() -> null
-        targets.size == 1 -> targets.first()
-        else -> {
-            var target = targets.first()
-            var minDistance = target.location.distanceSquared(this)
-            for (alternate in targets) {
-                val distance = alternate.location.distanceSquared(this)
-                if (distance < minDistance) {
-                    minDistance = distance
-                    target = alternate
-                }
-            }
-            target
+  val targets = getNearbyTargets(type, x, y, z, tolerance)
+  return when {
+    targets.isEmpty() -> null
+    targets.size == 1 -> targets.first()
+    else -> {
+      var target = targets.first()
+      var minDistance = target.location.distanceSquared(this)
+      for (alternate in targets) {
+        val distance = alternate.location.distanceSquared(this)
+        if (distance < minDistance) {
+          minDistance = distance
+          target = alternate
         }
+      }
+      target
     }
+  }
 }
 
 /**
@@ -392,7 +392,7 @@ fun <T : Entity> Location.getNearbyTarget(type: Class<T>, x: Double, y: Double, 
  */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z: Double, tolerance: Double = 4.0): T?
-        = location.getNearbyTarget(type, x, y, z, tolerance)
+  = location.getNearbyTarget(type, x, y, z, tolerance)
 
 /**
  * * Get the nearest of specified [type] entity in front of the [range] radius near the given location.
@@ -405,7 +405,7 @@ fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, x: Double, y: Double, z:
 @JvmOverloads
 @Throws(NullPointerException::class)
 fun <T : Entity> Location.getNearbyTarget(type: Class<T>, range: Double, tolerance: Double = 4.0): T?
-        = getNearbyTarget(type, range, range, range, tolerance)
+  = getNearbyTarget(type, range, range, range, tolerance)
 
 /**
  * * Get the nearest of specified [type] entity in front of the [range] radius near the given entity.
@@ -413,7 +413,7 @@ fun <T : Entity> Location.getNearbyTarget(type: Class<T>, range: Double, toleran
  */
 @JvmOverloads
 fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, range: Double, tolerance: Double = 4.0): T?
-        = getNearbyTarget(type, range, range, range, tolerance)
+  = getNearbyTarget(type, range, range, range, tolerance)
 
 /**************************************************************************
  *
@@ -426,24 +426,24 @@ fun <T : Entity> Entity.getNearbyTarget(type: Class<T>, range: Double, tolerance
  * * 表示此 [LivingEntity] 主手中的物品栈.
  */
 var LivingEntity.itemInHand: ItemStack?
-    get() = EntityFactory.getItemInHand(this)
-    set(value) { EntityFactory.setItemInHand(this, value) }
+  get() = EntityFactory.getItemInHand(this)
+  set(value) { EntityFactory.setItemInHand(this, value) }
 
 /**
  * * Indicate the item stack in main hand of the given [LivingEntity].
  * * 表示此 [LivingEntity] 主手中的物品栈.
  */
 var LivingEntity.itemInMainHand: ItemStack?
-    get() = EntityFactory.getItemInMainHand(this)
-    set(value) { EntityFactory.setItemInMainHand(this, value) }
+  get() = EntityFactory.getItemInMainHand(this)
+  set(value) { EntityFactory.setItemInMainHand(this, value) }
 
 /**
  * * Indicate the item stack in off hand of the given [LivingEntity].
  * * 表示此 [LivingEntity] 副手中的物品栈.
  */
 var LivingEntity.itemInOffHand: ItemStack?
-    get() = EntityFactory.getItemInOffHand(this)
-    set(value) { EntityFactory.setItemInOffHand(this, value) }
+  get() = EntityFactory.getItemInOffHand(this)
+  set(value) { EntityFactory.setItemInOffHand(this, value) }
 
 /**
  * @see [PotionEffectCustom.applyToEntity]
@@ -451,4 +451,4 @@ var LivingEntity.itemInOffHand: ItemStack?
  */
 @JvmOverloads
 fun LivingEntity.applyToEffect(effectCustom: PotionEffectCustom, force: Boolean = false): Boolean
-        = effectCustom.applyToEntity(this, force)
+  = effectCustom.applyToEntity(this, force)

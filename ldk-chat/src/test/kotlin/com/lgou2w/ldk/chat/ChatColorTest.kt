@@ -21,8 +21,8 @@ import org.junit.Test
 
 class ChatColorTest {
 
-    @Test fun `ChatColor - append`() {
-        ChatColor.GOLD.code shouldEqual '6'
-        (ChatColor.GOLD + "gold") shouldEqual "§6gold"
-    }
+  @Test fun `ChatColor - append`() {
+    ChatColor.GOLD.code shouldEqual '6'
+    (ChatColor.GOLD + "gold") shouldEqual "§6gold"
+  }
 }

@@ -24,12 +24,12 @@ package com.lgou2w.ldk.bukkit.depend
  */
 class DependCannotException : UnsupportedOperationException {
 
-    constructor() : super()
-    constructor(message: String?) : super(message)
-    constructor(message: String?, cause: Throwable?) : super(message, cause)
-    constructor(cause: Throwable?) : super(cause)
+  constructor() : super()
+  constructor(message: String?) : super(message)
+  constructor(message: String?, cause: Throwable?) : super(message, cause)
+  constructor(cause: Throwable?) : super(cause)
 
-    companion object {
-        private const val serialVersionUID = -4568975005840219674L
-    }
+  companion object {
+    private const val serialVersionUID = -4568975005840219674L
+  }
 }

@@ -22,24 +22,24 @@ import org.junit.Test
 
 class ChatComponentTranslationTest {
 
-    @Test fun `ChatComponentTranslation - test`() {
-        val cct = ChatComponentTranslation("item.diamond")
-        cct.key shouldEqual "item.diamond"
-        cct.key = "item.key"
-        cct.setKey("item.key").key shouldEqual "item.key"
-        cct.withs.size shouldEqual 0
-        cct.withs = mutableListOf()
-        cct.addWiths(arrayOf(1, "str", 2.0, 3f))
-        cct.withs.size shouldEqual 4
-        cct.hashCode() shouldNotEqual 0
-        cct.toString() shouldNotEqual null
-        cct.equals(cct) shouldEqual true
-        cct.equals(null) shouldEqual false
-        cct.equals(ChatComponentTranslation("key")) shouldEqual false
-        cct.equals(ChatComponentTranslation("item.key")) shouldEqual false
-        cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldEqual true
-        cct.style.color = ChatColor.RED
-        cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldEqual false
-        (ChatSerializer.fromJson(cct.toJson()) as ChatComponentTranslation).key shouldEqual "item.key"
-    }
+  @Test fun `ChatComponentTranslation - test`() {
+    val cct = ChatComponentTranslation("item.diamond")
+    cct.key shouldEqual "item.diamond"
+    cct.key = "item.key"
+    cct.setKey("item.key").key shouldEqual "item.key"
+    cct.withs.size shouldEqual 0
+    cct.withs = mutableListOf()
+    cct.addWiths(arrayOf(1, "str", 2.0, 3f))
+    cct.withs.size shouldEqual 4
+    cct.hashCode() shouldNotEqual 0
+    cct.toString() shouldNotEqual null
+    cct.equals(cct) shouldEqual true
+    cct.equals(null) shouldEqual false
+    cct.equals(ChatComponentTranslation("key")) shouldEqual false
+    cct.equals(ChatComponentTranslation("item.key")) shouldEqual false
+    cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldEqual true
+    cct.style.color = ChatColor.RED
+    cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldEqual false
+    (ChatSerializer.fromJson(cct.toJson()) as ChatComponentTranslation).key shouldEqual "item.key"
+  }
 }
