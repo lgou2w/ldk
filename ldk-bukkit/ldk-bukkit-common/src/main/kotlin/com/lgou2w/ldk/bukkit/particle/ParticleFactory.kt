@@ -436,14 +436,12 @@ object ParticleFactory {
   ) {
     var longDistance = false
     val results = players
-      .asSequence()
       .filter {
         val result = filter(it)
         if (result && !longDistance && it.location.distanceSquared(center) >= 256.0)
           longDistance = true
         result
       }
-      .toList()
       .toTypedArray()
     val packet = createPacket(particle, center.x.toFloat(), center.y.toFloat(), center.z.toFloat(), offsetX, offsetY, offsetZ, speed, count, longDistance, data)
     PacketFactory.sendPacketTo(packet, *results)

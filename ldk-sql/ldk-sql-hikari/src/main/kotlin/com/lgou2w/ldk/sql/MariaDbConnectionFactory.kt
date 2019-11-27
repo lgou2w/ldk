@@ -36,9 +36,7 @@ class MariaDbConnectionFactory(
     val entries = configuration.properties.entries
     if (entries.isEmpty())
       return
-    val properties = entries.asSequence()
-      .map { "${it.key}=${it.value}" }
-      .joinToString(separator = ";")
+    val properties = entries.joinToString(separator = ";") { "${it.key}=${it.value}" }
     config.addDataSourceProperty("properties", properties)
   }
 }

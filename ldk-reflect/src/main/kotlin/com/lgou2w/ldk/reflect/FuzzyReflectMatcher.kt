@@ -53,7 +53,7 @@ abstract class FuzzyReflectMatcher<T>(
   open fun with(predicate: Predicate<T>): FuzzyReflectMatcher<T> {
     if (values.isEmpty()) // if is empty
       return this
-    values = values.asSequence().filter(predicate).toMutableList()
+    values = values.filter(predicate).toMutableList()
     return this
   }
 
@@ -71,7 +71,7 @@ abstract class FuzzyReflectMatcher<T>(
     if (values.isEmpty()) // if is empty
       return this
     val initializeValue = initialize()
-    values = values.asSequence().filter { predicate(it, initializeValue) }.toMutableList()
+    values = values.filter { predicate(it, initializeValue) }.toMutableList()
     return this
   }
 

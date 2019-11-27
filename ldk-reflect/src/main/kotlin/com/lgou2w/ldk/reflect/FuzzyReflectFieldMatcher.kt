@@ -62,7 +62,7 @@ class FuzzyReflectFieldMatcher(
 
   override fun withType(clazz: Class<*>): FuzzyReflectFieldMatcher {
     val primitiveType = DataType.ofPrimitive(clazz)
-    values = values.asSequence().filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
+    values = values.filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
     return this
   }
 
@@ -80,14 +80,12 @@ class FuzzyReflectFieldMatcher(
     val primitiveRawType = if (rawType != null) DataType.ofPrimitive(rawType) else null
     val primitiveActualTypeArguments = DataType.ofPrimitive(actualTypeArguments)
     val subActualTypeArgumentSize= primitiveActualTypeArguments.size
-    values = values.asSequence().filter { field ->
+    values = values.filter { field ->
       val parameterizedType = field.genericType as? ParameterizedType
       val parameterizedRawType = parameterizedType?.rawType
       if (parameterizedRawType != null && parameterizedRawType is Class<*>) {
         val parameterizedActualTypeArguments = parameterizedType.actualTypeArguments
-          .asSequence()
           .filterIsInstance(Class::class.java)
-          .toList()
           .let {
             if (it.size > subActualTypeArgumentSize)
               it.subList(0, subActualTypeArgumentSize).toTypedArray()
