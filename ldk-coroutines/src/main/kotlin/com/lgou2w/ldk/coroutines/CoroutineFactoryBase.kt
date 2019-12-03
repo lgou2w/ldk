@@ -25,6 +25,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.atomic.AtomicLong
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -34,9 +35,28 @@ import kotlin.coroutines.CoroutineContext
  * @see [SimpleCoroutineFactory]
  * @author lgou2w
  */
-abstract class CoroutineFactoryBase(
-  final override val provider: DispatcherProvider
-) : CoroutineFactory {
+abstract class CoroutineFactoryBase : CoroutineFactory {
+
+  private companion object {
+
+    val counter = AtomicLong(0L)
+  }
+
+  constructor(provider: DispatcherProvider) {
+    this.name = javaClass.simpleName + "#" + counter.incrementAndGet()
+    this.provider = provider
+  }
+
+  /**
+   * @since LDK 0.2.0
+   */
+  constructor(name: String, provider: DispatcherProvider) {
+    this.name = name
+    this.provider = provider
+  }
+
+  final override val name : String
+  final override val provider : DispatcherProvider
 
   override val context : CoroutineContext
     get() = provider.dispatcher
@@ -75,5 +95,9 @@ abstract class CoroutineFactoryBase(
     block: SuspendApplicatorFunction<CoroutineScope, T>
   ): Deferred<T> = GlobalScope.async(ctx) {
     block()
+  }
+
+  override fun toString(): String {
+    return "CoroutineFactory(name='$name', provider=$provider)"
   }
 }

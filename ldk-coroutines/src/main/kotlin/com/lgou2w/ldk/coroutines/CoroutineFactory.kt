@@ -33,6 +33,14 @@ import kotlin.coroutines.CoroutineContext
 interface CoroutineFactory {
 
   /**
+   * * The name for this coroutine factory.
+   * * 此协程工厂的名称.
+   *
+   * @since LDK 0.2.0
+   */
+  val name : String
+
+  /**
    * * The dispatcher provider for this coroutine factory.
    * * 此协程工厂的调度程序提供者.
    */

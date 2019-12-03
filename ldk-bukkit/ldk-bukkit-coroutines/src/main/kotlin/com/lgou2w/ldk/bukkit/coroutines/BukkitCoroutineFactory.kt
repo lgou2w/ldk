@@ -35,19 +35,36 @@ import kotlin.coroutines.suspendCoroutine
  * @see [CoroutineFactoryBase]
  * @author lgou2w
  */
-open class BukkitCoroutineFactory(
+open class BukkitCoroutineFactory : CoroutineFactoryBase {
+
+  // 强制使用 Unconfined 调度器
+  // Mandatory use the Unconfined dispatcher
+
+  constructor(plugin: Plugin) : super(
+    CustomizeDispatcherProvider(Dispatchers.Unconfined)
+  ) {
+    this.plugin = plugin
+    this.delegate = NonRepeatingBukkitCoroutineTask(plugin)
+  }
+
+  /**
+   * @since LDK 0.2.0
+   */
+  constructor(name: String, plugin: Plugin) : super(
+    name,
+    CustomizeDispatcherProvider(Dispatchers.Unconfined)
+  ) {
+    this.plugin = plugin
+    this.delegate = NonRepeatingBukkitCoroutineTask(plugin)
+  }
+
   /**
    * * The plugin object for this Bukkit coroutine factory.
    * * 此 Bukkit 协程工厂的插件对象.
    */
   val plugin: Plugin
-) : CoroutineFactoryBase(CustomizeDispatcherProvider(Dispatchers.Unconfined)) {
-
-  // 强制使用 Unconfined 调度器
-  // Mandatory use the Unconfined dispatcher
 
   private var delegate : BukkitCoroutineTask
-    = NonRepeatingBukkitCoroutineTask(plugin)
 
   @Deprecated("No status.", replaceWith = ReplaceWith("launcher"), level = DeprecationLevel.HIDDEN)
   override fun launch(block: SuspendApplicator<CoroutineFactory>): Job {
