@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.i18n
 
+import com.lgou2w.ldk.common.notNull
+
 /**
  * ## SimpleLanguageManager (简单语言管理器)
  *
@@ -27,4 +29,45 @@ open class SimpleLanguageManager(
   baseName: String,
   adapter: LanguageAdapter,
   provider: LanguageProvider
-) : LanguageManagerBase(baseName, adapter, provider)
+) : LanguageManagerBase(baseName, adapter, provider) {
+
+  companion object {
+
+    /**
+     * @since LDK 0.2.0
+     */
+    @JvmStatic fun builder() = Builder()
+
+    /**
+     * @since LDK 0.2.0
+     */
+    class Builder internal constructor() {
+
+      private var baseName : String? = null
+      private var adapter : LanguageAdapter? = null
+      private var provider : LanguageProvider? = null
+
+      fun withBaseName(baseName: String): Builder {
+        this.baseName = baseName
+        return this
+      }
+
+      fun withAdapter(adapter: LanguageAdapter): Builder {
+        this.adapter = adapter
+        return this
+      }
+
+      fun withProvider(provider: LanguageProvider): Builder {
+        this.provider = provider
+        return this
+      }
+
+      fun build(): SimpleLanguageManager {
+        val baseName = this.baseName.notNull("The base name cannot be null.")
+        val adapter = this.adapter.notNull("The adapter cannot be null.")
+        val provider = this.provider.notNull("The provider cannot be null.")
+        return SimpleLanguageManager(baseName, adapter, provider)
+      }
+    }
+  }
+}
