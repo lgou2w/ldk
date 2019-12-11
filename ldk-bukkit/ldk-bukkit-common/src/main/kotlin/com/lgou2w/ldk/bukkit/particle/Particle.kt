@@ -17,7 +17,6 @@
 package com.lgou2w.ldk.bukkit.particle
 
 import com.lgou2w.ldk.bukkit.version.API
-import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.Level
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Valuable
@@ -131,10 +130,10 @@ enum class Particle(
   @API(Level.Minecraft_V1_14) LANDING_LAVA(56, "landing_lava", "landing_lava"),
   @API(Level.Minecraft_V1_14) FALLING_WATER(57, "falling_water", "falling_water"),
 
-  @Draft @Deprecated("Minecraft 1.15 Draft") DRIPPING_HONEY(58, "dripping_honey", "dripping_honey"),
-  @Draft @Deprecated("Minecraft 1.15 Draft") FALLING_HONEY(59, "falling_honey", "falling_honey"),
-  @Draft @Deprecated("Minecraft 1.15 Draft") LANDING_HONEY(60, "landing_honey", "landing_honey"),
-  @Draft @Deprecated("Minecraft 1.15 Draft") FALLING_NECTAR(61, "falling_nectar", "falling_nectar"),
+  @API(Level.Minecraft_V1_15) DRIPPING_HONEY(58, "dripping_honey", "dripping_honey"),
+  @API(Level.Minecraft_V1_15) FALLING_HONEY(59, "falling_honey", "falling_honey"),
+  @API(Level.Minecraft_V1_15) LANDING_HONEY(60, "landing_honey", "landing_honey"),
+  @API(Level.Minecraft_V1_15) FALLING_NECTAR(61, "falling_nectar", "falling_nectar"),
   ;
 
   constructor(

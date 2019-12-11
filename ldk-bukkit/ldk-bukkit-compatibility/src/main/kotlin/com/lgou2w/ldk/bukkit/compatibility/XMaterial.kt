@@ -56,7 +56,6 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
-import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
@@ -1070,15 +1069,15 @@ enum class XMaterial {
   //<editor-fold desc="XMaterials - Minecraft 1.15" defaultstate="collapsed">
   // Minecraft 1.15 Start
 
-  @Draft @Deprecated("Minecraft 1.15 Draft") BEEHIVE("STONE", 0),
-  @Draft @Deprecated("Minecraft 1.15 Draft") BEE_NEST("STONE", 0),
+  BEEHIVE("STONE", 0),
+  BEE_NEST("STONE", 0),
 
-  @Draft @Deprecated("Minecraft 1.15 Draft") HONEY_BOTTLE("STONE", 0),
-  @Draft @Deprecated("Minecraft 1.15 Draft") HONEYCOMB("STONE", 0),
-  @Draft @Deprecated("Minecraft 1.15 Draft") BEE_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+  HONEY_BOTTLE("STONE", 0),
+  HONEYCOMB("STONE", 0),
+  BEE_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
 
-  @Draft @Deprecated("Minecraft 1.15 Draft") HONEY_BLOCK("STONE", 0),
-  @Draft @Deprecated("Minecraft 1.15 Draft") HONEYCOMB_BLOCK("STONE", 0),
+  HONEY_BLOCK("STONE", 0),
+  HONEYCOMB_BLOCK("STONE", 0),
 
   //</editor-fold>
   ;

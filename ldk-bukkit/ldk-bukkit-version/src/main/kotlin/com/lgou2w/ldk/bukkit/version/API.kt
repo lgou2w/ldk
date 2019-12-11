@@ -46,8 +46,6 @@ enum class Level {
   /**
    * @since LDK 0.1.8-rc
    */
-  @Draft
-  @Deprecated("Minecraft 1.15 Draft")
   Minecraft_V1_15,
   ;
 

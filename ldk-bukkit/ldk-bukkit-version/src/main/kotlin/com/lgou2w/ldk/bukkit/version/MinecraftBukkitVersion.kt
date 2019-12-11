@@ -54,8 +54,6 @@ class MinecraftBukkitVersion(
     /**
      * @since LDK 0.1.8-rc
      */
-    @Draft
-    @Deprecated("Minecraft 1.15 Draft")
     @JvmField val V1_15_R1 = MinecraftBukkitVersion(1, 15, 1)
 
     @JvmStatic
@@ -138,8 +136,6 @@ class MinecraftBukkitVersion(
      *
      * @since LDK 0.1.8-rc
      */
-    @Draft
-    @Deprecated("Minecraft 1.15 Draft")
     @JvmStatic val isV115OrLater by lazy { CURRENT.isOrLater(V1_15_R1) }
 
     private val LOOKUP : NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
