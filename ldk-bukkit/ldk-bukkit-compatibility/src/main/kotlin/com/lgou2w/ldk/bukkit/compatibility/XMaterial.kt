@@ -56,6 +56,7 @@
 
 package com.lgou2w.ldk.bukkit.compatibility
 
+import com.lgou2w.ldk.bukkit.version.Draft
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.notNull
 import org.bukkit.Bukkit
@@ -944,6 +945,7 @@ enum class XMaterial {
 
   //</editor-fold>
 
+  //<editor-fold desc="XMaterials - Minecraft 1.14" defaultstate="collapsed">
   // Minecraft 1.14 Start
 
   BAMBOO("STONE", 0),
@@ -1062,6 +1064,25 @@ enum class XMaterial {
   POTTED_CORNFLOWER("STONE", 0),
   POTTED_LILY_OF_THE_VALLEY("STONE", 0),
   POTTED_WITHER_ROSE("STONE", 0),
+
+  //</editor-fold>
+
+  //<editor-fold desc="XMaterials - Minecraft 1.15" defaultstate="collapsed">
+  // Minecraft 1.15 Start
+
+  @Draft @Deprecated("Minecraft 1.15 Draft") BEEHIVE("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") BEE_NEST("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") WAX_BLOCK("STONE", 0),
+
+  @Draft @Deprecated("Minecraft 1.15 Draft") HONEY_BOTTLE("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") HONEYCOMB("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") CRYSTALLIZED_HONEY("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") BEE_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+
+  @Draft @Deprecated("Minecraft 1.15 Draft") HONEY_BLOCK("STONE", 0),
+  @Draft @Deprecated("Minecraft 1.15 Draft") HONEYCOMB_BLOCK("STONE", 0),
+
+  //</editor-fold>
   ;
 
   private val aliases : Array<out String>
