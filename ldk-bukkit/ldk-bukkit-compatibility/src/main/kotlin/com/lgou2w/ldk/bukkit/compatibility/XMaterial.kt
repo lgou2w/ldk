@@ -1072,11 +1072,9 @@ enum class XMaterial {
 
   @Draft @Deprecated("Minecraft 1.15 Draft") BEEHIVE("STONE", 0),
   @Draft @Deprecated("Minecraft 1.15 Draft") BEE_NEST("STONE", 0),
-  @Draft @Deprecated("Minecraft 1.15 Draft") WAX_BLOCK("STONE", 0),
 
   @Draft @Deprecated("Minecraft 1.15 Draft") HONEY_BOTTLE("STONE", 0),
   @Draft @Deprecated("Minecraft 1.15 Draft") HONEYCOMB("STONE", 0),
-  @Draft @Deprecated("Minecraft 1.15 Draft") CRYSTALLIZED_HONEY("STONE", 0),
   @Draft @Deprecated("Minecraft 1.15 Draft") BEE_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
 
   @Draft @Deprecated("Minecraft 1.15 Draft") HONEY_BLOCK("STONE", 0),
