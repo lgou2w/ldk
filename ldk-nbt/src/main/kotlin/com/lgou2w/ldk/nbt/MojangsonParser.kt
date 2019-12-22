@@ -23,7 +23,7 @@ package com.lgou2w.ldk.nbt
 
 /*
  *  Modify: Mojang brigadier MojangsonParser and StringReader Java -> Kotlin
- *  by lgou2w on 16/09/2019
+ *  by lgou2w on 09/16/2019
  */
 
 import java.util.regex.Pattern

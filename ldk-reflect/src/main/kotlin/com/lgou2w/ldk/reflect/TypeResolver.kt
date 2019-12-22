@@ -54,7 +54,7 @@ import java.util.WeakHashMap
 
 /*
  *  Modify: TypeTools TypeResolver Java -> Kotlin
- *  by lgou2w on 03/09/2019
+ *  by lgou2w on 09/03/2019
  */
 
 /**
