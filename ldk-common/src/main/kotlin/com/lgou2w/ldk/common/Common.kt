@@ -487,19 +487,16 @@ fun <T, C: Comparable<T>> C.isOrRange(min: T, max: T): Boolean
  * * Lazy loading class delegate.
  * * 延迟加载类委托.
  */
-fun <T> lazyClass(initializer: Callable<Class<T>>)
-  = LazyClass(initializer)
+fun <T> lazyClass(initializer: Callable<Class<T>>) = lazy(initializer)
 
 /**
  * * Lazy loading of any class delegate.
  * * 延迟加载任意类委托.
  */
-fun lazyAnyClass(initializer: Callable<Class<*>>)
-  = LazyAnyClass(initializer)
+fun lazyAnyClass(initializer: Callable<Class<*>>) = lazy(initializer)
 
 /**
  * * Lazy loading any or `null` class delegates.
  * * 延迟加载任意或 `null` 类委托.
  */
-fun lazyAnyOrNullClass(initializer: Callable<Class<*>?>)
-  = LazyAnyOrNullClass(initializer)
+fun lazyAnyOrNullClass(initializer: Callable<Class<*>?>) = lazy(initializer)
