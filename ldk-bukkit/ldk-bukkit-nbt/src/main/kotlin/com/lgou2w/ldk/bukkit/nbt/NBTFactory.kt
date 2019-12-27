@@ -35,8 +35,10 @@ import com.lgou2w.ldk.nbt.NBTTagLongArray
 import com.lgou2w.ldk.nbt.NBTTagShort
 import com.lgou2w.ldk.nbt.NBTTagString
 import com.lgou2w.ldk.nbt.NBTType
+import com.lgou2w.ldk.reflect.AccessorConstructor
 import com.lgou2w.ldk.reflect.AccessorField
 import com.lgou2w.ldk.reflect.AccessorMethod
+import com.lgou2w.ldk.reflect.DataType
 import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.Visibility
 import java.io.DataInput
@@ -67,15 +69,17 @@ object NBTFactory {
       .resultAccessorAs<Any, Byte>()
   }
 
+  // See: https://github.com/lgou2w/ldk/issues/104
   // NMS.NBTBase -> public static NBTBase createTag(byte)
-  @JvmStatic val METHOD_NBT_CREATE: AccessorMethod<Any, Any> by lazy {
+  @Deprecated("Since Minecraft 1.15 was removed!")
+  @JvmStatic val METHOD_NBT_CREATE: AccessorMethod<Any, Any>? by lazy {
     FuzzyReflect.of(CLASS_NBT_BASE, true)
       .useMethodMatcher()
       .withVisibilities(Visibility.STATIC)
       .withName("createTag")
       .withType(CLASS_NBT_BASE)
       .withParams(Byte::class.java)
-      .resultAccessor()
+      .resultAccessorOrNull()
   }
 
   // NMS.NBTBase -> public abstract byte getTypeId()
@@ -178,9 +182,7 @@ object NBTFactory {
       }
       NBTType.TAG_LIST -> {
         val value = (nbt as NBTTagList).map { toNMS(it) }
-        val handle = createInternal(NBTType.TAG_LIST, value)
-        NBT_LIST_TYPE_FIELD[handle] = nbt.elementType.id.toByte()
-        handle
+        createInternal(NBTType.TAG_LIST, value, nbt.elementType)
       }
       else -> if (nbt is NBTTagLongArray && CLASS_NBT_LONG_ARRAY == null) {
         // 最大化兼容性
@@ -197,14 +199,47 @@ object NBTFactory {
   /**
    * * Create an implementation instance object of `NMS` from the given NBT [type] and [value].
    * * 从给定的 NBT 类型 [type] 和值 [value] 创建一个 `NMS` 的实现实例对象.
+   *
+   * @throws [UnsupportedOperationException] If the server version does not support this [type].
+   * @throws [UnsupportedOperationException] 如果服务器版本不支持此 [type] 类型.
+   * @throws [IllegalArgumentException] If the [value] does not match the expected [type].
+   * @throws [IllegalArgumentException] 如果 [value] 值和预期 [type] 类型不符合.
    */
   @JvmStatic
-  fun createInternal(type: NBTType, value: Any? = null): Any {
-    val instance = METHOD_NBT_CREATE.invoke(null, type.id.toByte())
-    val valueAccessor = NBT_TYPE_FIELD(type)
-    if (value != null)
-      valueAccessor[instance] = value
-    return instance as Any
+  @Throws(UnsupportedOperationException::class, IllegalArgumentException::class)
+  fun createInternal(type: NBTType, value: Any? = null): Any
+    = createInternal(type, value, NBTType.TAG_END)
+
+  /**
+   * * Create an implementation instance object of `NMS` from the given NBT [type] and [value].
+   * * 从给定的 NBT 类型 [type] 和值 [value] 创建一个 `NMS` 的实现实例对象.
+   *
+   * @throws [UnsupportedOperationException] If the server version does not support this [type].
+   * @throws [UnsupportedOperationException] 如果服务器版本不支持此 [type] 类型.
+   * @throws [IllegalArgumentException] If the [value] does not match the expected [type].
+   * @throws [IllegalArgumentException] 如果 [value] 值和预期 [type] 类型不符合.
+   * @since LDK 0.2.0
+   */
+  @JvmStatic
+  @Throws(UnsupportedOperationException::class, IllegalArgumentException::class)
+  fun createInternal(type: NBTType, value: Any? = null, tagListElementType: NBTType): Any {
+    if (value != null && !type.primitive.isAssignableFrom(DataType.ofPrimitive(value::class.java)))
+      throw IllegalArgumentException("Value '${value::class.java}' and type mismatch. (Expected: ${type.primitive})")
+    val constructor = try {
+      NBT_TYPE_CONSTRUCTOR(type)
+    } catch (e: ClassNotFoundException) {
+      throw UnsupportedOperationException("The server version does not support this type: $type", e)
+    }
+    return if (type.isWrapper()) {
+      val inst = constructor.newInstance() // List and Compound
+      if (value != null)
+        NBT_TYPE_FIELD(type)[inst] = value
+      if (value != null && type == NBTType.TAG_LIST)
+        NBT_LIST_TYPE_FIELD[inst] = tagListElementType.id.toByte()
+      inst
+    } else {
+      constructor.newInstance(value)
+    }
   }
 
   /**
@@ -234,27 +269,52 @@ object NBTFactory {
       .newInstance()
   }
 
+  private fun NBTType.toNMSClassName() = when (this) {
+    NBTType.TAG_END        -> "NBTTagEnd"
+    NBTType.TAG_BYTE       -> "NBTTagByte"
+    NBTType.TAG_SHORT      -> "NBTTagShort"
+    NBTType.TAG_INT        -> "NBTTagInt"
+    NBTType.TAG_LONG       -> "NBTTagLong"
+    NBTType.TAG_FLOAT      -> "NBTTagFloat"
+    NBTType.TAG_DOUBLE     -> "NBTTagDouble"
+    NBTType.TAG_STRING     -> "NBTTagString"
+    NBTType.TAG_BYTE_ARRAY -> "NBTTagByteArray"
+    NBTType.TAG_INT_ARRAY  -> "NBTTagIntArray"
+    NBTType.TAG_LIST       -> "NBTTagList"
+    NBTType.TAG_COMPOUND   -> "NBTTagCompound"
+    NBTType.TAG_LONG_ARRAY -> "NBTTagLongArray" // since Minecraft 1.12
+  }
+
+  private val NBT_TYPE_CONSTRUCTOR_ACCESSORS : MutableMap<NBTType, AccessorConstructor<Any>> = HashMap()
+  private val NBT_TYPE_CONSTRUCTOR : (NBTType) -> AccessorConstructor<Any> = { type ->
+    var accessor = NBT_TYPE_CONSTRUCTOR_ACCESSORS[type]
+    if (accessor == null) {
+      if (type == NBTType.TAG_END)
+        throw IllegalArgumentException("TAG_END")
+      val className = type.toNMSClassName()
+      accessor = FuzzyReflect.of(MinecraftReflection.getMinecraftClass(className), true)
+        .useConstructorMatcher()
+        .apply {
+          when {
+            type.isWrapper()
+                 -> withParamsCount(0)
+            else -> withParams(type.primitive)
+          }
+        }
+        .resultAccessor()
+    }
+    accessor
+  }
+
   private val NBT_TYPE_FIELD_ACCESSORS : MutableMap<NBTType, AccessorField<Any, Any>> = HashMap()
   private val NBT_TYPE_FIELD : (NBTType) -> AccessorField<Any, Any> = { type ->
     var accessor = NBT_TYPE_FIELD_ACCESSORS[type]
     if (accessor == null) {
       if (type == NBTType.TAG_END)
         throw IllegalArgumentException("Type TAG_END has no value member field.")
-      accessor = FuzzyReflect.of(MinecraftReflection.getMinecraftClass(when (type) {
-        NBTType.TAG_END -> "NBTTagEnd"
-        NBTType.TAG_BYTE -> "NBTTagByte"
-        NBTType.TAG_SHORT -> "NBTTagShort"
-        NBTType.TAG_INT -> "NBTTagInt"
-        NBTType.TAG_LONG -> "NBTTagLong"
-        NBTType.TAG_FLOAT -> "NBTTagFloat"
-        NBTType.TAG_DOUBLE -> "NBTTagDouble"
-        NBTType.TAG_STRING -> "NBTTagString"
-        NBTType.TAG_BYTE_ARRAY -> "NBTTagByteArray"
-        NBTType.TAG_INT_ARRAY -> "NBTTagIntArray"
-        NBTType.TAG_LIST -> "NBTTagList"
-        NBTType.TAG_COMPOUND -> "NBTTagCompound"
-        NBTType.TAG_LONG_ARRAY -> "NBTTagLongArray" // since Minecraft 1.12
-      }), true)
+      val className = type.toNMSClassName()
+      accessor = FuzzyReflect
+        .of(MinecraftReflection.getMinecraftClass(className), true)
         .useFieldMatcher()
         .withType(type.primitive)
         .resultAccessor()
