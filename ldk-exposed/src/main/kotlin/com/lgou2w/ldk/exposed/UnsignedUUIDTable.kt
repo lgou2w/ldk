@@ -35,8 +35,8 @@ open class UnsignedUUIDTable @JvmOverloads constructor(
   name: String = "",
   columnName: String = ""
 ) : IdTable<UUID>(name) {
+  override val primaryKey by lazy { PrimaryKey(id) }
   override val id: Column<EntityID<UUID>> = unsignedUUID(columnName)
-    .primaryKey()
     .clientDefault { UUID.randomUUID() }
     .entityId()
 }
