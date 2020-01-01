@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,19 +35,36 @@ import kotlin.coroutines.suspendCoroutine
  * @see [CoroutineFactoryBase]
  * @author lgou2w
  */
-open class BukkitCoroutineFactory(
+open class BukkitCoroutineFactory : CoroutineFactoryBase {
+
+  // 强制使用 Unconfined 调度器
+  // Mandatory use the Unconfined dispatcher
+
+  constructor(plugin: Plugin) : super(
+    CustomizeDispatcherProvider(Dispatchers.Unconfined)
+  ) {
+    this.plugin = plugin
+    this.delegate = NonRepeatingBukkitCoroutineTask(plugin)
+  }
+
+  /**
+   * @since LDK 0.2.0
+   */
+  constructor(name: String, plugin: Plugin) : super(
+    name,
+    CustomizeDispatcherProvider(Dispatchers.Unconfined)
+  ) {
+    this.plugin = plugin
+    this.delegate = NonRepeatingBukkitCoroutineTask(plugin)
+  }
+
   /**
    * * The plugin object for this Bukkit coroutine factory.
    * * 此 Bukkit 协程工厂的插件对象.
    */
   val plugin: Plugin
-) : CoroutineFactoryBase(CustomizeDispatcherProvider(Dispatchers.Unconfined)) {
-
-  // 强制使用 Unconfined 调度器
-  // Mandatory use the Unconfined dispatcher
 
   private var delegate : BukkitCoroutineTask
-    = NonRepeatingBukkitCoroutineTask(plugin)
 
   @Deprecated("No status.", replaceWith = ReplaceWith("launcher"), level = DeprecationLevel.HIDDEN)
   override fun launch(block: SuspendApplicator<CoroutineFactory>): Job {

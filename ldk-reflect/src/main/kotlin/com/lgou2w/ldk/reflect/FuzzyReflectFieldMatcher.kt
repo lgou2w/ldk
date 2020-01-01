@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ class FuzzyReflectFieldMatcher(
 
   override fun withType(clazz: Class<*>): FuzzyReflectFieldMatcher {
     val primitiveType = DataType.ofPrimitive(clazz)
-    values = values.asSequence().filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
+    values = values.filter { primitiveType.isAssignableFrom(it.type) }.toMutableList()
     return this
   }
 
@@ -80,14 +80,12 @@ class FuzzyReflectFieldMatcher(
     val primitiveRawType = if (rawType != null) DataType.ofPrimitive(rawType) else null
     val primitiveActualTypeArguments = DataType.ofPrimitive(actualTypeArguments)
     val subActualTypeArgumentSize= primitiveActualTypeArguments.size
-    values = values.asSequence().filter { field ->
+    values = values.filter { field ->
       val parameterizedType = field.genericType as? ParameterizedType
       val parameterizedRawType = parameterizedType?.rawType
       if (parameterizedRawType != null && parameterizedRawType is Class<*>) {
         val parameterizedActualTypeArguments = parameterizedType.actualTypeArguments
-          .asSequence()
           .filterIsInstance(Class::class.java)
-          .toList()
           .let {
             if (it.size > subActualTypeArgumentSize)
               it.subList(0, subActualTypeArgumentSize).toTypedArray()

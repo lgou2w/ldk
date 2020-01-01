@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,7 @@ class MariaDbConnectionFactory(
     val entries = configuration.properties.entries
     if (entries.isEmpty())
       return
-    val properties = entries.asSequence()
-      .map { "${it.key}=${it.value}" }
-      .joinToString(separator = ";")
+    val properties = entries.joinToString(separator = ";") { "${it.key}=${it.value}" }
     config.addDataSourceProperty("properties", properties)
   }
 }

@@ -25,7 +25,7 @@
 */
 
 /*
- * Copyright (C) 2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2019-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ package com.lgou2w.ldk.eventbus
 
 /*
  *  Modify: Mouse EventBus Java -> Kotlin
- *  by lgou2w on 04/09/2019
+ *  by lgou2w on 09/04/2019
  */
 
 import java.util.function.Consumer

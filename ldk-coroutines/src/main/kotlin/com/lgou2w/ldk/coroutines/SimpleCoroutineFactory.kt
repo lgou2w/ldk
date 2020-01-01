@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package com.lgou2w.ldk.coroutines
 
+import com.lgou2w.ldk.common.notNull
+
 /**
  * ## SimpleCoroutineFactory (简单协程工厂)
  *
@@ -23,6 +25,46 @@ package com.lgou2w.ldk.coroutines
  * @see [CoroutineFactoryBase]
  * @author lgou2w
  */
-class SimpleCoroutineFactory(
-  provider: DispatcherProvider
-) : CoroutineFactoryBase(provider)
+class SimpleCoroutineFactory : CoroutineFactoryBase {
+
+  constructor(provider: DispatcherProvider) : super(provider)
+
+  /**
+   * @since LDK 0.2.0
+   */
+  constructor(name: String, provider: DispatcherProvider) : super(name, provider)
+
+  companion object {
+
+    /**
+     * @since LDK 0.2.0
+     */
+    @JvmStatic fun builder() = Builder()
+
+    /**
+     * @since LDK 0.2.0
+     */
+    class Builder internal constructor() {
+
+      private var name : String? = null
+      private var provider : DispatcherProvider? = null
+
+      fun withName(name: String?): Builder {
+        this.name = name
+        return this
+      }
+
+      fun withProvider(provider: DispatcherProvider): Builder {
+        this.provider = provider
+        return this
+      }
+
+      fun build(): SimpleCoroutineFactory {
+        val name = this.name
+        val provider = this.provider.notNull("Dispatcher provider cannot be null.")
+        return if (name == null) SimpleCoroutineFactory(provider)
+        else SimpleCoroutineFactory(name, provider)
+      }
+    }
+  }
+}

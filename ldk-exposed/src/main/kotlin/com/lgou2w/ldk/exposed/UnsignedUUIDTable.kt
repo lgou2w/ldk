@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.lgou2w.ldk.exposed
 
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IdTable
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
 import java.util.UUID
 
@@ -35,8 +35,8 @@ open class UnsignedUUIDTable @JvmOverloads constructor(
   name: String = "",
   columnName: String = ""
 ) : IdTable<UUID>(name) {
+  override val primaryKey by lazy { PrimaryKey(id) }
   override val id: Column<EntityID<UUID>> = unsignedUUID(columnName)
-    .primaryKey()
     .clientDefault { UUID.randomUUID() }
     .entityId()
 }

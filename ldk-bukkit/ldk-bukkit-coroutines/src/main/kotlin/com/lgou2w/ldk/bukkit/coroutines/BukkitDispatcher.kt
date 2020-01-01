@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,11 +49,33 @@ fun Plugin.launcher(
 ): Job = BukkitCoroutineFactory(this).launcher(initializeState, block)
 
 /**
+ * * Launches new coroutine with the plugin in the given [initializeState], and return the reference to the coroutine as [Job].
+ * * 以插件用给定的状态启动新的协同程序, 并将协程的引用作为 [Job] 返回.
+ *
+ * @since LDK 0.2.0
+ */
+@JvmOverloads
+fun Plugin.launcher(
+  name: String,
+  initializeState: State = State.SYNC,
+  block: SuspendApplicator<BukkitCoroutineFactory>
+): Job = BukkitCoroutineFactory(name, this).launcher(initializeState, block)
+
+/**
  * * Launches new coroutine with the plugin in asynchronous state, and return the reference to the coroutine as [Job].
  * * 以插件用异步状态启动新的协同程序, 并将协程的引用作为 [Job] 返回.
  */
 fun Plugin.launcherAsync(block: SuspendApplicator<BukkitCoroutineFactory>): Job
   = BukkitCoroutineFactory(this).launcher(State.ASYNC, block)
+
+/**
+ * * Launches new coroutine with the plugin in asynchronous state, and return the reference to the coroutine as [Job].
+ * * 以插件用异步状态启动新的协同程序, 并将协程的引用作为 [Job] 返回.
+ *
+ * @since LDK 0.2.0
+ */
+fun Plugin.launcherAsync(name: String, block: SuspendApplicator<BukkitCoroutineFactory>): Job
+  = BukkitCoroutineFactory(name, this).launcher(State.ASYNC, block)
 
 /**
  * * Use the Bukkit synchronization dispatcher context [Dispatchers.bukkit] to call the specified suspending block,

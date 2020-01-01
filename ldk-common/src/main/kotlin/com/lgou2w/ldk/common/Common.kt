@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -487,19 +487,16 @@ fun <T, C: Comparable<T>> C.isOrRange(min: T, max: T): Boolean
  * * Lazy loading class delegate.
  * * 延迟加载类委托.
  */
-fun <T> lazyClass(initializer: Callable<Class<T>>)
-  = LazyClass(initializer)
+fun <T> lazyClass(initializer: Callable<Class<T>>) = lazy(initializer)
 
 /**
  * * Lazy loading of any class delegate.
  * * 延迟加载任意类委托.
  */
-fun lazyAnyClass(initializer: Callable<Class<*>>)
-  = LazyAnyClass(initializer)
+fun lazyAnyClass(initializer: Callable<Class<*>>) = lazy(initializer)
 
 /**
  * * Lazy loading any or `null` class delegates.
  * * 延迟加载任意或 `null` 类委托.
  */
-fun lazyAnyOrNullClass(initializer: Callable<Class<*>?>)
-  = LazyAnyOrNullClass(initializer)
+fun lazyAnyOrNullClass(initializer: Callable<Class<*>?>) = lazy(initializer)

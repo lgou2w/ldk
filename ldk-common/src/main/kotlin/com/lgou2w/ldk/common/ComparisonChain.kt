@@ -15,7 +15,7 @@
  */
 
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2017-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ package com.lgou2w.ldk.common
 
 /*
  *  Modify: Guava ComparisonChain Java -> Kotlin
- *  by MoonLake on 24/08/2017
+ *  by lgou2w on 08/24/2017
  */
 
 /**
@@ -80,7 +80,7 @@ abstract class ComparisonChain private constructor() {
 
   /*
    * Modify: ACTIVE -> ActiveComparisonChain
-   * by MoonLake on 24/08/2017
+   * by lgou2w on 08/24/2017
    */
 
   private class ActiveComparisonChain : ComparisonChain() {
@@ -129,7 +129,7 @@ abstract class ComparisonChain private constructor() {
 
   /*
    * Modify: Comparable<?> -> <T extends Comparable<T>>
-   * by MoonLake on 24/08/2017
+   * by lgou2w on 08/24/2017
    */
 
   abstract fun <T : Comparable<T>> compare(left: T, right: T): ComparisonChain

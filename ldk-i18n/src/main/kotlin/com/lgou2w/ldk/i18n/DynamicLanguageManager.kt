@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.i18n
 
+import com.lgou2w.ldk.common.notNull
 import java.io.IOException
 import java.util.Collections
 import java.util.Locale
@@ -32,6 +33,46 @@ open class DynamicLanguageManager(
   adapter: LanguageAdapter,
   provider: LanguageProvider
 ) : LanguageManagerBase(baseName, adapter, provider) {
+
+  companion object {
+
+    /**
+     * @since LDK 0.2.0
+     */
+    @JvmStatic fun builder() = Builder()
+
+    /**
+     * @since LDK 0.2.0
+     */
+    class Builder internal constructor() {
+
+      private var baseName : String? = null
+      private var adapter : LanguageAdapter? = null
+      private var provider : LanguageProvider? = null
+
+      fun withBaseName(baseName: String): Builder {
+        this.baseName = baseName
+        return this
+      }
+
+      fun withAdapter(adapter: LanguageAdapter): Builder {
+        this.adapter = adapter
+        return this
+      }
+
+      fun withProvider(provider: LanguageProvider): Builder {
+        this.provider = provider
+        return this
+      }
+
+      fun build(): DynamicLanguageManager {
+        val baseName = this.baseName.notNull("The base name cannot be null.")
+        val adapter = this.adapter.notNull("The adapter cannot be null.")
+        val provider = this.provider.notNull("The provider cannot be null.")
+        return DynamicLanguageManager(baseName, adapter, provider)
+      }
+    }
+  }
 
   private val languages : MutableList<Language> = Collections.synchronizedList(ArrayList())
 

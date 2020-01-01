@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,6 +66,24 @@ object ParticleFactory {
         Float::class.java, // x
         Float::class.java, // y
         Float::class.java, // z
+        Float::class.java, // offsetX
+        Float::class.java, // offsetY
+        Float::class.java, // offsetZ
+        Float::class.java, // speed
+        Int::class.java) // count
+      .resultAccessorOrNull()
+  }
+
+  // After 1.15 => public constructor(NMS.ParticleParam, boolean, double, double, double, float, float, float, float, int)
+  @JvmStatic private val CONSTRUCTOR_FRESH_V115 : AccessorConstructor<Any>? by lazy {
+    FuzzyReflect.of(CLASS_PACKET_OUT_PARTICLES)
+      .useConstructorMatcher()
+      .withParams(
+        CLASS_PARTICLE_PARAM.notNull(), // Param
+        Boolean::class.java, // longDistance
+        Double::class.java, // x
+        Double::class.java, // y
+        Double::class.java, // z
         Float::class.java, // offsetX
         Float::class.java, // offsetY
         Float::class.java, // offsetZ
@@ -202,12 +220,40 @@ object ParticleFactory {
    * @throws [IllegalArgumentException] If wrong particle data.
    * @since LDK 0.1.8-rc
    */
+  @Deprecated("Double-precision floating-point x, y, z coordinates")
   @Throws(IllegalArgumentException::class)
   fun createPacket(
     particle: Particle,
     x: Float,
     y: Float,
     z: Float,
+    offsetX: Float,
+    offsetY: Float,
+    offsetZ: Float,
+    speed: Float,
+    count: Int,
+    longDistance: Boolean,
+    data: Any? = null
+  ): Any
+    = createPacket(particle,
+        x.toDouble(), y.toDouble(), z.toDouble(),
+        offsetX, offsetY, offsetZ, speed, count, longDistance)
+
+  /**
+   * * Create a particle effect packet with the given [particle].
+   * * 将给定的粒子效果 [particle] 以给定的参数创建粒子效果数据包.
+   *
+   * @param data [Material] | [ItemStack] | [Block] | [ParticleDust] | [Color] | `null`
+   * @throws [IllegalArgumentException] If wrong particle [data].
+   * @throws [IllegalArgumentException] 如果粒子数据 [data] 错误.
+   * @since LDK 0.2.0
+   */
+  @Throws(IllegalArgumentException::class)
+  fun createPacket(
+    particle: Particle,
+    x: Double,
+    y: Double,
+    z: Double,
     offsetX: Float,
     offsetY: Float,
     offsetZ: Float,
@@ -226,9 +272,9 @@ object ParticleFactory {
   @Suppress("DEPRECATION")
   private fun createPacketFresh(
     particle: Particle,
-    x: Float,
-    y: Float,
-    z: Float,
+    x: Double,
+    y: Double,
+    z: Double,
     offsetX: Float,
     offsetY: Float,
     offsetZ: Float,
@@ -281,23 +327,40 @@ object ParticleFactory {
     if (adaptParticle == Particle.NOTE && data is ParticleNote && data.value in 0..24) {
       overrideOffsetX = data.value / 24f
     }
-    return CONSTRUCTOR_FRESH.notNull().newInstance(
-      param,
-      longDistance,
-      x, y, z,
-      overrideOffsetX,
-      offsetY,
-      offsetZ,
-      speed,
-      count)
+    return if (MinecraftBukkitVersion.isV115OrLater) CONSTRUCTOR_FRESH_V115
+      .notNull()
+      .newInstance(
+        param,
+        longDistance,
+        x, y, z,
+        overrideOffsetX,
+        offsetY,
+        offsetZ,
+        speed,
+        count
+      )
+    else CONSTRUCTOR_FRESH
+      .notNull()
+      .newInstance(
+        param,
+        longDistance,
+        x.toFloat(),
+        y.toFloat(),
+        z.toFloat(),
+        overrideOffsetX,
+        offsetY,
+        offsetZ,
+        speed,
+        count
+      )
   }
 
   @Suppress("DEPRECATION")
   private fun createPacketLegacy(
     particle: Particle,
-    x: Float,
-    y: Float,
-    z: Float,
+    x: Double,
+    y: Double,
+    z: Double,
     offsetX: Float,
     offsetY: Float,
     offsetZ: Float,
@@ -344,7 +407,7 @@ object ParticleFactory {
     return CONSTRUCTOR_LEGACY.notNull().newInstance(
       nms,
       longDistance,
-      x, y, z,
+      x.toFloat(), y.toFloat(), z.toFloat(),
       overrideOffsetX,
       overrideOffsetY,
       overrideOffsetZ,
@@ -372,7 +435,8 @@ object ParticleFactory {
     count: Int = 1,
     data: Any? = null
   ) {
-    val packet = createPacket(particle, center.x.toFloat(), center.y.toFloat(), center.z.toFloat(), offsetX, offsetY, offsetZ, speed, count, range > 256.0, data)
+    val packet = createPacket(particle, center.x, center.y, center.z,
+      offsetX, offsetY, offsetZ, speed, count, range > 256.0, data)
     PacketFactory.sendPacketToNearby(packet, center, range)
   }
 
@@ -396,7 +460,8 @@ object ParticleFactory {
     data: Any? = null
   ) {
     val world = center.world.notNull()
-    sendParticle(world.players, { sender == null || sender.canSee(it) }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
+    sendParticle(world.players, { sender == null || sender.canSee(it) }, particle, center,
+      offsetX, offsetY, offsetZ, speed, count, data)
   }
 
   /**
@@ -418,7 +483,8 @@ object ParticleFactory {
     count: Int = 1,
     data: Any? = null
   ) {
-    sendParticle(players, { it.world == center.world }, particle, center, offsetX, offsetY, offsetZ, speed, count, data)
+    sendParticle(players, { it.world == center.world }, particle, center,
+      offsetX, offsetY, offsetZ, speed, count, data)
   }
 
   @JvmStatic
@@ -436,16 +502,15 @@ object ParticleFactory {
   ) {
     var longDistance = false
     val results = players
-      .asSequence()
       .filter {
         val result = filter(it)
         if (result && !longDistance && it.location.distanceSquared(center) >= 256.0)
           longDistance = true
         result
       }
-      .toList()
       .toTypedArray()
-    val packet = createPacket(particle, center.x.toFloat(), center.y.toFloat(), center.z.toFloat(), offsetX, offsetY, offsetZ, speed, count, longDistance, data)
+    val packet = createPacket(particle, center.x, center.y, center.z,
+      offsetX, offsetY, offsetZ, speed, count, longDistance, data)
     PacketFactory.sendPacketTo(packet, *results)
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,6 +129,11 @@ enum class Particle(
   @API(Level.Minecraft_V1_14) FALLING_LAVA(55, "falling_lava", "falling_lava"),
   @API(Level.Minecraft_V1_14) LANDING_LAVA(56, "landing_lava", "landing_lava"),
   @API(Level.Minecraft_V1_14) FALLING_WATER(57, "falling_water", "falling_water"),
+
+  @API(Level.Minecraft_V1_15) DRIPPING_HONEY(58, "dripping_honey", "dripping_honey"),
+  @API(Level.Minecraft_V1_15) FALLING_HONEY(59, "falling_honey", "falling_honey"),
+  @API(Level.Minecraft_V1_15) LANDING_HONEY(60, "landing_honey", "landing_honey"),
+  @API(Level.Minecraft_V1_15) FALLING_NECTAR(61, "falling_nectar", "falling_nectar"),
   ;
 
   constructor(

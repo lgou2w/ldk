@@ -39,7 +39,7 @@
  */
 
 /*
- * Copyright (C) 2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2019-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -944,6 +944,7 @@ enum class XMaterial {
 
   //</editor-fold>
 
+  //<editor-fold desc="XMaterials - Minecraft 1.14" defaultstate="collapsed">
   // Minecraft 1.14 Start
 
   BAMBOO("STONE", 0),
@@ -1062,6 +1063,23 @@ enum class XMaterial {
   POTTED_CORNFLOWER("STONE", 0),
   POTTED_LILY_OF_THE_VALLEY("STONE", 0),
   POTTED_WITHER_ROSE("STONE", 0),
+
+  //</editor-fold>
+
+  //<editor-fold desc="XMaterials - Minecraft 1.15" defaultstate="collapsed">
+  // Minecraft 1.15 Start
+
+  BEEHIVE("STONE", 0),
+  BEE_NEST("STONE", 0),
+
+  HONEY_BOTTLE("STONE", 0),
+  HONEYCOMB("STONE", 0),
+  BEE_SPAWN_EGG(0, "MONSTER_EGG", "STONE"),
+
+  HONEY_BLOCK("STONE", 0),
+  HONEYCOMB_BLOCK("STONE", 0),
+
+  //</editor-fold>
   ;
 
   private val aliases : Array<out String>

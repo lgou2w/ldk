@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,6 @@ class MinecraftBukkitVersion(
     /**
      * @since LDK 0.1.8-rc
      */
-    @Draft
-    @Deprecated("Minecraft 1.15 Draft")
     @JvmField val V1_15_R1 = MinecraftBukkitVersion(1, 15, 1)
 
     @JvmStatic
@@ -138,8 +136,6 @@ class MinecraftBukkitVersion(
      *
      * @since LDK 0.1.8-rc
      */
-    @Draft
-    @Deprecated("Minecraft 1.15 Draft")
     @JvmStatic val isV115OrLater by lazy { CURRENT.isOrLater(V1_15_R1) }
 
     private val LOOKUP : NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
@@ -214,7 +210,8 @@ class MinecraftBukkitVersion(
         // ---> net.minecraft.server.v1_14_R1
       )] = V1_14_R1
       map[arrayOf(
-        MinecraftVersion(1, 15, 0)
+        MinecraftVersion(1, 15, 0),
+        MinecraftVersion(1, 15, 1)
         // ---> net.minecraft.server.v1_15_R1
       )] = V1_15_R1
       return map
