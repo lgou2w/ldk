@@ -22,7 +22,7 @@
   <parent>
     <artifactId>ldk</artifactId>
     <groupId>com.lgou2w</groupId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>com.lgou2w</groupId>
       <artifactId>ldk-common</artifactId>
-      <version>0.2.0-SNAPSHOT</version>
+      <version>0.2.0</version>
       <scope>compile</scope>
     </dependency>
     <!-- Exposed -->
