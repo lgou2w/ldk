@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+ * Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
   private fun obcName(className: String) = "org/bukkit/craftbukkit/$VER/$className"
   private fun obcDescriptor(className: String) = "L${obcName(className)};"
 
-  // AnvilWindowImpl.java - Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+  // AnvilWindowImpl.java - Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
   /*
   package com.lgou2w.ldk.bukkit.anvil;
 
@@ -148,7 +148,7 @@ object AnvilWindowImplGenerator : ASMClassGenerator {
   */
 
   // Since Minecraft 1.14 Pre-Release 5
-  // AnvilWindowImpl.java - Copyright (C) 2016-2019 The lgou2w <lgou2w@hotmail.com>
+  // AnvilWindowImpl.java - Copyright (C) 2016-2020 The lgou2w <lgou2w@hotmail.com>
   /*
   package com.lgou2w.ldk.bukkit.anvil;
 
