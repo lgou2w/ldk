@@ -16,8 +16,8 @@
 
 package com.lgou2w.ldk.nbt
 
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldEndWith
-import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldStartWith
 import org.junit.Test
 
@@ -28,11 +28,11 @@ class NBTTagStringTest {
     nbt.toJson() shouldStartWith "\""
     nbt.toMojangson() shouldEndWith "\""
     nbt.toMojangsonWithColor() shouldStartWith "\""
-    nbt.toJson() shouldEqual "\"string\""
+    nbt.toJson() shouldBeEqualTo "\"string\""
   }
 
   @Test fun `NBTTagString - toJson - When value contains " should always be escaped`() {
     val nbt = NBTTagString(value = "\"Hi, I'm fine\"")
-    nbt.toJson() shouldEqual "\"\\\"Hi, I'm fine\\\"\""
+    nbt.toJson() shouldBeEqualTo "\"\\\"Hi, I'm fine\\\"\""
   }
 }

@@ -17,11 +17,12 @@
 package com.lgou2w.ldk.chat
 
 import org.amshove.kluent.invoking
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.amshove.kluent.shouldThrow
 import org.junit.Test
 
+@Suppress("ReplaceCallWithBinaryOperator")
 class ChatStyleTest {
 
   @Test fun `ChatStyle - normal` () {
@@ -35,61 +36,61 @@ class ChatStyleTest {
     cs.clickEvent = ChatClickEvent(ChatClickEvent.Action.OPEN_URL, "github.com")
     cs.hoverEvent = ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("hi"))
     cs.insertion = "Insertion"
-    cs.getColor() shouldEqual ChatColor.RED
-    cs.getBold() shouldEqual true
-    cs.getItalic() shouldEqual true
-    cs.getStrikethrough() shouldEqual true
-    cs.getUnderlined() shouldEqual true
-    cs.getObfuscated() shouldEqual true
-    cs.getInsertion() shouldEqual "Insertion"
-    cs.getClickEvent() shouldNotEqual null
-    cs.getHoverEvent() shouldNotEqual null
-    cs.isEmpty() shouldEqual false
-    cs.equals(cs) shouldEqual true
-    cs.equals(null) shouldEqual false
-    cs.hashCode() shouldNotEqual 0
+    cs.getColor() shouldBeEqualTo ChatColor.RED
+    cs.getBold() shouldBeEqualTo true
+    cs.getItalic() shouldBeEqualTo true
+    cs.getStrikethrough() shouldBeEqualTo true
+    cs.getUnderlined() shouldBeEqualTo true
+    cs.getObfuscated() shouldBeEqualTo true
+    cs.getInsertion() shouldBeEqualTo "Insertion"
+    cs.getClickEvent() shouldNotBeEqualTo null
+    cs.getHoverEvent() shouldNotBeEqualTo null
+    cs.isEmpty() shouldBeEqualTo false
+    cs.equals(cs) shouldBeEqualTo true
+    cs.equals(null) shouldBeEqualTo false
+    cs.hashCode() shouldNotBeEqualTo 0
     val cs2 = ChatStyle()
-    cs2.getColor() shouldEqual null
-    cs2.getBold() shouldEqual false
-    cs2.getItalic() shouldEqual false
-    cs2.getStrikethrough() shouldEqual false
-    cs2.getUnderlined() shouldEqual false
-    cs2.getObfuscated() shouldEqual false
-    cs2.getClickEvent() shouldEqual null
-    cs2.getHoverEvent() shouldEqual null
-    cs2.getInsertion() shouldEqual null
-    cs.equals(cs2) shouldEqual false
-    cs2.equals(cs) shouldEqual false
+    cs2.getColor() shouldBeEqualTo null
+    cs2.getBold() shouldBeEqualTo false
+    cs2.getItalic() shouldBeEqualTo false
+    cs2.getStrikethrough() shouldBeEqualTo false
+    cs2.getUnderlined() shouldBeEqualTo false
+    cs2.getObfuscated() shouldBeEqualTo false
+    cs2.getClickEvent() shouldBeEqualTo null
+    cs2.getHoverEvent() shouldBeEqualTo null
+    cs2.getInsertion() shouldBeEqualTo null
+    cs.equals(cs2) shouldBeEqualTo false
+    cs2.equals(cs) shouldBeEqualTo false
     cs2.setParent(cs)
-    cs2.getColor() shouldEqual ChatColor.RED
-    cs2.equals(cs) shouldEqual false
+    cs2.getColor() shouldBeEqualTo ChatColor.RED
+    cs2.equals(cs) shouldBeEqualTo false
   }
 
   @Test fun `ChatStyle - equals`() {
     val cs1 = ChatStyle()
     val cs2 = ChatStyle()
     cs1.italic = true
-    cs1.equals(cs2) shouldEqual false
+    cs1.equals(cs2) shouldBeEqualTo false
     cs2.italic = cs1.italic
     cs1.underlined = true
-    cs1.equals(cs2) shouldEqual false
+    cs1.equals(cs2) shouldBeEqualTo false
     cs2.underlined = cs1.underlined
     cs1.strikethrough = true
-    cs1.equals(cs2) shouldEqual false
+    cs1.equals(cs2) shouldBeEqualTo false
     cs2.strikethrough = cs1.strikethrough
     cs1.obfuscated = true
-    cs1.equals(cs2) shouldEqual false
+    cs1.equals(cs2) shouldBeEqualTo false
     cs2.obfuscated = cs1.obfuscated
     cs1.clickEvent = ChatClickEvent(ChatClickEvent.Action.OPEN_URL, "github.com")
-    cs1.equals(cs2) shouldEqual false
+    cs1.equals(cs2) shouldBeEqualTo false
     cs2.clickEvent = cs1.clickEvent
     cs1.hoverEvent = ChatHoverEvent(ChatHoverEvent.Action.SHOW_ITEM, ChatComponentText("hi"))
-    cs1.equals(cs2) shouldEqual false
+    cs1.equals(cs2) shouldBeEqualTo false
     cs2.hoverEvent = cs1.hoverEvent
     cs1.insertion = "Insertion"
-    cs1.equals(cs2) shouldEqual false
+    cs1.equals(cs2) shouldBeEqualTo false
     cs2.insertion = cs1.insertion
-    cs1.equals(cs2) shouldEqual true
+    cs1.equals(cs2) shouldBeEqualTo true
   }
 
   @Test fun `ChatStyle - ROOT - These operations should not be supported`() {
@@ -107,6 +108,6 @@ class ChatStyleTest {
     invoking { root.setClickEvent(null) } shouldThrow UnsupportedOperationException::class
     invoking { root.setHoverEvent(null) } shouldThrow UnsupportedOperationException::class
     invoking { root.setInsertion(null) } shouldThrow UnsupportedOperationException::class
-    root.toString() shouldEqual "ChatStyle.ROOT"
+    root.toString() shouldBeEqualTo "ChatStyle.ROOT"
   }
 }

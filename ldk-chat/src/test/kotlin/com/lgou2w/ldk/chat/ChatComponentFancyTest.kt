@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Test
 
 class ChatComponentFancyTest {
@@ -33,10 +33,10 @@ class ChatComponentFancyTest {
       .withHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("You found me."))
       .withClickEvent(ChatClickEvent.Action.RUN_COMMAND, "/say You found me.")
     val component = fancy.build()
-    fancy.size shouldEqual 5
+    fancy.size shouldBeEqualTo 5
     fancy.clear()
-    fancy.size shouldEqual 0
-    component.toRaw() shouldEqual "§6Hello §aWorld!§b <Click me>"
+    fancy.size shouldBeEqualTo 0
+    component.toRaw() shouldBeEqualTo "§6Hello §aWorld!§b <Click me>"
   }
 
   @Test fun `ChatComponentFancy - normal - 2`() {
@@ -53,19 +53,19 @@ class ChatComponentFancyTest {
       .build()
       .extras
       .first()
-    component.style.color shouldEqual ChatColor.RED
-    component.style.bold shouldEqual true
-    component.style.italic shouldEqual true
-    component.style.underlined shouldEqual true
-    component.style.strikethrough shouldEqual true
-    component.style.obfuscated shouldEqual true
-    component.style.insertion shouldEqual "Insertion"
-    component.style.clickEvent shouldEqual
+    component.style.color shouldBeEqualTo ChatColor.RED
+    component.style.bold shouldBeEqualTo true
+    component.style.italic shouldBeEqualTo true
+    component.style.underlined shouldBeEqualTo true
+    component.style.strikethrough shouldBeEqualTo true
+    component.style.obfuscated shouldBeEqualTo true
+    component.style.insertion shouldBeEqualTo "Insertion"
+    component.style.clickEvent shouldBeEqualTo
       ChatClickEvent(ChatClickEvent.Action.OPEN_URL, "https://github.com/lgou2w")
-    component.style.hoverEvent shouldEqual
+    component.style.hoverEvent shouldBeEqualTo
       ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("").append("Go to lgou2w's github page"))
-    component.toRaw(true) shouldEqual "§c§l§o§m§n§kHello"
-    component.toRaw(false) shouldEqual "Hello"
+    component.toRaw(true) shouldBeEqualTo "§c§l§o§m§n§kHello"
+    component.toRaw(false) shouldBeEqualTo "Hello"
   }
 
   @Test fun `ChatComponentFancy - normal - 3`() {
@@ -93,6 +93,6 @@ class ChatComponentFancyTest {
 
   @Test fun `ChatComponentFancy - test extends`() {
     val child = Child()
-    child.size shouldEqual 2
+    child.size shouldBeEqualTo 2
   }
 }

@@ -16,27 +16,28 @@
 
 package com.lgou2w.ldk.chat
 
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeGreaterThan
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
 class ChatComponentKeybindTest {
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `ChatComponentKeybind - test`() {
     val cck = ChatComponentKeybind("ctrl")
-    cck.keybind shouldEqual "ctrl"
+    cck.keybind shouldBeEqualTo "ctrl"
     cck.keybind = "ctrl + shift"
-    cck.keybind shouldEqual "ctrl + shift"
-    cck.setKeybind("ctrl").keybind shouldEqual "ctrl"
+    cck.keybind shouldBeEqualTo "ctrl + shift"
+    cck.setKeybind("ctrl").keybind shouldBeEqualTo "ctrl"
     cck.hashCode() shouldBeGreaterThan 1
-    cck.equals(cck) shouldEqual true
-    cck.equals(ChatComponentKeybind("ctrl")) shouldEqual true
-    cck.equals(ChatComponentKeybind("shift")) shouldEqual false
-    cck.equals(null) shouldEqual false
+    cck.equals(cck) shouldBeEqualTo true
+    cck.equals(ChatComponentKeybind("ctrl")) shouldBeEqualTo true
+    cck.equals(ChatComponentKeybind("shift")) shouldBeEqualTo false
+    cck.equals(null) shouldBeEqualTo false
     cck.style.color = ChatColor.RED
-    cck.equals(ChatComponentKeybind("ctrl")) shouldEqual false
+    cck.equals(ChatComponentKeybind("ctrl")) shouldBeEqualTo false
     cck.toJson() shouldContain "ctrl"
-    (ChatSerializer.fromJson(cck.toJson()) as ChatComponentKeybind).keybind shouldEqual "ctrl"
+    (ChatSerializer.fromJson(cck.toJson()) as ChatComponentKeybind).keybind shouldBeEqualTo "ctrl"
   }
 }

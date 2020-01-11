@@ -16,24 +16,24 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Test
 
 class ChatActionTest {
 
   @Test fun `ChatAction - test`() {
-    ChatAction.CHAT.id shouldEqual 0
-    ChatAction.CHAT.value shouldEqual 0
+    ChatAction.CHAT.id shouldBeEqualTo 0
+    ChatAction.CHAT.value shouldBeEqualTo 0
   }
 
   @Test fun `ChatAction - fromValue`() {
-    ChatAction.fromValue(0) shouldEqual ChatAction.CHAT
-    ChatAction.fromValue(1) shouldEqual ChatAction.SYSTEM
-    ChatAction.fromValue(2) shouldEqual ChatAction.ACTIONBAR
+    ChatAction.fromValue(0) shouldBeEqualTo ChatAction.CHAT
+    ChatAction.fromValue(1) shouldBeEqualTo ChatAction.SYSTEM
+    ChatAction.fromValue(2) shouldBeEqualTo ChatAction.ACTIONBAR
   }
 
   @Test fun `ChatAction - fromValue - Invalid value should always be CHAT`() {
-    ChatAction.fromValue(404) shouldEqual ChatAction.CHAT
-    ChatAction.fromValue(0) shouldEqual ChatAction.CHAT
+    ChatAction.fromValue(404) shouldBeEqualTo ChatAction.CHAT
+    ChatAction.fromValue(0) shouldBeEqualTo ChatAction.CHAT
   }
 }

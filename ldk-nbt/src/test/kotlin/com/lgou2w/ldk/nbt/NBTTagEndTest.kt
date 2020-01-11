@@ -17,8 +17,8 @@
 package com.lgou2w.ldk.nbt
 
 import org.amshove.kluent.shouldBe
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -29,21 +29,21 @@ class NBTTagEndTest {
 
   @Test fun `NBTTagEnd - clone should always be a singleton instance`() {
     NBTTagEnd.INSTANCE.clone() shouldBe NBTTagEnd.INSTANCE
-    NBTTagEnd.INSTANCE.type shouldEqual NBTType.TAG_END
+    NBTTagEnd.INSTANCE.type shouldBeEqualTo NBTType.TAG_END
   }
 
   @Test fun `NBTTagEnd - toJson should always be a empty string`() {
     val inst = NBTTagEnd.INSTANCE
-    inst.toJson() shouldEqual ""
-    inst.toMojangson() shouldEqual ""
-    inst.toMojangsonWithColor() shouldEqual ""
+    inst.toJson() shouldBeEqualTo ""
+    inst.toMojangson() shouldBeEqualTo ""
+    inst.toMojangsonWithColor() shouldBeEqualTo ""
   }
 
   @Test fun `NBTTagEnd - value set should be useless`() {
     val newAny = Any() // new instance
     NBTTagEnd.INSTANCE.value = newAny // useless
-    NBTTagEnd.INSTANCE.value shouldNotEqual newAny // !newAny
-    NBTTagEnd.INSTANCE.value shouldEqual NBTTagEnd.INSTANCE.value // ok
+    NBTTagEnd.INSTANCE.value shouldNotBeEqualTo newAny // !newAny
+    NBTTagEnd.INSTANCE.value shouldBeEqualTo NBTTagEnd.INSTANCE.value // ok
   }
 
   @Test fun `NBTTagEnd - read and write should be useless`() {
@@ -53,7 +53,7 @@ class NBTTagEndTest {
     val output = DataOutputStream(baos)
     NBTTagEnd.INSTANCE.read(input)
     NBTTagEnd.INSTANCE.write(output)
-    input.available() shouldEqual data.size
-    baos.size() shouldEqual 0
+    input.available() shouldBeEqualTo data.size
+    baos.size() shouldBeEqualTo 0
   }
 }

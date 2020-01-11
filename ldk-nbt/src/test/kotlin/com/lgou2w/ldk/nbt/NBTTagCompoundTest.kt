@@ -17,8 +17,8 @@
 package com.lgou2w.ldk.nbt
 
 import org.amshove.kluent.invoking
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotBe
 import org.amshove.kluent.shouldThrow
 import org.amshove.kluent.withCause
@@ -47,89 +47,90 @@ class NBTTagCompoundTest {
     compound.put(ofCompound("compound"))
     compound.putIntArray("[i", intArrayOf(1))
     compound.putLongArray("[l", longArrayOf(1L))
-    compound.size shouldEqual 12
-    compound.getByte("b") shouldEqual 1
-    compound.getBoolean("b") shouldEqual true
-    compound.getShort("s") shouldEqual 1
-    compound.getInt("i") shouldEqual 1
-    compound.getLong("l") shouldEqual 1L
-    compound.getFloat("f") shouldEqual 1f
-    compound.getDouble("d") shouldEqual 1.0
+    compound.size shouldBeEqualTo 12
+    compound.getByte("b") shouldBeEqualTo 1
+    compound.getBoolean("b") shouldBeEqualTo true
+    compound.getShort("s") shouldBeEqualTo 1
+    compound.getInt("i") shouldBeEqualTo 1
+    compound.getLong("l") shouldBeEqualTo 1L
+    compound.getFloat("f") shouldBeEqualTo 1f
+    compound.getDouble("d") shouldBeEqualTo 1.0
     compound.getByteArray("[b") shouldContain 1
-    compound.getString("string") shouldEqual "1"
-    compound.getList("list") shouldEqual ofList("list")
-    compound.getCompound("compound") shouldEqual ofCompound("compound")
+    compound.getString("string") shouldBeEqualTo "1"
+    compound.getList("list") shouldBeEqualTo ofList("list")
+    compound.getCompound("compound") shouldBeEqualTo ofCompound("compound")
     compound.getIntArray("[i") shouldContain 1
     compound.getLongArray("[l") shouldContain 1L
-    compound.getByteOrNull("bb") shouldEqual null
-    compound.getByteOrNull("b") shouldEqual 1
-    compound.getBooleanOrNull("bb") shouldEqual null
-    compound.getBooleanOrNull("b") shouldEqual true
-    compound.getShortOrNull("ss") shouldEqual null
-    compound.getShortOrNull("s") shouldEqual 1
-    compound.getIntOrNull("ii") shouldEqual null
-    compound.getIntOrNull("i") shouldEqual 1
-    compound.getLongOrNull("ll") shouldEqual null
-    compound.getLongOrNull("l") shouldEqual 1L
-    compound.getFloatOrNull("ff") shouldEqual null
-    compound.getFloatOrNull("f") shouldEqual 1f
-    compound.getDoubleOrNull("dd") shouldEqual null
-    compound.getDoubleOrNull("d") shouldEqual 1.0
-    compound.getByteArrayOrNull("[bb") shouldEqual null
+    compound.getByteOrNull("bb") shouldBeEqualTo null
+    compound.getByteOrNull("b") shouldBeEqualTo 1
+    compound.getBooleanOrNull("bb") shouldBeEqualTo null
+    compound.getBooleanOrNull("b") shouldBeEqualTo true
+    compound.getShortOrNull("ss") shouldBeEqualTo null
+    compound.getShortOrNull("s") shouldBeEqualTo 1
+    compound.getIntOrNull("ii") shouldBeEqualTo null
+    compound.getIntOrNull("i") shouldBeEqualTo 1
+    compound.getLongOrNull("ll") shouldBeEqualTo null
+    compound.getLongOrNull("l") shouldBeEqualTo 1L
+    compound.getFloatOrNull("ff") shouldBeEqualTo null
+    compound.getFloatOrNull("f") shouldBeEqualTo 1f
+    compound.getDoubleOrNull("dd") shouldBeEqualTo null
+    compound.getDoubleOrNull("d") shouldBeEqualTo 1.0
+    compound.getByteArrayOrNull("[bb") shouldBeEqualTo null
     compound.getByteArrayOrNull("[b")?.shouldContain(1)
-    compound.getStringOrNull("sstring") shouldEqual null
-    compound.getStringOrNull("string") shouldEqual "1"
-    compound.getListOrNull("llist") shouldEqual null
-    compound.getListOrNull("list") shouldEqual ofList("list")
-    compound.getCompoundOrNull("ccompound") shouldEqual null
-    compound.getCompoundOrNull("compound") shouldEqual ofCompound("compound")
-    compound.getIntArrayOrNull("[ii") shouldEqual null
+    compound.getStringOrNull("sstring") shouldBeEqualTo null
+    compound.getStringOrNull("string") shouldBeEqualTo "1"
+    compound.getListOrNull("llist") shouldBeEqualTo null
+    compound.getListOrNull("list") shouldBeEqualTo ofList("list")
+    compound.getCompoundOrNull("ccompound") shouldBeEqualTo null
+    compound.getCompoundOrNull("compound") shouldBeEqualTo ofCompound("compound")
+    compound.getIntArrayOrNull("[ii") shouldBeEqualTo null
     compound.getIntArrayOrNull("[i")?.shouldContain(1)
-    compound.getLongArrayOrNull("[ll") shouldEqual null
+    compound.getLongArrayOrNull("[ll") shouldBeEqualTo null
     compound.getLongArrayOrNull("[l")?.shouldContain(1L)
   }
 
   @Test fun `NBTTagCompound - getOrDefault - validation`() {
     val compound = ofCompound {  }
-    compound.getByteOrDefault("b") shouldEqual 0
-    compound.getBooleanOrDefault("b") shouldEqual false
-    compound.getShortOrDefault("s") shouldEqual 0
-    compound.getIntOrDefault("i") shouldEqual 0
-    compound.getLongOrDefault("l") shouldEqual 0L
-    compound.getFloatOrDefault("f") shouldEqual 0f
-    compound.getDoubleOrDefault("d") shouldEqual 0.0
-    compound.getByteArrayOrDefault("[b").isEmpty() shouldEqual true
-    compound.getStringOrDefault("string") shouldEqual ""
-    compound.getListOrDefault("list").isEmpty() shouldEqual true
-    compound.getCompoundOrDefault("compound").isEmpty() shouldEqual true
-    compound.getIntArrayOrDefault("[i").isEmpty() shouldEqual true
-    compound.getLongArrayOrDefault("[l").isEmpty() shouldEqual true
+    compound.getByteOrDefault("b") shouldBeEqualTo 0
+    compound.getBooleanOrDefault("b") shouldBeEqualTo false
+    compound.getShortOrDefault("s") shouldBeEqualTo 0
+    compound.getIntOrDefault("i") shouldBeEqualTo 0
+    compound.getLongOrDefault("l") shouldBeEqualTo 0L
+    compound.getFloatOrDefault("f") shouldBeEqualTo 0f
+    compound.getDoubleOrDefault("d") shouldBeEqualTo 0.0
+    compound.getByteArrayOrDefault("[b").isEmpty() shouldBeEqualTo true
+    compound.getStringOrDefault("string") shouldBeEqualTo ""
+    compound.getListOrDefault("list").isEmpty() shouldBeEqualTo true
+    compound.getCompoundOrDefault("compound").isEmpty() shouldBeEqualTo true
+    compound.getIntArrayOrDefault("[i").isEmpty() shouldBeEqualTo true
+    compound.getLongArrayOrDefault("[l").isEmpty() shouldBeEqualTo true
     compound.putBoolean("b2", true)
-    compound.getBoolean("b") shouldEqual false
-    compound.getBooleanOrNull("b") shouldEqual false
-    compound.getBooleanOrDefault("b2") shouldEqual true
+    compound.getBoolean("b") shouldBeEqualTo false
+    compound.getBooleanOrNull("b") shouldBeEqualTo false
+    compound.getBooleanOrDefault("b2") shouldBeEqualTo true
   }
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `NBTTagCompound - method validation from some map`() {
     val entryValue1= NBTTagString(value = "value")
     val compound = ofCompound {  }
     compound.value = hashMapOf("key" to entryValue1)
-    compound.containsValue(entryValue1) shouldEqual true
+    compound.containsValue(entryValue1) shouldBeEqualTo true
     compound.keys shouldContain "key"
     compound.values shouldContain entryValue1
-    compound.value.size shouldEqual 1
-    compound.containsKey("key") shouldEqual true
-    compound["key"] shouldEqual entryValue1
-    compound.remove("key", entryValue1) shouldEqual true
+    compound.value.size shouldBeEqualTo 1
+    compound.containsKey("key") shouldBeEqualTo true
+    compound["key"] shouldBeEqualTo entryValue1
+    compound.remove("key", entryValue1) shouldBeEqualTo true
     compound.clear()
-    compound.isEmpty() shouldEqual true
-    compound.equals(null) shouldEqual false
+    compound.isEmpty() shouldBeEqualTo true
+    compound.equals(null) shouldBeEqualTo false
     compound.putAll(mapOf("key" to entryValue1))
     val compoundCloned = compound.clone()
-    compound shouldEqual compoundCloned
+    compound shouldBeEqualTo compoundCloned
     compound shouldNotBe compoundCloned
     compound.clear()
-    compound.equals(compoundCloned) shouldEqual false
+    compound.equals(compoundCloned) shouldBeEqualTo false
   }
 
   @Test fun `NBTTagCompound - get - If the entry does not exist, should be throw exception`() {
@@ -139,7 +140,7 @@ class NBTTagCompoundTest {
 
   @Test fun `NBTTagCompound - get - If the entry type not match, should be throw exception`() {
     val compound = ofCompound { putInt("int", 1) }
-    compound.getInt("int") shouldEqual 1
+    compound.getInt("int") shouldBeEqualTo 1
     invoking { compound.getString("int") } shouldThrow ClassCastException::class
   }
 
@@ -149,21 +150,21 @@ class NBTTagCompoundTest {
       putByte("byte", 1)
       putString("str", "value")
     }
-    compound.toJson() shouldEqual "{\"byte\":1,\"str\":\"value\"}"
-    compound.toMojangson() shouldEqual "{\"byte\":1b,\"str\":\"value\"}"
-    compound.toMojangsonWithColor() shouldEqual "{§bbyte§r: §61§cb§r, §bstr§r: \"§avalue§r\"}"
-    emptyCompound.toJson() shouldEqual "{}"
-    emptyCompound.toMojangson() shouldEqual "{}"
-    emptyCompound.toMojangsonWithColor() shouldEqual "{}"
+    compound.toJson() shouldBeEqualTo "{\"byte\":1,\"str\":\"value\"}"
+    compound.toMojangson() shouldBeEqualTo "{\"byte\":1b,\"str\":\"value\"}"
+    compound.toMojangsonWithColor() shouldBeEqualTo "{§bbyte§r: §61§cb§r, §bstr§r: \"§avalue§r\"}"
+    emptyCompound.toJson() shouldBeEqualTo "{}"
+    emptyCompound.toMojangson() shouldBeEqualTo "{}"
+    emptyCompound.toMojangsonWithColor() shouldBeEqualTo "{}"
   }
 
   @Test fun `NBTTagCompound - lookup - If the path is null or blank, should return null`() {
     val compound = ofCompound {  }
-    compound.lookup(null) shouldEqual null
-    compound.lookup("") shouldEqual null
-    compound.lookupValue<String>(null) shouldEqual null
-    compound.lookupValue<String>("") shouldEqual null
-    compound.lookup("abc") shouldEqual null
+    compound.lookup(null) shouldBeEqualTo null
+    compound.lookup("") shouldBeEqualTo null
+    compound.lookupValue<String>(null) shouldBeEqualTo null
+    compound.lookupValue<String>("") shouldBeEqualTo null
+    compound.lookup("abc") shouldBeEqualTo null
   }
 
   @Test fun `NBTTagCompound - lookup`() {
@@ -176,14 +177,14 @@ class NBTTagCompoundTest {
         putInt("counts", 10)
       })
     }
-    compound.lookup("dt") shouldEqual null
-    compound.lookup("dt.id") shouldEqual null
-    compound.lookup("data")?.type shouldEqual NBTType.TAG_COMPOUND
-    compound.lookupValue<String>("data.id") shouldEqual "diamond"
-    compound.lookupValue<Byte>("data.flags[2]") shouldEqual 3
-    compound.lookupValue<NBTTagList>("data.flags")?.elementType shouldEqual NBTType.TAG_BYTE
-    compound.lookupValue<String>("data.404 not found") shouldEqual null
-    compound.lookup("data.counts[0]") shouldEqual null // should TAG_INT
+    compound.lookup("dt") shouldBeEqualTo null
+    compound.lookup("dt.id") shouldBeEqualTo null
+    compound.lookup("data")?.type shouldBeEqualTo NBTType.TAG_COMPOUND
+    compound.lookupValue<String>("data.id") shouldBeEqualTo "diamond"
+    compound.lookupValue<Byte>("data.flags[2]") shouldBeEqualTo 3
+    compound.lookupValue<NBTTagList>("data.flags")?.elementType shouldBeEqualTo NBTType.TAG_BYTE
+    compound.lookupValue<String>("data.404 not found") shouldBeEqualTo null
+    compound.lookup("data.counts[0]") shouldBeEqualTo null // should TAG_INT
   }
 
   @Test fun `NBTTagCompound - getOrDefault - TAG_END should be throw exception`() {

@@ -16,35 +16,36 @@
 
 package com.lgou2w.ldk.nbt
 
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 
 class NBTTagLongArrayTest {
 
   @Test fun `NBTTagLongArray - toJson`() {
     val nbt = NBTTagLongArray(value = longArrayOf(0L, 1L, 1L))
-    nbt.toJson() shouldEqual "[0,1,1]"
-    nbt.toMojangson() shouldEqual "[L; 0L,1L,1L]"
-    nbt.toMojangsonWithColor() shouldEqual "[§cL§r; §60§cL§r, §61§cL§r, §61§cL§r]"
+    nbt.toJson() shouldBeEqualTo "[0,1,1]"
+    nbt.toMojangson() shouldBeEqualTo "[L; 0L,1L,1L]"
+    nbt.toMojangsonWithColor() shouldBeEqualTo "[§cL§r; §60§cL§r, §61§cL§r, §61§cL§r]"
   }
 
   @Test fun `NBTTagLongArray - toJson - Empty values should only be parentheses`() {
     val nbt = NBTTagLongArray(value = longArrayOf())
-    nbt.toJson() shouldEqual "[]"
+    nbt.toJson() shouldBeEqualTo "[]"
   }
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `NBTTagLongArray - equals`() {
     val nbt1 = NBTTagLongArray(name = "[L")
     val nbt2 = NBTTagLongArray(name = "[L")
     nbt1.value = longArrayOf(0L, 1L)
     nbt2.value = longArrayOf(1L, 0L)
-    nbt1.value shouldNotEqual nbt2.value
-    nbt1.value.size shouldEqual nbt2.value.size
-    nbt1.equals(nbt2) shouldEqual false
+    nbt1.value shouldNotBeEqualTo nbt2.value
+    nbt1.value.size shouldBeEqualTo nbt2.value.size
+    nbt1.equals(nbt2) shouldBeEqualTo false
     nbt2.value = nbt1.value // array clone, not reference
-    nbt1.equals(nbt2) shouldEqual true
+    nbt1.equals(nbt2) shouldBeEqualTo true
     nbt2.value = longArrayOf(1L, 0L) // Does not affect the value of nbt1
-    nbt1.equals(nbt2) shouldEqual false
+    nbt1.equals(nbt2) shouldBeEqualTo false
   }
 }

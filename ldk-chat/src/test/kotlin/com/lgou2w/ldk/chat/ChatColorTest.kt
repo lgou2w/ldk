@@ -16,13 +16,13 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Test
 
 class ChatColorTest {
 
   @Test fun `ChatColor - append`() {
-    ChatColor.GOLD.code shouldEqual '6'
-    (ChatColor.GOLD + "gold") shouldEqual "§6gold"
+    ChatColor.GOLD.code shouldBeEqualTo '6'
+    (ChatColor.GOLD + "gold") shouldBeEqualTo "§6gold"
   }
 }
