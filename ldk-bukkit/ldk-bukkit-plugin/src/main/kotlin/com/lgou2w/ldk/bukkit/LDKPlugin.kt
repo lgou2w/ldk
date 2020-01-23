@@ -53,7 +53,8 @@ class LDKPlugin : PluginBase() {
       null
     }
     if (safeCurrent == null || !safeCurrent.isOrLater(MinecraftBukkitVersion.V1_8_R1)) {
-      // Very sorry. Although can load LDK, it is not compatible with 1.7 and previous versions from the beginning of design.
+      // Very sorry. Although can load LDK, it is not compatible
+      // with 1.7 and previous versions from the beginning of design.
       logger.severe("-------- A lgou2w development kit of Bukkit -----")
       logger.severe("  Very sorry. Although can load LDK, it is not compatible")
       logger.severe("  with 1.7 and previous versions from the beginning of design.")
@@ -62,7 +63,7 @@ class LDKPlugin : PluginBase() {
       server.pluginManager.disablePlugin(this)
       return
     }
-    logger.info("A lgou2w development kit of Bukkit.")
+    logger.info("A lgou2w development kit for Bukkit.")
     logger.info("Open source: $GITHUB")
     logger.info("Game Version: ${MinecraftVersion.CURRENT.version} Impl Version: ${safeCurrent.version}")
     updater = VersionUpdater(this)
@@ -98,7 +99,7 @@ class LDKPlugin : PluginBase() {
     val first = args.firstOrNull()
     return if (first == null || first.equals("help", true)) {
       sender.sendMessage(arrayOf(
-        "&7-------- &aA lgou2w development kit of Bukkit &7-----",
+        "&7-------- &aA lgou2w development kit for Bukkit &7-----",
         "&6/ldk help &8- &7View command help.",
         "&6/ldk version &8- &7View current plugin version."
       ).toColor())
