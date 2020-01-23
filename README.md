@@ -27,7 +27,7 @@ Multi-modules、Multi-platform、Low coupling、Dependency library、Minecraft's
 Retrofit、ASM、Eventbus、Plugin API、Bukkit's coroutines、extended and runtime etc. Rapid development、Lambda、Functional programming. 
 Integrated multi-module multi-platform lgou2w development kit. `LDK`
 
-* Wiki
+* Wiki (Currently lagging)
 
     Please check the [wiki](https://github.com/lgou2w/ldk/wiki) for various module usage and questions.
 

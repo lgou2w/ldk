@@ -27,7 +27,7 @@
 Retrofit，ASM，Eventbus，插件 API，Bukkit 的协程、扩展和运行时等。快速开发，Lambda，函数编程。 
 集成的多模块多平台 lgou2w 开发套件。`LDK`
 
-* Wiki
+* Wiki (目前滞后)
 
     有关各种模块使用和问题请查看 [维基](https://github.com/lgou2w/ldk/wiki) 内容.
 
