@@ -38,6 +38,7 @@ class LDKPlugin : PluginBase() {
     const val NAME = com.lgou2w.ldk.common.Constants.LDK
     const val PREFIX = "[$NAME] "
     const val GITHUB = com.lgou2w.ldk.common.Constants.LDK_GITHUB
+    const val BSTATS_ID = 3254
   }
 
   private var updater : VersionUpdater? = null
@@ -71,7 +72,7 @@ class LDKPlugin : PluginBase() {
 
   private fun setupMetrics() {
     try {
-      Metrics(this).apply {
+      Metrics(this, BSTATS_ID).apply {
         addCustomChart(Metrics.AdvancedPie("plugin_dependents") {
           val plugins = Bukkit.getPluginManager().plugins
           val hard = plugins.count { it.description.depend.contains(NAME) }
