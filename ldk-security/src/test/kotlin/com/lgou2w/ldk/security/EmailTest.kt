@@ -25,8 +25,6 @@ class EmailTest {
     const val ID = "lgou2w"
     const val SECONDARY_DOMAIN = "hotmail"
     const val TOP_DOMAIN = "com"
-    const val AT = '@'
-    const val DOT = '.'
   }
 
   @Test fun `Email - validation`() {
@@ -34,7 +32,7 @@ class EmailTest {
     email.id shouldBeEqualTo ID
     email.secondaryDomain shouldBeEqualTo SECONDARY_DOMAIN
     email.topDomain shouldBeEqualTo TOP_DOMAIN
-    email.fullyQualifiedEmail shouldBeEqualTo (ID + AT + SECONDARY_DOMAIN + DOT + TOP_DOMAIN)
+    email.fullyQualifiedEmail shouldBeEqualTo (ID + Email.AT + SECONDARY_DOMAIN + Email.DOT + TOP_DOMAIN)
   }
 
   @Test fun `Email - compare`() {

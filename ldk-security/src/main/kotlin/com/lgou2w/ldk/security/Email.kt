@@ -29,7 +29,7 @@ data class Email(
   val topDomain: String
 ) : Comparable<Email> {
 
-  val fullyQualifiedEmail = id + '@' + secondaryDomain + '.' + topDomain
+  val fullyQualifiedEmail = id + AT + secondaryDomain + DOT + topDomain
 
   override fun compareTo(other: Email): Int {
     return ComparisonChain.start()
@@ -37,5 +37,41 @@ data class Email(
       .compare(secondaryDomain, other.secondaryDomain)
       .compare(id, other.id)
       .result
+  }
+
+  companion object {
+
+    const val AT = '@'
+    const val DOT = '.'
+
+    /**
+     * @see [SimpleEmailParser]
+     * @since LDK 0.2.1
+     */
+    @Throws(IllegalArgumentException::class)
+    @JvmStatic fun fromSimple(fullyQualifiedEmail: String): Email
+      = SimpleEmailParser.parse(fullyQualifiedEmail)
+
+    /**
+     * @see [SimpleEmailParser]
+     * @since LDK 0.2.1
+     */
+    @JvmStatic fun fromSimpleSafely(fullyQualifiedEmail: String?): Email?
+      = SimpleEmailParser.parseSafely(fullyQualifiedEmail)
+
+    /**
+     * @see [StandardEmailParser]
+     * @since LDK 0.2.1
+     */
+    @Throws(IllegalArgumentException::class)
+    @JvmStatic fun fromStandard(fullyQualifiedEmail: String): Email
+      = StandardEmailParser.parse(fullyQualifiedEmail)
+
+    /**
+     * @see [StandardEmailParser]
+     * @since LDK 0.2.1
+     */
+    @JvmStatic fun fromStandardSafely(fullyQualifiedEmail: String?): Email?
+      = StandardEmailParser.parseSafely(fullyQualifiedEmail)
   }
 }

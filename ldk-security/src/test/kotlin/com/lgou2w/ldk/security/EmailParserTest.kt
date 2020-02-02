@@ -79,4 +79,11 @@ class EmailParserTest {
     StandardEmailParser.parseSafely("") shouldBe null
     StandardEmailParser.parseSafely("!#$%@^&*.()") shouldBe null
   }
+
+  @Test fun `Email - from test`() {
+    Email.fromSimple("1@s.t") shouldNotBe null
+    Email.fromSimpleSafely(null) shouldBe null
+    Email.fromStandard("hello@email.com") shouldNotBe null
+    Email.fromStandardSafely(null) shouldBe null
+  }
 }
