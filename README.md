@@ -86,7 +86,7 @@ Integrated multi-module multi-platform lgou2w development kit. `LDK`
 <details>
 <summary>View Modules UML</summary>
 
-![ldk-modules](.images/ldk-modules.svg)
+[![ldk-modules](.images/ldk-modules.svg)](https://raw.githubusercontent.com/lgou2w/ldk/develop/.images/ldk-modules.svg?sanitize=true)
 
 </details>
 

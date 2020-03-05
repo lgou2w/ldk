@@ -87,7 +87,7 @@ Retrofit，ASM，Eventbus，插件 API，Bukkit 的协程、扩展和运行时�
 <details>
 <summary>查看所有模块 UML 图</summary>
 
-![ldk-modules](.images/ldk-modules.svg)
+[![ldk-modules](.images/ldk-modules.svg)](https://raw.githubusercontent.com/lgou2w/ldk/develop/.images/ldk-modules.svg?sanitize=true)
 
 </details>
 
