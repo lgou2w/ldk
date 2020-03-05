@@ -381,7 +381,7 @@
       <rect x="0" width="89" height="1" y="0" clip-path="url(#clipPath3)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1611.2762,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath4)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath4)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath4)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-sql-sqlite</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(8.8462,400)" stroke="rgb(176,190,197)">
@@ -391,7 +391,7 @@
       <rect x="0" width="64" height="1" y="0" clip-path="url(#clipPath5)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(9.8462,401)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath6)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath6)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath6)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-asm</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1249.2762,112)" stroke="rgb(176,190,197)">
@@ -401,7 +401,7 @@
       <rect x="0" width="85" height="1" y="0" clip-path="url(#clipPath7)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1250.2762,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath8)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath8)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath8)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-exposed</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1354.2762,112)" stroke="rgb(176,190,197)">
@@ -411,7 +411,7 @@
       <rect x="0" width="83" height="1" y="0" clip-path="url(#clipPath9)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1355.2762,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath10)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath10)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath10)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-security</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(615.6288,112)" stroke="rgb(176,190,197)">
@@ -421,7 +421,7 @@
       <rect x="0" width="61" height="1" y="0" clip-path="url(#clipPath11)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(616.6288,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath12)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath12)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath12)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-nbt</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(51.3462,184)" stroke="rgb(176,190,197)">
@@ -431,7 +431,7 @@
       <rect x="0" width="135" height="1" y="0" clip-path="url(#clipPath13)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(52.3462,185)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath14)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath14)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath14)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-eventbus-common</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(491.6288,184)" stroke="rgb(176,190,197)">
@@ -441,7 +441,7 @@
       <rect x="0" width="144" height="1" y="0" clip-path="url(#clipPath15)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(492.6288,185)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath16)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath16)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath16)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-compatibility</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(174.2538,112)" stroke="rgb(176,190,197)">
@@ -451,7 +451,7 @@
       <rect x="0" width="76" height="1" y="0" clip-path="url(#clipPath17)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(175.2538,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath18)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath18)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath18)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-reflect</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(948.2538,0)" stroke="rgb(176,190,197)">
@@ -461,7 +461,7 @@
       <rect x="0" width="87" height="1" y="0" clip-path="url(#clipPath19)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(949.2538,1)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath20)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath20)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath20)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-common</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(930.1288,400)" stroke="rgb(176,190,197)">
@@ -471,7 +471,7 @@
       <rect x="0" width="99" height="1" y="0" clip-path="url(#clipPath21)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(931.1288,401)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath22)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath22)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath22)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-cmd</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(660.6288,472)" stroke="rgb(176,190,197)">
@@ -481,7 +481,7 @@
       <rect x="0" width="192" height="1" y="0" clip-path="url(#clipPath23)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(661.6288,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath24)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath24)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath24)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-depend-placeholderapi</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1566.4045,112)" stroke="rgb(176,190,197)">
@@ -491,7 +491,7 @@
       <rect x="0" width="81" height="1" y="0" clip-path="url(#clipPath25)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1567.4045,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath26)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath26)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath26)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-retrofit</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(816.1288,400)" stroke="rgb(176,190,197)">
@@ -501,7 +501,7 @@
       <rect x="0" width="94" height="1" y="0" clip-path="url(#clipPath27)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(817.1288,401)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath28)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath28)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath28)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-gui</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(501.6288,400)" stroke="rgb(176,190,197)">
@@ -511,7 +511,7 @@
       <rect x="0" width="115" height="1" y="0" clip-path="url(#clipPath29)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(502.6288,401)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath30)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath30)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath30)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-depend</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1517.4045,400)" stroke="rgb(176,190,197)">
@@ -521,7 +521,7 @@
       <rect x="0" width="77" height="1" y="0" clip-path="url(#clipPath31)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1518.4045,401)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath32)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath32)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath32)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-sql-api</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1147.2762,184)" stroke="rgb(176,190,197)">
@@ -531,7 +531,7 @@
       <rect x="0" width="99" height="1" y="0" clip-path="url(#clipPath33)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1148.2762,185)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath34)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath34)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath34)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-i18n</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(996.2762,184)" stroke="rgb(176,190,197)">
@@ -541,7 +541,7 @@
       <rect x="0" width="131" height="1" y="0" clip-path="url(#clipPath35)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(997.2762,185)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath36)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath36)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath36)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-coroutines</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(361.6288,184)" stroke="rgb(176,190,197)">
@@ -551,7 +551,7 @@
       <rect x="0" width="110" height="1" y="0" clip-path="url(#clipPath37)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(362.6288,185)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath38)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath38)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath38)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-reflect</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(169.6288,472)" stroke="rgb(176,190,197)">
@@ -561,7 +561,7 @@
       <rect x="0" width="102" height="1" y="0" clip-path="url(#clipPath39)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(170.6288,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath40)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath40)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath40)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-anvil</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(830.5223,574)" stroke="rgb(176,190,197)">
@@ -571,7 +571,7 @@
       <rect x="0" width="110" height="1" y="0" clip-path="url(#clipPath41)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(831.5223,575)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath38)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath38)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath38)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-plugin</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(277.6288,400)" stroke="rgb(176,190,197)">
@@ -581,7 +581,7 @@
       <rect x="0" width="111" height="1" y="0" clip-path="url(#clipPath42)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(278.6288,401)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath43)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath43)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath43)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-region</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(696.6288,112)" stroke="rgb(176,190,197)">
@@ -591,7 +591,7 @@
       <rect x="0" width="65" height="1" y="0" clip-path="url(#clipPath44)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(697.6288,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath45)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath45)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath45)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-chat</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1013.2762,112)" stroke="rgb(176,190,197)">
@@ -601,7 +601,7 @@
       <rect x="0" width="97" height="1" y="0" clip-path="url(#clipPath46)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1014.2762,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath47)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath47)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath47)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-coroutines</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(477.6288,472)" stroke="rgb(176,190,197)">
@@ -611,7 +611,7 @@
       <rect x="0" width="163" height="1" y="0" clip-path="url(#clipPath48)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(478.6288,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath49)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath49)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath49)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-depend-economy</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(574.8788,256)" stroke="rgb(176,190,197)">
@@ -621,7 +621,7 @@
       <rect x="0" width="95" height="1" y="0" clip-path="url(#clipPath50)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(575.8788,257)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath51)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath51)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath51)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-nbt</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1516.2762,472)" stroke="rgb(176,190,197)">
@@ -631,7 +631,7 @@
       <rect x="0" width="74" height="1" y="0" clip-path="url(#clipPath52)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1517.2762,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath53)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath53)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath53)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-sql-h2</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(498.1288,328)" stroke="rgb(176,190,197)">
@@ -641,7 +641,7 @@
       <rect x="0" width="122" height="1" y="0" clip-path="url(#clipPath54)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(499.1288,329)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath55)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath55)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath55)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-common</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(0,472)" stroke="rgb(176,190,197)">
@@ -651,7 +651,7 @@
       <rect x="0" width="112" height="1" y="0" clip-path="url(#clipPath56)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath57)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath57)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath57)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-eventbus-asm</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(900.5038,112)" stroke="rgb(176,190,197)">
@@ -661,7 +661,7 @@
       <rect x="0" width="76" height="1" y="0" clip-path="url(#clipPath58)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(901.5038,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath18)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath18)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath18)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-plugin</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1164.2762,112)" stroke="rgb(176,190,197)">
@@ -671,7 +671,7 @@
       <rect x="0" width="65" height="1" y="0" clip-path="url(#clipPath59)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1165.2762,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath45)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath45)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath45)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-i18n</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(1406.2762,472)" stroke="rgb(176,190,197)">
@@ -681,7 +681,7 @@
       <rect x="0" width="90" height="1" y="0" clip-path="url(#clipPath60)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(1407.2762,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath61)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath61)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath61)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-sql-hikari</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(291.6288,472)" stroke="rgb(176,190,197)">
@@ -691,7 +691,7 @@
       <rect x="0" width="166" height="1" y="0" clip-path="url(#clipPath62)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(292.6288,473)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath63)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath63)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath63)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-depend-worldedit</text>
     </g>
     <g fill="rgb(176,190,197)" transform="matrix(1,0,0,1,20,20) translate(446.3788,112)" stroke="rgb(176,190,197)">
@@ -701,7 +701,7 @@
       <rect x="0" width="115" height="1" y="0" clip-path="url(#clipPath64)" stroke="none"/>
     </g>
     <g fill="black" transform="matrix(1,0,0,1,20,20) translate(447.3788,113)" stroke="white">
-      <image x="2" y="2" clip-path="url(#clipPath30)" width="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4XmNgGBRg&#13;&#10;1ar/zCcnvfY+PvFVPBxPeu2Lrg4nODbxZdPxSa/+Y+DJr+vR1WIFJya9WoWhGT/+&#13;&#10;fGLiC39KDAC67tVyigwA6RlCBtja+f9X0zNBwcaWLu+INsDYzu1/w+kjKFjP2uEb&#13;&#10;9QzAmZDwGKBlafsRbgAoKZ+Y+MoLJSkjYQ1zq7foBiiaGD+GG0AISGlqnJZQVXmF&#13;&#10;jEFi6OrIAgDKt8/cYxhuagAAAABJRU5ErkJggg==" height="16" preserveAspectRatio="none"/>
+      <image x="2" y="2" clip-path="url(#clipPath30)" width="16" xlink:href="./ldk-modules-icon.png" height="16" preserveAspectRatio="none"/>
       <text x="21" font-size="10px" y="14" clip-path="url(#clipPath30)" font-family="'monospace'" stroke="none" xml:space="preserve">ldk-bukkit-version</text>
     </g>
     <g fill="rgb(0,0,130)" stroke-miterlimit="1.45" transform="matrix(1,0,0,1,20,20)" stroke-linecap="butt" stroke="rgb(0,0,130)">
