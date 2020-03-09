@@ -49,7 +49,7 @@
   </modules>
 
   <properties>
-    <bukkit.version>1.15.1-R0.1-SNAPSHOT</bukkit.version>
+    <bukkit.version>1.15.2-R0.1-SNAPSHOT</bukkit.version>
   </properties>
 
   <repositories>

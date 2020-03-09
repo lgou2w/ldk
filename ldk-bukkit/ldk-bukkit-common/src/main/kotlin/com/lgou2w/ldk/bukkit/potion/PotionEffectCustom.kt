@@ -17,7 +17,9 @@
 package com.lgou2w.ldk.bukkit.potion
 
 import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
+import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.ComparisonChain
+import com.lgou2w.ldk.common.isOrLater
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
@@ -79,7 +81,11 @@ data class PotionEffectCustom @JvmOverloads constructor(
       PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle, icon)
     else
       PotionEffect(type.toBukkit(), duration, amplifier, ambient, particle)
-    return entity.addPotionEffect(effect, force)
+    return if (MinecraftVersion.CURRENT.isOrLater(MinecraftVersion(1, 15, 2)))
+      entity.addPotionEffect(effect)
+    else
+      @Suppress("DEPRECATION") // Legacy only
+      entity.addPotionEffect(effect, force)
   }
 
   override fun save(root: NBTTagCompound): NBTTagCompound {
