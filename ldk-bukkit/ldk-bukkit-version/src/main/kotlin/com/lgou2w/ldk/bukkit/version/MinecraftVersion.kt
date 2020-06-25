@@ -61,8 +61,6 @@ class MinecraftVersion(
     /**
      * @since LDK 0.2.1
      */
-    @Draft
-    @Deprecated("Minecraft 1.16 Draft")
     @JvmField val V1_16 = MinecraftVersion(1, 16, 0)
 
     @JvmStatic
