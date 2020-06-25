@@ -101,22 +101,22 @@ enum class Enchantment(
    * * Enchantment: Thorns
    * * 附魔类型: 荆棘
    */
-  THORNS(7, 3, "thorns", "thorns"),
+  THORNS(7, 3, "thorns"),
   /**
    * * Enchantment: Depth Strider
    * * 附魔类型: 深海探索者
    */
-  DEPTH_STRIDER(8, 3, "depth_strider", "depth_strider"),
+  DEPTH_STRIDER(8, 3, "depth_strider"),
   /**
    * * Enchantment: Frost Walker
    * * 附魔类型: 冰霜行者
    */
-  FROST_WALKER(9, 2, "frost_walker", "frost_walker", MinecraftVersion.V1_9),
+  FROST_WALKER(9, 2, "frost_walker", MinecraftVersion.V1_9),
   /**
    * * Enchantment: Binding Curse
    * * 附魔类型: 绑定诅咒
    */
-  BINDING_CURSE(10, 1, "binding_curse", "binding_curse", MinecraftVersion.V1_11),
+  BINDING_CURSE(10, 1, "binding_curse", MinecraftVersion.V1_11),
 
   /**
    * * Enchantment: Sharpness
@@ -137,12 +137,12 @@ enum class Enchantment(
    * * Enchantment: Knockback
    * * 附魔类型: 击退
    */
-  KNOCKBACK(19, 2, "knockback", "knockback"),
+  KNOCKBACK(19, 2, "knockback"),
   /**
    * * Enchantment: Fire Aspect
    * * 附魔类型: 火焰附加
    */
-  FIRE_ASPECT(20, 2, "fire_aspect", "fire_aspect"),
+  FIRE_ASPECT(20, 2, "fire_aspect"),
   /**
    * * Enchantment: Looting
    * * 附魔类型: 抢夺
@@ -163,7 +163,7 @@ enum class Enchantment(
    * * Enchantment: Silk Touch
    * * 附魔类型: 精准采集
    */
-  SILK_TOUCH(33, 1, "silk_touch", "silk_touch"),
+  SILK_TOUCH(33, 1, "silk_touch"),
   /**
    * * Enchantment: Unbreaking
    * * 附魔类型: 耐久
@@ -205,39 +205,39 @@ enum class Enchantment(
    * * Enchantment: Lure
    * * 附魔类型: 饵钓
    */
-  LURE(62, 3, "lure", "lure"),
+  LURE(62, 3, "lure"),
 
   /**
    * * Enchantment: Loyalty
    * * 附魔类型: 忠诚
    */
-  LOYALTY(65, 3, "loyalty", "loyalty", MinecraftVersion.V1_13),
+  LOYALTY(65, 3, "loyalty", MinecraftVersion.V1_13),
   /**
    * * Enchantment: Impaling
    * * 附魔类型: 穿刺
    */
-  IMPALING(66, 5, "impaling", "impaling", MinecraftVersion.V1_13),
+  IMPALING(66, 5, "impaling", MinecraftVersion.V1_13),
   /**
    * * Enchantment: Riptide
    * * 附魔类型: 激流
    */
-  RIPTIDE(67, 3, "riptide", "riptide", MinecraftVersion.V1_13),
+  RIPTIDE(67, 3, "riptide", MinecraftVersion.V1_13),
   /**
    * * Enchantment: Channeling
    * * 附魔类型: 引雷
    */
-  CHANNELING(68, 1, "channeling", "channeling", MinecraftVersion.V1_13),
+  CHANNELING(68, 1, "channeling", MinecraftVersion.V1_13),
 
   /**
    * * Enchantment: Mending
    * * 附魔类型: 经验修补
    */
-  MENDING(70, 1, "mending", "mending", MinecraftVersion.V1_9),
+  MENDING(70, 1, "mending", MinecraftVersion.V1_9),
   /**
    * * Enchantment: Vanishing Curse
    * * 附魔类型: 消失诅咒
    */
-  VANISHING_CURSE(71, 1, "vanishing_curse", "vanishing_curse", MinecraftVersion.V1_11),
+  VANISHING_CURSE(71, 1, "vanishing_curse", MinecraftVersion.V1_11),
 
   ///
   /// WARNING: From here on, these enchantment IDs are all maintained by LDK, since Minecraft 1.13 has completely removed the ID.
@@ -248,18 +248,30 @@ enum class Enchantment(
    * * Enchantment: Multishot
    * * 附魔类型: 多重射击
    */
-  MULTISHOT(200, 1, "multishot", "multishot", MinecraftVersion.V1_14),
+  MULTISHOT(200, 1, "multishot", MinecraftVersion.V1_14),
   /**
    * * Enchantment: Quick Charge
    * * 附魔类型: 快速装填
    */
-  QUICK_CHARGE(201, 3, "quick_charge", "quick_charge", MinecraftVersion.V1_14),
+  QUICK_CHARGE(201, 3, "quick_charge", MinecraftVersion.V1_14),
   /**
    * * Enchantment: Piercing
    * * 附魔类型: 穿透
    */
-  PIERCING(202, 4, "piercing", "piercing", MinecraftVersion.V1_14),
+  PIERCING(202, 4, "piercing", MinecraftVersion.V1_14),
+  /**
+   * * Enchantment: Soul Speed
+   * * 附魔类型: 灵魂疾行
+   */
+  SOUL_SPEED(203, 3, "soul_speed", MinecraftVersion.V1_16),
   ;
+
+  constructor(
+    id: Int,
+    max: Int,
+    type: String,
+    minimum: MinecraftVersion? = null
+  ) : this(id, max, type, type, minimum)
 
   override val value : String
     get() = type

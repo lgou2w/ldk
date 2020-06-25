@@ -79,7 +79,7 @@ object EntityFactory {
       .resultAccessor()
   }
 
-  // NMS.Entity -> public NMS.NBTTagCompound read(NMS.NBTTagCompound)
+  // NMS.Entity -> public void load(NMS.NBTTagCompound)
   @JvmStatic val METHOD_ENTITY_READ_TAG : AccessorMethod<Any, Any> by lazy {
     FuzzyReflect.of(CLASS_ENTITY, true)
       .useMethodMatcher()

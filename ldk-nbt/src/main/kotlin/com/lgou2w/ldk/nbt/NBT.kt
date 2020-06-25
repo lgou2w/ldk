@@ -145,6 +145,7 @@ interface NBT<T> : Cloneable {
     const val TAG_ATTRIBUTE_OPERATION = "Operation"
     const val TAG_ATTRIBUTE_UUID_MOST = "UUIDMost"
     const val TAG_ATTRIBUTE_UUID_LEAST= "UUIDLeast"
+    const val TAG_ATTRIBUTE_UUID = "UUID" // since Minecraft 1.16
     const val TAG_ATTRIBUTE_MODIFIERS = "AttributeModifiers"
     const val TAG_STORED_ENCHANTMENTS = "StoredEnchantments"
     const val TAG_CUSTOM_POTION_EFFECTS = "CustomPotionEffects"

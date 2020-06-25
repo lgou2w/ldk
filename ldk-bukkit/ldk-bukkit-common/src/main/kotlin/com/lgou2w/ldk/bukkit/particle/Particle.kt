@@ -68,7 +68,7 @@ enum class Particle(
   UNDERWATER(42, "suspended", "underwater"),
   @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.", replaceWith = ReplaceWith("UNDERWATER"))
   UNDERWATER_DEPTH("suspended_depth", -42),
-  CRIT(6, "crit", "crit"),
+  CRIT(6, "crit"),
   ENCHANTED_HIT(14, "crit_magic", "enchanted_hit"),
   SMOKE(37, "smoke_normal", "smoke"),
   LARGE_SMOKE(30, "smoke_large", "large_smoke"),
@@ -82,21 +82,21 @@ enum class Particle(
   ANGRY_VILLAGER(1, "villager_angry", "angry_villager"),
   HAPPY_VILLAGER(24, "villager_happy", "happy_villager"),
   MYCELIUM(32, "town_aura", "mycelium"),
-  NOTE(33, "note", "note"),
-  PORTAL(35, "portal", "portal"),
+  NOTE(33, "note"),
+  PORTAL(35, "portal"),
   ENCHANT(15, "enchantment_table", "enchant"),
-  FLAME(23, "flame", "flame"),
-  LAVA(31, "lava", "lava"),
+  FLAME(23, "flame"),
+  LAVA(31, "lava"),
   @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.")
   FOOTSTEP("footstep", -2),
-  CLOUD(5, "cloud", "cloud"),
+  CLOUD(5, "cloud"),
   DUST(11, "red_dust", "dust"),
   ITEM_SNOWBALL(29, "snowball", "item_snowball"),
   @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.", replaceWith = ReplaceWith("ITEM_SNOWBALL"))
   ITEM_SNOW_SHOVEL("snow_shovel", -29),
   ITEM_SLIME(28, "slime", "item_slime"),
-  HEART(25, "heart", "heart"),
-  BARRIER(2, "barrier", "barrier"),
+  HEART(25, "heart"),
+  BARRIER(2, "barrier"),
   ITEM(27, "item_crack", "item"),
   BLOCK(3, "block_crack", "block"),
   @Deprecated("Removed in Minecraft 1.13, Automatically adapt if used.", replaceWith = ReplaceWith("BLOCK"))
@@ -106,40 +106,56 @@ enum class Particle(
   TAKE("item_take", -27),
   ELDER_GUARDIAN(13, "mob_appearance", "elder_guardian"),
 
-  @API(Level.Minecraft_V1_9) DRAGON_BREATH(8, "dragon_breath", "dragon_breath"),
-  @API(Level.Minecraft_V1_9) END_ROD(16, "end_rod", "end_rod"),
-  @API(Level.Minecraft_V1_9) DAMAGE_INDICATOR(7, "damage_indicator", "damage_indicator"),
-  @API(Level.Minecraft_V1_9) SWEEP_ATTACK(40, "sweep_attack", "sweep_attack"),
-  @API(Level.Minecraft_V1_10) FALLING_DUST(20, "falling_dust", "falling_dust"),
-  @API(Level.Minecraft_V1_11) TOTEM_OF_UNDYING(41, "totem", "totem_of_undying"),
-  @API(Level.Minecraft_V1_11) SPIT(38, "spit", "spit"),
+  @API(Level.Minecraft_V1_9) DRAGON_BREATH(8, "dragon_breath"),
+  @API(Level.Minecraft_V1_9) END_ROD(16, "end_rod"),
+  @API(Level.Minecraft_V1_9) DAMAGE_INDICATOR(7, "damage_indicator"),
+  @API(Level.Minecraft_V1_9) SWEEP_ATTACK(40, "sweep_attack"),
+  @API(Level.Minecraft_V1_10) FALLING_DUST(20, "falling_dust"),
+  @API(Level.Minecraft_V1_11) TOTEM_OF_UNDYING(41, "totem_of_undying"),
+  @API(Level.Minecraft_V1_11) SPIT(38, "spit"),
 
-  @API(Level.Minecraft_V1_13) SQUID_INK(39, "squid_ink", "squid_ink"),
-  @API(Level.Minecraft_V1_13) BUBBLE_POP(45, "bubble_pop", "bubble_pop"),
-  @API(Level.Minecraft_V1_13) CURRENT_DOWN(46, "current_down", "current_down"),
-  @API(Level.Minecraft_V1_13) BUBBLE_COLUMN_UP(47, "bubble_column_up", "bubble_column_up"),
-  @API(Level.Minecraft_V1_13) NAUTILUS(48, "nautilus", "nautilus"),
-  @API(Level.Minecraft_V1_13) DOLPHIN(49, "dolphin", "dolphin"),
+  @API(Level.Minecraft_V1_13) SQUID_INK(39, "squid_ink"),
+  @API(Level.Minecraft_V1_13) BUBBLE_POP(45, "bubble_pop"),
+  @API(Level.Minecraft_V1_13) CURRENT_DOWN(46, "current_down"),
+  @API(Level.Minecraft_V1_13) BUBBLE_COLUMN_UP(47, "bubble_column_up"),
+  @API(Level.Minecraft_V1_13) NAUTILUS(48, "nautilus"),
+  @API(Level.Minecraft_V1_13) DOLPHIN(49, "dolphin"),
 
-  @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze", "sneeze"),
-  @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke", "campfire_cosy_smoke"),
-  @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke", "campfire_signal_smoke"),
-  @API(Level.Minecraft_V1_14) COMPOSTER(53, "composter", "composter"),
-  @API(Level.Minecraft_V1_14) FLASH(54, "flash", "flash"),
-  @API(Level.Minecraft_V1_14) FALLING_LAVA(55, "falling_lava", "falling_lava"),
-  @API(Level.Minecraft_V1_14) LANDING_LAVA(56, "landing_lava", "landing_lava"),
-  @API(Level.Minecraft_V1_14) FALLING_WATER(57, "falling_water", "falling_water"),
+  @API(Level.Minecraft_V1_14) SNEEZE(50, "sneeze"),
+  @API(Level.Minecraft_V1_14) CAMPFIRE_COSY_SMOKE(51, "campfire_cosy_smoke"),
+  @API(Level.Minecraft_V1_14) CAMPFIRE_SIGNAL_SMOKE(52, "campfire_signal_smoke"),
+  @API(Level.Minecraft_V1_14) COMPOSTER(53, "composter"),
+  @API(Level.Minecraft_V1_14) FLASH(54, "flash"),
+  @API(Level.Minecraft_V1_14) FALLING_LAVA(55, "falling_lava"),
+  @API(Level.Minecraft_V1_14) LANDING_LAVA(56, "landing_lava"),
+  @API(Level.Minecraft_V1_14) FALLING_WATER(57, "falling_water"),
 
-  @API(Level.Minecraft_V1_15) DRIPPING_HONEY(58, "dripping_honey", "dripping_honey"),
-  @API(Level.Minecraft_V1_15) FALLING_HONEY(59, "falling_honey", "falling_honey"),
-  @API(Level.Minecraft_V1_15) LANDING_HONEY(60, "landing_honey", "landing_honey"),
-  @API(Level.Minecraft_V1_15) FALLING_NECTAR(61, "falling_nectar", "falling_nectar"),
+  @API(Level.Minecraft_V1_15) DRIPPING_HONEY(58, "dripping_honey"),
+  @API(Level.Minecraft_V1_15) FALLING_HONEY(59, "falling_honey"),
+  @API(Level.Minecraft_V1_15) LANDING_HONEY(60, "landing_honey"),
+  @API(Level.Minecraft_V1_15) FALLING_NECTAR(61, "falling_nectar"),
+
+  @API(Level.Minecraft_V1_16) SOUL_FIRE_FLAME(62, "soul_fire_flame"),
+  @API(Level.Minecraft_V1_16) ASH(63, "ash"),
+  @API(Level.Minecraft_V1_16) CRIMSON_SPORE(64, "crimson_spore"),
+  @API(Level.Minecraft_V1_16) WARPED_SPORE(65, "warped_spore"),
+  @API(Level.Minecraft_V1_16) SOUL(66, "soul"),
+  @API(Level.Minecraft_V1_16) DRIPPING_OBSIDIAN_TEAR(67, "dripping_obsidian_tear"),
+  @API(Level.Minecraft_V1_16) FALLING_OBSIDIAN_TEAR(68, "falling_obsidian_tear"),
+  @API(Level.Minecraft_V1_16) LANDING_OBSIDIAN_TEAR(69, "landing_obsidian_tear"),
+  @API(Level.Minecraft_V1_16) REVERSE_PORTAL(70, "reverse_portal"),
+  @API(Level.Minecraft_V1_16) WHITE_ASH(71, "white_ash"),
   ;
 
   constructor(
     legacy: String,
     equivalent: Int
   ) : this(equivalent, legacy, legacy)
+
+  constructor(
+    internal: Int,
+    type: String
+  ) : this(internal, type, type)
 
   override val value : Int
     get() = if (MinecraftBukkitVersion.isV113OrLater)

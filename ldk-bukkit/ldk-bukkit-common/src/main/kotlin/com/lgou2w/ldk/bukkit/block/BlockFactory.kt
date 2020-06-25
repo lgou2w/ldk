@@ -20,6 +20,7 @@ import com.lgou2w.ldk.bukkit.nbt.NBTFactory
 import com.lgou2w.ldk.bukkit.packet.PacketFactory
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.Applicator
 import com.lgou2w.ldk.nbt.NBTTagCompound
 import com.lgou2w.ldk.nbt.NBTType
@@ -40,6 +41,7 @@ object BlockFactory {
   @JvmStatic val CLASS_TILE_ENTITY by lazyMinecraftClass("TileEntity")
   @JvmStatic val CLASS_BLOCK_POSITION by lazyMinecraftClass("BlockPosition")
   @JvmStatic val CLASS_IBLOCK_ACCESS by lazyMinecraftClass("IBlockAccess")
+  @JvmStatic val CLASS_IBLOCK_DATA by lazyMinecraftClass("IBlockData")
 
   @JvmStatic val CLASS_CRAFT_WORLD by lazyCraftBukkitClass("CraftWorld")
 
@@ -70,6 +72,16 @@ object BlockFactory {
       .resultAccessorAs<Any, Any?>()
   }
 
+  // NMS.IBlockAccess -> public NMS.IBlockData getType(NMS.BlockPosition)
+  @JvmStatic val METHOD_IBLOCK_ACCESS_GET_TYPE : AccessorMethod<Any, Any> by lazy {
+    FuzzyReflect.of(CLASS_IBLOCK_ACCESS)
+      .useMethodMatcher()
+      .withName("getType")
+      .withType(CLASS_IBLOCK_DATA)
+      .withParams(CLASS_BLOCK_POSITION)
+      .resultAccessor()
+  }
+
   // NMS.TileEntity -> public NMS.Packet getUpdatePacket()
   @JvmStatic val METHOD_TILE_ENTITY_GET_UPDATE_PACKET : AccessorMethod<Any, Any?> by lazy {
     FuzzyReflect.of(CLASS_TILE_ENTITY)
@@ -78,13 +90,17 @@ object BlockFactory {
       .resultAccessorAs<Any, Any?>()
   }
 
-  // NMS.TileEntity -> public void load(NMS.NBTTagCompound)
   // 1.12 or after is 'load', before is 'a'.
+  // 1.16 and before: NMS.TileEntity -> public void load(NMS.NBTTagCompound)
+  // 1.16 and after: NMS.TileEntity -> public void load(NMS.IBlockData, NMS.NBTTagCompound)
   @JvmStatic val METHOD_TILE_ENTITY_WRITE : AccessorMethod<Any, Any> by lazy {
     FuzzyReflect.of(CLASS_TILE_ENTITY)
       .useMethodMatcher()
       .withName("load|a")
-      .withParams(NBTFactory.CLASS_NBT_TAG_COMPOUND)
+      .also {
+        if (!MinecraftBukkitVersion.isV116OrLater) it.withParams(NBTFactory.CLASS_NBT_TAG_COMPOUND)
+        else it.withParams(CLASS_IBLOCK_DATA, NBTFactory.CLASS_NBT_TAG_COMPOUND)
+      }
       .resultAccessor()
   }
 
@@ -140,7 +156,17 @@ object BlockFactory {
   fun writeTag(block: Block, tag: NBTTagCompound) {
     val tileEntity = getTileEntity(block) ?: throw IllegalArgumentException("The block type is not a TileEntity object.")
     val internal = NBTFactory.toNMS(tag)
-    METHOD_TILE_ENTITY_WRITE.invoke(tileEntity, internal)
+    if (MinecraftBukkitVersion.isV116OrLater) {
+      val x = block.x
+      val y = block.y
+      val z = block.z
+      val world = METHOD_CRAFT_WORLD_HANDLE.invoke(block.world)
+      val position = CONSTRUCTOR_BLOCK_POSITION.newInstance(x, y, z)
+      val blockData = METHOD_IBLOCK_ACCESS_GET_TYPE.invoke(world, position)
+      METHOD_TILE_ENTITY_WRITE.invoke(tileEntity, blockData, internal)
+    } else {
+      METHOD_TILE_ENTITY_WRITE.invoke(tileEntity, internal)
+    }
     val packet = METHOD_TILE_ENTITY_GET_UPDATE_PACKET.invoke(tileEntity)
     if (packet != null) {
       val range = Bukkit.getServer().viewDistance * 32 + .0
