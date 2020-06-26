@@ -34,6 +34,7 @@ import com.lgou2w.ldk.common.notNull
 import java.io.IOException
 import java.io.StringReader
 import java.lang.reflect.Type
+import java.util.Collections
 import java.util.regex.Pattern
 
 /**
@@ -47,11 +48,25 @@ object ChatSerializer {
   @JvmStatic
   private val GSON : Gson
 
+  /**
+   * RGB hex color is a feature of minecraft 1.16, this function can convert
+   * the color rgb that supports the old version to a unified color type name
+   *
+   * e.g.: #f55 | #ff5555 -> red
+   */
+  @JvmStatic
+  private val RGB_FORMATTING_TABLE : Map<Int, String>
+
   init {
     GSON = GsonBuilder()
       .registerTypeHierarchyAdapter(ChatStyle::class.java, ChatStyleSerializer())
       .registerTypeHierarchyAdapter(ChatComponent::class.java, ChatComponentSerializer())
       .create()
+    RGB_FORMATTING_TABLE = Collections.unmodifiableMap(
+      ChatColor
+        .values()
+        .filter { it.rgb != null }
+        .associate { it.rgb!! to it.name.toLowerCase() })
   }
 
   /**
@@ -183,15 +198,16 @@ object ChatSerializer {
       while (matcher.find()) {
         val match : String = matcher.group(1)
         append(matcher.start(1))
-        val code = match.notNull().toLowerCase()[1]
-        when (val color = Enums.ofValuable(ChatColor::class.java, code)) {
-          ChatColor.RESET -> style = ChatStyle()
-          ChatColor.OBFUSCATED -> style.setObfuscated(true)
-          ChatColor.BOLD -> style.setBold(true)
-          ChatColor.STRIKETHROUGH -> style.setStrikethrough(true)
-          ChatColor.UNDERLINE -> style.setUnderlined(true)
-          ChatColor.ITALIC -> style.setItalic(true)
-          else -> style = ChatStyle().setColor(color)
+        val code = match.notNull().toLowerCase()[1].toString()
+        val color = Color.ofSafely(code)
+        style = when {
+          ChatColor.RESET == color -> ChatStyle()
+          ChatColor.BOLD == color -> style.setBold(true)
+          ChatColor.ITALIC == color -> style.setItalic(true)
+          ChatColor.UNDERLINE == color -> style.setUnderlined(true)
+          ChatColor.STRIKETHROUGH == color -> style.setStrikethrough(true)
+          ChatColor.OBFUSCATED == color -> style.setObfuscated(true)
+          else -> style.setColor(color)
         }
         currentIndex = matcher.end(1)
       }
@@ -201,7 +217,8 @@ object ChatSerializer {
 
     private fun append(index: Int) {
       if (index > currentIndex) {
-        val extra = ChatComponentText(raw.substring(currentIndex, index)).setStyle(style)
+        val extra = ChatComponentText(raw.substring(currentIndex, index))
+        extra.setStyle(style)
         currentIndex = index
         style = style.clone()
         if (currentComponent == null)
@@ -237,8 +254,9 @@ object ChatSerializer {
   private fun toRaw0(component: ChatComponent, color: Boolean = true, builder: StringBuilder) {
     if (color) {
       val chatStyle = component.style
-      if (chatStyle.color != null)
-        appendColor(builder, chatStyle.color.notNull())
+      val chatColor = chatStyle.color
+      if (chatColor is ChatColor)
+        appendColor(builder, chatColor)
       if (chatStyle.bold.isTrue())
         appendColor(builder, ChatColor.BOLD)
       if (chatStyle.italic.isTrue())
@@ -255,59 +273,78 @@ object ChatSerializer {
     component.extras.forEach { toRaw0(it, color, builder) }
   }
 
-  @JvmStatic
   private fun appendColor(builder: StringBuilder, color: ChatColor) {
     builder.append(color.toString())
   }
 
+  private fun rgbToHex(rgb: Int): String {
+    val r = rgb.shr(16).and(0xFF).toString(16)
+    val g = rgb.shr(8).and(0xFF).toString(16)
+    val b = rgb.and(0xFF).toString(16)
+    return buildString {
+      append("#")
+      append(if (r.length == 1) "0$r" else r)
+      append(if (g.length == 1) "0$g" else g)
+      append(if (b.length == 1) "0$b" else b)
+    }
+  }
+
   private class ChatStyleSerializer : JsonDeserializer<ChatStyle>, JsonSerializer<ChatStyle> {
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): ChatStyle? {
-      if (json.isJsonObject) {
-        val jsonObject : JsonObject = json.asJsonObject
-        val chatStyle = ChatStyle()
-        if (jsonObject.has("color"))
-          chatStyle.color = Enums.ofName(ChatColor::class.java, jsonObject.get("color").asString.toUpperCase())
-        if (jsonObject.has("bold"))
-          chatStyle.bold = jsonObject.get("bold").asBoolean
-        if (jsonObject.has("italic"))
-          chatStyle.italic = jsonObject.get("italic").asBoolean
-        if (jsonObject.has("underlined"))
-          chatStyle.underlined = jsonObject.get("underlined").asBoolean
-        if (jsonObject.has("strikethrough"))
-          chatStyle.strikethrough = jsonObject.get("strikethrough").asBoolean
-        if (jsonObject.has("obfuscated"))
-          chatStyle.obfuscated = jsonObject.get("obfuscated").asBoolean
-        if (jsonObject.has("insertion"))
-          chatStyle.insertion = jsonObject.get("insertion").asString
-        if (jsonObject.has("clickEvent")) {
-          val jsonObjectClickEvent = jsonObject.get("clickEvent") as? JsonObject
-          if (jsonObjectClickEvent != null) {
-            val action = Enums.ofName(ChatClickEvent.Action::class.java, jsonObjectClickEvent.get("action").asString.toUpperCase())
-            val value = jsonObjectClickEvent.get("value")?.asString
-            if (action != null && value != null)
-              chatStyle.clickEvent = ChatClickEvent(action, value)
-          }
+      if (!json.isJsonObject)
+        return null
+      val jsonObject : JsonObject = json.asJsonObject
+      val style = ChatStyle()
+
+      val color = if (jsonObject.has("color")) Color.ofSafely(jsonObject.get("color").asString) else null
+      val bold = if (jsonObject.has("bold")) jsonObject.get("bold").asBoolean else null
+      val italic = if (jsonObject.has("italic")) jsonObject.get("italic").asBoolean else null
+      val underlined = if (jsonObject.has("underlined")) jsonObject.get("underlined").asBoolean else null
+      val strikethrough = if (jsonObject.has("strikethrough")) jsonObject.get("strikethrough").asBoolean else null
+      val obfuscated = if (jsonObject.has("obfuscated")) jsonObject.get("obfuscated").asBoolean else null
+      val insertion = if (jsonObject.has("insertion")) jsonObject.get("obfuscated").asString else null
+      val font = if (jsonObject.has("font")) jsonObject.get("font").asString else null
+
+      var clickEvent: ChatClickEvent? = null
+      if (jsonObject.has("clickEvent")) {
+        val jsonObjectClickEvent = jsonObject.get("clickEvent") as? JsonObject
+        if (jsonObjectClickEvent != null) {
+          val action = Enums.ofName(ChatClickEvent.Action::class.java, jsonObjectClickEvent.get("action").asString.toUpperCase())
+          val value = jsonObjectClickEvent.get("value")?.asString
+          if (action != null && value != null)
+            clickEvent = ChatClickEvent(action, value)
         }
-        if (jsonObject.has("hoverEvent")) {
-          val jsonObjectHoverEvent = jsonObject.get("hoverEvent") as? JsonObject
-          if (jsonObjectHoverEvent != null) {
-            val action = Enums.ofName(ChatHoverEvent.Action::class.java, jsonObjectHoverEvent.get("action").asString.toUpperCase())
-            val value = jsonObjectHoverEvent.get("value") ?: null
-            if (action != null && value != null)
-              chatStyle.hoverEvent = ChatHoverEvent(action, context.deserialize(value, ChatComponent::class.java))
-          }
-        }
-        return chatStyle
       }
-      return null
+      var hoverEvent: ChatHoverEvent? = null
+      if (jsonObject.has("hoverEvent")) {
+        val jsonObjectHoverEvent = jsonObject.get("hoverEvent") as? JsonObject
+        if (jsonObjectHoverEvent != null) {
+          val action = Enums.ofName(ChatHoverEvent.Action::class.java, jsonObjectHoverEvent.get("action").asString.toUpperCase())
+          val value = jsonObjectHoverEvent.get("value") ?: null
+          if (action != null && value != null)
+            hoverEvent = ChatHoverEvent(action, context.deserialize(value, ChatComponent::class.java))
+        }
+      }
+      style.color = color
+      style.bold = bold
+      style.italic = italic
+      style.underlined = underlined
+      style.strikethrough = strikethrough
+      style.obfuscated = obfuscated
+      style.clickEvent = clickEvent
+      style.hoverEvent = hoverEvent
+      style.insertion = insertion
+      style.font = font
+      return style
     }
 
     override fun serialize(src: ChatStyle, typeOfSrc: Type, context: JsonSerializationContext): JsonElement? {
       if (src.isEmpty())
         return null
       val jsonObject = JsonObject()
-      if (src.color != null)
-        jsonObject.addProperty("color", src.color.notNull().name.toLowerCase())
+      val rgb = src.color?.rgb
+      if (rgb != null)
+        jsonObject.addProperty("color", RGB_FORMATTING_TABLE[rgb] ?: rgbToHex(rgb))
       if (src.bold != null)
         jsonObject.addProperty("bold", src.bold)
       if (src.italic != null)
@@ -323,20 +360,22 @@ object ChatSerializer {
       if (src.clickEvent != null) {
         val clickEvent = src.clickEvent.notNull()
         val jsonObjectClickEvent = JsonObject()
-        jsonObjectClickEvent.addProperty("action", clickEvent.action.toString().toLowerCase())
+        jsonObjectClickEvent.addProperty("action", clickEvent.action.name.toLowerCase())
         jsonObjectClickEvent.addProperty("value", clickEvent.value)
         jsonObject.add("clickEvent", jsonObjectClickEvent)
       }
       if (src.hoverEvent != null) {
         val hoverEvent = src.hoverEvent.notNull()
         val jsonObjectHoverEvent = JsonObject()
-        jsonObjectHoverEvent.addProperty("action", hoverEvent.action.toString().toLowerCase())
+        jsonObjectHoverEvent.addProperty("action", hoverEvent.action.name.toLowerCase())
         if (hoverEvent.value is ChatComponentRaw)
           jsonObjectHoverEvent.addProperty("value", hoverEvent.value.raw)
         else
           jsonObjectHoverEvent.add("value", context.serialize(hoverEvent.value))
         jsonObject.add("hoverEvent", jsonObjectHoverEvent)
       }
+      if (src.font != null)
+        jsonObject.addProperty("font", src.font)
       return jsonObject
     }
   }
@@ -366,7 +405,7 @@ object ChatSerializer {
         if (jsonObject.has("with")) {
           val jsonArray = jsonObject.getAsJsonArray("with")
           val withs = arrayOfNulls<Any>(jsonArray.size())
-          (0 until withs.size).forEach {
+          withs.indices.forEach {
             withs[it] = deserialize(jsonArray[it], typeOfT, context)
             if (withs[it] is ChatComponentText) {
               val componentText = withs[it] as ChatComponentText
@@ -389,6 +428,15 @@ object ChatSerializer {
         component = ChatComponentSelector(jsonObject.get("selector").asString)
       } else if (jsonObject.has("keybind")) {
         component = ChatComponentKeybind(jsonObject.get("keybind").asString)
+      } else if (jsonObject.has("nbt")) {
+        val nbt = jsonObject.get("nbt").asString
+        val interpret = if (jsonObject.has("interpret")) jsonObject.get("interpret").asBoolean else null
+        component = when {
+          jsonObject.has("block") -> ChatComponentNBTBlock(nbt, interpret, jsonObject.get("block").asString)
+          jsonObject.has("entity") -> ChatComponentNBTEntity(nbt, interpret, jsonObject.get("entity").asString)
+          jsonObject.has("storage") -> ChatComponentNBTStorage(nbt, interpret, jsonObject.get("storage").asString)
+          else -> throw JsonParseException("Don't know how to turn $json into a Component")
+        }
       } else {
         throw JsonParseException("Don't know how to parse $json into a chat component.")
       }
@@ -444,8 +492,18 @@ object ChatSerializer {
         jsonObject.addProperty("selector", src.selector)
       } else if (src is ChatComponentKeybind) {
         jsonObject.addProperty("keybind", src.keybind)
+      } else if (src is ChatComponentNBT) {
+        jsonObject.addProperty("nbt", src.nbt)
+        if (src.interpret != null)
+          jsonObject.addProperty("interpret", src.interpret)
+        when (src) {
+          is ChatComponentNBTBlock -> jsonObject.addProperty("block", src.path)
+          is ChatComponentNBTEntity -> jsonObject.addProperty("entity", src.path)
+          is ChatComponentNBTStorage -> jsonObject.addProperty("storage", src.path)
+          else -> throw JsonParseException("Don't know how to serialize $src as a Component")
+        }
       } else {
-        throw JsonParseException("Don't know how to parse $src into a chat component.")
+        throw JsonParseException("Don't know how to serialize $src as a Component")
       }
       return jsonObject
     }

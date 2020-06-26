@@ -37,7 +37,7 @@ class ChatComponentTextTest {
     component2.equals(component2) shouldBeEqualTo true
     component2.equals(ChatComponentText("cba")) shouldBeEqualTo true
     component2.hashCode() shouldNotBeEqualTo component.hashCode()
-    component2.style.setBold(true)
+    component2.style.bold = true
     component2.equals(ChatComponentText("cba")) shouldBeEqualTo false
   }
 }

@@ -16,10 +16,8 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
-import org.amshove.kluent.shouldThrow
 import org.junit.Test
 
 @Suppress("ReplaceCallWithBinaryOperator")
@@ -49,21 +47,21 @@ class ChatStyleTest {
     cs.equals(cs) shouldBeEqualTo true
     cs.equals(null) shouldBeEqualTo false
     cs.hashCode() shouldNotBeEqualTo 0
-    val cs2 = ChatStyle()
+    var cs2 = ChatStyle()
     cs2.getColor() shouldBeEqualTo null
-    cs2.getBold() shouldBeEqualTo false
-    cs2.getItalic() shouldBeEqualTo false
-    cs2.getStrikethrough() shouldBeEqualTo false
-    cs2.getUnderlined() shouldBeEqualTo false
-    cs2.getObfuscated() shouldBeEqualTo false
+    cs2.getBold() shouldBeEqualTo null
+    cs2.getItalic() shouldBeEqualTo null
+    cs2.getStrikethrough() shouldBeEqualTo null
+    cs2.getUnderlined() shouldBeEqualTo null
+    cs2.getObfuscated() shouldBeEqualTo null
     cs2.getClickEvent() shouldBeEqualTo null
     cs2.getHoverEvent() shouldBeEqualTo null
     cs2.getInsertion() shouldBeEqualTo null
     cs.equals(cs2) shouldBeEqualTo false
     cs2.equals(cs) shouldBeEqualTo false
-    cs2.setParent(cs)
+    cs2 = cs2.setParent(cs)
     cs2.getColor() shouldBeEqualTo ChatColor.RED
-    cs2.equals(cs) shouldBeEqualTo false
+    cs2.equals(cs) shouldBeEqualTo true
   }
 
   @Test fun `ChatStyle - equals`() {
@@ -93,21 +91,21 @@ class ChatStyleTest {
     cs1.equals(cs2) shouldBeEqualTo true
   }
 
-  @Test fun `ChatStyle - ROOT - These operations should not be supported`() {
-    val rootField = ChatStyle::class.java.getDeclaredField("ROOT")
-      ?: return
-    rootField.isAccessible = true
-    val root = rootField.get(null) as ChatStyle
-    invoking { root.setParent(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setColor(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setBold(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setItalic(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setStrikethrough(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setUnderlined(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setObfuscated(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setClickEvent(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setHoverEvent(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setInsertion(null) } shouldThrow UnsupportedOperationException::class
-    root.toString() shouldBeEqualTo "ChatStyle.ROOT"
-  }
+//  @Test fun `ChatStyle - ROOT - These operations should not be supported`() {
+//    val rootField = ChatStyle::class.java.getDeclaredField("ROOT")
+//      ?: return
+//    rootField.isAccessible = true
+//    val root = rootField.get(null) as ChatStyle
+//    invoking { root.setParent(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setColor(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setBold(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setItalic(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setStrikethrough(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setUnderlined(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setObfuscated(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setClickEvent(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setHoverEvent(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setInsertion(null) } shouldThrow UnsupportedOperationException::class
+//    root.toString() shouldBeEqualTo "ChatStyle.ROOT"
+//  }
 }

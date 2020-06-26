@@ -21,13 +21,13 @@ package com.lgou2w.ldk.chat
  *
  * @author lgou2w
  */
-open class ChatStyle {
+class ChatStyle {
 
-  /** member */
+  companion object {
+    @JvmField val EMPTY = ChatStyle()
+  }
 
-  private var parent : ChatStyle? = null
-
-  @JvmField internal var color : ChatColor? = null
+  @JvmField internal var color : Color? = null
   @JvmField internal var bold : Boolean? = null
   @JvmField internal var italic : Boolean? = null
   @JvmField internal var underlined : Boolean? = null
@@ -36,182 +36,171 @@ open class ChatStyle {
   @JvmField internal var clickEvent : ChatClickEvent? = null
   @JvmField internal var hoverEvent : ChatHoverEvent? = null
   @JvmField internal var insertion : String? = null
-
-  /** static */
-
-  companion object {
-
-    @JvmStatic
-    private val ROOT = object : ChatStyle() {
-      override fun getColor(): ChatColor?
-        = null
-      override fun getBold(): Boolean?
-        = false
-      override fun getItalic(): Boolean?
-        = false
-      override fun getStrikethrough(): Boolean?
-        = false
-      override fun getUnderlined(): Boolean?
-        = false
-      override fun getObfuscated(): Boolean?
-        = false
-      override fun getClickEvent(): ChatClickEvent?
-        = null
-      override fun getHoverEvent(): ChatHoverEvent?
-        = null
-      override fun getInsertion(): String?
-        = null
-      override fun setParent(parent: ChatStyle?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setColor(color: ChatColor?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setBold(bold: Boolean?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setItalic(italic: Boolean?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setStrikethrough(strikethrough: Boolean?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setUnderlined(underlined: Boolean?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setObfuscated(obfuscated: Boolean?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setClickEvent(clickEvent: ChatClickEvent?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setHoverEvent(hoverEvent: ChatHoverEvent?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun setInsertion(insertion: String?): ChatStyle
-        = throw UnsupportedOperationException()
-      override fun toString(): String
-        = "ChatStyle.ROOT"
-    }
-  }
-
-  private fun getParent(): ChatStyle
-    = parent ?: ROOT
+  @JvmField internal var font : String? = null
 
   /**
-   * @see [ChatColor]
+   * @see [Color]
+   * @since LDK 0.2.1
    */
-  open fun getColor(): ChatColor?
-    = color ?: getParent().getColor()
+  fun getColor(): Color?
+    = color
 
   /**
    * @see [ChatColor.BOLD]
    */
-  open fun getBold(): Boolean?
-    = bold ?: getParent().getBold()
+  fun getBold(): Boolean?
+    = bold
 
   /**
    * @see [ChatColor.ITALIC]
    */
-  open fun getItalic(): Boolean?
-    = italic ?: getParent().getItalic()
+  fun getItalic(): Boolean?
+    = italic
 
   /**
    * @see [ChatColor.STRIKETHROUGH]
    */
-  open fun getStrikethrough(): Boolean?
-    = strikethrough ?: getParent().getStrikethrough()
+  fun getStrikethrough(): Boolean?
+    = strikethrough
 
   /**
    * @see [ChatColor.UNDERLINE]
    */
-  open fun getUnderlined(): Boolean?
-    = underlined ?: getParent().getUnderlined()
+  fun getUnderlined(): Boolean?
+    = underlined
 
   /**
    * @see [ChatColor.OBFUSCATED]
    */
-  open fun getObfuscated(): Boolean?
-    = obfuscated ?: getParent().getObfuscated()
+  fun getObfuscated(): Boolean?
+    = obfuscated
 
   /**
    * @see [ChatClickEvent]
    */
-  open fun getClickEvent(): ChatClickEvent?
-    = clickEvent ?: getParent().getClickEvent()
+  fun getClickEvent(): ChatClickEvent?
+    = clickEvent
 
   /**
    * @see [ChatHoverEvent]
    */
-  open fun getHoverEvent(): ChatHoverEvent?
-    = hoverEvent ?: getParent().getHoverEvent()
+  fun getHoverEvent(): ChatHoverEvent?
+    = hoverEvent
 
-  open fun getInsertion(): String?
-    = insertion ?: getParent().getInsertion()
+  fun getInsertion(): String?
+    = insertion
 
-  open fun setParent(parent: ChatStyle?): ChatStyle {
-    this.parent = parent
-    return this
+  /**
+   * @since LDK 0.2.1
+   */
+  fun getFont(): String?
+    = font
+
+  fun setParent(parent: ChatStyle): ChatStyle {
+    if (this == EMPTY)
+      return parent
+    if (parent == EMPTY)
+      return this
+    val copy = ChatStyle()
+    copy.color = color ?: parent.color
+    copy.bold = bold ?: parent.bold
+    copy.italic = italic ?: parent.italic
+    copy.underlined = underlined ?: parent.underlined
+    copy.strikethrough = strikethrough ?: parent.strikethrough
+    copy.obfuscated = obfuscated ?: parent.obfuscated
+    copy.clickEvent = clickEvent ?: parent.clickEvent
+    copy.hoverEvent = hoverEvent ?: parent.hoverEvent
+    copy.insertion = insertion ?: parent.insertion
+    copy.font = font ?: parent.font
+    return copy
   }
 
   /**
-   * @see [ChatColor]
+   * @see [Color]
+   * @since LDK 0.2.1
    */
-  open fun setColor(color: ChatColor?): ChatStyle {
-    this.color = color
-    return this
+  fun setColor(color: Color?): ChatStyle {
+    val copy = clone()
+    copy.color = color
+    return copy
   }
 
   /**
    * @see [ChatColor.BOLD]
    */
-  open fun setBold(bold: Boolean?): ChatStyle {
-    this.bold = bold
-    return this
+  fun setBold(bold: Boolean?): ChatStyle {
+    val copy = clone()
+    copy.bold = bold
+    return copy
   }
 
   /**
    * @see [ChatColor.ITALIC]
    */
-  open fun setItalic(italic: Boolean?): ChatStyle {
-    this.italic = italic
-    return this
+  fun setItalic(italic: Boolean?): ChatStyle {
+    val copy = clone()
+    copy.italic = italic
+    return copy
   }
 
   /**
    * @see [ChatColor.STRIKETHROUGH]
    */
-  open fun setStrikethrough(strikethrough: Boolean?): ChatStyle {
-    this.strikethrough = strikethrough
-    return this
+  fun setStrikethrough(strikethrough: Boolean?): ChatStyle {
+    val copy = clone()
+    copy.strikethrough = strikethrough
+    return copy
   }
 
   /**
    * @see [ChatColor.UNDERLINE]
    */
-  open fun setUnderlined(underlined: Boolean?): ChatStyle {
-    this.underlined = underlined
-    return this
+  fun setUnderlined(underlined: Boolean?): ChatStyle {
+    val copy = clone()
+    copy.underlined = underlined
+    return copy
   }
 
   /**
    * @see [ChatColor.OBFUSCATED]
    */
-  open fun setObfuscated(obfuscated: Boolean?): ChatStyle {
-    this.obfuscated = obfuscated
-    return this
+  fun setObfuscated(obfuscated: Boolean?): ChatStyle {
+    val copy = clone()
+    copy.obfuscated = obfuscated
+    return copy
   }
 
   /**
    * @see [ChatClickEvent]
    */
-  open fun setClickEvent(clickEvent: ChatClickEvent?): ChatStyle {
-    this.clickEvent = clickEvent
-    return this
+  fun setClickEvent(clickEvent: ChatClickEvent?): ChatStyle {
+    val copy = clone()
+    copy.clickEvent = clickEvent
+    return copy
   }
 
   /**
    * @see [ChatHoverEvent]
    */
-  open fun setHoverEvent(hoverEvent: ChatHoverEvent?): ChatStyle {
-    this.hoverEvent = hoverEvent
-    return this
+  fun setHoverEvent(hoverEvent: ChatHoverEvent?): ChatStyle {
+    val copy = clone()
+    copy.hoverEvent = hoverEvent
+    return copy
   }
 
-  open fun setInsertion(insertion: String?): ChatStyle {
-    this.insertion = insertion
-    return this
+  fun setInsertion(insertion: String?): ChatStyle {
+    val copy = clone()
+    copy.insertion = insertion
+    return copy
+  }
+
+  /**
+   * @since LDK 0.2.1
+   */
+  fun setFont(font: String?): ChatStyle {
+    val copy = clone()
+    copy.font = font
+    return copy
   }
 
   /**
@@ -227,7 +216,8 @@ open class ChatStyle {
     obfuscated == null &&
     clickEvent == null &&
     hoverEvent == null &&
-    insertion == null
+    insertion == null &&
+    font == null
 
   /**
    * * Shallow a clone of this chat style object.
@@ -244,6 +234,7 @@ open class ChatStyle {
     copy.clickEvent = clickEvent
     copy.hoverEvent = hoverEvent
     copy.insertion = insertion
+    copy.font = font
     return copy
   }
 
@@ -251,7 +242,6 @@ open class ChatStyle {
     if (other === this)
       return true
     if (other is ChatStyle) {
-      if (parent != other.parent) return false
       if (color != other.color) return false
       if (bold != other.bold) return false
       if (italic != other.italic) return false
@@ -261,25 +251,27 @@ open class ChatStyle {
       if (clickEvent != other.clickEvent) return false
       if (hoverEvent != other.hoverEvent) return false
       if (insertion != other.insertion) return false
+      if (font != other.font) return false
       return true
     }
     return false
   }
 
   override fun hashCode(): Int {
-    var result = color?.hashCode() ?: 0
-    result = 31 * result + (bold?.hashCode() ?: 0)
-    result = 31 * result + (italic?.hashCode() ?: 0)
-    result = 31 * result + (underlined?.hashCode() ?: 0)
-    result = 31 * result + (strikethrough?.hashCode() ?: 0)
-    result = 31 * result + (obfuscated?.hashCode() ?: 0)
-    result = 31 * result + (clickEvent?.hashCode() ?: 0)
-    result = 31 * result + (hoverEvent?.hashCode() ?: 0)
-    result = 31 * result + (insertion?.hashCode() ?: 0)
+    var result = color.hashCode()
+    result = 31 * result + bold.hashCode()
+    result = 31 * result + italic.hashCode()
+    result = 31 * result + underlined.hashCode()
+    result = 31 * result + strikethrough.hashCode()
+    result = 31 * result + obfuscated.hashCode()
+    result = 31 * result + clickEvent.hashCode()
+    result = 31 * result + hoverEvent.hashCode()
+    result = 31 * result + insertion.hashCode()
+    result = 31 * result + font.hashCode()
     return result
   }
 
   override fun toString(): String {
-    return "ChatStyle(hasParent=${parent != null}, color=${color?.name}, bold=$bold, italic=$italic, underlined=$underlined, strikethrough=$strikethrough, obfuscated=$obfuscated, clickEvent=$clickEvent, hoverEvent=$hoverEvent, insertion=$insertion)"
+    return "ChatStyle(color=${color?.rgb}, bold=$bold, italic=$italic, underlined=$underlined, strikethrough=$strikethrough, obfuscated=$obfuscated, clickEvent=$clickEvent, hoverEvent=$hoverEvent, insertion=$insertion, font=$font)"
   }
 }

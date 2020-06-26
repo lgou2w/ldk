@@ -100,12 +100,12 @@ open class ChatComponentFancy(
    * * Set the color style of the last component of this fancy component.
    * * 设置此花式组件最后一个组件的颜色样式.
    *
-   * @see [ChatColor]
+   * @see [Color]
    * @param color Chat color.
    * @param color 聊天颜色.
    */
-  fun color(color: ChatColor): ChatComponentFancy {
-    last.style.setColor(color)
+  fun color(color: Color): ChatComponentFancy {
+    last.style.color = color
     return this
   }
 
@@ -116,7 +116,7 @@ open class ChatComponentFancy(
    * @see [ChatColor.BOLD]
    */
   fun withBold(): ChatComponentFancy {
-    last.style.setBold(true)
+    last.style.bold = true
     return this
   }
 
@@ -127,7 +127,7 @@ open class ChatComponentFancy(
    * @see [ChatColor.ITALIC]
    */
   fun withItalic(): ChatComponentFancy {
-    last.style.setItalic(true)
+    last.style.italic = true
     return this
   }
 
@@ -138,7 +138,7 @@ open class ChatComponentFancy(
    * @see [ChatColor.UNDERLINE]
    */
   fun withUnderlined(): ChatComponentFancy {
-    last.style.setUnderlined(true)
+    last.style.underlined = true
     return this
   }
 
@@ -149,7 +149,7 @@ open class ChatComponentFancy(
    * @see [ChatColor.STRIKETHROUGH]
    */
   fun withStrikethrough(): ChatComponentFancy {
-    last.style.setStrikethrough(true)
+    last.style.strikethrough = true
     return this
   }
 
@@ -160,7 +160,7 @@ open class ChatComponentFancy(
    * @see [ChatColor.OBFUSCATED]
    */
   fun withObfuscated(): ChatComponentFancy {
-    last.style.setObfuscated(true)
+    last.style.obfuscated = true
     return this
   }
 
@@ -171,7 +171,15 @@ open class ChatComponentFancy(
    * @see [ChatColor.OBFUSCATED]
    */
   fun withInsertion(insertion: String): ChatComponentFancy {
-    last.style.setInsertion(insertion)
+    last.style.insertion = insertion
+    return this
+  }
+
+  /**
+   * @since LDK 0.2.1
+   */
+  fun withFont(font: String): ChatComponentFancy {
+    last.style.font = font
     return this
   }
 
@@ -187,7 +195,7 @@ open class ChatComponentFancy(
    * @param value 交互值.
    */
   fun withClickEvent(action: ChatClickEvent.Action, value: String): ChatComponentFancy {
-    last.style.setClickEvent(ChatClickEvent(action, value))
+    last.style.clickEvent = ChatClickEvent(action, value)
     return this
   }
 
@@ -203,7 +211,7 @@ open class ChatComponentFancy(
    * @param value 交互值.
    */
   fun withHoverEvent(action: ChatHoverEvent.Action, value: ChatComponent): ChatComponentFancy {
-    last.style.setHoverEvent(ChatHoverEvent(action, value))
+    last.style.hoverEvent = ChatHoverEvent(action, value)
     return this
   }
 
@@ -221,7 +229,7 @@ open class ChatComponentFancy(
    * @param path 文件路径.
    */
   fun file(path: String): ChatComponentFancy {
-    last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.OPEN_FILE, path))
+    last.style.clickEvent = ChatClickEvent(ChatClickEvent.Action.OPEN_FILE, path)
     return this
   }
 
@@ -234,7 +242,7 @@ open class ChatComponentFancy(
    * @param url 网络链接.
    */
   fun link(url: String): ChatComponentFancy {
-    last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.OPEN_URL, url))
+    last.style.clickEvent = ChatClickEvent(ChatClickEvent.Action.OPEN_URL, url)
     return this
   }
 
@@ -247,7 +255,7 @@ open class ChatComponentFancy(
    * @param command 命令.
    */
   fun suggest(command: String): ChatComponentFancy {
-    last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.SUGGEST_COMMAND, command))
+    last.style.clickEvent = ChatClickEvent(ChatClickEvent.Action.SUGGEST_COMMAND, command)
     return this
   }
 
@@ -260,7 +268,7 @@ open class ChatComponentFancy(
    * @param command 命令.
    */
   fun command(command: String): ChatComponentFancy {
-    last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.RUN_COMMAND, command))
+    last.style.clickEvent = ChatClickEvent(ChatClickEvent.Action.RUN_COMMAND, command)
     return this
   }
 
@@ -273,7 +281,7 @@ open class ChatComponentFancy(
    * @param index 页面索引.
    */
   fun changePage(index: Int): ChatComponentFancy {
-    last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.CHANGE_PAGE, index.toString()))
+    last.style.clickEvent = ChatClickEvent(ChatClickEvent.Action.CHANGE_PAGE, index.toString())
     return this
   }
 
@@ -289,7 +297,7 @@ open class ChatComponentFancy(
    * @since LDK 0.1.9
    */
   fun copyToClipboard(value: String): ChatComponentFancy {
-    last.style.setClickEvent(ChatClickEvent(ChatClickEvent.Action.COPY_TO_CLIPBOARD, value))
+    last.style.clickEvent = ChatClickEvent(ChatClickEvent.Action.COPY_TO_CLIPBOARD, value)
     return this
   }
 
@@ -341,7 +349,7 @@ open class ChatComponentFancy(
    * @param component 聊天组件.
    */
   fun tooltipComponent(component: ChatComponent): ChatComponentFancy {
-    last.style.setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, component))
+    last.style.hoverEvent = ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, component)
     return this
   }
 
@@ -355,7 +363,7 @@ open class ChatComponentFancy(
    */
   fun tooltipItem(itemMojangson: String): ChatComponentFancy {
     val componentRaw = ChatSerializer.ChatComponentRaw(itemMojangson)
-    last.style.setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_ITEM, componentRaw))
+    last.style.hoverEvent = ChatHoverEvent(ChatHoverEvent.Action.SHOW_ITEM, componentRaw)
     return this
   }
 

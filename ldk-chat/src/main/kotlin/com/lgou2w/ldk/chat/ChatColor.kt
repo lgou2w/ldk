@@ -16,8 +16,59 @@
 
 package com.lgou2w.ldk.chat
 
+import com.lgou2w.ldk.common.Enums
 import com.lgou2w.ldk.common.Valuable
 import java.util.regex.Pattern
+
+/**
+ * @since LDK 0.2.1
+ */
+interface Color {
+
+  val rgb: Int?
+
+  companion object {
+
+    private val HEX_RGB = Pattern.compile("^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$")
+
+    @JvmStatic
+    fun of(rgb: Int): Color = ChatHexColor(rgb)
+
+    @JvmStatic
+    @Throws(IllegalArgumentException::class)
+    fun of(codeOrHexRgb: String): Color {
+      if (codeOrHexRgb.isBlank())
+        throw IllegalArgumentException("Invalid rgb, is blank.")
+      val formatting = Enums.ofName(ChatColor::class.java, codeOrHexRgb.toUpperCase())
+        ?: Enums.ofValuable(ChatColor::class.java, codeOrHexRgb.toLowerCase().first())
+      if (formatting != null)
+        return formatting
+      if (!HEX_RGB.matcher(codeOrHexRgb).matches())
+        throw IllegalArgumentException("Invalid rgb hex: $codeOrHexRgb")
+      val rgb = hexCompletion(codeOrHexRgb).toInt(16)
+      return ChatHexColor(rgb)
+    }
+
+    @JvmStatic
+    fun ofSafely(codeOrHexRgb: String): Color? = try {
+      of(codeOrHexRgb)
+    } catch (e: IllegalArgumentException) {
+      null
+    }
+
+    private fun hexCompletion (hex: String): String {
+      var r = hex.replace(Regex("^#"), "")
+      if (r.length == 3)
+        r = r[0].toString() + r[0] + r[1] + r[1] + r[2] + r[2]
+      return r
+    }
+  }
+}
+
+/**
+ * @since LDK 0.2.1
+ */
+class ChatHexColor(override val rgb: Int) : Color
 
 /**
  * ## ChatColor (聊天颜色)
@@ -26,6 +77,13 @@ import java.util.regex.Pattern
  * @author lgou2w
  */
 enum class ChatColor(
+  /**
+   * * Hexadecimal rgb value for this chat color.
+   * * 此聊天颜色的十六进制 rgb 值.
+   *
+   * @since LDK 0.2.1
+   */
+  override val rgb: Int?,
   /**
    * * Enum color code.
    * * 枚举颜色代码.
@@ -36,8 +94,7 @@ enum class ChatColor(
    * * 此聊天颜色是否为格式符.
    */
   val isFormat: Boolean = false
-
-) : Valuable<Char> {
+) : Valuable<Char>, Color {
 
   /** enums */
 
@@ -45,82 +102,82 @@ enum class ChatColor(
    * * Black
    * * 黑色
    */
-  BLACK('0'),
+  BLACK(0x000000, '0'),
   /**
    * * Dark Blue
    * * 深蓝色
    */
-  DARK_BLUE('1'),
+  DARK_BLUE(0x0AA000, '1'),
   /**
    * * Dark Green
    * * 深绿色
    */
-  DARK_GREEN('2'),
+  DARK_GREEN(0x00AA00, '2'),
   /**
    * * Dark Aqua
    * * 深青色
    */
-  DARK_AQUA('3'),
+  DARK_AQUA(0x00AAAA, '3'),
   /**
    * * Dark Red
    * * 深红色
    */
-  DARK_RED('4'),
+  DARK_RED(0xAA0000, '4'),
   /**
    * * Dark Purple
    * * 深紫色
    */
-  DARK_PURPLE('5'),
+  DARK_PURPLE(0xAA00AA, '5'),
   /**
    * * Gold
    * * 金色
    */
-  GOLD('6'),
+  GOLD(0xFFAA00, '6'),
   /**
    * * Gray
    * * 灰色
    */
-  GRAY('7'),
+  GRAY(0xAAAAAA, '7'),
   /**
    * * Dark Gray
    * * 深灰色
    */
-  DARK_GRAY('8'),
+  DARK_GRAY(0x555555, '8'),
   /**
    * * Blue
    * * 蓝色
    */
-  BLUE('9'),
+  BLUE(0x5555FF, '9'),
   /**
    * * Green
    * * 绿色
    */
-  GREEN('a'),
+  GREEN(0x55FF55, 'a'),
   /**
    * * Aqua
    * * 青色
    */
-  AQUA('b'),
+  AQUA(0x55FFFF, 'b'),
   /**
    * * Red
    * * 红色
    */
-  RED('c'),
+  RED(0xFF5555, 'c'),
   /**
    * * Light Purple
    * * 浅紫色
    */
-  LIGHT_PURPLE('d'),
+  LIGHT_PURPLE(0xFF55FF, 'd'),
   /**
    * * Yellow
    * * 黄色
    */
-  YELLOW('e'),
+  YELLOW(0xFFFF55, 'e'),
   /**
    * * White
    * * 白色
    */
-  WHITE('f'),
+  WHITE(0xFFFFFF, 'f'),
 
   /**
    * * Format: Obfuscated
@@ -153,6 +210,11 @@ enum class ChatColor(
    */
   RESET('r'),
   ;
+
+  constructor(
+    code: Char,
+    isFormat: Boolean = false
+  ) : this(null, code, isFormat)
 
   override val value: Char
     get() = code
