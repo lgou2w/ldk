@@ -117,7 +117,6 @@ class ChatStyle {
 
   /**
    * @see [Color]
-   * @since LDK 0.2.1
    */
   fun setColor(color: Color?): ChatStyle {
     val copy = clone()
