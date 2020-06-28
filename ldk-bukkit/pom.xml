@@ -22,7 +22,7 @@
   <parent>
     <artifactId>ldk</artifactId>
     <groupId>com.lgou2w</groupId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -49,7 +49,7 @@
   </modules>
 
   <properties>
-    <bukkit.version>1.15.1-R0.1-SNAPSHOT</bukkit.version>
+    <spigot.version>1.16.1-R0.1-SNAPSHOT</spigot.version>
   </properties>
 
   <repositories>
@@ -58,34 +58,42 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
     </repository>
     <repository>
-      <id>bukkit-repo</id>
+      <id>md5-repo</id>
       <url>http://repo.md-5.net/content/groups/public/</url>
     </repository>
   </repositories>
 
   <dependencies>
-    <!-- Spigot -->
+    <!-- Spigot API -->
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>${bukkit.version}</version>
+      <version>${spigot.version}</version>
       <scope>provided</scope>
     </dependency>
+    <!-- Spigot Runtime: See BuildTools -->
+<!--    <dependency>-->
+<!--      <groupId>org.spigotmc</groupId>-->
+<!--      <artifactId>spigot</artifactId>-->
+<!--      <version>${spigot.version}</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
+    <!-- No longer available since 1.16 -->
+    <!-- See: https://www.spigotmc.org/threads/spigot-bungeecord-1-16-1.447405/ -->
     <!-- Bukkit -->
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>${bukkit.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- Maybe you need to build it yourself -->
-    <!-- CraftBukkit Dependency -->
-    <!--<dependency>-->
-    <!--<groupId>org.bukkit</groupId>-->
-    <!--<artifactId>craftbukkit</artifactId>-->
-    <!--<version>${bukkit.version}</version>-->
-    <!--<scope>provided</scope>-->
-    <!--</dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.bukkit</groupId>-->
+<!--      <artifactId>bukkit</artifactId>-->
+<!--      <version>${spigot.version}</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
+    <!-- CraftBukkit -->
+<!--    <dependency>-->
+<!--      <groupId>org.bukkit</groupId>-->
+<!--      <artifactId>craftbukkit</artifactId>-->
+<!--      <version>${spigot.version}</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
   </dependencies>
 
 </project>

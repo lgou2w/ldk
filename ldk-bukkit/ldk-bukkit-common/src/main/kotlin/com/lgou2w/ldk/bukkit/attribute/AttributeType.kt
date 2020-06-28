@@ -20,6 +20,8 @@ import com.lgou2w.ldk.bukkit.version.IllegalBukkitVersionException
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion
 import com.lgou2w.ldk.common.Valuable
 import com.lgou2w.ldk.common.isOrLater
+import java.util.Collections
+import java.util.Locale
 
 /**
  * ## AttributeType (属性类型)
@@ -30,6 +32,11 @@ import com.lgou2w.ldk.common.isOrLater
  * @author lgou2w
  */
 enum class AttributeType(
+  /**
+   * * The type name in the old version.
+   * * 此属性类型的类型名称.
+   */
+  val legacy: String,
   /**
    * * The type name of this attribute type.
    * * 此属性类型的类型名称.
@@ -61,32 +68,32 @@ enum class AttributeType(
    * * Attribute Type: Max Health
    * * 属性类型: 最大生命
    */
-  MAX_HEALTH("generic.maxHealth", 20.0, .0, 2048.0),
+  MAX_HEALTH("generic.maxHealth", "generic.max_health", 20.0, .0, 2048.0),
   /**
    * * Attribute Type: Follow Range
    * * 属性类型: 追踪范围
    */
-  FOLLOW_RANGE("generic.followRange", 32.0, .0, 2048.0),
+  FOLLOW_RANGE("generic.followRange", "generic.follow_range", 32.0, .0, 2048.0),
   /**
    * * Attribute Type: Knockback Resistance
    * * 属性类型: 击退抗性
    */
-  KNOCKBACK_RESISTANCE("generic.knockbackResistance", .0, .0, 1.0),
+  KNOCKBACK_RESISTANCE("generic.knockbackResistance", "generic.knockback_resistance", .0, .0, 1.0),
   /**
    * * Attribute Type: Movement Speed
    * * 属性类型: 移动速度
    */
-  MOVEMENT_SPEED("generic.movementSpeed", 0.699999988079071, .0, 2048.0),
+  MOVEMENT_SPEED("generic.movementSpeed", "generic.movement_speed", 0.699999988079071, .0, 2048.0),
   /**
    * * Attribute Type: Attack Damage
    * * 属性类型: 攻击伤害
    */
-  ATTACK_DAMAGE("generic.attackDamage", 2.0, .0, 2048.0),
+  ATTACK_DAMAGE("generic.attackDamage", "generic.attack_damage", 2.0, .0, 2048.0),
   /**
    * * Attribute Type: Attack Speed
    * * 属性类型: 攻击速度
    */
-  ATTACK_SPEED("generic.attackSpeed", 4.0, .0, 1024.0, MinecraftVersion.V1_9),
+  ATTACK_SPEED("generic.attackSpeed", "generic.attack_speed", 4.0, .0, 1024.0, MinecraftVersion.V1_9),
   /**
    * * Attribute Type: Armor
    * * 属性类型: 护甲
@@ -96,7 +103,7 @@ enum class AttributeType(
    * * Attribute Type: Armor Toughness
    * * 属性类型: 护甲韧性
    */
-  ARMOR_TOUGHNESS("generic.armorToughness", .0, .0, 20.0, MinecraftVersion.V1_9),
+  ARMOR_TOUGHNESS("generic.armorToughness", "generic.armor_toughness", .0, .0, 20.0, MinecraftVersion.V1_9),
   /**
    * * Attribute Type: Luck
    * * 属性类型: 幸运
@@ -106,22 +113,30 @@ enum class AttributeType(
    * * Attribute Type: Flying Speed
    * * 属性类型: 飞行速度
    */
-  FLYING_SPEED("generic.flyingSpeed", 0.4000000059604645, .0, 1024.0, MinecraftVersion.V1_12),
+  FLYING_SPEED("generic.flyingSpeed", "generic.flying_speed", 0.4000000059604645, .0, 1024.0, MinecraftVersion.V1_12),
   /**
    * * Attribute Type: Horse Jump Strength
    * * 属性类型: 马弹跳力
    *
    * @see [org.bukkit.entity.Horse]
    */
-  HORSE_JUMP_STRENGTH("horse.jumpStrength", 0.69999999999999996, .0, 2.0),
+  HORSE_JUMP_STRENGTH("horse.jumpStrength", "horse.jump_strength", 0.69999999999999996, .0, 2.0),
   /**
    * * Attribute Type: Zombie Spawn Reinforcements
    * * 属性类型: 僵尸增援生成率
    *
    * @see [org.bukkit.entity.Zombie]
    */
-  ZOMBIE_SPAWN_REINFORCEMENTS("zombie.spawnReinforcements", .0, .0, 1.0),
+  ZOMBIE_SPAWN_REINFORCEMENTS("zombie.spawnReinforcements", "zombie.spawn_reinforcements", .0, .0, 1.0),
   ;
+
+  constructor(
+    type: String,
+    defValue: Double,
+    minValue: Double,
+    maxValue: Double,
+    mcVer: MinecraftVersion? = null
+  ) : this(type, type, defValue, minValue, maxValue, mcVer)
 
   override val value : String
     get() = type
@@ -138,5 +153,35 @@ enum class AttributeType(
     if (mcVer != null && !MinecraftVersion.CURRENT.isOrLater(mcVer))
       throw IllegalBukkitVersionException("This $this attribute type is not supported in current Bukkit versions.")
     return true
+  }
+
+  companion object {
+
+    @JvmStatic private val NAME_MAP : Map<String, AttributeType>
+
+    init {
+      val nameMap = HashMap<String, AttributeType>()
+      values().forEach {
+        // Maximize compatibility with old and new version type names
+        // 最大化兼容旧版本和新版本的类型名称
+        nameMap[it.legacy] = it
+        nameMap[it.type] = it
+      }
+      NAME_MAP = Collections.unmodifiableMap(nameMap)
+    }
+
+    /**
+     * * Get the attribute type from the given type name.
+     * * 从给定的类型名称获取属性类型.
+     *
+     * @throws IllegalArgumentException If the type name does not exist.
+     * @throws IllegalArgumentException 如果类型名称不存在.
+     * @since LDK 0.2.1
+     */
+    @JvmStatic
+    @Throws(IllegalArgumentException::class)
+    fun of(type: String): AttributeType
+      = NAME_MAP[type.toLowerCase(Locale.US)]
+      ?: throw IllegalArgumentException("Invalid attribute type name: $type.")
   }
 }

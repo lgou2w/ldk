@@ -17,8 +17,8 @@
 package com.lgou2w.ldk.nbt
 
 import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeInstanceOf
-import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
 class NBTTypeTest {
@@ -28,18 +28,18 @@ class NBTTypeTest {
       NBTType.TAG_SHORT.isNumber() &&
       NBTType.TAG_INT.isNumber() &&
       NBTType.TAG_FLOAT.isNumber() &&
-      NBTType.TAG_DOUBLE.isNumber() shouldEqual true
+      NBTType.TAG_DOUBLE.isNumber() shouldBeEqualTo true
     NBTType.TAG_LIST.isNumber() &&
-      NBTType.TAG_COMPOUND.isNumber() shouldEqual false
+      NBTType.TAG_COMPOUND.isNumber() shouldBeEqualTo false
   }
 
   @Test fun `NBTType - fromId - zero id should be TAG_END type`() {
     val type = NBTType.fromId(0)
-    type shouldEqual NBTType.TAG_END
-    type?.id shouldEqual 0
-    type?.primitive shouldEqual java.lang.Void.TYPE
-    type?.reference shouldEqual java.lang.Void::class.java
-    type?.wrapped shouldEqual NBTTagEnd::class.java
+    type shouldBeEqualTo NBTType.TAG_END
+    type?.id shouldBeEqualTo 0
+    type?.primitive shouldBeEqualTo java.lang.Void.TYPE
+    type?.reference shouldBeEqualTo java.lang.Void::class.java
+    type?.wrapped shouldBeEqualTo NBTTagEnd::class.java
     type?.mojangsonSuffix shouldBe null
   }
 

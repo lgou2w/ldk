@@ -23,6 +23,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
+
 /*
  * Copyright (C) 2019-2020 The lgou2w <lgou2w@hotmail.com>
  *
@@ -179,7 +180,7 @@ class SimpleEventBus(
   override fun unregister(target: Any) {
     if (!registeredListeners.containsKey(target))
       return
-    registeredListeners[target]?.forEach { listener ->
+    registeredListeners.remove(target)?.forEach { listener ->
       getListenerList(listener.eventType)
         .unregister(listener)
     }

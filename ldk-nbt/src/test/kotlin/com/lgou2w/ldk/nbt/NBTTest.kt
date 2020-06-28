@@ -17,26 +17,27 @@
 package com.lgou2w.ldk.nbt
 
 import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainAll
-import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
+@Suppress("ReplaceCallWithBinaryOperator")
 class NBTTest {
 
   @Test fun `ofList - Two empty list should be equal`() {
     val l1 = ofList {  }
     val l2 = ofList {  }
-    l1 shouldEqual l2
-    l1.equals(l2) shouldEqual true
-    l1.isEmpty() shouldEqual l2.isEmpty()
+    l1 shouldBeEqualTo l2
+    l1.equals(l2) shouldBeEqualTo true
+    l1.isEmpty() shouldBeEqualTo l2.isEmpty()
   }
 
   @Test fun `ofCompound - Two empty compound should be equal`() {
     val c1 = ofCompound {  }
     val c2 = ofCompound {  }
-    c1 shouldEqual c2
-    c1.equals(c2) shouldEqual true
-    c1.isEmpty() shouldEqual c1.isEmpty()
+    c1 shouldBeEqualTo c2
+    c1.equals(c2) shouldBeEqualTo true
+    c1.isEmpty() shouldBeEqualTo c1.isEmpty()
   }
 
   @Test fun `NBTTagCompound - removeIf - If the predicate is null, the entry should be removed directly`() {
@@ -46,9 +47,9 @@ class NBTTest {
     }
       .removeIf<Int>("key", null)
       .removeIf<NBTTagCompound>("tag", null)
-    compound.getIntOrNull("key") shouldEqual null
-    compound.containsKey("key") shouldEqual false
-    compound.isEmpty() shouldEqual true
+    compound.getIntOrNull("key") shouldBeEqualTo null
+    compound.containsKey("key") shouldBeEqualTo false
+    compound.isEmpty() shouldBeEqualTo true
   }
 
   @Test fun `NBTTagCompound - removeIf - If the predicate is false, the entry should not be removed`() {
@@ -58,10 +59,10 @@ class NBTTest {
     }
       .removeIf<Byte>("key") { it == 0.toByte() }
       .removeIf<NBTTagCompound>("tag") { it.isNotEmpty() }
-    compound.getByte("key") shouldEqual 1
-    compound.containsKey("key") shouldEqual true
-    compound.containsKey("tag") shouldEqual true
-    compound.isEmpty() shouldEqual false
+    compound.getByte("key") shouldBeEqualTo 1
+    compound.containsKey("key") shouldBeEqualTo true
+    compound.containsKey("tag") shouldBeEqualTo true
+    compound.isEmpty() shouldBeEqualTo false
   }
 
   @Test fun `NBTTagCompound - removeIf - If the predicate is true, the entry should be removed`() {
@@ -71,8 +72,8 @@ class NBTTest {
     }
       .removeIf<Short>("key") { it == 1.toShort() }
       .removeIf<NBTTagList>("list") { it.isEmpty() }
-    compound.getShortOrNull("key") shouldEqual null
-    compound.isEmpty() shouldEqual true
+    compound.getShortOrNull("key") shouldBeEqualTo null
+    compound.isEmpty() shouldBeEqualTo true
   }
 
   @Test fun `NBTTagCompound - removeIf - If the entry not found or predicate is not true, compound should not change`() {
@@ -81,29 +82,29 @@ class NBTTest {
       .removeIf<Byte>("404") { it == 2.toByte() }
       .removeIf<Byte>("405") { it == 1.toByte() }
     compound shouldBe compound
-    compound.size shouldEqual 1
+    compound.size shouldBeEqualTo 1
   }
 
   @Test fun `NBTTagList - removeIf - If the predicate is null, the list should be clear`() {
     val list1 = ofList { addByte(0, 1, 2) }.removeIf<Byte>(null)
     val list2 = ofList { addByte(0, 1, 2) }.removeIf<Byte, String>({ it.toString() }, null)
-    list1.isEmpty() shouldEqual true
-    list2.isEmpty() shouldEqual true
+    list1.isEmpty() shouldBeEqualTo true
+    list2.isEmpty() shouldBeEqualTo true
   }
 
   @Test fun `NBTTagList - removeIf - If the predicate is all true, the list should be clear`() {
     val list1 = ofList { addByte(0, 1, 2) }.removeIf<Byte> { it < 3 }
     val list2 = ofList { addCompound(ofCompound {  }) }.removeIf<NBTTagCompound> { it.isEmpty() }
     val list3 = ofList { addShort(0, 1, 2) }.removeIf<Short, Int>({ it.toInt() }) { it < 3 }
-    list1.isEmpty() shouldEqual true
-    list2.isEmpty() shouldEqual true
-    list3.isEmpty() shouldEqual true
+    list1.isEmpty() shouldBeEqualTo true
+    list2.isEmpty() shouldBeEqualTo true
+    list3.isEmpty() shouldBeEqualTo true
   }
 
   @Test fun `NBTTagList - removeIf - If the predicate is false, the list should not change`() {
     val list = ofList { addByte(0, 1, 2) }
       .removeIf<Byte> { it > 3 }
-    list.size shouldEqual 3
+    list.size shouldBeEqualTo 3
     list.asElements<Byte>() shouldContainAll arrayOf<Byte>(0, 1, 2)
   }
 

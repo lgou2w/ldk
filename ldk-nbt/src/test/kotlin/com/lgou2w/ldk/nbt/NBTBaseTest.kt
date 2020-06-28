@@ -17,9 +17,9 @@
 package com.lgou2w.ldk.nbt
 
 import org.amshove.kluent.invoking
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBe
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.amshove.kluent.shouldThrow
 import org.junit.Test
 import java.io.DataInput
@@ -27,12 +27,13 @@ import java.io.DataOutput
 
 class NBTBaseTest {
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `NBTBase - equals`() {
     val n1 = NBTTagString()
     val n2 = NBTTagInt()
-    n1.equals(n2) shouldEqual false
-    n1.name shouldEqual n2.name
-    n1.value shouldNotEqual n2.value
+    n1.equals(n2) shouldBeEqualTo false
+    n1.name shouldBeEqualTo n2.name
+    n1.value shouldNotBeEqualTo n2.value
   }
 
   class MyNbt : NBTBase<Any?>("mynbt", null) {
@@ -45,16 +46,16 @@ class NBTBaseTest {
   }
 
   @Test fun `NBTBase - hashCode - The hash value should not be zero`() {
-    NBTTagString().hashCode() shouldNotEqual 0
-    NBTTagInt().hashCode() shouldNotEqual 0
-    MyNbt().hashCode() shouldNotEqual 0
+    NBTTagString().hashCode() shouldNotBeEqualTo 0
+    NBTTagInt().hashCode() shouldNotBeEqualTo 0
+    MyNbt().hashCode() shouldNotBeEqualTo 0
   }
 
   @Test fun `NBTBase - as - Non-wrapper class should throw exception`() {
     invoking { NBTTagString().asCompound() } shouldThrow ClassCastException::class
     invoking { NBTTagInt().asList() } shouldThrow ClassCastException::class
-    ofList {  }.asList().isEmpty() shouldEqual true
-    ofCompound {  }.asCompound().isEmpty() shouldEqual true
+    ofList {  }.asList().isEmpty() shouldBeEqualTo true
+    ofCompound {  }.asCompound().isEmpty() shouldBeEqualTo true
   }
 
   @Test fun `NBTBase - clone - The cloned object address should be different`() {

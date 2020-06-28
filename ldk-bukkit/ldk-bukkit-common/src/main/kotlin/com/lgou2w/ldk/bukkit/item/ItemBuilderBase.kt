@@ -23,6 +23,7 @@ import com.lgou2w.ldk.bukkit.attribute.Operation
 import com.lgou2w.ldk.bukkit.attribute.Slot
 import com.lgou2w.ldk.bukkit.firework.FireworkEffect
 import com.lgou2w.ldk.bukkit.firework.FireworkType
+import com.lgou2w.ldk.bukkit.nbt.NBTFactory
 import com.lgou2w.ldk.bukkit.potion.PotionBase
 import com.lgou2w.ldk.bukkit.potion.PotionEffectCustom
 import com.lgou2w.ldk.bukkit.potion.PotionEffectType
@@ -750,14 +751,19 @@ abstract class ItemBuilderBase : ItemBuilder {
       return tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
         ?.asElements<NBTTagCompound>()
         ?.map { attribute ->
-          val type = Enums.ofValuableNotNull(AttributeType::class.java, attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
+          val type = AttributeType.of(attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
           val name = attribute.getString(NBT.TAG_ATTRIBUTE_NAME)
           val operation = Enums.ofValuableNotNull(Operation::class.java, attribute.getInt(NBT.TAG_ATTRIBUTE_OPERATION))
           val slot = Enums.ofValuable(Slot::class.java, attribute.getStringOrNull(NBT.TAG_ATTRIBUTE_SLOT))
           val amount = attribute.getDouble(NBT.TAG_ATTRIBUTE_AMOUNT)
-          val uuidMost = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_MOST)
-          val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
-          val uuid = if (uuidLeast == null || uuidMost == null) UUID.randomUUID() else UUID(uuidMost, uuidLeast)
+          val uuid = if (MinecraftBukkitVersion.isV116OrLater) {
+            val value = attribute.getIntArrayOrNull(NBT.TAG_ATTRIBUTE_UUID)
+            if (value != null) NBTFactory.readUniqueIdIntArray(value) else UUID.randomUUID()
+          } else {
+            val uuidMost = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_MOST)
+            val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
+            if (uuidMost != null && uuidLeast != null) UUID(uuidMost, uuidLeast) else UUID.randomUUID()
+          }
           AttributeItemModifier(type, name, operation, slot, amount, uuid)
         }
     }
@@ -836,14 +842,19 @@ abstract class ItemBuilderBase : ItemBuilder {
   override fun removeAttributeIndexed(block: BiFunction<Int, AttributeItemModifier, Boolean>?): ItemBuilder {
     tag.getListOrNull(NBT.TAG_ATTRIBUTE_MODIFIERS)
       ?.removeIfIndexed<NBTTagCompound, AttributeItemModifier>({ attribute ->
-        val type = Enums.ofValuableNotNull(AttributeType::class.java, attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
+        val type = AttributeType.of(attribute.getString(NBT.TAG_ATTRIBUTE_TYPE))
         val name = attribute.getString(NBT.TAG_ATTRIBUTE_NAME)
         val operation = Enums.ofValuableNotNull(Operation::class.java, attribute.getInt(NBT.TAG_ATTRIBUTE_OPERATION))
         val slot = Enums.ofValuable(Slot::class.java, attribute.getStringOrNull(NBT.TAG_ATTRIBUTE_SLOT))
         val amount = attribute.getDouble(NBT.TAG_ATTRIBUTE_AMOUNT)
-        val uuidMost = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_MOST)
-        val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
-        val uuid = if (uuidLeast == null || uuidMost == null) UUID.randomUUID() else UUID(uuidMost, uuidLeast)
+        val uuid = if (MinecraftBukkitVersion.isV116OrLater) {
+          val value = attribute.getIntArrayOrNull(NBT.TAG_ATTRIBUTE_UUID)
+          if (value != null) NBTFactory.readUniqueIdIntArray(value) else UUID.randomUUID()
+        } else {
+          val uuidMost = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_MOST)
+          val uuidLeast = attribute.getLongOrNull(NBT.TAG_ATTRIBUTE_UUID_LEAST)
+          if (uuidMost != null && uuidLeast != null) UUID(uuidMost, uuidLeast) else UUID.randomUUID()
+        }
         AttributeItemModifier(type, name, operation, slot, amount, uuid)
       }, block)
     return this
@@ -1476,7 +1487,11 @@ abstract class ItemBuilderBase : ItemBuilder {
         putString(NBT.TAG_SKULL_OWNER_TEXTURES_VALUE, value)
       })
     val skullOwner = tag.getCompoundOrDefault(NBT.TAG_SKULL_OWNER)
-    skullOwner.putString(NBT.TAG_SKULL_OWNER_ID, id?.toString() ?: UUID.randomUUID().toString())
+    if (MinecraftBukkitVersion.isV116OrLater) {
+      skullOwner.putIntArray(NBT.TAG_SKULL_OWNER_ID, NBTFactory.writeUniqueIdIntArray(id ?: UUID.randomUUID()))
+    } else {
+      skullOwner.putString(NBT.TAG_SKULL_OWNER_ID, id?.toString() ?: UUID.randomUUID().toString())
+    }
     if (name != null)
       skullOwner.putString(NBT.TAG_SKULL_OWNER_NAME, name)
     return this

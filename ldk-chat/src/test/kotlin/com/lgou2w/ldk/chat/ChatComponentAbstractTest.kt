@@ -16,23 +16,27 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 
 class ChatComponentAbstractTest {
 
+  @Suppress("ReplaceCallWithBinaryOperator", "SENSELESS_COMPARISON")
   @Test fun `ChatComponentAbstract - test`() {
     val cca = object : ChatComponentAbstract() {}
     val cca2 = object : ChatComponentAbstract() {}
-    cca.equals(cca) shouldEqual true
-    cca.equals(null) shouldEqual false
-    cca2.equals(cca2) shouldEqual true
+    (cca == cca) shouldBeEqualTo true
+    (cca == null) shouldBeEqualTo false
+    (cca2 == cca2) shouldBeEqualTo true
     cca.style = ChatStyle().setColor(ChatColor.RED)
-    cca.equals(cca2) shouldEqual false
+    cca.equals(cca2) shouldBeEqualTo false
     cca2.style = cca.style.clone()
     cca.plus("extra1")
-    cca.equals(cca2) shouldEqual false
-    cca.toString() shouldNotEqual cca2.toString()
+    cca.equals(cca2) shouldBeEqualTo false
+    cca.toString() shouldNotBeEqualTo cca2.toString()
+    cca.equals(null) shouldBe false
+    cca.setStyle(null).style shouldBeEqualTo ChatStyle.EMPTY
   }
 }

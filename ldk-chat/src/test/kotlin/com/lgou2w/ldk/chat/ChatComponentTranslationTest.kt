@@ -16,30 +16,31 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 
 class ChatComponentTranslationTest {
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `ChatComponentTranslation - test`() {
     val cct = ChatComponentTranslation("item.diamond")
-    cct.key shouldEqual "item.diamond"
+    cct.key shouldBeEqualTo "item.diamond"
     cct.key = "item.key"
-    cct.setKey("item.key").key shouldEqual "item.key"
-    cct.withs.size shouldEqual 0
+    cct.key shouldBeEqualTo "item.key"
+    cct.withs.size shouldBeEqualTo 0
     cct.withs = mutableListOf()
     cct.addWiths(arrayOf(1, "str", 2.0, 3f))
-    cct.withs.size shouldEqual 4
-    cct.hashCode() shouldNotEqual 0
-    cct.toString() shouldNotEqual null
-    cct.equals(cct) shouldEqual true
-    cct.equals(null) shouldEqual false
-    cct.equals(ChatComponentTranslation("key")) shouldEqual false
-    cct.equals(ChatComponentTranslation("item.key")) shouldEqual false
-    cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldEqual true
+    cct.withs.size shouldBeEqualTo 4
+    cct.hashCode() shouldNotBeEqualTo 0
+    cct.toString() shouldNotBeEqualTo null
+    cct.equals(cct) shouldBeEqualTo true
+    cct.equals(null) shouldBeEqualTo false
+    cct.equals(ChatComponentTranslation("key")) shouldBeEqualTo false
+    cct.equals(ChatComponentTranslation("item.key")) shouldBeEqualTo false
+    cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldBeEqualTo true
     cct.style.color = ChatColor.RED
-    cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldEqual false
-    (ChatSerializer.fromJson(cct.toJson()) as ChatComponentTranslation).key shouldEqual "item.key"
+    cct.equals(ChatComponentTranslation("item.key", cct.withs.toMutableList())) shouldBeEqualTo false
+    (ChatSerializer.fromJson(cct.toJson()) as ChatComponentTranslation).key shouldBeEqualTo "item.key"
   }
 }

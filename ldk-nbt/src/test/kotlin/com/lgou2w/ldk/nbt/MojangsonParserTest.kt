@@ -17,9 +17,9 @@
 package com.lgou2w.ldk.nbt
 
 import org.amshove.kluent.invoking
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeInstanceOf
 import org.amshove.kluent.shouldContainAll
-import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldThrow
 import org.junit.Test
 
@@ -50,16 +50,16 @@ class MojangsonParserTest {
     mojangson = "{list:[1,2,3],list2:[1b,2b,3b]}"
     compound = MojangsonParser.parse(mojangson)
     compound["list"] shouldBeInstanceOf NBTTagList::class
-    compound["list2"]?.asList()?.elementType shouldEqual NBTType.TAG_BYTE
+    compound["list2"]?.asList()?.elementType shouldBeEqualTo NBTType.TAG_BYTE
   }
 
   @Test fun `MojangsonParser - Support for lenient JSON string`() {
     val mojangson = "  {  lenient   :   1b  ,  map  :  {  k   :   1.0  }  }   "
     val compound = MojangsonParser.parse(mojangson)
     compound["lenient"] shouldBeInstanceOf NBTTagByte::class
-    compound["lenient"]?.value shouldEqual 1.toByte()
+    compound["lenient"]?.value shouldBeEqualTo 1.toByte()
     compound["map"] shouldBeInstanceOf NBTTagCompound::class
-    compound["map"]?.asCompound()?.get("k")?.value shouldEqual 1.0
+    compound["map"]?.asCompound()?.get("k")?.value shouldBeEqualTo 1.0
 
     MojangsonParser.parseValue("[B; 1b]") shouldBeInstanceOf NBTTagByteArray::class // must  [B;
     invoking { MojangsonParser.parseValue(" [  B;   1b  ]") } shouldThrow IllegalArgumentException::class
@@ -98,10 +98,10 @@ class MojangsonParserTest {
     invoking { MojangsonParser.parseValue("[1, 2, 3b]") } shouldThrow IllegalArgumentException::class
     val list = MojangsonParser.parseValue("[1, 2, 3]").asList()
     list shouldBeInstanceOf NBTTagList::class
-    list.elementType shouldEqual NBTType.TAG_INT
-    list.size shouldEqual 3
-    list[0].value shouldEqual 1
-    list[1].value shouldEqual 2
-    list[2].value shouldEqual 3
+    list.elementType shouldBeEqualTo NBTType.TAG_INT
+    list.size shouldBeEqualTo 3
+    list[0].value shouldBeEqualTo 1
+    list[1].value shouldBeEqualTo 2
+    list[2].value shouldBeEqualTo 3
   }
 }

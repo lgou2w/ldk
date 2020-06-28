@@ -42,14 +42,6 @@ class ChatComponentTranslation(
 ) : ChatComponentAbstract() {
 
   /**
-   * @see [ChatComponentTranslation.key]
-   */
-  fun setKey(key: String): ChatComponentTranslation {
-    this.key = key
-    return this
-  }
-
-  /**
    * @see [ChatComponentTranslation.withs]
    */
   fun addWiths(withs: Array<Any>): ChatComponentTranslation {

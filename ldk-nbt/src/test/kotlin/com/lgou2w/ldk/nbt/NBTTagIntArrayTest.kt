@@ -16,35 +16,36 @@
 
 package com.lgou2w.ldk.nbt
 
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 
 class NBTTagIntArrayTest {
 
   @Test fun `NBTTagIntArray - toJson`() {
     val nbt = NBTTagIntArray(value = intArrayOf(0, 1, 1))
-    nbt.toJson() shouldEqual "[0,1,1]"
-    nbt.toMojangson() shouldEqual "[I; 0,1,1]"
-    nbt.toMojangsonWithColor() shouldEqual "[§cI§r; §60§r, §61§r, §61§r]"
+    nbt.toJson() shouldBeEqualTo "[0,1,1]"
+    nbt.toMojangson() shouldBeEqualTo "[I; 0,1,1]"
+    nbt.toMojangsonWithColor() shouldBeEqualTo "[§cI§r; §60§r, §61§r, §61§r]"
   }
 
   @Test fun `NBTTagIntArray - toJson - Empty values should only be parentheses`() {
     val nbt = NBTTagIntArray(value = intArrayOf())
-    nbt.toJson() shouldEqual "[]"
+    nbt.toJson() shouldBeEqualTo "[]"
   }
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `NBTTagIntArray - equals`() {
     val nbt1 = NBTTagIntArray(name = "[I")
     val nbt2 = NBTTagIntArray(name = "[I")
     nbt1.value = intArrayOf(0, 1)
     nbt2.value = intArrayOf(1, 0)
-    nbt1.value shouldNotEqual nbt2.value
-    nbt1.value.size shouldEqual nbt2.value.size
-    nbt1.equals(nbt2) shouldEqual false
+    nbt1.value shouldNotBeEqualTo nbt2.value
+    nbt1.value.size shouldBeEqualTo nbt2.value.size
+    nbt1.equals(nbt2) shouldBeEqualTo false
     nbt2.value = nbt1.value // array clone, not reference
-    nbt1.equals(nbt2) shouldEqual true
+    nbt1.equals(nbt2) shouldBeEqualTo true
     nbt2.value = intArrayOf(1, 0) // Does not affect the value of nbt1
-    nbt1.equals(nbt2) shouldEqual false
+    nbt1.equals(nbt2) shouldBeEqualTo false
   }
 }

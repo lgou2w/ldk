@@ -16,29 +16,31 @@
 
 package com.lgou2w.ldk.chat
 
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeGreaterThan
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 
 class ChatComponentSelectorTest {
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `ChatComponentSelector - test`() {
     val ccs = ChatComponentSelector("@p")
-    ccs.selector shouldEqual "@p"
+    ccs.selector shouldBeEqualTo "@p"
     ccs.selector = "@e"
-    ccs.selector shouldEqual "@e"
-    ccs.setSelector("@s").selector shouldEqual "@s"
+    ccs.selector shouldBeEqualTo "@e"
+    ccs.selector = "@s"
+    ccs.selector shouldBeEqualTo "@s"
     ccs.hashCode() shouldBeGreaterThan 1
-    ccs.equals(ccs) shouldEqual true
-    ccs.equals(ChatComponentSelector("@s")) shouldEqual true
-    ccs.equals(ChatComponentSelector("@e")) shouldEqual false
-    ccs.equals(null) shouldEqual false
+    ccs.equals(ccs) shouldBeEqualTo true
+    ccs.equals(ChatComponentSelector("@s")) shouldBeEqualTo true
+    ccs.equals(ChatComponentSelector("@e")) shouldBeEqualTo false
+    ccs.equals(null) shouldBeEqualTo false
     ccs.style.color = ChatColor.RED
-    ccs.equals(ChatComponentSelector("@s")) shouldEqual false
+    ccs.equals(ChatComponentSelector("@s")) shouldBeEqualTo false
     ccs.toJson() shouldContain "@s"
-    ccs.toString() shouldNotEqual null
-    (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentSelector).selector shouldEqual "@s"
+    ccs.toString() shouldNotBeEqualTo null
+    (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentSelector).selector shouldBeEqualTo "@s"
   }
 }

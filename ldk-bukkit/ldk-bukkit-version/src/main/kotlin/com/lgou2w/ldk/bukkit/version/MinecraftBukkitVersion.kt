@@ -55,6 +55,10 @@ class MinecraftBukkitVersion(
      * @since LDK 0.1.8-rc
      */
     @JvmField val V1_15_R1 = MinecraftBukkitVersion(1, 15, 1)
+    /**
+     * @since LDK 0.2.1
+     */
+    @JvmField val V1_16_R1 = MinecraftBukkitVersion(1, 16, 1)
 
     @JvmStatic
     private val VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$")
@@ -138,6 +142,14 @@ class MinecraftBukkitVersion(
      */
     @JvmStatic val isV115OrLater by lazy { CURRENT.isOrLater(V1_15_R1) }
 
+    /**
+     * * Gets whether the current Bukkit server is an implementation version of `1.16` or later.
+     * * 获取当前 Bukkit 服务器是否是 `1.16` 或之后的实现版本.
+     *
+     * @since LDK 0.2.1
+     */
+    @JvmStatic val isV116OrLater by lazy { CURRENT.isOrLater(V1_16_R1) }
+
     private val LOOKUP : NavigableMap<MinecraftVersion, MinecraftBukkitVersion> = createLookup()
     private fun createLookup(): NavigableMap<MinecraftVersion, MinecraftBukkitVersion> {
       val map = object: TreeMap<MinecraftVersion, MinecraftBukkitVersion>() {
@@ -211,9 +223,15 @@ class MinecraftBukkitVersion(
       )] = V1_14_R1
       map[arrayOf(
         MinecraftVersion(1, 15, 0),
-        MinecraftVersion(1, 15, 1)
+        MinecraftVersion(1, 15, 1),
+        MinecraftVersion(1, 15, 2)
         // ---> net.minecraft.server.v1_15_R1
       )] = V1_15_R1
+      map[arrayOf(
+        MinecraftVersion(1, 16, 0),
+        MinecraftVersion(1, 16, 1)
+        // ---> net.minecraft.server.v1_16_R1
+      )] = V1_16_R1
       return map
     }
 

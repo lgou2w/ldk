@@ -18,10 +18,10 @@ package com.lgou2w.ldk.security
 
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeInstanceOf
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.amshove.kluent.shouldThrow
 import org.junit.Test
 import java.security.KeyPairGenerator
@@ -128,8 +128,8 @@ class RSASecurityTest {
   @Test fun `RSASecurity - fromKeyPair - validation`() {
     val generator = KeyPairGenerator.getInstance("RSA").apply { initialize(1024) }
     val keyPair = generator.genKeyPair()
-    RSASecurity.fromKeyPair(keyPair, TEST_SIGNATURE_ALGORITHM) shouldNotEqual null
-    RSASecurity.fromKeyPairGenerator(1024, TEST_SIGNATURE_ALGORITHM) shouldNotEqual null
+    RSASecurity.fromKeyPair(keyPair, TEST_SIGNATURE_ALGORITHM) shouldNotBeEqualTo  null
+    RSASecurity.fromKeyPairGenerator(1024, TEST_SIGNATURE_ALGORITHM) shouldNotBeEqualTo null
     invoking { RSASecurity.fromKeyPair(keyPair, "Invalid algorithm") } shouldThrow IllegalArgumentException::class
     invoking { RSASecurity.fromKeyPairGenerator(1024, "Invalid algorithm") } shouldThrow IllegalArgumentException::class
     invoking { RSASecurity.fromKeyPairGenerator(1, "Bit length must be greater than 512") } shouldThrow IllegalArgumentException::class
@@ -137,9 +137,9 @@ class RSASecurityTest {
 
   @Test fun `RSASecurity - decodeKey - validation`() {
     (RSASecurity.decodePublicKey(TEST_X509_BASE64_ENCODED_PUBLIC_KEY) as RSAKey)
-      .modulus.bitLength() shouldEqual TEST_BIT
+      .modulus.bitLength() shouldBeEqualTo TEST_BIT
     (RSASecurity.decodePrivateKey(TEST_PKCS8_NOT_ENCRYPTED_BASE64_ENCODED_PRIVATE_KEY) as RSAKey)
-      .modulus.bitLength() shouldEqual TEST_BIT
+      .modulus.bitLength() shouldBeEqualTo TEST_BIT
     RSASecurity.decodeKey(TEST_X509_BASE64_ENCODED_PUBLIC_KEY) shouldBeInstanceOf PublicKey::class
     RSASecurity.decodeKey(TEST_PKCS8_NOT_ENCRYPTED_BASE64_ENCODED_PRIVATE_KEY) shouldBeInstanceOf PrivateKey::class
     invoking { RSASecurity.decodePublicKey("error encoded key") } shouldThrow IllegalArgumentException::class
@@ -180,14 +180,14 @@ class RSASecurityTest {
       .fromEncodedKey(TEST_PKCS8_NOT_ENCRYPTED_BASE64_ENCODED_PRIVATE_KEY, TEST_SIGNATURE_ALGORITHM)
     val rsaSecurityPublic = RSASecurity
       .fromEncodedKey(TEST_X509_BASE64_ENCODED_PUBLIC_KEY, TEST_SIGNATURE_ALGORITHM)
-    rsaSecurityPrivate.signatureAlgorithm shouldEqual TEST_SIGNATURE_ALGORITHM
+    rsaSecurityPrivate.signatureAlgorithm shouldBeEqualTo TEST_SIGNATURE_ALGORITHM
     rsaSecurityPrivate.key shouldBeInstanceOf PrivateKey::class.java
-    rsaSecurityPrivate.bit shouldEqual TEST_BIT
-    rsaSecurityPrivate.isPrivateKey shouldEqual true
-    rsaSecurityPublic.signatureAlgorithm shouldEqual TEST_SIGNATURE_ALGORITHM
+    rsaSecurityPrivate.bit shouldBeEqualTo TEST_BIT
+    rsaSecurityPrivate.isPrivateKey shouldBeEqualTo true
+    rsaSecurityPublic.signatureAlgorithm shouldBeEqualTo TEST_SIGNATURE_ALGORITHM
     rsaSecurityPublic.key shouldBeInstanceOf PublicKey::class.java
-    rsaSecurityPublic.bit shouldEqual TEST_BIT
-    rsaSecurityPublic.isPrivateKey shouldEqual false
+    rsaSecurityPublic.bit shouldBeEqualTo TEST_BIT
+    rsaSecurityPublic.isPrivateKey shouldBeEqualTo false
     rsaSecurityPrivate.toString() shouldContain "true" // isPrivateKey=true
   }
 
@@ -202,13 +202,13 @@ class RSASecurityTest {
     val plainTextBytes = plainText.toByteArray(Charsets.UTF_8)
     val plainTextPublicKeyEncrypted = rsaSecurityPublic.encrypt(plainTextBytes)
     val plainTextPrivateKeyDecrypted = rsaSecurityPrivate.decrypt(plainTextPublicKeyEncrypted)
-    plainTextPrivateKeyDecrypted shouldEqual plainTextBytes
-    plainTextPrivateKeyDecrypted.toString(Charsets.UTF_8) shouldEqual plainText
+    plainTextPrivateKeyDecrypted shouldBeEqualTo plainTextBytes
+    plainTextPrivateKeyDecrypted.toString(Charsets.UTF_8) shouldBeEqualTo plainText
     // Private key encryption, public key decryption
     val plainTextPrivateKeyEncrypted = rsaSecurityPrivate.encrypt(plainTextBytes)
     val plainTextPublicKeyDecrypted = rsaSecurityPublic.decrypt(plainTextPrivateKeyEncrypted)
-    plainTextPublicKeyDecrypted shouldEqual plainTextBytes
-    plainTextPublicKeyDecrypted.toString(Charsets.UTF_8) shouldEqual plainText
+    plainTextPublicKeyDecrypted shouldBeEqualTo plainTextBytes
+    plainTextPublicKeyDecrypted.toString(Charsets.UTF_8) shouldBeEqualTo plainText
   }
 
   @Test fun `RSASecurity - signature and verify validation`() {
@@ -223,7 +223,7 @@ class RSASecurityTest {
     val plainText = "Hello World"
     val plainTextBytes = plainText.toByteArray()
     val plaintTextSignature = rsaSecurityPrivate.signature(plainTextBytes)
-    rsaSecurityPublic.verify(plainTextBytes, plaintTextSignature) shouldEqual true
-    rsaSecurityPublic.verify(plainTextBytes, byteArrayOf(0)) shouldEqual false // invalid signature
+    rsaSecurityPublic.verify(plainTextBytes, plaintTextSignature) shouldBeEqualTo true
+    rsaSecurityPublic.verify(plainTextBytes, byteArrayOf(0)) shouldBeEqualTo false // invalid signature
   }
 }

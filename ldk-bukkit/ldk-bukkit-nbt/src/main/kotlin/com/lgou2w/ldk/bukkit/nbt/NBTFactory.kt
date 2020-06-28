@@ -43,6 +43,7 @@ import com.lgou2w.ldk.reflect.FuzzyReflect
 import com.lgou2w.ldk.reflect.Visibility
 import java.io.DataInput
 import java.io.DataOutput
+import java.util.UUID
 
 /**
  * ## NBTFactory (NBT 工厂)
@@ -121,6 +122,33 @@ object NBTFactory {
       .withParams(String::class.java)
       .withType(CLASS_NBT_TAG_COMPOUND)
       .resultAccessor()
+  }
+
+  /**
+   * @since LDK 0.2.1
+   */
+  @JvmStatic
+  fun writeUniqueIdIntArray(uuid: UUID): IntArray {
+    val most = uuid.mostSignificantBits
+    val least = uuid.leastSignificantBits
+    return intArrayOf(
+      (most shr 32).toInt(), most.toInt(),
+      (least shr 32).toInt(), least.toInt()
+    )
+  }
+
+  /**
+   * @since LDK 0.2.1
+   */
+  @JvmStatic
+  @Throws(IllegalArgumentException::class)
+  fun readUniqueIdIntArray(value: IntArray): UUID {
+    if (value.size != 4)
+      throw IllegalArgumentException("Expected UUID-Array to be of length 4, but found ${value.size}.")
+    return UUID(
+      value[0].toLong() shl 32 or value[1].toLong() and 4294967295L,
+      value[2].toLong() shl 32 or value[3].toLong() and 4294967295L
+    )
   }
 
   /**

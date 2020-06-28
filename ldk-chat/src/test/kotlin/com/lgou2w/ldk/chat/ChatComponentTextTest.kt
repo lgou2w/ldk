@@ -16,27 +16,28 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 
 class ChatComponentTextTest {
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `ChatComponentText - test`() {
     val component = ChatComponentText()
-    component.text shouldEqual ""
+    component.text shouldBeEqualTo ""
     component.text = "abc"
-    component.text shouldEqual "abc"
+    component.text shouldBeEqualTo "abc"
     val component2 = ChatComponentText(component)
-    component2.text shouldEqual component.text
-    component2.equals(component) shouldEqual true
-    component2.equals(null) shouldEqual false
-    component2.setText("cba")
-    component2.equals(component) shouldEqual false
-    component2.equals(component2) shouldEqual true
-    component2.equals(ChatComponentText("cba")) shouldEqual true
-    component2.hashCode() shouldNotEqual component.hashCode()
-    component2.style.setBold(true)
-    component2.equals(ChatComponentText("cba")) shouldEqual false
+    component2.text shouldBeEqualTo component.text
+    component2.equals(component) shouldBeEqualTo true
+    component2.equals(null) shouldBeEqualTo false
+    component2.text = "cba"
+    component2.equals(component) shouldBeEqualTo false
+    component2.equals(component2) shouldBeEqualTo true
+    component2.equals(ChatComponentText("cba")) shouldBeEqualTo true
+    component2.hashCode() shouldNotBeEqualTo component.hashCode()
+    component2.style.bold = true
+    component2.equals(ChatComponentText("cba")) shouldBeEqualTo false
   }
 }

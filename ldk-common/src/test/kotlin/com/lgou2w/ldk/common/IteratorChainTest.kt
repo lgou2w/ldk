@@ -17,7 +17,7 @@
 package com.lgou2w.ldk.common
 
 import org.amshove.kluent.invoking
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldThrow
 import org.junit.Test
 
@@ -27,14 +27,14 @@ class IteratorChainTest {
     val it1 = listOf(0, 1, 2).iterator()
     val it2 = listOf(3, 4, 5).iterator()
     val chain = IteratorChain.concat(it1, it2)
-    chain.hasNext() shouldEqual true
-    chain.next() shouldEqual 0
-    chain.next() shouldEqual 1
-    chain.next() shouldEqual 2
-    chain.next() shouldEqual 3
-    chain.next() shouldEqual 4
-    chain.next() shouldEqual 5
-    chain.hasNext() shouldEqual false
+    chain.hasNext() shouldBeEqualTo true
+    chain.next() shouldBeEqualTo 0
+    chain.next() shouldBeEqualTo 1
+    chain.next() shouldBeEqualTo 2
+    chain.next() shouldBeEqualTo 3
+    chain.next() shouldBeEqualTo 4
+    chain.next() shouldBeEqualTo 5
+    chain.hasNext() shouldBeEqualTo false
     invoking { chain.next() } shouldThrow NoSuchElementException::class
   }
 
@@ -42,7 +42,7 @@ class IteratorChainTest {
   @Test fun `IteratorChain - Empty chain validation`() {
     val chain = IteratorChain.concat(emptyList<Iterator<Int>>())
     val currentIteratorField = IteratorChain::class.java.getDeclaredField("currentIterator").apply { isAccessible = true }
-    chain.hasNext() shouldEqual false
+    chain.hasNext() shouldBeEqualTo false
     invoking { chain.next() } shouldThrow NoSuchElementException::class
     invoking { chain as MutableIterator<Int> } shouldThrow ClassCastException::class // Because kotlin mutable iteration do type checking
     invoking { (chain as java.util.Iterator<Int>).remove() } shouldThrow UnsupportedOperationException::class

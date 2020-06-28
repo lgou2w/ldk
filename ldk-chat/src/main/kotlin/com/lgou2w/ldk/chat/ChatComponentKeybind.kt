@@ -34,14 +34,6 @@ class ChatComponentKeybind(
   var keybind: String
 ) : ChatComponentAbstract() {
 
-  /**
-   * @see [ChatComponentKeybind.keybind]
-   */
-  fun setKeybind(keybind: String): ChatComponentKeybind {
-    this.keybind = keybind
-    return this
-  }
-
   override fun equals(other: Any?): Boolean {
     if (other === this)
       return true

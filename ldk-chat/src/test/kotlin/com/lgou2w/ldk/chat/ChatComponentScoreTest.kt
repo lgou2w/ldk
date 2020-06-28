@@ -16,39 +16,39 @@
 
 package com.lgou2w.ldk.chat
 
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeGreaterThan
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
 
 class ChatComponentScoreTest {
 
+  @Suppress("ReplaceCallWithBinaryOperator")
   @Test fun `ChatComponentScore - test`() {
     val ccs = ChatComponentScore("key", "obj")
-    ccs.name shouldEqual "key"
+    ccs.name shouldBeEqualTo "key"
     ccs.name = "key2"
-    ccs.name shouldEqual "key2"
-    ccs.setName("key2").name shouldEqual "key2"
+    ccs.name shouldBeEqualTo "key2"
     ccs.hashCode() shouldBeGreaterThan 1
-    ccs.equals(ccs) shouldEqual true
-    ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual true
-    ccs.equals(ChatComponentScore("key", "obj")) shouldEqual false
-    ccs.equals(null) shouldEqual false
-    ccs.objective shouldEqual "obj"
+    ccs.equals(ccs) shouldBeEqualTo true
+    ccs.equals(ChatComponentScore("key2", "obj")) shouldBeEqualTo true
+    ccs.equals(ChatComponentScore("key", "obj")) shouldBeEqualTo false
+    ccs.equals(null) shouldBeEqualTo false
+    ccs.objective shouldBeEqualTo "obj"
     ccs.objective = "object"
-    ccs.setObjective("object").objective shouldEqual "object"
-    ccs.value shouldEqual null
+    ccs.objective shouldBeEqualTo "object"
+    ccs.value shouldBeEqualTo null
     ccs.value = "value"
-    ccs.setValue("value").value shouldEqual "value"
-    ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual false
-    ccs.equals(ChatComponentScore("key2", "object", "v")) shouldEqual false
-    ccs.equals(ChatComponentScore("key2", "object", "value")) shouldEqual true
+    ccs.value shouldBeEqualTo "value"
+    ccs.equals(ChatComponentScore("key2", "obj")) shouldBeEqualTo false
+    ccs.equals(ChatComponentScore("key2", "object", "v")) shouldBeEqualTo false
+    ccs.equals(ChatComponentScore("key2", "object", "value")) shouldBeEqualTo true
     ccs.style.color = ChatColor.RED
-    ccs.equals(ChatComponentScore("key2", "obj")) shouldEqual false
+    ccs.equals(ChatComponentScore("key2", "obj")) shouldBeEqualTo false
     ccs.toJson() shouldContain "key2"
-    ccs.toString() shouldNotEqual null
+    ccs.toString() shouldNotBeEqualTo null
     ccs.value = null
-    (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentScore).name shouldEqual "key2"
+    (ChatSerializer.fromJson(ccs.toJson()) as ChatComponentScore).name shouldBeEqualTo "key2"
   }
 }

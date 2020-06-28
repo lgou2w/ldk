@@ -17,10 +17,10 @@
 package com.lgou2w.ldk.nbt
 
 import org.amshove.kluent.invoking
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeGreaterThan
 import org.amshove.kluent.shouldBeInstanceOf
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.amshove.kluent.shouldThrow
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -61,8 +61,8 @@ class NBTStreamsTest {
   @Test fun `NBTStreams - 00 - writeBase64`() {
     val nbt = ofCompound { putString("id", "diamond") }
     val base64 = NBTStreams.writeBase64(nbt)
-    base64 shouldNotEqual null
-    base64 shouldNotEqual ""
+    base64 shouldNotBeEqualTo null
+    base64 shouldNotBeEqualTo ""
     base64.length shouldBeGreaterThan 1 // length > 1
   }
 
@@ -70,15 +70,15 @@ class NBTStreamsTest {
     val base64 = "CgAACAACaWQAB2RpYW1vbmQA" // From above nbt
     val nbt = NBTStreams.readBase64(base64)
     val compound = NBTStreams.readBase64Compound(base64)
-    compound shouldEqual nbt
-    compound.getString("id") shouldEqual "diamond"
-    compound.size shouldEqual 1
+    compound shouldBeEqualTo nbt
+    compound.getString("id") shouldBeEqualTo "diamond"
+    compound.size shouldBeEqualTo 1
   }
 
   @Test fun `NBTStreams - 02 - readBase64 - Illegal base64 value should throw exception`() {
     val base64 = "CgAACAACaWQAB2RpYW1vbmQA"
     val illegalBase64 = "illegal base64 value"
-    NBTStreams.readBase64(base64) shouldNotEqual null
+    NBTStreams.readBase64(base64) shouldNotBeEqualTo null
     invoking { NBTStreams.readBase64(illegalBase64) } shouldThrow IllegalArgumentException::class
   }
 
@@ -86,15 +86,15 @@ class NBTStreamsTest {
     val baos = ByteArrayOutputStream()
     NBTStreams.write(baos, NBTTagEnd.INSTANCE)
     val bytes = baos.toByteArray()
-    bytes.size shouldEqual 1
-    bytes[0] shouldEqual 0
+    bytes.size shouldBeEqualTo 1
+    bytes[0] shouldBeEqualTo 0
   }
 
   @Test fun `NBTStreams - 04 - readBase64 - Read compound then base64 must be of type TAG_COMPOUND`() {
     val base64 = "CAAGYmFzZTY0AAV2YWx1ZQ==" // NBTTagString
     val inst = NBTStreams.readBase64(base64)
     inst shouldBeInstanceOf NBTTagString::class
-    (inst as NBTTagString).name shouldEqual "base64"
+    (inst as NBTTagString).name shouldBeEqualTo "base64"
     invoking { NBTStreams.readBase64Compound(base64) } shouldThrow IllegalArgumentException::class
   }
 
@@ -102,7 +102,7 @@ class NBTStreamsTest {
     if (!testResourceFolder.exists()) return
     val compound = ofCompound { putInt("id", 1); putByte("Count", 10) }
     NBTStreams.writeFile(compound, writeFile) // compress
-    writeFile.exists() && writeFile.isFile shouldEqual true
+    writeFile.exists() && writeFile.isFile shouldBeEqualTo true
     writeFile.length() shouldBeGreaterThan 1L
     val nbt = NBTTagString("name", "str")
     NBTStreams.writeFile(nbt, writeFileNoCompound, false) // no compress
@@ -111,17 +111,17 @@ class NBTStreamsTest {
   @Test fun `NBTStreams - 06 - readFile`() {
     if (!writeFile.exists()) return
     val compound = NBTStreams.readFileCompound(writeFile) // decompress
-    compound.getInt("id") shouldEqual 1
-    compound.getByte("Count") shouldEqual 10
-    compound.size shouldEqual 2
+    compound.getInt("id") shouldBeEqualTo 1
+    compound.getByte("Count") shouldBeEqualTo 10
+    compound.size shouldBeEqualTo 2
   }
 
   @Test fun `NBTStreams - 07 - readFile - If do not decompress should throw exception`() {
     if (!writeFile.exists()) return  // not decompress
     invoking { NBTStreams.readFileCompound(writeFile, false) } shouldThrow IllegalArgumentException::class
-    NBTStreams.readFileInfer(writeFile) shouldNotEqual null
-    NBTStreams.readFileInferCompound(writeFile).size shouldEqual 2
-    NBTStreams.readFileInfer(writeFileNoCompound) shouldNotEqual null
+    NBTStreams.readFileInfer(writeFile) shouldNotBeEqualTo null
+    NBTStreams.readFileInferCompound(writeFile).size shouldBeEqualTo 2
+    NBTStreams.readFileInfer(writeFileNoCompound) shouldNotBeEqualTo null
     invoking { NBTStreams.readFileInferCompound(writeFileNoCompound) } shouldThrow IllegalArgumentException::class
   }
 
@@ -148,11 +148,11 @@ class NBTStreamsTest {
       putLongArray("long[]", longArrayOf(1L))
     }
     val base64 = NBTStreams.writeBase64(compound)
-    base64 shouldNotEqual null
-    base64 shouldNotEqual ""
+    base64 shouldNotBeEqualTo null
+    base64 shouldNotBeEqualTo ""
     base64.length shouldBeGreaterThan 1
     val compoundRead = NBTStreams.readBase64Compound(base64)
-    compound shouldEqual compoundRead
-    compound.size shouldEqual compoundRead.size
+    compound shouldBeEqualTo compoundRead
+    compound.size shouldBeEqualTo compoundRead.size
   }
 }

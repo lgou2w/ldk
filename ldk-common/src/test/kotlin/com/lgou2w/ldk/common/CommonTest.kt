@@ -18,9 +18,9 @@ package com.lgou2w.ldk.common
 
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.amshove.kluent.shouldNotThrow
 import org.amshove.kluent.shouldThrow
 import org.amshove.kluent.withMessage
@@ -30,9 +30,9 @@ class CommonTest {
 
   @Test fun `nullable - should return itself`() {
     val obj = "NotNull".nullable()
-    obj shouldEqual obj
-    obj shouldNotEqual null
-    obj shouldEqual "NotNull"
+    obj shouldBeEqualTo obj
+    obj shouldNotBeEqualTo null
+    obj shouldBeEqualTo "NotNull"
   }
 
   @Test fun `notNull - should throw null pointer exception`() {
@@ -48,79 +48,79 @@ class CommonTest {
 
   @Test fun `applyIfNotNull - null should return null`() {
     val obj : Any? = null
-    obj shouldEqual null
-    obj.applyIfNotNull {  } shouldEqual null
+    obj shouldBeEqualTo null
+    obj.applyIfNotNull {  } shouldBeEqualTo null
   }
 
   @Test fun `applyIfNotNull - add an element to the list so size should be 1`() {
     val list = arrayListOf<Int>().applyIfNotNull { add(1) }
-    list shouldNotEqual null
-    list?.size shouldEqual 1
-    list?.isEmpty() shouldEqual false
+    list shouldNotBeEqualTo null
+    list?.size shouldBeEqualTo 1
+    list?.isEmpty() shouldBeEqualTo false
   }
 
   @Test fun `letIfNotNull - null should return null`() {
     val obj : Any? = null
-    obj.letIfNotNull {  } shouldEqual null
+    obj.letIfNotNull {  } shouldBeEqualTo null
   }
 
   @Test fun `letIfNotNull - string to int should be int type`() {
     val obj = "1".letIfNotNull { it.toInt() }
-    obj shouldNotEqual null
-    obj shouldEqual 1
+    obj shouldNotBeEqualTo null
+    obj shouldBeEqualTo 1
   }
 
   @Test fun `isTrue - null or false should return false`() {
     val obj : Boolean? = null
-    obj.isTrue() shouldEqual false
-    false.isTrue() shouldEqual false
-    true.isTrue() shouldEqual true
+    obj.isTrue() shouldBeEqualTo false
+    false.isTrue() shouldBeEqualTo false
+    true.isTrue() shouldBeEqualTo true
   }
 
   @Test fun `isFalse - null or false should return true`() {
     val obj : Boolean? = null
-    obj.isFalse() shouldEqual true
-    false.isFalse() shouldEqual true
-    true.isFalse() shouldEqual false
+    obj.isFalse() shouldBeEqualTo true
+    false.isFalse() shouldBeEqualTo true
+    true.isFalse() shouldBeEqualTo false
   }
 
   @Test fun `orTrue - null or true should return true`() {
     val obj : Boolean? = null
-    obj.orTrue() shouldEqual true
-    true.orTrue() shouldEqual true
-    false.orTrue() shouldEqual false
+    obj.orTrue() shouldBeEqualTo true
+    true.orTrue() shouldBeEqualTo true
+    false.orTrue() shouldBeEqualTo false
   }
 
   @Test fun `orFalse - null or false should return false`() {
     val obj : Boolean? = null
-    obj.orFalse() shouldEqual false
-    false.orFalse() shouldEqual false
-    true.orFalse() shouldEqual true
+    obj.orFalse() shouldBeEqualTo false
+    false.orFalse() shouldBeEqualTo false
+    true.orFalse() shouldBeEqualTo true
   }
 
   @Test fun `isLater - 'b' should be after 'a'`() {
-    "b".isLater("a") shouldEqual true
-    "a".isLater("b") shouldEqual false
+    "b".isLater("a") shouldBeEqualTo true
+    "a".isLater("b") shouldBeEqualTo false
   }
 
   @Test fun `isOrLater - 'b' should be after 'a' or equal to 'b'`() {
-    "b".isOrLater("a") shouldEqual true
-    "b".isOrLater("b") shouldEqual true
-    "a".isOrLater("b") shouldEqual false
+    "b".isOrLater("a") shouldBeEqualTo true
+    "b".isOrLater("b") shouldBeEqualTo true
+    "a".isOrLater("b") shouldBeEqualTo false
   }
 
   @Test fun `isRange - 'b' should be between 'a' and 'c'`() {
-    "b".isRange("a", "c") shouldEqual true
-    "b".isRange("a", "b") shouldEqual false
-    "b".isRange("a", "a") shouldEqual false
-    "b".isRange("b", "c") shouldEqual false
+    "b".isRange("a", "c") shouldBeEqualTo true
+    "b".isRange("a", "b") shouldBeEqualTo false
+    "b".isRange("a", "a") shouldBeEqualTo false
+    "b".isRange("b", "c") shouldBeEqualTo false
   }
 
   @Test fun `isOrRange - 'b' should be equal to or between 'a' and 'c'`() {
-    "b".isOrRange("a", "c") shouldEqual true
-    "b".isOrRange("b", "b") shouldEqual true
-    "b".isOrRange("a", "a") shouldEqual false
-    "b".isOrRange("c", "a") shouldEqual false
+    "b".isOrRange("a", "c") shouldBeEqualTo true
+    "b".isOrRange("b", "b") shouldBeEqualTo true
+    "b".isOrRange("a", "a") shouldBeEqualTo false
+    "b".isOrRange("c", "a") shouldBeEqualTo false
   }
 
   @Suppress("UNCHECKED_CAST")
@@ -129,9 +129,9 @@ class CommonTest {
   @Suppress("UNCHECKED_CAST")
   @Test fun `lazyClass - new should not be initialized yet`() {
     val lazyClass = lazyClass { Class.forName("java.lang.String") as Class<String> }
-    lazyClass.isInitialized() shouldEqual false
-    lazyClass.value.simpleName shouldEqual "String"
-    lazyClass.isInitialized() shouldEqual true
+    lazyClass.isInitialized() shouldBeEqualTo false
+    lazyClass.value.simpleName shouldBeEqualTo "String"
+    lazyClass.isInitialized() shouldBeEqualTo true
     lazyClass.value shouldBe lazyClassDelegate
   }
 
@@ -139,9 +139,9 @@ class CommonTest {
 
   @Test fun `lazyAnyClass - new should not be initialized yet`() {
     val lazyAnyClass = lazyAnyClass { Class.forName("java.lang.String") }
-    lazyAnyClass.isInitialized() shouldEqual false
-    lazyAnyClass.value.simpleName shouldEqual "String"
-    lazyAnyClass.isInitialized() shouldEqual true
+    lazyAnyClass.isInitialized() shouldBeEqualTo false
+    lazyAnyClass.value.simpleName shouldBeEqualTo "String"
+    lazyAnyClass.isInitialized() shouldBeEqualTo true
     lazyAnyClass.value shouldBe lazyAnyClassDelegate
   }
 
@@ -151,9 +151,9 @@ class CommonTest {
     val lazyAnyOrNullClass = lazyAnyOrNullClass {
       try { Class.forName("404 Not Found") } catch (e: ClassNotFoundException) { null }
     }
-    lazyAnyOrNullClass.isInitialized() shouldEqual false
-    lazyAnyOrNullClass.value shouldEqual null
-    lazyAnyOrNullClass.isInitialized() shouldEqual true
+    lazyAnyOrNullClass.isInitialized() shouldBeEqualTo false
+    lazyAnyOrNullClass.value shouldBeEqualTo null
+    lazyAnyOrNullClass.isInitialized() shouldBeEqualTo true
     lazyAnyOrNullClass.value shouldBe lazyAnyOrNullClassDelegate
   }
 
@@ -161,31 +161,31 @@ class CommonTest {
     val p1 : Predicate<Int> = { it > 0 }
     val p2 : Predicate<Int> = { it % 2 == 0 }
     // normal
-    p1.invoke(1) shouldEqual true           // 1 > 0 = true
-    p2.invoke(3) shouldEqual false          // 3 % 2 == 0 = false
+    p1.invoke(1) shouldBeEqualTo true           // 1 > 0 = true
+    p2.invoke(3) shouldBeEqualTo false          // 3 % 2 == 0 = false
     // and
-    (p1 and p2).invoke(2) shouldEqual true  // 2 > 0 && 2 % 2 == 0 = true
-    (p1 and p2).invoke(3) shouldEqual false // 3 > 0 && 3 % 2 == 0 = false
+    (p1 and p2).invoke(2) shouldBeEqualTo true  // 2 > 0 && 2 % 2 == 0 = true
+    (p1 and p2).invoke(3) shouldBeEqualTo false // 3 > 0 && 3 % 2 == 0 = false
     // or
-    (p1 or p2).invoke(2) shouldEqual true   // 2 > 0 || 2 % 2 == 0 = true
-    (p1 or p2).invoke(3) shouldEqual true   // 3 > 0 || 3 % 2 == 0 = true
+    (p1 or p2).invoke(2) shouldBeEqualTo true   // 2 > 0 || 2 % 2 == 0 = true
+    (p1 or p2).invoke(3) shouldBeEqualTo true   // 3 > 0 || 3 % 2 == 0 = true
     // negate
-    p1.negate().invoke(2) shouldEqual false // 2 > 0 = true, !true = false
-    p2.negate().invoke(3) shouldEqual true  // 3 % 2 == 0 = false, !false = true
+    p1.negate().invoke(2) shouldBeEqualTo false // 2 > 0 = true, !true = false
+    p2.negate().invoke(3) shouldBeEqualTo true  // 3 % 2 == 0 = false, !false = true
   }
 
   @Test fun `Function - compose - andThen`() {
     val f1 : Function<Int, Int> = { it * 2 }
     val f2 : Function<Int, Int> = { it * it } // it ^ 2
     // normal
-    f1.invoke(3) shouldEqual 6 // 3 * 2 = 6
-    f2.invoke(5) shouldEqual 25 // 5 ^ 2 = 25
+    f1.invoke(3) shouldBeEqualTo 6 // 3 * 2 = 6
+    f2.invoke(5) shouldBeEqualTo 25 // 5 ^ 2 = 25
     // compose
-    (f1 compose f2).invoke(3) shouldEqual 18 // (3 ^ 2) * 2 = 18, f1(f2(3))
-    (f2 compose f1).invoke(3) shouldEqual 36 // (3 * 2) ^ 2 = 36, f2(f1(3))
+    (f1 compose f2).invoke(3) shouldBeEqualTo 18 // (3 ^ 2) * 2 = 18, f1(f2(3))
+    (f2 compose f1).invoke(3) shouldBeEqualTo 36 // (3 * 2) ^ 2 = 36, f2(f1(3))
     // andThen
-    (f1 andThen f2).invoke(3) shouldEqual 36 // (3 * 2) ^ 2 = 36, f2(f1(3))
-    (f2 andThen f1).invoke(3) shouldEqual 18 // (3 ^ 2) * 2 = 18, f1(f2(3))
+    (f1 andThen f2).invoke(3) shouldBeEqualTo 36 // (3 * 2) ^ 2 = 36, f2(f1(3))
+    (f2 andThen f1).invoke(3) shouldBeEqualTo 18 // (3 ^ 2) * 2 = 18, f1(f2(3))
   }
 
   @Test fun `Consumer - andThenConsume - list`() {
@@ -204,6 +204,6 @@ class CommonTest {
 
   @Test fun `Constants - string`() {
     Constants shouldBe Constants
-    Constants.LDK shouldEqual "LDK"
+    Constants.LDK shouldBeEqualTo "LDK"
   }
 }
