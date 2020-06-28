@@ -32,7 +32,7 @@ class ChatComponentTextTest {
     component2.text shouldBeEqualTo component.text
     component2.equals(component) shouldBeEqualTo true
     component2.equals(null) shouldBeEqualTo false
-    component2.setText("cba")
+    component2.text = "cba"
     component2.equals(component) shouldBeEqualTo false
     component2.equals(component2) shouldBeEqualTo true
     component2.equals(ChatComponentText("cba")) shouldBeEqualTo true

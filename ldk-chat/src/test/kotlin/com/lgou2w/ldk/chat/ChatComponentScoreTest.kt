@@ -30,7 +30,6 @@ class ChatComponentScoreTest {
     ccs.name shouldBeEqualTo "key"
     ccs.name = "key2"
     ccs.name shouldBeEqualTo "key2"
-    ccs.setName("key2").name shouldBeEqualTo "key2"
     ccs.hashCode() shouldBeGreaterThan 1
     ccs.equals(ccs) shouldBeEqualTo true
     ccs.equals(ChatComponentScore("key2", "obj")) shouldBeEqualTo true
@@ -38,10 +37,10 @@ class ChatComponentScoreTest {
     ccs.equals(null) shouldBeEqualTo false
     ccs.objective shouldBeEqualTo "obj"
     ccs.objective = "object"
-    ccs.setObjective("object").objective shouldBeEqualTo "object"
+    ccs.objective shouldBeEqualTo "object"
     ccs.value shouldBeEqualTo null
     ccs.value = "value"
-    ccs.setValue("value").value shouldBeEqualTo "value"
+    ccs.value shouldBeEqualTo "value"
     ccs.equals(ChatComponentScore("key2", "obj")) shouldBeEqualTo false
     ccs.equals(ChatComponentScore("key2", "object", "v")) shouldBeEqualTo false
     ccs.equals(ChatComponentScore("key2", "object", "value")) shouldBeEqualTo true

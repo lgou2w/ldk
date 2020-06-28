@@ -29,7 +29,7 @@ class ChatComponentKeybindTest {
     cck.keybind shouldBeEqualTo "ctrl"
     cck.keybind = "ctrl + shift"
     cck.keybind shouldBeEqualTo "ctrl + shift"
-    cck.setKeybind("ctrl").keybind shouldBeEqualTo "ctrl"
+    cck.keybind = "ctrl"
     cck.hashCode() shouldBeGreaterThan 1
     cck.equals(cck) shouldBeEqualTo true
     cck.equals(ChatComponentKeybind("ctrl")) shouldBeEqualTo true

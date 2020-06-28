@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.chat
 
+import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.Test
@@ -35,5 +36,7 @@ class ChatComponentAbstractTest {
     cca.plus("extra1")
     cca.equals(cca2) shouldBeEqualTo false
     cca.toString() shouldNotBeEqualTo cca2.toString()
+    cca.equals(null) shouldBe false
+    cca.setStyle(null).style shouldBeEqualTo ChatStyle.EMPTY
   }
 }

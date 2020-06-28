@@ -239,19 +239,30 @@ object ChatSerializer {
    * @see [fromRawOrNull]
    * @param component Chat component.
    * @param component 聊天组件.
+   */
+  @JvmStatic
+  fun toRaw(component: ChatComponent)
+    = toRaw(component, true)
+
+  /**
+   * * Converts the given chat component to a raw string object.
+   * * 将给定的聊天组件转换为源字符串对象.
+   *
+   * @see [fromRaw]
+   * @see [fromRawOrNull]
+   * @param component Chat component.
+   * @param component 聊天组件.
    * @param color Whether it has a color.
    * @param color 是否拥有颜色.
    */
   @JvmStatic
-  @JvmOverloads
-  fun toRaw(component: ChatComponent, color: Boolean = true): String {
+  fun toRaw(component: ChatComponent, color: Boolean): String {
     val builder = StringBuilder()
     toRaw0(component, color, builder)
     return builder.toString()
   }
 
-  @JvmStatic
-  private fun toRaw0(component: ChatComponent, color: Boolean = true, builder: StringBuilder) {
+  private fun toRaw0(component: ChatComponent, color: Boolean, builder: StringBuilder) {
     if (color) {
       val chatStyle = component.style
       val chatColor = chatStyle.color
@@ -384,7 +395,7 @@ object ChatSerializer {
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): ChatComponent? {
       if (json.isJsonPrimitive)
         return ChatComponentText(json.asString)
-      if (!json.isJsonObject && json.isJsonArray) {
+      if (json.isJsonArray) {
         var component: ChatComponent? = null
         val jsonArray = json.asJsonArray
         jsonArray.forEach {
@@ -423,7 +434,7 @@ object ChatSerializer {
           throw JsonParseException("A score component needs a least a name and an objective.")
         component = ChatComponentScore(jsonObjectScore.get("name").asString, jsonObjectScore.get("objective").asString)
         if (jsonObjectScore.has("value"))
-          component.setValue(jsonObjectScore.get("value").asString)
+          component.value = jsonObjectScore.get("value").asString
       } else if (jsonObject.has("selector")) {
         component = ChatComponentSelector(jsonObject.get("selector").asString)
       } else if (jsonObject.has("keybind")) {
@@ -457,11 +468,8 @@ object ChatSerializer {
     override fun serialize(src: ChatComponent, typeOfSrc: Type, context: JsonSerializationContext): JsonElement? {
       val jsonObject = JsonObject()
       if (!src.style.isEmpty()) {
-        val jsonElement = context.serialize(src.style)
-        if (jsonElement.isJsonObject) {
-          val jsonObjectStyle = jsonElement.asJsonObject
-          jsonObjectStyle.entrySet().forEach { jsonObject.add(it.key, it.value) }
-        }
+        val jsonObjectStyle = context.serialize(src.style).asJsonObject
+        jsonObjectStyle.entrySet().forEach { jsonObject.add(it.key, it.value) }
       }
       if (src.extras.isNotEmpty()) {
         val jsonArray = JsonArray()
@@ -512,5 +520,5 @@ object ChatSerializer {
   /**
    * 仅用在 Tooltip ItemStack 上
    */
-  internal data class ChatComponentRaw(var raw: String) : ChatComponentAbstract()
+  internal data class ChatComponentRaw(val raw: String) : ChatComponentAbstract()
 }

@@ -51,6 +51,9 @@ abstract class ChatComponentAbstract : ChatComponent {
   override fun toJson(): String
     = ChatSerializer.toJson(this)
 
+  override fun toRaw(): String
+    = ChatSerializer.toRaw(this)
+
   override fun toRaw(color: Boolean): String
     = ChatSerializer.toRaw(this, color)
 

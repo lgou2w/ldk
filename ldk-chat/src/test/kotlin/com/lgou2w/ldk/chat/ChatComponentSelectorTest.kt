@@ -30,7 +30,8 @@ class ChatComponentSelectorTest {
     ccs.selector shouldBeEqualTo "@p"
     ccs.selector = "@e"
     ccs.selector shouldBeEqualTo "@e"
-    ccs.setSelector("@s").selector shouldBeEqualTo "@s"
+    ccs.selector = "@s"
+    ccs.selector shouldBeEqualTo "@s"
     ccs.hashCode() shouldBeGreaterThan 1
     ccs.equals(ccs) shouldBeEqualTo true
     ccs.equals(ChatComponentSelector("@s")) shouldBeEqualTo true

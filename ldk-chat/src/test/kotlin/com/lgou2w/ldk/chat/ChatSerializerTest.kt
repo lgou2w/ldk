@@ -16,9 +16,11 @@
 
 package com.lgou2w.ldk.chat
 
+import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import org.amshove.kluent.invoking
+import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeInstanceOf
 import org.amshove.kluent.shouldContain
@@ -147,6 +149,7 @@ class ChatSerializerTest {
       .setStrikethrough(true)
       .setObfuscated(true)
       .setInsertion("Insertion")
+      .setFont("default")
       .setClickEvent(ChatClickEvent(ChatClickEvent.Action.OPEN_URL, "github.com"))
       .setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("hi")))
     ).toJson() shouldContain "Insertion"
@@ -179,5 +182,73 @@ class ChatSerializerTest {
     component.style.clickEvent shouldNotBe null
     component.style.clickEvent?.action shouldBeEqualTo ChatClickEvent.Action.COPY_TO_CLIPBOARD
     component.style.clickEvent?.value shouldBeEqualTo "hello"
+  }
+
+  @Test fun `ChatSerializer - deserialize - style - font`() {
+    val json = "{\"text\":\"font\",\"font\":\"custom\"}"
+    val component = ChatSerializer.fromJson(json)
+    component shouldBeInstanceOf ChatComponentText::class.java
+    (component as ChatComponentText).text shouldBeEqualTo "font"
+    component.style.font shouldBeEqualTo "custom"
+  }
+
+  @Test fun `ChatSerializer - serialize - style - font`() {
+    val component = ChatComponentText()
+    component.style.font = "custom"
+    component.toJson() shouldContain "custom"
+  }
+
+  @Test fun `ChatSerializer - serialize - component nbt`() {
+    val ccnbb = ChatComponentNBTBlock("nbt", true, "block").toJson()
+    ccnbb shouldContain "nbt"
+    ccnbb shouldContain "block"
+    val ccnbe = ChatComponentNBTEntity("nbt", null, "entity").toJson()
+    ccnbe shouldContain "nbt"
+    ccnbe shouldContain "entity"
+    val ccnbs = ChatComponentNBTStorage("nbt", null, "storage").toJson()
+    ccnbs shouldContain "nbt"
+    ccnbs shouldContain "storage"
+  }
+
+  @Test fun `ChatSerializer - serialize - rgb color`() {
+    ChatComponentText()
+      .setStyle(ChatStyle.EMPTY.setColor(Color.of(0)))
+      .toJson() shouldContain "black"
+    val cct = ChatComponentText()
+    cct.setStyle(ChatStyle.EMPTY.setColor(Color.of("#f00"))).toJson() shouldContain "#ff0000"
+    cct.setStyle(ChatStyle.EMPTY.setColor(Color.of("#0f0"))).toJson() shouldContain "#00ff00"
+    cct.setStyle(ChatStyle.EMPTY.setColor(Color.of("#00f"))).toJson() shouldContain "#0000ff"
+  }
+
+  @Test fun `ChatSerializer - deserialize - component nbt`() {
+    val ccnbb = ChatSerializer.fromJson("{\"nbt\":\"nbt\",\"block\":\"test\"}")
+    ccnbb shouldBeInstanceOf ChatComponentNBTBlock::class
+    (ccnbb as ChatComponentNBTBlock).nbt shouldBeEqualTo "nbt"
+    ccnbb.interpret shouldBe null
+    ccnbb.path shouldBeEqualTo "test"
+    val ccnbe = ChatSerializer.fromJson("{\"nbt\":\"nbt\",\"entity\":\"@s\",\"interpret\":true}")
+    ccnbe shouldBeInstanceOf ChatComponentNBTEntity::class
+    (ccnbe as ChatComponentNBTEntity).nbt shouldBeEqualTo "nbt"
+    ccnbe.interpret shouldBe true
+    ccnbe.path shouldBeEqualTo "@s"
+    val ccnbs = ChatSerializer.fromJson("{\"nbt\":\"nbt\",\"storage\":\"diamond\",\"interpret\":true}")
+    ccnbs shouldBeInstanceOf ChatComponentNBTStorage::class
+    (ccnbs as ChatComponentNBTStorage).nbt shouldBeEqualTo "nbt"
+    ccnbs.interpret shouldBe true
+    ccnbs.path shouldBeEqualTo "diamond"
+  }
+
+  @Test fun `ChatSerializer - deserialize - component nbt path must be block, entity or storage`() {
+    invoking { ChatSerializer.fromJson("{\"nbt\":\"nbt\"}") } shouldThrow JsonParseException::class
+    invoking { ChatSerializer.fromJson("{\"nbt\":\"nbt\",\"path\":\"entity\"}") } shouldThrow JsonParseException::class
+  }
+
+  @Test fun `ChatSerializer - deserialize - style - gson`() {
+    val field = ChatSerializer::class.java.getDeclaredField("GSON")
+    field.isAccessible = true
+    val gson = field.get(null) as Gson
+    val adapter = gson.getAdapter(ChatStyle::class.java)
+    adapter.fromJson("[]") shouldBe null
+    adapter.fromJson("{}") shouldBeEqualTo ChatStyle.EMPTY
   }
 }

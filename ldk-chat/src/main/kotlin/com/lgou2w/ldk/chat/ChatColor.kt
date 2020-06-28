@@ -68,7 +68,24 @@ interface Color {
 /**
  * @since LDK 0.2.1
  */
-class ChatHexColor(override val rgb: Int) : Color
+class ChatHexColor(override val rgb: Int) : Color {
+
+  override fun equals(other: Any?): Boolean {
+    if (other === this)
+      return true
+    if (other is ChatHexColor)
+      return rgb == other.rgb
+    return false
+  }
+
+  override fun hashCode(): Int {
+    return rgb.hashCode()
+  }
+
+  override fun toString(): String {
+    return "ChatHexColor(rgb=$rgb)"
+  }
+}
 
 /**
  * ## ChatColor (聊天颜色)

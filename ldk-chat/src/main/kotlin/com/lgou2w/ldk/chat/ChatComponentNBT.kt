@@ -17,25 +17,14 @@
 package com.lgou2w.ldk.chat
 
 abstract class ChatComponentNBT(
-  var nbt: String,
+  nbt: String,
   var interpret: Boolean? = null,
   var path: String? = null
 ) : ChatComponentAbstract() {
 
-  fun setNBT(nbt: String): ChatComponentNBT {
-    this.nbt = nbt
-    return this
-  }
-
-  fun setInterpret(interpret: Boolean?): ChatComponentNBT {
-    this.interpret = interpret
-    return this
-  }
-
-  fun setPath(path: String?): ChatComponentNBT {
-    this.path = path
-    return this
-  }
+  var nbt = nbt
+    @JvmName("getNBT") get
+    @JvmName("setNBT") set
 
   override fun equals(other: Any?): Boolean {
     if (other === this)
