@@ -72,12 +72,12 @@
       <scope>provided</scope>
     </dependency>
     <!-- Spigot Runtime: See BuildTools -->
-    <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot</artifactId>
-      <version>${spigot.version}</version>
-      <scope>provided</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.spigotmc</groupId>-->
+<!--      <artifactId>spigot</artifactId>-->
+<!--      <version>${spigot.version}</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
     <!-- No longer available since 1.16 -->
     <!-- See: https://www.spigotmc.org/threads/spigot-bungeecord-1-16-1.447405/ -->
     <!-- Bukkit -->
