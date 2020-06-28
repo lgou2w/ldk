@@ -91,7 +91,7 @@ object BlockFactory {
   }
 
   // 1.12 or after is 'load', before is 'a'.
-  // 1.16 and before: NMS.TileEntity -> public void load(NMS.NBTTagCompound)
+  // 1.16 before: NMS.TileEntity -> public void load(NMS.NBTTagCompound)
   // 1.16 and after: NMS.TileEntity -> public void load(NMS.IBlockData, NMS.NBTTagCompound)
   @JvmStatic val METHOD_TILE_ENTITY_WRITE : AccessorMethod<Any, Any> by lazy {
     FuzzyReflect.of(CLASS_TILE_ENTITY)
