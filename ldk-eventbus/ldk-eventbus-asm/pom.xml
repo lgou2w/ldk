@@ -22,7 +22,7 @@
   <parent>
     <artifactId>ldk-eventbus</artifactId>
     <groupId>com.lgou2w</groupId>
-    <version>0.2.1</version>
+    <version>0.2.2-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -33,14 +33,14 @@
     <dependency>
       <groupId>com.lgou2w</groupId>
       <artifactId>ldk-eventbus-common</artifactId>
-      <version>0.2.1</version>
+      <version>0.2.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <!-- ldk-asm -->
     <dependency>
       <groupId>com.lgou2w</groupId>
       <artifactId>ldk-asm</artifactId>
-      <version>0.2.1</version>
+      <version>0.2.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
