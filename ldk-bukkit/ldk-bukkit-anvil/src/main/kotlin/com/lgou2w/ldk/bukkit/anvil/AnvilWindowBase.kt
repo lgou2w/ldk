@@ -146,7 +146,7 @@ abstract class AnvilWindowBase(
         .resultAccessor()
     }
 
-    // 1.16 and before -> NMS.ContainerAnvil -> private final NMS.EntityHuman player
+    // 1.16 before -> NMS.ContainerAnvil -> private final NMS.EntityHuman player
     // 1.16 and after ->  NMS.ContainerAnvilAbstract -> protected final NMS.EntityHuman player
     @JvmStatic private val FIELD_CONTAINER_ANVIL_PLAYER : AccessorField<Any, Any> by lazy {
       FuzzyReflect.of(CLASS_CONTAINER_ANVIL_ABSTRACT ?: CLASS_CONTAINER_ANVIL, true)
