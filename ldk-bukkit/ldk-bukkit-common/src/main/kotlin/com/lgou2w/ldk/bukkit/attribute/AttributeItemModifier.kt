@@ -16,8 +16,11 @@
 
 package com.lgou2w.ldk.bukkit.attribute
 
+import com.lgou2w.ldk.bukkit.nbt.NBTFactory
+import com.lgou2w.ldk.bukkit.version.MinecraftBukkitVersion
 import com.lgou2w.ldk.common.ComparisonChain
 import com.lgou2w.ldk.common.Enums
+import com.lgou2w.ldk.common.notNull
 import com.lgou2w.ldk.nbt.NBT
 import com.lgou2w.ldk.nbt.NBTSavable
 import com.lgou2w.ldk.nbt.NBTTagCompound
@@ -89,8 +92,12 @@ data class AttributeItemModifier(
     root.putInt(NBT.TAG_ATTRIBUTE_OPERATION, operation.value)
     if (slot != null) root.putString(NBT.TAG_ATTRIBUTE_SLOT, slot.value)
     root.putDouble(NBT.TAG_ATTRIBUTE_AMOUNT, amount)
-    root.putLong(NBT.TAG_ATTRIBUTE_UUID_LEAST, uuid.leastSignificantBits)
-    root.putLong(NBT.TAG_ATTRIBUTE_UUID_MOST, uuid.mostSignificantBits)
+    if (MinecraftBukkitVersion.isV116OrLater) {
+      root.putIntArray(NBT.TAG_ATTRIBUTE_UUID, NBTFactory.writeUniqueIdIntArray(uuid))
+    } else {
+      root.putLong(NBT.TAG_ATTRIBUTE_UUID_LEAST, uuid.leastSignificantBits)
+      root.putLong(NBT.TAG_ATTRIBUTE_UUID_MOST, uuid.mostSignificantBits)
+    }
     return root
   }
 
@@ -127,7 +134,7 @@ data class AttributeItemModifier(
      */
     @JvmStatic
     fun deserialize(args: Map<String, Any>): AttributeItemModifier {
-      val type: AttributeType = Enums.ofValuableNotNull(AttributeType::class.java, args["type"]?.toString())
+      val type = AttributeType.of(args["type"].notNull("Attribute type").toString())
       val operation: Operation = Enums.ofValuableNotNull(Operation::class.java, args["operation"].toString().toIntOrNull() ?: 0)
       val slot: Slot? = Enums.ofValuable(Slot::class.java, args["slot"]?.toString())
       val amount = args["amount"].toString().toDoubleOrNull() ?: .0

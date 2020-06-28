@@ -16,8 +16,6 @@
 
 package com.lgou2w.ldk.chat
 
-import com.lgou2w.ldk.common.notNull
-
 /**
  * ## ChatComponentAbstract (聊天组件抽象)
  *
@@ -31,30 +29,13 @@ import com.lgou2w.ldk.common.notNull
  */
 abstract class ChatComponentAbstract : ChatComponent {
 
-  private var _style : ChatStyle? = null
-  private var _extras : MutableList<ChatComponent> = ArrayList()
-
-  override var style : ChatStyle
-    get() {
-      if (_style == null) {
-        _style = ChatStyle()
-        extras.forEach { it.style.setParent(style) }
-      }
-      return _style.notNull()
-    }
-    set(value) {
-      _style = value
-      extras.forEach { it.style.setParent(style) }
-    }
+  override var style = ChatStyle()
+  override val extras = ArrayList<ChatComponent>()
 
   override fun setStyle(style: ChatStyle?): ChatComponent {
-    _style = style
-    extras.forEach { it.style.setParent(style) }
+    this.style = style ?: ChatStyle()
     return this
   }
-
-  override val extras : MutableList<ChatComponent>
-    get() = _extras
 
   override val extraSize : Int
     get() = extras.size
@@ -63,13 +44,15 @@ abstract class ChatComponentAbstract : ChatComponent {
     = append(ChatComponentText(text))
 
   override fun append(extra: ChatComponent): ChatComponent {
-    extra.style.setParent(style)
     extras.add(extra)
     return this
   }
 
   override fun toJson(): String
     = ChatSerializer.toJson(this)
+
+  override fun toRaw(): String
+    = ChatSerializer.toRaw(this)
 
   override fun toRaw(color: Boolean): String
     = ChatSerializer.toRaw(this, color)
@@ -94,7 +77,7 @@ abstract class ChatComponentAbstract : ChatComponent {
   }
 
   override fun hashCode(): Int {
-    var result = _style?.hashCode() ?: 0
+    var result = style.hashCode()
     result = 31 * result + extras.hashCode()
     return result
   }

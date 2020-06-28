@@ -27,7 +27,7 @@ class ChatComponentTranslationTest {
     val cct = ChatComponentTranslation("item.diamond")
     cct.key shouldBeEqualTo "item.diamond"
     cct.key = "item.key"
-    cct.setKey("item.key").key shouldBeEqualTo "item.key"
+    cct.key shouldBeEqualTo "item.key"
     cct.withs.size shouldBeEqualTo 0
     cct.withs = mutableListOf()
     cct.addWiths(arrayOf(1, "str", 2.0, 3f))

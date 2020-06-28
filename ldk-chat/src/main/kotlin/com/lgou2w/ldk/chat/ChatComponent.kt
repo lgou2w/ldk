@@ -99,7 +99,6 @@ interface ChatComponent {
    * @see [ChatSerializer.toRaw]
    */
   fun toRaw(): String
-    = toRaw(true)
 
   /**
    * * Convert this chat component to a raw string.
@@ -109,7 +108,7 @@ interface ChatComponent {
    * @param color Whether it has a color.
    * @param color 是否拥有颜色.
    */
-  fun toRaw(color: Boolean = true): String
+  fun toRaw(color: Boolean): String
 
 // SEE: ldk-bukkit-common / com.lgou2w.ldk.bukkit.chat.ChatFactory
 //
@@ -166,6 +165,8 @@ interface ChatComponent {
         override fun append(extra: ChatComponent): ChatComponent
           = throw UnsupportedOperationException()
         override fun toJson(): String
+          = throw UnsupportedOperationException()
+        override fun toRaw(): String
           = throw UnsupportedOperationException()
         override fun toRaw(color: Boolean): String
           = throw UnsupportedOperationException()

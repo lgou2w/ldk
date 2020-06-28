@@ -34,14 +34,6 @@ class ChatComponentSelector(
   var selector: String
 ) : ChatComponentAbstract() {
 
-  /**
-   * @see [ChatComponentSelector.selector]
-   */
-  fun setSelector(selector: String): ChatComponentSelector {
-    this.selector = selector
-    return this
-  }
-
   override fun equals(other: Any?): Boolean {
     if (other === this)
       return true

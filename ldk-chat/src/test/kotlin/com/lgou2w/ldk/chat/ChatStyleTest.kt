@@ -16,10 +16,9 @@
 
 package com.lgou2w.ldk.chat
 
-import org.amshove.kluent.invoking
+import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
-import org.amshove.kluent.shouldThrow
 import org.junit.Test
 
 @Suppress("ReplaceCallWithBinaryOperator")
@@ -36,6 +35,7 @@ class ChatStyleTest {
     cs.clickEvent = ChatClickEvent(ChatClickEvent.Action.OPEN_URL, "github.com")
     cs.hoverEvent = ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("hi"))
     cs.insertion = "Insertion"
+    cs.font = "default"
     cs.getColor() shouldBeEqualTo ChatColor.RED
     cs.getBold() shouldBeEqualTo true
     cs.getItalic() shouldBeEqualTo true
@@ -43,27 +43,29 @@ class ChatStyleTest {
     cs.getUnderlined() shouldBeEqualTo true
     cs.getObfuscated() shouldBeEqualTo true
     cs.getInsertion() shouldBeEqualTo "Insertion"
+    cs.getFont() shouldBeEqualTo "default"
     cs.getClickEvent() shouldNotBeEqualTo null
     cs.getHoverEvent() shouldNotBeEqualTo null
     cs.isEmpty() shouldBeEqualTo false
     cs.equals(cs) shouldBeEqualTo true
     cs.equals(null) shouldBeEqualTo false
     cs.hashCode() shouldNotBeEqualTo 0
-    val cs2 = ChatStyle()
+    var cs2 = ChatStyle()
     cs2.getColor() shouldBeEqualTo null
-    cs2.getBold() shouldBeEqualTo false
-    cs2.getItalic() shouldBeEqualTo false
-    cs2.getStrikethrough() shouldBeEqualTo false
-    cs2.getUnderlined() shouldBeEqualTo false
-    cs2.getObfuscated() shouldBeEqualTo false
+    cs2.getBold() shouldBeEqualTo null
+    cs2.getItalic() shouldBeEqualTo null
+    cs2.getStrikethrough() shouldBeEqualTo null
+    cs2.getUnderlined() shouldBeEqualTo null
+    cs2.getObfuscated() shouldBeEqualTo null
     cs2.getClickEvent() shouldBeEqualTo null
     cs2.getHoverEvent() shouldBeEqualTo null
     cs2.getInsertion() shouldBeEqualTo null
+    cs2.getFont() shouldBeEqualTo null
     cs.equals(cs2) shouldBeEqualTo false
     cs2.equals(cs) shouldBeEqualTo false
-    cs2.setParent(cs)
+    cs2 = cs2.setParent(cs)
     cs2.getColor() shouldBeEqualTo ChatColor.RED
-    cs2.equals(cs) shouldBeEqualTo false
+    cs2.equals(cs) shouldBeEqualTo true
   }
 
   @Test fun `ChatStyle - equals`() {
@@ -90,24 +92,65 @@ class ChatStyleTest {
     cs1.insertion = "Insertion"
     cs1.equals(cs2) shouldBeEqualTo false
     cs2.insertion = cs1.insertion
+    cs1.font = "default"
+    cs1.equals(cs2) shouldBeEqualTo false
+    cs2.font = cs1.font
     cs1.equals(cs2) shouldBeEqualTo true
   }
 
-  @Test fun `ChatStyle - ROOT - These operations should not be supported`() {
-    val rootField = ChatStyle::class.java.getDeclaredField("ROOT")
-      ?: return
-    rootField.isAccessible = true
-    val root = rootField.get(null) as ChatStyle
-    invoking { root.setParent(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setColor(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setBold(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setItalic(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setStrikethrough(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setUnderlined(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setObfuscated(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setClickEvent(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setHoverEvent(null) } shouldThrow UnsupportedOperationException::class
-    invoking { root.setInsertion(null) } shouldThrow UnsupportedOperationException::class
-    root.toString() shouldBeEqualTo "ChatStyle.ROOT"
+//  @Test fun `ChatStyle - ROOT - These operations should not be supported`() {
+//    val rootField = ChatStyle::class.java.getDeclaredField("ROOT")
+//      ?: return
+//    rootField.isAccessible = true
+//    val root = rootField.get(null) as ChatStyle
+//    invoking { root.setParent(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setColor(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setBold(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setItalic(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setStrikethrough(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setUnderlined(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setObfuscated(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setClickEvent(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setHoverEvent(null) } shouldThrow UnsupportedOperationException::class
+//    invoking { root.setInsertion(null) } shouldThrow UnsupportedOperationException::class
+//    root.toString() shouldBeEqualTo "ChatStyle.ROOT"
+//  }
+
+  @Test fun `ChatStyle - setParent`() {
+    val self = ChatStyle().setColor(Color.of(0))
+    self.setParent(ChatStyle.EMPTY) shouldBeEqualTo self // because parent is empty
+
+    var n = ChatStyle.EMPTY.setParent(ChatStyle().setColor(Color.of(0xff0000)))
+    n.color shouldBeEqualTo Color.of(0xff0000)
+    n = n.setParent(ChatStyle().setBold(true))
+    n.bold shouldBeEqualTo true
+    n = n.setParent(ChatStyle().setItalic(true))
+    n.italic shouldBeEqualTo true
+    n = n.setParent(ChatStyle().setUnderlined(true))
+    n.underlined shouldBeEqualTo true
+    n = n.setParent(ChatStyle().setStrikethrough(true))
+    n.strikethrough shouldBeEqualTo true
+    n = n.setParent(ChatStyle().setObfuscated(true))
+    n.obfuscated shouldBeEqualTo true
+    n = n.setParent(ChatStyle().setClickEvent(ChatClickEvent(ChatClickEvent.Action.RUN_COMMAND, "/say hi")))
+    n.clickEvent shouldBeEqualTo ChatClickEvent(ChatClickEvent.Action.RUN_COMMAND, "/say hi")
+    n = n.setParent(ChatStyle().setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("hi"))))
+    n.hoverEvent shouldBeEqualTo ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("hi"))
+    n = n.setParent(ChatStyle().setInsertion("insertion"))
+    n.insertion shouldBeEqualTo "insertion"
+    n = n.setParent(ChatStyle().setFont("default"))
+    n.font shouldBeEqualTo "default"
+    n.isEmpty() shouldBe false
+
+    ChatStyle().setFont("default").setParent(ChatStyle().setFont("parent")).font shouldBeEqualTo "default"
+  }
+
+  @Test fun `ChatStyle - isEmpty`() {
+    val s = ChatStyle()
+    s.isEmpty() shouldBe true
+    s.setFont("default").isEmpty() shouldBe false
+    s.setInsertion("insertion").isEmpty() shouldBe false
+    s.setHoverEvent(ChatHoverEvent(ChatHoverEvent.Action.SHOW_TEXT, ChatComponentText("hi"))).isEmpty() shouldBe false
+    s.setClickEvent(ChatClickEvent(ChatClickEvent.Action.RUN_COMMAND, "/say hi")).isEmpty() shouldBe false
   }
 }

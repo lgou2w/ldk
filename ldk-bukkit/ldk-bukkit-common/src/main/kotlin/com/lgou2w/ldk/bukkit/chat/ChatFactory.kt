@@ -36,6 +36,7 @@ import com.lgou2w.ldk.reflect.Visibility
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import java.util.UUID
 
 /**
  * ## ChatFactory (聊天工厂)
@@ -50,11 +51,17 @@ object ChatFactory {
   @JvmStatic private val CLASS_PACKET_OUT_CHAT by lazyMinecraftClass("PacketPlayOutChat")
   @JvmStatic private val CLASS_CHAT_MESSAGE_TYPE by lazyMinecraftClassOrNull("ChatMessageType")
 
-  // NMS.PacketPlayOutChat -> public constructor(NMS.IChatBaseComponent, ChatMessageType | Byte)
+  // 1.16 before NMS.PacketPlayOutChat -> public constructor(NMS.IChatBaseComponent, ChatMessageType | Byte)
+  // 1.16 and after NMS.PacketPlayOutChat -> public constructor(NMS.IChatBaseComponent, ChatMessageType, UUID)
   @JvmStatic private val CONSTRUCTOR_PACKET_OUT_CHAT : AccessorConstructor<Any> by lazy {
     FuzzyReflect.of(CLASS_PACKET_OUT_CHAT, true)
       .useConstructorMatcher()
-      .withParams(CLASS_ICHAT_BASE_COMPONENT, CLASS_CHAT_MESSAGE_TYPE ?: Byte::class.java)
+      .also {
+        if (!MinecraftBukkitVersion.isV116OrLater)
+          it.withParams(CLASS_ICHAT_BASE_COMPONENT, CLASS_CHAT_MESSAGE_TYPE ?: Byte::class.java)
+        else
+          it.withParams(CLASS_ICHAT_BASE_COMPONENT, CLASS_CHAT_MESSAGE_TYPE!!, UUID::class.java)
+      }
       .resultAccessor()
   }
 
@@ -106,7 +113,10 @@ object ChatFactory {
       if (CLASS_CHAT_MESSAGE_TYPE != null) Enums.fromOrdinal(CLASS_CHAT_MESSAGE_TYPE!!, action.ordinal)
       else action.id
     val icbc = toNMS(component)
-    return CONSTRUCTOR_PACKET_OUT_CHAT.newInstance(icbc, value)
+    return if (!MinecraftBukkitVersion.isV116OrLater)
+      CONSTRUCTOR_PACKET_OUT_CHAT.newInstance(icbc, value)
+    else
+      CONSTRUCTOR_PACKET_OUT_CHAT.newInstance(icbc, value, UUID(0L, 0L)) // zero, always display message
   }
 
   /**

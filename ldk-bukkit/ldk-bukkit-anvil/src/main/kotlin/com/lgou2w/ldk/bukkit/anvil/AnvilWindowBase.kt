@@ -21,6 +21,7 @@ import com.lgou2w.ldk.bukkit.entity.EntityFactory
 import com.lgou2w.ldk.bukkit.internal.FakePlugin
 import com.lgou2w.ldk.bukkit.reflect.lazyCraftBukkitClass
 import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClass
+import com.lgou2w.ldk.bukkit.reflect.lazyMinecraftClassOrNull
 import com.lgou2w.ldk.common.Constants
 import com.lgou2w.ldk.common.Consumer
 import com.lgou2w.ldk.common.Enums
@@ -120,6 +121,7 @@ abstract class AnvilWindowBase(
 
     @JvmStatic private val CLASS_CONTAINER by lazyMinecraftClass("Container")
     @JvmStatic private val CLASS_CONTAINER_ANVIL by lazyMinecraftClass("ContainerAnvil")
+    @JvmStatic private val CLASS_CONTAINER_ANVIL_ABSTRACT by lazyMinecraftClassOrNull("ContainerAnvilAbstract")
     @JvmStatic private val CLASS_CRAFT_INVENTORY_VIEW by lazyCraftBukkitClass("inventory.CraftInventoryView")
 
     @JvmStatic private val CLASSES by lazy { ASMClassLoader.ofInstance().defineClasses(AnvilWindowImplGenerator.generate()) }
@@ -144,9 +146,10 @@ abstract class AnvilWindowBase(
         .resultAccessor()
     }
 
-    // NMS.ContainerAnvil -> private final NMS.EntityHuman player
+    // 1.16 before -> NMS.ContainerAnvil -> private final NMS.EntityHuman player
+    // 1.16 and after ->  NMS.ContainerAnvilAbstract -> protected final NMS.EntityHuman player
     @JvmStatic private val FIELD_CONTAINER_ANVIL_PLAYER : AccessorField<Any, Any> by lazy {
-      FuzzyReflect.of(CLASS_CONTAINER_ANVIL, true)
+      FuzzyReflect.of(CLASS_CONTAINER_ANVIL_ABSTRACT ?: CLASS_CONTAINER_ANVIL, true)
         .useFieldMatcher()
         .withType(EntityFactory.CLASS_ENTITY_HUMAN)
         .resultAccessor()
