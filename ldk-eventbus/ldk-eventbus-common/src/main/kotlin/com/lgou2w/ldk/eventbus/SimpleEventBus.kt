@@ -124,7 +124,7 @@ class SimpleEventBus(
 
   override fun register(target: Any) {
     if (registeredListeners.containsKey(target))
-      return
+      throw IllegalStateException("Listener has been registered")
     if (target is Class<*>)
       registerClass(target)
     else
@@ -201,18 +201,15 @@ class SimpleEventBus(
   }
 
   override fun <T : Event> addListener(order: Order, receiveCancelled: Boolean, eventType: Class<T>, consumer: Consumer<T>) {
-    getListenerList(eventType).register(RegisteredListener(
-      eventType,
-      null,
-      order,
-      receiveCancelled,
-      null,
-      object : EventListener {
-        override fun post(event: Event) {
-          consumer.accept(eventType.cast(event))
-        }
+    if (registeredListeners.containsKey(consumer))
+      throw IllegalStateException("Listener has been registered")
+    val listener = RegisteredListener(eventType, consumer, order, receiveCancelled, null, object : EventListener {
+      override fun post(event: Event) {
+        consumer.accept(eventType.cast(event))
       }
-    ))
+    })
+    registeredListeners[listener] = listOf(listener)
+    getListenerList(eventType).register(listener)
   }
 
   override fun <T : GenericEvent<G>, G> addGenericListener(genericType: Class<G>, consumer: Consumer<T>) {
@@ -230,17 +227,14 @@ class SimpleEventBus(
   }
 
   override fun <T : GenericEvent<G>, G> addGenericListener(genericType: Class<G>, order: Order, receiveCancelled: Boolean, eventType: Class<T>, consumer: Consumer<T>) {
-    getListenerList(eventType).register(RegisteredListener(
-      eventType,
-      null,
-      order,
-      receiveCancelled,
-      genericType,
-      object : EventListener {
-        override fun post(event: Event) {
-          consumer.accept(eventType.cast(event))
-        }
+    if (registeredListeners.containsKey(consumer))
+      throw IllegalStateException("Listener has been registered")
+    val listener = RegisteredListener(eventType, consumer, order, receiveCancelled, genericType, object : EventListener {
+      override fun post(event: Event) {
+        consumer.accept(eventType.cast(event))
       }
-    ))
+    })
+    registeredListeners[listener] = listOf(listener)
+    getListenerList(eventType).register(listener)
   }
 }
