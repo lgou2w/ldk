@@ -16,7 +16,9 @@
 
 package com.lgou2w.ldk.bukkit.depend
 
+import com.lgou2w.ldk.asm.ASMClassLoader
 import com.lgou2w.ldk.common.notNull
+import com.lgou2w.ldk.reflect.FuzzyReflect
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -32,7 +34,7 @@ abstract class PlaceholderExpansion {
   /**
    * PlaceholderAPI expansion proxy object
    */
-  private val proxy by lazy { PlaceholderExpansionProxy(this) }
+  private val proxy by lazy { newProxyInstance(this) }
 
   /**
    * * Called when a placeholder is requested from this hook.
@@ -94,8 +96,11 @@ abstract class PlaceholderExpansion {
     } catch (e: DependCannotException) {
       return false
     }
-    @Suppress("DEPRECATION")
-    return  me.clip.placeholderapi.PlaceholderAPI.getRegisteredPlaceholderPlugins().contains(identifier)
+    return if (shouldProvideRegister()) {
+      val registeredPlugins = METHOD_GETREGISTEREDPLACEHOLDERPLUGINS.invoke(null) as Set<String>
+      return registeredPlugins.contains(identifier)
+    } else
+      proxy.isRegistered
   }
 
   /**
@@ -108,8 +113,11 @@ abstract class PlaceholderExpansion {
     } catch (e: DependCannotException) {
       return false
     }
-    val requiredPlugin = this.requiredPlugin
-    return requiredPlugin == null || Bukkit.getPluginManager().getPlugin(requiredPlugin) != null
+    return if (shouldProvideRegister()) {
+      val requiredPlugin = this.requiredPlugin
+      requiredPlugin == null || Bukkit.getPluginManager().getPlugin(requiredPlugin) != null
+    } else
+      proxy.canRegister()
   }
 
   /**
@@ -123,10 +131,13 @@ abstract class PlaceholderExpansion {
   fun register(): Boolean {
     val identifier = this.identifier.notNull("Placeholder identifier can not be null!")
     checkApiLoaded()
-    return if (Bukkit.getPluginManager().getPlugin(DependPlaceholderAPI.NAME).notNull().description.version < "2.8.7")
-      me.clip.placeholderapi.PlaceholderAPI.registerPlaceholderHook(identifier, proxy)
-    else
-      me.clip.placeholderapi.PlaceholderAPI.registerExpansion(proxy) // since PlaceholderAPI 2.8.7
+    return if (shouldProvideRegister()) {
+      return if (Bukkit.getPluginManager().getPlugin(DependPlaceholderAPI.NAME).notNull().description.version < "2.8.7")
+        METHOD_REGISTERPLACEHOLDERHOOK.invoke(null, identifier, proxy).notNull()
+      else
+        METHOD_REGISTEREXPANSION.invoke(null, proxy).notNull() // since PlaceholderAPI 2.8.7
+    } else
+      proxy.register()
   }
 
   /**
@@ -141,10 +152,46 @@ abstract class PlaceholderExpansion {
     }
   }
 
+  @Suppress("UNCHECKED_CAST", "DEPRECATION")
   companion object {
+
+    private val CLASSES by lazy { ASMClassLoader.ofInstance().defineClasses(PlaceholderExpansionGenerator.generate()) }
+    private val CLASS_PROXY by lazy { CLASSES.first() as Class<out me.clip.placeholderapi.expansion.PlaceholderExpansion> }
+    private val CONSTRUCTOR_PROXY by lazy { CLASS_PROXY.getDeclaredConstructor(PlaceholderExpansion::class.java) }
+
     @JvmStatic
     @Throws(DependCannotException::class)
     private fun checkApiLoaded() = if (Bukkit.getPluginManager().isPluginEnabled(DependPlaceholderAPI.NAME)) true else
       throw DependCannotException("The PlaceholderAPI plugin is not loaded yet.")
+
+    private fun newProxyInstance (proxy: PlaceholderExpansion): me.clip.placeholderapi.expansion.PlaceholderExpansion
+      = CONSTRUCTOR_PROXY.newInstance(proxy)
+
+    private fun shouldProvideRegister ()
+      = Bukkit.getPluginManager().getPlugin(DependPlaceholderAPI.NAME).notNull().description.version < "2.10.7"
+
+    // public static me.clip.placeholderapi.PlaceholderAPI.getRegisteredPlaceholderPlugins()
+    private val METHOD_GETREGISTEREDPLACEHOLDERPLUGINS by lazy {
+      FuzzyReflect.of(me.clip.placeholderapi.PlaceholderAPI::class.java)
+        .useMethodMatcher()
+        .withName("getRegisteredPlaceholderPlugins")
+        .resultAccessorAs<me.clip.placeholderapi.PlaceholderAPI, Set<String>>()
+    }
+
+    // public static me.clip.placeholderapi.PlaceholderAPI.registerPlaceholderHook(String, PlaceholderExpansion)
+    private val METHOD_REGISTERPLACEHOLDERHOOK by lazy {
+      FuzzyReflect.of(me.clip.placeholderapi.PlaceholderAPI::class.java)
+        .useMethodMatcher()
+        .withName("registerPlaceholderHook")
+        .resultAccessorAs<me.clip.placeholderapi.PlaceholderAPI, Boolean>()
+    }
+
+    // public static me.clip.placeholderapi.PlaceholderAPI.registerExpansion(PlaceholderExpansion)
+    private val METHOD_REGISTEREXPANSION by lazy {
+      FuzzyReflect.of(me.clip.placeholderapi.PlaceholderAPI::class.java)
+        .useMethodMatcher()
+        .withName("registerExpansion")
+        .resultAccessorAs<me.clip.placeholderapi.PlaceholderAPI, Boolean>()
+    }
   }
 }
