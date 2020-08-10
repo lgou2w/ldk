@@ -37,6 +37,13 @@
   </repositories>
 
   <dependencies>
+    <!-- ldk-asm -->
+    <dependency>
+      <groupId>com.lgou2w</groupId>
+      <artifactId>ldk-asm</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
     <!-- ldk-bukkit-depend -->
     <dependency>
       <groupId>com.lgou2w</groupId>
