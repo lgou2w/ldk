@@ -59,6 +59,10 @@ class MinecraftBukkitVersion(
      * @since LDK 0.2.1
      */
     @JvmField val V1_16_R1 = MinecraftBukkitVersion(1, 16, 1)
+    /**
+     * @since LDK 0.2.2
+     */
+    @JvmField val V1_16_R2 = MinecraftBukkitVersion(1, 16, 2)
 
     @JvmStatic
     private val VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$")
@@ -229,10 +233,13 @@ class MinecraftBukkitVersion(
       )] = V1_15_R1
       map[arrayOf(
         MinecraftVersion(1, 16, 0),
-        MinecraftVersion(1, 16, 1),
-        MinecraftVersion(1, 16, 2)
+        MinecraftVersion(1, 16, 1)
         // ---> net.minecraft.server.v1_16_R1
       )] = V1_16_R1
+      map[arrayOf(
+        MinecraftVersion(1, 16, 2)
+        // ---> net.minecraft.server.v1_16_R2
+      )] = V1_16_R2
       return map
     }
 
