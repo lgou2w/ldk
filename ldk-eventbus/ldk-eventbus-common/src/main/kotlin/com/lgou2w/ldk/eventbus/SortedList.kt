@@ -47,7 +47,6 @@ package com.lgou2w.ldk.eventbus
  *  by lgou2w on 09/04/2019
  */
 
-import java.util.LinkedList
 import java.util.function.Supplier
 
 /**
@@ -61,32 +60,8 @@ class SortedList<E> private constructor(
 
   companion object {
 
-    @JvmStatic fun <E> create(comparator: Comparator<E>): SortedList<E>
-      = create(comparator, Supplier<MutableList<E>> { LinkedList() })
-
     @JvmStatic fun <E> create(comparator: Comparator<E>, constructor: Supplier<MutableList<E>>)
       = SortedList(constructor.get(), comparator)
-
-    @JvmStatic fun <E : Comparable<E>> create(): SortedList<E>
-      = create(Comparator { o1, o2 -> o1.compareTo(o2) })
-
-    @JvmStatic fun <E> copyOf(list: MutableList<E>, comparator: Comparator<E>): SortedList<E> {
-      for (i in 0 until list.size) {
-        val el = list[i]
-        if (el == null)
-          list.remove(el)
-      }
-      return SortedList(list, comparator)
-    }
-
-    @JvmStatic fun <E : Comparable<E>> copyOf(list: MutableList<E>): SortedList<E>
-      = copyOf(list, Comparator { o1, o2 -> o1.compareTo(o2) })
-
-    @JvmStatic fun <E> of(comparator: Comparator<E>, vararg elements: E): SortedList<E>
-      = SortedList(arrayListOf(*elements), comparator)
-
-    @JvmStatic fun <E : Comparable<E>> of(vararg elements: E): SortedList<E>
-      = of(Comparator { o1, o2 -> o1.compareTo(o2) }, *elements)
   }
 
   override fun add(element: E): Boolean {

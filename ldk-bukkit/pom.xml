@@ -22,7 +22,7 @@
   <parent>
     <artifactId>ldk</artifactId>
     <groupId>com.lgou2w</groupId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -49,7 +49,7 @@
   </modules>
 
   <properties>
-    <spigot.version>1.16.1-R0.1-SNAPSHOT</spigot.version>
+    <spigot.version>1.16.2-R0.1-SNAPSHOT</spigot.version>
   </properties>
 
   <repositories>

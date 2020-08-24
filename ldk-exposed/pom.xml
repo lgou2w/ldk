@@ -22,14 +22,14 @@
   <parent>
     <artifactId>ldk</artifactId>
     <groupId>com.lgou2w</groupId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ldk-exposed</artifactId>
 
   <properties>
-    <exposed.version>0.26.1</exposed.version>
+    <exposed.version>0.26.2</exposed.version>
   </properties>
 
   <repositories>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>com.lgou2w</groupId>
       <artifactId>ldk-common</artifactId>
-      <version>0.2.1</version>
+      <version>0.2.2</version>
       <scope>compile</scope>
     </dependency>
     <!-- Exposed -->

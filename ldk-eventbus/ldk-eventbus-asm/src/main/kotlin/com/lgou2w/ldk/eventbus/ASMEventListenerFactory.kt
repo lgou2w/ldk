@@ -82,9 +82,7 @@ class ASMEventListenerFactory private constructor() : EventListenerFactory {
       val methodDesc = Type.getMethodDescriptor(method)
       val wrapperName = getUniqueName(ownerType.simpleName, methodName, eventType.simpleName)
       val classWriter = ClassWriter(ClassWriter.COMPUTE_MAXS or ClassWriter.COMPUTE_FRAMES).apply {
-        visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, wrapperName, null,
-          "java/lang/Object", arrayOf(EVENT_LISTENER_INTERFACE_NAME)
-        )
+        visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, wrapperName, null, "java/lang/Object", INTERFACES)
         visitSource(".dynamic", null)
         if (!isStatic) {
           visitField(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL, "owner", declClassDesc, null, null)
@@ -107,7 +105,7 @@ class ASMEventListenerFactory private constructor() : EventListenerFactory {
           visitMaxs(2, 2)
           visitEnd()
         }
-        visitMethod(Opcodes.ACC_PUBLIC, "post", "($EVENT_TYPE_DESC)V", null, arrayOf("java/lang/Exception")).apply {
+        visitMethod(Opcodes.ACC_PUBLIC, "post", METHOD_POST_DESC, null, THROWS).apply {
           visitCode()
           if (!isStatic) {
             visitVarInsn(Opcodes.ALOAD, 0)
@@ -140,8 +138,10 @@ class ASMEventListenerFactory private constructor() : EventListenerFactory {
 
     @JvmStatic fun create() = ASMEventListenerFactory()
 
-    private val EVENT_LISTENER_INTERFACE_NAME = EventListener::class.java.name.replace(".", "/")
+    private val INTERFACES = arrayOf(Type.getInternalName(EventListener::class.java))
+    private val THROWS = arrayOf(Type.getInternalName(Exception::class.java))
     private val EVENT_TYPE_DESC = Type.getDescriptor(Event::class.java)
+    private val METHOD_POST_DESC = "($EVENT_TYPE_DESC)V"
 
     private class SafeClassDefiner {
 
