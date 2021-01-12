@@ -152,7 +152,7 @@
     <dependency>
       <groupId>org.amshove.kluent</groupId>
       <artifactId>kluent</artifactId>
-      <version>1.64</version>
+      <version>1.65</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
