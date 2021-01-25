@@ -29,7 +29,7 @@
   <artifactId>ldk-exposed</artifactId>
 
   <properties>
-    <exposed.version>0.28.1</exposed.version>
+    <exposed.version>0.29.1</exposed.version>
   </properties>
 
   <repositories>
