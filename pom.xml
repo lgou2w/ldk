@@ -81,7 +81,7 @@
   </distributionManagement>
 
   <properties>
-    <kotlin.version>1.4.21</kotlin.version>
+    <kotlin.version>1.4.30</kotlin.version>
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
