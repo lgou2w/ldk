@@ -29,7 +29,7 @@
   <artifactId>ldk-asm</artifactId>
 
   <properties>
-    <asm.version>9.0</asm.version>
+    <asm.version>9.1</asm.version>
   </properties>
 
   <dependencies>
