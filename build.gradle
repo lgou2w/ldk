@@ -1,0 +1,39 @@
+buildscript {
+  ext {
+    junit_version = '5.3.1'
+    bukkit_version = '1.16.5-R0.1-SNAPSHOT'
+  }
+}
+
+subprojects {
+  apply plugin: 'idea'
+  apply plugin: 'java'
+
+  group 'com.lgou2w'
+  version '0.3.0'
+
+  sourceCompatibility = targetCompatibility = 1.8
+
+  repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/groups/public/' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    mavenLocal()
+  }
+
+  dependencies {
+    compile "org.jetbrains:annotations:20.1.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
+  }
+
+  compileJava {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = targetCompatibility = 1.8
+  }
+
+  test {
+    useJUnitPlatform()
+  }
+}
