@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.reflect;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,11 +69,15 @@ public abstract class ReflectionMatcher<T extends AccessibleObject & Member> {
     return this;
   }
 
+  @Contract("null -> fail")
   public ReflectionMatcher<T> withModifiers(int... modifiers) {
+    if (modifiers == null) throw new NullPointerException("modifiers");
+    if (modifiers.length <= 0) return this;
     return with(it -> {
       int mod = it.getModifiers();
       boolean result = true;
-      for (int modifier : modifiers) result = (mod & modifier) != 0;
+      for (int modifier : modifiers)
+        if (!(result = (mod & modifier) != 0)) break;
       return result;
     });
   }
