@@ -1,3 +1,15 @@
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+
+def localProperties
+def localFile = rootProject.file('local.properties')
+if (localFile.canRead()) {
+  println 'Local properties file exists, to loading...'
+  localProperties = new Properties()
+  localProperties.load(new FileInputStream(localFile))
+}
+
 buildscript {
   ext {
     junit_version = '5.3.1'
@@ -8,9 +20,11 @@ buildscript {
 subprojects {
   apply plugin: 'idea'
   apply plugin: 'java'
+  apply plugin: 'maven-publish'
+  apply plugin: 'signing'
 
   group 'com.lgou2w'
-  version '0.3.0'
+  version '0.3.0-SNAPSHOT'
 
   sourceCompatibility = targetCompatibility = 1.8
 
@@ -28,12 +42,86 @@ subprojects {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
   }
 
-  compileJava {
-    options.encoding = 'UTF-8'
-    sourceCompatibility = targetCompatibility = 1.8
-  }
+  compileJava { options.encoding = 'UTF-8' }
 
   test {
     useJUnitPlatform()
+  }
+
+  jar {
+    manifest {
+      attributes([
+        'Built-By': System.getProperty('user.name'),
+        'Specification-Title': 'ldk',
+        'Specification-Vendor': 'lgou2w',
+        'Specification-Version': '1',
+        'Implementation-Title': project.name,
+        'Implementation-Version': "${project.version}",
+        'Implementation-Vendor': 'lgou2w',
+        'Implementation-Timestamp': DateTimeFormatter.ISO_INSTANT.format(Instant.now().truncatedTo(ChronoUnit.SECONDS))
+      ])
+    }
+  }
+
+  java {
+    withJavadocJar()
+    withSourcesJar()
+  }
+
+  javadoc {
+    options.addStringOption('charset', 'UTF-8')
+  }
+
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        from components.java
+        pom {
+          name = 'ldk'
+          description = 'A multi-module lgou2w development kit.'
+          licenses {
+            license {
+              name = 'The Apache License, Version 2.0'
+              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+              distribution = 'repo'
+            }
+          }
+          developers {
+            developer {
+              id = 'lgou2w'
+              name = 'lgou2w'
+              email = 'lgou2w@hotmail.com'
+              url = 'https://lgou2w.com'
+              timezone = '+8'
+              roles = ['Owner', 'Developer']
+            }
+          }
+          scm {
+            connection = 'scm:git:git@github.com:lgou2w/ldk.git'
+            developerConnection = 'scm:git:git@github.com:lgou2w/ldk.git'
+            url = 'git@github.com:lgou2w/ldk.git'
+          }
+        }
+      }
+    }
+    repositories {
+      maven {
+        def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+        def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+        url = project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        name = 'archive'
+        credentials {
+          username = localProperties != null ? localProperties['mavenUsername'] : System.env.MAVEN_USERNAME
+          password = localProperties != null ? localProperties['mavenPassword'] : System.env.MAVEN_PASSWORD
+        }
+      }
+    }
+  }
+
+  signing {
+    def signingKey = localProperties != null ? localProperties['signingKey'] : System.env.SIGNING_KEY
+    def signingPassword = localProperties != null ? localProperties['signingPassword'] : System.env.SIGNING_PASSWORD
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
   }
 }
