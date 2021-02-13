@@ -1,1 +1,3 @@
 rootProject.name = 'ldk'
+
+include ':ldk-common'
