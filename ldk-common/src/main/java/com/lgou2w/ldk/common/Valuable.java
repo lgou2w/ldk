@@ -16,7 +16,7 @@
 
 package com.lgou2w.ldk.common;
 
-interface Valuable<T> {
+public interface Valuable<T> {
 
   T getValue();
 }
