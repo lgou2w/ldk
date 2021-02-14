@@ -6,3 +6,4 @@ include ':ldk-nbt'
 
 include ':ldk-bukkit-version'
 include ':ldk-bukkit-reflect'
+include ':ldk-bukkit-nbt'
