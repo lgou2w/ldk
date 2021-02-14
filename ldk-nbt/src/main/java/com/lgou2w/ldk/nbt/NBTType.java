@@ -114,31 +114,24 @@ public enum NBTType {
   }
 
   @NotNull
-  @Contract("null, _ -> fail; _, null -> fail")
-  public static NBTBase<?> create(NBTType type, String name) {
-    if (type == null) throw new NullPointerException("type");
-    if (name == null) throw new NullPointerException("name");
-    switch (type) {
-      case END: return NBTTagEnd.INSTANCE;
-      case BYTE: return new NBTTagByte(name);
-      case SHORT: return new NBTTagShort(name);
-      case INT: return new NBTTagInt(name);
-      case LONG: return new NBTTagLong(name);
-      case FLOAT: return new NBTTagFloat(name);
-      case DOUBLE: return new NBTTagDouble(name);
-      case BYTE_ARRAY: return new NBTTagByteArray(name);
-      case STRING: return new NBTTagString(name, ""); // name, value
-      case LIST: return new NBTTagList(name);
-      case COMPOUND: return new NBTTagCompound(name);
-      case INT_ARRAY: return new NBTTagIntArray(name);
-      case LONG_ARRAY: return new NBTTagLongArray(name);
-      default: throw new UnsupportedOperationException();
-    }
-  }
-
-  @NotNull
   @Contract("null -> fail")
   public static NBTBase<?> create(NBTType type) {
-    return create(type, "");
+    if (type == null) throw new NullPointerException("type");
+    switch (type) {
+      case END: return NBTTagEnd.INSTANCE;
+      case BYTE: return new NBTTagByte();
+      case SHORT: return new NBTTagShort();
+      case INT: return new NBTTagInt();
+      case LONG: return new NBTTagLong();
+      case FLOAT: return new NBTTagFloat();
+      case DOUBLE: return new NBTTagDouble();
+      case BYTE_ARRAY: return new NBTTagByteArray();
+      case STRING: return new NBTTagString();
+      case LIST: return new NBTTagList();
+      case COMPOUND: return new NBTTagCompound();
+      case INT_ARRAY: return new NBTTagIntArray();
+      case LONG_ARRAY: return new NBTTagLongArray();
+      default: throw new UnsupportedOperationException();
+    }
   }
 }

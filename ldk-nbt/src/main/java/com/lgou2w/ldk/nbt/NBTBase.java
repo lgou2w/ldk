@@ -18,23 +18,12 @@ package com.lgou2w.ldk.nbt;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public abstract class NBTBase<T> implements NBT<T> {
-  protected final String name;
   protected @NotNull T value;
 
-  public NBTBase(String name, T value) {
-    if (name == null) throw new NullPointerException("name");
+  public NBTBase(T value) {
     if (value == null) throw new NullPointerException("value");
-    this.name = name;
     this.value = value;
-  }
-
-  @NotNull
-  @Override
-  public final String getName() {
-    return name;
   }
 
   @NotNull
@@ -54,12 +43,12 @@ public abstract class NBTBase<T> implements NBT<T> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     NBTBase<?> base = (NBTBase<?>) o;
-    return name.equals(base.name) && Objects.equals(value, base.value);
+    return value.equals(base.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, value);
+    return value.hashCode();
   }
 
   @Override

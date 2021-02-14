@@ -26,19 +26,13 @@ import java.util.Arrays;
 
 public class NBTTagLongArray extends NBTBase<long[]> {
 
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTTagLongArray(String name, long[] value) {
-    super(name, value);
-  }
-
-  @Contract("null -> fail")
-  public NBTTagLongArray(String name) {
-    super(name, new long[0]);
-  }
-
   @Contract("null -> fail")
   public NBTTagLongArray(long[] value) {
-    super("", value);
+    super(value);
+  }
+
+  public NBTTagLongArray() {
+    this(new long[0]);
   }
 
   @Override
@@ -118,6 +112,6 @@ public class NBTTagLongArray extends NBTBase<long[]> {
   public NBTTagLongArray clone() {
     long[] newValue = new long[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
-    return new NBTTagLongArray(name, newValue);
+    return new NBTTagLongArray(newValue);
   }
 }

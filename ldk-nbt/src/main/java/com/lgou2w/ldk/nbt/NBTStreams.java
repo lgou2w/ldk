@@ -42,43 +42,44 @@ public final class NBTStreams {
 
   @NotNull
   @Contract("null -> fail")
-  public static NBTBase<?> read(InputStream input) throws IOException {
+  public static NBTMetadata read(InputStream input) throws IOException {
     if (input == null) throw new NullPointerException("input");
     return read((DataInput) new DataInputStream(input));
   }
 
   @NotNull
   @Contract("null -> fail")
-  public static NBTBase<?> read(DataInput input) throws IOException {
+  public static NBTMetadata read(DataInput input) throws IOException {
     if (input == null) throw new NullPointerException("input");
     NBTType type = NBTType.fromId(input.readUnsignedByte());
-    if (type == null || type == NBTType.END) return NBTTagEnd.INSTANCE;
+    if (type == null || type == NBTType.END) return NBTMetadata.EMPTY;
     String name = input.readUTF();
-    NBTBase<?> base = NBTType.create(type, name);
+    NBTBase<?> base = NBTType.create(type);
     base.read(input);
-    return base;
+    return NBTMetadata.of(name, base);
   }
 
   @Contract("null, _ -> fail; _, null -> fail")
-  public static void write(OutputStream output, NBTBase<?> base) throws IOException {
+  public static void write(OutputStream output, NBTMetadata metadata) throws IOException {
     if (output == null) throw new NullPointerException("output");
-    write((DataOutput) new DataOutputStream(output), base);
+    write((DataOutput) new DataOutputStream(output), metadata);
   }
 
   @Contract("null, _ -> fail; _, null -> fail;")
-  public static void write(DataOutput output, NBTBase<?> base) throws IOException {
+  public static void write(DataOutput output, NBTMetadata metadata) throws IOException {
     if (output == null) throw new NullPointerException("output");
-    if (base == null) throw new NullPointerException("base");
-    output.writeByte(base.getType().getId());
-    if (base.getType() != NBTType.END) {
-      output.writeUTF(base.name);
-      base.write(output);
+    if (metadata == null) throw new NullPointerException("metadata");
+    NBTBase<?> value = metadata.getValue();
+    output.writeByte(value.getType().getId());
+    if (!metadata.isEmpty()) {
+      output.writeUTF(metadata.getName());
+      value.write(output);
     }
   }
 
   @NotNull
   @Contract("null -> fail")
-  public static NBTBase<?> readBase64(String encoded) throws IllegalArgumentException, IOException {
+  public static NBTMetadata readBase64(String encoded) throws IllegalArgumentException, IOException {
     if (encoded == null) throw new NullPointerException("encoded");
     byte[] bytes = Base64.getDecoder().decode(encoded);
     return read(new ByteArrayInputStream(bytes));
@@ -86,16 +87,16 @@ public final class NBTStreams {
 
   @NotNull
   @Contract("null -> fail")
-  public static String writeBase64(NBTBase<?> base) throws IOException {
-    if (base == null) throw new NullPointerException("base");
+  public static String writeBase64(NBTMetadata metadata) throws IOException {
+    if (metadata == null) throw new NullPointerException("metadata");
     ByteArrayOutputStream output = new ByteArrayOutputStream();
-    write(output, base);
+    write(output, metadata);
     return Base64.getEncoder().encodeToString(output.toByteArray());
   }
 
   @NotNull
   @Contract("null, _ -> fail")
-  public static NBTBase<?> readFile(File file, boolean decompress) throws IOException {
+  public static NBTMetadata readFile(File file, boolean decompress) throws IOException {
     if (file == null) throw new NullPointerException("file");
     if (!file.exists() || file.isDirectory()) throw new FileNotFoundException(
       "File does not exist or is a directory: " + file.getAbsolutePath());
@@ -107,13 +108,13 @@ public final class NBTStreams {
   }
 
   @Contract("null, _, _ -> fail; _, null, _ -> fail")
-  public static void writeFile(NBTBase<?> base, File file, boolean compress) throws IOException {
-    if (base == null) throw new NullPointerException("base");
+  public static void writeFile(NBTMetadata metadata, File file, boolean compress) throws IOException {
+    if (metadata == null) throw new NullPointerException("metadata");
     if (file == null) throw new NullPointerException("file");
     try (OutputStream output = compress
       ? new GZIPOutputStream(new FileOutputStream(file))
       : new FileOutputStream(file)) {
-      write(output, base);
+      write(output, metadata);
     }
   }
 }

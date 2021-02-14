@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class NBTTagNumeric<T extends Number> extends NBTBase<T> {
 
-  public NBTTagNumeric(String name, T value) {
-    super(name, value);
+  public NBTTagNumeric(T value) {
+    super(value);
   }
 
   public double doubleValu() {

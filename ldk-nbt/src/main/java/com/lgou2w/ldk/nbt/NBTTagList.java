@@ -33,24 +33,13 @@ import java.util.Objects;
 public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBase<?>> {
   private @NotNull NBTType elementType = NBTType.END;
 
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTTagList(String name, List<NBTBase<?>> value) {
-    super(name, new ArrayList<>(value));
-    for (NBTBase<?> el : value) checkElement(el);
-  }
-
-  @Contract("null -> fail")
-  public NBTTagList(String name) {
-    this(name, new ArrayList<>());
-  }
-
   @Contract("null -> fail")
   public NBTTagList(List<NBTBase<?>> value) {
-    this("", value);
+    super(new ArrayList<>(value));
   }
 
   public NBTTagList() {
-    this("", new ArrayList<>());
+    this(new ArrayList<>());
   }
 
   private void checkElement(@NotNull NBTBase<?> el) {
@@ -139,7 +128,7 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   public NBTTagList clone() {
     List<NBTBase<?>> newValue = new ArrayList<>(value.size());
     for (NBTBase<?> el : value) newValue.add(el.clone());
-    return new NBTTagList(name, newValue);
+    return new NBTTagList(newValue);
   }
 
   /// Extended
@@ -220,7 +209,7 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   public boolean addString(String... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagString> c = new ArrayList<>(values.length);
-    for (String element : values) c.add(new NBTTagString("", element));
+    for (String element : values) c.add(new NBTTagString(element));
     return addAll(c);
   }
 

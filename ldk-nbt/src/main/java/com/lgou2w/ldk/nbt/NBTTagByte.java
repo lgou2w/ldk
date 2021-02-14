@@ -16,7 +16,6 @@
 
 package com.lgou2w.ldk.nbt;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInput;
@@ -25,18 +24,12 @@ import java.io.IOException;
 
 public class NBTTagByte extends NBTTagNumeric<Byte> {
 
-  @Contract("null, _ -> fail")
-  public NBTTagByte(String name, byte value) {
-    super(name, value);
-  }
-
-  @Contract("null -> fail")
-  public NBTTagByte(String name) {
-    super(name, (byte) 0);
-  }
-
   public NBTTagByte(byte value) {
-    super("", value);
+    super(value);
+  }
+
+  public NBTTagByte() {
+    this((byte) 0);
   }
 
   @Override
@@ -65,7 +58,7 @@ public class NBTTagByte extends NBTTagNumeric<Byte> {
   @Override
   @NotNull
   public NBTTagByte clone() {
-    return new NBTTagByte(name, value);
+    return new NBTTagByte(value);
   }
 
   @Override

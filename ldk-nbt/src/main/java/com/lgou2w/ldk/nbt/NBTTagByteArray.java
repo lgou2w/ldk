@@ -26,19 +26,13 @@ import java.util.Arrays;
 
 public class NBTTagByteArray extends NBTBase<byte[]> {
 
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTTagByteArray(String name, byte[] value) {
-    super(name, value);
-  }
-
-  @Contract("null -> fail")
-  public NBTTagByteArray(String name) {
-    super(name, new byte[0]);
-  }
-
   @Contract("null -> fail")
   public NBTTagByteArray(byte[] value) {
-    super("", value);
+    super(value);
+  }
+
+  public NBTTagByteArray() {
+    this(new byte[0]);
   }
 
   @Override
@@ -118,6 +112,6 @@ public class NBTTagByteArray extends NBTBase<byte[]> {
   public NBTTagByteArray clone() {
     byte[] newValue = new byte[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
-    return new NBTTagByteArray(name, newValue);
+    return new NBTTagByteArray(newValue);
   }
 }

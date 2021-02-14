@@ -26,19 +26,13 @@ import java.util.Arrays;
 
 public class NBTTagIntArray extends NBTBase<int[]> {
 
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTTagIntArray(String name, int[] value) {
-    super(name, value);
-  }
-
-  @Contract("null -> fail")
-  public NBTTagIntArray(String name) {
-    super(name, new int[0]);
-  }
-
   @Contract("null -> fail")
   public NBTTagIntArray(int[] value) {
-    super("", value);
+    super(value);
+  }
+
+  public NBTTagIntArray() {
+    this(new int[0]);
   }
 
   @Override
@@ -115,6 +109,6 @@ public class NBTTagIntArray extends NBTBase<int[]> {
   public NBTTagIntArray clone() {
     int[] newValue = new int[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
-    return new NBTTagIntArray(name, newValue);
+    return new NBTTagIntArray(newValue);
   }
 }

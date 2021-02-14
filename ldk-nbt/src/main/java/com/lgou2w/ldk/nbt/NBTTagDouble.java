@@ -16,7 +16,6 @@
 
 package com.lgou2w.ldk.nbt;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInput;
@@ -25,18 +24,12 @@ import java.io.IOException;
 
 public class NBTTagDouble extends NBTTagNumeric<Double> {
 
-  @Contract("null, _ -> fail")
-  public NBTTagDouble(String name, double value) {
-    super(name, value);
-  }
-
-  @Contract("null -> fail")
-  public NBTTagDouble(String name) {
-    super(name, 0d);
-  }
-
   public NBTTagDouble(double value) {
-    super("", value);
+    super(value);
+  }
+
+  public NBTTagDouble() {
+    this(0d);
   }
 
   @Override
@@ -65,7 +58,7 @@ public class NBTTagDouble extends NBTTagNumeric<Double> {
   @Override
   @NotNull
   public NBTTagDouble clone() {
-    return new NBTTagDouble(name, value);
+    return new NBTTagDouble(value);
   }
 
   @Override

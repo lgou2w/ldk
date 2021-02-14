@@ -25,9 +25,13 @@ import java.io.IOException;
 
 public class NBTTagString extends NBTBase<String> {
 
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTTagString(String name, String value) {
-    super(name, value);
+  @Contract("null -> fail")
+  public NBTTagString(String value) {
+    super(value);
+  }
+
+  public NBTTagString() {
+    this("");
   }
 
   @Override
@@ -68,6 +72,6 @@ public class NBTTagString extends NBTBase<String> {
   @Override
   @NotNull
   public NBTTagString clone() {
-    return new NBTTagString(name, value);
+    return new NBTTagString(value);
   }
 }

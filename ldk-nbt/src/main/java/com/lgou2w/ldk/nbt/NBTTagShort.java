@@ -16,7 +16,6 @@
 
 package com.lgou2w.ldk.nbt;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInput;
@@ -25,18 +24,12 @@ import java.io.IOException;
 
 public class NBTTagShort extends NBTTagNumeric<Short> {
 
-  @Contract("null, _ -> fail")
-  public NBTTagShort(String name, short value) {
-    super(name, value);
-  }
-
-  @Contract("null -> fail")
-  public NBTTagShort(String name) {
-    super(name, (short) 0);
-  }
-
   public NBTTagShort(short value) {
-    super("", value);
+    super(value);
+  }
+
+  public NBTTagShort() {
+    this((short) 0);
   }
 
   @Override
@@ -65,7 +58,7 @@ public class NBTTagShort extends NBTTagNumeric<Short> {
   @Override
   @NotNull
   public NBTTagShort clone() {
-    return new NBTTagShort(name, value);
+    return new NBTTagShort(value);
   }
 
   @Override

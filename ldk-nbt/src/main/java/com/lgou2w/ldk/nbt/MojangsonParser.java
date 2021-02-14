@@ -76,7 +76,7 @@ public final class MojangsonParser {
     reader.skipWhitespace();
     int start = reader.cursor;
     if (reader.peek() == StringReader.SYNTAX_DOUBLE_QUOTE)
-      return new NBTTagString("", reader.readQuotedString());
+      return new NBTTagString(reader.readQuotedString());
     String str = reader.readUnquotedString();
     if (str.isEmpty()) {
       reader.cursor = start;
@@ -116,7 +116,7 @@ public final class MojangsonParser {
         return new NBTTagByte((byte) 0);
     } catch (NumberFormatException ignore) {
     }
-    return new NBTTagString("", str);
+    return new NBTTagString(str);
   }
 
   @NotNull

@@ -28,7 +28,7 @@ public final class NBTTagEnd extends NBTBase<Object> {
   public final static NBTTagEnd INSTANCE = new NBTTagEnd();
 
   private NBTTagEnd() {
-    super("", VOID);
+    super(VOID);
   }
 
   @Override

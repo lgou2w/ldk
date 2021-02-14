@@ -31,23 +31,13 @@ import java.util.Set;
 
 public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements Map<String, NBTBase<?>> {
 
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTTagCompound(String name, Map<String, NBTBase<?>> value) {
-    super(name, new LinkedHashMap<>(value));
-  }
-
-  @Contract("null -> fail")
-  public NBTTagCompound(String name) {
-    super(name, new LinkedHashMap<>());
-  }
-
   @Contract("null -> fail")
   public NBTTagCompound(Map<String, NBTBase<?>> value) {
-    super("", new LinkedHashMap<>(value));
+    super(new LinkedHashMap<>(value));
   }
 
   public NBTTagCompound() {
-    super("", new LinkedHashMap<>());
+    super(new LinkedHashMap<>());
   }
 
   @Override
@@ -63,9 +53,9 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    NBTBase<?> base;
-    while ((base = NBTStreams.read(input)).getType() != NBTType.END) {
-      value.put(base.name, base);
+    NBTMetadata metadata;
+    while (!(metadata = NBTStreams.read(input)).isEmpty()) {
+      value.put(metadata.getName(), metadata.getValue());
     }
   }
 
@@ -74,11 +64,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     for (Map.Entry<String, NBTBase<?>> entry : value.entrySet()) {
       NBTBase<?> value = entry.getValue();
       String key = entry.getKey();
-      output.writeByte(value.getType().getId());
-      if (value.getType() != NBTType.END) {
-        output.writeUTF(key);
-        value.write(output);
-      }
+      NBTStreams.write(output, NBTMetadata.of(key, value));
     }
     output.writeByte(0); // END
   }
@@ -130,7 +116,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     Map<String, NBTBase<?>> newValue = new LinkedHashMap<>(value.size());
     for (Map.Entry<String, NBTBase<?>> entry : value.entrySet())
       newValue.put(entry.getKey(), entry.getValue().clone());
-    return new NBTTagCompound(name, newValue);
+    return new NBTTagCompound(newValue);
   }
 
   /// Extended
@@ -144,15 +130,9 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   }
 
   @Nullable
-  @Contract("null -> fail")
-  public NBTBase<?> set(NBTBase<?> value) {
-    return set(value.name, value);
-  }
-
-  @Nullable
   @Contract("null, _ -> fail")
   public NBTBase<?> setByte(String key, byte value) {
-    return set(new NBTTagByte(key, value));
+    return set(key, new NBTTagByte(value));
   }
 
   @Nullable
@@ -164,7 +144,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   @Nullable
   @Contract("null, _ -> fail")
   public NBTBase<?> setShort(String key, short value) {
-    return set(new NBTTagShort(key, value));
+    return set(key, new NBTTagShort(value));
   }
 
   @Nullable
@@ -176,49 +156,49 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   @Nullable
   @Contract("null, _ -> fail")
   public NBTBase<?> setInt(String key, int value) {
-    return set(new NBTTagInt(key, value));
+    return set(key, new NBTTagInt(value));
   }
 
   @Nullable
   @Contract("null, _ -> fail")
   public NBTBase<?> setLong(String key, long value) {
-    return set(new NBTTagLong(key, value));
+    return set(key, new NBTTagLong(value));
   }
 
   @Nullable
   @Contract("null, _ -> fail")
   public NBTBase<?> setFloat(String key, float value) {
-    return set(new NBTTagFloat(key, value));
+    return set(key, new NBTTagFloat(value));
   }
 
   @Nullable
   @Contract("null, _ -> fail")
   public NBTBase<?> setDouble(String key, double value) {
-    return set(new NBTTagDouble(key, value));
+    return set(key, new NBTTagDouble(value));
   }
 
   @Nullable
   @Contract("null, _ -> fail; _, null -> fail")
   public NBTBase<?> setByteArray(String key, byte[] value) {
-    return set(new NBTTagByteArray(key, value));
+    return set(key, new NBTTagByteArray(value));
   }
 
   @Nullable
   @Contract("null, _ -> fail; _, null -> fail")
   public NBTBase<?> setString(String key, String value) {
-    return set(new NBTTagString(key, value));
+    return set(key, new NBTTagString(value));
   }
 
   @Nullable
   @Contract("null, _ -> fail; _, null -> fail")
   public NBTBase<?> setIntArray(String key, int[] value) {
-    return set(new NBTTagIntArray(key, value));
+    return set(key, new NBTTagIntArray(value));
   }
 
   @Nullable
   @Contract("null, _ -> fail; _, null -> fail")
   public NBTBase<?> setLongArray(String key, long[] value) {
-    return set(new NBTTagLongArray(key, value));
+    return set(key, new NBTTagLongArray(value));
   }
 
   @Nullable
@@ -263,8 +243,8 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     NBTBase<?> value = find(key, type.getWrapped(), true);
     if (value == null) {
       if (type == NBTType.END) throw new UnsupportedOperationException("END");
-      value = NBTType.create(type, key);
-      set(value); // present
+      value = NBTType.create(type);
+      set(key, value); // present
     }
     return (T) (value.getType().isListOrCompound() ? value : value.value);
   }
