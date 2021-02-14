@@ -69,6 +69,7 @@ subprojects {
   }
 
   javadoc {
+    options.encoding = 'UTF-8'
     options.addStringOption('charset', 'UTF-8')
   }
 
