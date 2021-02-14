@@ -82,20 +82,23 @@ public class ConstructorReflectionMatcher<T> extends ReflectionMatcher<Construct
   }
 
   @Override
-  public @NotNull List<Accessor<Constructor<T>>> resultAccessors() {
+  @NotNull
+  public List<ConstructorAccessor<T>> resultAccessors() {
     List<Constructor<T>> pureResults = results();
-    List<Accessor<Constructor<T>>> results = new ArrayList<>(pureResults.size());
+    List<ConstructorAccessor<T>> results = new ArrayList<>(pureResults.size());
     for (Constructor<T> element : pureResults) results.add(Accessors.of(element));
     return results;
   }
 
   @Override
-  public @NotNull ConstructorAccessor<T> resultAccessor() throws NoSuchElementException {
+  @NotNull
+  public ConstructorAccessor<T> resultAccessor() throws NoSuchElementException {
     return resultAccessorAs();
   }
 
   @Override
-  public @Nullable ConstructorAccessor<T> resultAccessorOrNull() {
+  @Nullable
+  public ConstructorAccessor<T> resultAccessorOrNull() {
     Constructor<T> result = resultOrNull();
     return result != null ? Accessors.of(result) : null;
   }

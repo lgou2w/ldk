@@ -83,20 +83,23 @@ public class MethodReflectionMatcher extends ReflectionMatcher<Method> {
   }
 
   @Override
-  public @NotNull List<Accessor<Method>> resultAccessors() {
+  @NotNull
+  public List<MethodAccessor<Object, Object>> resultAccessors() {
     List<Method> pureResults = results();
-    List<Accessor<Method>> results = new ArrayList<>(pureResults.size());
+    List<MethodAccessor<Object, Object>> results = new ArrayList<>(pureResults.size());
     for (Method element : pureResults) results.add(Accessors.of(element));
     return results;
   }
 
   @Override
-  public @NotNull MethodAccessor<Object, Object> resultAccessor() throws NoSuchElementException {
+  @NotNull
+  public MethodAccessor<Object, Object> resultAccessor() throws NoSuchElementException {
     return resultAccessorAs();
   }
 
   @Override
-  public @Nullable MethodAccessor<Object, Object> resultAccessorOrNull() {
+  @Nullable
+  public MethodAccessor<Object, Object> resultAccessorOrNull() {
     Method result = resultOrNull();
     return result != null ? Accessors.of(result) : null;
   }

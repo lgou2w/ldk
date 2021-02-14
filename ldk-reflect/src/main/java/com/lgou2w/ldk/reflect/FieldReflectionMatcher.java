@@ -16,7 +16,6 @@
 
 package com.lgou2w.ldk.reflect;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -114,20 +113,23 @@ public class FieldReflectionMatcher extends ReflectionMatcher<Field> {
   }
 
   @Override
-  public @NotNull List<Accessor<Field>> resultAccessors() {
+  @NotNull
+  public List<FieldAccessor<Object, Object>> resultAccessors() {
     List<Field> pureResults = results();
-    List<Accessor<Field>> results = new ArrayList<>(pureResults.size());
+    List<FieldAccessor<Object, Object>> results = new ArrayList<>(pureResults.size());
     for (Field element : pureResults) results.add(Accessors.of(element));
     return results;
   }
 
   @Override
-  public @NotNull FieldAccessor<Object, Object> resultAccessor() throws NoSuchElementException {
+  @NotNull
+  public FieldAccessor<Object, Object> resultAccessor() throws NoSuchElementException {
     return resultAccessorAs();
   }
 
   @Override
-  public @Nullable FieldAccessor<Object, Object> resultAccessorOrNull() {
+  @Nullable
+  public FieldAccessor<Object, Object> resultAccessorOrNull() {
     Field result = resultOrNull();
     return result != null ? Accessors.of(result) : null;
   }

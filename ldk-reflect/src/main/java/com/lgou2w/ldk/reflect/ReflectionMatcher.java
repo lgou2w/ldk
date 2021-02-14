@@ -128,7 +128,7 @@ public abstract class ReflectionMatcher<T extends AccessibleObject & Member> {
   }
 
   @NotNull
-  public abstract List<Accessor<T>> resultAccessors();
+  public abstract List<? extends Accessor<T>> resultAccessors();
 
   @NotNull
   public abstract Accessor<T> resultAccessor() throws NoSuchElementException;
