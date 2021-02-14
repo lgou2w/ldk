@@ -3,3 +3,5 @@ rootProject.name = 'ldk'
 include ':ldk-common'
 include ':ldk-reflect'
 include ':ldk-nbt'
+
+include ':ldk-bukkit-version'

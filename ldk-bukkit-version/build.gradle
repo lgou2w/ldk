@@ -1,0 +1,4 @@
+dependencies {
+  compile project(':ldk-common')
+  compileOnly "org.spigotmc:spigot-api:${bukkit_version}"
+}
