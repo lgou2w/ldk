@@ -20,6 +20,7 @@ buildscript {
 subprojects {
   apply plugin: 'idea'
   apply plugin: 'java'
+  apply plugin: 'jacoco'
   apply plugin: 'maven-publish'
   apply plugin: 'signing'
 
@@ -46,6 +47,17 @@ subprojects {
 
   test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+  }
+
+  jacocoTestReport {
+    dependsOn test
+    reports {
+      csv.enabled true
+      html.enabled true
+      xml.enabled true
+      xml.destination file("${project.buildDir}/reports/jacoco/report.xml")
+    }
   }
 
   jar {
