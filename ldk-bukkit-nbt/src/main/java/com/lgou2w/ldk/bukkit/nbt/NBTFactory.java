@@ -63,7 +63,7 @@ public final class NBTFactory {
   @NotNull public final static Class<?> CLASS_NBT_TAG_END;
   @NotNull public final static Class<?> CLASS_NBT_TAG_LIST;
   @NotNull public final static Class<?> CLASS_NBT_TAG_COMPOUND;
-  @Nullable public final static Class<?> CLASS_NBT_LONG_ARRAY; // since Minecraft 1.12
+  @Nullable public final static Class<?> CLASS_NBT_TAG_LONG_ARRAY; // since Minecraft 1.12
 
   static {
     try {
@@ -71,7 +71,7 @@ public final class NBTFactory {
       CLASS_NBT_TAG_END = getMinecraftClass("NBTTagEnd");
       CLASS_NBT_TAG_LIST = getMinecraftClass("NBTTagList");
       CLASS_NBT_TAG_COMPOUND = getMinecraftClass("NBTTagCompound");
-      CLASS_NBT_LONG_ARRAY = getMinecraftClassOrNull("NBTTagLongArray");
+      CLASS_NBT_TAG_LONG_ARRAY = getMinecraftClassOrNull("NBTTagLongArray");
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Error in initializing internal static block: ", e);
     }
@@ -239,7 +239,7 @@ public final class NBTFactory {
         }
         return newInternal(NBTType.COMPOUND, compoundValue);
       case LONG_ARRAY:
-        boolean supported = CLASS_NBT_LONG_ARRAY != null;
+        boolean supported = CLASS_NBT_TAG_LONG_ARRAY != null;
         if (supported) return newInternal(nbt.getType(), nbt.getValue());
         // Server does not support, convert to list to compatibility
         NBTTagLongArray longArray = (NBTTagLongArray) nbt;
