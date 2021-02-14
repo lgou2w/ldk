@@ -263,7 +263,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     NBTBase<?> value = find(key, type.getWrapped(), true);
     if (value == null) {
       if (type == NBTType.END) throw new UnsupportedOperationException("END");
-      value = NBTType.create(type);
+      value = NBTType.create(type, key);
       set(value); // present
     }
     return (T) (value.getType().isListOrCompound() ? value : value.value);
