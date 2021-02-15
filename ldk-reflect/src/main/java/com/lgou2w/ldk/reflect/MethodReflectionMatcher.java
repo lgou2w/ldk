@@ -93,8 +93,14 @@ public class MethodReflectionMatcher extends ReflectionMatcher<Method> {
 
   @Override
   @NotNull
+  public MethodAccessor<Object, Object> resultAccessor(@Nullable String message) throws NoSuchElementException {
+    return resultAccessorAs(message);
+  }
+
+  @Override
+  @NotNull
   public MethodAccessor<Object, Object> resultAccessor() throws NoSuchElementException {
-    return resultAccessorAs();
+    return resultAccessorAs(ERROR_EMPTY_RESULTS);
   }
 
   @Override
@@ -105,7 +111,12 @@ public class MethodReflectionMatcher extends ReflectionMatcher<Method> {
   }
 
   @NotNull
-  public <T, R> MethodAccessor<T, R> resultAccessorAs() {
-    return Accessors.of(result());
+  public <T, R> MethodAccessor<T, R> resultAccessorAs(@Nullable String message) throws NoSuchElementException {
+    return Accessors.of(result(message));
+  }
+
+  @NotNull
+  public <T, R> MethodAccessor<T, R> resultAccessorAs() throws NoSuchElementException {
+    return resultAccessorAs(ERROR_EMPTY_RESULTS);
   }
 }

@@ -115,10 +115,15 @@ public abstract class ReflectionMatcher<T extends AccessibleObject & Member> {
   }
 
   @NotNull
-  public T result() throws NoSuchElementException {
+  public T result(@Nullable String message) throws NoSuchElementException {
     List<T> results = results();
-    if (results.isEmpty()) throw new NoSuchElementException("Empty results");
+    if (results.isEmpty()) throw new NoSuchElementException(message);
     return results.get(0);
+  }
+
+  @NotNull
+  public T result() throws NoSuchElementException {
+    return result(ERROR_EMPTY_RESULTS);
   }
 
   @Nullable
@@ -131,8 +136,13 @@ public abstract class ReflectionMatcher<T extends AccessibleObject & Member> {
   public abstract List<? extends Accessor<T>> resultAccessors();
 
   @NotNull
+  public abstract Accessor<T> resultAccessor(@Nullable String message) throws NoSuchElementException;
+
+  @NotNull
   public abstract Accessor<T> resultAccessor() throws NoSuchElementException;
 
   @Nullable
   public abstract Accessor<T> resultAccessorOrNull();
+
+  final static String ERROR_EMPTY_RESULTS = "Empty results";
 }
