@@ -71,6 +71,7 @@ public class LDKPlugin extends JavaPlugin {
         compound.setByte("foo", 1);
         compound.setString("bar", "HelloWorld!");
         Object internal = NBTFactory.to(compound);
+        getLogger().info("" + internal.getClass());
         getLogger().info("" + internal);
 
 //        Class<?> clazz = MinecraftReflection.getMinecraftClass("NBTBase");
