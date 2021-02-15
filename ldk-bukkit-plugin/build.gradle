@@ -1,0 +1,43 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+buildscript {
+  ext {
+    shadow_version = '6.1.0'
+    bstats_version = '2.1.0'
+  }
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "com.github.jengelman.gradle.plugins:shadow:${shadow_version}"
+  }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+repositories {
+  maven { url 'https://repo.codemc.org/repository/maven-public/' }
+}
+
+dependencies {
+  compile project(':ldk-bukkit-version')
+  compile project(':ldk-bukkit-reflect')
+  compile project(':ldk-bukkit-nbt')
+  compile project(':ldk-bukkit-basic')
+  compile project(':ldk-bukkit-item')
+  compile "org.bstats:bstats-bukkit:${bstats_version}"
+  compileOnly "org.spigotmc:spigot-api:${bukkit_version}"
+}
+
+shadowJar {
+  classifier = null
+  relocate 'org.bstats', 'com.lgou2w.ldk.bukkit.bstats'
+}
+
+processResources {
+  filter ReplaceTokens, tokens: [
+    'project.version': project.version
+  ]
+}
+
+tasks.build.dependsOn tasks.shadowJar
