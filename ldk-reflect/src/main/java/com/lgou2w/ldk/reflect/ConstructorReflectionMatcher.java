@@ -51,6 +51,11 @@ public class ConstructorReflectionMatcher<T> extends ReflectionMatcher<Construct
   }
 
   @Override
+  public ConstructorReflectionMatcher<T> withoutModifiers(int... modifiers) {
+    return (ConstructorReflectionMatcher<T>) super.withoutModifiers(modifiers);
+  }
+
+  @Override
   public ConstructorReflectionMatcher<T> withName(@NotNull String regex) {
     return this; // Constructor not have name
   }
@@ -104,7 +109,7 @@ public class ConstructorReflectionMatcher<T> extends ReflectionMatcher<Construct
   }
 
   @NotNull
-  public <R> ConstructorAccessor<R> resultAccessorAs() {
+  public <R> ConstructorAccessor<R> resultAccessorAs() throws NoSuchElementException {
     Constructor<R> result = (Constructor<R>) result();
     return Accessors.of(result);
   }

@@ -51,6 +51,11 @@ public class MethodReflectionMatcher extends ReflectionMatcher<Method> {
   }
 
   @Override
+  public MethodReflectionMatcher withoutModifiers(int... modifiers) {
+    return (MethodReflectionMatcher) super.withoutModifiers(modifiers);
+  }
+
+  @Override
   public MethodReflectionMatcher withName(@NotNull String regex) {
     return (MethodReflectionMatcher) super.withName(regex);
   }
@@ -105,7 +110,7 @@ public class MethodReflectionMatcher extends ReflectionMatcher<Method> {
   }
 
   @NotNull
-  public <T, R> MethodAccessor<T, R> resultAccessorAs() {
+  public <T, R> MethodAccessor<T, R> resultAccessorAs() throws NoSuchElementException {
     return Accessors.of(result());
   }
 }

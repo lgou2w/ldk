@@ -53,6 +53,11 @@ public class FieldReflectionMatcher extends ReflectionMatcher<Field> {
   }
 
   @Override
+  public FieldReflectionMatcher withoutModifiers(int... modifiers) {
+    return (FieldReflectionMatcher) super.withoutModifiers(modifiers);
+  }
+
+  @Override
   public FieldReflectionMatcher withName(@NotNull String regex) {
     return (FieldReflectionMatcher) super.withName(regex);
   }
@@ -135,7 +140,7 @@ public class FieldReflectionMatcher extends ReflectionMatcher<Field> {
   }
 
   @NotNull
-  public <T, R> FieldAccessor<T, R> resultAccessorAs() {
+  public <T, R> FieldAccessor<T, R> resultAccessorAs() throws NoSuchElementException {
     return Accessors.of(result());
   }
 }
