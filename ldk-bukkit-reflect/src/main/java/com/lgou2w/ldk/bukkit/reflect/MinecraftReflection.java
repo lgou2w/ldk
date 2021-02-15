@@ -50,12 +50,17 @@ public final class MinecraftReflection {
     /// Remapper
     Remapper remapper = null;
     if (BukkitVersion.isArclight) {
-      remapper = new Remapper.ArclightRemapper(LOADER);
+      remapper = new ArclightRemapper(LOADER);
     } else if (BukkitVersion.isCatServer) {
-      remapper = new Remapper.CatServerRemapper(LOADER);
+      remapper = new CatServerRemapper(LOADER);
+    } else if (BukkitVersion.isMohist) {
+      remapper = new MohistRemapper(LOADER);
     }
-    if (remapper != null)
-      Bukkit.getLogger().info("[LDK] MinecraftReflection remapper using: " + remapper);
+    if (remapper != null) {
+      Bukkit.getLogger().info("[LDK] --- MinecraftReflection ---");
+      Bukkit.getLogger().info("[LDK] Server: " + remapper.getServerName());
+      Bukkit.getLogger().info("[LDK] Using remapper: " + remapper.toString());
+    }
     REMAPPER = remapper;
   }
 

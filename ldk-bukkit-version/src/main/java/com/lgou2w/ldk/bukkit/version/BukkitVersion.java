@@ -82,6 +82,7 @@ public final class BukkitVersion extends Version implements Comparable<Version> 
   public final static boolean isPaper;
   public final static boolean isArclight;
   public final static boolean isCatServer;
+  public final static boolean isMohist;
   ///
 
   private final static Pattern VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$");
@@ -121,6 +122,7 @@ public final class BukkitVersion extends Version implements Comparable<Version> 
     isPaper = existClasses("com.destroystokyo.paper.PaperConfig", "com.destroystokyo.paper.PaperMCConfig");
     isArclight = existClasses("io.izzel.arclight.common.ArclightMain");
     isCatServer = existClasses("catserver.server.CatServer");
+    isMohist = existClasses("com.mohistmc.MohistMC");
   }
 
   private static boolean existClasses(String... classes) {
