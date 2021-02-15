@@ -16,10 +16,8 @@
 
 package com.lgou2w.ldk.bukkit;
 
-import com.lgou2w.ldk.bukkit.nbt.NBTFactory;
 import com.lgou2w.ldk.bukkit.version.BukkitVersion;
 import com.lgou2w.ldk.bukkit.version.MinecraftVersion;
-import com.lgou2w.ldk.nbt.NBTTagCompound;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bukkit.Bukkit;
@@ -58,30 +56,6 @@ public class LDKPlugin extends JavaPlugin {
       BukkitVersion.CURRENT.getVersionString()
     });
     setupMetrics();
-
-    getServer().getScheduler().runTask(this, () -> {
-
-      try {
-//        Class<?> clazz = MinecraftReflection.getMinecraftClass("NBTBase");
-//        String name = MinecraftReflection.getRemapper().mapMethodName(clazz, "getTypeId", new Class[] { byte.class });
-//        getLogger().info("NBTBase mapping: " + clazz);
-//        getLogger().info("NBTBase#getTypeId(byte) mapping: " + name);
-
-        NBTTagCompound compound = new NBTTagCompound();
-        compound.setByte("foo", 1);
-        compound.setString("bar", "HelloWorld!");
-        Object internal = NBTFactory.to(compound);
-        getLogger().info("" + internal.getClass());
-        getLogger().info("" + internal);
-
-//        Class<?> clazz = MinecraftReflection.getMinecraftClass("NBTBase");
-//        FuzzyReflection.of(clazz, true).getMethods().forEach(it -> getLogger().info("" + it));
-
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-
-    });
   }
 
   @Override

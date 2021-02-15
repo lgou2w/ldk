@@ -61,10 +61,10 @@ public final class MinecraftReflection {
 
 // TODO: 待定是否公开此方法
 //
-  @Nullable
-  public static Remapper getRemapper() {
-    return REMAPPER;
-  }
+//  @Nullable
+//  public static Remapper getRemapper() {
+//    return REMAPPER;
+//  }
 
   @NotNull
   @Contract("null -> fail")
