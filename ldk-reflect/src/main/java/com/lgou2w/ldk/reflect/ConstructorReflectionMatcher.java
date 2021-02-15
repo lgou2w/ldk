@@ -97,8 +97,14 @@ public class ConstructorReflectionMatcher<T> extends ReflectionMatcher<Construct
 
   @Override
   @NotNull
+  public ConstructorAccessor<T> resultAccessor(@Nullable String message) throws NoSuchElementException {
+    return resultAccessorAs(message);
+  }
+
+  @Override
+  @NotNull
   public ConstructorAccessor<T> resultAccessor() throws NoSuchElementException {
-    return resultAccessorAs();
+    return resultAccessor(ERROR_EMPTY_RESULTS);
   }
 
   @Override
@@ -109,8 +115,13 @@ public class ConstructorReflectionMatcher<T> extends ReflectionMatcher<Construct
   }
 
   @NotNull
-  public <R> ConstructorAccessor<R> resultAccessorAs() throws NoSuchElementException {
-    Constructor<R> result = (Constructor<R>) result();
+  public <R> ConstructorAccessor<R> resultAccessorAs(@Nullable String message) throws NoSuchElementException {
+    Constructor<R> result = (Constructor<R>) result(message);
     return Accessors.of(result);
+  }
+
+  @NotNull
+  public <R> ConstructorAccessor<R> resultAccessorAs() throws NoSuchElementException {
+    return resultAccessorAs(ERROR_EMPTY_RESULTS);
   }
 }

@@ -1,5 +1,3 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 buildscript {
   ext {
     shadow_version = '6.1.0'
@@ -35,9 +33,12 @@ shadowJar {
 }
 
 processResources {
-  filter ReplaceTokens, tokens: [
-    'project.version': project.version
-  ]
+  from(sourceSets.main.resources.srcDirs) {
+    include 'plugin.yml'
+    expand(
+      version: project.version
+    )
+  }
 }
 
 tasks.build.dependsOn tasks.shadowJar

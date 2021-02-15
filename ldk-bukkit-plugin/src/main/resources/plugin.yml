@@ -18,17 +18,17 @@ name: LDK
 prefix: LDK
 api-version: 1.13
 main: com.lgou2w.ldk.bukkit.LDKPlugin
-version: @project.version@
+version: ${version}
 load: STARTUP
 author: lgou2w
 authors: [lgou2w]
 contributors: [lgou2w, Feier]
 website: https://lgou2w.com
 github: https://github.com/lgou2w/ldk
-description: A lgou2w development kit for Bukkit.
+description: A multi-module lgou2w development kit for Bukkit.
 commands:
   ldk:
-    description: A lgou2w development kit for Bukkit.
+    description: A multi-module lgou2w development kit for Bukkit.
     permission: ldk
 permissions:
   ldk:

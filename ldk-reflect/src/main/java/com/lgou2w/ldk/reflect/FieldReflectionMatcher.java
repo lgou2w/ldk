@@ -128,8 +128,14 @@ public class FieldReflectionMatcher extends ReflectionMatcher<Field> {
 
   @Override
   @NotNull
+  public FieldAccessor<Object, Object> resultAccessor(@Nullable String message) throws NoSuchElementException {
+    return resultAccessorAs(message);
+  }
+
+  @Override
+  @NotNull
   public FieldAccessor<Object, Object> resultAccessor() throws NoSuchElementException {
-    return resultAccessorAs();
+    return resultAccessorAs(ERROR_EMPTY_RESULTS);
   }
 
   @Override
@@ -140,7 +146,12 @@ public class FieldReflectionMatcher extends ReflectionMatcher<Field> {
   }
 
   @NotNull
+  public <T, R> FieldAccessor<T, R> resultAccessorAs(@Nullable String message) throws NoSuchElementException {
+    return Accessors.of(result(message));
+  }
+
+  @NotNull
   public <T, R> FieldAccessor<T, R> resultAccessorAs() throws NoSuchElementException {
-    return Accessors.of(result());
+    return resultAccessorAs(ERROR_EMPTY_RESULTS);
   }
 }

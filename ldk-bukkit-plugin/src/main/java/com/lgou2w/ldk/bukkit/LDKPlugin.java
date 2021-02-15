@@ -41,15 +41,14 @@ public class LDKPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     if (!BukkitVersion.isV18OrLater) {
-      getLogger().severe("-------- A lgou2w development kit for Bukkit -----");
+      getLogger().severe("-------- A multi-module lgou2w development kit for Bukkit -----");
       getLogger().severe("  Very sorry. Although can load LDK, it is not compatible");
       getLogger().severe("  with 1.7 and previous versions from the beginning of design.");
-      getLogger().severe("  Thank you for downloaded and trying this plugin.");
       getLogger().severe("-------------");
       getServer().getPluginManager().disablePlugin(this);
       return;
     }
-    getLogger().info("A lgou2w development kit for Bukkit");
+    getLogger().info("A multi-module lgou2w development kit for Bukkit");
     getLogger().info("Open source: https://github.com/lgou2w/ldk");
     getLogger().log(Level.INFO, "Minecraft version: {0} Impl version: {1}", new Object[] {
       MinecraftVersion.CURRENT.getVersionString(),
