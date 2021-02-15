@@ -1,0 +1,6 @@
+dependencies {
+  compile project(':ldk-bukkit-version')
+  compile project(':ldk-bukkit-reflect')
+  compile project(':ldk-bukkit-nbt')
+  compileOnly "org.spigotmc:spigot-api:${bukkit_version}"
+}
