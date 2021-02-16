@@ -51,6 +51,11 @@ public class MethodReflectionMatcher extends ReflectionMatcher<Method> {
   }
 
   @Override
+  public MethodReflectionMatcher withoutModifiers(int... modifiers) {
+    return (MethodReflectionMatcher) super.withoutModifiers(modifiers);
+  }
+
+  @Override
   public MethodReflectionMatcher withName(@NotNull String regex) {
     return (MethodReflectionMatcher) super.withName(regex);
   }

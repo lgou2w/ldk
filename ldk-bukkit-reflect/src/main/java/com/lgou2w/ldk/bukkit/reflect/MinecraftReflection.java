@@ -17,6 +17,9 @@
 package com.lgou2w.ldk.bukkit.reflect;
 
 import com.lgou2w.ldk.bukkit.version.BukkitVersion;
+import com.lgou2w.ldk.bukkit.version.MinecraftVersion;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,20 +32,54 @@ public final class MinecraftReflection {
   public final static String PACKAGE_CRAFTBUKKIT;
   public final static String PACKAGE_MINECRAFT;
 
+  // TODO: 是否公开一些字段
+  private final static ClassLoader LOADER;
   private final static ClassSource SOURCE;
   private final static PackageCached CACHED_CRAFTBUKKIT;
   private final static PackageCached CACHED_MINECRAFT;
 
+  /// Remapper
+  private final static @Nullable Remapper REMAPPER;
+
   static {
     PACKAGE_CRAFTBUKKIT = "org.bukkit.craftbukkit." + BukkitVersion.CURRENT.getVersionString();
     PACKAGE_MINECRAFT = "net.minecraft.server." + BukkitVersion.CURRENT.getVersionString();
-    SOURCE = ClassSource.fromClassLoader(MinecraftReflection.class.getClassLoader());
+    LOADER = MinecraftReflection.class.getClassLoader();
+    SOURCE = ClassSource.fromClassLoader(LOADER);
     CACHED_CRAFTBUKKIT = new PackageCached(PACKAGE_CRAFTBUKKIT, SOURCE);
     CACHED_MINECRAFT = new PackageCached(PACKAGE_MINECRAFT, SOURCE);
+
+    /// Remapper
+    Remapper remapper = null;
+    if (BukkitVersion.isArclight) {
+      remapper = new ArclightRemapper(LOADER);
+    } else if (BukkitVersion.isCatServer) {
+      remapper = new CatServerRemapper(LOADER);
+    } else if (BukkitVersion.isMohist) {
+      remapper = new MohistRemapper(LOADER);
+    } else if (BukkitVersion.isMagma) {
+      remapper = new MagmaRemapper(LOADER);
+    }
+    if (remapper != null) {
+      Bukkit.getLogger().info("[LDK] --- MinecraftReflection ---");
+      Bukkit.getLogger().info("[LDK] Server: " + remapper.getServerName() + "-" + MinecraftVersion.CURRENT.getVersionString());
+      Bukkit.getLogger().info("[LDK] Using remapper: " + remapper.toString());
+    }
+    REMAPPER = remapper;
   }
 
+// TODO: 待定是否公开此方法
+//
+//  @Nullable
+//  public static Remapper getRemapper() {
+//    return REMAPPER;
+//  }
+
   @NotNull
-  public static Class<?> getMinecraftClass(@NotNull String className) throws ClassNotFoundException {
+  @Contract("null -> fail")
+  public static Class<?> getMinecraftClass(String className) throws ClassNotFoundException {
+    if (className == null) throw new NullPointerException("className");
+    if (REMAPPER != null) className = REMAPPER.mapClassName(className); // remapper
     return CACHED_MINECRAFT.getPackageClass(className);
   }
 
@@ -56,10 +93,13 @@ public final class MinecraftReflection {
 //  }
 
   @NotNull
+  @Contract("null, _ -> fail; _, null -> fail")
   public static Class<?> getMinecraftClass(
-    @NotNull String className,
-    @NotNull String... aliases
+    String className,
+    String... aliases
   ) throws ClassNotFoundException {
+    if (className == null) throw new NullPointerException("className");
+    if (aliases == null) throw new NullPointerException("aliases");
     try {
       return getMinecraftClass(className);
     } catch (ClassNotFoundException e) {
@@ -78,7 +118,8 @@ public final class MinecraftReflection {
   }
 
   @Nullable
-  public static Class<?> getMinecraftClassOrNull(@NotNull String className) {
+  @Contract("null -> fail")
+  public static Class<?> getMinecraftClassOrNull(String className) {
     try {
       return getMinecraftClass(className);
     } catch (ClassNotFoundException e) {
@@ -87,9 +128,10 @@ public final class MinecraftReflection {
   }
 
   @Nullable
+  @Contract("null, _ -> fail; _, null -> fail")
   public static Class<?> getMinecraftClassOrNull(
-    @NotNull String className,
-    @NotNull String... aliases
+    String className,
+    String... aliases
   ) {
     try {
       return getMinecraftClass(className, aliases);
@@ -99,12 +141,16 @@ public final class MinecraftReflection {
   }
 
   @NotNull
-  public static Class<?> getCraftBukkitClass(@NotNull String className) throws ClassNotFoundException {
+  @Contract("null -> fail")
+  public static Class<?> getCraftBukkitClass(String className) throws ClassNotFoundException {
+    if (className == null) throw new NullPointerException("className");
     return CACHED_CRAFTBUKKIT.getPackageClass(className);
   }
 
   @Nullable
-  public static Class<?> getCraftBukkitClassOrNull(@NotNull String className) {
+  @Contract("null -> fail")
+  public static Class<?> getCraftBukkitClassOrNull(String className) {
+    if (className == null) throw new NullPointerException("className");
     try {
       return getCraftBukkitClass(className);
     } catch (ClassNotFoundException e) {

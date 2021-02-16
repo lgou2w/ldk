@@ -77,6 +77,15 @@ public final class BukkitVersion extends Version implements Comparable<Version> 
   @Deprecated
   public final static boolean isV117OrLater;
 
+  /// Remapper
+  public final static boolean isSpigot;
+  public final static boolean isPaper;
+  public final static boolean isArclight;
+  public final static boolean isCatServer;
+  public final static boolean isMohist;
+  public final static boolean isMagma;
+  ///
+
   private final static Pattern VERSION_PATTERN = Pattern.compile("(?i)^v(\\d+)_(\\d+)_r(\\d+)$");
 
   static {
@@ -108,5 +117,24 @@ public final class BukkitVersion extends Version implements Comparable<Version> 
     isV115OrLater = CURRENT.compareTo(V1_15_R1) >= 0;
     isV116OrLater = CURRENT.compareTo(V1_16_R1) >= 0;
     isV117OrLater = CURRENT.compareTo(V1_17_R1) >= 0;
+
+    /// Remapper
+    isSpigot = existClasses("org.bukkit.craftbukkit." + CURRENT.getVersionString() + ".Spigot", "org.spigotmc.SpigotConfig");
+    isPaper = existClasses("com.destroystokyo.paper.PaperConfig", "com.destroystokyo.paper.PaperMCConfig");
+    isArclight = existClasses("io.izzel.arclight.common.ArclightMain");
+    isCatServer = existClasses("catserver.server.CatServer");
+    isMohist = existClasses("com.mohistmc.MohistMC");
+    isMagma = existClasses("org.magmafoundation.magma.Magma");
+  }
+
+  private static boolean existClasses(String... classes) {
+    for (String clazz : classes) {
+      try {
+        Class.forName(clazz);
+        return true;
+      } catch (ClassNotFoundException ignore) {
+      }
+    }
+    return false;
   }
 }

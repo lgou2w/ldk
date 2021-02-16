@@ -81,9 +81,10 @@ public final class NBTFactory {
 
   // NMS.NBTTagList -> private byte type;
   @NotNull final static FieldAccessor<Object, Byte> FIELD_NBT_TAG_LIST_TYPE
-    = FuzzyReflection.of(CLASS_NBT_TAG_LIST)
+    = FuzzyReflection.of(CLASS_NBT_TAG_LIST, true)
     .useFieldMatcher()
-    .withType(Byte.class)
+    .withoutModifiers(Modifier.FINAL, Modifier.STATIC)
+    .withType(byte.class)
     .resultAccessorAs();
 
   // NMS.NBTBase -> public abstract byte getTypeId();
@@ -91,8 +92,8 @@ public final class NBTFactory {
     = FuzzyReflection.of(CLASS_NBT_BASE, true)
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-    .withName("getTypeId")
-    .withType(Byte.class)
+    .withArgsCount(0)
+    .withType(byte.class)
     .resultAccessorAs();
 
   final static Map<NBTType, FieldAccessor<Object, Object>> INTERNAL_FIELD_MAP = new HashMap<>();
