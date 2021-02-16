@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.reflect;
 
 import com.lgou2w.ldk.bukkit.version.BukkitVersion;
+import com.lgou2w.ldk.bukkit.version.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,7 @@ public final class MinecraftReflection {
   public final static String PACKAGE_CRAFTBUKKIT;
   public final static String PACKAGE_MINECRAFT;
 
+  // TODO: 是否公开一些字段
   private final static ClassLoader LOADER;
   private final static ClassSource SOURCE;
   private final static PackageCached CACHED_CRAFTBUKKIT;
@@ -55,10 +57,12 @@ public final class MinecraftReflection {
       remapper = new CatServerRemapper(LOADER);
     } else if (BukkitVersion.isMohist) {
       remapper = new MohistRemapper(LOADER);
+    } else if (BukkitVersion.isMagma) {
+      remapper = new MagmaRemapper(LOADER);
     }
     if (remapper != null) {
       Bukkit.getLogger().info("[LDK] --- MinecraftReflection ---");
-      Bukkit.getLogger().info("[LDK] Server: " + remapper.getServerName());
+      Bukkit.getLogger().info("[LDK] Server: " + remapper.getServerName() + "-" + MinecraftVersion.CURRENT.getVersionString());
       Bukkit.getLogger().info("[LDK] Using remapper: " + remapper.toString());
     }
     REMAPPER = remapper;
@@ -75,7 +79,7 @@ public final class MinecraftReflection {
   @Contract("null -> fail")
   public static Class<?> getMinecraftClass(String className) throws ClassNotFoundException {
     if (className == null) throw new NullPointerException("className");
-    if (REMAPPER != null) className = REMAPPER.mapClassName(className);
+    if (REMAPPER != null) className = REMAPPER.mapClassName(className); // remapper
     return CACHED_MINECRAFT.getPackageClass(className);
   }
 
