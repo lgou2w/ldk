@@ -51,13 +51,13 @@ final class CatServerRemapper extends Remapper {
         .useFieldMatcher()
         .withType(Map.class)
         .withName("classes")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: JarMapping -> Field: Map classes");
       fieldReflectionTransformerJarMapping = FuzzyReflection
         .of(classReflectionTransformer, true)
         .useFieldMatcher()
         .withType(classJarMapping)
         .withName("jarMapping")
-        .resultAccessor();
+        .resultAccessor("Missing match: ReflectionTransformer -> Field: JarMapping jarMapping");
 
       FuzzyReflection remapUtilsReflection = FuzzyReflection.of(classRemapUtils, true);
       methodMapMethod = remapUtilsReflection
@@ -65,13 +65,13 @@ final class CatServerRemapper extends Remapper {
         .withType(String.class)
         .withArgs(Class.class, String.class, Class[].class)
         .withName("mapMethod")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: RemapUtils -> Method: String mapMethod(Class, String, Class[])");
       methodMapFieldName = remapUtilsReflection
         .useMethodMatcher()
         .withType(String.class)
         .withArgs(Class.class, String.class)
         .withName("mapFieldName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: RemapUtils -> Method: String mapFieldName(Class, String)");
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Classes does not exist, ensure that the server is CatServer?", e);
     } catch (NoSuchElementException e) {

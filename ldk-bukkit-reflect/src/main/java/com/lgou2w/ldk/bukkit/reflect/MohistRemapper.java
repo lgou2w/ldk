@@ -52,32 +52,32 @@ final class MohistRemapper extends Remapper {
         .useFieldMatcher()
         .withType(Map.class)
         .withName("byNMSName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: MohistJarMapping -> Field: Map byNMSName");
       fieldClassMappingMcpName = FuzzyReflection
         .of(classClassMapping, true)
         .useFieldMatcher()
         .withType(String.class)
         .withName("mcpName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: ClassMapping -> Field: String mcpName");
 
       FuzzyReflection remapUtilsReflection = FuzzyReflection.of(classRemapUtils, true);
       fieldRemapUtilsJarMapping = remapUtilsReflection
         .useFieldMatcher()
         .withType(classMohistJarMapping)
         .withName("jarMapping")
-        .resultAccessor();
+        .resultAccessor("Missing match: RemapUtils -> Field: MohistJarMapping jarMapping");
       methodMapMethod = remapUtilsReflection
         .useMethodMatcher()
         .withType(String.class)
         .withArgs(Class.class, String.class, Class[].class)
         .withName("mapMethodName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: RemapUtils -> Method: String mapMethod(Class, String, Class[])");
       methodMapFieldName = remapUtilsReflection
         .useMethodMatcher()
         .withType(String.class)
         .withArgs(Class.class, String.class)
         .withName("mapFieldName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: RemapUtils -> Method: String mapFieldName(Class, String)");
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Classes does not exist, ensure that the server is Mohist?", e);
     } catch (NoSuchElementException e) {

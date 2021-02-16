@@ -85,7 +85,7 @@ public final class NBTFactory {
     .useFieldMatcher()
     .withoutModifiers(Modifier.FINAL, Modifier.STATIC)
     .withType(byte.class)
-    .resultAccessorAs();
+    .resultAccessorAs("Missing match: NMS.NBTTagList -> Field: byte type");
 
   // NMS.NBTBase -> public abstract byte getTypeId();
   @NotNull final static MethodAccessor<Object, Byte> METHOD_NBT_BASE_GET_TYPE_ID
@@ -94,7 +94,7 @@ public final class NBTFactory {
     .withModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
     .withArgsCount(0)
     .withType(byte.class)
-    .resultAccessorAs();
+    .resultAccessorAs("Missing match: NMS.NBTBase -> Method: public abstract byte getTypeId()");
 
   final static Map<NBTType, FieldAccessor<Object, Object>> INTERNAL_FIELD_MAP = new HashMap<>();
   final static Map<NBTType, ConstructorAccessor<Object>> INTERNAL_CONSTRUCTOR_MAP = new HashMap<>();
@@ -126,7 +126,10 @@ public final class NBTFactory {
         type.isListOrCompound()
           ? matcher.withArgsCount(0)
           : matcher.withArgs(type.getPrimitive())
-      ).resultAccessor();
+      ).resultAccessor("Missing match: NMS." + className + " -> Constructor(" + (!type.isListOrCompound()
+        ? type.getPrimitive().getSimpleName() + ")"
+        : ")"
+      ));
       INTERNAL_CONSTRUCTOR_MAP.put(type, accessor);
     }
     return accessor;
@@ -140,7 +143,7 @@ public final class NBTFactory {
       accessor = FuzzyReflection.of(getMinecraftClass(className), true)
         .useFieldMatcher()
         .withType(type.getPrimitive())
-        .resultAccessor();
+        .resultAccessor("Missing match: NMS." + className + " -> Field: " + type.getPrimitive().getSimpleName() + " value");
       INTERNAL_FIELD_MAP.put(type, accessor);
     }
     return accessor;
@@ -161,7 +164,7 @@ public final class NBTFactory {
     } else {
       return reflection
         .useConstructorMatcher()
-        .resultAccessor()
+        .resultAccessor("Missing match: NMS.NBTTagEnd -> Constructor()")
         .newInstance();
     }
   }

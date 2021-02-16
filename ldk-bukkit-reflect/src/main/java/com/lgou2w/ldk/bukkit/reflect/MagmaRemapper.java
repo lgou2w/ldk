@@ -52,32 +52,32 @@ final class MagmaRemapper extends Remapper {
         .useFieldMatcher()
         .withType(Map.class)
         .withName("byNMSName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: MagmaJarMapping -> Field: Map byNMSName");
       fieldClassMappingsMcpName = FuzzyReflection
         .of(classClassMappings, true)
         .useFieldMatcher()
         .withType(String.class)
         .withName("mcpName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: ClassMappings -> Field: String mcpName");
 
       FuzzyReflection remapUtilsReflection = FuzzyReflection.of(classRemappingUtils, true);
       fieldRemappingUtilsJarMapping = remapUtilsReflection
         .useFieldMatcher()
         .withType(classMagmaJarMapping)
         .withName("jarMapping")
-        .resultAccessor();
+        .resultAccessor("Missing match: RemappingUtils -> Field: MagmaJarMapping jarMapping");
       methodMapMethod = remapUtilsReflection
         .useMethodMatcher()
         .withType(String.class)
         .withArgs(Class.class, String.class, Class[].class)
         .withName("mapMethodName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: RemappingUtils -> Method: String mapMethodName(Class, String, Class[])");
       methodMapFieldName = remapUtilsReflection
         .useMethodMatcher()
         .withType(String.class)
         .withArgs(Class.class, String.class)
         .withName("mapFieldName")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: RemappingUtils -> Method: String mapFieldName(Class, String)");
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Classes does not exist, ensure that the server is Magma?", e);
     } catch (NoSuchElementException e) {

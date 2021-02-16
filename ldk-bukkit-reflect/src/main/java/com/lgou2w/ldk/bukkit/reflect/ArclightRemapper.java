@@ -44,7 +44,7 @@ final class ArclightRemapper extends Remapper {
         .useFieldMatcher()
         .withType(classLoaderRemapper)
         .withName("remapper")
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: " + classLoader.getClass().getSimpleName() + " -> Field: ClassLoaderRemapper remapper");
       remapper = fieldRemapper.get(classLoader);
 
       FuzzyReflection remapperReflection = FuzzyReflection.of(remapper, true);
@@ -53,19 +53,19 @@ final class ArclightRemapper extends Remapper {
         .withName("map")
         .withType(String.class)
         .withArgs(String.class)
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: ClassLoaderRemapper -> Method: String map(String)");
       methodTryMapMethodToSrg = remapperReflection
         .useMethodMatcher()
         .withName("tryMapMethodToSrg")
         .withType(Method.class)
         .withArgs(Class.class, String.class, Class[].class)
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: ClassLoaderRemapper -> Method: String tryMapMethodToSrg(Class, String, Class[])");
       methodTryMapFieldToSrg = remapperReflection
         .useMethodMatcher()
         .withName("tryMapFieldToSrg")
         .withType(String.class)
         .withArgs(Class.class, String.class)
-        .resultAccessorAs();
+        .resultAccessorAs("Missing match: ClassLoaderRemapper -> Method: String tryMapFieldToSrg(Class, String)");
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("ClassLoaderRemapper class does not exist, ensure that the server is Arclight?", e);
     } catch (NoSuchElementException e) {
