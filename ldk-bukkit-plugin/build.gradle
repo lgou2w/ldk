@@ -28,7 +28,7 @@ dependencies {
 }
 
 shadowJar {
-  classifier = null
+  classifier = "shadow"
   relocate 'org.bstats', 'com.lgou2w.ldk.bukkit.bstats'
 }
 
