@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lgou2w.ldk.bukkit;
+package com.lgou2w.ldk.bukkit.item;
 
 import com.lgou2w.ldk.bukkit.version.BukkitVersion;
 import org.jetbrains.annotations.Contract;
