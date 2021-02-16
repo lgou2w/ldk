@@ -5,3 +5,32 @@
 # LDK
 
 A multi-module lgou2w development kit.
+
+## Information
+
+TODO docs
+
+## Modules
+
+TODO docs
+
+## Minecraft Bukkit
+
+TODO docs
+
+### Server compatibility
+
+* CraftBukkit, Spigot, Paper: 1.8 - 1.16.5
+* Forge:
+  * [Arclight](https://github.com/IzzelAliz/Arclight): 1.14, 1.15, 1.16
+  * [Mohist](https://github.com/Mohist-Community/Mohist): 1.12.2, 1.16.5
+  * [Magma](https://github.com/magmafoundation/Magma): 1.12, 1.15
+  * [CatServer](https://github.com/Luohuayu/CatServer): 1.12.2
+
+## Donates
+
+TODO docs
+
+## License
+
+Apache-2.0
