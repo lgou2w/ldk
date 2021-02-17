@@ -75,4 +75,9 @@ public final class NBTMetadata {
     if (value == null) throw new NullPointerException("base");
     return new NBTMetadata(name, value);
   }
+
+  @Contract("null -> fail")
+  public static NBTMetadata of(NBTBase<?> value) {
+    return of("", value);
+  }
 }
