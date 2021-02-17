@@ -55,7 +55,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
     NBTMetadata metadata;
-    while (!(metadata = NBTStreams.read(input)).isEmpty()) {
+    while (!(metadata = NBTStreams.read(input)).isEndType()) {
       value.put(metadata.getName(), metadata.getValue());
     }
   }

@@ -52,7 +52,7 @@ public final class NBTStreams {
   public static NBTMetadata read(DataInput input) throws IOException {
     if (input == null) throw new NullPointerException("input");
     NBTType type = NBTType.fromId(input.readUnsignedByte());
-    if (type == null || type == NBTType.END) return NBTMetadata.EMPTY;
+    if (type == null || type == NBTType.END) return NBTMetadata.END;
     String name = input.readUTF();
     NBTBase<?> base = NBTType.create(type);
     base.read(input);
@@ -71,7 +71,7 @@ public final class NBTStreams {
     if (metadata == null) throw new NullPointerException("metadata");
     NBTBase<?> value = metadata.getValue();
     output.writeByte(value.getType().getId());
-    if (!metadata.isEmpty()) {
+    if (!metadata.isEndType()) {
       output.writeUTF(metadata.getName());
       value.write(output);
     }

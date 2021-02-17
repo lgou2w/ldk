@@ -40,8 +40,12 @@ public final class NBTMetadata {
     return value;
   }
 
-  public boolean isEmpty() {
-    return this == EMPTY ||
+  public boolean isBlankName() {
+    return name.isEmpty();
+  }
+
+  public boolean isEndType() {
+    return this == END ||
       getValue() == NBTTagEnd.INSTANCE ||
       getValue().getType() == NBTType.END;
   }
@@ -67,7 +71,7 @@ public final class NBTMetadata {
       '}';
   }
 
-  public final static NBTMetadata EMPTY = new NBTMetadata("", NBTTagEnd.INSTANCE);
+  public final static NBTMetadata END = new NBTMetadata("", NBTTagEnd.INSTANCE);
 
   @Contract("null, _ -> fail; _, null -> fail")
   public static NBTMetadata of(String name, NBTBase<?> value) {
