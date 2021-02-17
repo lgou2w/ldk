@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements Map<String, NBTBase<?>> {
 
@@ -239,13 +240,52 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.value : null;
   }
 
+  @SuppressWarnings("unchecked")
   @NotNull
-  private <T> T findOrPresent(@NotNull NBTType type, @NotNull String key) {
+  private <T, V> T findOrPresent(@NotNull NBTType type, @NotNull String key, @Nullable Supplier<V> present) {
     NBTBase<?> value = find(key, type.getWrapped(), true);
     if (value == null) {
-      if (type == NBTType.END) throw new UnsupportedOperationException("END");
-      value = NBTType.create(type);
-      set(key, value); // present
+      V pv = present != null ? present.get() : null;
+      switch (type) {
+        case END: throw new UnsupportedOperationException("END");
+        case BYTE:
+          value = new NBTTagByte((byte) (pv != null ? pv : 0));
+          break;
+        case SHORT:
+          value = new NBTTagShort((short) (pv != null ? pv : 0));
+          break;
+        case INT:
+          value = new NBTTagInt((int) (pv != null ? pv : 0));
+          break;
+        case LONG:
+          value = new NBTTagLong((long) (pv != null ? pv : 0L));
+          break;
+        case FLOAT:
+          value = new NBTTagFloat((float) (pv != null ? pv : 0f));
+          break;
+        case DOUBLE:
+          value = new NBTTagDouble((double) (pv != null ? pv : 0d));
+          break;
+        case BYTE_ARRAY:
+          value = new NBTTagByteArray(pv != null ? (byte[]) pv : new byte[0]);
+          break;
+        case STRING:
+          value = new NBTTagString(pv != null ? (String) pv : "");
+          break;
+        case INT_ARRAY:
+          value = new NBTTagIntArray(pv != null ? (int[]) pv : new int[0]);
+          break;
+        case LONG_ARRAY:
+          value = new NBTTagLongArray(pv != null ? (long[]) pv : new long[0]);
+          break;
+        case LIST:
+          value = pv != null ? (NBTTagList) pv : new NBTTagList();
+          break;
+        case COMPOUND:
+          value = pv != null ? (NBTTagCompound) pv : new NBTTagCompound();
+          break;
+      }
+      put(key, value);
     }
     return (T) (value.getType().isListOrCompound() ? value : value.value);
   }
@@ -262,10 +302,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.byteValue() : null;
   }
 
+  @Contract("null, _ -> fail")
+  public byte getByteOrPresent(String key, @Nullable Supplier<Byte> present) throws ClassCastException  {
+    Number value = findOrPresent(NBTType.BYTE, key, present);
+    return value.byteValue();
+  }
+
   @Contract("null -> fail")
   public byte getByteOrPresent(String key) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.BYTE, key);
-    return value.byteValue();
+    return getByteOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -280,10 +325,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.shortValue() : null;
   }
 
+  @Contract("null, _ -> fail")
+  public short getShortOrPresent(String key, @Nullable Supplier<Short> present) throws ClassCastException  {
+    Number value = findOrPresent(NBTType.BYTE, key, present);
+    return value.byteValue();
+  }
+
   @Contract("null -> fail")
   public short getShortOrPresent(String key) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.SHORT, key);
-    return value.shortValue();
+    return getShortOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -298,10 +348,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.intValue() : null;
   }
 
+  @Contract("null, _ -> fail")
+  public int getIntOrPresent(String key, @Nullable Supplier<Integer> present) throws ClassCastException  {
+    Number value = findOrPresent(NBTType.INT, key, present);
+    return value.intValue();
+  }
+
   @Contract("null -> fail")
   public int getIntOrPresent(String key) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.INT, key);
-    return value.intValue();
+    return getIntOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -316,10 +371,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.longValue() : null;
   }
 
+  @Contract("null, _ -> fail")
+  public long getLongOrPresent(String key, @Nullable Supplier<Long> present) throws ClassCastException  {
+    Number value = findOrPresent(NBTType.LONG, key, present);
+    return value.longValue();
+  }
+
   @Contract("null -> fail")
   public long getLongOrPresent(String key) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.LONG, key);
-    return value.longValue();
+    return getLongOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -334,10 +394,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.floatValue() : null;
   }
 
+  @Contract("null, _ -> fail")
+  public float getFloatOrPresent(String key, @Nullable Supplier<Float> present) throws ClassCastException  {
+    Number value = findOrPresent(NBTType.FLOAT, key, present);
+    return value.floatValue();
+  }
+
   @Contract("null -> fail")
   public float getFloatOrPresent(String key) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.FLOAT, key);
-    return value.floatValue();
+    return getFloatOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -352,10 +417,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.doubleValue() : null;
   }
 
+  @Contract("null, _ -> fail")
+  public double getDoubleOrPresent(String key, @Nullable Supplier<Double> present) throws ClassCastException  {
+    Number value = findOrPresent(NBTType.DOUBLE, key, present);
+    return value.doubleValue();
+  }
+
   @Contract("null -> fail")
   public double getDoubleOrPresent(String key) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.DOUBLE, key);
-    return value.doubleValue();
+    return getDoubleOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -370,10 +440,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.value : null;
   }
 
+  @Contract("null, _ -> fail")
+  public byte @NotNull [] getByteArrayOrPresent(String key, @Nullable Supplier<byte[]> present) throws ClassCastException  {
+    NBTTagByteArray value = findOrPresent(NBTType.BYTE_ARRAY, key, present);
+    return value.value;
+  }
+
   @Contract("null -> fail")
   public byte @NotNull [] getByteArrayOrPresent(String key) throws ClassCastException  {
-    NBTTagByteArray value = findOrPresent(NBTType.BYTE_ARRAY, key);
-    return value.value;
+    return getByteArrayOrPresent(key, null);
   }
 
   @NotNull
@@ -391,10 +466,16 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   }
 
   @NotNull
+  @Contract("null, _ -> fail")
+  public String getStringOrPresent(String key, @Nullable Supplier<String> present) throws ClassCastException  {
+    NBTTagString value = findOrPresent(NBTType.STRING, key, present);
+    return value.value;
+  }
+
+  @NotNull
   @Contract("null -> fail")
   public String getStringOrPresent(String key) throws ClassCastException  {
-    NBTTagString value = findOrPresent(NBTType.STRING, key);
-    return value.value;
+    return getStringOrPresent(key, null);
   }
 
   @NotNull
@@ -410,9 +491,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   }
 
   @NotNull
+  @Contract("null, _ -> fail")
+  public NBTTagList getListOrPresent(String key, @Nullable Supplier<NBTTagList> present) throws ClassCastException  {
+    return findOrPresent(NBTType.LIST, key, present);
+  }
+
+  @NotNull
   @Contract("null -> fail")
   public NBTTagList getListOrPresent(String key) throws ClassCastException  {
-    return findOrPresent(NBTType.LIST, key);
+    return getListOrPresent(key, null);
   }
 
   @NotNull
@@ -428,9 +515,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   }
 
   @NotNull
+  @Contract("null, _ -> fail")
+  public NBTTagCompound getCompoundOrPresent(String key, @Nullable Supplier<NBTTagCompound> present) throws ClassCastException  {
+    return findOrPresent(NBTType.COMPOUND, key, present);
+  }
+
+  @NotNull
   @Contract("null -> fail")
   public NBTTagCompound getCompoundOrPresent(String key) throws ClassCastException  {
-    return findOrPresent(NBTType.COMPOUND, key);
+    return getCompoundOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -445,10 +538,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.value : null;
   }
 
+  @Contract("null, _ -> fail")
+  public int @NotNull [] getIntArrayOrPresent(String key, @Nullable Supplier<int[]> present) throws ClassCastException  {
+    NBTTagIntArray value = findOrPresent(NBTType.INT_ARRAY, key, present);
+    return value.value;
+  }
+
   @Contract("null -> fail")
   public int @NotNull [] getIntArrayOrPresent(String key) throws ClassCastException  {
-    NBTTagIntArray value = findOrPresent(NBTType.INT_ARRAY, key);
-    return value.value;
+    return getIntArrayOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -463,10 +561,15 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
     return value != null ? value.value : null;
   }
 
+  @Contract("null, _ -> fail")
+  public long @NotNull [] getLongArrayOrPresent(String key, @Nullable Supplier<long[]> present) throws ClassCastException  {
+    NBTTagLongArray value = findOrPresent(NBTType.LONG_ARRAY, key, present);
+    return value.value;
+  }
+
   @Contract("null -> fail")
   public long @NotNull [] getLongArrayOrPresent(String key) throws ClassCastException  {
-    NBTTagLongArray value = findOrPresent(NBTType.LONG_ARRAY, key);
-    return value.value;
+    return getLongArrayOrPresent(key, null);
   }
 
   @Contract("null -> fail")
@@ -478,12 +581,32 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   @Contract("null -> fail")
   public Boolean getBooleanOrNull(String key) throws NoSuchElementException, ClassCastException  {
     Byte value = getByteOrNull(key);
-    return value != null ? value == 1 : null;
+    return value != null ? value != 0 : null; // if not zero, true
+  }
+
+  @Contract("null, _ -> fail")
+  public boolean getBooleanOrPresent(String key, @Nullable Supplier<Boolean> present) throws ClassCastException  {
+    return getByteOrPresent(key, () -> {
+      Boolean pv = present != null ? present.get() : null;
+      return (byte) (pv == null ? 0 : 1);
+    }) != 0; // if not zero, true
   }
 
   @Contract("null -> fail")
   public boolean getBooleanOrPresent(String key) throws ClassCastException  {
-    return getByteOrPresent(key) == 1;
+    return getByteOrPresent(key) != 0; // if not zero, true
+  }
+
+  @Contract("null -> false")
+  public boolean hasKey(@Nullable String key) {
+    if (key == null) return false;
+    return value.containsKey(key);
+  }
+
+  @Contract("null -> false")
+  public boolean hasValue(@Nullable NBTBase<?> value) {
+    if (value == null) return false;
+    return this.value.containsValue(value);
   }
 
   /// Map
@@ -494,17 +617,23 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   }
 
   @Override
-  public boolean containsKey(Object key) {
-    return value.containsKey(key);
+  @Contract("null -> false")
+  public boolean containsKey(@Nullable Object key) {
+    if (!(key instanceof String)) return false;
+    return hasKey((String) key);
   }
 
   @Override
-  public boolean containsValue(Object value) {
-    return this.value.containsValue(value);
+  @Contract("null -> false")
+  public boolean containsValue(@Nullable Object value) {
+    if (!(value instanceof NBTBase)) return false;
+    return hasValue((NBTBase<?>) value);
   }
 
   @Override
-  public NBTBase<?> get(Object key) {
+  @Contract("null -> null")
+  public NBTBase<?> get(@Nullable Object key) {
+    if (!(key instanceof String)) return null;
     return value.get(key);
   }
 
@@ -538,7 +667,9 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   }
 
   @Override
-  public NBTBase<?> remove(Object key) {
+  @Contract("null -> null")
+  public NBTBase<?> remove(@Nullable Object key) {
+    if (!(key instanceof String)) return null;
     return value.remove(key);
   }
 
