@@ -133,118 +133,135 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
 
   /// Extended
 
-  @Contract("null -> fail")
-  public boolean addByte(byte... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addByte(byte... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagByte> c = new ArrayList<>(values.length);
     for (byte element : values) c.add(new NBTTagByte(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addByte(int... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addByte(int... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagByte> c = new ArrayList<>(values.length);
     for (int element : values) c.add(new NBTTagByte((byte) element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addShort(short... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addShort(short... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagShort> c = new ArrayList<>(values.length);
     for (short element : values) c.add(new NBTTagShort(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addShort(int... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addShort(int... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagShort> c = new ArrayList<>(values.length);
     for (int element : values) c.add(new NBTTagShort((short) element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addInt(int... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addInt(int... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagInt> c = new ArrayList<>(values.length);
     for (int element : values) c.add(new NBTTagInt(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addLong(long... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addLong(long... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagLong> c = new ArrayList<>(values.length);
     for (long element : values) c.add(new NBTTagLong(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addFloat(float... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addFloat(float... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagFloat> c = new ArrayList<>(values.length);
     for (float element : values) c.add(new NBTTagFloat(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addDouble(double... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addDouble(double... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagDouble> c = new ArrayList<>(values.length);
     for (double element : values) c.add(new NBTTagDouble(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addByteArray(byte[]... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addByteArray(byte[]... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagByteArray> c = new ArrayList<>(values.length);
     for (byte[] element : values) c.add(new NBTTagByteArray(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addString(String... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addString(String... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagString> c = new ArrayList<>(values.length);
     for (String element : values) c.add(new NBTTagString(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addList(NBTTagList... values) {
-    return addAll(Arrays.asList(values));
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addList(NBTTagList... values) {
+    if (values == null) throw new NullPointerException("values");
+    addAll(Arrays.asList(values));
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addCompound(NBTTagCompound... values) {
-    return addAll(Arrays.asList(values));
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addCompound(NBTTagCompound... values) {
+    if (values == null) throw new NullPointerException("values");
+    addAll(Arrays.asList(values));
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addIntArray(int[]... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addIntArray(int[]... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagIntArray> c = new ArrayList<>(values.length);
     for (int[] element : values) c.add(new NBTTagIntArray(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addLongArray(long[]... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addLongArray(long[]... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagLongArray> c = new ArrayList<>(values.length);
     for (long[] element : values) c.add(new NBTTagLongArray(element));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
-  @Contract("null -> fail")
-  public boolean addBoolean(boolean... values) {
+  @Contract("null -> fail; !null -> this")
+  public NBTTagList addBoolean(boolean... values) {
     if (values == null) throw new NullPointerException("values");
     List<NBTTagByte> c = new ArrayList<>(values.length);
     for (boolean element : values) c.add(new NBTTagByte((byte) (element ? 1 : 0)));
-    return addAll(c);
+    addAll(c);
+    return this;
   }
 
   /// List

@@ -121,89 +121,90 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   /// Extended
 
-  @Nullable
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTBase<?> set(String key, NBTBase<?> value) {
+  @NotNull
+  @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
+  public NBTTagCompound set(String key, NBTBase<?> value) {
     if (key == null) throw new NullPointerException("key");
     if (value == null) throw new NullPointerException("value");
-    return put(key, value);
+    put(key, value);
+    return this;
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setByte(String key, byte value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setByte(String key, byte value) {
     return set(key, new NBTTagByte(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setByte(String key, int value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setByte(String key, int value) {
     return setByte(key, (byte) value);
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setShort(String key, short value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setShort(String key, short value) {
     return set(key, new NBTTagShort(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setShort(String key, int value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setShort(String key, int value) {
     return setShort(key, (short) value);
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setInt(String key, int value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setInt(String key, int value) {
     return set(key, new NBTTagInt(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setLong(String key, long value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setLong(String key, long value) {
     return set(key, new NBTTagLong(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setFloat(String key, float value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setFloat(String key, float value) {
     return set(key, new NBTTagFloat(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setDouble(String key, double value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setDouble(String key, double value) {
     return set(key, new NBTTagDouble(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTBase<?> setByteArray(String key, byte[] value) {
+  @NotNull
+  @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
+  public NBTTagCompound setByteArray(String key, byte[] value) {
     return set(key, new NBTTagByteArray(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTBase<?> setString(String key, String value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setString(String key, String value) {
     return set(key, new NBTTagString(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTBase<?> setIntArray(String key, int[] value) {
+  @NotNull
+  @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
+  public NBTTagCompound setIntArray(String key, int[] value) {
     return set(key, new NBTTagIntArray(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail; _, null -> fail")
-  public NBTBase<?> setLongArray(String key, long[] value) {
+  @NotNull
+  @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
+  public NBTTagCompound setLongArray(String key, long[] value) {
     return set(key, new NBTTagLongArray(value));
   }
 
-  @Nullable
-  @Contract("null, _ -> fail")
-  public NBTBase<?> setBoolean(String key, boolean value) {
+  @NotNull
+  @Contract("null, _ -> fail; !null, _ -> this")
+  public NBTTagCompound setBoolean(String key, boolean value) {
     return setByte(key, (byte) (value ? 1 : 0));
   }
 
