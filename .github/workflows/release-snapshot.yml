@@ -1,0 +1,50 @@
+name: Release (Snapshot)
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  check:
+    if: "!contains(github.event.commits[0].message, '[skip release]')"
+    runs-on: ubuntu-latest
+    outputs:
+      project_version: ${{ steps.project_version.outputs.value }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get the project version number
+        id: project_version
+        run: |
+          version=`sed -n "s/version ['\"]\(.*\)['\"]/\1/p" build.gradle | sed 's/^[ \t]*//g'`
+          echo "${version}"
+          echo "::set-output name=value::${version}"
+
+  release:
+    needs: [check]
+    if: endsWith(needs.check.outputs.project_version, '-SNAPSHOT')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Grant execute permission from gradlew
+        run: chmod +x gradlew
+
+      - name: Test with Gradle
+        run: ./gradlew test --stacktrace
+
+      - name: Publish with Gradle
+        run: ./gradlew publishMavenJavaPublicationToArchiveRepository
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
