@@ -51,7 +51,8 @@ subprojects {
   jar {
     manifest {
       attributes([
-        'Built-By': System.getProperty('user.name'),
+        'Created-By': 'lgou2w',
+        'Built-By': System.env.BUILT_BY ?: System.getProperty('user.name'),
         'Specification-Title': rootProject.name,
         'Specification-Vendor': 'lgou2w',
         'Specification-Version': '1',

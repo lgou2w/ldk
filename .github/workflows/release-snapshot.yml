@@ -44,6 +44,7 @@ jobs:
       - name: Publish with Gradle
         run: ./gradlew publishMavenJavaPublicationToArchiveRepository
         env:
+          BUILT_BY: GitHub Action
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
