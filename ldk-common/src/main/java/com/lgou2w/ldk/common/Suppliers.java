@@ -139,7 +139,6 @@ public final class Suppliers {
             value = t;
             initialized = true;
             // Release the delegate to GC.
-            System.out.println("gc delegate");
             delegate = null;
             return t;
           }
