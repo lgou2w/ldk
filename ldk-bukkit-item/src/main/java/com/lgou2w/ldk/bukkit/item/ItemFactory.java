@@ -67,103 +67,102 @@ public final class ItemFactory {
   /// NMS Accessors
 
   // NMS.NBTTagCompound -> Map<String, NMS.NBTBase> value;
-  @NotNull final static FieldAccessor<Object, Object> FIELD_NBT_TAG_COMPOUND_VALUE
-    = FuzzyReflection.of(NBTFactory.CLASS_NBT_TAG_COMPOUND, true)
+  final static Supplier<@NotNull FieldAccessor<Object, Object>> FIELD_NBT_TAG_COMPOUND_VALUE
+    = FuzzyReflection.lazySupplier(NBTFactory.CLASS_NBT_TAG_COMPOUND, true, fuzzy -> fuzzy
     .useFieldMatcher()
     .withType(Map.class)
-    .resultAccessor("Missing match: NMS.NBTTagCompound -> Field: Map<String, NMS.NBTBase> value");
+    .resultAccessor("Missing match: NMS.NBTTagCompound -> Field: Map<String, NMS.NBTBase> value"));
 
   // NMS.ItemStack -> private NMS.NBTTagCompound tag;
   // Not necessarily private, but must not be static.
-  @NotNull final static FieldAccessor<Object, Object> FIELD_ITEM_STACK_TAG
-    = FuzzyReflection.of(CLASS_ITEM_STACK, true)
+  final static Supplier<@NotNull FieldAccessor<Object, Object>> FIELD_ITEM_STACK_TAG
+    = FuzzyReflection.lazySupplier(CLASS_ITEM_STACK, true, fuzzy -> fuzzy
     .useFieldMatcher()
     .withoutModifiers(Modifier.STATIC)
     .withType(NBTFactory.CLASS_NBT_TAG_COMPOUND)
-    .resultAccessor("Missing match: NMS.ItemStack -> Field: NMS.NBTTagCompound tag");
+    .resultAccessor("Missing match: NMS.ItemStack -> Field: NMS.NBTTagCompound tag"));
 
   // OBC.inventory.CraftItemStack -> private NMS.ItemStack handle;
   // Not necessarily private, but must not be static.
-  @NotNull final static FieldAccessor<Object, Object> FIELD_CRAFT_ITEM_STACK_HANDLE
-    = FuzzyReflection.of(CLASS_CRAFT_ITEM_STACK, true)
+  final static Supplier<@NotNull FieldAccessor<Object, Object>> FIELD_CRAFT_ITEM_STACK_HANDLE
+    = FuzzyReflection.lazySupplier(CLASS_CRAFT_ITEM_STACK, true, fuzzy -> fuzzy
     .useFieldMatcher()
     .withoutModifiers(Modifier.STATIC)
     .withType(CLASS_ITEM_STACK)
-    .resultAccessor("Missing match: OBC.inventory.CraftItemStack -> Field: NMS.ItemStack handle");
+    .resultAccessor("Missing match: OBC.inventory.CraftItemStack -> Field: NMS.ItemStack handle"));
 
   // OBC.inventory.CraftItemStack -> public static NMS.ItemStack asNMSCopy(OB.inventory.ItemStack);
-  @NotNull final static MethodAccessor<Object, Object> METHOD_CRAFT_ITEM_STACK_AS_NMS_COPY
-    = FuzzyReflection.of(CLASS_CRAFT_ITEM_STACK, true)
+  final static Supplier<@NotNull MethodAccessor<Object, Object>> METHOD_CRAFT_ITEM_STACK_AS_NMS_COPY
+    = FuzzyReflection.lazySupplier(CLASS_CRAFT_ITEM_STACK, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.STATIC)
     .withType(CLASS_ITEM_STACK)
     .withArgs(ItemStack.class)
     .withName("asNMSCopy")
-    .resultAccessor("Missing match: OBC.inventory.CraftItemStack -> Method: public static NMS.ItemStack asNMSCopy(OB.inventory.ItemStack)");
+    .resultAccessor("Missing match: OBC.inventory.CraftItemStack -> Method: public static NMS.ItemStack asNMSCopy(OB.inventory.ItemStack)"));
 
   // OBC.inventory.CraftItemStack -> public static OBC.inventory.CraftItemStack asCraftMirror(NMS.ItemStack);
-  @NotNull final static MethodAccessor<Object, Object> METHOD_CRAFT_ITEM_STACK_AS_CRAFT_MIRROR
-    = FuzzyReflection.of(CLASS_CRAFT_ITEM_STACK, true)
+  final static Supplier<@NotNull MethodAccessor<Object, Object>> METHOD_CRAFT_ITEM_STACK_AS_CRAFT_MIRROR
+    = FuzzyReflection.lazySupplier(CLASS_CRAFT_ITEM_STACK, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.STATIC)
     .withType(CLASS_CRAFT_ITEM_STACK)
     .withArgs(CLASS_ITEM_STACK)
     .withName("asCraftMirror")
-    .resultAccessor("Missing match: OBC.inventory.CraftItemStack -> Method: public static OB.inventory.ItemStack asBukkitCopy(NMS.ItemStack)");
+    .resultAccessor("Missing match: OBC.inventory.CraftItemStack -> Method: public static OB.inventory.ItemStack asBukkitCopy(NMS.ItemStack)"));
 
   // OBC.inventory.CraftItemStack -> public static OB.inventory.ItemStack asBukkitCopy(NMS.ItemStack);
-  @NotNull final static MethodAccessor<Object, ItemStack> METHOD_CRAFT_ITEM_STACK_AS_BUKKIT_COPY
-    = FuzzyReflection.of(CLASS_CRAFT_ITEM_STACK, true)
+  final static Supplier<@NotNull MethodAccessor<Object, ItemStack>> METHOD_CRAFT_ITEM_STACK_AS_BUKKIT_COPY
+    = FuzzyReflection.lazySupplier(CLASS_CRAFT_ITEM_STACK, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.STATIC)
     .withType(ItemStack.class)
     .withArgs(CLASS_ITEM_STACK)
     .withName("asBukkitCopy")
-    .resultAccessorAs("Missing match: OBC.inventory.CraftItemStack -> Method: public static OB.inventory.ItemStack asBukkitCopy(NMS.ItemStack)");
+    .resultAccessorAs("Missing match: OBC.inventory.CraftItemStack -> Method: public static OB.inventory.ItemStack asBukkitCopy(NMS.ItemStack)"));
 
   // This method does not necessarily exist, it should be used with the constructor.
   // NMS.ItemStack -> public static NMS.ItemStack create(NMS.NBTTagCompound);
-  @Nullable final static MethodAccessor<Object, Object> METHOD_ITEM_STACK_CREATE
-    = FuzzyReflection.of(CLASS_ITEM_STACK, true)
+  final static Supplier<@Nullable MethodAccessor<Object, Object>> METHOD_ITEM_STACK_CREATE
+    = FuzzyReflection.lazySupplier(CLASS_ITEM_STACK, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.STATIC)
     .withType(CLASS_ITEM_STACK)
     .withArgs(NBTFactory.CLASS_NBT_TAG_COMPOUND)
-    .resultAccessorOrNull();
+    .resultAccessorOrNull());
 
   // NMS.ItemStack -> public NMS.ItemStack(NMS.NBTTagCompound);
-  @Nullable final static ConstructorAccessor<Object> CONSTRUCTOR_ITEM_STACK
-    = METHOD_ITEM_STACK_CREATE != null ? null
-    : FuzzyReflection.of(CLASS_ITEM_STACK, true)
+  final static Supplier<@Nullable ConstructorAccessor<Object>> CONSTRUCTOR_ITEM_STACK
+    = FuzzyReflection.lazySupplier(CLASS_ITEM_STACK, true, fuzzy -> fuzzy
     .useConstructorMatcher()
     .withArgs(NBTFactory.CLASS_NBT_TAG_COMPOUND)
-    .resultAccessorOrNull();
+    .resultAccessorOrNull());
 
   // NMS.ItemStack -> public NMS.NBTTagCompound save(NMS.NBTTagCompound);
-  @NotNull final static MethodAccessor<Object, Object> METHOD_ITEM_STACK_SAVE
-    = FuzzyReflection.of(CLASS_ITEM_STACK, true)
+  final static Supplier<@NotNull MethodAccessor<Object, Object>> METHOD_ITEM_STACK_SAVE
+    = FuzzyReflection.lazySupplier(CLASS_ITEM_STACK, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withoutModifiers(Modifier.STATIC)
     .withModifiers(Modifier.PUBLIC)
     .withType(NBTFactory.CLASS_NBT_TAG_COMPOUND)
     .withArgs(NBTFactory.CLASS_NBT_TAG_COMPOUND)
-    .resultAccessor("Missing match: NMS.ItemStack -> Method: public NMS.NBTTagCompound save(NMS.NBTTagCompound)");
+    .resultAccessor("Missing match: NMS.ItemStack -> Method: public NMS.NBTTagCompound save(NMS.NBTTagCompound)"));
 
   // OBC.util.CraftMagicNumbers -> public static NMS.MinecraftKey key(OB.Material);
-  @Nullable final static MethodAccessor<Object, Object> METHOD_CRAFT_MAGIC_NUMBERS_KEY
+  @Nullable final static Supplier<@Nullable MethodAccessor<Object, Object>> METHOD_CRAFT_MAGIC_NUMBERS_KEY
     = CLASS_CRAFT_MAGIC_NUMBERS == null || CLASS_MINECRAFT_KEY == null ? null
-    : FuzzyReflection.of(CLASS_CRAFT_MAGIC_NUMBERS, true)
+    : FuzzyReflection.lazySupplier(CLASS_CRAFT_MAGIC_NUMBERS, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.STATIC)
     .withType(CLASS_MINECRAFT_KEY)
     .withArgs(Material.class)
-    .resultAccessorOrNull();
+    .resultAccessorOrNull());
 
   @Nullable
   @Contract("null -> null; !null -> !null")
   public static Object asNMSCopy(ItemStack stack) {
     if (stack == null) return null;
-    return METHOD_CRAFT_ITEM_STACK_AS_NMS_COPY.invoke(null, stack);
+    return METHOD_CRAFT_ITEM_STACK_AS_NMS_COPY.get().invoke(null, stack);
   }
 
   @Nullable
@@ -171,7 +170,7 @@ public final class ItemFactory {
   public static Object asCraftMirror(Object origin) throws IllegalArgumentException {
     if (!CLASS_ITEM_STACK.isInstance(origin))
       throw new IllegalArgumentException("Object is not an instance of NMS.ItemStack. Current: " + origin);
-    return METHOD_CRAFT_ITEM_STACK_AS_CRAFT_MIRROR.invoke(null, origin);
+    return METHOD_CRAFT_ITEM_STACK_AS_CRAFT_MIRROR.get().invoke(null, origin);
   }
 
   @Nullable
@@ -179,7 +178,7 @@ public final class ItemFactory {
   public static ItemStack asBukkitCopy(Object origin) throws IllegalArgumentException {
     if (!CLASS_ITEM_STACK.isInstance(origin))
       throw new IllegalArgumentException("Object is not an instance of NMS.ItemStack. Current: " + origin);
-    return METHOD_CRAFT_ITEM_STACK_AS_BUKKIT_COPY.invoke(null, origin);
+    return METHOD_CRAFT_ITEM_STACK_AS_BUKKIT_COPY.get().invoke(null, origin);
   }
 
   @Nullable
@@ -187,14 +186,14 @@ public final class ItemFactory {
   public static NBTTagCompound readTag(ItemStack stack) {
     if (stack == null) return null;
     if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
-      Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get(stack);
+      Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get().get(stack);
       if (handle == null) {
         // Why the handle is null? Because the item material type is invalid, such as WALL_BANNER.
         // Return an null tag or throw an exception, need confirmation.
         // TODO: ItemFactory.readTag -> handle null problem
         return null;
       }
-      Object tag = FIELD_ITEM_STACK_TAG.get(handle);
+      Object tag = FIELD_ITEM_STACK_TAG.get().get(handle);
       if (tag == null) {
         // If it is a pure vanilla server, such as spigot, paper, the value of this field must not be null.
         // The invoke save method is needed when the server is forge combined.
@@ -209,7 +208,7 @@ public final class ItemFactory {
         //   - Mohist-1.16      : null
         // Possible patch changes made in forge 1.16? Maybe
         Object internal = NBTFactory.newInternal(NBTType.COMPOUND, null);
-        METHOD_ITEM_STACK_SAVE.invoke(handle, internal);
+        METHOD_ITEM_STACK_SAVE.get().invoke(handle, internal);
         NBTTagCompound compound = (NBTTagCompound) NBTFactory.from(internal);
         return compound.getCompoundOrNull("tag"); // get tag only
       } else {
@@ -260,7 +259,7 @@ public final class ItemFactory {
 //      stack.setItemMeta(null);
 //    }
 
-    if (METHOD_ITEM_STACK_CREATE == null && CONSTRUCTOR_ITEM_STACK == null) {
+    if (METHOD_ITEM_STACK_CREATE.get() == null && CONSTRUCTOR_ITEM_STACK.get() == null) {
       // Unless the server is a specially modified version that cannot be reflected to the member structure.
       // It is only used to avoid the null pointer problem below.
       throw new UnsupportedOperationException(
@@ -270,7 +269,7 @@ public final class ItemFactory {
     }
 
     if (CLASS_ITEM_STACK.isInstance(stack)) {
-      Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get(stack);
+      Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get().get(stack);
       if (handle == null) {
         // Why the handle is null? Because the item material type is invalid, such as WALL_BANNER.
         // Return an null tag or throw an exception, need confirmation.
@@ -278,21 +277,21 @@ public final class ItemFactory {
         return;
       }
       Object internal = tag != null ? NBTFactory.to(tag) : tag;
-      FIELD_ITEM_STACK_TAG.set(handle, internal);
+      FIELD_ITEM_STACK_TAG.get().set(handle, internal);
     } else if (tag != null) {
       // TODO: docs
       Object internal = NBTFactory.to(tag);
       Object origin = asNMSCopy(stack);
       Object saved = NBTFactory.newInternal(NBTType.COMPOUND, null);
-      METHOD_ITEM_STACK_SAVE.invoke(origin, saved);
+      METHOD_ITEM_STACK_SAVE.get().invoke(origin, saved);
 
-      Map<String, Object> value = (Map<String, Object>) FIELD_NBT_TAG_COMPOUND_VALUE.get(saved);
+      Map<String, Object> value = (Map<String, Object>) FIELD_NBT_TAG_COMPOUND_VALUE.get().get(saved);
       value.put("Damage", tag.getShortOrNull("Damage")); // Compatible with the old version
       value.put("tag", internal);
 
-      Object newOrigin = METHOD_ITEM_STACK_CREATE != null
-        ? METHOD_ITEM_STACK_CREATE.invoke(null, saved)
-        : CONSTRUCTOR_ITEM_STACK.newInstance(saved);
+      Object newOrigin = METHOD_ITEM_STACK_CREATE.get() != null
+        ? METHOD_ITEM_STACK_CREATE.get().invoke(null, saved)
+        : CONSTRUCTOR_ITEM_STACK.get().newInstance(saved);
       ItemStack obcStack = (ItemStack) asCraftMirror(newOrigin);
       stack.setItemMeta(obcStack.getItemMeta());
     } else {

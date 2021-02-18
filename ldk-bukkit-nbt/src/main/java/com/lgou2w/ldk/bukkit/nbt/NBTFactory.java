@@ -49,6 +49,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getMinecraftClass;
 import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getMinecraftClassOrNull;
@@ -80,21 +81,21 @@ public final class NBTFactory {
   /// NMS Accessors
 
   // NMS.NBTTagList -> private byte type;
-  @NotNull final static FieldAccessor<Object, Byte> FIELD_NBT_TAG_LIST_TYPE
-    = FuzzyReflection.of(CLASS_NBT_TAG_LIST, true)
+  final static Supplier<@NotNull FieldAccessor<Object, Byte>> FIELD_NBT_TAG_LIST_TYPE
+    = FuzzyReflection.lazySupplier(CLASS_NBT_TAG_LIST, true, fuzzy -> fuzzy
     .useFieldMatcher()
     .withoutModifiers(Modifier.FINAL, Modifier.STATIC)
     .withType(byte.class)
-    .resultAccessorAs("Missing match: NMS.NBTTagList -> Field: byte type");
+    .resultAccessorAs("Missing match: NMS.NBTTagList -> Field: byte type"));
 
   // NMS.NBTBase -> public abstract byte getTypeId();
-  @NotNull final static MethodAccessor<Object, Byte> METHOD_NBT_BASE_GET_TYPE_ID
-    = FuzzyReflection.of(CLASS_NBT_BASE, true)
+  final static Supplier<@NotNull MethodAccessor<Object, Byte>> METHOD_NBT_BASE_GET_TYPE_ID
+    = FuzzyReflection.lazySupplier(CLASS_NBT_BASE, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
     .withArgsCount(0)
     .withType(byte.class)
-    .resultAccessorAs("Missing match: NMS.NBTBase -> Method: public abstract byte getTypeId()");
+    .resultAccessorAs("Missing match: NMS.NBTBase -> Method: public abstract byte getTypeId()"));
 
   final static Map<NBTType, FieldAccessor<Object, Object>> INTERNAL_FIELD_MAP = new HashMap<>();
   final static Map<NBTType, ConstructorAccessor<Object>> INTERNAL_CONSTRUCTOR_MAP = new HashMap<>();
@@ -178,7 +179,7 @@ public final class NBTFactory {
     if (!CLASS_NBT_BASE.isInstance(nbt))
       throw new IllegalArgumentException("Value type of the instance does not match. (Expected: " + CLASS_NBT_BASE + ")");
     @SuppressWarnings("ConstantConditions")
-    int typeId = METHOD_NBT_BASE_GET_TYPE_ID.invoke(nbt);
+    int typeId = METHOD_NBT_BASE_GET_TYPE_ID.get().invoke(nbt);
     NBTType type = Objects.requireNonNull(NBTType.fromId(typeId), "Invalid nbt type id: " + typeId);
     @NotNull FieldAccessor<Object, Object> field;
     try {
@@ -286,7 +287,8 @@ public final class NBTFactory {
     if (type.isListOrCompound()) {
       Object inst = constructor.newInstance();
       if (value != null) field.set(inst, value);
-      if (value != null && type == NBTType.LIST) FIELD_NBT_TAG_LIST_TYPE.set(inst, (byte) listElementType.getId());
+      if (value != null && type == NBTType.LIST)
+        FIELD_NBT_TAG_LIST_TYPE.get().set(inst, (byte) listElementType.getId());
       return inst;
     } else {
       return constructor.newInstance(value);
