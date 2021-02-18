@@ -18,6 +18,7 @@ package com.lgou2w.ldk.reflect;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -27,6 +28,8 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class FuzzyReflection {
   private final Class<?> source;
@@ -123,5 +126,88 @@ public final class FuzzyReflection {
   @Contract("null -> fail; !null -> new")
   public static FuzzyReflection of(Object source) {
     return of(source, false);
+  }
+
+  @NotNull
+  @Contract("null, _, _, -> fail; _, _, null -> fail")
+  public static <T extends Accessor<?>> Supplier<T> lazySupplier(
+    Class<?> source,
+    boolean declared,
+    Function<FuzzyReflection, T> delegate
+  ) {
+    return new LazyNonSerializableMemoizingSupplier<>(source, declared, delegate);
+  }
+
+  @NotNull
+  @Contract("null, _, -> fail; _, null -> fail")
+  public static <T extends Accessor<?>> Supplier<T> lazySupplier(
+    Class<?> source,
+    Function<FuzzyReflection, T> delegate
+  ) {
+    return lazySupplier(source, false, delegate);
+  }
+
+  @NotNull
+  @Contract("null, _, _, -> fail; _, _, null -> fail")
+  public static <T extends Accessor<?>> Supplier<T> lazySupplier(
+    Object source,
+    boolean declared,
+    Function<FuzzyReflection, @Nullable T> delegate
+  ) {
+    if (source == null) throw new NullPointerException("source");
+    return lazySupplier(source.getClass(), declared, delegate);
+  }
+
+  @NotNull
+  @Contract("null, _, -> fail; _, null -> fail")
+  public static <T extends Accessor<?>> Supplier<T> lazySupplier(
+    Object source,
+    Function<FuzzyReflection, @Nullable T> delegate
+  ) {
+    return lazySupplier(source, false, delegate);
+  }
+
+  final static class LazyNonSerializableMemoizingSupplier<@Nullable T extends Accessor<?>> implements Supplier<T> {
+    volatile Function<FuzzyReflection, T> delegate;
+    volatile FuzzyReflection fuzzy;
+    volatile boolean initialized;
+    @Nullable volatile T value;
+
+    @Contract("null, _, _, -> fail; _, _, null -> fail")
+    LazyNonSerializableMemoizingSupplier(
+      Class<?> source,
+      boolean declared,
+      Function<FuzzyReflection, T> delegate
+    ) {
+      if (source == null) throw new NullPointerException("source");
+      if (delegate == null) throw new NullPointerException("delegate");
+      this.fuzzy = new FuzzyReflection(source, declared);
+      this.delegate = delegate;
+    }
+
+    @Override
+    public T get() {
+      if (!initialized) {
+        synchronized (this) {
+          if (!initialized) {
+            T t = delegate.apply(fuzzy);
+            value = t;
+            initialized = true;
+            // Release to gc.
+            delegate = null;
+            fuzzy = null;
+            return t;
+          }
+        }
+      }
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return "FuzzyReflection.lazySupplier{" +
+        (delegate == null ? "<supplier that returned " + value + ">" : delegate) +
+        "}";
+    }
   }
 }
