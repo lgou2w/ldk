@@ -62,13 +62,13 @@ public abstract class BaseTag<T> implements NBT<T> {
 
   @Override
   @NotNull
-  public String toMojangson(boolean color) {
+  public String toMojangson(boolean includeColor) {
     StringBuilder builder = new StringBuilder();
-    toMojangsonBuilder(builder, color);
+    toMojangsonBuilder(builder, includeColor);
     return builder.toString();
   }
 
-  protected abstract void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color);
+  protected abstract void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor);
 
   @Override
   @NotNull

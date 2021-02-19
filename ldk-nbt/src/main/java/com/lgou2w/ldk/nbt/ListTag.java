@@ -112,12 +112,12 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
     builder.append('[');
     int len = value.size(), i = 0;
     for (BaseTag<?> element : value) {
-      if (i >= 1 && i < len) builder.append(!color ? "," : ", ");
-      element.toMojangsonBuilder(builder, color);
+      if (i >= 1 && i < len) builder.append(!includeColor ? "," : ", ");
+      element.toMojangsonBuilder(builder, includeColor);
       i++;
     }
     builder.append(']');

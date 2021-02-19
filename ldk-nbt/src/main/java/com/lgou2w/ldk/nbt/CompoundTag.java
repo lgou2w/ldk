@@ -78,12 +78,12 @@ public class CompoundTag extends BaseTag<Map<String, BaseTag<?>>> implements Map
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
     builder.append('{');
     Set<Map.Entry<String, BaseTag<?>>> entrySet = entrySet();
     int len = entrySet.size(), i = 0;
 
-    if (!color) {
+    if (!includeColor) {
       for (Map.Entry<String, BaseTag<?>> entry : entrySet) {
         String key = entry.getKey();
         BaseTag<?> value = entry.getValue();

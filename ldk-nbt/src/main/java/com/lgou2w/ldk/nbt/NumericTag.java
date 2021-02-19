@@ -51,8 +51,8 @@ public abstract class NumericTag<T extends Number> extends BaseTag<T> {
   protected abstract char getMojangsonSuffix();
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
-    if (!color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
+    if (!includeColor) {
       builder.append(value);
       if (getMojangsonSuffix() > 0) builder.append(getMojangsonSuffix());
     } else {

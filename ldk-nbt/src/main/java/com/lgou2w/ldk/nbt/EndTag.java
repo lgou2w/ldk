@@ -52,12 +52,12 @@ public final class EndTag extends BaseTag<Object> {
 
   @Override
   @NotNull
-  public String toMojangson(boolean color) {
+  public String toMojangson(boolean includeColor) {
     return "";
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) { }
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) { }
 
   @Override
   @NotNull

@@ -77,8 +77,8 @@ public class ByteArrayTag extends BaseTag<byte[]> {
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
-    if (!color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
+    if (!includeColor) {
       builder.append('[');
       builder.append(PREFIX_BYTE_ARRAY + ";");
       int len = value.length, i = 0;
