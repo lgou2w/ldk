@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class CompoundTag extends BaseTag<Map<String, BaseTag<?>>> implements Map<String, BaseTag<?>> {
@@ -39,6 +40,15 @@ public class CompoundTag extends BaseTag<Map<String, BaseTag<?>>> implements Map
 
   public CompoundTag() {
     super(new LinkedHashMap<>());
+  }
+
+  @NotNull
+  @Contract("_ -> new")
+  public static CompoundTag of(Consumer<CompoundTag> initializer) {
+    CompoundTag tag = new CompoundTag();
+    if (initializer != null)
+      initializer.accept(tag);
+    return tag;
   }
 
   @Override

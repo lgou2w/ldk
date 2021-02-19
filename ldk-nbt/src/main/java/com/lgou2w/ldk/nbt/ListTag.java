@@ -18,6 +18,7 @@ package com.lgou2w.ldk.nbt;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -29,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?>> {
   private @NotNull TagType elementType = TagType.END;
@@ -40,6 +42,15 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   public ListTag() {
     this(new ArrayList<>());
+  }
+
+  @NotNull
+  @Contract("_ -> new")
+  public static ListTag of(@Nullable Consumer<ListTag> initializer) {
+    ListTag tag = new ListTag();
+    if (initializer != null)
+      initializer.accept(tag);
+    return tag;
   }
 
   private void checkElement(@NotNull BaseTag<?> el) {
