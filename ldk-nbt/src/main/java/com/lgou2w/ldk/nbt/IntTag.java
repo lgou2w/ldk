@@ -22,47 +22,47 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagDouble extends NBTTagNumeric<Double> {
+public class IntTag extends NumericTag<Integer> {
 
-  public NBTTagDouble(double value) {
+  public IntTag(int value) {
     super(value);
   }
 
-  public NBTTagDouble() {
-    this(0d);
+  public IntTag() {
+    this(0);
   }
 
   @Override
   @NotNull
-  public NBTType getType() {
-    return NBTType.DOUBLE;
+  public TagType getType() {
+    return TagType.INT;
   }
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    value = input.readDouble();
+    value = input.readInt();
   }
 
   @Override
   public void write(@NotNull DataOutput output) throws IOException {
-    output.writeDouble(value);
+    output.writeInt(value);
   }
 
   @Override
   public String toString() {
-    return "NBTTagDouble{" +
+    return "IntTag{" +
       "value=" + value +
       '}';
   }
 
   @Override
   @NotNull
-  public NBTTagDouble clone() {
-    return new NBTTagDouble(value);
+  public IntTag clone() {
+    return new IntTag(value);
   }
 
   @Override
   protected char getMojangsonSuffix() {
-    return NBTBase.SUFFIX_DOUBLE;
+    return 0; // not needed
   }
 }

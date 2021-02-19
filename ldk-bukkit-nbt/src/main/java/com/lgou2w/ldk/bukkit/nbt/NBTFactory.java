@@ -16,21 +16,21 @@
 
 package com.lgou2w.ldk.bukkit.nbt;
 
-import com.lgou2w.ldk.nbt.NBTBase;
-import com.lgou2w.ldk.nbt.NBTTagByte;
-import com.lgou2w.ldk.nbt.NBTTagByteArray;
-import com.lgou2w.ldk.nbt.NBTTagCompound;
-import com.lgou2w.ldk.nbt.NBTTagDouble;
-import com.lgou2w.ldk.nbt.NBTTagEnd;
-import com.lgou2w.ldk.nbt.NBTTagFloat;
-import com.lgou2w.ldk.nbt.NBTTagInt;
-import com.lgou2w.ldk.nbt.NBTTagIntArray;
-import com.lgou2w.ldk.nbt.NBTTagList;
-import com.lgou2w.ldk.nbt.NBTTagLong;
-import com.lgou2w.ldk.nbt.NBTTagLongArray;
-import com.lgou2w.ldk.nbt.NBTTagShort;
-import com.lgou2w.ldk.nbt.NBTTagString;
-import com.lgou2w.ldk.nbt.NBTType;
+import com.lgou2w.ldk.nbt.BaseTag;
+import com.lgou2w.ldk.nbt.ByteTag;
+import com.lgou2w.ldk.nbt.ByteArrayTag;
+import com.lgou2w.ldk.nbt.CompoundTag;
+import com.lgou2w.ldk.nbt.DoubleTag;
+import com.lgou2w.ldk.nbt.EndTag;
+import com.lgou2w.ldk.nbt.FloatTag;
+import com.lgou2w.ldk.nbt.IntTag;
+import com.lgou2w.ldk.nbt.IntArrayTag;
+import com.lgou2w.ldk.nbt.ListTag;
+import com.lgou2w.ldk.nbt.LongTag;
+import com.lgou2w.ldk.nbt.LongArrayTag;
+import com.lgou2w.ldk.nbt.ShortTag;
+import com.lgou2w.ldk.nbt.StringTag;
+import com.lgou2w.ldk.nbt.TagType;
 import com.lgou2w.ldk.reflect.ConstructorAccessor;
 import com.lgou2w.ldk.reflect.ConstructorReflectionMatcher;
 import com.lgou2w.ldk.reflect.DataType;
@@ -97,26 +97,26 @@ public final class NBTFactory {
     .withType(byte.class)
     .resultAccessorAs("Missing match: NMS.NBTBase -> Method: public abstract byte getTypeId()"));
 
-  final static Map<NBTType, FieldAccessor<Object, Object>> INTERNAL_FIELD_MAP = new HashMap<>();
-  final static Map<NBTType, ConstructorAccessor<Object>> INTERNAL_CONSTRUCTOR_MAP = new HashMap<>();
-  final static Map<NBTType, String> INTERNAL_CLASS_NAME_MAP = Collections.unmodifiableMap(new HashMap<NBTType, String>() {{
-    put(NBTType.END,        "NBTTagEnd");
-    put(NBTType.BYTE,       "NBTTagByte");
-    put(NBTType.SHORT,      "NBTTagShort");
-    put(NBTType.INT,        "NBTTagInt");
-    put(NBTType.LONG,       "NBTTagLong");
-    put(NBTType.FLOAT,      "NBTTagFloat");
-    put(NBTType.DOUBLE,     "NBTTagDouble");
-    put(NBTType.STRING,     "NBTTagString");
-    put(NBTType.BYTE_ARRAY, "NBTTagByteArray");
-    put(NBTType.INT_ARRAY,  "NBTTagIntArray");
-    put(NBTType.LIST,       "NBTTagList");
-    put(NBTType.COMPOUND,   "NBTTagCompound");
-    put(NBTType.LONG_ARRAY, "NBTTagLongArray");
+  final static Map<TagType, FieldAccessor<Object, Object>> INTERNAL_FIELD_MAP = new HashMap<>();
+  final static Map<TagType, ConstructorAccessor<Object>> INTERNAL_CONSTRUCTOR_MAP = new HashMap<>();
+  final static Map<TagType, String> INTERNAL_CLASS_NAME_MAP = Collections.unmodifiableMap(new HashMap<TagType, String>() {{
+    put(TagType.END,        "NBTTagEnd");
+    put(TagType.BYTE,       "NBTTagByte");
+    put(TagType.SHORT,      "NBTTagShort");
+    put(TagType.INT,        "NBTTagInt");
+    put(TagType.LONG,       "NBTTagLong");
+    put(TagType.FLOAT,      "NBTTagFloat");
+    put(TagType.DOUBLE,     "NBTTagDouble");
+    put(TagType.STRING,     "NBTTagString");
+    put(TagType.BYTE_ARRAY, "NBTTagByteArray");
+    put(TagType.INT_ARRAY,  "NBTTagIntArray");
+    put(TagType.LIST,       "NBTTagList");
+    put(TagType.COMPOUND,   "NBTTagCompound");
+    put(TagType.LONG_ARRAY, "NBTTagLongArray");
   }});
 
-  static ConstructorAccessor<Object> lookupInternalConstructor(NBTType type) throws ClassNotFoundException {
-    if (type == NBTType.END) throw new IllegalArgumentException("END");
+  static ConstructorAccessor<Object> lookupInternalConstructor(TagType type) throws ClassNotFoundException {
+    if (type == TagType.END) throw new IllegalArgumentException("END");
     ConstructorAccessor<Object> accessor = INTERNAL_CONSTRUCTOR_MAP.get(type);
     if (accessor == null) {
       @NotNull String className = INTERNAL_CLASS_NAME_MAP.get(type);
@@ -136,8 +136,8 @@ public final class NBTFactory {
     return accessor;
   }
 
-  static FieldAccessor<Object, Object> lookupInternalField(NBTType type) throws ClassNotFoundException {
-    if (type == NBTType.END) throw new IllegalArgumentException("END");
+  static FieldAccessor<Object, Object> lookupInternalField(TagType type) throws ClassNotFoundException {
+    if (type == TagType.END) throw new IllegalArgumentException("END");
     FieldAccessor<Object, Object> accessor = INTERNAL_FIELD_MAP.get(type);
     if (accessor == null) {
       @NotNull String className = INTERNAL_CLASS_NAME_MAP.get(type);
@@ -174,13 +174,13 @@ public final class NBTFactory {
 
   @NotNull
   @Contract("null -> fail; !null -> !null")
-  public static NBTBase<?> from(Object nbt) throws IllegalArgumentException {
+  public static BaseTag<?> from(Object nbt) throws IllegalArgumentException {
     if (nbt == null) throw new NullPointerException("nbt");
     if (!CLASS_NBT_BASE.isInstance(nbt))
       throw new IllegalArgumentException("Value type of the instance does not match. (Expected: " + CLASS_NBT_BASE + ")");
     @SuppressWarnings("ConstantConditions")
     int typeId = METHOD_NBT_BASE_GET_TYPE_ID.get().invoke(nbt);
-    NBTType type = Objects.requireNonNull(NBTType.fromId(typeId), "Invalid nbt type id: " + typeId);
+    TagType type = Objects.requireNonNull(TagType.fromId(typeId), "Invalid nbt type id: " + typeId);
     @NotNull FieldAccessor<Object, Object> field;
     try {
       field = lookupInternalField(type);
@@ -189,30 +189,30 @@ public final class NBTFactory {
     }
     Object value = Objects.requireNonNull(field.get(nbt), "Null value for nbt: " + nbt);
     switch (type) {
-      case END: return NBTTagEnd.INSTANCE;
-      case BYTE: return new NBTTagByte((byte) value);
-      case SHORT: return new NBTTagShort((short) value);
-      case INT: return new NBTTagInt((int) value);
-      case LONG: return new NBTTagLong((long) value);
-      case FLOAT: return new NBTTagFloat((float) value);
-      case DOUBLE: return new NBTTagDouble((double) value);
-      case BYTE_ARRAY: return new NBTTagByteArray((byte[]) value);
-      case STRING: return new NBTTagString((String) value);
-      case INT_ARRAY: return new NBTTagIntArray((int[]) value);
-      case LONG_ARRAY: return new NBTTagLongArray((long[]) value);
+      case END: return EndTag.INSTANCE;
+      case BYTE: return new ByteTag((byte) value);
+      case SHORT: return new ShortTag((short) value);
+      case INT: return new IntTag((int) value);
+      case LONG: return new LongTag((long) value);
+      case FLOAT: return new FloatTag((float) value);
+      case DOUBLE: return new DoubleTag((double) value);
+      case BYTE_ARRAY: return new ByteArrayTag((byte[]) value);
+      case STRING: return new StringTag((String) value);
+      case INT_ARRAY: return new IntArrayTag((int[]) value);
+      case LONG_ARRAY: return new LongArrayTag((long[]) value);
       case LIST:
-        NBTTagList list = new NBTTagList();
+        ListTag list = new ListTag();
         List<Object> listValue = (List<Object>) value;
         for (Object element : listValue) {
-          NBTBase<?> elementFrom = from(element);
+          BaseTag<?> elementFrom = from(element);
           list.add(elementFrom);
         }
         return list;
       case COMPOUND:
-        NBTTagCompound compound = new NBTTagCompound();
+        CompoundTag compound = new CompoundTag();
         Map<String, Object> compoundValue = (Map<String, Object>) value;
         for (Map.Entry<String, Object> entry : compoundValue.entrySet()) {
-          NBTBase<?> entryValueFrom = from(entry.getValue());
+          BaseTag<?> entryValueFrom = from(entry.getValue());
           compound.set(entry.getKey(), entryValueFrom);
         }
         return compound;
@@ -223,32 +223,32 @@ public final class NBTFactory {
 
   @NotNull
   @Contract("null -> fail; !null -> !null")
-  public static Object to(NBTBase<?> nbt) throws IllegalArgumentException {
+  public static Object to(BaseTag<?> nbt) throws IllegalArgumentException {
     if (nbt == null) throw new NullPointerException("nbt");
     switch (nbt.getType()) {
       case END: return INSTANCE_NBT_TAG_END;
       case LIST:
-        NBTTagList list = (NBTTagList) nbt;
+        ListTag list = (ListTag) nbt;
         List<Object> listValue = new ArrayList<>();
-        for (NBTBase<?> element : list) {
+        for (BaseTag<?> element : list) {
           Object elementTo = to(element);
           listValue.add(elementTo);
         }
-        return newInternal(NBTType.LIST, listValue, list.getElementType());
+        return newInternal(TagType.LIST, listValue, list.getElementType());
       case COMPOUND:
-        NBTTagCompound compound = (NBTTagCompound) nbt;
+        CompoundTag compound = (CompoundTag) nbt;
         Map<String, Object> compoundValue = new LinkedHashMap<>();
-        for (Map.Entry<String, NBTBase<?>> entry : compound.entrySet()) {
+        for (Map.Entry<String, BaseTag<?>> entry : compound.entrySet()) {
           Object entryValueTo = to(entry.getValue());
           compoundValue.put(entry.getKey(), entryValueTo);
         }
-        return newInternal(NBTType.COMPOUND, compoundValue);
+        return newInternal(TagType.COMPOUND, compoundValue);
       case LONG_ARRAY:
         boolean supported = CLASS_NBT_TAG_LONG_ARRAY != null;
         if (supported) return newInternal(nbt.getType(), nbt.getValue());
         // Server does not support, convert to list to compatibility
-        NBTTagLongArray longArray = (NBTTagLongArray) nbt;
-        NBTTagList longList = new NBTTagList();
+        LongArrayTag longArray = (LongArrayTag) nbt;
+        ListTag longList = new ListTag();
         longList.addLong(longArray.getValue());
         return to(longList);
       default:
@@ -259,18 +259,18 @@ public final class NBTFactory {
   @NotNull
   @Contract("null, _ -> fail")
   public static Object newInternal(
-    NBTType type,
+    TagType type,
     @Nullable Object value
   ) throws IllegalArgumentException {
-    return newInternal(type, value, NBTType.END);
+    return newInternal(type, value, TagType.END);
   }
 
   @NotNull
   @Contract("null, _, _ -> fail; _, _, null -> fail")
   public static Object newInternal(
-    NBTType type,
+    TagType type,
     @Nullable Object value,
-    NBTType listElementType
+    TagType listElementType
   ) throws IllegalArgumentException {
     if (type == null) throw new NullPointerException("type");
     if (listElementType == null) throw new NullPointerException("listElementType");
@@ -287,7 +287,7 @@ public final class NBTFactory {
     if (type.isListOrCompound()) {
       Object inst = constructor.newInstance();
       if (value != null) field.set(inst, value);
-      if (value != null && type == NBTType.LIST)
+      if (value != null && type == TagType.LIST)
         FIELD_NBT_TAG_LIST_TYPE.get().set(inst, (byte) listElementType.getId());
       return inst;
     } else {

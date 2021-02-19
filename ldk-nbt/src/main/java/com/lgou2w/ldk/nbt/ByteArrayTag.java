@@ -24,20 +24,20 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class NBTTagByteArray extends NBTBase<byte[]> {
+public class ByteArrayTag extends BaseTag<byte[]> {
 
   @Contract("null -> fail")
-  public NBTTagByteArray(byte[] value) {
+  public ByteArrayTag(byte[] value) {
     super(value);
   }
 
-  public NBTTagByteArray() {
+  public ByteArrayTag() {
     this(new byte[0]);
   }
 
   @Override
-  public @NotNull NBTType getType() {
-    return NBTType.BYTE_ARRAY;
+  public @NotNull TagType getType() {
+    return TagType.BYTE_ARRAY;
   }
 
   @Override
@@ -71,14 +71,14 @@ public class NBTTagByteArray extends NBTBase<byte[]> {
 
   @Override
   public String toString() {
-    return "NBTTagByteArray{" +
+    return "ByteArrayTag{" +
       "value=" + Arrays.toString(value) +
       '}';
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
-    if (!color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
+    if (!includeColor) {
       builder.append('[');
       builder.append(PREFIX_BYTE_ARRAY + ";");
       int len = value.length, i = 0;
@@ -109,9 +109,9 @@ public class NBTTagByteArray extends NBTBase<byte[]> {
 
   @Override
   @NotNull
-  public NBTTagByteArray clone() {
+  public ByteArrayTag clone() {
     byte[] newValue = new byte[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
-    return new NBTTagByteArray(newValue);
+    return new ByteArrayTag(newValue);
   }
 }

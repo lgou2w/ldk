@@ -22,47 +22,47 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagLong extends NBTTagNumeric<Long> {
+public class FloatTag extends NumericTag<Float> {
 
-  public NBTTagLong(long value) {
+  public FloatTag(float value) {
     super(value);
   }
 
-  public NBTTagLong() {
-    this(0L);
+  public FloatTag() {
+    this(0f);
   }
 
   @Override
   @NotNull
-  public NBTType getType() {
-    return NBTType.LONG;
+  public TagType getType() {
+    return TagType.FLOAT;
   }
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    value = input.readLong();
+    value = input.readFloat();
   }
 
   @Override
   public void write(@NotNull DataOutput output) throws IOException {
-    output.writeLong(value);
+    output.writeFloat(value);
   }
 
   @Override
   public String toString() {
-    return "NBTTagLong{" +
+    return "FloatTag{" +
       "value=" + value +
       '}';
   }
 
   @Override
   @NotNull
-  public NBTTagLong clone() {
-    return new NBTTagLong(value);
+  public FloatTag clone() {
+    return new FloatTag(value);
   }
 
   @Override
   protected char getMojangsonSuffix() {
-    return NBTBase.SUFFIX_LONG;
+    return BaseTag.SUFFIX_FLOAT;
   }
 }

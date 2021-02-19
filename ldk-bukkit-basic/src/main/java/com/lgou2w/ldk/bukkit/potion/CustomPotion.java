@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public final class CustomPotion implements Comparable<CustomPotion> {
-  private final @NotNull PotionEffectType effect;
+  private final PotionEffectType effect;
   private final int amplifier, duration;
   private final boolean ambient, particles, icon;
 

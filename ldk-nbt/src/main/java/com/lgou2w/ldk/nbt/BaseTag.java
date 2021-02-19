@@ -18,10 +18,10 @@ package com.lgou2w.ldk.nbt;
 
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NBTBase<T> implements NBT<T> {
-  protected @NotNull T value;
+public abstract class BaseTag<T> implements NBT<T> {
+  @NotNull protected T value;
 
-  public NBTBase(T value) {
+  public BaseTag(T value) {
     if (value == null) throw new NullPointerException("value");
     this.value = value;
   }
@@ -42,7 +42,7 @@ public abstract class NBTBase<T> implements NBT<T> {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    NBTBase<?> base = (NBTBase<?>) o;
+    BaseTag<?> base = (BaseTag<?>) o;
     return value.equals(base.value);
   }
 
@@ -62,17 +62,17 @@ public abstract class NBTBase<T> implements NBT<T> {
 
   @Override
   @NotNull
-  public String toMojangson(boolean color) {
+  public String toMojangson(boolean includeColor) {
     StringBuilder builder = new StringBuilder();
-    toMojangsonBuilder(builder, color);
+    toMojangsonBuilder(builder, includeColor);
     return builder.toString();
   }
 
-  protected abstract void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color);
+  protected abstract void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor);
 
   @Override
   @NotNull
-  public abstract NBTBase<T> clone();
+  public abstract BaseTag<T> clone();
 
   /// Mojangson numeric prefix, suffix and colors
 

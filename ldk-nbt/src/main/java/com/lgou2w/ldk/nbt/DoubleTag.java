@@ -17,51 +17,52 @@
 package com.lgou2w.ldk.nbt;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
+import java.io.IOException;
 
-public final class NBTTagEnd extends NBTBase<Object> {
+public class DoubleTag extends NumericTag<Double> {
 
-  private final static Object VOID = new Object();
-  public final static NBTTagEnd INSTANCE = new NBTTagEnd();
+  public DoubleTag(double value) {
+    super(value);
+  }
 
-  private NBTTagEnd() {
-    super(VOID);
+  public DoubleTag() {
+    this(0d);
   }
 
   @Override
-  public @NotNull NBTType getType() {
-    return NBTType.END;
+  @NotNull
+  public TagType getType() {
+    return TagType.DOUBLE;
   }
 
   @Override
-  public void setValue(@Nullable Object value) { /* No change allowed */ }
+  public void read(@NotNull DataInput input) throws IOException {
+    value = input.readDouble();
+  }
 
   @Override
-  public void read(@NotNull DataInput input) { }
-
-  @Override
-  public void write(@NotNull DataOutput output) { }
+  public void write(@NotNull DataOutput output) throws IOException {
+    output.writeDouble(value);
+  }
 
   @Override
   public String toString() {
-    return "NBTTagEnd";
+    return "DoubleTag{" +
+      "value=" + value +
+      '}';
   }
 
   @Override
   @NotNull
-  public String toMojangson(boolean color) {
-    return "";
+  public DoubleTag clone() {
+    return new DoubleTag(value);
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) { }
-
-  @Override
-  @NotNull
-  public NBTTagEnd clone() {
-    return INSTANCE;
+  protected char getMojangsonSuffix() {
+    return BaseTag.SUFFIX_DOUBLE;
   }
 }

@@ -16,62 +16,53 @@
 
 package com.lgou2w.ldk.nbt;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagString extends NBTBase<String> {
+public class ByteTag extends NumericTag<Byte> {
 
-  @Contract("null -> fail")
-  public NBTTagString(String value) {
+  public ByteTag(byte value) {
     super(value);
   }
 
-  public NBTTagString() {
-    this("");
-  }
-
-  @Override
-  public @NotNull NBTType getType() {
-    return NBTType.STRING;
-  }
-
-  @Override
-  public void read(@NotNull DataInput input) throws IOException {
-    value = input.readUTF();
-  }
-
-  @Override
-  public void write(@NotNull DataOutput output) throws IOException {
-    output.writeUTF(value);
-  }
-
-  @Override
-  public String toString() {
-    return "NBTTagString{" +
-      "value=" + value.replace("\"", "\\\"") +
-      '}';
-  }
-
-  @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
-    if (!color) {
-      builder.append("\"");
-      builder.append(value.replace("\"", "\\\""));
-      builder.append("\"");
-    } else {
-      builder.append("\"" + COLOR_GREEN);
-      builder.append(value.replace("\"", "\\\""));
-      builder.append(COLOR_RESET + "\"");
-    }
+  public ByteTag() {
+    this((byte) 0);
   }
 
   @Override
   @NotNull
-  public NBTTagString clone() {
-    return new NBTTagString(value);
+  public TagType getType() {
+    return TagType.BYTE;
+  }
+
+  @Override
+  public void read(@NotNull DataInput input) throws IOException {
+    value = input.readByte();
+  }
+
+  @Override
+  public void write(@NotNull DataOutput output) throws IOException {
+    output.writeByte(value);
+  }
+
+  @Override
+  public String toString() {
+    return "ByteTag{" +
+      "value=" + value +
+      '}';
+  }
+
+  @Override
+  @NotNull
+  public ByteTag clone() {
+    return new ByteTag(value);
+  }
+
+  @Override
+  protected char getMojangsonSuffix() {
+    return BaseTag.SUFFIX_BYTE;
   }
 }

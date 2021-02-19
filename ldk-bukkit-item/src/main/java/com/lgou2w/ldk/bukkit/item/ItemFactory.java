@@ -17,8 +17,8 @@
 package com.lgou2w.ldk.bukkit.item;
 
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory;
-import com.lgou2w.ldk.nbt.NBTTagCompound;
-import com.lgou2w.ldk.nbt.NBTType;
+import com.lgou2w.ldk.nbt.CompoundTag;
+import com.lgou2w.ldk.nbt.TagType;
 import com.lgou2w.ldk.reflect.ConstructorAccessor;
 import com.lgou2w.ldk.reflect.FieldAccessor;
 import com.lgou2w.ldk.reflect.FuzzyReflection;
@@ -28,9 +28,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.TestOnly;
 
 import java.lang.reflect.Modifier;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -160,7 +160,7 @@ public final class ItemFactory {
 
   @Nullable
   @Contract("null -> null; !null -> !null")
-  public static Object asNMSCopy(ItemStack stack) {
+  public static Object asNMSCopy(@Nullable ItemStack stack) {
     if (stack == null) return null;
     return METHOD_CRAFT_ITEM_STACK_AS_NMS_COPY.get().invoke(null, stack);
   }
@@ -181,9 +181,50 @@ public final class ItemFactory {
     return METHOD_CRAFT_ITEM_STACK_AS_BUKKIT_COPY.get().invoke(null, origin);
   }
 
+  @NotNull
+  @Contract("null -> fail; !null -> !null")
+  @SuppressWarnings("ConstantConditions")
+  public static String materialKey(Material material) {
+    if (material == null) throw new NullPointerException("material");
+    if (METHOD_CRAFT_MAGIC_NUMBERS_KEY != null &&
+      METHOD_CRAFT_MAGIC_NUMBERS_KEY.get() != null) {
+      Object minecraftKey = METHOD_CRAFT_MAGIC_NUMBERS_KEY.get().invoke(null, material);
+      return minecraftKey.toString(); // such as: minecraft:diamond
+    } else {
+      String name = material.name().toLowerCase(Locale.ENGLISH);
+      return !name.startsWith("minecraft:")
+        ? "minecraft:" + name
+        : name;
+    }
+  }
+
   @Nullable
   @Contract("null -> null")
-  public static NBTTagCompound readTag(ItemStack stack) {
+  public static CompoundTag readStack(@Nullable ItemStack stack) {
+    if (stack == null) return null;
+    if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
+      Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get().get(stack);
+      if (handle == null) {
+        // Why the handle is null? Because the item material type is invalid, such as WALL_BANNER.
+        // Return an null tag or throw an exception, need confirmation.
+        // TODO: ItemFactory.readStack -> handle null problem
+        //throw new UnsupportedOperationException("Illegal item stack material type: " + stack.getType());
+        return null;
+      }
+      Object internal = NBTFactory.newInternal(TagType.COMPOUND, null);
+      METHOD_ITEM_STACK_SAVE.get().invoke(handle, internal);
+      return (CompoundTag) NBTFactory.from(internal);
+    } else {
+      Object origin = asNMSCopy(stack);
+      ItemStack obcStack = (ItemStack) asCraftMirror(origin);
+      obcStack.setItemMeta(stack.getItemMeta()); // Copy item meta
+      return readStack(obcStack);
+    }
+  }
+
+  @Nullable
+  @Contract("null -> null")
+  public static CompoundTag readStackTag(@Nullable ItemStack stack) {
     if (stack == null) return null;
     if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
       Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get().get(stack);
@@ -207,58 +248,61 @@ public final class ItemFactory {
         //   - Mohist-1.12      : pass
         //   - Mohist-1.16      : null
         // Possible patch changes made in forge 1.16? Maybe
-        Object internal = NBTFactory.newInternal(NBTType.COMPOUND, null);
+        Object internal = NBTFactory.newInternal(TagType.COMPOUND, null);
         METHOD_ITEM_STACK_SAVE.get().invoke(handle, internal);
-        NBTTagCompound compound = (NBTTagCompound) NBTFactory.from(internal);
+        CompoundTag compound = (CompoundTag) NBTFactory.from(internal);
         return compound.getCompoundOrNull("tag"); // get tag only
       } else {
-        return (NBTTagCompound) NBTFactory.from(tag);
+        return (CompoundTag) NBTFactory.from(tag);
       }
     } else {
       Object origin = asNMSCopy(stack);
       ItemStack obcStack = (ItemStack) asCraftMirror(origin);
       obcStack.setItemMeta(stack.getItemMeta()); // Copy item meta
-      return readTag(obcStack);
+      return readStackTag(obcStack);
     }
   }
 
   @NotNull
-  public static NBTTagCompound readTagOrPresent(ItemStack stack, @Nullable Supplier<NBTTagCompound> present) {
-    NBTTagCompound compound = readTag(stack);
+  @Contract("null, _ -> !null")
+  public static CompoundTag readStackTagOrPresent(@Nullable ItemStack stack, @Nullable Supplier<CompoundTag> present) {
+    CompoundTag compound = readStackTag(stack);
     if (compound == null && present != null) compound = present.get();
-    return compound != null ? compound : new NBTTagCompound();
+    return compound != null ? compound : new CompoundTag();
   }
 
   @NotNull
-  public static NBTTagCompound readTagOrPresent(ItemStack stack) {
-    return readTagOrPresent(stack, null);
+  @Contract("null -> !null")
+  public static CompoundTag readStackTagOrPresent(@Nullable ItemStack stack) {
+    return readStackTagOrPresent(stack, null);
   }
 
-  public static void writeTag(@Nullable ItemStack stack, @Nullable NBTTagCompound tag) {
-    if (stack == null) return;
-// TODO: remove
-//
-//    if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
-//      Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get(stack);
-//      if (handle == null) {
-//        // Why the handle is null? Because the item material type is invalid, such as WALL_BANNER.
-//        // Return an null tag or throw an exception, need confirmation.
-//        // TODO: ItemFactory.writeTag -> handle null problem
-//        return;
-//      }
-//      Object internal = tag != null ? NBTFactory.to(tag) : null;
-//      FIELD_ITEM_STACK_TAG.set(handle, internal);
-//      System.out.println(FIELD_ITEM_STACK_TAG.get(handle));
-//    } else if (tag != null) {
-//      Object origin = asNMSCopy(stack);
-//      ItemStack obcStack = (ItemStack) asCraftMirror(origin);
-//      writeTag(obcStack, tag);
-//      System.out.println(obcStack);
-//      stack.setItemMeta(obcStack.getItemMeta());
-//    } else {
-//      stack.setItemMeta(null);
-//    }
+  @NotNull
+  @Contract("null -> !null")
+  @SuppressWarnings("ConstantConditions")
+  public static ItemStack createStack(@Nullable CompoundTag item) {
+    if (item == null) return new ItemStack(Material.AIR);
+    if (METHOD_ITEM_STACK_CREATE.get() == null && CONSTRUCTOR_ITEM_STACK.get() == null) {
+      // Unless the server is a specially modified version that cannot be reflected to the member structure.
+      // It is only used to avoid the null pointer problem below.
+      throw new UnsupportedOperationException(
+        "Unsupported server, Missing match: \n" +
+          "\tNMS.ItemStack -> Constructor(NMS.NBTTagCompound)\n" +
+          "\tNMS.ItemStack -> Method: public static NMS.ItemStack create(NMS.NBTTagCompound)");
+    }
+    Object internal = NBTFactory.to(item);
+    Object origin = METHOD_ITEM_STACK_CREATE.get() != null
+      ? METHOD_ITEM_STACK_CREATE.get().invoke(null, internal)
+      : CONSTRUCTOR_ITEM_STACK.get().newInstance(internal);
+    // If the item id is an invalid material type, then origin is null.
+    // Return an 'AIR' item stack.
+    if (origin == null) return new ItemStack(Material.AIR);
+    return (ItemStack) asCraftMirror(origin); // Instance of OBC.inventory.CraftItemStack
+  }
 
+  @SuppressWarnings({ "unchecked", "ConstantConditions" })
+  public static void writeStackTag(@Nullable ItemStack stack, @Nullable CompoundTag tag) {
+    if (stack == null) return;
     if (METHOD_ITEM_STACK_CREATE.get() == null && CONSTRUCTOR_ITEM_STACK.get() == null) {
       // Unless the server is a specially modified version that cannot be reflected to the member structure.
       // It is only used to avoid the null pointer problem below.
@@ -279,10 +323,13 @@ public final class ItemFactory {
       Object internal = tag != null ? NBTFactory.to(tag) : tag;
       FIELD_ITEM_STACK_TAG.get().set(handle, internal);
     } else if (tag != null) {
-      // TODO: docs
+      // In order to avoid the problem that some special Forge servers
+      // only modify the origin field and do not take effect.
+      // The method used here is to first save a copy of the NBT data of the entire item stack,
+      // then overwrite the 'tag' value and finally use this data to create a new item stack.
       Object internal = NBTFactory.to(tag);
       Object origin = asNMSCopy(stack);
-      Object saved = NBTFactory.newInternal(NBTType.COMPOUND, null);
+      Object saved = NBTFactory.newInternal(TagType.COMPOUND, null);
       METHOD_ITEM_STACK_SAVE.get().invoke(origin, saved);
 
       Map<String, Object> value = (Map<String, Object>) FIELD_NBT_TAG_COMPOUND_VALUE.get().get(saved);
@@ -300,30 +347,11 @@ public final class ItemFactory {
   }
 
   @Contract("null, _ -> fail; _, null -> fail")
-  public static void modifyTag(ItemStack stack, Consumer<NBTTagCompound> modifier) {
+  public static void modifyStackTag(ItemStack stack, Consumer<CompoundTag> modifier) {
     if (stack == null) throw new NullPointerException("stack");
     if (modifier == null) throw new NullPointerException("modifier");
-    NBTTagCompound tag = readTagOrPresent(stack);
+    CompoundTag tag = readStackTagOrPresent(stack);
     modifier.accept(tag);
-    writeTag(stack, tag);
-  }
-
-  // FIXME: remove unit test
-  // TODO: full server test
-  @TestOnly
-  @Deprecated
-  public static void test() {
-    ItemStack stack = new ItemStack(Material.IRON_SWORD);
-    NBTTagCompound tag = new NBTTagCompound();
-    tag.setShort("Damage", 10);
-    tag.getCompoundOrPresent("display").setString("Name", "{\"text\":\"HelloWorld\"}");
-    writeTag(stack, tag);
-    System.out.println(stack);
-
-    Object origin = asNMSCopy(new ItemStack(Material.IRON_SWORD));
-    Object obcStack = asCraftMirror(origin);
-    System.out.println(CLASS_CRAFT_ITEM_STACK.isInstance(obcStack));
-    writeTag((ItemStack) obcStack, tag);
-    System.out.println(obcStack);
+    writeStackTag(stack, tag);
   }
 }

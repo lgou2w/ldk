@@ -31,10 +31,10 @@ public final class Potion implements Valuable<String>, Comparable<Potion> {
   @Contract("null, _, _ -> fail")
   public Potion(PotionType type, boolean upgraded, boolean extended) throws IllegalArgumentException {
     if (type == null) throw new NullPointerException("type");
-    this.type = type;
     if (!(!upgraded || type.isUpgradeable())) throw new IllegalArgumentException("Potion Type is not upgradable.");
     if (!(!extended || type.isExtendable())) throw new IllegalArgumentException("Potion Type is not extendable.");
     if (!(!extended || !upgraded)) throw new IllegalArgumentException("Potion cannot be both extended and upgraded.");
+    this.type = type;
     this.upgraded = upgraded;
     this.extended = extended;
   }

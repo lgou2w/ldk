@@ -22,47 +22,47 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagInt extends NBTTagNumeric<Integer> {
+public class ShortTag extends NumericTag<Short> {
 
-  public NBTTagInt(int value) {
+  public ShortTag(short value) {
     super(value);
   }
 
-  public NBTTagInt() {
-    this(0);
+  public ShortTag() {
+    this((short) 0);
   }
 
   @Override
   @NotNull
-  public NBTType getType() {
-    return NBTType.INT;
+  public TagType getType() {
+    return TagType.SHORT;
   }
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    value = input.readInt();
+    value = input.readShort();
   }
 
   @Override
   public void write(@NotNull DataOutput output) throws IOException {
-    output.writeInt(value);
+    output.writeShort(value);
   }
 
   @Override
   public String toString() {
-    return "NBTTagInt{" +
+    return "ShortTag{" +
       "value=" + value +
       '}';
   }
 
   @Override
   @NotNull
-  public NBTTagInt clone() {
-    return new NBTTagInt(value);
+  public ShortTag clone() {
+    return new ShortTag(value);
   }
 
   @Override
   protected char getMojangsonSuffix() {
-    return 0; // not needed
+    return BaseTag.SUFFIX_SHORT;
   }
 }

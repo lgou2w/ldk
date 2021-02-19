@@ -26,7 +26,7 @@ import java.io.IOException;
 public interface NBT<T> extends Cloneable {
 
   @NotNull
-  NBTType getType();
+  TagType getType();
 
   @NotNull
   T getValue();
@@ -42,7 +42,7 @@ public interface NBT<T> extends Cloneable {
   String toMojangson();
 
   @NotNull
-  String toMojangson(boolean color);
+  String toMojangson(boolean includeColor);
 
   @NotNull
   NBT<T> clone();

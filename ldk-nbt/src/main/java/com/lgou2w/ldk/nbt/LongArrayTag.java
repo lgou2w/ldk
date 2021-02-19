@@ -24,79 +24,82 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class NBTTagIntArray extends NBTBase<int[]> {
+public class LongArrayTag extends BaseTag<long[]> {
 
   @Contract("null -> fail")
-  public NBTTagIntArray(int[] value) {
+  public LongArrayTag(long[] value) {
     super(value);
   }
 
-  public NBTTagIntArray() {
-    this(new int[0]);
+  public LongArrayTag() {
+    this(new long[0]);
   }
 
   @Override
-  public @NotNull NBTType getType() {
-    return NBTType.INT_ARRAY;
+  public @NotNull TagType getType() {
+    return TagType.LONG_ARRAY;
   }
 
   @Override
   @Contract("-> new")
-  public int @NotNull [] getValue() {
-    int[] value = super.getValue();
-    int[] newValue = new int[value.length];
+  public long @NotNull [] getValue() {
+    long[] value = super.getValue();
+    long[] newValue = new long[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
     return newValue;
   }
 
   @Override
-  public void setValue(int[] value) {
-    int[] newValue = new int[value.length];
+  public void setValue(long[] value) {
+    long[] newValue = new long[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
     super.setValue(newValue);
   }
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    int[] newValue = new int[input.readInt()];
-    for (int i = 0; i < newValue.length; i++) newValue[i] = input.readInt();
+    long[] newValue = new long[input.readInt()];
+    for (int i = 0; i < newValue.length; i++) newValue[i] = input.readLong();
     value = newValue;
   }
 
   @Override
   public void write(@NotNull DataOutput output) throws IOException {
     output.writeInt(value.length);
-    for (int element : value) output.writeInt(element);
+    for (long element : value) output.writeLong(element);
   }
 
   @Override
   public String toString() {
-    return "NBTTagIntArray{" +
+    return "LongArrayTag{" +
       "value=" + Arrays.toString(value) +
       '}';
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
-    if (!color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
+    if (!includeColor) {
       builder.append('[');
-      builder.append(PREFIX_INT_ARRAY + ";");
+      builder.append(PREFIX_LONG_ARRAY + ";");
       int len = value.length, i = 0;
-      for (int element : value) {
+      for (long element : value) {
         if (i >= 1 && i < len) builder.append(',');
         builder.append(element);
+        builder.append(SUFFIX_LONG);
         i++;
       }
     } else {
       builder.append("[" + COLOR_RED);
-      builder.append(PREFIX_INT_ARRAY);
+      builder.append(PREFIX_LONG_ARRAY);
       builder.append(COLOR_RESET);
       builder.append(';');
       int len = value.length, i = 0;
-      for (int element : value) {
+      for (long element : value) {
         if (i >= 1 && i < len) builder.append(", ");
         builder.append(COLOR_GOLD);
         builder.append(element);
+        builder.append(COLOR_RED);
+        builder.append(SUFFIX_LONG);
         builder.append(COLOR_RESET);
         i++;
       }
@@ -106,9 +109,9 @@ public class NBTTagIntArray extends NBTBase<int[]> {
 
   @Override
   @NotNull
-  public NBTTagIntArray clone() {
-    int[] newValue = new int[value.length];
+  public LongArrayTag clone() {
+    long[] newValue = new long[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
-    return new NBTTagIntArray(newValue);
+    return new LongArrayTag(newValue);
   }
 }

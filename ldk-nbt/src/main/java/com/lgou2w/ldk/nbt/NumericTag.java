@@ -18,9 +18,9 @@ package com.lgou2w.ldk.nbt;
 
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NBTTagNumeric<T extends Number> extends NBTBase<T> {
+public abstract class NumericTag<T extends Number> extends BaseTag<T> {
 
-  public NBTTagNumeric(T value) {
+  public NumericTag(T value) {
     super(value);
   }
 
@@ -51,8 +51,8 @@ public abstract class NBTTagNumeric<T extends Number> extends NBTBase<T> {
   protected abstract char getMojangsonSuffix();
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
-    if (!color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
+    if (!includeColor) {
       builder.append(value);
       if (getMojangsonSuffix() > 0) builder.append(getMojangsonSuffix());
     } else {

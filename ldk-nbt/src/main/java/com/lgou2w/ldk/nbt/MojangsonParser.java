@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  */
 
 public final class MojangsonParser {
-  private final @NotNull StringReader reader;
+  @NotNull private final StringReader reader;
 
   private MojangsonParser(@NotNull StringReader reader) {
     this.reader = reader;
@@ -42,7 +42,7 @@ public final class MojangsonParser {
 
   @NotNull
   @Contract("null -> fail; !null -> !null")
-  public static NBTBase<?> parse(String mojangson) throws IllegalArgumentException {
+  public static BaseTag<?> parse(String mojangson) throws IllegalArgumentException {
     if (mojangson == null) throw new NullPointerException("mojangson");
     StringReader reader = new StringReader(mojangson);
     return new MojangsonParser(reader).readValue();
@@ -50,15 +50,15 @@ public final class MojangsonParser {
 
   @NotNull
   @Contract("null -> fail; !null -> !null")
-  public static NBTTagCompound parseCompound(String mojangson) throws IllegalArgumentException {
+  public static CompoundTag parseCompound(String mojangson) throws IllegalArgumentException {
     if (mojangson == null) throw new NullPointerException("mojangson");
     StringReader reader = new StringReader(mojangson);
     return new MojangsonParser(reader).readSingleStruct();
   }
 
   @NotNull
-  private NBTTagCompound readSingleStruct() {
-    NBTTagCompound compound = readStruct();
+  private CompoundTag readSingleStruct() {
+    CompoundTag compound = readStruct();
     reader.skipWhitespace();
     if (reader.canRead()) throw new IllegalArgumentException("Unexpected trailing data.");
     return compound;
@@ -72,11 +72,11 @@ public final class MojangsonParser {
   }
 
   @NotNull
-  private NBTBase<?> readTypedValue() {
+  private BaseTag<?> readTypedValue() {
     reader.skipWhitespace();
     int start = reader.cursor;
     if (reader.peek() == StringReader.SYNTAX_DOUBLE_QUOTE)
-      return new NBTTagString(reader.readQuotedString());
+      return new StringTag(reader.readQuotedString());
     String str = reader.readUnquotedString();
     if (str.isEmpty()) {
       reader.cursor = start;
@@ -94,33 +94,33 @@ public final class MojangsonParser {
   private final static Pattern PATTERN_INT = Pattern.compile("[-+]?(?:0|[1-9][0-9]*)", Pattern.CASE_INSENSITIVE);
 
   @NotNull
-  private NBTBase<?> parseString(String str) {
+  private BaseTag<?> parseString(String str) {
     try {
       if (PATTERN_FLOAT.matcher(str).matches())
-        return new NBTTagFloat(Float.parseFloat(str.substring(0, str.length() - 1)));
+        return new FloatTag(Float.parseFloat(str.substring(0, str.length() - 1)));
       if (PATTERN_BYTE.matcher(str).matches())
-        return new NBTTagByte(Byte.parseByte(str.substring(0, str.length() - 1)));
+        return new ByteTag(Byte.parseByte(str.substring(0, str.length() - 1)));
       if (PATTERN_SHORT.matcher(str).matches())
-        return new NBTTagShort(Short.parseShort(str.substring(0, str.length() - 1)));
+        return new ShortTag(Short.parseShort(str.substring(0, str.length() - 1)));
       if (PATTERN_LONG.matcher(str).matches())
-        return new NBTTagLong(Long.parseLong(str.substring(0, str.length() - 1)));
+        return new LongTag(Long.parseLong(str.substring(0, str.length() - 1)));
       if (PATTERN_INT.matcher(str).matches())
-        return new NBTTagInt(Integer.parseInt(str));
+        return new IntTag(Integer.parseInt(str));
       if (PATTERN_DOUBLE.matcher(str).matches())
-        return new NBTTagDouble(Double.parseDouble(str.substring(0, str.length() - 1)));
+        return new DoubleTag(Double.parseDouble(str.substring(0, str.length() - 1)));
       if (PATTERN_DOUBLE_NOSUFFIX.matcher(str).matches())
-        return new NBTTagDouble(Double.parseDouble(str));
+        return new DoubleTag(Double.parseDouble(str));
       if (str.equals("true"))
-        return new NBTTagByte((byte) 1);
+        return new ByteTag((byte) 1);
       if (str.equals("false"))
-        return new NBTTagByte((byte) 0);
+        return new ByteTag((byte) 0);
     } catch (NumberFormatException ignore) {
     }
-    return new NBTTagString(str);
+    return new StringTag(str);
   }
 
   @NotNull
-  private NBTBase<?> readValue() {
+  private BaseTag<?> readValue() {
     reader.skipWhitespace();
     if (!reader.canRead()) throw new IllegalArgumentException("Expected value.");
     char c = reader.peek();
@@ -130,7 +130,7 @@ public final class MojangsonParser {
   }
 
   @NotNull
-  private NBTBase<?> readArrayOrList() {
+  private BaseTag<?> readArrayOrList() {
     if (reader.canRead(3) &&
       reader.peek(1) != StringReader.SYNTAX_DOUBLE_QUOTE &&
       reader.peek(2) == ';') return readArray();
@@ -138,10 +138,10 @@ public final class MojangsonParser {
   }
 
   @NotNull
-  private NBTTagCompound readStruct() {
+  private CompoundTag readStruct() {
     expect('{');
     reader.skipWhitespace();
-    NBTTagCompound compound = new NBTTagCompound();
+    CompoundTag compound = new CompoundTag();
     while (reader.canRead() && reader.peek() != '}') {
       int start = reader.cursor;
       String key = readKey();
@@ -159,16 +159,16 @@ public final class MojangsonParser {
   }
 
   @NotNull
-  private NBTBase<?> readList() {
+  private BaseTag<?> readList() {
     expect('[');
     reader.skipWhitespace();
     if (!reader.canRead()) throw new IllegalArgumentException("Expected value.");
-    NBTTagList list = new NBTTagList();
-    NBTType elementType = NBTType.END;
+    ListTag list = new ListTag();
+    TagType elementType = TagType.END;
     while (reader.peek() != ']') {
       int start = reader.cursor;
-      NBTBase<?> element = readValue();
-      if (elementType == NBTType.END) elementType = element.getType();
+      BaseTag<?> element = readValue();
+      if (elementType == TagType.END) elementType = element.getType();
       else if (element.getType() != elementType) {
         reader.cursor = start;
         throw new IllegalArgumentException("Can't insert '" + element.getType() + "' type into '" + elementType + "' element type list.");
@@ -182,28 +182,28 @@ public final class MojangsonParser {
   }
 
   @NotNull
-  private NBTBase<?> readArray() {
+  private BaseTag<?> readArray() {
     expect('[');
     int start = reader.cursor;
     char c = reader.read();
     reader.read();
     reader.skipWhitespace();
     if (!reader.canRead()) throw new IllegalArgumentException("Expected value.");
-    if (c == NBTBase.PREFIX_BYTE_ARRAY) {
-      Number[] elements = readArrayElements(NBTType.BYTE_ARRAY, NBTType.BYTE);
+    if (c == BaseTag.PREFIX_BYTE_ARRAY) {
+      Number[] elements = readArrayElements(TagType.BYTE_ARRAY, TagType.BYTE);
       byte[] unboxes = new byte[elements.length];
       for (int i = 0; i < unboxes.length; i++) unboxes[i] = elements[i].byteValue();
-      return new NBTTagByteArray(unboxes);
-    } else if (c == NBTBase.PREFIX_INT_ARRAY) {
-      Number[] elements = readArrayElements(NBTType.INT_ARRAY, NBTType.INT);
+      return new ByteArrayTag(unboxes);
+    } else if (c == BaseTag.PREFIX_INT_ARRAY) {
+      Number[] elements = readArrayElements(TagType.INT_ARRAY, TagType.INT);
       int[] unboxes = new int[elements.length];
       for (int i = 0; i < unboxes.length; i++) unboxes[i] = elements[i].intValue();
-      return new NBTTagIntArray(unboxes);
-    } else if (c == NBTBase.PREFIX_LONG_ARRAY) {
-      Number[] elements = readArrayElements(NBTType.LONG_ARRAY, NBTType.LONG);
+      return new IntArrayTag(unboxes);
+    } else if (c == BaseTag.PREFIX_LONG_ARRAY) {
+      Number[] elements = readArrayElements(TagType.LONG_ARRAY, TagType.LONG);
       long[] unboxes = new long[elements.length];
       for (int i = 0; i < unboxes.length; i++) unboxes[i] = elements[i].longValue();
-      return new NBTTagLongArray(unboxes);
+      return new LongArrayTag(unboxes);
     } else {
       reader.cursor = start;
       throw new IllegalArgumentException("Invalid array type: " + c);
@@ -211,13 +211,13 @@ public final class MojangsonParser {
   }
 
   @NotNull
-  private Number[] readArrayElements(NBTType arrayType, NBTType elementType) {
+  private Number[] readArrayElements(TagType arrayType, TagType elementType) {
     List<Number> elements = new ArrayList<>();
     while (true) {
       if (reader.peek() != ']') {
         int start = this.reader.cursor;
         @SuppressWarnings("unchecked")
-        NBTTagNumeric<Number> base = (NBTTagNumeric<Number>) readValue();
+        NumericTag<Number> base = (NumericTag<Number>) readValue();
         if (base.getType() != elementType) {
           reader.cursor = start;
           throw new IllegalArgumentException("Can't insert '" + base.getType() + "' type into '" + arrayType + "' type array.");

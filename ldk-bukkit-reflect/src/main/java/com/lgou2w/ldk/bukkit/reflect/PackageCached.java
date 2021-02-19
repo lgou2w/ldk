@@ -16,6 +16,7 @@
 
 package com.lgou2w.ldk.bukkit.reflect;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +29,10 @@ public class PackageCached {
   private final ClassSource source;
   private final String packageName;
 
-  public PackageCached(@NotNull String packageName, @NotNull ClassSource source) {
+  @Contract("null, _ -> fail; _, null -> fail")
+  public PackageCached(String packageName, ClassSource source) {
+    if (packageName == null) throw new NullPointerException("packageName");
+    if (source == null) throw new NullPointerException("source");
     this.cached = new ConcurrentHashMap<>();
     this.packageName = packageName;
     this.source = source;

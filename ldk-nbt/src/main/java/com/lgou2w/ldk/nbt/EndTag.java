@@ -17,52 +17,51 @@
 package com.lgou2w.ldk.nbt;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
-import java.io.IOException;
 
-public class NBTTagShort extends NBTTagNumeric<Short> {
+public final class EndTag extends BaseTag<Object> {
 
-  public NBTTagShort(short value) {
-    super(value);
-  }
+  private final static Object VOID = new Object();
+  public final static EndTag INSTANCE = new EndTag();
 
-  public NBTTagShort() {
-    this((short) 0);
-  }
-
-  @Override
-  @NotNull
-  public NBTType getType() {
-    return NBTType.SHORT;
+  private EndTag() {
+    super(VOID);
   }
 
   @Override
-  public void read(@NotNull DataInput input) throws IOException {
-    value = input.readShort();
+  public @NotNull TagType getType() {
+    return TagType.END;
   }
 
   @Override
-  public void write(@NotNull DataOutput output) throws IOException {
-    output.writeShort(value);
-  }
+  public void setValue(@Nullable Object value) { /* No change allowed */ }
+
+  @Override
+  public void read(@NotNull DataInput input) { }
+
+  @Override
+  public void write(@NotNull DataOutput output) { }
 
   @Override
   public String toString() {
-    return "NBTTagShort{" +
-      "value=" + value +
-      '}';
+    return "EndTag";
   }
 
   @Override
   @NotNull
-  public NBTTagShort clone() {
-    return new NBTTagShort(value);
+  public String toMojangson(boolean includeColor) {
+    return "";
   }
 
   @Override
-  protected char getMojangsonSuffix() {
-    return NBTBase.SUFFIX_SHORT;
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) { }
+
+  @Override
+  @NotNull
+  public EndTag clone() {
+    return INSTANCE;
   }
 }

@@ -23,9 +23,9 @@ import java.util.Objects;
 
 public final class NBTMetadata {
   @NotNull private final String name;
-  @NotNull private final NBTBase<?> value;
+  @NotNull private final BaseTag<?> value;
 
-  private NBTMetadata(@NotNull String name, @NotNull NBTBase<?> value) {
+  private NBTMetadata(@NotNull String name, @NotNull BaseTag<?> value) {
     this.name = name;
     this.value = value;
   }
@@ -36,7 +36,7 @@ public final class NBTMetadata {
   }
 
   @NotNull
-  public NBTBase<?> getValue() {
+  public BaseTag<?> getValue() {
     return value;
   }
 
@@ -46,8 +46,8 @@ public final class NBTMetadata {
 
   public boolean isEndType() {
     return this == END ||
-      getValue() == NBTTagEnd.INSTANCE ||
-      getValue().getType() == NBTType.END;
+      getValue() == EndTag.INSTANCE ||
+      getValue().getType() == TagType.END;
   }
 
   @Override
@@ -71,17 +71,17 @@ public final class NBTMetadata {
       '}';
   }
 
-  public final static NBTMetadata END = new NBTMetadata("", NBTTagEnd.INSTANCE);
+  public final static NBTMetadata END = new NBTMetadata("", EndTag.INSTANCE);
 
   @Contract("null, _ -> fail; _, null -> fail")
-  public static NBTMetadata of(String name, NBTBase<?> value) {
+  public static NBTMetadata of(String name, BaseTag<?> value) {
     if (name == null) throw new NullPointerException("name");
     if (value == null) throw new NullPointerException("base");
     return new NBTMetadata(name, value);
   }
 
   @Contract("null -> fail")
-  public static NBTMetadata of(NBTBase<?> value) {
+  public static NBTMetadata of(BaseTag<?> value) {
     return of("", value);
   }
 }

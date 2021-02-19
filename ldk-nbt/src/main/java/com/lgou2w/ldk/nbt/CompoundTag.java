@@ -28,27 +28,37 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements Map<String, NBTBase<?>> {
+public class CompoundTag extends BaseTag<Map<String, BaseTag<?>>> implements Map<String, BaseTag<?>> {
 
   @Contract("null -> fail")
-  public NBTTagCompound(Map<String, NBTBase<?>> value) {
+  public CompoundTag(Map<String, BaseTag<?>> value) {
     super(new LinkedHashMap<>(value));
   }
 
-  public NBTTagCompound() {
+  public CompoundTag() {
     super(new LinkedHashMap<>());
+  }
+
+  @NotNull
+  @Contract("_ -> new")
+  public static CompoundTag of(Consumer<CompoundTag> initializer) {
+    CompoundTag tag = new CompoundTag();
+    if (initializer != null)
+      initializer.accept(tag);
+    return tag;
   }
 
   @Override
   @NotNull
-  public NBTType getType() {
-    return NBTType.COMPOUND;
+  public TagType getType() {
+    return TagType.COMPOUND;
   }
 
   @Override
-  public void setValue(Map<String, NBTBase<?>> value) {
+  public void setValue(Map<String, BaseTag<?>> value) {
     super.setValue(new LinkedHashMap<>(value));
   }
 
@@ -62,8 +72,8 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Override
   public void write(@NotNull DataOutput output) throws IOException {
-    for (Map.Entry<String, NBTBase<?>> entry : value.entrySet()) {
-      NBTBase<?> value = entry.getValue();
+    for (Map.Entry<String, BaseTag<?>> entry : value.entrySet()) {
+      BaseTag<?> value = entry.getValue();
       String key = entry.getKey();
       NBTStreams.write(output, NBTMetadata.of(key, value));
     }
@@ -72,21 +82,21 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Override
   public String toString() {
-    return "NBTTagCompound{" +
+    return "CompoundTag{" +
       "value=" + value +
       '}';
   }
 
   @Override
-  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
     builder.append('{');
-    Set<Map.Entry<String, NBTBase<?>>> entrySet = entrySet();
+    Set<Map.Entry<String, BaseTag<?>>> entrySet = entrySet();
     int len = entrySet.size(), i = 0;
 
-    if (!color) {
-      for (Map.Entry<String, NBTBase<?>> entry : entrySet) {
+    if (!includeColor) {
+      for (Map.Entry<String, BaseTag<?>> entry : entrySet) {
         String key = entry.getKey();
-        NBTBase<?> value = entry.getValue();
+        BaseTag<?> value = entry.getValue();
         if (i >= 1 && i < len) builder.append(',');
         builder.append("\"");
         builder.append(key);
@@ -95,9 +105,9 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
         i++;
       }
     } else {
-      for (Map.Entry<String, NBTBase<?>> entry : entrySet) {
+      for (Map.Entry<String, BaseTag<?>> entry : entrySet) {
         String key = entry.getKey();
-        NBTBase<?> value = entry.getValue();
+        BaseTag<?> value = entry.getValue();
         if (i >= 1 && i < len) builder.append(", ");
         builder.append("\"");
         builder.append(COLOR_AQUA);
@@ -113,18 +123,18 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Override
   @NotNull
-  public NBTTagCompound clone() {
-    Map<String, NBTBase<?>> newValue = new LinkedHashMap<>(value.size());
-    for (Map.Entry<String, NBTBase<?>> entry : value.entrySet())
+  public CompoundTag clone() {
+    Map<String, BaseTag<?>> newValue = new LinkedHashMap<>(value.size());
+    for (Map.Entry<String, BaseTag<?>> entry : value.entrySet())
       newValue.put(entry.getKey(), entry.getValue().clone());
-    return new NBTTagCompound(newValue);
+    return new CompoundTag(newValue);
   }
 
   /// Extended
 
   @NotNull
   @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
-  public NBTTagCompound set(String key, NBTBase<?> value) {
+  public CompoundTag set(String key, BaseTag<?> value) {
     if (key == null) throw new NullPointerException("key");
     if (value == null) throw new NullPointerException("value");
     put(key, value);
@@ -133,94 +143,94 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setByte(String key, byte value) {
-    return set(key, new NBTTagByte(value));
+  public CompoundTag setByte(String key, byte value) {
+    return set(key, new ByteTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setByte(String key, int value) {
+  public CompoundTag setByte(String key, int value) {
     return setByte(key, (byte) value);
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setShort(String key, short value) {
-    return set(key, new NBTTagShort(value));
+  public CompoundTag setShort(String key, short value) {
+    return set(key, new ShortTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setShort(String key, int value) {
+  public CompoundTag setShort(String key, int value) {
     return setShort(key, (short) value);
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setInt(String key, int value) {
-    return set(key, new NBTTagInt(value));
+  public CompoundTag setInt(String key, int value) {
+    return set(key, new IntTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setLong(String key, long value) {
-    return set(key, new NBTTagLong(value));
+  public CompoundTag setLong(String key, long value) {
+    return set(key, new LongTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setFloat(String key, float value) {
-    return set(key, new NBTTagFloat(value));
+  public CompoundTag setFloat(String key, float value) {
+    return set(key, new FloatTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setDouble(String key, double value) {
-    return set(key, new NBTTagDouble(value));
+  public CompoundTag setDouble(String key, double value) {
+    return set(key, new DoubleTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
-  public NBTTagCompound setByteArray(String key, byte[] value) {
-    return set(key, new NBTTagByteArray(value));
+  public CompoundTag setByteArray(String key, byte[] value) {
+    return set(key, new ByteArrayTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setString(String key, String value) {
-    return set(key, new NBTTagString(value));
+  public CompoundTag setString(String key, String value) {
+    return set(key, new StringTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
-  public NBTTagCompound setIntArray(String key, int[] value) {
-    return set(key, new NBTTagIntArray(value));
+  public CompoundTag setIntArray(String key, int[] value) {
+    return set(key, new IntArrayTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
-  public NBTTagCompound setLongArray(String key, long[] value) {
-    return set(key, new NBTTagLongArray(value));
+  public CompoundTag setLongArray(String key, long[] value) {
+    return set(key, new LongArrayTag(value));
   }
 
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> this")
-  public NBTTagCompound setBoolean(String key, boolean value) {
+  public CompoundTag setBoolean(String key, boolean value) {
     return setByte(key, (byte) (value ? 1 : 0));
   }
 
   @Nullable
   @Contract("_, _, false -> !null")
-  private <T extends NBTBase<?>> T find(
+  private <T extends BaseTag<?>> T find(
     String key,
     Class<T> expected,
     boolean nullable
   ) throws NoSuchElementException, ClassCastException {
     if (key == null) throw new NullPointerException("key");
-    NBTBase<?> value = this.value.get(key);
+    BaseTag<?> value = this.value.get(key);
     if (nullable && value == null) return null;
     if (value == null) throw new NoSuchElementException("Key value does not exist: " + key);
-    NBTType expectedType = NBTType.fromClass(expected);
+    TagType expectedType = TagType.fromClass(expected);
     if (!expected.isInstance(value)) {
       String name = expectedType != null ? expectedType.name() : expected.getSimpleName();
       throw new ClassCastException("Key '" + key + "' of value type '" + value.getType() + "' does not match. (Expected: " + name + ")");
@@ -230,59 +240,59 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @NotNull
   private Number findNumber(@NotNull String key) throws NoSuchElementException, ClassCastException {
-    NBTTagNumeric<?> value = find(key, NBTTagNumeric.class, false);
+    NumericTag<?> value = find(key, NumericTag.class, false);
     return value.value;
   }
 
   @Nullable
   private Number findNumberOrNull(@NotNull String key) {
-    NBTTagNumeric<?> value = find(key, NBTTagNumeric.class, true);
+    NumericTag<?> value = find(key, NumericTag.class, true);
     return value != null ? value.value : null;
   }
 
   @SuppressWarnings("unchecked")
   @NotNull
-  private <T, V> T findOrPresent(@NotNull NBTType type, @NotNull String key, @Nullable Supplier<V> present) {
-    NBTBase<?> value = find(key, type.getWrapped(), true);
+  private <T, V> T findOrPresent(@NotNull TagType type, @NotNull String key, @Nullable Supplier<V> present) {
+    BaseTag<?> value = find(key, type.getWrapped(), true);
     if (value == null) {
       V pv = present != null ? present.get() : null;
       switch (type) {
         case END: throw new UnsupportedOperationException("END");
         case BYTE:
-          value = new NBTTagByte((byte) (pv != null ? pv : 0));
+          value = new ByteTag((byte) (pv != null ? pv : 0));
           break;
         case SHORT:
-          value = new NBTTagShort((short) (pv != null ? pv : 0));
+          value = new ShortTag((short) (pv != null ? pv : 0));
           break;
         case INT:
-          value = new NBTTagInt((int) (pv != null ? pv : 0));
+          value = new IntTag((int) (pv != null ? pv : 0));
           break;
         case LONG:
-          value = new NBTTagLong((long) (pv != null ? pv : 0L));
+          value = new LongTag((long) (pv != null ? pv : 0L));
           break;
         case FLOAT:
-          value = new NBTTagFloat((float) (pv != null ? pv : 0f));
+          value = new FloatTag((float) (pv != null ? pv : 0f));
           break;
         case DOUBLE:
-          value = new NBTTagDouble((double) (pv != null ? pv : 0d));
+          value = new DoubleTag((double) (pv != null ? pv : 0d));
           break;
         case BYTE_ARRAY:
-          value = new NBTTagByteArray(pv != null ? (byte[]) pv : new byte[0]);
+          value = new ByteArrayTag(pv != null ? (byte[]) pv : new byte[0]);
           break;
         case STRING:
-          value = new NBTTagString(pv != null ? (String) pv : "");
+          value = new StringTag(pv != null ? (String) pv : "");
           break;
         case INT_ARRAY:
-          value = new NBTTagIntArray(pv != null ? (int[]) pv : new int[0]);
+          value = new IntArrayTag(pv != null ? (int[]) pv : new int[0]);
           break;
         case LONG_ARRAY:
-          value = new NBTTagLongArray(pv != null ? (long[]) pv : new long[0]);
+          value = new LongArrayTag(pv != null ? (long[]) pv : new long[0]);
           break;
         case LIST:
-          value = pv != null ? (NBTTagList) pv : new NBTTagList();
+          value = pv != null ? (ListTag) pv : new ListTag();
           break;
         case COMPOUND:
-          value = pv != null ? (NBTTagCompound) pv : new NBTTagCompound();
+          value = pv != null ? (CompoundTag) pv : new CompoundTag();
           break;
       }
       put(key, value);
@@ -304,7 +314,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null, _ -> fail")
   public byte getByteOrPresent(String key, @Nullable Supplier<Byte> present) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.BYTE, key, present);
+    Number value = findOrPresent(TagType.BYTE, key, present);
     return value.byteValue();
   }
 
@@ -327,7 +337,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null, _ -> fail")
   public short getShortOrPresent(String key, @Nullable Supplier<Short> present) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.BYTE, key, present);
+    Number value = findOrPresent(TagType.BYTE, key, present);
     return value.byteValue();
   }
 
@@ -350,7 +360,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null, _ -> fail")
   public int getIntOrPresent(String key, @Nullable Supplier<Integer> present) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.INT, key, present);
+    Number value = findOrPresent(TagType.INT, key, present);
     return value.intValue();
   }
 
@@ -373,7 +383,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null, _ -> fail")
   public long getLongOrPresent(String key, @Nullable Supplier<Long> present) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.LONG, key, present);
+    Number value = findOrPresent(TagType.LONG, key, present);
     return value.longValue();
   }
 
@@ -396,7 +406,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null, _ -> fail")
   public float getFloatOrPresent(String key, @Nullable Supplier<Float> present) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.FLOAT, key, present);
+    Number value = findOrPresent(TagType.FLOAT, key, present);
     return value.floatValue();
   }
 
@@ -419,7 +429,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null, _ -> fail")
   public double getDoubleOrPresent(String key, @Nullable Supplier<Double> present) throws ClassCastException  {
-    Number value = findOrPresent(NBTType.DOUBLE, key, present);
+    Number value = findOrPresent(TagType.DOUBLE, key, present);
     return value.doubleValue();
   }
 
@@ -430,19 +440,19 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null -> fail")
   public byte @NotNull [] getByteArray(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagByteArray value = find(key, NBTTagByteArray.class, false);
+    ByteArrayTag value = find(key, ByteArrayTag.class, false);
     return value.value;
   }
 
   @Contract("null -> fail")
   public byte @Nullable [] getByteArrayOrNull(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagByteArray value = find(key, NBTTagByteArray.class, true);
+    ByteArrayTag value = find(key, ByteArrayTag.class, true);
     return value != null ? value.value : null;
   }
 
   @Contract("null, _ -> fail")
   public byte @NotNull [] getByteArrayOrPresent(String key, @Nullable Supplier<byte[]> present) throws ClassCastException  {
-    NBTTagByteArray value = findOrPresent(NBTType.BYTE_ARRAY, key, present);
+    ByteArrayTag value = findOrPresent(TagType.BYTE_ARRAY, key, present);
     return value.value;
   }
 
@@ -454,21 +464,21 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   @NotNull
   @Contract("null -> fail")
   public String getString(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagString value = find(key, NBTTagString.class, false);
+    StringTag value = find(key, StringTag.class, false);
     return value.value;
   }
 
   @Nullable
   @Contract("null -> fail")
   public String getStringOrNull(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagString value = find(key, NBTTagString.class, true);
+    StringTag value = find(key, StringTag.class, true);
     return value != null ? value.value : null;
   }
 
   @NotNull
   @Contract("null, _ -> fail")
   public String getStringOrPresent(String key, @Nullable Supplier<String> present) throws ClassCastException  {
-    NBTTagString value = findOrPresent(NBTType.STRING, key, present);
+    StringTag value = findOrPresent(TagType.STRING, key, present);
     return value.value;
   }
 
@@ -480,67 +490,67 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @NotNull
   @Contract("null -> fail")
-  public NBTTagList getList(String key) throws NoSuchElementException, ClassCastException  {
-    return find(key, NBTTagList.class, false);
+  public ListTag getList(String key) throws NoSuchElementException, ClassCastException  {
+    return find(key, ListTag.class, false);
   }
 
   @Nullable
   @Contract("null -> fail")
-  public NBTTagList getListOrNull(String key) throws NoSuchElementException, ClassCastException  {
-    return find(key, NBTTagList.class, true);
+  public ListTag getListOrNull(String key) throws NoSuchElementException, ClassCastException  {
+    return find(key, ListTag.class, true);
   }
 
   @NotNull
   @Contract("null, _ -> fail")
-  public NBTTagList getListOrPresent(String key, @Nullable Supplier<NBTTagList> present) throws ClassCastException  {
-    return findOrPresent(NBTType.LIST, key, present);
+  public ListTag getListOrPresent(String key, @Nullable Supplier<ListTag> present) throws ClassCastException  {
+    return findOrPresent(TagType.LIST, key, present);
   }
 
   @NotNull
   @Contract("null -> fail")
-  public NBTTagList getListOrPresent(String key) throws ClassCastException  {
+  public ListTag getListOrPresent(String key) throws ClassCastException  {
     return getListOrPresent(key, null);
   }
 
   @NotNull
   @Contract("null -> fail")
-  public NBTTagCompound getCompound(String key) throws NoSuchElementException, ClassCastException  {
-    return find(key, NBTTagCompound.class, false);
+  public CompoundTag getCompound(String key) throws NoSuchElementException, ClassCastException  {
+    return find(key, CompoundTag.class, false);
   }
 
   @Nullable
   @Contract("null -> fail")
-  public NBTTagCompound getCompoundOrNull(String key) throws NoSuchElementException, ClassCastException  {
-    return find(key, NBTTagCompound.class, true);
+  public CompoundTag getCompoundOrNull(String key) throws NoSuchElementException, ClassCastException  {
+    return find(key, CompoundTag.class, true);
   }
 
   @NotNull
   @Contract("null, _ -> fail")
-  public NBTTagCompound getCompoundOrPresent(String key, @Nullable Supplier<NBTTagCompound> present) throws ClassCastException  {
-    return findOrPresent(NBTType.COMPOUND, key, present);
+  public CompoundTag getCompoundOrPresent(String key, @Nullable Supplier<CompoundTag> present) throws ClassCastException  {
+    return findOrPresent(TagType.COMPOUND, key, present);
   }
 
   @NotNull
   @Contract("null -> fail")
-  public NBTTagCompound getCompoundOrPresent(String key) throws ClassCastException  {
+  public CompoundTag getCompoundOrPresent(String key) throws ClassCastException  {
     return getCompoundOrPresent(key, null);
   }
 
   @Contract("null -> fail")
   public int @NotNull [] getIntArray(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagIntArray value = find(key, NBTTagIntArray.class, false);
+    IntArrayTag value = find(key, IntArrayTag.class, false);
     return value.value;
   }
 
   @Contract("null -> fail")
   public int @Nullable [] getIntArrayOrNull(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagIntArray value = find(key, NBTTagIntArray.class, true);
+    IntArrayTag value = find(key, IntArrayTag.class, true);
     return value != null ? value.value : null;
   }
 
   @Contract("null, _ -> fail")
   public int @NotNull [] getIntArrayOrPresent(String key, @Nullable Supplier<int[]> present) throws ClassCastException  {
-    NBTTagIntArray value = findOrPresent(NBTType.INT_ARRAY, key, present);
+    IntArrayTag value = findOrPresent(TagType.INT_ARRAY, key, present);
     return value.value;
   }
 
@@ -551,19 +561,19 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @Contract("null -> fail")
   public long @NotNull [] getLongArray(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagLongArray value = find(key, NBTTagLongArray.class, false);
+    LongArrayTag value = find(key, LongArrayTag.class, false);
     return value.value;
   }
 
   @Contract("null -> fail")
   public long @Nullable [] getLongArrayOrNull(String key) throws NoSuchElementException, ClassCastException  {
-    NBTTagLongArray value = find(key, NBTTagLongArray.class, true);
+    LongArrayTag value = find(key, LongArrayTag.class, true);
     return value != null ? value.value : null;
   }
 
   @Contract("null, _ -> fail")
   public long @NotNull [] getLongArrayOrPresent(String key, @Nullable Supplier<long[]> present) throws ClassCastException  {
-    NBTTagLongArray value = findOrPresent(NBTType.LONG_ARRAY, key, present);
+    LongArrayTag value = findOrPresent(TagType.LONG_ARRAY, key, present);
     return value.value;
   }
 
@@ -604,7 +614,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   }
 
   @Contract("null -> false")
-  public boolean hasValue(@Nullable NBTBase<?> value) {
+  public boolean hasValue(@Nullable BaseTag<?> value) {
     if (value == null) return false;
     return this.value.containsValue(value);
   }
@@ -626,13 +636,13 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
   @Override
   @Contract("null -> false")
   public boolean containsValue(@Nullable Object value) {
-    if (!(value instanceof NBTBase)) return false;
-    return hasValue((NBTBase<?>) value);
+    if (!(value instanceof BaseTag)) return false;
+    return hasValue((BaseTag<?>) value);
   }
 
   @Override
   @Contract("null -> null")
-  public NBTBase<?> get(@Nullable Object key) {
+  public BaseTag<?> get(@Nullable Object key) {
     if (!(key instanceof String)) return null;
     return value.get(key);
   }
@@ -644,7 +654,7 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @NotNull
   @Override
-  public Set<Entry<String, NBTBase<?>>> entrySet() {
+  public Set<Entry<String, BaseTag<?>>> entrySet() {
     return value.entrySet();
   }
 
@@ -656,25 +666,25 @@ public class NBTTagCompound extends NBTBase<Map<String, NBTBase<?>>> implements 
 
   @NotNull
   @Override
-  public Collection<NBTBase<?>> values() {
+  public Collection<BaseTag<?>> values() {
     return value.values();
   }
 
   @Nullable
   @Override
-  public NBTBase<?> put(String key, NBTBase<?> value) {
+  public BaseTag<?> put(String key, BaseTag<?> value) {
     return this.value.put(key, value);
   }
 
   @Override
   @Contract("null -> null")
-  public NBTBase<?> remove(@Nullable Object key) {
+  public BaseTag<?> remove(@Nullable Object key) {
     if (!(key instanceof String)) return null;
     return value.remove(key);
   }
 
   @Override
-  public void putAll(@NotNull Map<? extends String, ? extends NBTBase<?>> m) {
+  public void putAll(@NotNull Map<? extends String, ? extends BaseTag<?>> m) {
     value.putAll(m);
   }
 
