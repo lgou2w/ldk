@@ -160,7 +160,7 @@ public final class ItemFactory {
 
   @Nullable
   @Contract("null -> null; !null -> !null")
-  public static Object asNMSCopy(ItemStack stack) {
+  public static Object asNMSCopy(@Nullable ItemStack stack) {
     if (stack == null) return null;
     return METHOD_CRAFT_ITEM_STACK_AS_NMS_COPY.get().invoke(null, stack);
   }
@@ -224,7 +224,7 @@ public final class ItemFactory {
 
   @Nullable
   @Contract("null -> null")
-  public static CompoundTag readStackTag(ItemStack stack) {
+  public static CompoundTag readStackTag(@Nullable ItemStack stack) {
     if (stack == null) return null;
     if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
       Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get().get(stack);
@@ -264,14 +264,16 @@ public final class ItemFactory {
   }
 
   @NotNull
-  public static CompoundTag readStackTagOrPresent(ItemStack stack, @Nullable Supplier<CompoundTag> present) {
+  @Contract("null, _ -> !null")
+  public static CompoundTag readStackTagOrPresent(@Nullable ItemStack stack, @Nullable Supplier<CompoundTag> present) {
     CompoundTag compound = readStackTag(stack);
     if (compound == null && present != null) compound = present.get();
     return compound != null ? compound : new CompoundTag();
   }
 
   @NotNull
-  public static CompoundTag readStackTagOrPresent(ItemStack stack) {
+  @Contract("null -> !null")
+  public static CompoundTag readStackTagOrPresent(@Nullable ItemStack stack) {
     return readStackTagOrPresent(stack, null);
   }
 

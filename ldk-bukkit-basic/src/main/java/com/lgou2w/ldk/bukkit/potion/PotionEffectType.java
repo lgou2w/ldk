@@ -134,7 +134,7 @@ public enum PotionEffectType {
 
   @Nullable
   @Contract("null -> null")
-  public static PotionEffectType fromName(String name) {
+  public static PotionEffectType fromName(@Nullable String name) {
     if (name == null) return null;
     return NAME_MAP.get(name.toLowerCase(Locale.ENGLISH));
   }

@@ -149,7 +149,7 @@ public enum Enchantment {
 
   @Nullable
   @Contract("null -> null")
-  public static Enchantment fromName(String name) {
+  public static Enchantment fromName(@Nullable String name) {
     if (name == null) return null;
     return NAME_MAP.get(name.toLowerCase(Locale.ENGLISH));
   }

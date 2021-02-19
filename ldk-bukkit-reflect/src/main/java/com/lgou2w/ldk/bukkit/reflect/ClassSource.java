@@ -53,7 +53,8 @@ public abstract class ClassSource {
       private final Map<String, Class<?>> cache = map;
 
       @Override
-      public @NotNull Class<?> loadClass(@NotNull String name) throws ClassNotFoundException {
+      @NotNull
+      public Class<?> loadClass(@NotNull String name) throws ClassNotFoundException {
         Class<?> clazz = cache.get(name);
         if (clazz == null) throw new ClassNotFoundException("The specified class does not exist in map.");
         return clazz;

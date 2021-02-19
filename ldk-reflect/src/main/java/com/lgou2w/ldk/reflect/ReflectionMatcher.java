@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 public abstract class ReflectionMatcher<T extends AccessibleObject & Member> {
   protected final boolean declared;
-  protected @NotNull List<T> values;
+  @NotNull protected List<T> values;
 
   public ReflectionMatcher(@NotNull Collection<T> values, boolean declared) {
     this.declared = declared;

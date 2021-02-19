@@ -39,7 +39,7 @@ public final class MinecraftReflection {
   private final static PackageCached CACHED_MINECRAFT;
 
   /// Remapper
-  private final static @Nullable Remapper REMAPPER;
+  @Nullable private final static Remapper REMAPPER;
 
   static {
     PACKAGE_CRAFTBUKKIT = "org.bukkit.craftbukkit." + BukkitVersion.CURRENT.getVersionString();

@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  */
 
 public final class MojangsonParser {
-  private final @NotNull StringReader reader;
+  @NotNull private final StringReader reader;
 
   private MojangsonParser(@NotNull StringReader reader) {
     this.reader = reader;

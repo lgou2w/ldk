@@ -51,7 +51,7 @@ import java.util.NoSuchElementException;
 
 public final class IteratorChain<T> implements Iterator<T> {
   private final List<Iterator<T>> iterators;
-  private @Nullable Iterator<T> current;
+  @Nullable private Iterator<T> current;
   private int index = 0;
 
   @SafeVarargs
@@ -63,6 +63,7 @@ public final class IteratorChain<T> implements Iterator<T> {
     this.iterators = new ArrayList<>(iterators);
   }
 
+  @SuppressWarnings("unchecked")
   @NotNull
   private Iterator<T> update() {
     if (current == null) {
