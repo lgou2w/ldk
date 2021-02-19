@@ -48,4 +48,10 @@ public interface ChatComponent extends Iterable<ChatComponent> {
   @NotNull
   @Contract("null -> fail; !null -> this")
   ChatComponent addSibling(String text);
+
+  @NotNull
+  @Contract("-> new")
+  static ComponentBuilder builder() {
+    return ComponentBuilder.newBuilder();
+  }
 }
