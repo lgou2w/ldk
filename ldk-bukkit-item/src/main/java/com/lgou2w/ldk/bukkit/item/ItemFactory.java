@@ -28,7 +28,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.TestOnly;
 
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -234,31 +233,9 @@ public final class ItemFactory {
     return readTagOrPresent(stack, null);
   }
 
+  @SuppressWarnings({ "unchecked", "ConstantConditions" })
   public static void writeTag(@Nullable ItemStack stack, @Nullable CompoundTag tag) {
     if (stack == null) return;
-// TODO: remove
-//
-//    if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
-//      Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get(stack);
-//      if (handle == null) {
-//        // Why the handle is null? Because the item material type is invalid, such as WALL_BANNER.
-//        // Return an null tag or throw an exception, need confirmation.
-//        // TODO: ItemFactory.writeTag -> handle null problem
-//        return;
-//      }
-//      Object internal = tag != null ? NBTFactory.to(tag) : null;
-//      FIELD_ITEM_STACK_TAG.set(handle, internal);
-//      System.out.println(FIELD_ITEM_STACK_TAG.get(handle));
-//    } else if (tag != null) {
-//      Object origin = asNMSCopy(stack);
-//      ItemStack obcStack = (ItemStack) asCraftMirror(origin);
-//      writeTag(obcStack, tag);
-//      System.out.println(obcStack);
-//      stack.setItemMeta(obcStack.getItemMeta());
-//    } else {
-//      stack.setItemMeta(null);
-//    }
-
     if (METHOD_ITEM_STACK_CREATE.get() == null && CONSTRUCTOR_ITEM_STACK.get() == null) {
       // Unless the server is a specially modified version that cannot be reflected to the member structure.
       // It is only used to avoid the null pointer problem below.
@@ -306,25 +283,5 @@ public final class ItemFactory {
     CompoundTag tag = readTagOrPresent(stack);
     modifier.accept(tag);
     writeTag(stack, tag);
-  }
-
-  // FIXME: remove unit test
-  // TODO: full server test
-  @TestOnly
-  @Deprecated
-  public static void test() {
-    ItemStack stack = new ItemStack(Material.IRON_SWORD);
-    CompoundTag tag = new CompoundTag()
-      .setShort("Damage", 10)
-      .getCompoundOrPresent("display")
-      .setString("Name", "{\"text\":\"HelloWorld\"}");
-    writeTag(stack, tag);
-    System.out.println(stack);
-
-    Object origin = asNMSCopy(new ItemStack(Material.IRON_SWORD));
-    Object obcStack = asCraftMirror(origin);
-    System.out.println(CLASS_CRAFT_ITEM_STACK.isInstance(obcStack));
-    writeTag((ItemStack) obcStack, tag);
-    System.out.println(obcStack);
   }
 }
