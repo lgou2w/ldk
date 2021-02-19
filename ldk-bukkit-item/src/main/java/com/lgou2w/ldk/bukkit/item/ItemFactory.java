@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Modifier;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -178,6 +179,23 @@ public final class ItemFactory {
     if (!CLASS_ITEM_STACK.isInstance(origin))
       throw new IllegalArgumentException("Object is not an instance of NMS.ItemStack. Current: " + origin);
     return METHOD_CRAFT_ITEM_STACK_AS_BUKKIT_COPY.get().invoke(null, origin);
+  }
+
+  @NotNull
+  @Contract("null -> fail; !null -> !null")
+  @SuppressWarnings("ConstantConditions")
+  public static String materialKey(Material material) {
+    if (material == null) throw new NullPointerException("material");
+    if (METHOD_CRAFT_MAGIC_NUMBERS_KEY != null &&
+      METHOD_CRAFT_MAGIC_NUMBERS_KEY.get() != null) {
+      Object minecraftKey = METHOD_CRAFT_MAGIC_NUMBERS_KEY.get().invoke(null, material);
+      return minecraftKey.toString(); // such as: minecraft:diamond
+    } else {
+      String name = material.name().toLowerCase(Locale.ENGLISH);
+      return !name.startsWith("minecraft:")
+        ? "minecraft:" + name
+        : name;
+    }
   }
 
   @Nullable
