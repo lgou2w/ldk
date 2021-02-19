@@ -20,6 +20,7 @@ repositories {
 dependencies {
   compile project(':ldk-bukkit-version')
   compile project(':ldk-bukkit-reflect')
+  compile project(':ldk-bukkit-chat')
   compile project(':ldk-bukkit-nbt')
   compile project(':ldk-bukkit-basic')
   compile project(':ldk-bukkit-item')

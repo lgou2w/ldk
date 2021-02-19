@@ -1,7 +1,7 @@
 ext {
-  gson_vesrion = '2.8.6'
+  gson_version = '2.8.6'
 }
 
 dependencies {
-  compile "com.google.code.gson:gson:${gson_vesrion}"
+  compile "com.google.code.gson:gson:${gson_version}"
 }

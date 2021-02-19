@@ -1,5 +1,4 @@
 dependencies {
-  compile project(':ldk-chat')
-  compile project(':ldk-bukkit-packet')
+  compile project(':ldk-bukkit-reflect')
   compileOnly "org.spigotmc:spigot-api:${bukkit_version}"
 }
