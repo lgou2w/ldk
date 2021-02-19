@@ -7,6 +7,7 @@ include ':ldk-nbt'
 
 include ':ldk-bukkit-version'
 include ':ldk-bukkit-reflect'
+include ':ldk-bukkit-chat'
 include ':ldk-bukkit-nbt'
 include ':ldk-bukkit-basic'
 include ':ldk-bukkit-item'
