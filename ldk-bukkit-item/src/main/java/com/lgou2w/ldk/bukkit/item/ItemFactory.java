@@ -182,7 +182,7 @@ public final class ItemFactory {
 
   @Nullable
   @Contract("null -> null")
-  public static CompoundTag readTag(ItemStack stack) {
+  public static CompoundTag readStackTag(ItemStack stack) {
     if (stack == null) return null;
     if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
       Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get().get(stack);
@@ -217,24 +217,24 @@ public final class ItemFactory {
       Object origin = asNMSCopy(stack);
       ItemStack obcStack = (ItemStack) asCraftMirror(origin);
       obcStack.setItemMeta(stack.getItemMeta()); // Copy item meta
-      return readTag(obcStack);
+      return readStackTag(obcStack);
     }
   }
 
   @NotNull
-  public static CompoundTag readTagOrPresent(ItemStack stack, @Nullable Supplier<CompoundTag> present) {
-    CompoundTag compound = readTag(stack);
+  public static CompoundTag readStackTagOrPresent(ItemStack stack, @Nullable Supplier<CompoundTag> present) {
+    CompoundTag compound = readStackTag(stack);
     if (compound == null && present != null) compound = present.get();
     return compound != null ? compound : new CompoundTag();
   }
 
   @NotNull
-  public static CompoundTag readTagOrPresent(ItemStack stack) {
-    return readTagOrPresent(stack, null);
+  public static CompoundTag readStackTagOrPresent(ItemStack stack) {
+    return readStackTagOrPresent(stack, null);
   }
 
   @SuppressWarnings({ "unchecked", "ConstantConditions" })
-  public static void writeTag(@Nullable ItemStack stack, @Nullable CompoundTag tag) {
+  public static void writeStackTag(@Nullable ItemStack stack, @Nullable CompoundTag tag) {
     if (stack == null) return;
     if (METHOD_ITEM_STACK_CREATE.get() == null && CONSTRUCTOR_ITEM_STACK.get() == null) {
       // Unless the server is a specially modified version that cannot be reflected to the member structure.
@@ -277,11 +277,11 @@ public final class ItemFactory {
   }
 
   @Contract("null, _ -> fail; _, null -> fail")
-  public static void modifyTag(ItemStack stack, Consumer<CompoundTag> modifier) {
+  public static void modifyStackTag(ItemStack stack, Consumer<CompoundTag> modifier) {
     if (stack == null) throw new NullPointerException("stack");
     if (modifier == null) throw new NullPointerException("modifier");
-    CompoundTag tag = readTagOrPresent(stack);
+    CompoundTag tag = readStackTagOrPresent(stack);
     modifier.accept(tag);
-    writeTag(stack, tag);
+    writeStackTag(stack, tag);
   }
 }
