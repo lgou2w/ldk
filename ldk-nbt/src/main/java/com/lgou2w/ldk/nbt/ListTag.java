@@ -30,20 +30,20 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 
-public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBase<?>> {
-  private @NotNull NBTType elementType = NBTType.END;
+public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?>> {
+  private @NotNull TagType elementType = TagType.END;
 
   @Contract("null -> fail")
-  public NBTTagList(List<NBTBase<?>> value) {
+  public ListTag(List<BaseTag<?>> value) {
     super(new ArrayList<>(value));
   }
 
-  public NBTTagList() {
+  public ListTag() {
     this(new ArrayList<>());
   }
 
-  private void checkElement(@NotNull NBTBase<?> el) {
-    if (elementType == NBTType.END) {
+  private void checkElement(@NotNull BaseTag<?> el) {
+    if (elementType == TagType.END) {
       elementType = el.getType();
     } else if (el.getType() != elementType) {
       throw new IllegalArgumentException("The type of element value that does not match, should be: " + elementType);
@@ -51,32 +51,32 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   }
 
   @NotNull
-  public NBTType getElementType() {
+  public TagType getElementType() {
     return elementType;
   }
 
   @Override
   @NotNull
-  public NBTType getType() {
-    return NBTType.LIST;
+  public TagType getType() {
+    return TagType.LIST;
   }
 
   @Override
-  public void setValue(List<NBTBase<?>> value) {
+  public void setValue(List<BaseTag<?>> value) {
     if (value == null) throw new NullPointerException("value");
-    for (NBTBase<?> el : value) checkElement(el);
+    for (BaseTag<?> el : value) checkElement(el);
     super.setValue(new ArrayList<>(value));
   }
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    NBTType elementType = NBTType.fromId(input.readUnsignedByte());
-    if (elementType == null) elementType = NBTType.END;
+    TagType elementType = TagType.fromId(input.readUnsignedByte());
+    if (elementType == null) elementType = TagType.END;
     int length = input.readInt();
     this.elementType = elementType;
     value = new ArrayList<>();
     for (int i = 0; i < length; i++) {
-      NBTBase<?> element = NBTType.create(elementType);
+      BaseTag<?> element = TagType.create(elementType);
       element.read(input);
       value.add(element); // skip check
     }
@@ -86,14 +86,14 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   public void write(@NotNull DataOutput output) throws IOException {
     output.writeByte(isEmpty() ? 0 : elementType.getId());
     output.writeInt(size());
-    for (NBTBase<?> el : value) el.write(output);
+    for (BaseTag<?> el : value) el.write(output);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    NBTTagList list = (NBTTagList) o;
+    ListTag list = (ListTag) o;
     if (elementType != list.elementType) return false;
     return super.equals(o);
   }
@@ -105,7 +105,7 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
 
   @Override
   public String toString() {
-    return "NBTTagList{" +
+    return "ListTag{" +
       "value=" + value +
       ", elementType=" + elementType +
       '}';
@@ -115,7 +115,7 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
     builder.append('[');
     int len = value.size(), i = 0;
-    for (NBTBase<?> element : value) {
+    for (BaseTag<?> element : value) {
       if (i >= 1 && i < len) builder.append(!color ? "," : ", ");
       element.toMojangsonBuilder(builder, color);
       i++;
@@ -125,141 +125,141 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
 
   @Override
   @NotNull
-  public NBTTagList clone() {
-    List<NBTBase<?>> newValue = new ArrayList<>(value.size());
-    for (NBTBase<?> el : value) newValue.add(el.clone());
-    return new NBTTagList(newValue);
+  public ListTag clone() {
+    List<BaseTag<?>> newValue = new ArrayList<>(value.size());
+    for (BaseTag<?> el : value) newValue.add(el.clone());
+    return new ListTag(newValue);
   }
 
   /// Extended
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addByte(byte... values) {
+  public ListTag addByte(byte... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagByte> c = new ArrayList<>(values.length);
-    for (byte element : values) c.add(new NBTTagByte(element));
+    List<ByteTag> c = new ArrayList<>(values.length);
+    for (byte element : values) c.add(new ByteTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addByte(int... values) {
+  public ListTag addByte(int... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagByte> c = new ArrayList<>(values.length);
-    for (int element : values) c.add(new NBTTagByte((byte) element));
+    List<ByteTag> c = new ArrayList<>(values.length);
+    for (int element : values) c.add(new ByteTag((byte) element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addShort(short... values) {
+  public ListTag addShort(short... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagShort> c = new ArrayList<>(values.length);
-    for (short element : values) c.add(new NBTTagShort(element));
+    List<ShortTag> c = new ArrayList<>(values.length);
+    for (short element : values) c.add(new ShortTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addShort(int... values) {
+  public ListTag addShort(int... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagShort> c = new ArrayList<>(values.length);
-    for (int element : values) c.add(new NBTTagShort((short) element));
+    List<ShortTag> c = new ArrayList<>(values.length);
+    for (int element : values) c.add(new ShortTag((short) element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addInt(int... values) {
+  public ListTag addInt(int... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagInt> c = new ArrayList<>(values.length);
-    for (int element : values) c.add(new NBTTagInt(element));
+    List<IntTag> c = new ArrayList<>(values.length);
+    for (int element : values) c.add(new IntTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addLong(long... values) {
+  public ListTag addLong(long... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagLong> c = new ArrayList<>(values.length);
-    for (long element : values) c.add(new NBTTagLong(element));
+    List<LongTag> c = new ArrayList<>(values.length);
+    for (long element : values) c.add(new LongTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addFloat(float... values) {
+  public ListTag addFloat(float... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagFloat> c = new ArrayList<>(values.length);
-    for (float element : values) c.add(new NBTTagFloat(element));
+    List<FloatTag> c = new ArrayList<>(values.length);
+    for (float element : values) c.add(new FloatTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addDouble(double... values) {
+  public ListTag addDouble(double... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagDouble> c = new ArrayList<>(values.length);
-    for (double element : values) c.add(new NBTTagDouble(element));
+    List<DoubleTag> c = new ArrayList<>(values.length);
+    for (double element : values) c.add(new DoubleTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addByteArray(byte[]... values) {
+  public ListTag addByteArray(byte[]... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagByteArray> c = new ArrayList<>(values.length);
-    for (byte[] element : values) c.add(new NBTTagByteArray(element));
+    List<ByteArrayTag> c = new ArrayList<>(values.length);
+    for (byte[] element : values) c.add(new ByteArrayTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addString(String... values) {
+  public ListTag addString(String... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagString> c = new ArrayList<>(values.length);
-    for (String element : values) c.add(new NBTTagString(element));
+    List<StringTag> c = new ArrayList<>(values.length);
+    for (String element : values) c.add(new StringTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addList(NBTTagList... values) {
+  public ListTag addList(ListTag... values) {
     if (values == null) throw new NullPointerException("values");
     addAll(Arrays.asList(values));
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addCompound(NBTTagCompound... values) {
+  public ListTag addCompound(CompoundTag... values) {
     if (values == null) throw new NullPointerException("values");
     addAll(Arrays.asList(values));
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addIntArray(int[]... values) {
+  public ListTag addIntArray(int[]... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagIntArray> c = new ArrayList<>(values.length);
-    for (int[] element : values) c.add(new NBTTagIntArray(element));
+    List<IntArrayTag> c = new ArrayList<>(values.length);
+    for (int[] element : values) c.add(new IntArrayTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addLongArray(long[]... values) {
+  public ListTag addLongArray(long[]... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagLongArray> c = new ArrayList<>(values.length);
-    for (long[] element : values) c.add(new NBTTagLongArray(element));
+    List<LongArrayTag> c = new ArrayList<>(values.length);
+    for (long[] element : values) c.add(new LongArrayTag(element));
     addAll(c);
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
-  public NBTTagList addBoolean(boolean... values) {
+  public ListTag addBoolean(boolean... values) {
     if (values == null) throw new NullPointerException("values");
-    List<NBTTagByte> c = new ArrayList<>(values.length);
-    for (boolean element : values) c.add(new NBTTagByte((byte) (element ? 1 : 0)));
+    List<ByteTag> c = new ArrayList<>(values.length);
+    for (boolean element : values) c.add(new ByteTag((byte) (element ? 1 : 0)));
     addAll(c);
     return this;
   }
@@ -268,7 +268,7 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
 
   @NotNull
   @Override
-  public Iterator<NBTBase<?>> iterator() {
+  public Iterator<BaseTag<?>> iterator() {
     return value.iterator();
   }
 
@@ -288,7 +288,7 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   }
 
   @Override
-  public NBTBase<?> get(int index) {
+  public BaseTag<?> get(int index) {
     return value.get(index);
   }
 
@@ -308,26 +308,26 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   }
 
   @Override
-  public boolean add(NBTBase<?> element) {
+  public boolean add(BaseTag<?> element) {
     checkElement(element);
     return value.add(element);
   }
 
   @Override
-  public void add(int index, NBTBase<?> element) {
+  public void add(int index, BaseTag<?> element) {
     checkElement(element);
     value.add(index, element);
   }
 
   @Override
-  public boolean addAll(int index, @NotNull Collection<? extends NBTBase<?>> c) {
-    for (NBTBase<?> el : c) checkElement(el);
+  public boolean addAll(int index, @NotNull Collection<? extends BaseTag<?>> c) {
+    for (BaseTag<?> el : c) checkElement(el);
     return value.addAll(index, c);
   }
 
   @Override
-  public boolean addAll(@NotNull Collection<? extends NBTBase<?>> c) {
-    for (NBTBase<?> el : c) checkElement(el);
+  public boolean addAll(@NotNull Collection<? extends BaseTag<?>> c) {
+    for (BaseTag<?> el : c) checkElement(el);
     return value.addAll(c);
   }
 
@@ -338,32 +338,32 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
 
   @NotNull
   @Override
-  public ListIterator<NBTBase<?>> listIterator() {
+  public ListIterator<BaseTag<?>> listIterator() {
     return value.listIterator();
   }
 
   @NotNull
   @Override
-  public ListIterator<NBTBase<?>> listIterator(int index) {
+  public ListIterator<BaseTag<?>> listIterator(int index) {
     return value.listIterator(index);
   }
 
   @Override
-  public NBTBase<?> remove(int index) {
+  public BaseTag<?> remove(int index) {
     return value.remove(index);
   }
 
   @Override
   public boolean remove(Object o) {
-    if (o instanceof NBTBase) checkElement((NBTBase<?>) o);
+    if (o instanceof BaseTag) checkElement((BaseTag<?>) o);
     return value.remove(o);
   }
 
   @Override
   public boolean removeAll(@NotNull Collection<?> c) {
     for (Object el : c) {
-      if (el instanceof NBTBase) {
-        checkElement((NBTBase<?>) el);
+      if (el instanceof BaseTag) {
+        checkElement((BaseTag<?>) el);
       }
     }
     return value.removeAll(c);
@@ -372,22 +372,22 @@ public class NBTTagList extends NBTBase<List<NBTBase<?>>> implements List<NBTBas
   @Override
   public boolean retainAll(@NotNull Collection<?> c) {
     for (Object el : c) {
-      if (el instanceof NBTBase) {
-        checkElement((NBTBase<?>) el);
+      if (el instanceof BaseTag) {
+        checkElement((BaseTag<?>) el);
       }
     }
     return value.retainAll(c);
   }
 
   @Override
-  public NBTBase<?> set(int index, NBTBase<?> element) {
+  public BaseTag<?> set(int index, BaseTag<?> element) {
     checkElement(element);
     return value.set(index, element);
   }
 
   @NotNull
   @Override
-  public List<NBTBase<?>> subList(int fromIndex, int toIndex) {
+  public List<BaseTag<?>> subList(int fromIndex, int toIndex) {
     return value.subList(fromIndex, toIndex);
   }
 

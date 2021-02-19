@@ -17,8 +17,8 @@
 package com.lgou2w.ldk.bukkit.item;
 
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory;
-import com.lgou2w.ldk.nbt.NBTTagCompound;
-import com.lgou2w.ldk.nbt.NBTType;
+import com.lgou2w.ldk.nbt.CompoundTag;
+import com.lgou2w.ldk.nbt.TagType;
 import com.lgou2w.ldk.reflect.ConstructorAccessor;
 import com.lgou2w.ldk.reflect.FieldAccessor;
 import com.lgou2w.ldk.reflect.FuzzyReflection;
@@ -183,7 +183,7 @@ public final class ItemFactory {
 
   @Nullable
   @Contract("null -> null")
-  public static NBTTagCompound readTag(ItemStack stack) {
+  public static CompoundTag readTag(ItemStack stack) {
     if (stack == null) return null;
     if (CLASS_CRAFT_ITEM_STACK.isInstance(stack)) {
       Object handle = FIELD_CRAFT_ITEM_STACK_HANDLE.get().get(stack);
@@ -207,12 +207,12 @@ public final class ItemFactory {
         //   - Mohist-1.12      : pass
         //   - Mohist-1.16      : null
         // Possible patch changes made in forge 1.16? Maybe
-        Object internal = NBTFactory.newInternal(NBTType.COMPOUND, null);
+        Object internal = NBTFactory.newInternal(TagType.COMPOUND, null);
         METHOD_ITEM_STACK_SAVE.get().invoke(handle, internal);
-        NBTTagCompound compound = (NBTTagCompound) NBTFactory.from(internal);
+        CompoundTag compound = (CompoundTag) NBTFactory.from(internal);
         return compound.getCompoundOrNull("tag"); // get tag only
       } else {
-        return (NBTTagCompound) NBTFactory.from(tag);
+        return (CompoundTag) NBTFactory.from(tag);
       }
     } else {
       Object origin = asNMSCopy(stack);
@@ -223,18 +223,18 @@ public final class ItemFactory {
   }
 
   @NotNull
-  public static NBTTagCompound readTagOrPresent(ItemStack stack, @Nullable Supplier<NBTTagCompound> present) {
-    NBTTagCompound compound = readTag(stack);
+  public static CompoundTag readTagOrPresent(ItemStack stack, @Nullable Supplier<CompoundTag> present) {
+    CompoundTag compound = readTag(stack);
     if (compound == null && present != null) compound = present.get();
-    return compound != null ? compound : new NBTTagCompound();
+    return compound != null ? compound : new CompoundTag();
   }
 
   @NotNull
-  public static NBTTagCompound readTagOrPresent(ItemStack stack) {
+  public static CompoundTag readTagOrPresent(ItemStack stack) {
     return readTagOrPresent(stack, null);
   }
 
-  public static void writeTag(@Nullable ItemStack stack, @Nullable NBTTagCompound tag) {
+  public static void writeTag(@Nullable ItemStack stack, @Nullable CompoundTag tag) {
     if (stack == null) return;
 // TODO: remove
 //
@@ -282,7 +282,7 @@ public final class ItemFactory {
       // TODO: docs
       Object internal = NBTFactory.to(tag);
       Object origin = asNMSCopy(stack);
-      Object saved = NBTFactory.newInternal(NBTType.COMPOUND, null);
+      Object saved = NBTFactory.newInternal(TagType.COMPOUND, null);
       METHOD_ITEM_STACK_SAVE.get().invoke(origin, saved);
 
       Map<String, Object> value = (Map<String, Object>) FIELD_NBT_TAG_COMPOUND_VALUE.get().get(saved);
@@ -300,10 +300,10 @@ public final class ItemFactory {
   }
 
   @Contract("null, _ -> fail; _, null -> fail")
-  public static void modifyTag(ItemStack stack, Consumer<NBTTagCompound> modifier) {
+  public static void modifyTag(ItemStack stack, Consumer<CompoundTag> modifier) {
     if (stack == null) throw new NullPointerException("stack");
     if (modifier == null) throw new NullPointerException("modifier");
-    NBTTagCompound tag = readTagOrPresent(stack);
+    CompoundTag tag = readTagOrPresent(stack);
     modifier.accept(tag);
     writeTag(stack, tag);
   }
@@ -314,9 +314,10 @@ public final class ItemFactory {
   @Deprecated
   public static void test() {
     ItemStack stack = new ItemStack(Material.IRON_SWORD);
-    NBTTagCompound tag = new NBTTagCompound();
-    tag.setShort("Damage", 10);
-    tag.getCompoundOrPresent("display").setString("Name", "{\"text\":\"HelloWorld\"}");
+    CompoundTag tag = new CompoundTag()
+      .setShort("Damage", 10)
+      .getCompoundOrPresent("display")
+      .setString("Name", "{\"text\":\"HelloWorld\"}");
     writeTag(stack, tag);
     System.out.println(stack);
 

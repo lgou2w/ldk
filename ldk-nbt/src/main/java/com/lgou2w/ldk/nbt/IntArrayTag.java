@@ -24,20 +24,20 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class NBTTagIntArray extends NBTBase<int[]> {
+public class IntArrayTag extends BaseTag<int[]> {
 
   @Contract("null -> fail")
-  public NBTTagIntArray(int[] value) {
+  public IntArrayTag(int[] value) {
     super(value);
   }
 
-  public NBTTagIntArray() {
+  public IntArrayTag() {
     this(new int[0]);
   }
 
   @Override
-  public @NotNull NBTType getType() {
-    return NBTType.INT_ARRAY;
+  public @NotNull TagType getType() {
+    return TagType.INT_ARRAY;
   }
 
   @Override
@@ -71,7 +71,7 @@ public class NBTTagIntArray extends NBTBase<int[]> {
 
   @Override
   public String toString() {
-    return "NBTTagIntArray{" +
+    return "IntArrayTag{" +
       "value=" + Arrays.toString(value) +
       '}';
   }
@@ -106,9 +106,9 @@ public class NBTTagIntArray extends NBTBase<int[]> {
 
   @Override
   @NotNull
-  public NBTTagIntArray clone() {
+  public IntArrayTag clone() {
     int[] newValue = new int[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
-    return new NBTTagIntArray(newValue);
+    return new IntArrayTag(newValue);
   }
 }

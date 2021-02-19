@@ -26,7 +26,7 @@ import java.io.IOException;
 public interface NBT<T> extends Cloneable {
 
   @NotNull
-  NBTType getType();
+  TagType getType();
 
   @NotNull
   T getValue();

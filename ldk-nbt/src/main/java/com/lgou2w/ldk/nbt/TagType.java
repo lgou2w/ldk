@@ -25,29 +25,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum NBTType {
+public enum TagType {
 
-  END(0, Void.TYPE, Void.class, NBTTagEnd.class),
-  BYTE(1, Byte.TYPE, Byte.class, NBTTagByte.class),
-  SHORT(2, Short.TYPE, Short.class, NBTTagShort.class),
-  INT(3, Integer.TYPE, Integer.class, NBTTagInt.class),
-  LONG(4, Long.TYPE, Long.class, NBTTagLong.class),
-  FLOAT(5, Float.TYPE, Float.class, NBTTagFloat.class),
-  DOUBLE(6, Double.TYPE, Double.class, NBTTagDouble.class),
-  BYTE_ARRAY(7, byte[].class, byte[].class, NBTTagByteArray.class),
-  STRING(8, String.class, String.class, NBTTagString.class),
-  LIST(9, List.class, List.class, NBTTagList.class),
-  COMPOUND(10, Map.class, Map.class, NBTTagCompound.class),
-  INT_ARRAY(11, int[].class, int[].class, NBTTagIntArray.class),
-  LONG_ARRAY(12, long[].class, long[].class, NBTTagLongArray.class)
+  END(0, Void.TYPE, Void.class, EndTag.class),
+  BYTE(1, Byte.TYPE, Byte.class, ByteTag.class),
+  SHORT(2, Short.TYPE, Short.class, ShortTag.class),
+  INT(3, Integer.TYPE, Integer.class, IntTag.class),
+  LONG(4, Long.TYPE, Long.class, LongTag.class),
+  FLOAT(5, Float.TYPE, Float.class, FloatTag.class),
+  DOUBLE(6, Double.TYPE, Double.class, DoubleTag.class),
+  BYTE_ARRAY(7, byte[].class, byte[].class, ByteArrayTag.class),
+  STRING(8, String.class, String.class, StringTag.class),
+  LIST(9, List.class, List.class, ListTag.class),
+  COMPOUND(10, Map.class, Map.class, CompoundTag.class),
+  INT_ARRAY(11, int[].class, int[].class, IntArrayTag.class),
+  LONG_ARRAY(12, long[].class, long[].class, LongArrayTag.class)
   ;
 
   private final int id;
   private final Class<?> primitive;
   private final Class<?> reference;
-  private final Class<? extends NBTBase<?>> wrapped;
+  private final Class<? extends BaseTag<?>> wrapped;
 
-  NBTType(int id, Class<?> primitive, Class<?> reference, Class<? extends NBTBase<?>> wrapped) {
+  TagType(int id, Class<?> primitive, Class<?> reference, Class<? extends BaseTag<?>> wrapped) {
     this.id = id;
     this.primitive = primitive;
     this.reference = reference;
@@ -69,7 +69,7 @@ public enum NBTType {
   }
 
   @NotNull
-  public Class<? extends NBTBase<?>> getWrapped() {
+  public Class<? extends BaseTag<?>> getWrapped() {
     return wrapped;
   }
 
@@ -86,13 +86,13 @@ public enum NBTType {
     return this == LIST || this == COMPOUND;
   }
 
-  private final static Map<Integer, NBTType> ID_MAP;
-  private final static Map<Class<?>, NBTType> CLASS_MAP;
+  private final static Map<Integer, TagType> ID_MAP;
+  private final static Map<Class<?>, TagType> CLASS_MAP;
 
   static {
-    Map<Integer, NBTType> idMap = new HashMap<>();
-    Map<Class<?>, NBTType> classMap = new HashMap<>();
-    for (NBTType type : NBTType.values()) {
+    Map<Integer, TagType> idMap = new HashMap<>();
+    Map<Class<?>, TagType> classMap = new HashMap<>();
+    for (TagType type : TagType.values()) {
       idMap.put(type.id, type);
       classMap.put(type.primitive, type);
       classMap.put(type.reference, type);
@@ -103,34 +103,34 @@ public enum NBTType {
   }
 
   @Nullable
-  public static NBTType fromId(int id) {
+  public static TagType fromId(int id) {
     return ID_MAP.get(id);
   }
 
   @Nullable
   @Contract("null -> null")
-  public static NBTType fromClass(Class<?> clazz) {
+  public static TagType fromClass(Class<?> clazz) {
     return CLASS_MAP.get(clazz);
   }
 
   @NotNull
   @Contract("null -> fail")
-  public static NBTBase<?> create(NBTType type) {
+  public static BaseTag<?> create(TagType type) {
     if (type == null) throw new NullPointerException("type");
     switch (type) {
-      case END: return NBTTagEnd.INSTANCE;
-      case BYTE: return new NBTTagByte();
-      case SHORT: return new NBTTagShort();
-      case INT: return new NBTTagInt();
-      case LONG: return new NBTTagLong();
-      case FLOAT: return new NBTTagFloat();
-      case DOUBLE: return new NBTTagDouble();
-      case BYTE_ARRAY: return new NBTTagByteArray();
-      case STRING: return new NBTTagString();
-      case LIST: return new NBTTagList();
-      case COMPOUND: return new NBTTagCompound();
-      case INT_ARRAY: return new NBTTagIntArray();
-      case LONG_ARRAY: return new NBTTagLongArray();
+      case END: return EndTag.INSTANCE;
+      case BYTE: return new ByteTag();
+      case SHORT: return new ShortTag();
+      case INT: return new IntTag();
+      case LONG: return new LongTag();
+      case FLOAT: return new FloatTag();
+      case DOUBLE: return new DoubleTag();
+      case BYTE_ARRAY: return new ByteArrayTag();
+      case STRING: return new StringTag();
+      case LIST: return new ListTag();
+      case COMPOUND: return new CompoundTag();
+      case INT_ARRAY: return new IntArrayTag();
+      case LONG_ARRAY: return new LongArrayTag();
       default: throw new UnsupportedOperationException();
     }
   }

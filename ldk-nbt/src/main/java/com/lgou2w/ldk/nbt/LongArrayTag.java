@@ -24,20 +24,20 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class NBTTagLongArray extends NBTBase<long[]> {
+public class LongArrayTag extends BaseTag<long[]> {
 
   @Contract("null -> fail")
-  public NBTTagLongArray(long[] value) {
+  public LongArrayTag(long[] value) {
     super(value);
   }
 
-  public NBTTagLongArray() {
+  public LongArrayTag() {
     this(new long[0]);
   }
 
   @Override
-  public @NotNull NBTType getType() {
-    return NBTType.LONG_ARRAY;
+  public @NotNull TagType getType() {
+    return TagType.LONG_ARRAY;
   }
 
   @Override
@@ -71,7 +71,7 @@ public class NBTTagLongArray extends NBTBase<long[]> {
 
   @Override
   public String toString() {
-    return "NBTTagLongArray{" +
+    return "LongArrayTag{" +
       "value=" + Arrays.toString(value) +
       '}';
   }
@@ -109,9 +109,9 @@ public class NBTTagLongArray extends NBTBase<long[]> {
 
   @Override
   @NotNull
-  public NBTTagLongArray clone() {
+  public LongArrayTag clone() {
     long[] newValue = new long[value.length];
     System.arraycopy(value, 0, newValue, 0, newValue.length);
-    return new NBTTagLongArray(newValue);
+    return new LongArrayTag(newValue);
   }
 }

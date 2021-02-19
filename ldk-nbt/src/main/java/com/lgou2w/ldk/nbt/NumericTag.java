@@ -18,9 +18,9 @@ package com.lgou2w.ldk.nbt;
 
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NBTTagNumeric<T extends Number> extends NBTBase<T> {
+public abstract class NumericTag<T extends Number> extends BaseTag<T> {
 
-  public NBTTagNumeric(T value) {
+  public NumericTag(T value) {
     super(value);
   }
 

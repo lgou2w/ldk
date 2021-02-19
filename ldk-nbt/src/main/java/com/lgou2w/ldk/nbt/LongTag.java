@@ -22,47 +22,47 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagByte extends NBTTagNumeric<Byte> {
+public class LongTag extends NumericTag<Long> {
 
-  public NBTTagByte(byte value) {
+  public LongTag(long value) {
     super(value);
   }
 
-  public NBTTagByte() {
-    this((byte) 0);
+  public LongTag() {
+    this(0L);
   }
 
   @Override
   @NotNull
-  public NBTType getType() {
-    return NBTType.BYTE;
+  public TagType getType() {
+    return TagType.LONG;
   }
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    value = input.readByte();
+    value = input.readLong();
   }
 
   @Override
   public void write(@NotNull DataOutput output) throws IOException {
-    output.writeByte(value);
+    output.writeLong(value);
   }
 
   @Override
   public String toString() {
-    return "NBTTagByte{" +
+    return "LongTag{" +
       "value=" + value +
       '}';
   }
 
   @Override
   @NotNull
-  public NBTTagByte clone() {
-    return new NBTTagByte(value);
+  public LongTag clone() {
+    return new LongTag(value);
   }
 
   @Override
   protected char getMojangsonSuffix() {
-    return NBTBase.SUFFIX_BYTE;
+    return BaseTag.SUFFIX_LONG;
   }
 }

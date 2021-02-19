@@ -51,10 +51,10 @@ public final class NBTStreams {
   @Contract("null -> fail")
   public static NBTMetadata read(DataInput input) throws IOException {
     if (input == null) throw new NullPointerException("input");
-    NBTType type = NBTType.fromId(input.readUnsignedByte());
-    if (type == null || type == NBTType.END) return NBTMetadata.END;
+    TagType type = TagType.fromId(input.readUnsignedByte());
+    if (type == null || type == TagType.END) return NBTMetadata.END;
     String name = input.readUTF();
-    NBTBase<?> base = NBTType.create(type);
+    BaseTag<?> base = TagType.create(type);
     base.read(input);
     return NBTMetadata.of(name, base);
   }
@@ -69,7 +69,7 @@ public final class NBTStreams {
   public static void write(DataOutput output, NBTMetadata metadata) throws IOException {
     if (output == null) throw new NullPointerException("output");
     if (metadata == null) throw new NullPointerException("metadata");
-    NBTBase<?> value = metadata.getValue();
+    BaseTag<?> value = metadata.getValue();
     output.writeByte(value.getType().getId());
     if (!metadata.isEndType()) {
       output.writeUTF(metadata.getName());

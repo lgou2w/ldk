@@ -16,53 +16,62 @@
 
 package com.lgou2w.ldk.nbt;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagFloat extends NBTTagNumeric<Float> {
+public class StringTag extends BaseTag<String> {
 
-  public NBTTagFloat(float value) {
+  @Contract("null -> fail")
+  public StringTag(String value) {
     super(value);
   }
 
-  public NBTTagFloat() {
-    this(0f);
+  public StringTag() {
+    this("");
   }
 
   @Override
-  @NotNull
-  public NBTType getType() {
-    return NBTType.FLOAT;
+  public @NotNull TagType getType() {
+    return TagType.STRING;
   }
 
   @Override
   public void read(@NotNull DataInput input) throws IOException {
-    value = input.readFloat();
+    value = input.readUTF();
   }
 
   @Override
   public void write(@NotNull DataOutput output) throws IOException {
-    output.writeFloat(value);
+    output.writeUTF(value);
   }
 
   @Override
   public String toString() {
-    return "NBTTagFloat{" +
-      "value=" + value +
+    return "StringTag{" +
+      "value=" + value.replace("\"", "\\\"") +
       '}';
   }
 
   @Override
-  @NotNull
-  public NBTTagFloat clone() {
-    return new NBTTagFloat(value);
+  protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean color) {
+    if (!color) {
+      builder.append("\"");
+      builder.append(value.replace("\"", "\\\""));
+      builder.append("\"");
+    } else {
+      builder.append("\"" + COLOR_GREEN);
+      builder.append(value.replace("\"", "\\\""));
+      builder.append(COLOR_RESET + "\"");
+    }
   }
 
   @Override
-  protected char getMojangsonSuffix() {
-    return NBTBase.SUFFIX_FLOAT;
+  @NotNull
+  public StringTag clone() {
+    return new StringTag(value);
   }
 }
