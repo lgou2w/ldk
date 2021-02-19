@@ -52,20 +52,21 @@ public class StringTag extends BaseTag<String> {
   @Override
   public String toString() {
     return "StringTag{" +
-      "value=" + value.replace("\"", "\\\"") +
+      "value=" + escape(value) +
       '}';
   }
 
   @Override
   protected void toMojangsonBuilder(@NotNull StringBuilder builder, boolean includeColor) {
     if (!includeColor) {
-      builder.append("\"");
-      builder.append(value.replace("\"", "\\\""));
-      builder.append("\"");
+      builder.append('"');
+      builder.append(escape(value));
+      builder.append('"');
     } else {
       builder.append("\"" + COLOR_GREEN);
-      builder.append(value.replace("\"", "\\\""));
-      builder.append(COLOR_RESET + "\"");
+      builder.append(escape(value));
+      builder.append(COLOR_RESET);
+      builder.append('"');
     }
   }
 
@@ -73,5 +74,9 @@ public class StringTag extends BaseTag<String> {
   @NotNull
   public StringTag clone() {
     return new StringTag(value);
+  }
+
+  static String escape(String value) {
+    return value.replace("\"", "\\\"");
   }
 }
