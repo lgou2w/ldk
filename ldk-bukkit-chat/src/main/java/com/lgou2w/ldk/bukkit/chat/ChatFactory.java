@@ -27,6 +27,7 @@ import com.lgou2w.ldk.reflect.ConstructorReflectionMatcher;
 import com.lgou2w.ldk.reflect.FieldAccessor;
 import com.lgou2w.ldk.reflect.FuzzyReflection;
 import com.lgou2w.ldk.reflect.MethodAccessor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -200,6 +201,41 @@ public final class ChatFactory {
   @Contract("null, _ -> fail; _, null -> fail")
   public static void sendChat(Player receiver, ChatComponent chat) {
     sendChat(receiver, chat, null, null);
+  }
+
+  @Contract("null, _, _, _ -> fail; _, null, _, _ -> fail")
+  public static void sendChat(Player[] receivers, ChatComponent chat, @Nullable ChatType type, @Nullable UUID sender) {
+    if (receivers == null) throw new NullPointerException("receivers");
+    Object packet = newPacketChat(chat, type, sender);
+    PacketFactory.sendPacket(packet, receivers);
+  }
+
+  @Contract("null, _, _ -> fail; _, null, _ -> fail")
+  public static void sendChat(Player[] receivers, ChatComponent chat, @Nullable ChatType type) {
+    sendChat(receivers, chat, type, null);
+  }
+
+  @Contract("null, _ -> fail; _, null -> fail")
+  public static void sendChat(Player[] receivers, ChatComponent chat) {
+    sendChat(receivers, chat, null, null);
+  }
+
+  @Contract("null, _, _ -> fail")
+  public static void sendChatToAll(ChatComponent chat, @Nullable ChatType type, @Nullable UUID sender) {
+    Player[] players = Bukkit.getOnlinePlayers().toArray(new Player[0]);
+    if (players.length <= 0) return; // No players online, skip packet create.
+    Object packet = newPacketChat(chat, type, sender);
+    PacketFactory.sendPacket(packet, players);
+  }
+
+  @Contract("null, _ -> fail")
+  public static void sendChatToAll(ChatComponent chat, @Nullable ChatType type) {
+    sendChatToAll(chat, type, null);
+  }
+
+  @Contract("null -> fail")
+  public static void sendChatToAll(ChatComponent chat) {
+    sendChatToAll(chat, null, null);
   }
 
   // FIXME: remove unit test
