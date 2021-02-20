@@ -25,7 +25,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.TestOnly;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -201,16 +200,5 @@ public final class PacketFactory {
     validatePacket(packet);
     Player[] players = nearbyPlayers(center, range);
     processPacket(packet, players);
-  }
-
-  // FIXME: remove unit test
-  @TestOnly
-  @Deprecated
-  public static void test() {
-    System.out.println(METHOD_CRAFT_ENTITY_GET_HANDLE.get());
-    System.out.println(FIELD_ENTITY_PLAYER_CONNECTION.get());
-    System.out.println(FIELD_PLAYER_CONNECTION_MANAGER.get());
-    System.out.println(METHOD_PLAYER_CONNECTION_SEND_PACKET.get());
-    System.out.println(METHOD_PACKET_PROCESS.get());
   }
 }

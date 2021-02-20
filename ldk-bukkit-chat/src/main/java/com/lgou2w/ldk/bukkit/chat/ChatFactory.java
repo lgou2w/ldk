@@ -32,7 +32,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.TestOnly;
 
 import java.lang.reflect.Modifier;
 import java.util.UUID;
@@ -236,13 +235,5 @@ public final class ChatFactory {
   @Contract("null -> fail")
   public static void sendChatToAll(ChatComponent chat) {
     sendChatToAll(chat, null, null);
-  }
-
-  // FIXME: remove unit test
-  @TestOnly
-  @Deprecated
-  public static void test() {
-    System.out.println(CONSTRUCTOR_PACKET_PLAY_OUT_CHAT.get());
-    System.out.println(FIELD_CHAT_SERIALIZER_GSON.get());
   }
 }
