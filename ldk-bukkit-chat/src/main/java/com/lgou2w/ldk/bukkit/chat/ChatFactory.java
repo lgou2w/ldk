@@ -110,7 +110,7 @@ public final class ChatFactory {
     .withModifiers(Modifier.PUBLIC)
     .withArgs(String.class, Class.class)
     .withName("toJson")
-    .resultAccessorAs());
+    .resultAccessorAs("Missing match: " + CLASS_GSON_RELOCATED.getCanonicalName() + " -> public <T> T toJson(String, Class<T>)"));
 
   /** @see ChatFactory#CLASS_GSON_RELOCATED */
   @Nullable final static Supplier<@NotNull MethodAccessor<Object, String>> METHOD_GSON_RELOCATED_FROM_JSON
@@ -120,7 +120,7 @@ public final class ChatFactory {
     .withModifiers(Modifier.PUBLIC)
     .withArgs(String.class, Class.class)
     .withName("fromJson")
-    .resultAccessorAs());
+    .resultAccessorAs("Missing match: " + CLASS_GSON_RELOCATED.getCanonicalName() + " -> public <T> T fromJson(String, Class<T>)"));
 
   /// Public API
 

@@ -80,7 +80,7 @@ public final class PacketFactory {
     .useFieldMatcher()
     .withoutModifiers(Modifier.STATIC)
     .withType(CLASS_PLAYER_CONNECTION)
-    .resultAccessor());
+    .resultAccessor("Missing match: NMS.EntityPlayer -> Field: public NMS.PlayerConnection playerConnection"));
 
   // NMS.PlayerConnection -> public NMS.NetworkManager networkManager;
   final static Supplier<@NotNull FieldAccessor<Object, Object>> FIELD_PLAYER_CONNECTION_MANAGER
@@ -88,7 +88,7 @@ public final class PacketFactory {
     .useFieldMatcher()
     .withoutModifiers(Modifier.STATIC)
     .withType(CLASS_NETWORK_MANAGER)
-    .resultAccessor());
+    .resultAccessor("Missing match: NMS.PlayerConnection -> Field: public NMS.NetworkManager networkManager"));
 
   // NMS.PlayerConnection -> public void sendPacket(NMS.Packet);
   final static Supplier<@NotNull MethodAccessor<Object, Object>> METHOD_PLAYER_CONNECTION_SEND_PACKET
@@ -96,7 +96,7 @@ public final class PacketFactory {
     .useMethodMatcher()
     .withoutModifiers(Modifier.STATIC)
     .withArgs(CLASS_PACKET)
-    .resultAccessor());
+    .resultAccessor("Missing match: NMS.PlayerConnection -> Method: public void sendPacket(NMS.Packet)"));
 
   // NMS.Packet -> public void process(NMS.PacketListener);
   final static Supplier<@NotNull MethodAccessor<Object, Object>> METHOD_PACKET_PROCESS
@@ -104,7 +104,7 @@ public final class PacketFactory {
     .useMethodMatcher()
     .withoutModifiers(Modifier.STATIC)
     .withArgs(CLASS_PACKET_LISTENER)
-    .resultAccessor());
+    .resultAccessor("Missing match: NMS.Packet -> Method: public void process(NMS.PacketListener)"));
 
   @NotNull
   @SuppressWarnings("ConstantConditions")
