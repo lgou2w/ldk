@@ -52,6 +52,7 @@ TODO docs
 Thank you very much for your donate.
 
 * [@LywLover](https://github.com/LywLover)
+* [@weihao](https://github.com/weihao)
 * [@EnTIv](https://github.com/EnTIv)
 * [@nihuge](https://github.com/nihuge)
 
