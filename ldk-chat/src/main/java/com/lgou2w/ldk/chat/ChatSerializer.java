@@ -18,6 +18,7 @@ package com.lgou2w.ldk.chat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
 import org.jetbrains.annotations.Contract;
@@ -39,11 +40,23 @@ public final class ChatSerializer {
 
   private ChatSerializer() { }
 
+  // Experimental
+  @Deprecated
+  public final static boolean NOT_USE_LEGACY
+    = Boolean.parseBoolean(System.getProperty("ldk.chat.notUseLegacy"));
+
   final static Gson GSON = new GsonBuilder()
     .disableHtmlEscaping()
-    .registerTypeHierarchyAdapter(Style.class, new Style.StyleSerializer())
-    .registerTypeHierarchyAdapter(ChatComponent.class, new BaseComponent.ChatComponentSerializer())
+    .registerTypeHierarchyAdapter(Style.class, new Style.Serializer())
+    .registerTypeHierarchyAdapter(ChatComponent.class, new BaseComponent.Serializer())
     .create();
+
+  @NotNull
+  @Contract("null -> fail")
+  public static ChatComponent fromJson(JsonElement json) throws JsonParseException {
+    if (json == null) throw new NullPointerException("json");
+    return GSON.fromJson(json, ChatComponent.class);
+  }
 
   @NotNull
   @Contract("null -> fail")
@@ -76,6 +89,13 @@ public final class ChatSerializer {
   public static String toJson(ChatComponent component) throws JsonParseException {
     if (component == null) throw new NullPointerException("component");
     return GSON.toJson(component);
+  }
+
+  @NotNull
+  @Contract("null -> fail")
+  public static JsonElement toJsonTree(ChatComponent component) {
+    if (component == null) throw new NullPointerException("component");
+    return GSON.toJsonTree(component);
   }
 
   private static void toPlaintText0(

@@ -128,7 +128,7 @@ public abstract class BaseComponent implements ChatComponent {
       concat(result, sibling);
   }
 
-  final static class ChatComponentSerializer implements JsonSerializer<ChatComponent>, JsonDeserializer<ChatComponent> {
+  final static class Serializer implements JsonSerializer<ChatComponent>, JsonDeserializer<ChatComponent> {
     @Override
     public JsonElement serialize(ChatComponent src, Type typeOfSrc, JsonSerializationContext context) {
       JsonObject json = new JsonObject();

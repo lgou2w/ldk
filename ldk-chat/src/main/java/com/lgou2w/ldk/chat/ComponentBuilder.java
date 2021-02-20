@@ -243,18 +243,16 @@ public final class ComponentBuilder {
 
   @NotNull
   @Contract("null -> fail; !null -> this")
-  public ComponentBuilder hoverShowItem(String itemData) {
-    if (itemData == null) throw new NullPointerException("itemData");
-    ChatComponent value = new ChatSerializer.NonSerializedValueComponent(itemData); // non serialized
+  public ComponentBuilder hoverShowItem(HoverEvent.ItemStackInfo value) {
+    if (value == null) throw new NullPointerException("value");
     hoverable(new HoverEvent(HoverEvent.Action.SHOW_ITEM, value));
     return this;
   }
 
   @NotNull
   @Contract("null -> fail; !null -> this")
-  public ComponentBuilder hoverShowEntity(String entityData) {
-    if (entityData == null) throw new NullPointerException("entityData");
-    ChatComponent value = new ChatSerializer.NonSerializedValueComponent(entityData); // non serialized
+  public ComponentBuilder hoverShowEntity(HoverEvent.EntityInfo value) {
+    if (value == null) throw new NullPointerException("value");
     hoverable(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, value));
     return this;
   }
