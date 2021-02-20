@@ -1,0 +1,5 @@
+dependencies {
+  compile project(':ldk-chat')
+  compile project(':ldk-bukkit-packet')
+  compileOnly "org.spigotmc:spigot-api:${bukkit_version}"
+}

@@ -2,10 +2,13 @@ rootProject.name = 'ldk'
 
 include ':ldk-common'
 include ':ldk-reflect'
+include ':ldk-chat'
 include ':ldk-nbt'
 
 include ':ldk-bukkit-version'
 include ':ldk-bukkit-reflect'
+include ':ldk-bukkit-packet'
+include ':ldk-bukkit-chat'
 include ':ldk-bukkit-nbt'
 include ':ldk-bukkit-basic'
 include ':ldk-bukkit-item'
