@@ -340,12 +340,72 @@ public final class Style {
       if (object.has("hoverEvent")) {
         JsonObject jsonHoverEvent = object.getAsJsonObject("hoverEvent");
         HoverEvent.Action action = HoverEvent.Action.fromName(jsonHoverEvent.get("action").getAsString());
-        JsonElement value = jsonHoverEvent.get("value");
-        if (action != null && value != null) {
+        if (action != null && jsonHoverEvent.has("value")) {
+          JsonElement value = jsonHoverEvent.get("value");
           ChatComponent valueComponent = value.isJsonObject()
             ? context.deserialize(value, ChatComponent.class)
             : new ChatSerializer.NonSerializedValueComponent(value.getAsString());
           hoverEvent = new HoverEvent(action, valueComponent);
+        } else if (action != null && jsonHoverEvent.has("contents")) {
+          JsonElement contents = jsonHoverEvent.get("contents");
+          ChatComponent value;
+          switch (action) {
+            case SHOW_TEXT:
+              value = context.deserialize(contents, ChatComponent.class);
+              hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, value);
+              break;
+            case SHOW_ITEM:
+              JsonObject jsonItem = contents.getAsJsonObject();
+              if (!jsonItem.has("id") || !jsonItem.has("count"))
+                throw new JsonParseException("A show item value needs a least a 'id' and an 'count' properties.");
+              String itemId = jsonItem.get("id").getAsString();
+              int itemCount = jsonItem.get("count").getAsInt();
+              String itemTag = jsonItem.has("tag") ? jsonItem.get("tag").getAsString() : null;
+              StringBuilder itemBuilder = new StringBuilder()
+                .append("{\"id\":\"")
+                .append(itemId)
+                .append('"')
+                .append(",\"Count\":")
+                .append(itemCount);
+              if (itemTag != null) {
+                itemBuilder
+                  .append(",\"tag\":")
+                  .append(itemTag); // not escape double quote
+              }
+              itemBuilder.append('}');
+              value = new ChatSerializer.NonSerializedValueComponent(itemBuilder.toString());
+              hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_ITEM, value);
+              break;
+            case SHOW_ENTITY:
+              JsonObject jsonEntity = contents.getAsJsonObject();
+              if (!jsonEntity.has("id"))
+                throw new JsonParseException("A show entity value needs a least a 'id' property.");
+              String entityId = jsonEntity.get("id").getAsString();
+              String entityType = jsonEntity.has("type") ? jsonEntity.get("type").getAsString() : null;
+              JsonObject entityName = jsonEntity.has("name") ? jsonEntity.get("name").getAsJsonObject() : null;
+              StringBuilder entityBuilder = new StringBuilder()
+                .append("{\"id\":\"")
+                .append(entityId)
+                .append('"');
+              if (entityType != null) {
+                entityBuilder
+                  .append(",\"type\":\"")
+                  .append(entityType)
+                  .append('"');
+              }
+              if (entityName != null) {
+                entityBuilder
+                  .append(",\"name\":\"") // need escape double quote
+                  .append(entityName.toString().replace("\"", "\\\""))
+                  .append("\"");
+              }
+              entityBuilder.append('}');
+              value = new ChatSerializer.NonSerializedValueComponent(entityBuilder.toString());
+              hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_ENTITY, value);
+              break;
+            default:
+              break;
+          }
         }
       }
       String font = object.has("font") ? object.get("font").getAsString() : null;
