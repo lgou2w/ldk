@@ -6,7 +6,7 @@ on:
 
 jobs:
   check:
-    if: "!contains(github.event.commits[0].message, '[skip release]')"
+    if: "!contains(github.event.head_commit.message, '[skip release]')"
     runs-on: ubuntu-latest
     outputs:
       project_version: ${{ steps.project_version.outputs.value }}
