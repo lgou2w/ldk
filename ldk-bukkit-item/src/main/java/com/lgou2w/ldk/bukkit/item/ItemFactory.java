@@ -17,6 +17,8 @@
 package com.lgou2w.ldk.bukkit.item;
 
 import com.lgou2w.ldk.bukkit.nbt.NBTFactory;
+import com.lgou2w.ldk.bukkit.version.BukkitVersion;
+import com.lgou2w.ldk.common.Suppliers;
 import com.lgou2w.ldk.nbt.CompoundTag;
 import com.lgou2w.ldk.nbt.TagType;
 import com.lgou2w.ldk.reflect.ConstructorAccessor;
@@ -30,15 +32,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Modifier;
-import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getCraftBukkitClass;
-import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getCraftBukkitClassOrNull;
 import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getMinecraftClass;
-import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getMinecraftClassOrNull;
 
 public final class ItemFactory {
 
@@ -49,16 +49,16 @@ public final class ItemFactory {
   @NotNull public final static Class<?> CLASS_ITEM;
   @NotNull public final static Class<?> CLASS_ITEM_STACK;
   @NotNull public final static Class<?> CLASS_CRAFT_ITEM_STACK;
-  @Nullable public final static Class<?> CLASS_MINECRAFT_KEY; // since Minecraft 1.13
-  @Nullable public final static Class<?> CLASS_CRAFT_MAGIC_NUMBERS; // since Minecraft 1.13
+  @NotNull public final static Class<?> CLASS_MINECRAFT_KEY;
+  @NotNull public final static Class<?> CLASS_CRAFT_MAGIC_NUMBERS;
 
   static {
     try {
       CLASS_ITEM = getMinecraftClass("Item");
       CLASS_ITEM_STACK = getMinecraftClass("ItemStack");
       CLASS_CRAFT_ITEM_STACK = getCraftBukkitClass("inventory.CraftItemStack");
-      CLASS_MINECRAFT_KEY = getMinecraftClassOrNull("MinecraftKey");
-      CLASS_CRAFT_MAGIC_NUMBERS = getCraftBukkitClassOrNull("util.CraftMagicNumbers");
+      CLASS_MINECRAFT_KEY = getMinecraftClass("MinecraftKey");
+      CLASS_CRAFT_MAGIC_NUMBERS = getCraftBukkitClass("util.CraftMagicNumbers");
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Error in initializing internal static block: ", e);
     }
@@ -148,15 +148,24 @@ public final class ItemFactory {
     .withArgs(NBTFactory.CLASS_NBT_TAG_COMPOUND)
     .resultAccessor("Missing match: NMS.ItemStack -> Method: public NMS.NBTTagCompound save(NMS.NBTTagCompound)"));
 
+  // Since Minecraft 1.13
   // OBC.util.CraftMagicNumbers -> public static NMS.MinecraftKey key(OB.Material);
-  @Nullable final static Supplier<@Nullable MethodAccessor<Object, Object>> METHOD_CRAFT_MAGIC_NUMBERS_KEY
-    = CLASS_CRAFT_MAGIC_NUMBERS == null || CLASS_MINECRAFT_KEY == null ? null
-    : FuzzyReflection.lazySupplier(CLASS_CRAFT_MAGIC_NUMBERS, true, fuzzy -> fuzzy
+  final static Supplier<@Nullable MethodAccessor<Object, Object>> METHOD_CRAFT_MAGIC_NUMBERS_KEY
+    = FuzzyReflection.lazySupplier(CLASS_CRAFT_MAGIC_NUMBERS, true, fuzzy -> fuzzy
     .useMethodMatcher()
     .withModifiers(Modifier.PUBLIC, Modifier.STATIC)
     .withType(CLASS_MINECRAFT_KEY)
     .withArgs(Material.class)
     .resultAccessorOrNull());
+
+  // OBC.util.CraftMagicNumbers -> public static NMS.Item getItem(OB.Material);
+  final static Supplier<@NotNull MethodAccessor<Object, Object>> METHOD_CRAFT_MAGIC_NUMBERS_GET_ITEM
+    = FuzzyReflection.lazySupplier(CLASS_CRAFT_MAGIC_NUMBERS, true, fuzzy -> fuzzy
+    .useMethodMatcher()
+    .withModifiers(Modifier.PUBLIC, Modifier.STATIC)
+    .withType(CLASS_ITEM)
+    .withArgs(Material.class)
+    .resultAccessor("Missing match: OBC.util.CraftMagicNumbers -> Method: public static NMS.Item getItem(OB.Material)"));
 
   @Nullable
   @Contract("null -> null; !null -> !null")
@@ -182,21 +191,166 @@ public final class ItemFactory {
   }
 
   @NotNull
-  @Contract("null -> fail; !null -> !null")
-  @SuppressWarnings("ConstantConditions")
-  public static String materialKey(Material material) {
-    if (material == null) throw new NullPointerException("material");
-    if (METHOD_CRAFT_MAGIC_NUMBERS_KEY != null &&
-      METHOD_CRAFT_MAGIC_NUMBERS_KEY.get() != null) {
-      Object minecraftKey = METHOD_CRAFT_MAGIC_NUMBERS_KEY.get().invoke(null, material);
-      return minecraftKey.toString(); // such as: minecraft:diamond
+  @Contract("null -> !null; !null -> !null")
+  @SuppressWarnings({ "ConstantConditions" })
+  public static String materialToMinecraftKey(@Nullable Material material) {
+    if (material == null) return "minecraft:air";
+    Object minecraftKey;
+    if (BukkitVersion.isForge || !BukkitVersion.isV113OrLater) {
+      Object item = METHOD_CRAFT_MAGIC_NUMBERS_GET_ITEM.get().invoke(null, material);
+      minecraftKey = REGISTRY_PROVIDER.get().key(item);
     } else {
-      String name = material.name().toLowerCase(Locale.ENGLISH);
-      return !name.startsWith("minecraft:")
-        ? "minecraft:" + name
-        : name;
+      minecraftKey = METHOD_CRAFT_MAGIC_NUMBERS_KEY.get().invoke(null, material);
+    }
+    return minecraftKey != null ? minecraftKey.toString() : "minecraft:air";
+  }
+
+  /// TODO: docs
+  @Nullable final static Supplier<RegistryProvider> REGISTRY_PROVIDER
+    = BukkitVersion.isForge
+      ? Suppliers.synchronizedSupplier(ForgeRegistryProvider::new)
+      : !BukkitVersion.isV113OrLater
+        ? Suppliers.synchronizedSupplier(VanillaRegistryProvider::new)
+        : null;
+
+  static abstract class RegistryProvider {
+
+    abstract Object key(Object item);
+
+    // TODO: Experimental
+    abstract Object item(Object key);
+  }
+
+  // TODO: docs
+  // Vanilla Minecraft 1.8 ~ Minecraft 1.12.2 Item Registry Adapter
+  final static class VanillaRegistryProvider extends RegistryProvider {
+    final Class<?> CLASS_REGISTRY_SIMPLE;
+    final Class<?> CLASS_REGISTRY_MATERIALS;
+    final FieldAccessor<Object, Map<Object, Object>> FIELD_REGISTRY_SIMPLE_MAP;
+    final FieldAccessor<Object, Map<Object, Object>> FIELD_REGISTRY_MATERIALS_MAP;
+    final Object itemRegistry;
+
+    VanillaRegistryProvider() {
+      try {
+        CLASS_REGISTRY_SIMPLE = getMinecraftClass("RegistrySimple");
+        CLASS_REGISTRY_MATERIALS = getMinecraftClass("RegistryMaterials");
+        itemRegistry = FuzzyReflection.of(CLASS_ITEM, true)
+          .useFieldMatcher()
+          .withModifiers(Modifier.STATIC, Modifier.FINAL)
+          .withType(CLASS_REGISTRY_MATERIALS)
+          .resultAccessor("Missing match: NMS.Item -> Field: final static NMS.RegistryMaterials REGISTRY")
+          .get(null);
+        FIELD_REGISTRY_SIMPLE_MAP = FuzzyReflection.of(CLASS_REGISTRY_SIMPLE, true)
+          .useFieldMatcher()
+          .withoutModifiers(Modifier.STATIC)
+          .withModifiers(Modifier.FINAL)
+          .withType(Map.class)
+          .resultAccessorAs("Missing match: NMS.RegistrySimple -> Field: final Map<NMS.MinecraftKey, NMS.Item> map");
+        FIELD_REGISTRY_MATERIALS_MAP = FuzzyReflection.of(CLASS_REGISTRY_MATERIALS, true)
+          .useFieldMatcher()
+          .withoutModifiers(Modifier.STATIC)
+          .withModifiers(Modifier.FINAL)
+          .withType(Map.class)
+          .resultAccessorAs("Missing match: NMS.RegistryMaterials -> Field: final Map<NMS.Item, NMS.MinecraftKey> map");
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException("NMS.RegistryMaterials class does not exist: ", e);
+      } catch (NoSuchElementException e) {
+        throw new RuntimeException("Error while find structure members: ", e);
+      } catch (Throwable t) {
+        throw new RuntimeException("Internal error: ", t);
+      }
+    }
+
+    @Override
+    @SuppressWarnings("ConstantConditions")
+    Object key(Object item) {
+      return FIELD_REGISTRY_MATERIALS_MAP.get(itemRegistry).get(item);
+    }
+
+    @Override
+    Object item(Object key) {
+      return FIELD_REGISTRY_SIMPLE_MAP.get(itemRegistry).get(key);
+    }
+
+    @Override
+    public String toString() {
+      return "VanillaRegistryProvider";
     }
   }
+
+  // TODO: docs
+  // Forge Item Registry Adapter
+  //  Arclight: 1.14, 1.15, 1.16
+  //  Mohist: 1.12.2, 1.16.5
+  //  Magma: 1.12, 1.15
+  //  CatServer: 1.12.2
+  //
+  // Note that RegistryManager was added in Forge 1.12
+  // And these servers do not have old versions.
+  // FIXME: Need to be compatible with older versions?
+  //
+  final static class ForgeRegistryProvider extends RegistryProvider {
+    final Class<?> CLASS_REGISTRY_MANAGER;
+    final Class<?> CLASS_IFORGE_REGISTRY;
+    final MethodAccessor<Object, Object> METHOD_REGISTRY_MANAGER_GET_REGISTRY;
+    final MethodAccessor<Object, Object> METHOD_IFORGE_REGISTRY_GET_KEY;
+    final MethodAccessor<Object, Object> METHOD_IFORGE_REGISTRY_GET_VALUE;
+    final Object itemForgeRegistry;
+
+    ForgeRegistryProvider() {
+      try {
+        CLASS_REGISTRY_MANAGER = Class.forName("net.minecraftforge.registries.RegistryManager");
+        CLASS_IFORGE_REGISTRY = Class.forName("net.minecraftforge.registries.IForgeRegistry");
+        METHOD_REGISTRY_MANAGER_GET_REGISTRY = FuzzyReflection.of(CLASS_REGISTRY_MANAGER)
+          .useMethodMatcher()
+          .withModifiers(Modifier.PUBLIC)
+          .withType(CLASS_IFORGE_REGISTRY)
+          .withArgs(Class.class)
+          .withName("getRegistry")
+          .resultAccessor("Missing match: forge.registries.RegistryManager -> Method: public forge.registries.IForgeRegistry getRegistry(Class)");
+        METHOD_IFORGE_REGISTRY_GET_KEY = FuzzyReflection.of(CLASS_IFORGE_REGISTRY)
+          .useMethodMatcher()
+          .withName("getKey")
+          .resultAccessor("Missing match: forge.registries.IForgeRegistry -> Method: public NMS.MinecraftKey getKey(NMS.Item)");
+        METHOD_IFORGE_REGISTRY_GET_VALUE = FuzzyReflection.of(CLASS_IFORGE_REGISTRY)
+          .useMethodMatcher()
+          .withName("getValue")
+          .resultAccessor("Missing match: forge.registries.IForgeRegistry -> Method: public NMS.Item getKey(NMS.MinecraftKey)");
+        Object activeRegistryManager = FuzzyReflection.of(CLASS_REGISTRY_MANAGER, true)
+          .useFieldMatcher()
+          .withModifiers(Modifier.STATIC, Modifier.FINAL)
+          .withType(CLASS_REGISTRY_MANAGER)
+          .withName("ACTIVE")
+          .resultAccessor("Missing match: forge.registries.RegistryManager -> Field: public final static forge.registries.RegistryManager ACTIVE")
+          .get(null);
+
+        itemForgeRegistry = METHOD_REGISTRY_MANAGER_GET_REGISTRY.invoke(activeRegistryManager, CLASS_ITEM);
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException("Classes does not exist, ensure that the server is Forge?", e);
+      } catch (NoSuchElementException e) {
+        throw new RuntimeException("Error while find structure members: ", e);
+      } catch (Throwable t) {
+        throw new RuntimeException("Internal error: ", t);
+      }
+    }
+
+    @Override
+    Object key(Object item) {
+      return METHOD_IFORGE_REGISTRY_GET_KEY.invoke(itemForgeRegistry, item);
+    }
+
+    @Override
+    Object item(Object key) {
+      return METHOD_IFORGE_REGISTRY_GET_VALUE.invoke(itemForgeRegistry, key);
+    }
+
+    @Override
+    public String toString() {
+      return "ForgeRegistryProvider";
+    }
+  }
+
+  ///
 
   @Nullable
   @Contract("null -> null")

@@ -80,6 +80,7 @@ public final class BukkitVersion extends Version implements Comparable<Version> 
   /// Remapper
   public final static boolean isSpigot;
   public final static boolean isPaper;
+  public final static boolean isForge;
   public final static boolean isArclight;
   public final static boolean isCatServer;
   public final static boolean isMohist;
@@ -121,6 +122,7 @@ public final class BukkitVersion extends Version implements Comparable<Version> 
     /// Remapper
     isSpigot = existClasses("org.bukkit.craftbukkit." + CURRENT.getVersionString() + ".Spigot", "org.spigotmc.SpigotConfig");
     isPaper = existClasses("com.destroystokyo.paper.PaperConfig", "com.destroystokyo.paper.PaperMCConfig");
+    isForge = existClasses("net.minecraftforge.common.MinecraftForge");
     isArclight = existClasses("io.izzel.arclight.common.ArclightMain");
     isCatServer = existClasses("catserver.server.CatServer");
     isMohist = existClasses("com.mohistmc.MohistMC");
