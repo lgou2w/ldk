@@ -430,14 +430,15 @@ public final class HoverEvent {
 
   public final static class ItemStackInfo {
     private final String id;
-    private final int count;
+    private final int count, damage;
     @Nullable private final String mojangsonTag;
 
-    @Contract("null, _, _ -> fail")
-    public ItemStackInfo(String id, int count, @Nullable String mojangsonTag) {
+    @Contract("null, _, _, _ -> fail")
+    public ItemStackInfo(String id, int count, int damage, @Nullable String mojangsonTag) {
       if (id == null) throw new NullPointerException("id");
       this.id = id;
       this.count = count;
+      this.damage = damage;
       this.mojangsonTag = mojangsonTag;
     }
 
@@ -448,6 +449,10 @@ public final class HoverEvent {
 
     public int getCount() {
       return count;
+    }
+
+    public int getDamage() {
+      return damage;
     }
 
     @Nullable
@@ -468,7 +473,8 @@ public final class HoverEvent {
     private JsonElement serializeToLegacy() {
       StringBuilder builder = new StringBuilder();
       builder.append("{\"id\":\"").append(id).append("\"");
-      builder.append(",\"Count\":").append(count);
+      builder.append(",\"Count\":").append(count); // Note: Value of count is uppercase
+      if (damage != 0) builder.append(",\"Damage\":").append(damage); // uppercase
       if (mojangsonTag != null) builder.append(",\"tag\":").append(mojangsonTag);
       builder.append('}');
       return new JsonPrimitive(builder.toString());
@@ -477,7 +483,7 @@ public final class HoverEvent {
     @Nullable
     private static ItemStackInfo deserialize(JsonElement json) {
       if (json.isJsonPrimitive()) {
-        return new ItemStackInfo(json.getAsString(), 1, null);
+        return new ItemStackInfo(json.getAsString(), 1, 0, null);
       } else {
         if (!json.isJsonObject()) return null;
         JsonObject object = json.getAsJsonObject();
@@ -485,7 +491,7 @@ public final class HoverEvent {
         String id = object.get("id").getAsString();
         int count = object.has("count") ? object.get("count").getAsInt() : 1;
         String mojangsonTag = object.has("tag") ? object.get("tag").getAsString() : null;
-        return new ItemStackInfo(id, count, mojangsonTag);
+        return new ItemStackInfo(id, count, 0, mojangsonTag);
       }
     }
 
@@ -494,7 +500,7 @@ public final class HoverEvent {
       if (!json.isJsonPrimitive()) return null;
       String value = json.getAsString();
       String id = null, mojangsonTag = null;
-      int count = 1;
+      int count = 1, damage = 0;
       try (JsonReader reader = new JsonReader(new StringReader(value))) {
         reader.beginObject();
         while (reader.hasNext()) {
@@ -503,8 +509,11 @@ public final class HoverEvent {
             case "id":
               id = reader.nextString();
               break;
-            case "count":
+            case "Count": // legacy is uppercase
               count = reader.nextInt();
+              break;
+            case "Damage":  // legacy is uppercase
+              damage = reader.nextInt();
               break;
             case "tag":
               mojangsonTag = reader.nextString();
@@ -515,7 +524,7 @@ public final class HoverEvent {
         }
         reader.endObject();
         if (id != null)
-          return new ItemStackInfo(id, count, mojangsonTag);
+          return new ItemStackInfo(id, count, damage, mojangsonTag);
       } catch (IOException ignore) {
       }
       return null;

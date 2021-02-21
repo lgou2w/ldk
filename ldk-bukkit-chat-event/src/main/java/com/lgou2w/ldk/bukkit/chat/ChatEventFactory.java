@@ -41,12 +41,14 @@ public final class ChatEventFactory {
 
   @NotNull
   @Contract("null -> fail")
+  @SuppressWarnings("deprecation")
   public static HoverEvent makeHoverShowItem(ItemStack stack) {
     if (stack == null) throw new NullPointerException("stack");
     String id = ItemFactory.materialKey(stack.getType());
+    int count = stack.getAmount(), damage = stack.getDurability();
     CompoundTag tag = ItemFactory.readStackTag(stack);
     String mojangsonTag = tag == null ? null : tag.toMojangson();
-    HoverEvent.ItemStackInfo value = new HoverEvent.ItemStackInfo(id, stack.getAmount(), mojangsonTag);
+    HoverEvent.ItemStackInfo value = new HoverEvent.ItemStackInfo(id, count, damage, mojangsonTag);
     return new HoverEvent(HoverEvent.Action.SHOW_ITEM, value);
   }
 
