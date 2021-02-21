@@ -173,7 +173,7 @@ public final class ChatFactory {
     Object origin = to(chat);
     Object messageType = CLASS_CHAT_MESSAGE_TYPE != null
       ? Enums.fromOrdinal(CLASS_CHAT_MESSAGE_TYPE, type.ordinal())
-      : type.ordinal();
+      : (byte) type.ordinal(); // Must be forced to byte type
     if (!BukkitVersion.isV116OrLater) {
       return CONSTRUCTOR_PACKET_PLAY_OUT_CHAT.get().newInstance(origin, messageType);
     } else {
