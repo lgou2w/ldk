@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.chat;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.lgou2w.ldk.bukkit.packet.PacketFactory;
 import com.lgou2w.ldk.bukkit.version.BukkitVersion;
 import com.lgou2w.ldk.chat.ChatComponent;
@@ -134,13 +135,13 @@ public final class ChatFactory {
     if (!CLASS_ICHAT_BASE_COMPONENT.isInstance(chat))
       throw new IllegalArgumentException("Value type of the instance does not match. (Expected: " + CLASS_ICHAT_BASE_COMPONENT + ")");
     Object gson = FIELD_CHAT_SERIALIZER_GSON.get().get(null);
-    String json;
     if (!GSON_RELOCATED) {
-      json = ((Gson) gson).toJson(chat, CLASS_ICHAT_BASE_COMPONENT);
+      JsonElement json = ((Gson) gson).toJsonTree(chat, CLASS_ICHAT_BASE_COMPONENT);
+      return ChatSerializer.fromJson(json);
     } else {
-      json = METHOD_GSON_RELOCATED_TO_JSON.get().invoke(gson, chat, CLASS_ICHAT_BASE_COMPONENT);
+      String json = METHOD_GSON_RELOCATED_TO_JSON.get().invoke(gson, chat, CLASS_ICHAT_BASE_COMPONENT);
+      return ChatSerializer.fromJson(json);
     }
-    return ChatSerializer.fromJson(json);
   }
 
   @NotNull
@@ -149,10 +150,11 @@ public final class ChatFactory {
   public static Object to(ChatComponent chat) {
     if (chat == null) throw new NullPointerException("chat");
     Object gson = FIELD_CHAT_SERIALIZER_GSON.get().get(null);
-    String json = ChatSerializer.toJson(chat);
     if (!GSON_RELOCATED) {
+      JsonElement json = ChatSerializer.toJsonTree(chat);
       return ((Gson) gson).fromJson(json, CLASS_ICHAT_BASE_COMPONENT);
     } else {
+      String json = ChatSerializer.toJson(chat);
       return METHOD_GSON_RELOCATED_FROM_JSON.get().invoke(gson, json, CLASS_ICHAT_BASE_COMPONENT);
     }
   }
