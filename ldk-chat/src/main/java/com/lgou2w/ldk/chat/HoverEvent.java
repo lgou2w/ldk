@@ -28,11 +28,13 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public final class HoverEvent {
@@ -174,14 +176,20 @@ public final class HoverEvent {
     private final String type;
     private final UUID id;
     @Nullable private final ChatComponent name;
+    private final Function<EntityInfo, JsonElement> legacyAdapter;
 
-    @Contract("null, _, _ -> fail; _, null, _ -> fail")
-    public EntityInfo(String type, UUID id, @Nullable ChatComponent name) {
+    public EntityInfo(
+      String type,
+      UUID id,
+      @Nullable ChatComponent name,
+      @Nullable Function<EntityInfo, JsonElement> legacyAdapter
+    ) {
       if (type == null) throw new NullPointerException("type");
       if (id == null) throw new NullPointerException("id");
       this.type = type;
       this.id = id;
       this.name = name;
+      this.legacyAdapter = legacyAdapter != null ? legacyAdapter : EntityInfo::legacyAdapterV113;
     }
 
     @NotNull
@@ -208,14 +216,77 @@ public final class HoverEvent {
       return json;
     }
 
+    // TODO: Experimental!
+    //    Deep unit testing required
+
     @NotNull
     private JsonElement serializeToLegacy() {
+      return legacyAdapter.apply(this);
+    }
+
+    private final static BiFunction<String, String, String> PURE
+      = (key, value) -> key + ':' + value;
+    private final static BiFunction<String, String, String> DOUBLE_QUOTES
+      = (key, value) -> '"' + key + "\":\"" + value + '"';
+    private final static BiFunction<String, String, String> VALUE_DOUBLE_QUOTES
+      = (key, value) -> key + ":\"" + value + '"';
+
+    @NotNull
+    @Contract("null, _ -> fail")
+    private static JsonElement legacyAdapterV18ToV112(EntityInfo info, boolean includeDoubleQuotes) {
+      if (info == null) throw new NullPointerException("info");
+      String name = info.name != null
+        ? ChatSerializer.toPlainText(info.name, true, false)
+        : null;
+      StringBuilder builder = new StringBuilder();
+      builder.append('{');
+
+      Map<String, Map.Entry<String, BiFunction<String, String, String>>> values = new HashMap<>();
+      values.put("type", new AbstractMap.SimpleEntry<>(info.type, includeDoubleQuotes ? DOUBLE_QUOTES : PURE));
+      values.put("id", new AbstractMap.SimpleEntry<>(info.id.toString(), includeDoubleQuotes ? DOUBLE_QUOTES : PURE));
+      if (name != null)
+        values.put("name", new AbstractMap.SimpleEntry<>(name, includeDoubleQuotes ? DOUBLE_QUOTES : VALUE_DOUBLE_QUOTES));
+
+      int i = 0;
+      for (Map.Entry<String, Map.Entry<String, BiFunction<String, String, String>>> entry : values.entrySet()) {
+        String key = entry.getKey();
+        String value = entry.getValue().getKey();
+        BiFunction<String, String, String> func = entry.getValue().getValue();
+        String result = func.apply(key, value);
+        if (i > 0 && i <= values.size())
+          builder.append(',');
+        builder.append(result);
+        i++;
+      }
+      builder.append('}');
+      return new JsonPrimitive(builder.toString());
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    public static JsonElement legacyAdapterV18(EntityInfo info) {
+      return legacyAdapterV18ToV112(info, false);
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    public static JsonElement legacyAdapterV19ToV112(EntityInfo info) {
+      return legacyAdapterV18ToV112(info, true);
+    }
+
+    @NotNull
+    @Contract("null -> fail")
+    public static JsonElement legacyAdapterV113(EntityInfo info) {
+      if (info == null) throw new NullPointerException("info");
       StringWriter out = new StringWriter();
       try (JsonWriter writer = new JsonWriter(out)) {
         writer.beginObject();
-        writer.name("type").value(type);
-        writer.name("id").value(id.toString());
-        if (name != null) writer.name("name").value(ChatSerializer.toJson(name));
+        writer.name("type").value(info.type);
+        writer.name("id").value(info.id.toString());
+        if (info.name != null) {
+          String nameValue = ChatSerializer.toJson(info.name);
+          writer.name("name").value(nameValue);
+        }
         writer.endObject();
       } catch (IOException ignore) {
       }
@@ -228,16 +299,69 @@ public final class HoverEvent {
       JsonObject object = json.getAsJsonObject();
       if (!object.has("type") || !object.has("id"))
         return null;
+
       String type = object.get("type").getAsString();
       UUID id = UUID.fromString(object.get("id").getAsString());
-      ChatComponent name = object.has("name") ? ChatSerializer.fromJson(object.get("name")) : null;
-      return new EntityInfo(type, id, name);
+      String nameValue = object.has("name") ? object.get("name").getAsString() : null;
+      Function<EntityInfo, JsonElement> legacyAdapter = null;
+      ChatComponent name = null;
+      if (nameValue != null) {
+        if (nameValue.charAt(0) != '{' && nameValue.charAt(nameValue.length() - 1) != '}') {
+          // 1.13 before
+          name = ChatSerializer.fromPlainText(nameValue);
+          legacyAdapter = EntityInfo::legacyAdapterV19ToV112;
+        } else {
+          // 1.13 or after
+          name = ChatSerializer.fromJson(nameValue);
+          legacyAdapter = EntityInfo::legacyAdapterV113;
+        }
+      }
+      return new EntityInfo(type, id, name, legacyAdapter);
+    }
+
+    @Nullable
+    private static EntityInfo deserializeFromLegacyV18(String json) {
+      // Remove the front and back braces
+      json = json.substring(1, json.length() - 1);
+      try {
+        String[] entries = json.split(",");
+        String type = null, id = null, name = null;
+        for (String entry : entries) {
+          String[] parts = entry.split(":", 2);
+          String key = parts[0];
+          String value = parts[1];
+          switch (key) {
+            case "type":
+              type = value;
+              break;
+            case "id":
+              id = value;
+              break;
+            case "name":
+              int quoteFirst = value.indexOf('"'), quoteEnd = value.lastIndexOf('"');
+              name = quoteFirst != -1 ? value.substring(quoteFirst + 1, quoteEnd) : value;
+              break;
+            default:
+              break;
+          }
+        }
+        if (type != null && id != null) {
+          ChatComponent nameValue = name != null ? ChatSerializer.fromPlainText(name) : null;
+          return new EntityInfo(type, UUID.fromString(id), nameValue, EntityInfo::legacyAdapterV18);
+        }
+      } catch (IndexOutOfBoundsException ignore) {
+      }
+      return null;
     }
 
     @Nullable
     private static EntityInfo deserializeFromLegacy(JsonElement json) {
       if (!json.isJsonPrimitive()) return null;
       String value = json.getAsString();
+      if (value.charAt(0) != '"') {
+        // 1.8 legacy format
+        return deserializeFromLegacyV18(value);
+      }
       String type = null, id = null, name = null;
       try (JsonReader reader = new JsonReader(new StringReader(value))) {
         reader.beginObject();
@@ -258,12 +382,25 @@ public final class HoverEvent {
           }
         }
         reader.endObject();
-        if (type != null && id != null) {
-          UUID idValue = UUID.fromString(id);
-          ChatComponent nameValue = name != null ? ChatSerializer.fromJson(name) : null;
-          return new EntityInfo(type, idValue, nameValue);
+
+        if (type == null || id == null)
+          return null;
+
+        Function<EntityInfo, JsonElement> legacyAdapter = null;
+        ChatComponent nameValue = null;
+        if (name != null) {
+          if (name.charAt(0) != '{' && name.charAt(name.length() - 1) != '}') {
+            // 1.13 before
+            nameValue = ChatSerializer.fromPlainText(name);
+            legacyAdapter = EntityInfo::legacyAdapterV19ToV112;
+          } else {
+            nameValue = ChatSerializer.fromJson(name);
+            legacyAdapter = EntityInfo::legacyAdapterV113;
+          }
         }
-      } catch (IOException ignore) {
+        return new EntityInfo(type, UUID.fromString(id), nameValue, legacyAdapter);
+      } catch (IOException e) {
+        e.printStackTrace();
       }
       return null;
     }
@@ -322,23 +459,19 @@ public final class HoverEvent {
     private JsonElement serialize() {
       JsonObject json = new JsonObject();
       json.addProperty("id", id);
-      json.addProperty("count", count);
+      json.addProperty("count", count); // Note: Contents value of count is lowercase
       if (mojangsonTag != null) json.addProperty("tag", mojangsonTag);
       return json;
     }
 
     @NotNull
     private JsonElement serializeToLegacy() {
-      StringWriter out = new StringWriter();
-      try (JsonWriter writer = new JsonWriter(out)) {
-        writer.beginObject();
-        writer.name("id").value(id);
-        writer.name("count").value(count);
-        if (mojangsonTag != null) writer.name("tag").value(mojangsonTag);
-        writer.endObject();
-      } catch (IOException ignore) {
-      }
-      return new JsonPrimitive(out.toString());
+      StringBuilder builder = new StringBuilder();
+      builder.append("{\"id\":\"").append(id).append("\"");
+      builder.append(",\"Count\":").append(count);
+      if (mojangsonTag != null) builder.append(",\"tag\":").append(mojangsonTag);
+      builder.append('}');
+      return new JsonPrimitive(builder.toString());
     }
 
     @Nullable
