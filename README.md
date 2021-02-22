@@ -21,19 +21,46 @@
 <a href="https://github.com/lgou2w/ldk/issues"><img src="https://img.shields.io/badge/issues-report-E74C3C.svg?style=flat-square&logo=github"></a>
 </p>
 
-## Information
+### Information
 
 **✨ A multi-module lgou2w development kit.**
 
-## Module
+### Module
 
 TODO docs
 
-## Minecraft
+### Download
+
+  <p>
+  <a href="https://oss.sonatype.org/content/repositories/snapshots/com/lgou2w/"><img src="https://img.shields.io/nexus/s/com.lgou2w/ldk-common?server=https%3A%2F%2Foss.sonatype.org&style=flat-square&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABWCAYAAACHBmuvAAAACXBIWXMAABYlAAAWJQFJUiTwAAAE9ElEQVR4nO2dv1LbQBDGlwx96KMZVEtFeIM4tYuQJ4jfABfqUXrPxDwB5gkSCtfYT4BT2C1ixg8AT0BmnTURnCRrT3t/TO43wwzjE9b50+nT3nG7Pnh6egJfiOL0BAAe1sWywC4l0ywGgHjVH8186OI75RUHRHF6FMXpBABuUZxSD/D3m2SaTUg4pzgXK4rTHABwJH1TGv+BbYtkmuVKi0WciRXFaS+KUxTpHADeKweo4DHnyTQrkml2qrRawLpYUZzGUZyiB90AwLFywG7wb34m02yWTLMTm323Jhb50hgA7gDgk3IAH3yPW/KzIxufwYpYUZwOyJfOlMbuoJ/hrTk0/TmMikW+tACAy5a+pAu+9w/ys56pkxwqrwiAvgQAeMt9MdXxGo4p1JgDwGDVHxXVh+khOrLIl3LyJdtClUE/u8NQQ9LPxMQiX1pQKOAL5+RnA4n+dBaLfGlGvqQTCpSZk+Bb8Pdr5Sge6GeXyTRbdPUz7bkh3nLkS02Rd1vu0WPWxbJyDkgfEs/1UWnkcwUAuY6faYlFvjQUeMI9YsfXxXKstFRAt9NY6Lz4PuNVf/SgtNbAEiuK01M6SdfbDegKD9fFsnVn4a9gOKJzoZjtnkbZRGmpoJVYtHQyFoq85yTSQmlhQKsQE8k+rfqjxj41ikW+JHkVUaRfSksHyM8mkqO97tasFSuK0yEJJeIP62JpdHmFlm+kfBS9TOmvIhaGAsJXKt+ufJqG/Ez0CV1epX0WS3iKMieRKkMB09DSjaTHbqZOh+RLQ6HI+5F8qdXTxRRk1D0KNfKOd8kR/cDBh+OkRwtxXflO3lRpjq6gW3Oo4WePZPbPF15CrGsaTVZ8SRcKNfKWfnZB8deLC99FrN8kkhf/pmrLjqlT5dIO+flERyzWFMVXXk2dlCcfVMSZXLEuSCivfEkX8rPTqulOVZzJEeurdPTtI01xJmdZ+U2MpjraxJlG1uD3DVoouN3VbS/2OnhAq3X6IBaDvboNKbDs0e6ame2tSF6IhfsWaia9n1GQhuj7/xOrCcF19874LtagYjQ5w3eD90YoCE9DHvv0NLwmQ19QXGR9RrEPYlUum7jAd7GuVv2RyKYOCXz3LGXpxCXB4BkEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRgEsRj4skRTt6Xaqy0DXoi16o+MJ1ZKEG5DBkEsBhyxnJQHMA3t7mv12ThinWEdBkp2ehOUEkpbpdtwDX5TUyGK0znlB3q9Q7kO3cQtXc/a5CBjnQYaxnvBq5o37OyLrgaPw7egzape07LmTSO4AbfVFsEWeLkvXjKhdJPoRDt06zbSc/Ei42K70V8yefNFCh09HaT2QjnJ5TGZUFqVb7i3WWJVG/01eU44L19sRazSiaWHsbH8Q2EbqU0orRXrVUe8zGwVTijd+YBqXarAp5xpV1bBrevgPBvf5UNIt2KI9ToPZAe50Dm1wptOdUptVBAhX6raA69DY82bXYgUdTVVm8ZVzZs6xCrgGhgBIDRixRJKxcsFC3tLF0Rq3pQxVluZnlpdayroYKTmDZgUC+TjoV0Yr3ljpWq3heqSVmreWC1xLjyHA9s1b5zUgxeYOt2TSFb3yTsrnt9h6uSs5o3zbxpgLAU5X4H15msZGpaCvFnb9+o7LODlFAd8q3njnVjI9n+RXtW8AYA/tGVcUIkiHQ0AAAAASUVORK5CYII=" /></a>
+  </p>
+
+Gradle:
+
+```groovy
+dependencies {
+  compile 'com.lgou2w:{module}:{version}'
+}
+```
+
+Maven:
+
+```xml
+<dependency>
+  <groupId>com.lgou2w</groupId>
+  <artifactId>{module}</artifactId>
+  <version>{version}</version>
+</dependency>
+```
+
+> If you need use snapshot version, add sonatype snapshot repo.
+> https://oss.sonatype.org/content/repositories/snapshots/
+
+### Minecraft
 
 TODO docs
 
-### Server compatibility
+#### Server compatibility
 
   <p>
   <a href="https://minecraft.net"><img src="https://img.shields.io/badge/Minecraft-Bukkit%20|%20Spigot%20|%20Paper%20%3E%3D%201.8-brightgreen.svg?style=flat-square&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABJ0AAASdAHeZh94AAAAGHRFWHRTb2Z0d2FyZQBwYWludC5uZXQgNC4xLjVkR1hSAAAChklEQVQ4T22RXUxSYRzGT5ldedGdrss2CwUUAUFQz0G+FMya5gmWHwdQkADZ2qym0Y66/E6pZSRqH2o4s1rlXV7VauuDD5W66MKt1bpta+siurCnc4At13y2d++79//+9nu2l/g/4Zgrd2mjS/Pog/9tJOl9OL/lPsay7P7seO9Ekj5BKMqszMTsv+bjDixvebCS7P6+vOkffZbszc8++5cnn9lDs3Hn4Fy848e9DSd4aGnThduJToTe28Dd/1lNdn+9k3Ay7Ef6YBoaW7cennpz5tP1dy0Ix22YjrYhHLNjcdONuwln+nwzymA2bsdComtn8LFljV6lc4jeSJPgwlJ9auB5MxbibszEeIMjbeMqI7J1Fve5NbHeCmu/FuVNxdsymSyXYBmj4HynIeUd1cA3Z8DwSwtCURtXtwNcNYRe29E6roXeVwW1UQylpDADhn3HBVfaa1IBOwl3mwKBp43oWWtA8FU7Ag9oUA4pynSFkJJHoZIKYagQb7t4cIihBGMOXSrob0bPqQoOVsLbTcEeJKE6LYG6TgSF8AgoaREP8XvGeNVlFAy0UKkRmxaXLFUYtevBttbAc7IcpEIMvVoKjbwIOoUQRlUJdCppBuSN/RwY8pkx3qHHEFODwTYNRhx6ziBCrVqCytKjqKuUgCwT4AQlz1Sd9pgLhhldfITR7kx1mTDprkfQZUSflYRGVgQTB/AQJRfx5t8auXCZpomc9F+usp68CafRd9lm+jLu0KGPqxxg6qAtL4ZeKYJOKd6pr5YmDJUlDRRFHUhDu3PNb82fdNVODdu0P294zWmjQSn+piOrPDRF5WWf7R0QxL5b5xpLL1rIF6ZqySJtpgqyo10hiL83Y0UXYFGT7wAAAABJRU5ErkJggg=="></a>
@@ -47,7 +74,7 @@ TODO docs
   * [Magma](https://github.com/magmafoundation/Magma): 1.12, 1.15
   * [CatServer](https://github.com/Luohuayu/CatServer): 1.12.2
 
-## Donate
+### Donate
 
 Thank you very much for your donate.
 
@@ -56,6 +83,6 @@ Thank you very much for your donate.
 * [@EnTIv](https://github.com/EnTIv)
 * [@nihuge](https://github.com/nihuge)
 
-## License
+### License
 
 Apache-2.0
