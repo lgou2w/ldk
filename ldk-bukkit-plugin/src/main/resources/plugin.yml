@@ -25,10 +25,10 @@ authors: [lgou2w]
 contributors: [lgou2w, Feier]
 website: https://lgou2w.com
 github: https://github.com/lgou2w/ldk
-description: A multi-module lgou2w development kit for Bukkit.
+description: A multi-module lgou2w development kit.
 commands:
   ldk:
-    description: A multi-module lgou2w development kit for Bukkit.
+    description: A multi-module lgou2w development kit.
     permission: ldk
 permissions:
   ldk:

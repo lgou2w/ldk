@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class LDKPlugin extends JavaPlugin {
+public final class LDKPlugin extends JavaPlugin {
   public final static String NAME = "LDK";
   public final static String PREFIX = "[" + NAME + "]";
   public final static int BSTATS_ID = 3254;
@@ -41,14 +41,14 @@ public class LDKPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     if (!BukkitVersion.isV18OrLater) {
-      getLogger().severe("-------- A multi-module lgou2w development kit for Bukkit -----");
+      getLogger().severe("-------- A multi-module lgou2w development kit -----");
       getLogger().severe("  Very sorry. Although can load LDK, it is not compatible");
       getLogger().severe("  with 1.7 and previous versions from the beginning of design.");
       getLogger().severe("-------------");
       getServer().getPluginManager().disablePlugin(this);
       return;
     }
-    getLogger().info("A multi-module lgou2w development kit for Bukkit");
+    getLogger().info("A multi-module lgou2w development kit");
     getLogger().info("Open source: https://github.com/lgou2w/ldk");
     getLogger().log(Level.INFO, "Minecraft version: {0} Impl version: {1}", new Object[] {
       MinecraftVersion.CURRENT.getVersionString(),
