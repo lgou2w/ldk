@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,8 +36,9 @@ public final class FuzzyReflection {
   private final Class<?> source;
   private final boolean declared;
 
+  @Contract("null, _ -> fail")
   private FuzzyReflection(Class<?> source, boolean declared) {
-    this.source = source;
+    this.source = Objects.requireNonNull(source, "source");
     this.declared = declared;
   }
 
@@ -105,7 +107,6 @@ public final class FuzzyReflection {
   @NotNull
   @Contract("null, _ -> fail; !null, _ -> new")
   public static FuzzyReflection of(Class<?> source, boolean declared) {
-    if (source == null) throw new NullPointerException("source");
     return new FuzzyReflection(source, declared);
   }
 
@@ -179,10 +180,8 @@ public final class FuzzyReflection {
       boolean declared,
       Function<FuzzyReflection, T> delegate
     ) {
-      if (source == null) throw new NullPointerException("source");
-      if (delegate == null) throw new NullPointerException("delegate");
       this.fuzzy = new FuzzyReflection(source, declared);
-      this.delegate = delegate;
+      this.delegate = Objects.requireNonNull(delegate, "delegate");
     }
 
     @Override

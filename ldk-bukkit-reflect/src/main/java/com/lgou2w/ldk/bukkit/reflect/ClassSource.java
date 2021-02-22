@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class ClassSource {
 
@@ -29,7 +30,7 @@ public abstract class ClassSource {
   @NotNull
   @Contract("null -> fail; !null -> new")
   public static ClassSource fromClassLoader(ClassLoader classLoader) {
-    if (classLoader == null) throw new NullPointerException("classLoader");
+    Objects.requireNonNull(classLoader, "classLoader");
     return new ClassSource() {
       private final ClassLoader loader = classLoader;
 
@@ -48,7 +49,7 @@ public abstract class ClassSource {
   @NotNull
   @Contract("null -> fail; !null -> new")
   public static ClassSource fromMap(Map<String, Class<?>> map) {
-    if (map == null) throw new NullPointerException("map");
+    Objects.requireNonNull(map, "map");
     return new ClassSource() {
       private final Map<String, Class<?>> cache = map;
 

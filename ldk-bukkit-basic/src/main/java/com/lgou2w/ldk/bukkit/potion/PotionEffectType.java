@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public enum PotionEffectType {
 
@@ -123,7 +124,7 @@ public enum PotionEffectType {
   @NotNull
   @Contract("null -> fail; !null -> !null")
   public static PotionEffectType fromBukkit(org.bukkit.potion.PotionEffectType type) {
-    if (type == null) throw new NullPointerException("type");
+    Objects.requireNonNull(type, "type");
     return NAME_MAP.get(type.getName());
   }
 

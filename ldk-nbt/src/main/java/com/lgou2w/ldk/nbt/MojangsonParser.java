@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /*
@@ -43,7 +44,7 @@ public final class MojangsonParser {
   @NotNull
   @Contract("null -> fail; !null -> !null")
   public static BaseTag<?> parse(String mojangson) throws IllegalArgumentException {
-    if (mojangson == null) throw new NullPointerException("mojangson");
+    Objects.requireNonNull(mojangson, "mojangson");
     StringReader reader = new StringReader(mojangson);
     return new MojangsonParser(reader).readValue();
   }
@@ -51,7 +52,7 @@ public final class MojangsonParser {
   @NotNull
   @Contract("null -> fail; !null -> !null")
   public static CompoundTag parseCompound(String mojangson) throws IllegalArgumentException {
-    if (mojangson == null) throw new NullPointerException("mojangson");
+    Objects.requireNonNull(mojangson, "mojangson");
     StringReader reader = new StringReader(mojangson);
     return new MojangsonParser(reader).readSingleStruct();
   }

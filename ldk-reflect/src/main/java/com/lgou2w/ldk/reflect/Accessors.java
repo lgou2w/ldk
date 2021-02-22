@@ -24,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public final class Accessors {
 
@@ -32,29 +33,27 @@ public final class Accessors {
   @NotNull
   @Contract("null -> fail; !null -> new")
   public static <T> ConstructorAccessor<T> of(Constructor<T> constructor) {
-    if (constructor == null) throw new NullPointerException("constructor");
     return new ConstructorAccessorImpl<>(constructor);
   }
 
   @NotNull
   @Contract("null -> fail; !null -> new")
   public static <T, R> MethodAccessor<T, R> of(Method method) {
-    if (method == null) throw new NullPointerException("method");
     return new MethodAccessorImpl<>(method);
   }
 
   @NotNull
   @Contract("null -> fail; !null -> new")
   public static <T, R> FieldAccessor<T, R> of(Field field) {
-    if (field == null) throw new NullPointerException("field");
     return new FieldAccessorImpl<>(field);
   }
 
   private final static class ConstructorAccessorImpl<T> implements ConstructorAccessor<T> {
     final Constructor<T> source;
 
+    @Contract("null -> fail")
     ConstructorAccessorImpl(Constructor<T> source) {
-      this.source = source;
+      this.source = Objects.requireNonNull(source, "source");
     }
 
     @Override
@@ -87,8 +86,9 @@ public final class Accessors {
   private final static class MethodAccessorImpl<T, R> implements MethodAccessor<T, R> {
     final Method source;
 
+    @Contract("null -> fail")
     MethodAccessorImpl(Method source) {
-      this.source = source;
+      this.source = Objects.requireNonNull(source, "source");
     }
 
     @Override
@@ -120,8 +120,9 @@ public final class Accessors {
   private final static class FieldAccessorImpl<T, R> implements FieldAccessor<T, R> {
     final Field source;
 
+    @Contract("null -> fail")
     FieldAccessorImpl(Field source) {
-      this.source = source;
+      this.source = Objects.requireNonNull(source, "source");
     }
 
     @Override

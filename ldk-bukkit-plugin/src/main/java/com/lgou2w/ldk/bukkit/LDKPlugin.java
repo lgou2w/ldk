@@ -78,7 +78,7 @@ public class LDKPlugin extends JavaPlugin {
         return map;
       }));
     } catch (Exception e) {
-      getLogger().log(Level.WARNING, "Metrics stats service load failed.", e);
+      getLogger().log(Level.WARNING, "Metrics stats service load failed:", e);
     }
   }
 }

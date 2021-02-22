@@ -84,7 +84,9 @@ public class Version implements Comparable<Version> {
   private final static Pattern VERSION_PATTERN = Pattern.compile("^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<build>\\d+)$");
 
   @NotNull
-  public static Version parse(@NotNull String versionString) throws IllegalArgumentException {
+  @Contract("null -> fail")
+  public static Version parse(String versionString) throws IllegalArgumentException {
+    Objects.requireNonNull(versionString, "versionString");
     Matcher matcher = VERSION_PATTERN.matcher(versionString);
     if (!matcher.matches()) throw new IllegalArgumentException("Illegal version format, must be: x.y.z");
     return new Version(

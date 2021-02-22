@@ -28,10 +28,8 @@ public class ScoreComponent extends BaseComponent {
 
   @Contract("null, _, _ -> fail; _, null, _ -> fail")
   public ScoreComponent(String name, String objective, @Nullable String value) {
-    if (name == null) throw new NullPointerException("name");
-    if (objective == null) throw new NullPointerException("objective");
-    this.name = name;
-    this.objective = objective;
+    this.name = Objects.requireNonNull(name, "name");
+    this.objective = Objects.requireNonNull(objective, "objective");
     this.value = value;
   }
 

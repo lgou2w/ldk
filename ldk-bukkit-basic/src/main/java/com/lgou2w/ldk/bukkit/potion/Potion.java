@@ -30,7 +30,7 @@ public final class Potion implements Valuable<String>, Comparable<Potion> {
 
   @Contract("null, _, _ -> fail")
   public Potion(PotionType type, boolean upgraded, boolean extended) throws IllegalArgumentException {
-    if (type == null) throw new NullPointerException("type");
+    Objects.requireNonNull(type, "type");
     if (!(!upgraded || type.isUpgradeable())) throw new IllegalArgumentException("Potion Type is not upgradable.");
     if (!(!extended || type.isExtendable())) throw new IllegalArgumentException("Potion Type is not extendable.");
     if (!(!extended || !upgraded)) throw new IllegalArgumentException("Potion cannot be both extended and upgraded.");
@@ -100,7 +100,7 @@ public final class Potion implements Valuable<String>, Comparable<Potion> {
   @NotNull
   @Contract("null -> fail")
   public static Potion parse(String value) throws IllegalArgumentException {
-    if (value == null) throw new NullPointerException("value");
+    Objects.requireNonNull(value, "value");
     String id = value.replace(PREFIX_UPGRADED, "").replace(PREFIX_EXTENDED, "");
     PotionType type = PotionType.valueOf(id.toUpperCase(Locale.ROOT));
     boolean upgradable = value.startsWith(PREFIX_UPGRADED);

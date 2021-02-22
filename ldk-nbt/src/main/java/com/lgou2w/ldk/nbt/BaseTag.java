@@ -16,14 +16,17 @@
 
 package com.lgou2w.ldk.nbt;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public abstract class BaseTag<T> implements NBT<T> {
   @NotNull protected T value;
 
+  @Contract("null -> fail")
   public BaseTag(T value) {
-    if (value == null) throw new NullPointerException("value");
-    this.value = value;
+    this.value = Objects.requireNonNull(value, "value");
   }
 
   @NotNull
@@ -34,8 +37,7 @@ public abstract class BaseTag<T> implements NBT<T> {
 
   @Override
   public void setValue(T value) {
-    if (value == null) throw new NullPointerException("value");
-    this.value = value;
+    this.value = Objects.requireNonNull(value, "value");
   }
 
   @Override

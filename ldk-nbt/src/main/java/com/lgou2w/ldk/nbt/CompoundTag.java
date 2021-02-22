@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -135,8 +136,8 @@ public class CompoundTag extends BaseTag<Map<String, BaseTag<?>>> implements Map
   @NotNull
   @Contract("null, _ -> fail; _, null -> fail; !null, !null -> this")
   public CompoundTag set(String key, BaseTag<?> value) {
-    if (key == null) throw new NullPointerException("key");
-    if (value == null) throw new NullPointerException("value");
+    Objects.requireNonNull(key, "key");
+    Objects.requireNonNull(value, "value");
     put(key, value);
     return this;
   }
@@ -226,7 +227,7 @@ public class CompoundTag extends BaseTag<Map<String, BaseTag<?>>> implements Map
     Class<T> expected,
     boolean nullable
   ) throws NoSuchElementException, ClassCastException {
-    if (key == null) throw new NullPointerException("key");
+    Objects.requireNonNull(key, "key");
     BaseTag<?> value = this.value.get(key);
     if (nullable && value == null) return null;
     if (value == null) throw new NoSuchElementException("Key value does not exist: " + key);

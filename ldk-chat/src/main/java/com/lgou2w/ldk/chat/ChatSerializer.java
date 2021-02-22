@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,14 +54,14 @@ public final class ChatSerializer {
   @NotNull
   @Contract("null -> fail")
   public static ChatComponent fromJson(JsonElement json) throws JsonParseException {
-    if (json == null) throw new NullPointerException("json");
+    Objects.requireNonNull(json, "json");
     return GSON.fromJson(json, ChatComponent.class);
   }
 
   @NotNull
   @Contract("null -> fail")
   public static ChatComponent fromJson(String json) throws JsonParseException {
-    if (json == null) throw new NullPointerException("json");
+    Objects.requireNonNull(json, "json");
     try {
       JsonReader reader = new JsonReader(new StringReader(json));
       reader.setLenient(false);
@@ -73,7 +74,7 @@ public final class ChatSerializer {
   @NotNull
   @Contract("null -> fail")
   public static ChatComponent fromJsonLenient(String json) throws JsonParseException {
-    if (json == null) throw new NullPointerException("json");
+    Objects.requireNonNull(json, "json");
     try {
       JsonReader reader = new JsonReader(new StringReader(json));
       reader.setLenient(true);
@@ -86,14 +87,14 @@ public final class ChatSerializer {
   @NotNull
   @Contract("null -> fail")
   public static String toJson(ChatComponent component) throws JsonParseException {
-    if (component == null) throw new NullPointerException("component");
+    Objects.requireNonNull(component, "component");
     return GSON.toJson(component);
   }
 
   @NotNull
   @Contract("null -> fail")
   public static JsonElement toJsonTree(ChatComponent component) {
-    if (component == null) throw new NullPointerException("component");
+    Objects.requireNonNull(component, "component");
     return GSON.toJsonTree(component);
   }
 

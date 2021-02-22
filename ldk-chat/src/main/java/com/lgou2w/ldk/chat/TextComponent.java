@@ -26,8 +26,7 @@ public class TextComponent extends BaseComponent {
 
   @Contract("null -> fail")
   public TextComponent(String text) {
-    if (text == null) throw new NullPointerException("text");
-    this.text = text;
+    this.text = Objects.requireNonNull(text, "text");
   }
 
   public TextComponent() {

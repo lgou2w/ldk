@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getCraftBukkitClass;
@@ -130,7 +131,7 @@ public final class PacketFactory {
 
   @Contract("null, _ -> fail")
   static Player[] nearbyPlayers(Location center, double range) {
-    if (center == null) throw new NullPointerException("center");
+    Objects.requireNonNull(center, "center");
     World world = center.getWorld();
     if (world == null)
       throw new IllegalArgumentException("The world at this location is a null.");
@@ -149,14 +150,14 @@ public final class PacketFactory {
   @Contract("null, _ -> fail; _, null -> fail")
   public static void sendPacket(Object packet, Player receiver) {
     validatePacket(packet);
-    if (receiver == null) throw new NullPointerException("receiver");
+    Objects.requireNonNull(receiver, "receiver");
     sendPacket0(packet, receiver);
   }
 
   @Contract("null, _ -> fail; _, null -> fail")
   public static void sendPacket(Object packet, Player[] receivers) {
     validatePacket(packet);
-    if (receivers == null) throw new NullPointerException("receivers");
+    Objects.requireNonNull(receivers, "receivers");
     for (Player receiver : receivers)
       sendPacket0(packet, receiver);
   }
@@ -177,14 +178,14 @@ public final class PacketFactory {
   @Contract("null, _ -> fail; _, null -> fail")
   public static void processPacket(Object packet, Player sender) {
     validatePacket(packet);
-    if (sender == null) throw new NullPointerException("sender");
+    Objects.requireNonNull(sender, "sender");
     processPacket0(packet, sender);
   }
 
   @Contract("null, _ -> fail; _, null -> fail")
   public static void processPacket(Object packet, Player[] senders) {
     validatePacket(packet);
-    if (senders == null) throw new NullPointerException("senders");
+    Objects.requireNonNull(senders, "senders");
     for (Player sender : senders)
       processPacket0(packet, sender);
   }

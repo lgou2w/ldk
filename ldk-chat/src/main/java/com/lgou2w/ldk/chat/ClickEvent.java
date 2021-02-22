@@ -32,10 +32,8 @@ public final class ClickEvent {
 
   @Contract("null, _ -> fail; _, null -> fail")
   public ClickEvent(Action action, String value) {
-    if (action == null) throw new NullPointerException("action");
-    if (value == null) throw new NullPointerException("value");
-    this.action = action;
-    this.value = value;
+    this.action = Objects.requireNonNull(action, "action");
+    this.value = Objects.requireNonNull(value, "value");
   }
 
   @NotNull

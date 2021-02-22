@@ -25,9 +25,8 @@ public class KeybindComponent extends BaseComponent {
   private final String keybind;
 
   @Contract("null -> fail")
-  public KeybindComponent(String key) {
-    if (key == null) throw new NullPointerException("key");
-    this.keybind = key;
+  public KeybindComponent(String keybind) {
+    this.keybind = Objects.requireNonNull(keybind, "keybind");
   }
 
   @NotNull

@@ -28,10 +28,8 @@ public abstract class NBTComponent extends BaseComponent {
 
   @Contract("null, _, _ -> fail; _, null, _ -> fail")
   protected NBTComponent(String path, String value, boolean interpret) {
-    if (path == null) throw new NullPointerException("path");
-    if (value == null) throw new NullPointerException("value");
-    this.path = path;
-    this.value = value;
+    this.path = Objects.requireNonNull(path, "path");
+    this.value = Objects.requireNonNull(value, "value");
     this.interpret = interpret;
   }
 

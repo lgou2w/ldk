@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public final class ComponentBuilder {
   private final List<ChatComponent> parts;
@@ -69,8 +70,9 @@ public final class ComponentBuilder {
   @NotNull
   @Contract("null -> fail; _ -> this")
   public ComponentBuilder append(ChatComponent... parts) throws IllegalArgumentException {
-    if (parts == null) throw new NullPointerException("parts");
-    if (parts.length <= 0) throw new IllegalArgumentException("No components to append.");
+    Objects.requireNonNull(parts, "parts");
+    if (parts.length <= 0)
+      throw new IllegalArgumentException("No components to append.");
     this.parts.addAll(Arrays.asList(parts));
     resetCursor();
     return this;
@@ -188,7 +190,7 @@ public final class ComponentBuilder {
   @NotNull
   @Contract("null -> fail; !null -> this")
   public ComponentBuilder clickOpenURL(String url) {
-    if (url == null) throw new NullPointerException("url");
+    Objects.requireNonNull(url, "url");
     clickable(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
     return this;
   }
@@ -196,7 +198,7 @@ public final class ComponentBuilder {
   @NotNull
   @Contract("null -> fail; !null -> this")
   public ComponentBuilder clickOpenFile(String file) {
-    if (file == null) throw new NullPointerException("file");
+    Objects.requireNonNull(file, "file");
     clickable(new ClickEvent(ClickEvent.Action.OPEN_FILE, file));
     return this;
   }
@@ -204,7 +206,7 @@ public final class ComponentBuilder {
   @NotNull
   @Contract("null -> fail; !null -> this")
   public ComponentBuilder clickSuggestCommand(String command) {
-    if (command == null) throw new NullPointerException("command");
+    Objects.requireNonNull(command, "command");
     clickable(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
     return this;
   }
@@ -212,7 +214,7 @@ public final class ComponentBuilder {
   @NotNull
   @Contract("null -> fail; !null -> this")
   public ComponentBuilder clickRunCommand(String command) {
-    if (command == null) throw new NullPointerException("command");
+    Objects.requireNonNull(command, "command");
     clickable(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
     return this;
   }
@@ -220,7 +222,7 @@ public final class ComponentBuilder {
   @NotNull
   @Contract("null -> fail; !null -> this")
   public ComponentBuilder clickChangePage(String page) {
-    if (page == null) throw new NullPointerException("page");
+    Objects.requireNonNull(page, "page");
     clickable(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, page));
     return this;
   }
@@ -228,32 +230,32 @@ public final class ComponentBuilder {
   @NotNull
   @Contract("null -> fail; !null -> this")
   public ComponentBuilder clickCopyToClipboard(String value) {
-    if (value == null) throw new NullPointerException("value");
+    Objects.requireNonNull(value, "value");
     clickable(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, value));
     return this;
   }
 
   @NotNull
   @Contract("null -> fail; !null -> this")
-  public ComponentBuilder hoverShowText(ChatComponent value) {
-    if (value == null) throw new NullPointerException("value");
-    hoverable(new HoverEvent(HoverEvent.Action.SHOW_TEXT, value));
+  public ComponentBuilder hoverShowText(ChatComponent text) {
+    Objects.requireNonNull(text, "text");
+    hoverable(new HoverEvent(HoverEvent.Action.SHOW_TEXT, text));
     return this;
   }
 
   @NotNull
   @Contract("null -> fail; !null -> this")
-  public ComponentBuilder hoverShowItem(HoverEvent.ItemStackInfo value) {
-    if (value == null) throw new NullPointerException("value");
-    hoverable(new HoverEvent(HoverEvent.Action.SHOW_ITEM, value));
+  public ComponentBuilder hoverShowItem(HoverEvent.ItemStackInfo item) {
+    Objects.requireNonNull(item, "item");
+    hoverable(new HoverEvent(HoverEvent.Action.SHOW_ITEM, item));
     return this;
   }
 
   @NotNull
   @Contract("null -> fail; !null -> this")
-  public ComponentBuilder hoverShowEntity(HoverEvent.EntityInfo value) {
-    if (value == null) throw new NullPointerException("value");
-    hoverable(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, value));
+  public ComponentBuilder hoverShowEntity(HoverEvent.EntityInfo entity) {
+    Objects.requireNonNull(entity, "entity");
+    hoverable(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, entity));
     return this;
   }
 

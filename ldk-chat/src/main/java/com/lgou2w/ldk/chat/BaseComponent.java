@@ -47,22 +47,21 @@ public abstract class BaseComponent implements ChatComponent {
   @NotNull
   @Override
   public ChatComponent setStyle(Style style) {
-    if (style == null) throw new NullPointerException("style");
-    this.style = style;
+    this.style = Objects.requireNonNull(style, "style");
     return this;
   }
 
   @Override
   @NotNull
   public ChatComponent withStyle(Style style) {
-    if (style == null) throw new NullPointerException("style");
+    Objects.requireNonNull(style, "style");
     return setStyle(style.applyStyle(getStyle()));
   }
 
   @Override
   @NotNull
   public ChatComponent withStyle(Formatting... formats) {
-    if (formats == null) throw new NullPointerException("formats");
+    Objects.requireNonNull(formats, "formats");
     return setStyle(style.applyFormat(formats));
   }
 
@@ -75,7 +74,7 @@ public abstract class BaseComponent implements ChatComponent {
   @Override
   @NotNull
   public ChatComponent addSibling(ChatComponent sibling) {
-    if (sibling == null) throw new NullPointerException("sibling");
+    Objects.requireNonNull(sibling, "sibling");
     siblings.add(sibling);
     return this;
   }
@@ -83,7 +82,7 @@ public abstract class BaseComponent implements ChatComponent {
   @Override
   @NotNull
   public ChatComponent addSibling(String text) {
-    if (text == null) throw new NullPointerException("text");
+    Objects.requireNonNull(text, "text");
     siblings.add(new TextComponent(text));
     return this;
   }

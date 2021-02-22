@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public final class MinecraftReflection {
 
@@ -78,7 +79,7 @@ public final class MinecraftReflection {
   @NotNull
   @Contract("null -> fail")
   public static Class<?> getMinecraftClass(String className) throws ClassNotFoundException {
-    if (className == null) throw new NullPointerException("className");
+    Objects.requireNonNull(className, "className");
     if (REMAPPER != null) className = REMAPPER.mapClassName(className); // remapper
     return CACHED_MINECRAFT.getPackageClass(className);
   }
@@ -98,8 +99,8 @@ public final class MinecraftReflection {
     String className,
     String... aliases
   ) throws ClassNotFoundException {
-    if (className == null) throw new NullPointerException("className");
-    if (aliases == null) throw new NullPointerException("aliases");
+    Objects.requireNonNull(className, "className");
+    Objects.requireNonNull(aliases, "aliases");
     try {
       return getMinecraftClass(className);
     } catch (ClassNotFoundException e) {
@@ -143,14 +144,14 @@ public final class MinecraftReflection {
   @NotNull
   @Contract("null -> fail")
   public static Class<?> getCraftBukkitClass(String className) throws ClassNotFoundException {
-    if (className == null) throw new NullPointerException("className");
+    Objects.requireNonNull(className, "className");
     return CACHED_CRAFTBUKKIT.getPackageClass(className);
   }
 
   @Nullable
   @Contract("null -> fail")
   public static Class<?> getCraftBukkitClassOrNull(String className) {
-    if (className == null) throw new NullPointerException("className");
+    Objects.requireNonNull(className, "className");
     try {
       return getCraftBukkitClass(className);
     } catch (ClassNotFoundException e) {

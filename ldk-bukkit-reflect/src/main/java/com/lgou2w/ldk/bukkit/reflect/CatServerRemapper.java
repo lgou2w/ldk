@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 final class CatServerRemapper extends Remapper {
   final Class<?> classJarMapping;
@@ -102,8 +103,8 @@ final class CatServerRemapper extends Remapper {
   @Override
   @Nullable
   public String mapMethodName(Class<?> clazz, String name, Class<?>[] parameterTypes) {
-    if (clazz == null) throw new NullPointerException("clazz");
-    if (parameterTypes == null) throw new NullPointerException("parameterTypes");
+    Objects.requireNonNull(clazz, "clazz");
+    Objects.requireNonNull(parameterTypes, "parameterTypes");
     if (name == null) return null;
     String methodName = methodMapMethod.invoke(null, clazz, name, parameterTypes);
     return methodName != null ? methodName : name;
@@ -112,7 +113,7 @@ final class CatServerRemapper extends Remapper {
   @Override
   @Nullable
   public String mapFieldName(Class<?> clazz, String name) {
-    if (clazz == null) throw new NullPointerException("clazz");
+    Objects.requireNonNull(clazz, "clazz");
     if (name == null) return null;
     String fieldName = methodMapFieldName.invoke(null, clazz, name);
     return fieldName != null ? fieldName : name;

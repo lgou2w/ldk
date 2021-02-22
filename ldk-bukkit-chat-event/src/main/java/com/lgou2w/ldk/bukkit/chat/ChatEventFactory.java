@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -43,7 +44,7 @@ public final class ChatEventFactory {
   @Contract("null -> fail")
   @SuppressWarnings("deprecation")
   public static HoverEvent makeHoverShowItem(ItemStack stack) {
-    if (stack == null) throw new NullPointerException("stack");
+    Objects.requireNonNull(stack, "stack");
     String id = ItemFactory.materialToMinecraftKey(stack.getType());
     int count = stack.getAmount(), damage = stack.getDurability();
     CompoundTag tag = ItemFactory.readStackTag(stack);
@@ -55,8 +56,8 @@ public final class ChatEventFactory {
   @NotNull
   @Contract("null, _, _ -> fail; _, null, _ -> fail")
   public static HoverEvent makeHoverShowEntity(EntityType type, UUID id, @Nullable ChatComponent name) {
-    if (type == null) throw new NullPointerException("type");
-    if (id == null) throw new NullPointerException("id");
+    Objects.requireNonNull(type, "type");
+    Objects.requireNonNull(id, "id");
     Function<HoverEvent.EntityInfo, JsonElement> adapter = !BukkitVersion.isV19OrLater
       ? HoverEvent.EntityInfo::legacyAdapterV18
       : !BukkitVersion.isV113OrLater
@@ -71,7 +72,7 @@ public final class ChatEventFactory {
   @NotNull
   @Contract("null, _ -> fail")
   public static HoverEvent makeHoverShowEntity(Entity entity, @Nullable ChatComponent name) {
-    if (entity == null) throw new NullPointerException("entity");
+    Objects.requireNonNull(entity, "entity");
     ChatComponent customName = entity.getCustomName() != null && name == null
       ? ChatSerializer.fromPlainText(entity.getCustomName())
       : name;
@@ -85,7 +86,7 @@ public final class ChatEventFactory {
   }
 
   @Nullable
-  @Contract("null, _ -> null; !null, null -> fail")
+  @Contract("null, _ -> null; !null, null -> fail; !null, !null -> param1")
   public static ChatComponent withHoverShowItem(ChatComponent component, ItemStack stack) {
     if (component == null) return null;
     HoverEvent hoverEvent = makeHoverShowItem(stack);
@@ -94,7 +95,7 @@ public final class ChatEventFactory {
   }
 
   @Nullable
-  @Contract("null, _ -> null; !null, null -> fail")
+  @Contract("null, _ -> null; !null, null -> fail; !null, !null -> param1")
   public static ChatComponent withHoverShowEntity(ChatComponent component, Entity entity) {
     if (component == null) return null;
     HoverEvent hoverEvent = makeHoverShowEntity(entity);

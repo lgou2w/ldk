@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -36,9 +37,11 @@ public abstract class ReflectionMatcher<T extends AccessibleObject & Member> {
   protected final boolean declared;
   @NotNull protected List<T> values;
 
-  public ReflectionMatcher(@NotNull Collection<T> values, boolean declared) {
-    this.declared = declared;
+  @Contract("null, _ -> fail")
+  public ReflectionMatcher(Collection<T> values, boolean declared) {
+    Objects.requireNonNull(values, "values");
     this.values = new ArrayList<>(values);
+    this.declared = declared;
   }
 
   public ReflectionMatcher<T> with(@NotNull Predicate<T> condition) {
@@ -71,7 +74,7 @@ public abstract class ReflectionMatcher<T extends AccessibleObject & Member> {
 
   @Contract("_, null -> fail")
   private ReflectionMatcher<T> withModifiers(boolean reverse, int... modifiers) {
-    if (modifiers == null) throw new NullPointerException("modifiers");
+    Objects.requireNonNull(modifiers, "modifiers");
     if (modifiers.length <= 0) return this;
     return with(it -> {
       int mod = it.getModifiers();

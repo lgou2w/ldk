@@ -43,10 +43,8 @@ public final class HoverEvent {
 
   @Contract("null, _ -> fail; _, null -> fail")
   public <T> HoverEvent(Action<T> action, T value) {
-    if (action == null) throw new NullPointerException("action");
-    if (value == null) throw new NullPointerException("value");
-    this.action = action;
-    this.value = value;
+    this.action = Objects.requireNonNull(action, "action");
+    this.value = Objects.requireNonNull(value, "value");
   }
 
   @NotNull
@@ -178,16 +176,15 @@ public final class HoverEvent {
     @Nullable private final ChatComponent name;
     private final Function<EntityInfo, JsonElement> legacyAdapter;
 
+    @Contract("null, _, _, _ -> fail; _, null, _, _ -> fail")
     public EntityInfo(
       String type,
       UUID id,
       @Nullable ChatComponent name,
       @Nullable Function<EntityInfo, JsonElement> legacyAdapter
     ) {
-      if (type == null) throw new NullPointerException("type");
-      if (id == null) throw new NullPointerException("id");
-      this.type = type;
-      this.id = id;
+      this.type = Objects.requireNonNull(type, "type");
+      this.id = Objects.requireNonNull(id, "id");
       this.name = name;
       this.legacyAdapter = legacyAdapter != null ? legacyAdapter : EntityInfo::legacyAdapterV113;
     }
@@ -234,7 +231,7 @@ public final class HoverEvent {
     @NotNull
     @Contract("null, _ -> fail")
     private static JsonElement legacyAdapterV18ToV112(EntityInfo info, boolean includeDoubleQuotes) {
-      if (info == null) throw new NullPointerException("info");
+      Objects.requireNonNull(info, "info");
       String name = info.name != null
         ? ChatSerializer.toPlainText(info.name, true, false)
         : null;
@@ -277,7 +274,7 @@ public final class HoverEvent {
     @NotNull
     @Contract("null -> fail")
     public static JsonElement legacyAdapterV113(EntityInfo info) {
-      if (info == null) throw new NullPointerException("info");
+      Objects.requireNonNull(info, "info");
       StringWriter out = new StringWriter();
       try (JsonWriter writer = new JsonWriter(out)) {
         writer.beginObject();
@@ -435,8 +432,7 @@ public final class HoverEvent {
 
     @Contract("null, _, _, _ -> fail")
     public ItemStackInfo(String id, int count, int damage, @Nullable String mojangsonTag) {
-      if (id == null) throw new NullPointerException("id");
-      this.id = id;
+      this.id = Objects.requireNonNull(id, "id");
       this.count = count;
       this.damage = damage;
       this.mojangsonTag = mojangsonTag;

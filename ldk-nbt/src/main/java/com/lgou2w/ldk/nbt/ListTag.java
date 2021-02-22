@@ -74,7 +74,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Override
   public void setValue(List<BaseTag<?>> value) {
-    if (value == null) throw new NullPointerException("value");
+    Objects.requireNonNull(value, "value");
     for (BaseTag<?> el : value) checkElement(el);
     super.setValue(new ArrayList<>(value));
   }
@@ -146,7 +146,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addByte(byte... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<ByteTag> c = new ArrayList<>(values.length);
     for (byte element : values) c.add(new ByteTag(element));
     addAll(c);
@@ -155,7 +155,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addByte(int... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<ByteTag> c = new ArrayList<>(values.length);
     for (int element : values) c.add(new ByteTag((byte) element));
     addAll(c);
@@ -164,7 +164,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addShort(short... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<ShortTag> c = new ArrayList<>(values.length);
     for (short element : values) c.add(new ShortTag(element));
     addAll(c);
@@ -173,7 +173,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addShort(int... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<ShortTag> c = new ArrayList<>(values.length);
     for (int element : values) c.add(new ShortTag((short) element));
     addAll(c);
@@ -182,7 +182,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addInt(int... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<IntTag> c = new ArrayList<>(values.length);
     for (int element : values) c.add(new IntTag(element));
     addAll(c);
@@ -191,7 +191,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addLong(long... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<LongTag> c = new ArrayList<>(values.length);
     for (long element : values) c.add(new LongTag(element));
     addAll(c);
@@ -200,7 +200,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addFloat(float... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<FloatTag> c = new ArrayList<>(values.length);
     for (float element : values) c.add(new FloatTag(element));
     addAll(c);
@@ -209,7 +209,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addDouble(double... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<DoubleTag> c = new ArrayList<>(values.length);
     for (double element : values) c.add(new DoubleTag(element));
     addAll(c);
@@ -218,7 +218,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addByteArray(byte[]... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<ByteArrayTag> c = new ArrayList<>(values.length);
     for (byte[] element : values) c.add(new ByteArrayTag(element));
     addAll(c);
@@ -227,7 +227,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addString(String... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<StringTag> c = new ArrayList<>(values.length);
     for (String element : values) c.add(new StringTag(element));
     addAll(c);
@@ -236,21 +236,21 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addList(ListTag... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     addAll(Arrays.asList(values));
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
   public ListTag addCompound(CompoundTag... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     addAll(Arrays.asList(values));
     return this;
   }
 
   @Contract("null -> fail; !null -> this")
   public ListTag addIntArray(int[]... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<IntArrayTag> c = new ArrayList<>(values.length);
     for (int[] element : values) c.add(new IntArrayTag(element));
     addAll(c);
@@ -259,7 +259,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addLongArray(long[]... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<LongArrayTag> c = new ArrayList<>(values.length);
     for (long[] element : values) c.add(new LongArrayTag(element));
     addAll(c);
@@ -268,7 +268,7 @@ public class ListTag extends BaseTag<List<BaseTag<?>>> implements List<BaseTag<?
 
   @Contract("null -> fail; !null -> this")
   public ListTag addBoolean(boolean... values) {
-    if (values == null) throw new NullPointerException("values");
+    Objects.requireNonNull(values, "values");
     List<ByteTag> c = new ArrayList<>(values.length);
     for (boolean element : values) c.add(new ByteTag((byte) (element ? 1 : 0)));
     addAll(c);

@@ -28,10 +28,8 @@ public class TranslationComponent extends BaseComponent {
 
   @Contract("null, _ -> fail; _, null -> fail")
   public TranslationComponent(String key, Object[] args) {
-    if (key == null) throw new NullPointerException("key");
-    if (args == null) throw new NullPointerException("args");
-    this.key = key;
-    this.args = args;
+    this.key = Objects.requireNonNull(key, "key");
+    this.args = Objects.requireNonNull(args, "args");
   }
 
   @Contract("null -> fail")

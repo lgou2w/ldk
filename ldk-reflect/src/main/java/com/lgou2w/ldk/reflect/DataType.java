@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public enum DataType {
 
@@ -89,7 +90,7 @@ public enum DataType {
   @NotNull
   @Contract("null -> fail; !null -> !null")
   public static Class<?>[] ofPrimitive(Class<?>[] classes) {
-    if (classes == null) throw new NullPointerException("classes");
+    Objects.requireNonNull(classes, "classes");
     Class<?>[] result = new Class[classes.length];
     for (int i = 0; i < result.length; i++) result[i] = ofPrimitive(classes[i]);
     return result;
@@ -98,7 +99,7 @@ public enum DataType {
   @NotNull
   @Contract("null -> fail; !null -> !null")
   public static Class<?>[] ofReference(Class<?>[] classes) {
-    if (classes == null) throw new NullPointerException("classes");
+    Objects.requireNonNull(classes, "classes");
     Class<?>[] result = new Class[classes.length];
     for (int i = 0; i < result.length; i++) result[i] = ofReference(classes[i]);
     return result;

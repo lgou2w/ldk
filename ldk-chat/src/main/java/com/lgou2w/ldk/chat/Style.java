@@ -188,7 +188,7 @@ public final class Style {
   @NotNull
   @Contract("null -> fail; _ -> new")
   public Style applyFormat(Formatting... formats) {
-    if (formats == null) throw new NullPointerException("formats");
+    Objects.requireNonNull(formats, "formats");
     Color color = this.color;
     Boolean bold = this.bold;
     Boolean italic = this.italic;
@@ -225,7 +225,7 @@ public final class Style {
   @NotNull
   @Contract("null -> fail")
   public Style applyStyle(Style other) {
-    if (other == null) throw new NullPointerException("other");
+    Objects.requireNonNull(other, "other");
     if (this == EMPTY) return other;
     if (other == EMPTY) return this;
     return new Style(

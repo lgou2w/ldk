@@ -174,14 +174,14 @@ public final class NBTFactory {
 
   @NotNull
   @Contract("null -> fail; !null -> !null")
+  @SuppressWarnings({ "unchecked", "ConstantConditions" })
   public static BaseTag<?> from(Object nbt) throws IllegalArgumentException {
-    if (nbt == null) throw new NullPointerException("nbt");
+    Objects.requireNonNull(nbt, "nbt");
     if (!CLASS_NBT_BASE.isInstance(nbt))
       throw new IllegalArgumentException("Value type of the instance does not match. (Expected: " + CLASS_NBT_BASE + ")");
-    @SuppressWarnings("ConstantConditions")
     int typeId = METHOD_NBT_BASE_GET_TYPE_ID.get().invoke(nbt);
     TagType type = Objects.requireNonNull(TagType.fromId(typeId), "Invalid nbt type id: " + typeId);
-    @NotNull FieldAccessor<Object, Object> field;
+    FieldAccessor<Object, Object> field;
     try {
       field = lookupInternalField(type);
     } catch (ClassNotFoundException e) {
@@ -224,7 +224,7 @@ public final class NBTFactory {
   @NotNull
   @Contract("null -> fail; !null -> !null")
   public static Object to(BaseTag<?> nbt) throws IllegalArgumentException {
-    if (nbt == null) throw new NullPointerException("nbt");
+    Objects.requireNonNull(nbt, "nbt");
     switch (nbt.getType()) {
       case END: return INSTANCE_NBT_TAG_END;
       case LIST:
@@ -272,12 +272,12 @@ public final class NBTFactory {
     @Nullable Object value,
     TagType listElementType
   ) throws IllegalArgumentException {
-    if (type == null) throw new NullPointerException("type");
-    if (listElementType == null) throw new NullPointerException("listElementType");
+    Objects.requireNonNull(type, "type");
+    Objects.requireNonNull(listElementType, "listElementType");
     if (value != null && !type.getPrimitive().isAssignableFrom(DataType.ofPrimitive(value.getClass())))
       throw new IllegalArgumentException("Value '" + value.getClass() + "' and type mismatch. (Expected: " + type.getPrimitive() + ")");
-    @NotNull ConstructorAccessor<Object> constructor;
-    @NotNull FieldAccessor<Object, Object> field;
+    ConstructorAccessor<Object> constructor;
+    FieldAccessor<Object, Object> field;
     try {
       constructor = lookupInternalConstructor(type);
       field = lookupInternalField(type);

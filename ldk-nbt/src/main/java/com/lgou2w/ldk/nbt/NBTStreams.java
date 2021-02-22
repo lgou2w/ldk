@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -43,14 +44,14 @@ public final class NBTStreams {
   @NotNull
   @Contract("null -> fail")
   public static NBTMetadata read(InputStream input) throws IOException {
-    if (input == null) throw new NullPointerException("input");
+    Objects.requireNonNull(input, "input");
     return read((DataInput) new DataInputStream(input));
   }
 
   @NotNull
   @Contract("null -> fail")
   public static NBTMetadata read(DataInput input) throws IOException {
-    if (input == null) throw new NullPointerException("input");
+    Objects.requireNonNull(input, "input");
     TagType type = TagType.fromId(input.readUnsignedByte());
     if (type == null || type == TagType.END) return NBTMetadata.END;
     String name = input.readUTF();
@@ -61,14 +62,14 @@ public final class NBTStreams {
 
   @Contract("null, _ -> fail; _, null -> fail")
   public static void write(OutputStream output, NBTMetadata metadata) throws IOException {
-    if (output == null) throw new NullPointerException("output");
+    Objects.requireNonNull(output, "output");
     write((DataOutput) new DataOutputStream(output), metadata);
   }
 
   @Contract("null, _ -> fail; _, null -> fail;")
   public static void write(DataOutput output, NBTMetadata metadata) throws IOException {
-    if (output == null) throw new NullPointerException("output");
-    if (metadata == null) throw new NullPointerException("metadata");
+    Objects.requireNonNull(output, "output");
+    Objects.requireNonNull(metadata, "metadata");
     BaseTag<?> value = metadata.getValue();
     output.writeByte(value.getType().getId());
     if (!metadata.isEndType()) {
@@ -80,7 +81,7 @@ public final class NBTStreams {
   @NotNull
   @Contract("null -> fail")
   public static NBTMetadata readBase64(String encoded) throws IllegalArgumentException, IOException {
-    if (encoded == null) throw new NullPointerException("encoded");
+    Objects.requireNonNull(encoded, "encoded");
     byte[] bytes = Base64.getDecoder().decode(encoded);
     return read(new ByteArrayInputStream(bytes));
   }
@@ -88,7 +89,7 @@ public final class NBTStreams {
   @NotNull
   @Contract("null -> fail")
   public static String writeBase64(NBTMetadata metadata) throws IOException {
-    if (metadata == null) throw new NullPointerException("metadata");
+    Objects.requireNonNull(metadata, "metadata");
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     write(output, metadata);
     return Base64.getEncoder().encodeToString(output.toByteArray());
@@ -97,7 +98,7 @@ public final class NBTStreams {
   @NotNull
   @Contract("null, _ -> fail")
   public static NBTMetadata readFile(File file, boolean decompress) throws IOException {
-    if (file == null) throw new NullPointerException("file");
+    Objects.requireNonNull(file, "file");
     if (!file.exists() || file.isDirectory()) throw new FileNotFoundException(
       "File does not exist or is a directory: " + file.getAbsolutePath());
     try (InputStream input = decompress
@@ -109,8 +110,8 @@ public final class NBTStreams {
 
   @Contract("null, _, _ -> fail; _, null, _ -> fail")
   public static void writeFile(NBTMetadata metadata, File file, boolean compress) throws IOException {
-    if (metadata == null) throw new NullPointerException("metadata");
-    if (file == null) throw new NullPointerException("file");
+    Objects.requireNonNull(metadata, "metadata");
+    Objects.requireNonNull(file, "file");
     try (OutputStream output = compress
       ? new GZIPOutputStream(new FileOutputStream(file))
       : new FileOutputStream(file)) {

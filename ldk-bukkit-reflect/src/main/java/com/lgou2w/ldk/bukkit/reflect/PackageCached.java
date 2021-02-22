@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,11 +32,9 @@ public class PackageCached {
 
   @Contract("null, _ -> fail; _, null -> fail")
   public PackageCached(String packageName, ClassSource source) {
-    if (packageName == null) throw new NullPointerException("packageName");
-    if (source == null) throw new NullPointerException("source");
+    this.packageName = Objects.requireNonNull(packageName, "packageName");
+    this.source = Objects.requireNonNull(source, "source");
     this.cached = new ConcurrentHashMap<>();
-    this.packageName = packageName;
-    this.source = source;
   }
 
   @NotNull

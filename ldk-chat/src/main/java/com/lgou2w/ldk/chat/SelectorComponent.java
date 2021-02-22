@@ -26,8 +26,7 @@ public class SelectorComponent extends BaseComponent {
 
   @Contract("null -> fail")
   public SelectorComponent(String selector) {
-    if (selector == null) throw new NullPointerException("selector");
-    this.selector = selector;
+    this.selector = Objects.requireNonNull(selector, "selector");
   }
 
   @NotNull

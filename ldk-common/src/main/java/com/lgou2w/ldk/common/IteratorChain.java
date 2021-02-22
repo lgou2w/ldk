@@ -43,6 +43,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /*
  * Modify: Apache common-collections IteratorChain
@@ -107,14 +108,14 @@ public final class IteratorChain<T> implements Iterator<T> {
   @NotNull
   @Contract("null -> fail; !null -> new")
   public static <T> IteratorChain<T> concat(Iterator<T>... iterators) {
-    if (iterators == null) throw new NullPointerException("iterators");
+    Objects.requireNonNull(iterators, "iterators");
     return new IteratorChain<>(iterators);
   }
 
   @NotNull
   @Contract("null -> fail; !null -> new")
   public static <T> IteratorChain<T> concat(Collection<Iterator<T>> iterators) {
-    if (iterators == null) throw new NullPointerException("iterators");
+    Objects.requireNonNull(iterators, "iterators");
     return new IteratorChain<>(iterators);
   }
 }

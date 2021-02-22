@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Modifier;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -129,7 +130,7 @@ public final class ChatFactory {
   @Contract("null -> fail; !null -> !null")
   @SuppressWarnings({ "ConstantConditions", "CastCanBeRemovedNarrowingVariableType" })
   public static ChatComponent from(Object chat) {
-    if (chat == null) throw new NullPointerException("chat");
+    Objects.requireNonNull(chat, "chat");
     if (!CLASS_ICHAT_BASE_COMPONENT.isInstance(chat))
       throw new IllegalArgumentException("Value type of the instance does not match. (Expected: " + CLASS_ICHAT_BASE_COMPONENT + ")");
     Object gson = FIELD_CHAT_SERIALIZER_GSON.get().get(null);
@@ -146,7 +147,7 @@ public final class ChatFactory {
   @Contract("null -> fail; !null -> !null")
   @SuppressWarnings({ "ConstantConditions", "CastCanBeRemovedNarrowingVariableType" })
   public static Object to(ChatComponent chat) {
-    if (chat == null) throw new NullPointerException("chat");
+    Objects.requireNonNull(chat, "chat");
     Object gson = FIELD_CHAT_SERIALIZER_GSON.get().get(null);
     if (!GSON_RELOCATED) {
       JsonElement json = ChatSerializer.toJsonTree(chat);
@@ -165,7 +166,7 @@ public final class ChatFactory {
     @Nullable ChatType type,
     @Nullable UUID sender
   ) {
-    if (chat == null) throw new NullPointerException("chat");
+    Objects.requireNonNull(chat, "chat");
     if (type == null) type = ChatType.CHAT;
 
     Object origin = to(chat);
@@ -187,7 +188,7 @@ public final class ChatFactory {
     @Nullable ChatType type,
     @Nullable UUID sender
   ) {
-    if (receiver == null) throw new NullPointerException("receiver");
+    Objects.requireNonNull(receiver, "receiver");
     Object packet = newPacketChat(chat, type, sender);
     PacketFactory.sendPacket(packet, receiver);
   }
@@ -204,7 +205,7 @@ public final class ChatFactory {
 
   @Contract("null, _, _, _ -> fail; _, null, _, _ -> fail")
   public static void sendChat(Player[] receivers, ChatComponent chat, @Nullable ChatType type, @Nullable UUID sender) {
-    if (receivers == null) throw new NullPointerException("receivers");
+    Objects.requireNonNull(receivers, "receivers");
     Object packet = newPacketChat(chat, type, sender);
     PacketFactory.sendPacket(packet, receivers);
   }

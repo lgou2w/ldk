@@ -75,8 +75,8 @@ public final class NBTMetadata {
 
   @Contract("null, _ -> fail; _, null -> fail")
   public static NBTMetadata of(String name, BaseTag<?> value) {
-    if (name == null) throw new NullPointerException("name");
-    if (value == null) throw new NullPointerException("base");
+    Objects.requireNonNull(name, "name");
+    Objects.requireNonNull(value, "value");
     return new NBTMetadata(name, value);
   }
 

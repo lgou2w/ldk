@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public enum Enchantment {
 
@@ -134,7 +135,7 @@ public enum Enchantment {
   @NotNull
   @Contract("null -> fail; !null -> !null")
   public static Enchantment fromBukkit(org.bukkit.enchantments.Enchantment enchantment) {
-    if (enchantment == null) throw new NullPointerException("enchantment");
+    Objects.requireNonNull(enchantment, "enchantment");
     if (BukkitVersion.isV113OrLater) {
       return NAME_MAP.get(enchantment.getKey().getKey());
     } else {

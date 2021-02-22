@@ -29,8 +29,7 @@ public final class CustomPotion implements Comparable<CustomPotion> {
 
   @Contract("null, _, _, _, _, _ -> fail")
   public CustomPotion(PotionEffectType effect, int amplifier, int duration, boolean ambient, boolean particles, boolean icon) {
-    if (effect == null) throw new NullPointerException("effect");
-    this.effect = effect;
+    this.effect = Objects.requireNonNull(effect, "effect");
     this.amplifier = amplifier;
     this.duration = duration;
     this.ambient = ambient;

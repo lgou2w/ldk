@@ -92,8 +92,7 @@ public final class Suppliers {
 
     @Contract("null -> fail")
     MemoizingSupplier(Supplier<T> delegate) {
-      if (delegate == null) throw new NullPointerException("delegate");
-      this.delegate = delegate;
+      this.delegate = Objects.requireNonNull(delegate, "delegate");
     }
 
     @Override
@@ -126,8 +125,7 @@ public final class Suppliers {
 
     @Contract("null -> fail")
     NonSerializableMemoizingSupplier(Supplier<T> delegate) {
-      if (delegate == null) throw new NullPointerException("delegate");
-      this.delegate = delegate;
+      this.delegate = Objects.requireNonNull(delegate, "delegate");
     }
 
     @Override
@@ -165,10 +163,8 @@ public final class Suppliers {
 
     @Contract("null, _, _ -> fail; _, _, null -> fail")
     ExpiringMemoizingSupplier(Supplier<T> delegate, long duration, TimeUnit unit) {
-      if (delegate == null) throw new NullPointerException("delegate");
-      if (unit == null) throw new NullPointerException("unit");
-      this.delegate = delegate;
-      this.durationNanos = unit.toNanos(duration);
+      this.delegate = Objects.requireNonNull(delegate, "delegate");
+      this.durationNanos = Objects.requireNonNull(unit, "unit").toNanos(duration);
       if (durationNanos <= 0)
         throw new IllegalArgumentException("Duration (" + duration + " " + unit + ") must be > 0");
     }
@@ -240,8 +236,7 @@ public final class Suppliers {
 
     @Contract("null -> fail")
     ThreadSafeSupplier(Supplier<T> delegate) {
-      if (delegate == null) throw new NullPointerException("delegate");
-      this.delegate = delegate;
+      this.delegate = Objects.requireNonNull(delegate, "delegate");
     }
 
     @Override

@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public enum TagType {
 
@@ -116,7 +117,7 @@ public enum TagType {
   @NotNull
   @Contract("null -> fail")
   public static BaseTag<?> create(TagType type) {
-    if (type == null) throw new NullPointerException("type");
+    Objects.requireNonNull(type, "type");
     switch (type) {
       case END: return EndTag.INSTANCE;
       case BYTE: return new ByteTag();

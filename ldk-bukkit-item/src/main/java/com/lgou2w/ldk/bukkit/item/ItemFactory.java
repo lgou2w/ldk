@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -509,8 +510,8 @@ public final class ItemFactory {
 
   @Contract("null, _ -> fail; _, null -> fail")
   public static void modifyStackTag(ItemStack stack, Consumer<CompoundTag> modifier) {
-    if (stack == null) throw new NullPointerException("stack");
-    if (modifier == null) throw new NullPointerException("modifier");
+    Objects.requireNonNull(stack, "stack");
+    Objects.requireNonNull(modifier, "modifier");
     CompoundTag tag = readStackTagOrPresent(stack);
     modifier.accept(tag);
     writeStackTag(stack, tag);
