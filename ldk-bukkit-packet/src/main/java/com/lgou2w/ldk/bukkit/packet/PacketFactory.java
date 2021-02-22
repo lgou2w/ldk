@@ -58,7 +58,7 @@ public final class PacketFactory {
       CLASS_ENTITY_PLAYER = getMinecraftClass("EntityPlayer");
       CLASS_CRAFT_ENTITY = getCraftBukkitClass("entity.CraftEntity");
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Error in initializing internal static block: ", e);
+      throw new RuntimeException("Error in initializing PacketFactory internal static block:", e);
     }
   }
 

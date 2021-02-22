@@ -60,7 +60,7 @@ public final class ItemFactory {
       CLASS_MINECRAFT_KEY = getMinecraftClass("MinecraftKey");
       CLASS_CRAFT_MAGIC_NUMBERS = getCraftBukkitClass("util.CraftMagicNumbers");
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Error in initializing internal static block: ", e);
+      throw new RuntimeException("Error in initializing ItemFactory internal static block:", e);
     }
   }
 
@@ -131,7 +131,7 @@ public final class ItemFactory {
     .withArgs(NBTFactory.CLASS_NBT_TAG_COMPOUND)
     .resultAccessorOrNull());
 
-  // NMS.ItemStack -> public NMS.ItemStack(NMS.NBTTagCompound);
+  // NMS.ItemStack -> public Constructor(NMS.NBTTagCompound);
   final static Supplier<@Nullable ConstructorAccessor<Object>> CONSTRUCTOR_ITEM_STACK
     = FuzzyReflection.lazySupplier(CLASS_ITEM_STACK, true, fuzzy -> fuzzy
     .useConstructorMatcher()
@@ -215,10 +215,12 @@ public final class ItemFactory {
 
   static abstract class RegistryProvider {
 
-    abstract Object key(Object item);
+    @Nullable
+    abstract Object key(@Nullable Object item);
 
     // TODO: Experimental
-    abstract Object item(Object key);
+    @Nullable
+    abstract Object item(@Nullable Object key);
   }
 
   // TODO: docs
@@ -253,22 +255,25 @@ public final class ItemFactory {
           .withType(Map.class)
           .resultAccessorAs("Missing match: NMS.RegistryMaterials -> Field: final Map<NMS.Item, NMS.MinecraftKey> map");
       } catch (ClassNotFoundException e) {
-        throw new RuntimeException("NMS.RegistryMaterials class does not exist: ", e);
+        throw new RuntimeException("NMS.RegistryMaterials class does not exist:", e);
       } catch (NoSuchElementException e) {
-        throw new RuntimeException("Error while find structure members: ", e);
+        throw new RuntimeException("Error while find structure members:", e);
       } catch (Throwable t) {
-        throw new RuntimeException("Internal error: ", t);
+        throw new RuntimeException("Internal error:", t);
       }
     }
 
     @Override
+    @Nullable
     @SuppressWarnings("ConstantConditions")
-    Object key(Object item) {
+    Object key(@Nullable Object item) {
       return FIELD_REGISTRY_MATERIALS_MAP.get(itemRegistry).get(item);
     }
 
     @Override
-    Object item(Object key) {
+    @Nullable
+    @SuppressWarnings("ConstantConditions")
+    Object item(@Nullable Object key) {
       return FIELD_REGISTRY_SIMPLE_MAP.get(itemRegistry).get(key);
     }
 
@@ -328,19 +333,21 @@ public final class ItemFactory {
       } catch (ClassNotFoundException e) {
         throw new RuntimeException("Classes does not exist, ensure that the server is Forge?", e);
       } catch (NoSuchElementException e) {
-        throw new RuntimeException("Error while find structure members: ", e);
+        throw new RuntimeException("Error while find structure members:", e);
       } catch (Throwable t) {
-        throw new RuntimeException("Internal error: ", t);
+        throw new RuntimeException("Internal error:", t);
       }
     }
 
     @Override
-    Object key(Object item) {
+    @Nullable
+    Object key(@Nullable Object item) {
       return METHOD_IFORGE_REGISTRY_GET_KEY.invoke(itemForgeRegistry, item);
     }
 
     @Override
-    Object item(Object key) {
+    @Nullable
+    Object item(@Nullable Object key) {
       return METHOD_IFORGE_REGISTRY_GET_VALUE.invoke(itemForgeRegistry, key);
     }
 

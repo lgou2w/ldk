@@ -71,14 +71,14 @@ public final class ChatFactory {
         GSON_RELOCATED = gsonRelocated != Gson.class;
       }
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Error in initializing internal static block: ", e);
+      throw new RuntimeException("Error in initializing ChatFactory internal static block:", e);
     }
   }
 
   /// NMS Accessors
 
-  // 1.16 before    NMS.PacketPlayOutChat -> public constructor(NMS.IChatBaseComponent, NMS.ChatMessageType | byte)
-  // 1.16 and after NMS.PacketPlayOutChat -> public constructor(NMS.IChatBaseComponent, NMS.ChatMessageType, UUID)
+  // 1.16 before    NMS.PacketPlayOutChat -> public Constructor(NMS.IChatBaseComponent, NMS.ChatMessageType | byte)
+  // 1.16 and after NMS.PacketPlayOutChat -> public Constructor(NMS.IChatBaseComponent, NMS.ChatMessageType, UUID)
   @SuppressWarnings("ConstantConditions")
   final static Supplier<@NotNull ConstructorAccessor<Object>> CONSTRUCTOR_PACKET_PLAY_OUT_CHAT
     = FuzzyReflection.lazySupplier(CLASS_PACKET_PLAY_OUT_CHAT, true, fuzzy -> {
@@ -101,7 +101,7 @@ public final class ChatFactory {
     .useFieldMatcher()
     .withModifiers(Modifier.STATIC)
     .withType(CLASS_GSON_RELOCATED)
-    .resultAccessorAs("Missing match: NMS.ChatSerializer -> public final static Gson GSON;"));
+    .resultAccessorAs("Missing match: NMS.ChatSerializer -> public final static Gson GSON"));
 
   /** @see ChatFactory#CLASS_GSON_RELOCATED */
   @Nullable final static Supplier<@NotNull MethodAccessor<Object, String>> METHOD_GSON_RELOCATED_TO_JSON
@@ -124,8 +124,6 @@ public final class ChatFactory {
     .resultAccessorAs("Missing match: " + CLASS_GSON_RELOCATED.getCanonicalName() + " -> public <T> T fromJson(String, Class<T>)"));
 
   /// Public API
-
-  // TODO: from, to
 
   @NotNull
   @Contract("null -> fail; !null -> !null")

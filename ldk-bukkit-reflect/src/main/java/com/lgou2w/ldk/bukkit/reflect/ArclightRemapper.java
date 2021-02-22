@@ -69,9 +69,9 @@ final class ArclightRemapper extends Remapper {
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("ClassLoaderRemapper class does not exist, ensure that the server is Arclight?", e);
     } catch (NoSuchElementException e) {
-      throw new RuntimeException("Error while find structure members of ClassLoaderRemapper class: ", e);
+      throw new RuntimeException("Error while find structure members of ClassLoaderRemapper class:", e);
     } catch (Throwable t) {
-      throw new RuntimeException("Internal error: ", t);
+      throw new RuntimeException("Internal error:", t);
     }
   }
 

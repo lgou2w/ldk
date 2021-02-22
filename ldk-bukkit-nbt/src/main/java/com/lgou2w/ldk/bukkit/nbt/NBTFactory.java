@@ -74,7 +74,7 @@ public final class NBTFactory {
       CLASS_NBT_TAG_COMPOUND = getMinecraftClass("NBTTagCompound");
       CLASS_NBT_TAG_LONG_ARRAY = getMinecraftClassOrNull("NBTTagLongArray");
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Error in initializing internal static block: ", e);
+      throw new RuntimeException("Error in initializing NBTFactory internal static block:", e);
     }
   }
 

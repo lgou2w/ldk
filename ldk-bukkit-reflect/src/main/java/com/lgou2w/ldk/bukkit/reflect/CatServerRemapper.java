@@ -75,9 +75,9 @@ final class CatServerRemapper extends Remapper {
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Classes does not exist, ensure that the server is CatServer?", e);
     } catch (NoSuchElementException e) {
-      throw new RuntimeException("Error while find structure members: ", e);
+      throw new RuntimeException("Error while find structure members:", e);
     } catch (Throwable t) {
-      throw new RuntimeException("Internal error: ", t);
+      throw new RuntimeException("Internal error:", t);
     }
   }
 
