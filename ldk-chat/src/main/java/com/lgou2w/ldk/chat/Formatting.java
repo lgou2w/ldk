@@ -132,13 +132,13 @@ public enum Formatting {
   }
 
   @Contract("null -> null; !null -> !null")
-  public static String stripFormatting(@Nullable String input) {
+  public static String strip(@Nullable String input) {
     if (input == null) return null;
     return STRIP_FORMATTING_PATTERN.matcher(input).replaceAll("");
   }
 
   @Contract("_, null -> null; _, !null -> !null")
-  public static String translateAlternateFormattingCodes(char altPrefixChar, @Nullable String textToTranslate) {
+  public static String translate(char altPrefixChar, @Nullable String textToTranslate) {
     if (textToTranslate == null) return null;
     char[] chars = textToTranslate.toCharArray();
     for (int i = 0; i < chars.length - 1; i++) {
