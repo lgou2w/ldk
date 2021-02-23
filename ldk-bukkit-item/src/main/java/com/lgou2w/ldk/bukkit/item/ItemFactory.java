@@ -194,7 +194,7 @@ public final class ItemFactory {
   @NotNull
   @Contract("null -> !null; !null -> !null")
   @SuppressWarnings({ "ConstantConditions" })
-  public static String materialToMinecraftKey(@Nullable Material material) {
+  public static String materialNamespacedKey(@Nullable Material material) {
     if (material == null) return "minecraft:air";
     Object minecraftKey;
     if (BukkitVersion.isForge || !BukkitVersion.isV113OrLater) {

@@ -45,7 +45,7 @@ public final class ChatEventFactory {
   @SuppressWarnings("deprecation")
   public static HoverEvent makeHoverShowItem(ItemStack stack) {
     Objects.requireNonNull(stack, "stack");
-    String id = ItemFactory.materialToMinecraftKey(stack.getType());
+    String id = ItemFactory.materialNamespacedKey(stack.getType());
     int count = stack.getAmount(), damage = stack.getDurability();
     CompoundTag tag = ItemFactory.readStackTag(stack);
     String mojangsonTag = tag == null ? null : tag.toMojangson();
