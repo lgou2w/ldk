@@ -24,6 +24,7 @@ dependencies {
   compile project(':ldk-bukkit-nbt')
   compile project(':ldk-bukkit-basic')
   compile project(':ldk-bukkit-item')
+  compile project(':ldk-bukkit-item-builder')
   compile project(':ldk-bukkit-chat-event')
   compile "org.bstats:bstats-bukkit:${bstats_version}"
   compileOnly "org.spigotmc:spigot-api:${bukkit_version}"
