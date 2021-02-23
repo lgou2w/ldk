@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 
 /** INTERNAL ONLY */
 @Deprecated
-public class FakePlugin extends PluginBase {
+public final class FakePlugin extends PluginBase {
   private final PluginDescriptionFile description;
 
   public FakePlugin(@NotNull String name) {
