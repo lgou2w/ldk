@@ -20,123 +20,88 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
-public enum PotionEffectType {
+public final class PotionEffectType {
+  @NotNull private final String namespacedKey;
+  @NotNull private final String namespace, key;
+  // legacy Minecraft 1.12 and before
+  @Nullable private final Integer id;
 
-  SPEED(1, "speed"),
-  SLOWNESS(2, "slow", "slowness"),
-  HASTE(3, "fast_digging", "haste"),
-  MINING_FATIGUE(4, "slow_digging", "mining_fatigue"),
-  STRENGTH(5, "increase_damage", "strength"),
-  INSTANT_HEALTH(6, "heal", "instant_health"),
-  INSTANT_DAMAGE(7, "harm", "instant_damage"),
-  JUMP_BOOST(8, "jump", "jump_boost"),
-  NAUSEA(9, "confusion", "nausea"),
-  REGENERATION(10, "regeneration"),
-  RESISTANCE(11, "damage_resistance", "resistance"),
-  FIRE_RESISTANCE(12, "fire_resistance"),
-  WATER_BREATHING(13, "water_breathing"),
-  INVISIBILITY(14, "invisibility"),
-  BLINDNESS(15, "blindness"),
-  NIGHT_VISION(16, "night_vision"),
-  HUNGER(17, "hunger"),
-  WEAKNESS(18, "weakness"),
-  POISON(19, "poison"),
-  WITHER(20, "wither"),
-  HEALTH_BOOST(21, "health_boost"),
-  ABSORPTION(22, "absorption"),
-  SATURATION(23, "saturation"),
-  GLOWING(24, "glowing"),
-  LEVITATION(25, "levitation"),
-  LUCK(26, "luck"),
-  UNLUCK(27, "unluck"),
-  SLOW_FALLING(28, "slow_falling"),
-  CONDUIT_POWER(29, "conduit_power"),
-  DOLPHINS_GRACE(30, "dolphins_grace"),
-  BAD_OMEN(31, "bad_omen"),
-  HERO_OF_THE_VILLAGE(32, "hero_of_the_village")
-  ;
-
-  private final int id;
-  private final String legacy, flatting;
-
-  PotionEffectType(int id, String legacy, String flatting) {
+  @Contract("null, _, _ -> fail; _, null, _ -> fail")
+  PotionEffectType(String namespace, String key, @Nullable Integer id) {
+    this.namespace = Objects.requireNonNull(namespace, "namespace");
+    this.key = Objects.requireNonNull(key, "key");
+    this.namespacedKey = namespace + ':' + key;
     this.id = id;
-    this.legacy = legacy;
-    this.flatting = flatting;
   }
 
-  PotionEffectType(int id, String identical) {
-    this.id = id;
-    this.legacy = identical;
-    this.flatting = identical;
+  @Contract("null, _ -> fail")
+  PotionEffectType(String key, @Nullable Integer id) {
+    this("minecraft", key, id);
   }
 
+  @Contract("null -> fail")
+  PotionEffectType(String key) {
+    this("minecraft", key, null);
+  }
+
+  @NotNull
+  public String getNamespace() {
+    return namespace;
+  }
+
+  @NotNull
+  public String getKey() {
+    return key;
+  }
+
+  @NotNull
+  public String getNamespacedKey() {
+    return namespacedKey;
+  }
+
+  @Deprecated
   public int getId() {
-    return id;
+    return id != null ? id : -1;
   }
 
-  @NotNull
-  public String getLegacy() {
-    return legacy;
+  @Override
+  public String toString() {
+    return namespacedKey;
   }
 
-  @NotNull
-  public String getFlatting() {
-    return flatting;
-  }
+  public final static PotionEffectType SPEED = new PotionEffectType("speed", 1);
+  public final static PotionEffectType SLOWNESS = new PotionEffectType("slowness", 2);
+  public final static PotionEffectType HASTE = new PotionEffectType("haste", 3);
+  public final static PotionEffectType MINING_FATIGUE = new PotionEffectType("mining_fatigue", 4);
+  public final static PotionEffectType STRENGTH = new PotionEffectType("strength", 5);
+  public final static PotionEffectType INSTANT_HEALTH = new PotionEffectType("instant_health", 6);
+  public final static PotionEffectType INSTANT_DAMAGE = new PotionEffectType("instant_damage", 7);
+  public final static PotionEffectType JUMP_BOOST = new PotionEffectType("jump_boost", 8);
+  public final static PotionEffectType NAUSEA = new PotionEffectType("nausea", 9);
+  public final static PotionEffectType REGENERATION = new PotionEffectType("regeneration", 10);
+  public final static PotionEffectType RESISTANCE = new PotionEffectType("resistance", 11);
+  public final static PotionEffectType FIRE_RESISTANCE = new PotionEffectType("fire_resistance", 12);
+  public final static PotionEffectType WATER_BREATHING = new PotionEffectType("water_breathing", 13);
+  public final static PotionEffectType INVISIBILITY = new PotionEffectType("invisibility", 14);
+  public final static PotionEffectType BLINDNESS = new PotionEffectType("blindness", 15);
+  public final static PotionEffectType NIGHT_VISION = new PotionEffectType("night_vision", 16);
+  public final static PotionEffectType HUNGER = new PotionEffectType("hunger", 17);
+  public final static PotionEffectType WEAKNESS = new PotionEffectType("weakness", 18);
+  public final static PotionEffectType POISON = new PotionEffectType("poison", 19);
+  public final static PotionEffectType WITHER = new PotionEffectType("wither", 20);
+  public final static PotionEffectType HEALTH_BOOST = new PotionEffectType("health_boost", 21);
+  public final static PotionEffectType ABSORPTION = new PotionEffectType("absorption", 22);
+  public final static PotionEffectType SATURATION = new PotionEffectType("saturation", 23);
+  public final static PotionEffectType GLOWING = new PotionEffectType("glowing", 24);
+  public final static PotionEffectType LEVITATION = new PotionEffectType("levitation", 25);
+  public final static PotionEffectType LUCK = new PotionEffectType("luck", 26);
+  public final static PotionEffectType UNLUCK = new PotionEffectType("unluck", 27);
 
-  public boolean isInstantEffect() {
-    return this == INSTANT_HEALTH ||
-      this == INSTANT_DAMAGE ||
-      this == SATURATION;
-  }
-
-  @NotNull
-  public org.bukkit.potion.PotionEffectType toBukkit() throws UnsupportedOperationException {
-    org.bukkit.potion.PotionEffectType type = org.bukkit.potion.PotionEffectType.getByName(flatting);
-    if (type == null) type = org.bukkit.potion.PotionEffectType.getByName(legacy);
-    if (type == null) throw new UnsupportedOperationException(
-      "Server version does not unsupported this potion effect type: " + name());
-    return type;
-  }
-
-  private final static Map<Integer, PotionEffectType> ID_MAP;
-  private final static Map<String, PotionEffectType> NAME_MAP;
-
-  static {
-    Map<Integer, PotionEffectType> idMap = new HashMap<>();
-    Map<String, PotionEffectType> nameMap = new HashMap<>();
-    for (PotionEffectType type : PotionEffectType.values()) {
-      idMap.put(type.id, type);
-      nameMap.put(type.legacy, type);
-      nameMap.put(type.flatting, type);
-    }
-    ID_MAP = Collections.unmodifiableMap(idMap);
-    NAME_MAP = Collections.unmodifiableMap(nameMap);
-  }
-
-  @NotNull
-  @Contract("null -> fail; !null -> !null")
-  public static PotionEffectType fromBukkit(org.bukkit.potion.PotionEffectType type) {
-    Objects.requireNonNull(type, "type");
-    return NAME_MAP.get(type.getName());
-  }
-
-  @Nullable
-  public static PotionEffectType fromId(int id) {
-    return ID_MAP.get(id);
-  }
-
-  @Nullable
-  @Contract("null -> null")
-  public static PotionEffectType fromName(@Nullable String name) {
-    if (name == null) return null;
-    return NAME_MAP.get(name.toLowerCase(Locale.ENGLISH));
-  }
+  public final static PotionEffectType SLOW_FALLING = new PotionEffectType("slow_falling");
+  public final static PotionEffectType CONDUIT_POWER = new PotionEffectType("conduit_power");
+  public final static PotionEffectType DOLPHINS_GRACE = new PotionEffectType("dolphins_grace");
+  public final static PotionEffectType BAD_OMEN = new PotionEffectType("bad_omen");
+  public final static PotionEffectType HERO_OF_THE_VILLAGE = new PotionEffectType("hero_of_the_village");
 }
