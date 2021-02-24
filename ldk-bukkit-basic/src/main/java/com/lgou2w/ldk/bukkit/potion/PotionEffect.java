@@ -16,19 +16,18 @@
 
 package com.lgou2w.ldk.bukkit.potion;
 
-import com.lgou2w.ldk.common.ComparisonChain;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public final class CustomPotion implements Comparable<CustomPotion> {
+public final class PotionEffect {
   private final PotionEffectType effect;
   private final int amplifier, duration;
   private final boolean ambient, particles, icon;
 
   @Contract("null, _, _, _, _, _ -> fail")
-  public CustomPotion(PotionEffectType effect, int amplifier, int duration, boolean ambient, boolean particles, boolean icon) {
+  public PotionEffect(PotionEffectType effect, int amplifier, int duration, boolean ambient, boolean particles, boolean icon) {
     this.effect = Objects.requireNonNull(effect, "effect");
     this.amplifier = amplifier;
     this.duration = duration;
@@ -38,17 +37,17 @@ public final class CustomPotion implements Comparable<CustomPotion> {
   }
 
   @Contract("null, _, _, _, _ -> fail")
-  public CustomPotion(PotionEffectType effect, int amplifier, int duration, boolean ambient, boolean particles) {
+  public PotionEffect(PotionEffectType effect, int amplifier, int duration, boolean ambient, boolean particles) {
     this(effect, amplifier, duration, ambient, particles, particles);
   }
 
   @Contract("null, _, _, _ -> fail")
-  public CustomPotion(PotionEffectType effect, int amplifier, int duration, boolean ambient) {
+  public PotionEffect(PotionEffectType effect, int amplifier, int duration, boolean ambient) {
     this(effect, amplifier, duration, ambient, true);
   }
 
   @Contract("null, _, _ -> fail")
-  public CustomPotion(PotionEffectType effect, int amplifier, int duration) {
+  public PotionEffect(PotionEffectType effect, int amplifier, int duration) {
     this(effect, amplifier, duration, true);
   }
 
@@ -78,23 +77,11 @@ public final class CustomPotion implements Comparable<CustomPotion> {
   }
 
   @Override
-  public int compareTo(@NotNull CustomPotion o) {
-    return ComparisonChain.start()
-      .compare(effect, o.effect)
-      .compare(amplifier, o.amplifier)
-      .compare(duration, o.duration)
-      .compare(ambient, o.ambient)
-      .compare(particles, o.particles)
-      .compare(icon, o.icon)
-      .result();
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    CustomPotion that = (CustomPotion) o;
-    return effect == that.effect && amplifier == that.amplifier &&
+    PotionEffect that = (PotionEffect) o;
+    return effect.equals(that.effect) && amplifier == that.amplifier &&
       duration == that.duration && ambient == that.ambient &&
       particles == that.particles && icon == that.icon;
   }
@@ -106,7 +93,7 @@ public final class CustomPotion implements Comparable<CustomPotion> {
 
   @Override
   public String toString() {
-    return "CustomPotion{" +
+    return "PotionEffect{" +
       "effect=" + effect +
       ", amplifier=" + amplifier +
       ", duration=" + duration +
