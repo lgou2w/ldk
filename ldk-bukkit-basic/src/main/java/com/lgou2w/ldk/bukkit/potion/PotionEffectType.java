@@ -67,8 +67,21 @@ public final class PotionEffectType {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    PotionEffectType that = (PotionEffectType) o;
+    return namespace.equals(that.namespace) && key.equals(that.key);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(namespace, key);
+  }
+
+  @Override
   public String toString() {
-    return namespacedKey;
+    return "PotionEffectType{" + namespacedKey + '}';
   }
 
   public final static PotionEffectType SPEED = new PotionEffectType("speed", 1);
@@ -99,9 +112,9 @@ public final class PotionEffectType {
   public final static PotionEffectType LUCK = new PotionEffectType("luck", 26);
   public final static PotionEffectType UNLUCK = new PotionEffectType("unluck", 27);
 
-  public final static PotionEffectType SLOW_FALLING = new PotionEffectType("slow_falling");
-  public final static PotionEffectType CONDUIT_POWER = new PotionEffectType("conduit_power");
-  public final static PotionEffectType DOLPHINS_GRACE = new PotionEffectType("dolphins_grace");
-  public final static PotionEffectType BAD_OMEN = new PotionEffectType("bad_omen");
-  public final static PotionEffectType HERO_OF_THE_VILLAGE = new PotionEffectType("hero_of_the_village");
+  public final static PotionEffectType SLOW_FALLING = new PotionEffectType("slow_falling", 28);
+  public final static PotionEffectType CONDUIT_POWER = new PotionEffectType("conduit_power", 29);
+  public final static PotionEffectType DOLPHINS_GRACE = new PotionEffectType("dolphins_grace", 30);
+  public final static PotionEffectType BAD_OMEN = new PotionEffectType("bad_omen", 31);
+  public final static PotionEffectType HERO_OF_THE_VILLAGE = new PotionEffectType("hero_of_the_village", 32);
 }

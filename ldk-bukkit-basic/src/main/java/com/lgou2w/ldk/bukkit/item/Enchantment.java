@@ -68,8 +68,21 @@ public final class Enchantment {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Enchantment that = (Enchantment) o;
+    return namespace.equals(that.namespace) && key.equals(that.key);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(namespace, key);
+  }
+
+  @Override
   public String toString() {
-    return namespacedKey;
+    return "Enchantment{" + namespacedKey + '}';
   }
 
   public final static Enchantment PROTECTION = new Enchantment("protection", 0);
