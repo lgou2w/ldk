@@ -19,6 +19,7 @@ package com.lgou2w.ldk.bukkit.item;
 import com.lgou2w.ldk.bukkit.version.BukkitVersion;
 import com.lgou2w.ldk.chat.ChatComponent;
 import com.lgou2w.ldk.chat.ChatSerializer;
+import com.lgou2w.ldk.nbt.BaseTag;
 import com.lgou2w.ldk.nbt.CompoundTag;
 import com.lgou2w.ldk.nbt.ListTag;
 import com.lgou2w.ldk.nbt.StringTag;
@@ -61,6 +62,22 @@ public abstract class BaseItemBuilder implements ItemBuilder {
     Default(Material type, int count, int durability) {
       super(type, count, durability);
     }
+  }
+
+  @Override
+  @NotNull
+  public CompoundTag createToData() {
+    CompoundTag tag = this.tag.clone(); // clone
+    CompoundTag data = new CompoundTag();
+    data.setString(ITEM_ID, ItemFactory.materialNamespacedKey(type));
+    data.setByte(ITEM_COUNT, count);
+    if (BukkitVersion.isV113OrLater && durability != 0) {
+      tag.setInt(TAG_DAMAGE, durability);
+    } else if (durability != 0) {
+      data.setInt(TAG_DAMAGE, durability);
+    }
+    data.set(ITEM_TAG, tag);
+    return data;
   }
 
   @Override
@@ -214,10 +231,7 @@ public abstract class BaseItemBuilder implements ItemBuilder {
     return this;
   }
 
-  private void loreInsert(int index, StringTag[] lore) {
-    ListTag list = tag
-      .getCompoundOrPresent(TAG_DISPLAY)
-      .getListOrPresent(TAG_DISPLAY_LORE);
+  private static void loreInsert(ListTag list, int index, StringTag[] lore) {
     int size = list.size();
     int pos = index <= 0 ? 0 : Math.min(index, size);
     list.addAll(pos, Arrays.asList(lore));
@@ -234,7 +248,8 @@ public abstract class BaseItemBuilder implements ItemBuilder {
         : ChatSerializer.toPlainTextWithFormatted(lore[i], false);
       values[i] = new StringTag(value);
     }
-    loreInsert(index, values);
+    ListTag list = tag.getCompoundOrPresent(TAG_DISPLAY).getListOrPresent(TAG_DISPLAY_LORE);
+    loreInsert(list, index, values);
     return this;
   }
 
@@ -249,7 +264,8 @@ public abstract class BaseItemBuilder implements ItemBuilder {
         : lore[i];
       values[i] = new StringTag(value);
     }
-    loreInsert(index, values);
+    ListTag list = tag.getCompoundOrPresent(TAG_DISPLAY).getListOrPresent(TAG_DISPLAY_LORE);
+    loreInsert(list, index, values);
     return this;
   }
 
@@ -266,15 +282,42 @@ public abstract class BaseItemBuilder implements ItemBuilder {
   }
 
   @SuppressWarnings("deprecation")
-  private CompoundTag enchantmentToCompound(Enchantment enchantment, int level) {
+  private static CompoundTag enchantmentToCompound(Enchantment enchantment, int level) {
     CompoundTag compound = new CompoundTag();
     if (BukkitVersion.isV113OrLater) {
       compound.setString(TAG_ENCHANTMENT_ID, enchantment.getNamespacedKey());
     } else {
       compound.setShort(TAG_ENCHANTMENT_ID, enchantment.getId());
     }
-    compound.setShort(TAG_ENCHANTMENT_LEVEL, level);
+    compound.setInt(TAG_ENCHANTMENT_LEVEL, level);
     return compound;
+  }
+
+  @SuppressWarnings("deprecation")
+  private static boolean enchantmentEqual(BaseTag<?> el, Enchantment enchantment) {
+    if (!(el instanceof CompoundTag)) return false;
+    CompoundTag compound = (CompoundTag) el;
+    if (BukkitVersion.isV113OrLater) {
+      String id = compound.getString(TAG_ENCHANTMENT_ID);
+      if (!id.contains(":"))
+        id = "minecraft:" + id;
+      return id.equals(enchantment.getNamespacedKey());
+    } else {
+      return compound.getShort(TAG_ENCHANTMENT_ID) == enchantment.getId();
+    }
+  }
+
+  private static void enchantmentOverrideOrAppend(ListTag list, Enchantment enchantment, int level) {
+    boolean overrided = false;
+    for (BaseTag<?> next : list) {
+      if (enchantmentEqual(next, enchantment)) {
+        ((CompoundTag) next).setInt(TAG_ENCHANTMENT_LEVEL, level);
+        overrided = true;
+        break;
+      }
+    }
+    if (!overrided)
+      list.addCompound(enchantmentToCompound(enchantment, level));
   }
 
   @Override
@@ -297,15 +340,28 @@ public abstract class BaseItemBuilder implements ItemBuilder {
   }
 
   @Override
-  public ItemBuilder enchantmentApply(Enchantment enchantment, int level) {
+  public ItemBuilder enchantment(Enchantment enchantment, @Nullable Integer level) {
     Objects.requireNonNull(enchantment, "enchantment");
 
-    ListTag list = tag.getListOrPresent(BukkitVersion.isV113OrLater ? TAG_ENCHANTMENTS : TAG_ENCH);
-    CompoundTag value = enchantmentToCompound(enchantment, level);
-    list.addCompound(value);
+    ListTag list = tag.getListOrNull(BukkitVersion.isV113OrLater ? TAG_ENCHANTMENTS : TAG_ENCH);
+    if (level == null && (list != null && !list.isEmpty())) {
+      list.removeIf(it -> enchantmentEqual(it, enchantment));
+      return this;
+    }
+
+    if (level != null) {
+      if (list == null) {
+        list = new ListTag();
+        tag.set(BukkitVersion.isV113OrLater ? TAG_ENCHANTMENTS : TAG_ENCH, list);
+      }
+      enchantmentOverrideOrAppend(list, enchantment, level);
+    }
     return this;
   }
 
+  final static String ITEM_ID = "id";
+  final static String ITEM_COUNT = "Count";
+  final static String ITEM_TAG = "tag";
   final static String TAG_DAMAGE = "Damage";
   final static String TAG_DISPLAY = "display";
   final static String TAG_DISPLAY_NAME = "Name";

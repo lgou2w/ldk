@@ -17,6 +17,7 @@
 package com.lgou2w.ldk.bukkit.item;
 
 import com.lgou2w.ldk.chat.ChatComponent;
+import com.lgou2w.ldk.nbt.CompoundTag;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
@@ -46,6 +47,10 @@ public interface ItemBuilder {
   static ItemBuilder of(Material type) {
     return of(type, 1, 0);
   }
+
+  @NotNull
+  @Contract("-> new")
+  CompoundTag createToData();
 
   @NotNull
   @Contract("-> new")
@@ -103,7 +108,7 @@ public interface ItemBuilder {
   ItemBuilder enchantment(@Nullable Map<@NotNull Enchantment, @NotNull Integer> enchantments);
 
   @Contract("null, _ -> fail; _, _ -> this")
-  ItemBuilder enchantmentApply(Enchantment enchantment, int level);
+  ItemBuilder enchantment(Enchantment enchantment, @Nullable Integer level);
 
   // TODO: more more ...
 }
