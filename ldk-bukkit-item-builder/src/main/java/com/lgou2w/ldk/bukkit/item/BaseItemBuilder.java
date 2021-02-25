@@ -22,21 +22,17 @@ import com.lgou2w.ldk.chat.ChatSerializer;
 import com.lgou2w.ldk.nbt.CompoundTag;
 import com.lgou2w.ldk.nbt.ListTag;
 import com.lgou2w.ldk.nbt.StringTag;
-import com.lgou2w.ldk.reflect.FieldAccessor;
-import com.lgou2w.ldk.reflect.FuzzyReflection;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public abstract class BaseItemBuilder implements ItemBuilder {
   protected final Material type;
@@ -269,23 +265,13 @@ public abstract class BaseItemBuilder implements ItemBuilder {
     return this;
   }
 
-  // Bukkit 1.8 ~ Bukkit 1.12.2
-  // OB.enchantments.Enchantment -> private int id
-  @Nullable final static Supplier<@NotNull FieldAccessor<Enchantment, Integer>> FIELD_ENCHANTMENT_ID
-    = !BukkitVersion.isV113OrLater ? null : FuzzyReflection.lazySupplier(Enchantment.class, true, fuzzy -> fuzzy
-    .useFieldMatcher()
-    .withoutModifiers(Modifier.STATIC)
-    .withType(int.class)
-    .resultAccessorAs());
-
-  @SuppressWarnings("ConstantConditions")
+  @SuppressWarnings("deprecation")
   private CompoundTag enchantmentToCompound(Enchantment enchantment, int level) {
     CompoundTag compound = new CompoundTag();
     if (BukkitVersion.isV113OrLater) {
       compound.setString(TAG_ENCHANTMENT_ID, enchantment.getNamespacedKey());
     } else {
-      int id = FIELD_ENCHANTMENT_ID.get().get(enchantment);
-      compound.setShort(TAG_ENCHANTMENT_ID, id);
+      compound.setShort(TAG_ENCHANTMENT_ID, enchantment.getId());
     }
     compound.setShort(TAG_ENCHANTMENT_LEVEL, level);
     return compound;
