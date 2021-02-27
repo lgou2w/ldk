@@ -1,0 +1,3 @@
+dependencies {
+  compileOnly "org.spigotmc:spigot-api:${bukkit_version}"
+}
