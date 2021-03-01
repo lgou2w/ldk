@@ -94,15 +94,15 @@ final class AnvilWindowGenerator implements Opcodes {
         mv.visitVarInsn(ALOAD, 2);
         mv.visitVarInsn(ALOAD, 3);
         {
-          String name = remappingField(loadNMSClass("BlockPosition"), "ZERO");
-          mv.visitFieldInsn(GETSTATIC, NAME_NMS_BLOCK_POSITION, name, DESC_NMS_BLOCK_POSITION);
+          String fieldName = remappingField(loadNMSClass("BlockPosition"), "ZERO");
+          mv.visitFieldInsn(GETSTATIC, NAME_NMS_BLOCK_POSITION, fieldName, DESC_NMS_BLOCK_POSITION);
         }
         {
           Class<?> world = loadNMSClass("World");
           Class<?> containerAccess = loadNMSClass("ContainerAccess");
-          String name = remappingMethod(containerAccess, "at", new Class[] { world, loadNMSClass("BlockPosition") });
+          String methodName = remappingMethod(containerAccess, "at", new Class[] { world, loadNMSClass("BlockPosition") });
           String descriptor = '(' + classDesc(world) + DESC_NMS_BLOCK_POSITION + ')' + classDesc(containerAccess);
-          mv.visitMethodInsn(INVOKESTATIC, className(containerAccess), name, descriptor, true);
+          mv.visitMethodInsn(INVOKESTATIC, className(containerAccess), methodName, descriptor, true);
         }
         {
           Class<?> containerAccess = loadNMSClass("ContainerAccess");
@@ -203,7 +203,7 @@ final class AnvilWindowGenerator implements Opcodes {
       mv.visitEnd();
     }
     {
-      String methodName = BukkitVersion.isForge ? "func_82850_a" : "a";
+      String methodName = BukkitVersion.isArclight ? "func_82850_a" : "a";
       MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodName, "(Ljava/lang/String;)V", null, null);
       mv.visitCode();
       Label l0 = new Label();
