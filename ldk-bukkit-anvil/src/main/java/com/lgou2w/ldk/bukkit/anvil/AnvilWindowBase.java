@@ -56,6 +56,7 @@ import static com.lgou2w.ldk.bukkit.reflect.MinecraftReflection.getMinecraftClas
 @SuppressWarnings("DeprecatedIsStillUsed")
 public abstract class AnvilWindowBase implements AnvilWindow {
   private final Plugin plugin;
+  private Object title = null;
   private boolean allowMove = true;
   private Consumer<AnvilWindowOpenEvent> openListener;
   private Consumer<AnvilWindowCloseEvent> closeListener;
@@ -82,6 +83,27 @@ public abstract class AnvilWindowBase implements AnvilWindow {
   @Override
   public AnvilWindow setAllowMove(boolean flag) {
     this.allowMove = flag;
+    return this;
+  }
+
+  @NotNull
+  @Override
+  public AnvilWindow setTitle(@Nullable String title) {
+    if (title == null) {
+      this.title = null;
+    } else {
+      Object component = CONSTRUCTOR_CHAT_MESSAGE.get().newInstance(title, new Object[0]);
+      setTitle(component);
+    }
+    return this;
+  }
+
+  @NotNull
+  @Override
+  public AnvilWindow setTitle(@Nullable Object iChatBaseComponent) throws IllegalArgumentException {
+    if (iChatBaseComponent != null && !CLASS_ICHAT_BASE_COMPONENT.isInstance(iChatBaseComponent))
+      throw new IllegalArgumentException("Value type of the instance does not match. (Expected: " + CLASS_ICHAT_BASE_COMPONENT + ")");
+    this.title = iChatBaseComponent;
     return this;
   }
 
@@ -143,6 +165,15 @@ public abstract class AnvilWindowBase implements AnvilWindow {
 
   /// WARNING: These methods are only called in ASM, do not use!
 
+  // ASM ONLY
+  @NotNull
+  @Deprecated
+  protected Object getTitle() {
+    if (this.title == null)
+      this.title = CONSTRUCTOR_CHAT_MESSAGE.get().newInstance("container.repair", new Object[0]);
+    return this.title;
+  }
+
   @Nullable
   protected abstract Object getHandle();
 
@@ -154,6 +185,7 @@ public abstract class AnvilWindowBase implements AnvilWindow {
   // ASM ONLY
   @Deprecated
   public void release() {
+    this.title = null;
     this.openListener = null;
     this.closeListener = null;
     this.clickListener = null;
@@ -279,6 +311,8 @@ public abstract class AnvilWindowBase implements AnvilWindow {
   @NotNull final static Class<?> CLASS_CRAFT_INVENTORY_VIEW;
   @NotNull final static Class<?> CLASS_ENTITY;
   @NotNull final static Class<?> CLASS_ENTITY_HUMAN;
+  @NotNull final static Class<?> CLASS_CHAT_MESSAGE;
+  @NotNull final static Class<?> CLASS_ICHAT_BASE_COMPONENT;
 
   @NotNull final static List<Class<?>> ASM_CLASSES;
   @NotNull final static Class<?> ASM_CLASS_ANVIL_WINDOW_CONTAINER_IMPL;
@@ -299,6 +333,8 @@ public abstract class AnvilWindowBase implements AnvilWindow {
       CLASS_ENTITY = getMinecraftClass("Entity");
       CLASS_ENTITY_HUMAN = getMinecraftClass("EntityHuman");
       CLASS_CRAFT_INVENTORY_VIEW = getCraftBukkitClass("inventory.CraftInventoryView");
+      CLASS_CHAT_MESSAGE = getMinecraftClass("ChatMessage");
+      CLASS_ICHAT_BASE_COMPONENT = getMinecraftClass("IChatBaseComponent");
 
       ASM_CLASSES = ASMClassLoader.INSTANCE.defineClasses(AnvilWindowGenerator.generate());
       ASM_CLASS_ANVIL_WINDOW_CONTAINER_IMPL = ASM_CLASSES.get(0);
@@ -351,6 +387,13 @@ public abstract class AnvilWindowBase implements AnvilWindow {
     .withoutModifiers(Modifier.STATIC)
     .withType(CLASS_ENTITY_HUMAN)
     .resultAccessor("Missing match: NMS." + CLASS_CONTAINER_ANVIL.getSimpleName() + " -> Field: NMS.EntityHuman player"));
+
+  // NMS.ChatMessage -> public constructor(String, Object[])
+  @NotNull final static Supplier<ConstructorAccessor<Object>> CONSTRUCTOR_CHAT_MESSAGE
+    = FuzzyReflection.lazySupplier(CLASS_CHAT_MESSAGE, true, fuzzy -> fuzzy
+    .useConstructorMatcher()
+    .withArgs(String.class, Object[].class)
+    .resultAccessor());
 
   /** INTERNAL ONLY */
   @NotNull

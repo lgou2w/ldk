@@ -519,7 +519,6 @@ final class AnvilWindowGenerator implements Opcodes {
       mv.visitLineNumber(28, l2);
 
       if (BukkitVersion.isV114OrLater) {
-        String chatMessage = loadNMSClassName("ChatMessage");
         String tileInventory = loadNMSClassName("TileInventory");
         String iTileEntityContainer = loadNMSClassName("ITileEntityContainer");
         String iChatBaseComponent = loadNMSClassName("IChatBaseComponent");
@@ -529,12 +528,9 @@ final class AnvilWindowGenerator implements Opcodes {
         mv.visitInsn(DUP);
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, NAME_ANVIL_TILE_ENTITY_IMPL, "<init>", '(' + DESC_ANVIL_IMPL + ")V", false);
-        mv.visitTypeInsn(NEW, chatMessage);
-        mv.visitInsn(DUP);
-        mv.visitLdcInsn("container.repair");
-        mv.visitInsn(ICONST_0);
-        mv.visitTypeInsn(ANEWARRAY, "java/lang/Object");
-        mv.visitMethodInsn(INVOKESPECIAL, chatMessage, "<init>", "(Ljava/lang/String;[Ljava/lang/Object;)V", false);
+        mv.visitVarInsn(ALOAD, 0);
+        mv.visitMethodInsn(INVOKEVIRTUAL, NAME_ANVIL_IMPL, "getTitle", "()Ljava/lang/Object;", false);
+        mv.visitTypeInsn(CHECKCAST, iChatBaseComponent);
         mv.visitMethodInsn(INVOKESPECIAL, tileInventory, "<init>", '(' + classDesc(iTileEntityContainer) + classDesc(iChatBaseComponent) + ")V", false);
         mv.visitVarInsn(ASTORE, 3);
         Label l3 = new Label();
@@ -559,7 +555,7 @@ final class AnvilWindowGenerator implements Opcodes {
         mv.visitLocalVariable("player", "Lorg/bukkit/entity/Player;", null, l0, l5, 1);
         mv.visitLocalVariable("playerHandle", DESC_NMS_ENTITY_PLAYER, null, l2, l5, 2);
         mv.visitLocalVariable("inventory", classDesc(tileInventory), null, l3, l5, 3);
-        mv.visitMaxs(8, 4);
+        mv.visitMaxs(6, 4);
       } else {
         mv.visitTypeInsn(NEW, NAME_ANVIL_TILE_ENTITY_IMPL);
         mv.visitInsn(DUP);

@@ -51,6 +51,16 @@ public interface AnvilWindow {
   @Contract("_ -> this")
   AnvilWindow setAllowMove(boolean flag);
 
+  // Minecraft 1.14 or later
+  @NotNull
+  @Contract("_ -> this")
+  AnvilWindow setTitle(@Nullable String title);
+
+  // Minecraft 1.14 or later
+  @NotNull
+  @Contract("_ -> this")
+  AnvilWindow setTitle(@Nullable Object iChatBaseComponent) throws IllegalArgumentException;
+
   boolean isOpened();
 
   @NotNull
