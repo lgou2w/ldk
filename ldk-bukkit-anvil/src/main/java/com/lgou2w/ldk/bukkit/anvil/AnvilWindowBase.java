@@ -322,14 +322,7 @@ public abstract class AnvilWindowBase implements AnvilWindow {
     try {
       CLASS_CONTAINER = getMinecraftClass("Container");
       CLASS_CONTAINER_ANVIL = getMinecraftClass( "ContainerAnvil");
-      Class<?> containerAnvilAbstract;
-      try {
-        containerAnvilAbstract = getMinecraftClassOrNull("ContainerAnvilAbstract");
-      } catch (NullPointerException e) {
-        // CatServer 1.12.2 NullPointerException. wtf?
-        containerAnvilAbstract = null;
-      }
-      CLASS_CONTAINER_ABSTRACT = containerAnvilAbstract;
+      CLASS_CONTAINER_ABSTRACT = getMinecraftClassOrNull("ContainerAnvilAbstract");
       CLASS_ENTITY = getMinecraftClass("Entity");
       CLASS_ENTITY_HUMAN = getMinecraftClass("EntityHuman");
       CLASS_CRAFT_INVENTORY_VIEW = getCraftBukkitClass("inventory.CraftInventoryView");

@@ -121,9 +121,15 @@ public final class MinecraftReflection {
   @Nullable
   @Contract("null -> fail")
   public static Class<?> getMinecraftClassOrNull(String className) {
+    //noinspection TryWithIdenticalCatches
     try {
       return getMinecraftClass(className);
     } catch (ClassNotFoundException e) {
+      return null;
+    } catch (NullPointerException e) {
+      // Don't remove this catch block.
+      // Some special servers, such as CatServer, Magma's PluginClassLoader,
+      // will throw inexplicable null pointer exception!
       return null;
     }
   }
@@ -134,9 +140,15 @@ public final class MinecraftReflection {
     String className,
     String... aliases
   ) {
+    //noinspection TryWithIdenticalCatches
     try {
       return getMinecraftClass(className, aliases);
     } catch (ClassNotFoundException e) {
+      return null;
+    } catch (NullPointerException e) {
+      // Don't remove this catch block.
+      // Some special servers, such as CatServer, Magma's PluginClassLoader,
+      // will throw inexplicable null pointer exception!
       return null;
     }
   }
@@ -152,9 +164,15 @@ public final class MinecraftReflection {
   @Contract("null -> fail")
   public static Class<?> getCraftBukkitClassOrNull(String className) {
     Objects.requireNonNull(className, "className");
+    //noinspection TryWithIdenticalCatches
     try {
       return getCraftBukkitClass(className);
     } catch (ClassNotFoundException e) {
+      return null;
+    } catch (NullPointerException e) {
+      // Don't remove this catch block.
+      // Some special servers, such as CatServer, Magma's PluginClassLoader,
+      // will throw inexplicable null pointer exception!
       return null;
     }
   }
