@@ -97,6 +97,8 @@ public class FieldReflectionMatcher extends ReflectionMatcher<Field> {
       for (Type type : parameterizedType.getActualTypeArguments()) {
         if (type instanceof Class) {
           parameterizedActualTypeArgs.add((Class<?>) type);
+        } else if (type instanceof ParameterizedType && ((ParameterizedType) type).getRawType() instanceof Class) {
+          parameterizedActualTypeArgs.add((Class<?>) ((ParameterizedType) type).getRawType());
         }
       }
       if (parameterizedActualTypeArgs.size() > subActualTypeArgsSize) {
