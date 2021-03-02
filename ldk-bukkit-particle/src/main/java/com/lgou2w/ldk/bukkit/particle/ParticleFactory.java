@@ -98,13 +98,10 @@ public final class ParticleFactory {
           classEnumParticle = getMinecraftClassOrNull("PacketPlayOutWorldParticles$EnumParticle");
         } catch (Exception ignore) {
         }
-      } finally {
-        CLASS_ENUM_PARTICLE = classEnumParticle;
       }
+      CLASS_ENUM_PARTICLE = classEnumParticle;
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Error in initializing ParticleFactory internal static block:", e);
-    } catch (NullPointerException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -319,6 +316,7 @@ public final class ParticleFactory {
     boolean longDistance,
     @Nullable Object data
   ) {
+    // TODO: Incompatible particle always displayed as BARRIER?
     Object particleType = mappingInternal(particle);
     if (particleType == null)
       throw new UnsupportedOperationException("Unsupported particle type: " + particle);
@@ -394,6 +392,7 @@ public final class ParticleFactory {
     boolean longDistance,
     @Nullable Object data
   ) {
+    // TODO: Incompatible particle always displayed as BARRIER?
     Object particleType = particle.getId() < 0 ? null : METHOD_ENUM_PARTICLE_GET_BY_ID.get().invoke(null, particle.getId());
     if (particleType == null)
       throw new UnsupportedOperationException("Unsupported particle type: " + particle);
