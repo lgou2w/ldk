@@ -17,11 +17,13 @@
 package com.lgou2w.ldk.bukkit.anvil;
 
 import com.lgou2w.ldk.bukkit.internal.FakePlugin;
+import com.lgou2w.ldk.bukkit.packet.PacketFactory;
 import com.lgou2w.ldk.reflect.ConstructorAccessor;
 import com.lgou2w.ldk.reflect.FieldAccessor;
 import com.lgou2w.ldk.reflect.FuzzyReflection;
 import com.lgou2w.ldk.reflect.MethodAccessor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -286,10 +288,22 @@ public abstract class AnvilWindowBase implements AnvilWindow {
             case 2: slot = Slot.OUTPUT; break;
             default: slot = null; break;
           }
-          AnvilWindowClickEvent clickEvent = anvil.callClickEvent(slot, target.getCurrentItem());
+          ItemStack clicked = target.getCurrentItem();
+          AnvilWindowClickEvent clickEvent = anvil.callClickEvent(slot, clicked);
           if ((clickEvent != null && clickEvent.isCancelled()) || !anvil.isAllowMove()) {
             target.setCancelled(true);
             target.setResult(Event.Result.DENY);
+            // When the event is cancelled, clicking on the item in the output slot will have false experience reduction problem.
+            // Resend the data packet to update the player’s experience problem.
+            if (slot == Slot.OUTPUT && clicked != null && clicked.getType() != Material.AIR) {
+              Player clicker = (Player) target.getWhoClicked();
+              float exp = clicker.getExp();
+              int expLevel = clicker.getLevel();
+              int expTotal = clicker.getTotalExperience();
+              if (exp <= 0f && expLevel <= 0) return; // No need to send if not have experience
+              Object packet = CONSTRUCTOR_PACKET_PLAY_OUT_EXPERIENCE.get().newInstance(exp, expTotal, expLevel);
+              PacketFactory.sendPacket(packet, clicker);
+            }
           }
         }
       } else if (evt instanceof PluginDisableEvent) {
@@ -313,6 +327,7 @@ public abstract class AnvilWindowBase implements AnvilWindow {
   @NotNull final static Class<?> CLASS_ENTITY_HUMAN;
   @NotNull final static Class<?> CLASS_CHAT_MESSAGE;
   @NotNull final static Class<?> CLASS_ICHAT_BASE_COMPONENT;
+  @NotNull final static Class<?> CLASS_PACKET_PLAY_OUT_EXPERIENCE;
 
   @NotNull final static List<Class<?>> ASM_CLASSES;
   @NotNull final static Class<?> ASM_CLASS_ANVIL_WINDOW_CONTAINER_IMPL;
@@ -328,6 +343,7 @@ public abstract class AnvilWindowBase implements AnvilWindow {
       CLASS_CRAFT_INVENTORY_VIEW = getCraftBukkitClass("inventory.CraftInventoryView");
       CLASS_CHAT_MESSAGE = getMinecraftClass("ChatMessage");
       CLASS_ICHAT_BASE_COMPONENT = getMinecraftClass("IChatBaseComponent");
+      CLASS_PACKET_PLAY_OUT_EXPERIENCE = getMinecraftClass("PacketPlayOutExperience");
 
       ASM_CLASSES = ASMClassLoader.INSTANCE.defineClasses(AnvilWindowGenerator.generate());
       ASM_CLASS_ANVIL_WINDOW_CONTAINER_IMPL = ASM_CLASSES.get(0);
@@ -386,6 +402,13 @@ public abstract class AnvilWindowBase implements AnvilWindow {
     = FuzzyReflection.lazySupplier(CLASS_CHAT_MESSAGE, true, fuzzy -> fuzzy
     .useConstructorMatcher()
     .withArgs(String.class, Object[].class)
+    .resultAccessor());
+
+  // NMS.PacketPlayOutExperience -> public constructor(float, int, int)
+  @NotNull final static Supplier<ConstructorAccessor<Object>> CONSTRUCTOR_PACKET_PLAY_OUT_EXPERIENCE
+    = FuzzyReflection.lazySupplier(CLASS_PACKET_PLAY_OUT_EXPERIENCE, fuzzy -> fuzzy
+    .useConstructorMatcher()
+    .withArgs(float.class, int.class, int.class)
     .resultAccessor());
 
   /** INTERNAL ONLY */
